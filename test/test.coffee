@@ -82,18 +82,18 @@ check = (text) ->
 
   same = json1 is json2
 
-  if not same
-    log '----------------------------------'
-    log "CORRECT"
-    log text
-    log '**********************************'
-    log "RESULT"
-    log result
-    fs.writeFileSync('result.sql', result)
-    log '----------------------------------'
-    throw new Error('WRONG: ' + text)
-  else
-    successCount++
+  # if not same
+  #   log '----------------------------------'
+  #   log "CORRECT"
+  #   log text
+  #   log '**********************************'
+  #   log "RESULT"
+  #   log result
+  #   fs.writeFileSync('result.sql', result)
+  #   log '----------------------------------'
+  #   throw new Error('WRONG: ' + text)
+  # else
+  #   successCount++
 
   json1.should.eq(json2)
 
