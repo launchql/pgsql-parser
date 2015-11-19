@@ -1,0 +1,43 @@
+{
+  "name": "pg-query-parser",
+  "version": "0.0.1",
+  "description": "The real PostgreSQL query parser",
+  "homepage": "http://github.com/zhm/pg-query-parser",
+  "main": "dist/pg-query-parser.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --compilers coffee:coffee-script/register --reporter dot",
+    "build-js": "./node_modules/.bin/browserify --verbose -t coffeeify --extension=\".coffee\" src/index.coffee > dist/pg-query-parser.js",
+    "watch-js": "./node_modules/.bin/watchify --verbose -t coffeeify --extension=\".coffee\" src/index.coffee -o \"> dist/pg-query-parser.js && ./node_modules/.bin/uglifyjs dist/pg-query-parser.js > dist/pg-query-parser.min.js\"",
+    "uglify-js": "./node_modules/.bin/uglifyjs dist/pg-query-parser.js > dist/pg-query-parser.min.js",
+    "watch": "npm run watch-js & npm run watch-css"
+  },
+  "author": "Zac McCormick <zac.mccormick@gmail.com> (http://github.com/zhm)",
+  "license": "BSD-3-Clause",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/zhm/pg-query-parser.git"
+  },
+  "devDependencies": {
+    "browserify": "^12.0.1",
+    "chai": "^3.4.1",
+    "coffee-script": "^1.10.0",
+    "coffeeify": "^1.1.0",
+    "glob": "^6.0.1",
+    "mocha": "^2.3.3",
+    "uglify-js": "^2.6.0",
+    "watch-cli": "^0.2.1",
+    "watchify": "^3.6.0"
+  },
+  "dependencies": {
+    "lodash": "^3.10.1",
+    "pg-query-native": "0.0.4"
+  },
+  "keywords": [
+    "sql",
+    "postgres",
+    "postgresql",
+    "pg",
+    "query",
+    "database"
+  ]
+}

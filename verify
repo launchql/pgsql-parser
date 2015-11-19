@@ -1,0 +1,43 @@
+#!/usr/bin/env node
+
+require('coffee-script/register');
+
+parser = require('./src');
+
+var clean = require('./test/util');
+
+var exec = require('child_process').exec;
+var fs = require('fs');
+
+if (process.argv[2]) {
+  runQuery(process.argv[2]);
+} else {
+  var content = '';
+  process.stdin.resume();
+  process.stdin.on('data', function(buf) { content += buf.toString(); });
+  process.stdin.on('end', function() {
+    runQuery(content);
+  });
+}
+
+function runQuery(content) {
+  result = parser.deparse(parser.parse(content).query);
+
+  json1 = clean(parser.parse(content).query)
+  json2 = clean(parser.parse(result).query)
+
+  var same = JSON.stringify(json1) == JSON.stringify(json2);
+
+  if (same) {
+    console.log('OK');
+  }
+  else {
+    console.log('NOT OK');
+    fs.writeFileSync('a.json', JSON.stringify(json1, null, '  '))
+    fs.writeFileSync('b.json', JSON.stringify(json2, null, '  '))
+    child = exec('diff -C10 a.json b.json', function (error, stdout, stderr) {
+      console.log(stdout);
+    });
+  }
+}
+

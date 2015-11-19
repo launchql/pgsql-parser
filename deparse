@@ -1,0 +1,21 @@
+#!/usr/bin/env node
+
+require('coffee-script/register');
+
+parser = require('./src');
+
+if (process.argv[2]) {
+  runQuery(process.argv[2]);
+} else {
+  var content = '';
+  process.stdin.resume();
+  process.stdin.on('data', function(buf) { content += buf.toString(); });
+  process.stdin.on('end', function() {
+    runQuery(content);
+  });
+}
+
+function runQuery(content) {
+  result = parser.deparse(parser.parse(content).query);
+  console.log(result);
+}

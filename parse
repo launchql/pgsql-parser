@@ -1,0 +1,19 @@
+#!/usr/bin/env node
+
+parser = require('pg-query-native');
+
+if (process.argv[2]) {
+  runQuery(process.argv[2]);
+} else {
+  var content = '';
+  process.stdin.resume();
+  process.stdin.on('data', function(buf) { content += buf.toString(); });
+  process.stdin.on('end', function() {
+    runQuery(content);
+  });
+}
+
+function runQuery(query) {
+  result = parser.parse(query).query
+  console.log(JSON.stringify(result, null, '  '))
+}
