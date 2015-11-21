@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "The real PostgreSQL query parser",
   "homepage": "http://github.com/zhm/pg-query-parser",
-  "main": "dist/pg-query-parser.js",
+  "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha --compilers coffee:coffee-script/register --reporter dot",
     "build-js": "./node_modules/.bin/browserify --verbose -t coffeeify --extension=\".coffee\" src/index.coffee > dist/pg-query-parser.js",

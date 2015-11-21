@@ -33,8 +33,19 @@ clean = (tree) ->
       delete obj.location
   tree
 
+tables = (query) ->
+  all query, (obj, key, value) ->
+    # if key is 'RANGEVAR'
+    #   console.log JSON.stringify(obj, null, '  ')
+    key is 'RANGEVAR'
+
+byType = (obj, type) ->
+  all obj, (obj, key, value) -> key is type
+
 module.exports =
   walk: walk
   first: first
   all: all
   clean: clean
+  tables: tables
+  byType: byType

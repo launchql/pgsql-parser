@@ -1,1 +1,2 @@
-module.exports = require('./lib');
+require('coffee-script/register');
+module.exports = require('./src');
