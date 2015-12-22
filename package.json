@@ -1,15 +1,14 @@
 {
   "name": "pg-query-parser",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "The real PostgreSQL query parser",
   "homepage": "http://github.com/zhm/pg-query-parser",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha --compilers coffee:coffee-script/register --reporter dot",
-    "build-js": "./node_modules/.bin/browserify --verbose -t coffeeify --extension=\".coffee\" src/index.coffee > dist/pg-query-parser.js",
-    "watch-js": "./node_modules/.bin/watchify --verbose -t coffeeify --extension=\".coffee\" src/index.coffee -o \"> dist/pg-query-parser.js && ./node_modules/.bin/uglifyjs dist/pg-query-parser.js > dist/pg-query-parser.min.js\"",
-    "uglify-js": "./node_modules/.bin/uglifyjs dist/pg-query-parser.js > dist/pg-query-parser.min.js",
-    "watch": "npm run watch-js & npm run watch-css"
+    "build": "./node_modules/.bin/coffee --output dist --compile src",
+    "prepublish": "npm run clean && npm run build",
+    "clean": "rm -rf dist"
   },
   "author": "Zac McCormick <zac.mccormick@gmail.com> (http://github.com/zhm)",
   "license": "BSD-3-Clause",
