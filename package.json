@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "lodash": "^3.10.1",
-    "pg-query-native": "0.0.5"
+    "pg-query-native": "zhm/node-pg-query-native#v1"
   },
   "keywords": [
     "sql",

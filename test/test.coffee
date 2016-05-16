@@ -15,7 +15,8 @@ pattern =
   else
     '*.sql'
 
-files = glob.sync './test/fixtures/upstream/' + pattern
+files = glob.sync('./test/fixtures/' + pattern)
+files = files.concat(glob.sync('./test/fixtures/upstream/' + pattern))
 
 pretty = (obj) -> JSON.stringify(obj, null, 2)
 
@@ -102,11 +103,7 @@ successCount = 0
 
 # scripts with this text are known to be broken
 SKIP = [
-  '47909999999999999999999999999999999999999999999999999999999999999999999999999'
-  '47899999999999999999999999999999999999999999999999999999999999999999999999999'
-  '47709999999999999999999999999999999999999999999999999999999999999999999999999'
-  '47699999999999999999999999999999999999999999999999999999999999999999999999999'
-  '999999999999999999999'
+  'CREATE FOREIGN TABLE'
 ]
 
 if process.env.QUERY?
@@ -122,22 +119,36 @@ else
         closure = (sqlQuery, file) ->
           it "should parse #{sqlQuery.trim()} from #{file}", ->
             try
-              parsed = parse(sqlQuery)
-
-              if parsed.query and parsed.query[0]?.SELECT?
-                check(sqlQuery)
-
-            catch ex
-              knownBroken = false
+              skipQuery = false
 
               for skip in SKIP
-                if _.contains sqlQuery, skip
-                  knownBroken = true
+                if sqlQuery.indexOf(skip) > -1
+                  console.log('skipping', sqlQuery.trim())
+                  skipQuery = true
 
-              if search(parsed.query, 'INSERT INTO')
-                knownBroken = true
+              unless skipQuery
+                parsed = parse(sqlQuery)
 
-              unless knownBroken
+                # Only SelectStmt's for now
+                if parsed.query and parsed.query[0]?.SelectStmt?
+                  check(sqlQuery)
+
+            catch ex
+              unsupported = false
+
+              unsupportedTypes = [
+                'InsertStmt',
+                'UpdateStmt',
+                'DeleteStmt',
+                'XmlExpr',
+                'XmlSerialize'
+              ]
+
+              for type in unsupportedTypes
+                if search(parsed.query, type).length
+                  unsupported = true
+
+              unless unsupported
                 log file
                 log sqlQuery
                 log '------------------------------------------'

@@ -6,7 +6,8 @@ first = _.first
 
 compact = (o) ->
   _.select _.compact(o), (p) ->
-    _.isString(p) and p.length > 0
+    return false unless p?
+    p.toString().length
 
 fk = (value) -> _.first(_.keys(value))
 fv = (value) -> _.first(_.values(value))
@@ -25,6 +26,9 @@ class Deparser
   deparseQuery: ->
     (@tree.map (node) => @deparse(node)).join("\n\n")
 
+  deparseNodes: (nodes) ->
+    nodes.map (node) => @deparse(node)
+
   quote: (value) ->
     return unless value?
     if _.isArray(value)
@@ -37,7 +41,7 @@ class Deparser
     "'" + literal.replace(/'/g, "''") + "'"
 
   type: (names, args) ->
-    [catalog, type] = names
+    [catalog, type] = names.map((name) => @deparse(name))
 
     mods = (name, args) ->
       if args?
@@ -46,9 +50,9 @@ class Deparser
         name
 
     # handle the special "char" (in quotes) type
-    names[0] = '"char"' if names[0] is 'char'
+    names[0].String.str = '"char"' if names[0].String.str is 'char'
 
-    return mods(names.join('.'), args) if catalog isnt 'pg_catalog'
+    return mods(@deparseNodes(names).join('.'), args) if catalog isnt 'pg_catalog'
 
     res =
       switch type
@@ -106,95 +110,132 @@ class Deparser
 
     @[type](node, context)
 
-  'AEXPR ALL': (node, context) ->
+	# 0  AEXPR_OP,					/* normal operator */
+	# 1  AEXPR_OP_ANY,				/* scalar op ANY (array) */
+	# 2  AEXPR_OP_ALL,				/* scalar op ALL (array) */
+	# 3  AEXPR_DISTINCT,				/* IS DISTINCT FROM - name must be "=" */
+	# 4  AEXPR_NULLIF,				/* NULLIF - name must be "=" */
+	# 5  AEXPR_OF,					/* IS [NOT] OF - name must be "=" or "<>" */
+	# 6  AEXPR_IN,					/* [NOT] IN - name must be "=" or "<>" */
+	# 7  AEXPR_LIKE,					/* [NOT] LIKE - name must be "~~" or "!~~" */
+	# 8  AEXPR_ILIKE,				/* [NOT] ILIKE - name must be "~~*" or "!~~*" */
+	# 9  AEXPR_SIMILAR,				/* [NOT] SIMILAR - name must be "~" or "!~" */
+	# 10 AEXPR_BETWEEN,				/* name must be "BETWEEN" */
+	# 11 AEXPR_NOT_BETWEEN,			/* name must be "NOT BETWEEN" */
+	# 12 AEXPR_BETWEEN_SYM,			/* name must be "BETWEEN SYMMETRIC" */
+	# 13 AEXPR_NOT_BETWEEN_SYM,		/* name must be "NOT BETWEEN SYMMETRIC" */
+	# 14 AEXPR_PAREN					/* nameless dummy node for parentheses */
+
+  'A_Expr': (node, context) ->
     output = []
-    output.push @deparse(node.lexpr)
-    output.push format('ALL (%s)', @deparse(node.rexpr))
-    output.join(' ' + node.name[0] + ' ')
 
-  'AEXPR AND': (node, context) ->
-    format('(%s) AND (%s)', @deparse(node.lexpr), @deparse(node.rexpr))
+    switch node.kind
+      when 0 # AEXPR_OP
+        if node.lexpr
+          output.push '(' + @deparse(node.lexpr) + ')'
 
-  'AEXPR ANY': (node, context) ->
-    output = []
-    output.push @deparse(node.lexpr)
-    output.push format('ANY (%s)', @deparse(node.rexpr))
-    output.join(' ' + node.name[0] + ' ')
+        if node.name.length > 1
+          output.push "OPERATOR(" + @deparse(node.name[0]) + "." + @deparse(node.name[1]) + ")"
+        else
+          output.push(@deparse(node.name[0]))
 
-  'AEXPR DISTINCT': (node, context) ->
-    format('%s IS DISTINCT FROM %s', @deparse(node.lexpr), @deparse(node.rexpr))
+        if node.rexpr
+          output.push '(' + @deparse(node.rexpr) + ')'
 
-  'AEXPR IN': (node, context) ->
-    rexpr = node.rexpr.map (node) => @deparse(node)
+        if output.length is 2
+          return '(' + output.join('') + ')'
+        else
+          return '(' + output.join(' ') + ')'
 
-    operator =
-      if node.name[0] == '='
-        'IN'
-      else
-        'NOT IN'
+      when 1 # AEXPR_OP_ANY
+        output.push @deparse(node.lexpr)
+        output.push format('ANY (%s)', @deparse(node.rexpr))
+        return output.join(' ' + @deparse(node.name[0]) + ' ')
 
-    format('%s %s (%s)', @deparse(node.lexpr), operator, rexpr.join(', '))
+      when 2 # AEXPR_OP_ALL
+        output.push @deparse(node.lexpr)
+        output.push format('ALL (%s)', @deparse(node.rexpr))
+        return output.join(' ' + @deparse(node.name[0]) + ' ')
 
-  'AEXPR NOT': (node, context) ->
-    format('NOT (%s)', @deparse(node.rexpr))
+      when 3 # AEXPR_DISTINCT
+        return format('%s IS DISTINCT FROM %s', @deparse(node.lexpr), @deparse(node.rexpr))
 
-  'AEXPR NULLIF': (node, context) ->
-    format('NULLIF(%s, %s)', @deparse(node.lexpr), @deparse(node.rexpr))
+      when 4 # AEXPR_NULLIF
+        return format('NULLIF(%s, %s)', @deparse(node.lexpr), @deparse(node.rexpr))
 
-  'AEXPR OR': (node, context) ->
-    format('(%s) OR (%s)', @deparse(node.lexpr), @deparse(node.rexpr))
+      when 5 # AEXPR_OF
+        op = if node.name[0].String.str is '=' then 'IS OF' else 'IS NOT OF'
+        list = (@deparse(item) for item in node.rexpr)
+        return format('%s %s (%s)', @deparse(node.lexpr), op, list.join(', '))
 
-  'AEXPR OF': (node) ->
-    op = if node.name[0] is '=' then 'IS OF' else 'IS NOT OF'
-    list = (@deparse(item) for item in node.rexpr)
-    format('%s %s (%s)', @deparse(node.lexpr), op, list.join(', '))
+      when 6 # AEXPR_IN
+        rexpr = node.rexpr.map (node) => @deparse(node)
 
-  'AEXPR': (node, context) ->
-    output = []
+        operator =
+          if node.name[0].String.str == '='
+            'IN'
+          else
+            'NOT IN'
+
+        return format('%s %s (%s)', @deparse(node.lexpr), operator, rexpr.join(', '))
+
+      when 7 # AEXPR_LIKE
+        output.push @deparse(node.lexpr)
+
+        if node.name[0].String.str is '!~~'
+          output.push format('NOT LIKE (%s)', @deparse(node.rexpr))
+        else
+          output.push format('LIKE (%s)', @deparse(node.rexpr))
+
+        return output.join(' ')
+
+      when 8 # AEXPR_ILIKE
+        output.push @deparse(node.lexpr)
+
+        if node.name[0].String.str is '!~~*'
+          output.push format('NOT ILIKE (%s)', @deparse(node.rexpr))
+        else
+          output.push format('ILIKE (%s)', @deparse(node.rexpr))
+
+        return output.join(' ')
+
+      when 9 # AEXPR_SIMILAR TODO(zhm) untested
+        output.push @deparse(node.lexpr)
+        output.push format('SIMILAR TO %s', @deparse(node.rexpr))
+        return output.join(' ')
+
+      when 10 # AEXPR_BETWEEN TODO(zhm) untested
+        output.push @deparse(node.lexpr)
+        output.push format('BETWEEN %s AND %s', @deparse(node.rexpr[0]),  @deparse(node.rexpr[1]))
+        return output.join(' ')
+
+      when 11 # AEXPR_NOT_BETWEEN TODO(zhm) untested
+        output.push @deparse(node.lexpr)
+        output.push format('NOT BETWEEN %s AND %s', @deparse(node.rexpr[0]),  @deparse(node.rexpr[1]))
+        return output.join(' ')
+
 
     if node.lexpr
-      if node.lexpr.A_CONST?
+      if node.lexpr.A_Const?
         output.push @deparse(node.lexpr, context || true)
       else
         output.push '(' + @deparse(node.lexpr, context || true) + ')'
 
-    op =
-      if _.last(node.name) is '~~'
-        'LIKE'
-      else
-        _.last(node.name)
-
-    if node.name.length > 1
-      op = "OPERATOR(" + node.name[0] + "." + op + ")"
-
-    output.push(op)
-
-    if node.rexpr
-      if node.rexpr.A_CONST?
-        output.push @deparse(node.rexpr, context || true)
-      else
-        output.push '(' + @deparse(node.rexpr, context || true) + ')'
-
-    if output.length is 2
-      output = output.join('')
-    else
-      output = output.join(' ')
-
     '(' + output + ')'
 
-  'ALIAS': (node, context) ->
+  'Alias': (node, context) ->
     name = node.aliasname
 
     output = [ 'AS' ]
 
     if node.colnames
-      output.push name + '(' + @quote(node.colnames).join(', ') + ')'
+      output.push name + '(' + @deparseNodes(node.colnames).join(', ') + ')'
     else
       output.push @quote(name)
 
     output.join(' ')
 
-  'A_ARRAYEXPR': (node) ->
+  'A_ArrayExpr': (node) ->
     output = [ 'ARRAY[' ]
 
     list = []
@@ -207,42 +248,19 @@ class Deparser
 
     output.join('')
 
-  'A_CONST': (node, context) ->
-    switch node.type
-      when 'string'
-        @escape(node.val)
-      when 'integer'
-        # wrap negative numbers in parens so the following doesn't result in unary - AEXPR
-        # SELECT (-32768)::int2 * (-1)::int2
-        if node.val < 0
-          '(' + node.val.toString() + ')'
-        else
-          node.val.toString()
+  'A_Const': (node, context) ->
+    if node.val.String
+      @escape(@deparse(node.val))
+    else
+      @deparse(node.val)
 
-      when 'float'
-        value = node.val.toString()
-        value += '.0' unless value.indexOf('.') > -1
-        value
-
-        if node.val < 0
-          '(' + value + ')'
-        else
-          value
-
-      when 'bitstring'
-        prefix = node.val[0].toUpperCase() + @escape(node.val.substring(1))
-      when 'null'
-        'NULL'
-      else
-        fail format("Unrecognized A_CONST value %s: %s", JSON.stringify(node), context)
-
-  'A_INDICES': (node) ->
+  'A_Indices': (node) ->
     if node.lidx
       format('[%s:%s]', @deparse(node.lidx), @deparse(node.uidx))
     else
       format('[%s]', @deparse(node.uidx))
 
-  'A_INDIRECTION': (node) ->
+  'A_Indirection': (node) ->
     output = [ '(' + @deparse(node.arg) + ')' ]
 
     # TODO(zhm) figure out the actual rules for when a '.' is needed
@@ -255,12 +273,12 @@ class Deparser
     parts = []
 
     for subnode in node.indirection
-      if _.isString(subnode) or subnode.A_STAR
+      if subnode.String or subnode.A_Star
         value =
-          if subnode.A_STAR
+          if subnode.A_Star
             '*'
           else
-            @quote(subnode)
+            @quote(subnode.String.str)
 
         output.push '.' + value
       else
@@ -268,10 +286,25 @@ class Deparser
 
     output.join('')
 
-  'A_STAR': (node, context) ->
+  'A_Star': (node, context) ->
     '*'
 
-  'BOOLEANTEST': (node) ->
+  'BitString': (node) ->
+    prefix = node.str[0]
+    "#{prefix}'#{node.str.substring(1)}'"
+
+  'BoolExpr': (node) ->
+    switch node.boolop
+      when 0
+        '(' + @deparseNodes(node.args).join(' AND ') + ')'
+      when 1
+        '(' + @deparseNodes(node.args).join(' OR ') + ')'
+      when 2
+        format('NOT (%s)', @deparseNodes(node.args))
+      else
+        fail(format('Unhandled BoolExpr: %s', JSON.stringify(node)))
+
+  'BooleanTest': (node) ->
     output = []
     output.push @deparse(node.arg)
 
@@ -287,7 +320,7 @@ class Deparser
     output.push tests[node.booltesttype]
     output.join ' '
 
-  'CASE': (node) ->
+  'CaseExpr': (node) ->
     output = ['CASE']
 
     output.push(@deparse(node.arg)) if node.arg
@@ -301,7 +334,7 @@ class Deparser
     output.push 'END'
     output.join(' ')
 
-  'COALESCE': (node) ->
+  'CoalesceExpr': (node) ->
     output = []
 
     args = []
@@ -309,14 +342,14 @@ class Deparser
 
     format 'COALESCE(%s)', args.join(', ')
 
-  'COLLATECLAUSE': (node) ->
+  'CollateClause': (node) ->
     output = []
     output.push @deparse(node.arg) if node.arg?
     output.push 'COLLATE'
-    output.push @quote(node.collname) if node.collname?
+    output.push @quote(@deparseNodes(node.collname)) if node.collname?
     output.join ' '
 
-  'COLUMNDEF': (node) ->
+  'ColumnDef': (node) ->
     output = [ @quote(node.colname) ]
 
     output.push @deparse(node.typeName)
@@ -330,23 +363,30 @@ class Deparser
 
     _.compact(output).join(' ')
 
-  'COLUMNREF': (node) ->
+  'ColumnRef': (node) ->
     fields = node.fields.map (field) =>
-      if _.isString(field)
-        @quote(field)
+      if field.String
+        @quote(@deparse(field))
       else
         @deparse(field)
 
     fields.join('.')
 
-  'COMMONTABLEEXPR': (node) ->
+  'CommonTableExpr': (node) ->
     output = []
     output.push node.ctename
-    output.push format('(%s)', @quote(node.aliascolnames)) if node.aliascolnames
+    output.push format('(%s)', @quote(@deparseNodes(node.aliascolnames))) if node.aliascolnames
     output.push format('AS (%s)', @deparse(node.ctequery))
     output.join(' ')
 
-  'FUNCCALL': (node, context) ->
+  'Float': (node) ->
+    # wrap negative numbers in parens, SELECT (-2147483648)::int4 * (-1)::int4
+    if node.str[0] is '-'
+      '(' + node.str + ')'
+    else
+      node.str
+
+  'FuncCall': (node, context) ->
     output = []
 
     params = []
@@ -358,7 +398,7 @@ class Deparser
     # COUNT(*)
     params.push '*' if node.agg_star
 
-    name = node.funcname.join('.')
+    name = @deparseNodes(node.funcname).join('.')
 
     order = []
 
@@ -399,12 +439,18 @@ class Deparser
 
     output.join(' ')
 
-  'INTOCLAUSE': (node) ->
+  'Integer': (node) ->
+    if node.ival < 0
+      '(' + node.ival + ')'
+    else
+      node.ival.toString()
+
+  'IntoClause': (node) ->
     output = []
     output.push @deparse(node.rel)
     output.join ''
 
-  'JOINEXPR': (node, context) ->
+  'JoinExpr': (node, context) ->
     output = []
 
     output.push @deparse(node.larg)
@@ -427,7 +473,7 @@ class Deparser
     if node.rarg
       # wrap nested join expressions in parens to make the following symmetric:
       # select * from int8_tbl x cross join (int4_tbl x cross join lateral (select x.f1) ss)
-      if node.rarg.JOINEXPR? and not node.rarg.JOINEXPR?.alias?
+      if node.rarg.JoinExpr? and not node.rarg.JoinExpr?.alias?
         output.push '(' + @deparse(node.rarg) + ')'
       else
         output.push @deparse(node.rarg)
@@ -436,7 +482,7 @@ class Deparser
       output.push "ON " + @deparse(node.quals)
 
     if node.usingClause
-      output.push "USING (" + @quote(node.usingClause).join(", ") + ")"
+      output.push "USING (" + @quote(@deparseNodes(node.usingClause)).join(", ") + ")"
 
     wrapped =
       if node.rarg.JOINEXPR? or node.alias
@@ -449,8 +495,9 @@ class Deparser
     else
       wrapped
 
-  'LOCKINGCLAUSE': (node) ->
+  'LockingClause': (node) ->
     strengths = [
+      'NONE' # LCS_NONE
       'FOR KEY SHARE'
       'FOR SHARE'
       'FOR NO KEY UPDATE'
@@ -467,7 +514,7 @@ class Deparser
 
     output.join(' ')
 
-  'MINMAX': (node) ->
+  'MinMaxExpr': (node) ->
     output = []
 
     if node.op is 0
@@ -482,14 +529,17 @@ class Deparser
     output.push('(' + args.join(', ') + ')')
     output.join('')
 
-  'NAMEDARGEXPR': (node) ->
+  'NamedArgExpr': (node) ->
     output = []
     output.push node.name
     output.push ':='
     output.push @deparse(node.arg)
     output.join ' '
 
-  'NULLTEST': (node) ->
+  'Null': (node) ->
+    'NULL'
+
+  'NullTest': (node) ->
     output = [ @deparse(node.arg) ]
     if node.nulltesttype is 0
       output.push 'IS NULL'
@@ -497,7 +547,7 @@ class Deparser
       output.push 'IS NOT NULL'
     output.join(' ')
 
-  'RANGEFUNCTION': (node) ->
+  'RangeFunction': (node) ->
     output = []
     output.push 'LATERAL' if node.lateral
 
@@ -531,7 +581,7 @@ class Deparser
 
     output.join(' ')
 
-  'RANGESUBSELECT': (node, context) ->
+  'RangeSubselect': (node, context) ->
     output = ''
 
     if node.lateral
@@ -544,7 +594,7 @@ class Deparser
     else
       output
 
-  'RANGEVAR': (node, context) ->
+  'RangeVar': (node, context) ->
     output = []
     output.push 'ONLY' if node.inhOpt is 0
 
@@ -563,7 +613,7 @@ class Deparser
 
     output.join(' ')
 
-  'RESTARGET': (node, context) ->
+  'ResTarget': (node, context) ->
     if context is 'select'
       compact([ @deparse(node.val), @quote(node.name) ]).join(' AS ')
     else if context is 'update'
@@ -573,11 +623,14 @@ class Deparser
     else
       fail format("Can't deparse %s in context %s", JSON.stringify(node), context)
 
-  'ROW': (node) ->
+  'RowExpr': (node) ->
     args = node.args or []
-    'ROW(' + args.map((arg) => @deparse(arg)).join(', ') + ')'
+    if node.row_format is 2
+      '(' + args.map((arg) => @deparse(arg)).join(', ') + ')'
+    else
+      'ROW(' + args.map((arg) => @deparse(arg)).join(', ') + ')'
 
-  'SELECT': (node, context) ->
+  'SelectStmt': (node, context) ->
     output = []
 
     output.push @deparse(node.withClause) if node.withClause
@@ -645,7 +698,7 @@ class Deparser
 
       for w in node.windowClause
         window = []
-        window.push @quote(w.WINDOWDEF.name) + ' AS' if w.WINDOWDEF.name
+        window.push @quote(w.WindowDef.name) + ' AS' if w.WindowDef.name
         window.push '(' + @deparse(w, 'window') + ')'
         windows.push window.join(' ')
 
@@ -669,7 +722,7 @@ class Deparser
 
     output.join(" ")
 
-  'SORTBY': (node) ->
+  'SortBy': (node) ->
     output = []
     output.push @deparse(node.node)
 
@@ -677,35 +730,46 @@ class Deparser
     output.push 'DESC' if node.sortby_dir is 2
 
     if node.sortby_dir is 3
-      output.push 'USING ' + node.useOp
+      output.push 'USING ' + @deparseNodes(node.useOp)
 
     output.push 'NULLS FIRST' if node.sortby_nulls is 1
     output.push 'NULLS LAST'  if node.sortby_nulls is 2
 
     output.join(' ')
 
-  'SUBLINK': (node) ->
+  'String': (node) ->
+    node.str
+
+  'SubLink': (node) ->
+    # if node.subLinkType is 2 and not node.operName?
+    #   node.operName = ['=']
+
     switch true
       when node.subLinkType is 0
         format('EXISTS (%s)', @deparse(node.subselect))
       when node.subLinkType is 1
-        format('%s %s ALL (%s)', @deparse(node.testexpr), node.operName[0], @deparse(node.subselect))
-      when node.subLinkType is 2 and node.operName[0] is '='
+        format('%s %s ALL (%s)', @deparse(node.testexpr), @deparse(node.operName[0]), @deparse(node.subselect))
+      when node.subLinkType is 2 and not node.operName?
         format('%s IN (%s)', @deparse(node.testexpr), @deparse(node.subselect))
       when node.subLinkType is 2
-        format('%s %s ANY (%s)', @deparse(node.testexpr), node.operName[0], @deparse(node.subselect))
+        format('%s %s ANY (%s)', @deparse(node.testexpr), @deparse(node.operName[0]), @deparse(node.subselect))
       when node.subLinkType is 3
-        format('%s %s (%s)', @deparse(node.testexpr), node.operName[0], @deparse(node.subselect))
+        format('%s %s (%s)', @deparse(node.testexpr), @deparse(node.operName[0]), @deparse(node.subselect))
       when node.subLinkType is 4
         format('(%s)', @deparse(node.subselect))
       when node.subLinkType is 5
+        # TODO(zhm) what is this?
+        fail('Encountered MULTIEXPR_SUBLINK', JSON.stringify(node))
+        # MULTIEXPR_SUBLINK
+        # format('(%s)', @deparse(node.subselect))
+      when node.subLinkType is 6
         format('ARRAY (%s)', @deparse(node.subselect))
 
-  'TYPECAST': (node) ->
+  'TypeCast': (node) ->
     @deparse(node.arg) + '::' + @deparse(node['typeName'])
 
-  'TYPENAME': (node) ->
-    return @deparseInterval(node) if _.last(node.names) is 'interval'
+  'TypeName': (node) ->
+    return @deparseInterval(node) if _.last(node.names).String.str is 'interval'
 
     output = []
     output.push('SETOF') if node['setof']
@@ -724,14 +788,14 @@ class Deparser
 
     output.join(' ')
 
-  'WHEN': (node) ->
+  'CaseWhen': (node) ->
     output = [ 'WHEN' ]
     output.push @deparse(node.expr)
     output.push 'THEN'
     output.push @deparse(node.result)
     output.join(' ')
 
-  'WINDOWDEF': (node, context) ->
+  'WindowDef': (node, context) ->
     output = []
 
     unless context is 'window'
@@ -777,7 +841,7 @@ class Deparser
     else
       output.join(' ') + windowParts.join(' ')
 
-  'WITHCLAUSE': (node) ->
+  'WithClause': (node) ->
     output = [ 'WITH' ]
 
     output.push 'RECURSIVE' if node.recursive
@@ -866,8 +930,8 @@ class Deparser
       intervals = @interval(typmods[0])
 
       # SELECT interval(0) '1 day 01:23:45.6789'
-      if node.typmods[0]?.A_CONST?.val is 32767 and node.typmods[1]?.A_CONST?
-        intervals = ['(' + node.typmods[1]?.A_CONST.val + ')']
+      if node.typmods[0]?.A_Const?.val.Integer.ival is 32767 and node.typmods[1]?.A_Const?
+        intervals = ['(' + node.typmods[1]?.A_Const.val.Integer.ival + ')']
 
       else
         intervals = intervals.map (part) =>
