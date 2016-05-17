@@ -13,8 +13,8 @@ const compact = o => {
   });
 };
 
-const fail = (msg) => {
-  throw new Error(msg);
+const fail = (type, node) => {
+  throw new Error(format('Unhandled %s node: %s', type, JSON.stringify(node)));
 };
 
 const indent = (text, count = 1) => text;
@@ -94,7 +94,7 @@ export default class Deparser {
       case 'interval':
         return 'interval';
       default:
-        return fail(format("Can't deparse type: %s", typeName));
+        throw new Error(format('Unhandled data type: %s', typeName));
     }
   }
 
@@ -238,7 +238,7 @@ export default class Deparser {
         return output.join(' ');
 
       default:
-        fail('Unhandled A_Expr node: %s', JSON.stringify(node));
+        fail('A_Expr', node);
         return null;
     }
   }
@@ -332,7 +332,7 @@ export default class Deparser {
       case 2:
         return format('NOT (%s)', this.deparseNodes(node.args));
       default:
-        return fail(format('Unhandled BoolExpr: %s', JSON.stringify(node)));
+        return fail('BoolExpr', node);
     }
   }
 
@@ -578,7 +578,7 @@ export default class Deparser {
         break;
 
       default:
-        fail(format('Unhandled JoinExpr node %s', JSON.stringify(node)));
+        fail('JoinExpr', node);
         break;
     }
 
@@ -785,7 +785,7 @@ export default class Deparser {
       return this.quote(node.name);
     }
 
-    return fail(format("Can't deparse %s in context %s", JSON.stringify(node), context));
+    return fail('ResTarget', node);
   }
 
   ['RowExpr'](node) {
@@ -976,14 +976,13 @@ export default class Deparser {
         return format('(%s)', this.deparse(node.subselect));
       case node.subLinkType === 5:
         // TODO(zhm) what is this?
-        return fail('Encountered MULTIEXPR_SUBLINK', JSON.stringify(node));
+        return fail('SubLink', node);
         // MULTIEXPR_SUBLINK
         // format('(%s)', @deparse(node.subselect))
       case node.subLinkType === 6:
         return format('ARRAY (%s)', this.deparse(node.subselect));
       default:
-        fail('Unhandled SubLink node: %s', JSON.stringify(node));
-        return null;
+        return fail('SubLink', node);
     }
   }
 
