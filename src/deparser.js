@@ -525,6 +525,32 @@ export default class Deparser {
     return output.join(' ');
   }
 
+  ['GroupingFunc'](node) {
+    return 'GROUPING(' + node.args.map(e => this.deparse(e)).join(', ') + ')';
+  }
+
+  ['GroupingSet'](node) {
+    switch (node.kind) {
+      case 0: // GROUPING_SET_EMPTY
+        return '()';
+
+      case 1: // GROUPING_SET_SIMPLE
+        return fail('GroupingSet', node);
+
+      case 2: // GROUPING_SET_ROLLUP
+        return 'ROLLUP (' + node.content.map(e => this.deparse(e)).join(', ') + ')';
+
+      case 3: // GROUPING_SET_CUBE
+        return 'CUBE (' + node.content.map(e => this.deparse(e)).join(', ') + ')';
+
+      case 4: // GROUPING_SET_SETS
+        return 'GROUPING SETS (' + node.content.map(e => this.deparse(e)).join(', ') + ')';
+
+      default:
+        return fail('GroupingSet', node);
+    }
+  }
+
   ['Integer'](node) {
     if (node.ival < 0) {
       return `(${node.ival})`;
@@ -745,6 +771,26 @@ export default class Deparser {
     }
 
     return output;
+  }
+
+  ['RangeTableSample'](node) {
+    const output = [];
+
+    output.push(this.deparse(node.relation));
+    output.push('TABLESAMPLE');
+    output.push(this.deparse(node.method[0]));
+
+    if (node.args) {
+      const args = node.args.map(e => this.deparse(e)).join(', ');
+
+      output.push('(' + args + ')');
+    }
+
+    if (node.repeatable) {
+      output.push('REPEATABLE(' + this.deparse(node.repeatable) + ')');
+    }
+
+    return output.join(' ');
   }
 
   ['RangeVar'](node, context) {
