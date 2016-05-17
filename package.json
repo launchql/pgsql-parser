@@ -5,10 +5,15 @@
   "homepage": "http://github.com/zhm/pg-query-parser",
   "main": "dist/index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --compilers coffee:coffee-script/register --reporter dot",
-    "build": "./node_modules/.bin/coffee --output dist --compile src",
-    "prepublish": "npm run clean && npm run build",
-    "clean": "rm -rf dist"
+    "test": "./node_modules/.bin/mocha --reporter dot test/setup.js test/test.js",
+    "simpletest": "node_modules/.bin/mocha ./test/setup.js ./test/test.js ./test/elements/*.js",
+    "prepublish": "npm run lint && npm run clean && npm run build",
+    "lint": "node_modules/.bin/eslint src/* src/**/*",
+    "build": "node_modules/.bin/babel src --out-dir dist --source-maps",
+    "watch": "node_modules/.bin/babel src --out-dir dist --source-maps --watch",
+    "clean": "rm -rf dist",
+    "check-deps": "node_modules/.bin/ncu",
+    "update-deps": "node_modules/.bin/ncu -u"
   },
   "author": "Zac McCormick <zac.mccormick@gmail.com> (http://github.com/zhm)",
   "license": "BSD-3-Clause",
