@@ -17,6 +17,10 @@ const fail = (type, node) => {
   throw new Error(format('Unhandled %s node: %s', type, JSON.stringify(node)));
 };
 
+const parens = (string) => {
+  return '(' + string + ')';
+};
+
 const indent = (text, count = 1) => text;
 
 export default class Deparser {
@@ -34,6 +38,14 @@ export default class Deparser {
 
   deparseNodes(nodes) {
     return nodes.map(node => this.deparse(node));
+  }
+
+  list(nodes, separator = ', ') {
+    if (!nodes) {
+      return '';
+    }
+
+    return this.deparseNodes(nodes).join(separator);
   }
 
   quote(value) {
@@ -115,7 +127,7 @@ export default class Deparser {
     }
 
     if (catalog !== 'pg_catalog') {
-      return mods(this.deparseNodes(names).join('.'), args);
+      return mods(this.list(names, '.'), args);
     }
 
     const res = this.convertTypeName(type, args);
@@ -148,7 +160,7 @@ export default class Deparser {
     switch (node.kind) {
       case 0: // AEXPR_OP
         if (node.lexpr) {
-          output.push(`(${this.deparse(node.lexpr)})`);
+          output.push(parens(this.deparse(node.lexpr)));
         }
 
         if (node.name.length > 1) {
@@ -160,14 +172,14 @@ export default class Deparser {
         }
 
         if (node.rexpr) {
-          output.push(`(${this.deparse(node.rexpr)})`);
+          output.push(parens(this.deparse(node.rexpr)));
         }
 
         if (output.length === 2) {
-          return `(${output.join('')})`;
+          return parens(output.join(''));
         }
 
-        return `(${output.join(' ')})`;
+        return parens(output.join(' '));
 
       case 1: // AEXPR_OP_ANY
         output.push(this.deparse(node.lexpr));
@@ -187,17 +199,14 @@ export default class Deparser {
 
       case 5: { // AEXPR_OF
         const op = node.name[0].String.str === '=' ? 'IS OF' : 'IS NOT OF';
-        const list = node.rexpr.map(e => this.deparse(e));
-        return format('%s %s (%s)', this.deparse(node.lexpr), op, list.join(', '));
+        return format('%s %s (%s)', this.deparse(node.lexpr), op, this.list(node.rexpr));
       }
 
       case 6: { // AEXPR_IN
-        const rexpr = node.rexpr.map(e => this.deparse(e));
-
         const operator = node.name[0].String.str === '=' ? 'IN'
                                                          : 'NOT IN';
 
-        return format('%s %s (%s)', this.deparse(node.lexpr), operator, rexpr.join(', '));
+        return format('%s %s (%s)', this.deparse(node.lexpr), operator, this.list(node.rexpr));
       }
 
       case 7: // AEXPR_LIKE
@@ -248,7 +257,7 @@ export default class Deparser {
     const output = [ 'AS' ];
 
     if (node.colnames) {
-      output.push(name + '(' + this.deparseNodes(node.colnames).join(', ') + ')');
+      output.push(name + parens(this.list(node.colnames)));
     } else {
       output.push(this.quote(name));
     }
@@ -257,19 +266,7 @@ export default class Deparser {
   }
 
   ['A_ArrayExpr'](node) {
-    const output = [ 'ARRAY[' ];
-
-    let list = [];
-
-    if (node.elements) {
-      list = node.elements.map(e => this.deparse(e));
-    }
-      // list = (@deparse(element) for element in node.elements)
-
-    output.push(list.join(', '));
-    output.push(']');
-
-    return output.join('');
+    return format('ARRAY[%s]', this.list(node.elements));
   }
 
   ['A_Const'](node, context) {
@@ -325,11 +322,11 @@ export default class Deparser {
   ['BoolExpr'](node) {
     switch (node.boolop) {
       case 0:
-        return `(${this.deparseNodes(node.args).join(' AND ')})`;
+        return parens(this.list(node.args, ' AND '));
       case 1:
-        return `(${this.deparseNodes(node.args).join(' OR ')})`;
+        return parens(this.list(node.args, ' OR '));
       case 2:
-        return format('NOT (%s)', this.deparseNodes(node.args));
+        return format('NOT (%s)', this.deparse(node.args[0]));
       default:
         return fail('BoolExpr', node);
     }
@@ -376,25 +373,19 @@ export default class Deparser {
   }
 
   ['CoalesceExpr'](node) {
-    const args = [];
-
-    for (let i = 0; i < node.args.length; i++) {
-      args.push(this.deparse(node.args[i]));
-    }
-
-    return format('COALESCE(%s)', args.join(', '));
+    return format('COALESCE(%s)', this.list(node.args));
   }
 
   ['CollateClause'](node) {
     const output = [];
 
-    if (node.arg != null) {
+    if (node.arg) {
       output.push(this.deparse(node.arg));
     }
 
     output.push('COLLATE');
 
-    if (node.collname != null) {
+    if (node.collname) {
       output.push(this.quote(this.deparseNodes(node.collname)));
     }
 
@@ -412,10 +403,7 @@ export default class Deparser {
     }
 
     if (node.constraints) {
-      for (let i = 0; i < node.constraints.length; i++) {
-        const item = node.constraints[i];
-        output.push(this.deparse(item));
-      }
+      output.push(this.list(node.constraints, ' '));
     }
 
     return _.compact(output).join(' ');
@@ -472,7 +460,7 @@ export default class Deparser {
       params.push('*');
     }
 
-    const name = this.deparseNodes(node.funcname).join('.');
+    const name = this.list(node.funcname, '.');
 
     const order = [];
 
@@ -480,7 +468,7 @@ export default class Deparser {
 
     if (node.agg_order) {
       order.push('ORDER BY');
-      order.push((node.agg_order.map(e => this.deparse(e, context))).join(', '));
+      order.push(this.list(node.agg_order, ', '));
     }
 
     const call = [];
@@ -494,7 +482,7 @@ export default class Deparser {
     // prepend variadic before the last parameter
     // SELECT CONCAT('|', VARIADIC ARRAY['1','2','3'])
     if (node.func_variadic) {
-      params[params.length - 1] = `VARIADIC ${params[params.length - 1]}`;
+      params[params.length - 1] = 'VARIADIC ' + params[params.length - 1];
     }
 
     call.push(params.join(', '));
@@ -510,7 +498,7 @@ export default class Deparser {
 
     if (order.length && withinGroup) {
       output.push('WITHIN GROUP');
-      output.push(`(${order.join(' ')})`);
+      output.push(parens(order.join(' ')));
     }
 
     if (node.agg_filter != null) {
@@ -518,14 +506,14 @@ export default class Deparser {
     }
 
     if (node.over != null) {
-      output.push(format('OVER %s', this.deparse(node.over, 'function')));
+      output.push(format('OVER %s', this.deparse(node.over)));
     }
 
     return output.join(' ');
   }
 
   ['GroupingFunc'](node) {
-    return 'GROUPING(' + node.args.map(e => this.deparse(e)).join(', ') + ')';
+    return 'GROUPING(' + this.list(node.args) + ')';
   }
 
   ['GroupingSet'](node) {
@@ -537,13 +525,13 @@ export default class Deparser {
         return fail('GroupingSet', node);
 
       case 2: // GROUPING_SET_ROLLUP
-        return 'ROLLUP (' + node.content.map(e => this.deparse(e)).join(', ') + ')';
+        return 'ROLLUP (' + this.list(node.content) + ')';
 
       case 3: // GROUPING_SET_CUBE
-        return 'CUBE (' + node.content.map(e => this.deparse(e)).join(', ') + ')';
+        return 'CUBE (' + this.list(node.content) + ')';
 
       case 4: // GROUPING_SET_SETS
-        return 'GROUPING SETS (' + node.content.map(e => this.deparse(e)).join(', ') + ')';
+        return 'GROUPING SETS (' + this.list(node.content) + ')';
 
       default:
         return fail('GroupingSet', node);
@@ -559,11 +547,7 @@ export default class Deparser {
   }
 
   ['IntoClause'](node) {
-    const output = [];
-
-    output.push(this.deparse(node.rel));
-
-    return output.join('');
+    return this.deparse(node.rel);
   }
 
   ['JoinExpr'](node, context) {
@@ -655,7 +639,7 @@ export default class Deparser {
 
     if (node.lockedRels) {
       output.push('OF');
-      output.push((node.lockedRels.map(item => this.deparse(item))).join(', '));
+      output.push(this.list(node.lockedRels));
     }
 
     return output.join(' ');
@@ -670,13 +654,7 @@ export default class Deparser {
       output.push('LEAST');
     }
 
-    const args = [];
-
-    for (let i = 0; i < node.args.length; i++) {
-      args.push(this.deparse(node.args[i]));
-    }
-
-    output.push(`(${args.join(', ')})`);
+    output.push(parens(this.list(node.args)));
 
     return output.join('');
   }
@@ -721,7 +699,7 @@ export default class Deparser {
       const call = [ this.deparse(funcCall[0]) ];
 
       if (funcCall[1] && funcCall[1].length) {
-        call.push(`AS (${(funcCall[1].map(def => this.deparse(def))).join(', ')})`);
+        call.push(format('AS (%s)', this.list(funcCall[1])));
       }
 
       funcs.push(call.join(' '));
@@ -744,7 +722,7 @@ export default class Deparser {
     }
 
     if (node.coldeflist) {
-      const defList = (node.coldeflist.map(col => this.deparse(col))).join(', ');
+      const defList = this.list(node.coldeflist);
 
       if (!node.alias) {
         output.push(` AS (${defList})`);
@@ -763,7 +741,7 @@ export default class Deparser {
       output += 'LATERAL ';
     }
 
-    output += `(${this.deparse(node.subquery)})`;
+    output += parens(this.deparse(node.subquery));
 
     if (node.alias) {
       return output + ' ' + this.deparse(node.alias);
@@ -780,9 +758,7 @@ export default class Deparser {
     output.push(this.deparse(node.method[0]));
 
     if (node.args) {
-      const args = node.args.map(e => this.deparse(e)).join(', ');
-
-      output.push('(' + args + ')');
+      output.push(parens(this.list(node.args)));
     }
 
     if (node.repeatable) {
@@ -834,13 +810,11 @@ export default class Deparser {
   }
 
   ['RowExpr'](node) {
-    const args = node.args || [];
-
     if (node.row_format === 2) {
-      return `(${args.map(arg => this.deparse(arg)).join(', ')})`;
+      return parens(this.list(node.args));
     }
 
-    return `ROW(${args.map(arg => this.deparse(arg)).join(', ')})`;
+    return format('ROW(%s)', this.list(node.args));
   }
 
   ['SelectStmt'](node, context) {
@@ -856,7 +830,7 @@ export default class Deparser {
         output.push('SELECT');
       }
     } else {
-      output.push(`(${this.deparse(node.larg)})`);
+      output.push(parens(this.deparse(node.larg)));
 
       const sets = [
         'NONE',
@@ -871,7 +845,7 @@ export default class Deparser {
         output.push('ALL');
       }
 
-      output.push(`(${this.deparse(node.rarg)})`);
+      output.push(parens(this.deparse(node.rarg)));
     }
 
     if (node.distinctClause) {
@@ -938,7 +912,7 @@ export default class Deparser {
           window.push(this.quote(w.WindowDef.name) + ' AS');
         }
 
-        window.push(`(${this.deparse(w, 'window')})`);
+        window.push(parens(this.deparse(w, 'window')));
 
         windows.push(window.join(' '));
       }
@@ -1003,9 +977,6 @@ export default class Deparser {
   }
 
   ['SubLink'](node) {
-    // if node.subLinkType is 2 and not node.operName?
-    //   node.operName = ['=']
-
     switch (true) {
       case node.subLinkType === 0:
         return format('EXISTS (%s)', this.deparse(node.subselect));
@@ -1096,7 +1067,7 @@ export default class Deparser {
 
     const windowParts = [];
 
-    let parens = false;
+    let useParens = false;
 
     if (node.partitionClause) {
       const partition = [ 'PARTITION BY' ];
@@ -1106,7 +1077,7 @@ export default class Deparser {
       partition.push(clause.join(', '));
 
       windowParts.push(partition.join(' '));
-      parens = true;
+      useParens = true;
     }
 
     if (node.orderClause) {
@@ -1118,15 +1089,15 @@ export default class Deparser {
 
       windowParts.push(orders.join(', '));
 
-      parens = true;
+      useParens = true;
     }
 
     if (frameOptions.length) {
-      parens = true;
+      useParens = true;
       windowParts.push(frameOptions);
     }
 
-    if (parens && context !== 'window') {
+    if (useParens && context !== 'window') {
       return output.join(' ') + ' (' + windowParts.join(' ') + ')';
     }
 
@@ -1140,14 +1111,7 @@ export default class Deparser {
       output.push('RECURSIVE');
     }
 
-    const ctes = [];
-
-    for (let i = 0; i < node.ctes.length; i++) {
-      const cte = node.ctes[i];
-      ctes.push(this.deparse(cte));
-    }
-
-    output.push(ctes.join(', '));
+    output.push(this.list(node.ctes));
 
     return output.join(' ');
   }
