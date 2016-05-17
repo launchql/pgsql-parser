@@ -36,8 +36,9 @@ Returns an object in the format:
 
 ### `parser.deparse(query)`
 
-Deparses the query tree and returns a formatted SQL statement. This function takes as input the result
-of the `parse` method. This is the primary functionality of this module.
+Deparses the query tree and returns a formatted SQL statement. This function takes as input a query AST
+in the same format as the `query` property of on the result of the `parse` method. This is the primary
+functionality of this module.
 
 ### Parameters
 
@@ -50,11 +51,16 @@ Returns a normalized formatted SQL string.
 ## Example
 
 ```js
-const {parse, deparse} = require('pg-query-parser');
+const parser = require('pg-query-parser');
 
-console.log(deparse(parse('select 1').query));
+const query = parser.parse('SELECT * FROM test_table').query;
 
-// SELECT 1
+query[0].SelectStmt.fromClause[0].RangeVar.relname = 'another_table';
+
+console.log(parser.deparse(query));
+
+// SELECT * FROM "another_table"
+
 ```
 
 ## Related
