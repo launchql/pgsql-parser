@@ -108,23 +108,9 @@ class Deparser
 
     throw new Error(type + " is not implemented") unless @[type]?
 
-    @[type](node, context)
+    func = @[type]
 
-	# 0  AEXPR_OP,					/* normal operator */
-	# 1  AEXPR_OP_ANY,				/* scalar op ANY (array) */
-	# 2  AEXPR_OP_ALL,				/* scalar op ALL (array) */
-	# 3  AEXPR_DISTINCT,				/* IS DISTINCT FROM - name must be "=" */
-	# 4  AEXPR_NULLIF,				/* NULLIF - name must be "=" */
-	# 5  AEXPR_OF,					/* IS [NOT] OF - name must be "=" or "<>" */
-	# 6  AEXPR_IN,					/* [NOT] IN - name must be "=" or "<>" */
-	# 7  AEXPR_LIKE,					/* [NOT] LIKE - name must be "~~" or "!~~" */
-	# 8  AEXPR_ILIKE,				/* [NOT] ILIKE - name must be "~~*" or "!~~*" */
-	# 9  AEXPR_SIMILAR,				/* [NOT] SIMILAR - name must be "~" or "!~" */
-	# 10 AEXPR_BETWEEN,				/* name must be "BETWEEN" */
-	# 11 AEXPR_NOT_BETWEEN,			/* name must be "NOT BETWEEN" */
-	# 12 AEXPR_BETWEEN_SYM,			/* name must be "BETWEEN SYMMETRIC" */
-	# 13 AEXPR_NOT_BETWEEN_SYM,		/* name must be "NOT BETWEEN SYMMETRIC" */
-	# 14 AEXPR_PAREN					/* nameless dummy node for parentheses */
+    func.call(this, node, context)
 
   'A_Expr': (node, context) ->
     output = []
@@ -135,7 +121,9 @@ class Deparser
           output.push '(' + @deparse(node.lexpr) + ')'
 
         if node.name.length > 1
-          output.push "OPERATOR(" + @deparse(node.name[0]) + "." + @deparse(node.name[1]) + ")"
+          arg1 = @deparse(node.name[0])
+          arg2 = @deparse(node.name[1])
+          output.push 'OPERATOR(' + arg1 + '.' + arg2 + ')'
         else
           output.push(@deparse(node.name[0]))
 
@@ -165,7 +153,7 @@ class Deparser
 
       when 5 # AEXPR_OF
         op = if node.name[0].String.str is '=' then 'IS OF' else 'IS NOT OF'
-        list = (@deparse(item) for item in node.rexpr)
+        list = node.rexpr.map (node) => @deparse(node)
         return format('%s %s (%s)', @deparse(node.lexpr), op, list.join(', '))
 
       when 6 # AEXPR_IN
@@ -241,7 +229,8 @@ class Deparser
     list = []
 
     if node.elements
-      list = (@deparse(element) for element in node.elements)
+      list = node.elements.map (e) => @deparse(e)
+      # list = (@deparse(element) for element in node.elements)
 
     output.push list.join(', ')
     output.push(']')
@@ -409,13 +398,13 @@ class Deparser
       order.push (node.agg_order.map (node) => @deparse(node, context)).join(", ")
 
     call = []
-    call.push(name + '(')
+    call.push "#{name}("
     call.push 'DISTINCT ' if node.agg_distinct
 
     # prepend variadic before the last parameter
     # SELECT CONCAT('|', VARIADIC ARRAY['1','2','3'])
     if node.func_variadic
-      params[params.length - 1] = 'VARIADIC ' + params[params.length - 1]
+      params[params.length - 1] = "VARIADIC #{params[params.length - 1]}"
 
     call.push params.join(', ')
 
@@ -423,7 +412,7 @@ class Deparser
       call.push ' '
       call.push order.join(' ')
 
-    call.push ')'
+    call.push "#{''})"
 
     output.push(compact(call).join(''))
 
@@ -473,7 +462,7 @@ class Deparser
     if node.rarg
       # wrap nested join expressions in parens to make the following symmetric:
       # select * from int8_tbl x cross join (int4_tbl x cross join lateral (select x.f1) ss)
-      if node.rarg.JoinExpr? and not node.rarg.JoinExpr?.alias?
+      if node.rarg.JoinExpr? and not node.rarg.JoinExpr.alias?
         output.push '(' + @deparse(node.rarg) + ')'
       else
         output.push @deparse(node.rarg)
@@ -556,7 +545,7 @@ class Deparser
     for funcCall in node.functions
       call = [ @deparse(funcCall[0]) ]
 
-      if funcCall[1]?.length
+      if funcCall[1] && funcCall[1].length
         call.push 'AS (' + (funcCall[1].map((def) => @deparse(def))).join(', ') + ')'
 
       funcs.push call.join(' ')
@@ -650,7 +639,10 @@ class Deparser
       ]
 
       output.push sets[node.op]
-      output.push 'ALL' if node.all
+
+      if node.all
+        output.push 'ALL'
+
       output.push '(' + @deparse(node.rarg) + ')'
 
     if node.distinctClause
@@ -781,7 +773,7 @@ class Deparser
         @deparse(item)
 
     type = []
-    type.push @type(node['names'], args?.join(', '))
+    type.push @type(node['names'], args && args.join(', '))
     type.push '[]' if node.arrayBounds?
 
     output.push type.join('')
@@ -930,8 +922,8 @@ class Deparser
       intervals = @interval(typmods[0])
 
       # SELECT interval(0) '1 day 01:23:45.6789'
-      if node.typmods[0]?.A_Const?.val.Integer.ival is 32767 and node.typmods[1]?.A_Const?
-        intervals = ['(' + node.typmods[1]?.A_Const.val.Integer.ival + ')']
+      if node.typmods[0] and node.typmods[0].A_Const and node.typmods[0].A_Const.val.Integer.ival is 32767 and node.typmods[1] and node.typmods[1].A_Const?
+        intervals = ['(' + node.typmods[1].A_Const.val.Integer.ival + ')']
 
       else
         intervals = intervals.map (part) =>
