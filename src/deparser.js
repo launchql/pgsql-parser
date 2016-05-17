@@ -1270,17 +1270,17 @@ export default class Deparser {
       this.INTERVALS = {};
       this.INTERVALS[(1 << this.BITS.YEAR)] = [ 'year' ];
       this.INTERVALS[(1 << this.BITS.MONTH)] = [ 'month' ];
-      this.INTERVALS[(1 << this.BITS['DAY'])] = [ 'day' ];
-      this.INTERVALS[(1 << this.BITS['HOUR'])] = [ 'hour' ];
-      this.INTERVALS[(1 << this.BITS['MINUTE'])] = [ 'minute' ];
-      this.INTERVALS[(1 << this.BITS['SECOND'])] = [ 'second' ];
-      this.INTERVALS[(1 << this.BITS['YEAR'] | 1 << this.BITS['MONTH'])] = [ 'year', 'month' ];
-      this.INTERVALS[(1 << this.BITS['DAY'] | 1 << this.BITS['HOUR'])] = ['day', 'hour'];
-      this.INTERVALS[(1 << this.BITS['DAY'] | 1 << this.BITS['HOUR'] | 1 << this.BITS['MINUTE'])] = ['day', 'minute'];
-      this.INTERVALS[(1 << this.BITS['DAY'] | 1 << this.BITS['HOUR'] | 1 << this.BITS['MINUTE'] | 1 << this.BITS['SECOND'])] = ['day', 'second'];
-      this.INTERVALS[(1 << this.BITS['HOUR'] | 1 << this.BITS['MINUTE'])] = ['hour', 'minute'];
-      this.INTERVALS[(1 << this.BITS['HOUR'] | 1 << this.BITS['MINUTE'] | 1 << this.BITS['SECOND'])] = ['hour', 'second'];
-      this.INTERVALS[(1 << this.BITS['MINUTE'] | 1 << this.BITS['SECOND'])] = ['minute', 'second'];
+      this.INTERVALS[(1 << this.BITS.DAY)] = [ 'day' ];
+      this.INTERVALS[(1 << this.BITS.HOUR)] = [ 'hour' ];
+      this.INTERVALS[(1 << this.BITS.MINUTE)] = [ 'minute' ];
+      this.INTERVALS[(1 << this.BITS.SECOND)] = [ 'second' ];
+      this.INTERVALS[(1 << this.BITS.YEAR | 1 << this.BITS.MONTH)] = [ 'year', 'month' ];
+      this.INTERVALS[(1 << this.BITS.DAY | 1 << this.BITS.HOUR)] = [ 'day', 'hour' ];
+      this.INTERVALS[(1 << this.BITS.DAY | 1 << this.BITS.HOUR | 1 << this.BITS.MINUTE)] = [ 'day', 'minute' ];
+      this.INTERVALS[(1 << this.BITS.DAY | 1 << this.BITS.HOUR | 1 << this.BITS.MINUTE | 1 << this.BITS.SECOND)] = [ 'day', 'second' ];
+      this.INTERVALS[(1 << this.BITS.HOUR | 1 << this.BITS.MINUTE)] = [ 'hour', 'minute' ];
+      this.INTERVALS[(1 << this.BITS.HOUR | 1 << this.BITS.MINUTE | 1 << this.BITS.SECOND)] = [ 'hour', 'second' ];
+      this.INTERVALS[(1 << this.BITS.MINUTE | 1 << this.BITS.SECOND)] = [ 'minute', 'second' ];
 
       // utils/timestamp.h
       // #define INTERVAL_FULL_RANGE (0x7FFF)
