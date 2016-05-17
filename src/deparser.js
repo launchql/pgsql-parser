@@ -1,23 +1,23 @@
 import _ from 'lodash';
 import { format } from 'util';
 
-let { contains } = _;
-let { keys } = _;
-let { first } = _;
+const { keys } = _;
 
-let compact = o =>
-  _.select(_.compact(o), function(p) {
-    if (p == null) { return false; }
+const compact = o => {
+  return _.select(_.compact(o), (p) => {
+    if (p == null) {
+      return false;
+    }
+
     return p.toString().length;
-  })
-;
+  });
+};
 
-let fk = value => _.first(_.keys(value));
-let fv = value => _.first(_.values(value));
+const fail = (msg) => {
+  throw new Error(msg);
+};
 
-let fail = function(msg) { throw new Error(msg); };
-
-let indent = (text, count=1) => text;
+const indent = (text, count = 1) => text;
 
 export default class Deparser {
   static deparse(query) {
@@ -29,7 +29,7 @@ export default class Deparser {
   }
 
   deparseQuery() {
-    return (this.tree.map(node => this.deparse(node))).join("\n\n");
+    return (this.tree.map(node => this.deparse(node))).join('\n\n');
   }
 
   deparseNodes(nodes) {
@@ -37,79 +37,88 @@ export default class Deparser {
   }
 
   quote(value) {
-    if (value == null) { return; }
+    if (value == null) {
+      return null;
+    }
+
     if (_.isArray(value)) {
       return value.map(o => this.quote(o));
-    } else {
-      return `"${value}"`;
     }
+
+    return '"' + value + '"';
   }
 
   // SELECT encode(E'''123\\000\\001', 'base64')
   escape(literal) {
-    return `'${literal.replace(/'/g, "''")}'`;
+    return "'" + literal.replace(/'/g, "''") + "'";
+  }
+
+  convertTypeName(typeName, size) {
+    switch (typeName) {
+      case 'bpchar':
+        if (size != null) {
+          return 'char';
+        }
+        // return `pg_catalog.bpchar` below so that the following is symmetric
+        // SELECT char 'c' = char 'c' AS true
+        return 'pg_catalog.bpchar';
+      case 'varchar':
+        return 'varchar';
+      case 'numeric':
+        return 'numeric';
+      case 'bool':
+        return 'boolean';
+      case 'int2':
+        return 'smallint';
+      case 'int4':
+        return 'int';
+      case 'int8':
+        return 'bigint';
+      case 'real': case 'float4':
+        return 'real';
+      case 'float8':
+        return 'pg_catalog.float8';
+      case 'text':
+        // SELECT EXTRACT(CENTURY FROM CURRENT_DATE)>=21 AS True
+        return 'pg_catalog.text';
+      case 'date':
+        return 'pg_catalog.date';
+      case 'time':
+        return 'time';
+      case 'timetz':
+        return 'pg_catalog.timetz';
+      case 'timestamp':
+        return 'timestamp';
+      case 'timestamptz':
+        return 'pg_catalog.timestamptz';
+      case 'interval':
+        return 'interval';
+      default:
+        return fail(format("Can't deparse type: %s", typeName));
+    }
   }
 
   type(names, args) {
-    let [catalog, type] = names.map(name => this.deparse(name));
+    const [ catalog, type ] = names.map(name => this.deparse(name));
 
-    let mods = function(name, args) {
-      if (args != null) {
-        return name + '(' + args + ')';
-      } else {
-        return name;
+    const mods = (name, size) => {
+      if (size != null) {
+        return name + '(' + size + ')';
       }
+
+      return name;
     };
 
     // handle the special "char" (in quotes) type
-    if (names[0].String.str === 'char') { names[0].String.str = '"char"'; }
+    if (names[0].String.str === 'char') {
+      names[0].String.str = '"char"';
+    }
 
-    if (catalog !== 'pg_catalog') { return mods(this.deparseNodes(names).join('.'), args); }
+    if (catalog !== 'pg_catalog') {
+      return mods(this.deparseNodes(names).join('.'), args);
+    }
 
-    let res =
-      (() => { switch (type) {
-        case 'bpchar':
-          if (args != null) {
-            return 'char';
-          } else {
-            // return `pg_catalog.bpchar` below so that the following is symmetric
-            // SELECT char 'c' = char 'c' AS true
-            return 'pg_catalog.bpchar';
-          }
-        case 'varchar':
-          return 'varchar';
-        case 'numeric':
-          return 'numeric';
-        case 'bool':
-          return 'boolean';
-        case 'int2':
-          return 'smallint';
-        case 'int4':
-          return 'int';
-        case 'int8':
-          return 'bigint';
-        case 'real': case 'float4':
-          return 'real';
-        case 'float8':
-          return 'pg_catalog.float8';
-        case 'text':
-          // SELECT EXTRACT(CENTURY FROM CURRENT_DATE)>=21 AS True
-          return 'pg_catalog.text';
-        case 'date':
-          return 'pg_catalog.date';
-        case 'time':
-          return 'time';
-        case 'timetz':
-          return 'pg_catalog.timetz';
-        case 'timestamp':
-          return 'timestamp';
-        case 'timestamptz':
-          return 'pg_catalog.timestamptz';
-        case 'interval':
-          return 'interval';
-        default:
-          return fail(format("Can't deparse type: %s", type));
-      } })();
+    const res = this.convertTypeName(type, args);
 
     return mods(res, args);
   }

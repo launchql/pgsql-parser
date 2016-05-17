@@ -107,7 +107,7 @@ successCount = 0
 
 # scripts with this text are known to be broken
 SKIP = [
-  'CREATE FOREIGN TABLE'
+  # 'CREATE FOREIGN TABLE'
 ]
 
 if process.env.QUERY?
