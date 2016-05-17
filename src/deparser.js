@@ -238,8 +238,7 @@ export default class Deparser {
         return output.join(' ');
 
       default:
-        fail('A_Expr', node);
-        return null;
+        return fail('A_Expr', node);
     }
   }
 
