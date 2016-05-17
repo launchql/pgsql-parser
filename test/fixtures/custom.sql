@@ -27,3 +27,9 @@ select a from b where a < any (select 1);
 select a from b where exists (select 1);
 
 select a from b where a < ARRAY (select distinct (select 1), (select distinct 1 group by 7 having 1 < (select 1)));
+
+SELECT 1 WHERE 'abc' SIMILAR TO 'abc';
+
+SELECT 1 WHERE 'abc' SIMILAR TO test('test');
+
+SELECT 1 WHERE 'abc' SIMILAR TO test('test') ESCAPE 't';
