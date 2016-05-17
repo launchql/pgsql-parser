@@ -203,8 +203,7 @@ export default class Deparser {
       }
 
       case 6: { // AEXPR_IN
-        const operator = node.name[0].String.str === '=' ? 'IN'
-                                                         : 'NOT IN';
+        const operator = node.name[0].String.str === '=' ? 'IN' : 'NOT IN';
 
         return format('%s %s (%s)', this.deparse(node.lexpr), operator, this.list(node.rexpr));
       }
