@@ -10,7 +10,7 @@ function runQuery(query) {
 if (process.argv[2]) {
   runQuery(process.argv[2]);
 } else {
-  let content = '';
+  var content = '';
 
   process.stdin.resume();
 

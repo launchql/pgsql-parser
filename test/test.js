@@ -4,9 +4,7 @@ import glob from 'glob';
 
 chai.should();
 
-import { Deparser, parse, clean, byType } from '../src';
-
-const deparse = Deparser.deparse;
+import { deparse, parse, clean, byType } from '../src';
 
 const pattern = process.env.FILTER ? `*${process.env.FILTER}*.sql` : '*.sql';
 
@@ -17,9 +15,6 @@ const log = (msg) => {
   fs.writeSync(1, `${msg}\n`);
   return fs.fsyncSync(1);
 };
-
-// these are known to not work
-// const skip = [ 'create', 'begin;', 'notify', 'listen', 'unlisten' ];
 
 const check = (text) => {
   const reference = parse(text).query;

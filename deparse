@@ -5,14 +5,14 @@ require('babel-core/register')();
 const parser = require('./src');
 
 function runQuery(content) {
-  const result = parser.Deparser.deparse(parser.parse(content).query);
+  const result = parser.deparse(parser.parse(content).query);
   console.log(result);
 }
 
 if (process.argv[2]) {
   runQuery(process.argv[2]);
 } else {
-  let content = '';
+  var content = '';
 
   process.stdin.resume();
 
