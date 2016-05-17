@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 require('coffee-script/register');
+require('babel-core/register')();
 
 parser = require('./src');
 
@@ -16,6 +17,6 @@ if (process.argv[2]) {
 }
 
 function runQuery(content) {
-  result = parser.deparse(parser.parse(content).query);
+  result = parser.Deparser.deparse(parser.parse(content).query);
   console.log(result);
 }

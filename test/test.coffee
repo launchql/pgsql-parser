@@ -1,5 +1,6 @@
 chai = require('chai')
 chai.should()
+require('babel-core/register')()
 
 _ = require 'lodash'
 
@@ -7,7 +8,10 @@ fs = require 'fs'
 glob = require 'glob'
 path = require 'path'
 
-{parse, deparse} = require '../src'
+PgQuery = require '../src'
+
+parse = PgQuery.parse
+deparse = PgQuery.Deparser.deparse
 
 pattern =
   if process.env.FILTER
