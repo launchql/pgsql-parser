@@ -232,8 +232,9 @@ export default class Deparser {
         return output.join(' ');
 
       case 9: // AEXPR_SIMILAR TODO(zhm) untested
+        // SIMILAR TO emits a similar_escape FuncCall node with the first argument
         output.push(this.deparse(node.lexpr));
-        output.push(format('SIMILAR TO %s', this.deparse(node.rexpr)));
+        output.push(format('SIMILAR TO %s', this.deparse(node.rexpr.FuncCall.args[0])));
         return output.join(' ');
 
       case 10: // AEXPR_BETWEEN TODO(zhm) untested
