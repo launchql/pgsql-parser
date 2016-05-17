@@ -12,6 +12,22 @@ The main functionality provided by this module is deparsing, which PostgreSQL do
 npm install pg-query-parser
 ```
 
+## Example
+
+Rewrite part of a SQL query:
+
+```js
+const parser = require('pg-query-parser');
+
+const query = parser.parse('SELECT * FROM test_table').query;
+
+query[0].SelectStmt.fromClause[0].RangeVar.relname = 'another_table';
+
+console.log(parser.deparse(query));
+
+// SELECT * FROM "another_table"
+```
+
 ### Documentation
 
 ### `parser.parse(sql)`
@@ -47,21 +63,6 @@ functionality of this module.
 | `query`              | Object             | Query tree obtained from `parse`                          |
 
 Returns a normalized formatted SQL string.
-
-## Example
-
-```js
-const parser = require('pg-query-parser');
-
-const query = parser.parse('SELECT * FROM test_table').query;
-
-query[0].SelectStmt.fromClause[0].RangeVar.relname = 'another_table';
-
-console.log(parser.deparse(query));
-
-// SELECT * FROM "another_table"
-
-```
 
 ## Related
 
