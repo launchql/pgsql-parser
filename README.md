@@ -34,7 +34,7 @@ Returns an object in the format:
            cursorPosition: <cursor|Number> }
 ```
 
-### `parser.deparse(tree)`
+### `parser.deparse(query)`
 
 Deparses the query tree and returns a formatted SQL statement. This function takes as input the result
 of the `parse` method. This is the primary functionality of this module.
