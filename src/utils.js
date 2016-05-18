@@ -59,7 +59,7 @@ export function all(obj, func) {
 
   walk(obj, (object, key, value) => {
     if (func(object, key, value)) {
-      return results.push(obj);
+      return results.push(object);
     }
 
     return null;
@@ -76,6 +76,9 @@ export function tables(query) {
 
 export function byType(query, type) {
   return all(query, (object, key, value) => {
+    if (key === type) {
+      console.log('found', key, object);
+    }
     return key === type;
   });
 }
