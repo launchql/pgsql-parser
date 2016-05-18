@@ -75,7 +75,7 @@ function all(obj, func) {
 
   walk(obj, (object, key, value) => {
     if (func(object, key, value)) {
-      return results.push(obj);
+      return results.push(object);
     }
 
     return null;

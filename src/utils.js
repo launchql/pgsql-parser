@@ -76,9 +76,6 @@ export function tables(query) {
 
 export function byType(query, type) {
   return all(query, (object, key, value) => {
-    if (key === type) {
-      console.log('found', key, object);
-    }
     return key === type;
   });
 }
