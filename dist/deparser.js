@@ -18,7 +18,7 @@ const keys = _lodash2.default.keys;
 
 
 const compact = o => {
-  return _lodash2.default.select(_lodash2.default.compact(o), p => {
+  return _lodash2.default.filter(_lodash2.default.compact(o), p => {
     if (p == null) {
       return false;
     }
