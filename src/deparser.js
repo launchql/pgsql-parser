@@ -4,7 +4,7 @@ import { format } from 'util';
 const { keys } = _;
 
 const compact = o => {
-  return _.select(_.compact(o), (p) => {
+  return _.filter(_.compact(o), (p) => {
     if (p == null) {
       return false;
     }
