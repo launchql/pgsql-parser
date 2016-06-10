@@ -33,3 +33,5 @@ SELECT 1 WHERE 'abc' SIMILAR TO 'abc';
 SELECT 1 WHERE 'abc' SIMILAR TO test('test');
 
 SELECT 1 WHERE 'abc' SIMILAR TO test('test') ESCAPE 't';
+
+select 1::bit;

@@ -105,6 +105,8 @@ export default class Deparser {
         return 'pg_catalog.timestamptz';
       case 'interval':
         return 'interval';
+      case 'bit':
+        return 'bit';
       default:
         throw new Error(format('Unhandled data type: %s', typeName));
     }
