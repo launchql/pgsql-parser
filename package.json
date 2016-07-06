@@ -1,14 +1,19 @@
 {
   "name": "pg-query-parser",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "The real PostgreSQL query parser",
   "homepage": "http://github.com/zhm/pg-query-parser",
   "main": "dist/index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --compilers coffee:coffee-script/register --reporter dot",
-    "build": "./node_modules/.bin/coffee --output dist --compile src",
-    "prepublish": "npm run clean && npm run build",
-    "clean": "rm -rf dist"
+    "test": "./node_modules/.bin/mocha --reporter dot test/setup.js test/test.js",
+    "simpletest": "node_modules/.bin/mocha ./test/setup.js ./test/test.js ./test/elements/*.js",
+    "prepublish": "npm run lint && npm run clean && npm run build",
+    "lint": "node_modules/.bin/eslint src/* src/**/*",
+    "build": "node_modules/.bin/babel src --out-dir dist --source-maps",
+    "watch": "node_modules/.bin/babel src --out-dir dist --source-maps --watch",
+    "clean": "rm -rf dist",
+    "check-deps": "node_modules/.bin/ncu",
+    "update-deps": "node_modules/.bin/ncu -u"
   },
   "author": "Zac McCormick <zac.mccormick@gmail.com> (http://github.com/zhm)",
   "license": "BSD-3-Clause",
@@ -16,20 +21,33 @@
     "type": "git",
     "url": "git://github.com/zhm/pg-query-parser.git"
   },
+  "eslintConfig": {
+    "extends": "fulcrum"
+  },
   "devDependencies": {
-    "browserify": "^12.0.1",
-    "chai": "^3.4.1",
+    "babel-cli": "^6.9.0",
+    "babel-core": "^6.9.1",
+    "babel-eslint": "^6.0.4",
+    "babel-preset-es2015-node5": "^1.2.0",
+    "babel-preset-stage-1": "^6.5.0",
+    "browserify": "^13.0.1",
+    "chai": "^3.5.0",
     "coffee-script": "^1.10.0",
-    "coffeeify": "^1.1.0",
-    "glob": "^6.0.1",
-    "mocha": "^2.3.3",
-    "uglify-js": "^2.6.0",
+    "coffeeify": "^2.0.1",
+    "eslint": "^2.11.1",
+    "eslint-config-fulcrum": "^1.0.2",
+    "eslint-plugin-react": "^5.1.1",
+    "glob": "^7.0.3",
+    "mocha": "^2.5.3",
+    "npm-check-updates": "^2.6.5",
+    "source-map-support": "^0.4.0",
+    "uglify-js": "^2.6.2",
     "watch-cli": "^0.2.1",
-    "watchify": "^3.6.0"
+    "watchify": "^3.7.0"
   },
   "dependencies": {
-    "lodash": "^3.10.1",
-    "pg-query-native": "0.0.5"
+    "lodash": "^4.13.1",
+    "pg-query-native": "zhm/node-pg-query-native#v1"
   },
   "keywords": [
     "sql",

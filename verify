@@ -1,43 +1,50 @@
 #!/usr/bin/env node
 
 require('coffee-script/register');
+require('babel-core/register')();
 
-parser = require('./src');
+const parser = require('./src');
 
-var clean = require('./src/utils').clean;
-
-var exec = require('child_process').exec;
-var fs = require('fs');
-
-if (process.argv[2]) {
-  runQuery(process.argv[2]);
-} else {
-  var content = '';
-  process.stdin.resume();
-  process.stdin.on('data', function(buf) { content += buf.toString(); });
-  process.stdin.on('end', function() {
-    runQuery(content);
-  });
-}
+const exec = require('child_process').exec;
+const fs = require('fs');
 
 function runQuery(content) {
-  result = parser.deparse(parser.parse(content).query);
+  const result = parser.deparse(parser.parse(content).query);
 
-  json1 = clean(parser.parse(content).query)
-  json2 = clean(parser.parse(result).query)
+  const json1 = parser.clean(parser.parse(content).query);
+  const json2 = parser.clean(parser.parse(result).query);
 
-  var same = JSON.stringify(json1) == JSON.stringify(json2);
+  const same = parser.verify(content);
 
   if (same) {
     console.log('OK');
-  }
-  else {
+  } else {
     console.log('NOT OK');
-    fs.writeFileSync('a.json', JSON.stringify(json1, null, '  '))
-    fs.writeFileSync('b.json', JSON.stringify(json2, null, '  '))
-    child = exec('diff -C10 a.json b.json', function (error, stdout, stderr) {
+
+    fs.writeFileSync('a.json', JSON.stringify(json1, null, '  '));
+    fs.writeFileSync('b.json', JSON.stringify(json2, null, '  '));
+
+    exec('diff -C10 a.json b.json', (error, stdout, stderr) => {
+      if (error) {
+        console.log(error);
+      }
       console.log(stdout);
     });
   }
 }
 
+if (process.argv[2]) {
+  runQuery(process.argv[2]);
+} else {
+  var content = '';
+
+  process.stdin.resume();
+
+  process.stdin.on('data', (buf) => {
+    content += buf.toString();
+  });
+
+  process.stdin.on('end', () => {
+    runQuery(content);
+  });
+}
