@@ -697,7 +697,7 @@ export default class Deparser {
 
   ['ParamRef'](node) {
     if (node.number >= 0) {
-      return ['$', node.number].join('');
+      return [ '$', node.number ].join('');
     }
     return '?';
   }
