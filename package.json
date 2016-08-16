@@ -36,6 +36,7 @@
     "coffeeify": "^2.0.1",
     "eslint": "^2.11.1",
     "eslint-config-fulcrum": "^1.0.2",
+    "eslint-plugin-babel": "^3.3.0",
     "eslint-plugin-react": "^5.1.1",
     "glob": "^7.0.3",
     "mocha": "^2.5.3",
