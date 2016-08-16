@@ -1,6 +1,6 @@
 {
   "name": "pg-query-parser",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "The real PostgreSQL query parser",
   "homepage": "http://github.com/zhm/pg-query-parser",
   "main": "dist/index.js",
