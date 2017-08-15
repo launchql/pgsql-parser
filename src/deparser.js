@@ -1,6 +1,17 @@
 import _ from 'lodash';
 import { format } from 'util';
 
+const CONSTRAINT_TYPES = [
+  'NULL',
+  'NOT NULL',
+  'DEFAULT',
+  'CHECK',
+  'PRIMARY KEY',
+  'UNIQUE',
+  'EXCLUDE',
+  'REFERENCES'
+];
+
 const { keys } = _;
 
 const compact = o => {
@@ -956,6 +967,143 @@ export default class Deparser {
       node.lockingClause.forEach(item => {
         return output.push(this.deparse(item));
       });
+    }
+
+    return output.join(' ');
+  }
+
+  ['CreateStmt'](node) {
+    const output = [];
+    output.push('CREATE TABLE');
+    output.push(this.deparse(node.relation));
+    output.push('(');
+    output.push(this.list(node.tableElts));
+    output.push(')');
+    output.push(';');
+    return output.join(' ');
+  }
+
+  ['ConstraintStmt'](node) {
+    const output = [];
+    const constraint = CONSTRAINT_TYPES[node.contype];
+
+    if (node.conname) {
+      output.push(`CONSTRAINT ${node.conname} ${constraint}`);
+    } else {
+      output.push(constraint);
+    }
+
+    return output.join(' ');
+  }
+
+  ['ReferenceConstraint'](node) {
+    const output = [];
+    if (node.pk_attrs && node.fk_attrs) {
+      output.push('FOREIGN KEY');
+      output.push('(');
+      output.push(this.list(node.fk_attrs));
+      output.push(')');
+      output.push('REFERENCES');
+      output.push(this.deparse(node.pktable));
+      output.push('(');
+      output.push(this.list(node.pk_attrs));
+      output.push(')');
+    } else if (node.pk_attrs) {
+      output.push(this.ConstraintStmt(node));
+      output.push(this.deparse(node.pktable));
+      output.push('(');
+      output.push(this.list(node.pk_attrs));
+      output.push(')');
+    } else {
+      output.push(this.ConstraintStmt(node));
+      output.push(this.deparse(node.pktable));
+    }
+    return output.join(' ');
+  }
+
+  ['ExclusionConstraint'](node) {
+    const output = [];
+    function getExclusionGroup(node) {
+      var output = [];
+      var a = node.exclusions.map(excl => {
+        if (excl[0].IndexElem.name) {
+          return excl[0].IndexElem.name;
+        } else if (excl[0].IndexElem.expr) {
+          return this.deparse(excl[0].IndexElem.expr);
+        }
+      });
+
+      var b = node.exclusions.map(excl => this.deparse(excl[1][0]));
+
+      for (var i = 0; i < a.length; i++) {
+        output.push(`${a[i]} WITH ${b[i]}`);
+        i !== a.length - 1 && output.push(',');
+      }
+
+      return output.join(' ');
+    }
+
+    if (node.exclusions && node.access_method) {
+      output.push('USING');
+      output.push(node.access_method);
+      output.push('(');
+      output.push(getExclusionGroup.call(this, node));
+      output.push(')');
+    }
+
+    return output.join(' ');
+  }
+
+  ['Constraint'](node) {
+    const output = [];
+
+    const constraint = CONSTRAINT_TYPES[node.contype];
+    if (!constraint) {
+      throw new Error('type not implemented: ' + node.contype);
+    }
+
+    if (constraint === 'REFERENCES') {
+      output.push(this.ReferenceConstraint(node));
+    } else {
+      output.push(this.ConstraintStmt(node));
+    }
+
+    if (node.keys) {
+      output.push('(');
+      output.push(this.list(node.keys));
+      output.push(')');
+    }
+
+    if (node.raw_expr) {
+      output.push(this.deparse(node.raw_expr));
+    }
+
+    if (node.fk_del_action) {
+      switch (node.fk_del_action) {
+        case 'r':
+          output.push('ON DELETE RESTRICT');
+          break;
+        case 'c':
+          output.push('ON DELETE CASCADE');
+          break;
+        default:
+      }
+    }
+
+    if (node.fk_upd_action) {
+      switch (node.fk_upd_action) {
+        case 'r':
+          output.push('ON UPDATE RESTRICT');
+          break;
+        case 'c':
+          output.push('ON UPDATE CASCADE');
+          break;
+        default:
+      }
+    }
+
+    if (constraint === 'EXCLUDE') {
+      output.push(this.ExclusionConstraint(node));
     }
 
     return output.join(' ');
