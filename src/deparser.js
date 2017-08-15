@@ -1109,6 +1109,83 @@ export default class Deparser {
     return output.join(' ');
   }
 
+  ['FunctionParameter'](node) {
+    const output = [];
+
+    output.push(node.name);
+    output.push(this.deparse(node.argType));
+
+    return output.join(' ');
+  }
+
+  ['CreateFunctionStmt'](node) {
+    const output = [];
+
+    output.push('CREATE');
+    if (node.replace) {
+      output.push('OR REPLACE');
+    }
+    output.push('FUNCTION');
+
+    output.push(node.funcname.map(name => this.deparse(name)).join('.'));
+    output.push('(');
+    output.push(
+      node.parameters
+        .filter(({ FunctionParameter }) => FunctionParameter.mode === 105)
+        .map(param => this.deparse(param))
+        .join(', ')
+    );
+    output.push(')');
+
+    var returns = node.parameters.filter(
+      ({ FunctionParameter }) => FunctionParameter.mode === 116
+    );
+    // var setof = node.parameters.filter(
+    //   ({ FunctionParameter }) => FunctionParameter.mode === 109
+    // );
+
+    output.push('RETURNS');
+    if (returns.length) {
+      output.push('TABLE');
+      output.push('(');
+      output.push(
+        node.parameters
+          .filter(({ FunctionParameter }) => FunctionParameter.mode === 116)
+          .map(param => this.deparse(param))
+          .join(', ')
+      );
+      output.push(')');
+    } else {
+      output.push(this.deparse(node.returnType));
+    }
+
+    var elems = {};
+
+    node.options.forEach(option => {
+      if (option && option.DefElem) {
+        switch (option.DefElem.defname) {
+          case 'as':
+            elems.as = option;
+            break;
+
+          case 'language':
+            elems.language = option;
+            break;
+
+          case 'volatility':
+            elems.volatility = option;
+            break;
+        }
+      }
+    });
+
+    output.push(`
+AS $$${this.deparse(elems.as.DefElem.arg[0])}$$
+LANGUAGE '${this.deparse(elems.language.DefElem.arg)}' ${this.deparse(elems.volatility.DefElem.arg).toUpperCase()};
+`);
+
+    return output.join(' ');
+  }
   ['SortBy'](node) {
     const output = [];
 
