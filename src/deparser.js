@@ -1186,6 +1186,18 @@ LANGUAGE '${this.deparse(elems.language.DefElem.arg)}' ${this.deparse(elems.vola
 
     return output.join(' ');
   }
+  ['CreateSchemaStmt'](node) {
+    const output = [];
+
+    output.push('CREATE');
+    if (node.replace) {
+      output.push('OR REPLACE');
+    }
+    output.push('SCHEMA');
+    output.push(node.schemaname);
+    return output.join(' ');
+  }
+
   ['SortBy'](node) {
     const output = [];
 
