@@ -1198,6 +1198,19 @@ LANGUAGE '${this.deparse(elems.language.DefElem.arg)}' ${this.deparse(elems.vola
     return output.join(' ');
   }
 
+  ['TransactionStmt'](node) {
+    switch (node.kind) {
+      case 0:
+        return 'BEGIN';
+        break;
+      case 1:
+        break;
+      case 2:
+        return 'COMMIT';
+      default:
+    }
+  }
+
   ['SortBy'](node) {
     const output = [];
 
