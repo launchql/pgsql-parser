@@ -57,7 +57,7 @@ const defineQueryTest = (sqlQuery, file) => {
       parsed = parse(sqlQuery);
 
       // Only SelectStmt's for now
-      if (parsed.query && parsed.query[0] && (parsed.query[0].SelectStmt != null)) {
+      if (parsed.query && parsed.query[0] && isSupported(parsed.query[0])) {
         check(sqlQuery);
       }
     } catch (ex) {
