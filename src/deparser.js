@@ -1022,24 +1022,25 @@ export default class Deparser {
 
   ['ExclusionConstraint'](node) {
     const output = [];
-    function getExclusionGroup(node) {
-      var output = [];
-      var a = node.exclusions.map(excl => {
+    function getExclusionGroup(nde) {
+      const out = [];
+      const a = nde.exclusions.map(excl => {
         if (excl[0].IndexElem.name) {
           return excl[0].IndexElem.name;
-        } else if (excl[0].IndexElem.expr) {
-          return this.deparse(excl[0].IndexElem.expr);
         }
+        return excl[0].IndexElem.expr ? this.deparse(excl[0].IndexElem.expr) : null;
       });
 
-      var b = node.exclusions.map(excl => this.deparse(excl[1][0]));
+      const b = nde.exclusions.map(excl => this.deparse(excl[1][0]));
 
-      for (var i = 0; i < a.length; i++) {
-        output.push(`${a[i]} WITH ${b[i]}`);
-        i !== a.length - 1 && output.push(',');
+      for (let i = 0; i < a.length; i++) {
+        out.push(`${a[i]} WITH ${b[i]}`);
+        if (i !== a.length - 1) {
+          out.push(',');
+        }
       }
 
-      return output.join(' ');
+      return out.join(' ');
     }
 
     if (node.exclusions && node.access_method) {
@@ -1136,7 +1137,7 @@ export default class Deparser {
     );
     output.push(')');
 
-    var returns = node.parameters.filter(
+    const returns = node.parameters.filter(
       ({ FunctionParameter }) => FunctionParameter.mode === 116
     );
     // var setof = node.parameters.filter(
@@ -1158,7 +1159,7 @@ export default class Deparser {
       output.push(this.deparse(node.returnType));
     }
 
-    var elems = {};
+    const elems = {};
 
     node.options.forEach(option => {
       if (option && option.DefElem) {
@@ -1174,6 +1175,7 @@ export default class Deparser {
           case 'volatility':
             elems.volatility = option;
             break;
+          default:
         }
       }
     });
@@ -1201,13 +1203,13 @@ LANGUAGE '${this.deparse(elems.language.DefElem.arg)}' ${this.deparse(elems.vola
     switch (node.kind) {
       case 0:
         return 'BEGIN';
-        break;
       case 1:
         break;
       case 2:
         return 'COMMIT';
       default:
     }
+    return '';
   }
 
   ['SortBy'](node) {
