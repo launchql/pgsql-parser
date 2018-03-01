@@ -635,8 +635,7 @@ export default class Deparser {
     }
 
     const wrapped =
-      (node.rarg.JoinExpr != null) || node.alias ? '(' + output.join(' ') + ')'
-                                                 : output.join(' ');
+      (node.rarg.JoinExpr != null) || node.alias ? '(' + output.join(' ') + ')' : output.join(' ');
 
     if (node.alias) {
       return wrapped + ' ' + this.deparse(node.alias);
@@ -1549,13 +1548,13 @@ LANGUAGE '${this.deparse(elems.language.DefElem.arg)}' ${this.deparse(elems.vola
       this.INTERVALS[(1 << this.BITS.HOUR)] = [ 'hour' ];
       this.INTERVALS[(1 << this.BITS.MINUTE)] = [ 'minute' ];
       this.INTERVALS[(1 << this.BITS.SECOND)] = [ 'second' ];
-      this.INTERVALS[(1 << this.BITS.YEAR | 1 << this.BITS.MONTH)] = [ 'year', 'month' ];
-      this.INTERVALS[(1 << this.BITS.DAY | 1 << this.BITS.HOUR)] = [ 'day', 'hour' ];
-      this.INTERVALS[(1 << this.BITS.DAY | 1 << this.BITS.HOUR | 1 << this.BITS.MINUTE)] = [ 'day', 'minute' ];
-      this.INTERVALS[(1 << this.BITS.DAY | 1 << this.BITS.HOUR | 1 << this.BITS.MINUTE | 1 << this.BITS.SECOND)] = [ 'day', 'second' ];
-      this.INTERVALS[(1 << this.BITS.HOUR | 1 << this.BITS.MINUTE)] = [ 'hour', 'minute' ];
-      this.INTERVALS[(1 << this.BITS.HOUR | 1 << this.BITS.MINUTE | 1 << this.BITS.SECOND)] = [ 'hour', 'second' ];
-      this.INTERVALS[(1 << this.BITS.MINUTE | 1 << this.BITS.SECOND)] = [ 'minute', 'second' ];
+      this.INTERVALS[((1 << this.BITS.YEAR) | (1 << this.BITS.MONTH))] = [ 'year', 'month' ];
+      this.INTERVALS[((1 << this.BITS.DAY) | (1 << this.BITS.HOUR))] = [ 'day', 'hour' ];
+      this.INTERVALS[((1 << this.BITS.DAY) | (1 << this.BITS.HOUR) | (1 << this.BITS.MINUTE))] = [ 'day', 'minute' ];
+      this.INTERVALS[((1 << this.BITS.DAY) | (1 << this.BITS.HOUR) | (1 << this.BITS.MINUTE) | (1 << this.BITS.SECOND))] = [ 'day', 'second' ];
+      this.INTERVALS[((1 << this.BITS.HOUR) | (1 << this.BITS.MINUTE))] = [ 'hour', 'minute' ];
+      this.INTERVALS[((1 << this.BITS.HOUR) | (1 << this.BITS.MINUTE) | (1 << this.BITS.SECOND))] = [ 'hour', 'second' ];
+      this.INTERVALS[((1 << this.BITS.MINUTE) | (1 << this.BITS.SECOND))] = [ 'minute', 'second' ];
 
       // utils/timestamp.h
       // #define INTERVAL_FULL_RANGE (0x7FFF)
