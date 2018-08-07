@@ -1296,27 +1296,71 @@ export default class Deparser {
     if (node.roletype === 0) {
       return node.rolename;
     }
+    if (node.roletype === 1) {
+      return 'CURRENT_USER';
+    }
     if (node.roletype === 3) {
-      return 'public';
+      return 'PUBLIC';
     }
   }
 
   ['GrantStmt'](node) {
     const output = [];
 
-    if (node.objtype === 10) {
+    const getType = (node) => {
+      switch (node.objtype) {
+        case 1:
+            return 'TABLE';
+        case 3:
+            return 'DATABASE';
+        case 5:
+            return 'FOREIGN DATA WRAPPER';
+        case 6:
+            return 'FOREIGN SERVER';
+        case 7:
+            return 'FUNCTION';
+        case 10:
+            return 'SCHEMA';
+        case 12:
+            return 'TYPE';
+        default:
+      }
+    }
+
+    if ([1,3,5,6,7,10,12].includes(node.objtype)) {
       if (!node.is_grant) {
         output.push('REVOKE');
-        output.push('ALL ON SCHEMA');
-        output.push(dotty.search(node, 'objects.*.String.str').join(','));
+        if (node.privileges) {
+          output.push(this.list(node.privileges));
+        } else {
+          output.push('ALL');
+        }
+        output.push('ON');
+        output.push(getType(node));
+        output.push(this.list(node.objects));
         output.push('FROM');
         output.push(this.list(node.grantees))
       } else {
+
         output.push('GRANT');
-        output.push('ALL ON SCHEMA');
-        output.push(dotty.search(node, 'objects.*.String.str').join(','));
+        if (node.privileges) {
+          output.push(this.list(node.privileges));
+        } else {
+          output.push('ALL');
+        }
+        output.push('ON');
+        output.push(getType(node));
+        output.push(this.list(node.objects));
         output.push('TO');
         output.push(this.list(node.grantees));
+
+        if (node.grant_option) {
+          output.push('WITH GRANT OPTION')
+        }
+      }
+
+      if (Number(node.behavior) === 1) {
+        output.push('CASCADE')
       }
     }
 
@@ -1326,10 +1370,17 @@ export default class Deparser {
   ['GrantRoleStmt'](node) {
     const output = [];
 
-    output.push('GRANT');
-    output.push(dotty.search(node, 'granted_roles.*.AccessPriv.priv_name').join(','));
-    output.push('TO');
-    output.push(dotty.search(node, 'grantee_roles.*.RoleSpec.rolename').join(','));
+    if (!node.is_grant) {
+      output.push('REVOKE');
+      output.push(this.list(node.granted_roles));
+      output.push('FROM');
+      output.push(this.list(node.grantee_roles));
+    } else {
+      output.push('GRANT');
+      output.push(this.list(node.granted_roles));
+      output.push('TO');
+      output.push(this.list(node.grantee_roles));
+    }
 
     return output.join(' ');
   }
