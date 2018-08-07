@@ -1128,6 +1128,17 @@ export default class Deparser {
     return output.join(' ');
   }
 
+  ['AccessPriv'](node) {
+    const output = [];
+    output.push(node.priv_name);
+    if (node.cols) {
+      output.push('(');
+      output.push(this.list(node.cols));
+      output.push(')');
+    }
+    return output.join(' ');
+  }
+
   ['VariableSetStmt'](node) {
     const output = [];
     if (node.kind === 0) {
