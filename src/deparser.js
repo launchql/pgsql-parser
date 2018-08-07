@@ -1182,43 +1182,72 @@ export default class Deparser {
       output.push(this.deparse(node.returnType));
     }
 
-    const elems = {};
+    node.options.forEach((option, i) => {
+        if (option && option.DefElem) {
 
-    node.options.forEach(option => {
-      if (option && option.DefElem) {
-        switch (option.DefElem.defname) {
-          case 'as':
-            elems.as = option;
-            break;
+          switch (option.DefElem.defname) {
+            case 'as':
+              delete option.DefElem.arg[0].defaction;
+              const body = this.deparse(option.DefElem.arg[0]);
+              output.push(`AS $EOFCODE$${body}$EOFCODE$`);
+              break;
 
-          case 'language':
-            elems.language = option;
-            break;
+            case 'language':
+              const lang = this.deparse(option.DefElem.arg);
+              output.push('LANGUAGE');
+              output.push(lang);
+              break;
 
-          case 'volatility':
-            elems.volatility = option;
-            break;
-          default:
+            case 'strict':
+              output.push('STRICT');
+              break;
+
+            case 'volatility':
+              const vol = this.deparse(option.DefElem.arg);
+              output.push(vol.toUpperCase());
+              break;
+            default:
+          }
         }
-      }
     });
+    output.push(';');
 
-    const body = this.deparse(elems.as.DefElem.arg[0]);
-    if (elems.language) {
-      const lang = this.deparse(elems.language.DefElem.arg);
-      if (elems.volatility) {
-        const vol = this.deparse(elems.volatility.DefElem.arg).toUpperCase();
-        output.push(`
-        AS $$${body}$$
-        LANGUAGE '${lang}' ${vol};
-        `);
-      } else {
-        output.push(`
-        AS $$${body}$$
-        LANGUAGE '${lang}';
-        `);
-      }
-    }
+    // const elems = {};
+    // node.options.forEach(option => {
+    //   if (option && option.DefElem) {
+    //     switch (option.DefElem.defname) {
+    //       case 'as':
+    //         elems.as = option;
+    //         break;
+    //
+    //       case 'language':
+    //         elems.language = option;
+    //         break;
+    //
+    //       case 'volatility':
+    //         elems.volatility = option;
+    //         break;
+    //       default:
+    //     }
+    //   }
+    // });
+    //
+    // const body = this.deparse(elems.as.DefElem.arg[0]);
+    // if (elems.language) {
+    //   const lang = this.deparse(elems.language.DefElem.arg);
+    //   if (elems.volatility) {
+    //     const vol = this.deparse(elems.volatility.DefElem.arg).toUpperCase();
+    //     output.push(`
+    //     AS $$${body}$$
+    //     LANGUAGE '${lang}' ${vol};
+    //     `);
+    //   } else {
+    //     output.push(`
+    //     AS $$${body}$$
+    //     LANGUAGE '${lang}';
+    //     `);
+    //   }
+    // }
 
     return output.join(' ');
   }
