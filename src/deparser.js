@@ -49,7 +49,9 @@ export default class Deparser {
   }
 
   deparseNodes(nodes) {
-    return nodes.map(node => _.isArray(node) ? this.list(node) : this.deparse(node));
+    return nodes.map(node => {
+      return _.isArray(node) ? this.list(node) : this.deparse(node);
+    });
   }
 
   list(nodes, separator = ', ') {
@@ -985,8 +987,7 @@ export default class Deparser {
     output.push(this.list(node.tableElts));
     output.push(')');
 
-    if (relpersistence === 'p' &&
-      node.hasOwnProperty('inhRelations') ) {
+    if (relpersistence === 'p' && node.hasOwnProperty('inhRelations')) {
       output.push('INHERITS');
       output.push('(');
       output.push(this.deparse(node.inhRelations[0]));
@@ -1204,7 +1205,7 @@ export default class Deparser {
     output.push('(');
     let parameters = [];
     if (node.parameters) {
-      parameters = [ ...node.parameters];
+      parameters = [ ...node.parameters ];
     }
     const parametersList = parameters.filter(
       ({ FunctionParameter }) =>
@@ -1213,23 +1214,21 @@ export default class Deparser {
         FunctionParameter.mode === 98 ||
         FunctionParameter.mode === 105
     );
-    output.push(this.list(parametersList))
+    output.push(this.list(parametersList));
     output.push(')');
 
     const returns = parameters.filter(
       ({ FunctionParameter }) => FunctionParameter.mode === 116
     );
 
-    const outs = parameters.filter(
-      ({ FunctionParameter }) => FunctionParameter.mode === 111
-    );
+    // const outs = parameters.filter(
+    //   ({ FunctionParameter }) => FunctionParameter.mode === 111
+    // );
 
     // var setof = node.parameters.filter(
     //   ({ FunctionParameter }) => FunctionParameter.mode === 109
     // );
 
-    // if (outs.length === 0) {
-    // }
     if (returns.length > 0) {
       output.push('RETURNS');
       output.push('TABLE');
@@ -1242,66 +1241,66 @@ export default class Deparser {
     }
 
     node.options.forEach((option, i) => {
-        if (option && option.DefElem) {
+      if (option && option.DefElem) {
+        let value = '';
+        switch (option.DefElem.defname) {
+          case 'as':
+            value = this.deparse(option.DefElem.arg[0]);
+            output.push(`AS $EOFCODE$${value}$EOFCODE$`);
+            break;
 
-          switch (option.DefElem.defname) {
-            case 'as':
-              const body = this.deparse(option.DefElem.arg[0]);
-              output.push(`AS $EOFCODE$${body}$EOFCODE$`);
-              break;
+          case 'language':
+            value = this.deparse(option.DefElem.arg);
+            output.push('LANGUAGE');
+            output.push(value);
+            break;
 
-            case 'language':
-              const lang = this.deparse(option.DefElem.arg);
-              output.push('LANGUAGE');
-              output.push(lang);
-              break;
+          case 'security':
+            output.push('SECURITY');
+            value = Number(option.DefElem.arg.Integer.ival);
+            if (value > 0) {
+              output.push('DEFINER');
+            } else {
+              output.push('INVOKER');
+            }
+            break;
 
-            case 'security':
-              output.push('SECURITY');
-              const security = Number(option.DefElem.arg.Integer.ival);
-              if (security > 0) {
-                output.push('DEFINER');
-              } else {
-                output.push('INVOKER');
-              }
-              break;
+          case 'leakproof':
+            value = Number(option.DefElem.arg.Integer.ival);
+            if (value > 0) {
+              output.push('LEAKPROOF');
+            }
+            break;
 
-            case 'leakproof':
-              const leakproof = Number(option.DefElem.arg.Integer.ival);
-              if (leakproof > 0) {
-                output.push('LEAKPROOF');
-              }
-              break;
+          case 'window':
+            value = Number(option.DefElem.arg.Integer.ival);
+            if (value > 0) {
+              output.push('WINDOW');
+            }
+            break;
 
-            case 'window':
-              const window = Number(option.DefElem.arg.Integer.ival);
-              if (window > 0) {
-                output.push('WINDOW');
-              }
-              break;
+          case 'strict':
+            value = Number(option.DefElem.arg.Integer.ival);
+            if (value > 0) {
+              output.push('STRICT');
+            } else {
+              output.push('CALLED ON NULL INPUT');
+            }
+            break;
 
-            case 'strict':
-              const strict = Number(option.DefElem.arg.Integer.ival);
-              if (strict > 0) {
-                output.push('STRICT');
-              } else {
-                output.push('CALLED ON NULL INPUT');
-              }
-              break;
+          case 'set':
+            output.push('SET');
+            output.push(this.deparse(option.DefElem.arg));
+            break;
 
-            case 'set':
-              output.push('SET');
-              output.push(this.deparse(option.DefElem.arg));
-              break;
+          case 'volatility':
+            value = this.deparse(option.DefElem.arg);
+            output.push(value.toUpperCase());
+            break;
 
-            case 'volatility':
-              const vol = this.deparse(option.DefElem.arg);
-              output.push(vol.toUpperCase());
-              break;
-
-            default:
-          }
+          default:
         }
+      }
     });
     output.push(';');
 
@@ -1332,63 +1331,63 @@ export default class Deparser {
     if (node.roletype === 3) {
       return 'PUBLIC';
     }
+    return '';
   }
 
   ['GrantStmt'](node) {
     const output = [];
 
-    const getType = (node) => {
-      switch (node.objtype) {
+    const getTypeFromNode = (nodeObj) => {
+      switch (nodeObj.objtype) {
         case 1:
-            if (node.targtype === 1) {
-              return 'ALL TABLES IN SCHEMA';
-            }
-            return 'TABLE';
+          if (nodeObj.targtype === 1) {
+            return 'ALL TABLES IN SCHEMA';
+          }
+          return 'TABLE';
         case 3:
-            return 'DATABASE';
+          return 'DATABASE';
         case 4:
-            return 'DOMAIN';
+          return 'DOMAIN';
         case 5:
-            return 'FOREIGN DATA WRAPPER';
+          return 'FOREIGN DATA WRAPPER';
         case 6:
-            return 'FOREIGN SERVER';
+          return 'FOREIGN SERVER';
         case 7:
-            if (node.targtype === 1) {
-              return 'ALL FUNCTIONS IN SCHEMA';
-            }
-            return 'FUNCTION';
+          if (nodeObj.targtype === 1) {
+            return 'ALL FUNCTIONS IN SCHEMA';
+          }
+          return 'FUNCTION';
         case 8:
-            return 'LANGUAGE';
+          return 'LANGUAGE';
         case 9:
-            return 'LARGE OBJECT';
+          return 'LARGE OBJECT';
         case 10:
-            return 'SCHEMA';
+          return 'SCHEMA';
         case 12:
-            return 'TYPE';
+          return 'TYPE';
         default:
       }
-    }
+      return '';
+    };
 
-    if ([1,3,4,5,6,7,8,9,10,12].includes(node.objtype)) {
+    if ([ 1, 3, 4, 5, 6, 7, 8, 9, 10, 12 ].includes(node.objtype)) {
       if (!node.is_grant) {
         output.push('REVOKE');
         if (node.grant_option) {
-          output.push('GRANT OPTION')
-          output.push('FOR')
+          output.push('GRANT OPTION');
+          output.push('FOR');
         }
         if (node.privileges) {
           output.push(this.list(node.privileges));
         } else {
           output.push('ALL');
         }
-
         output.push('ON');
-        output.push(getType(node));
+        output.push(getTypeFromNode(node));
         output.push(this.list(node.objects));
         output.push('FROM');
-        output.push(this.list(node.grantees))
+        output.push(this.list(node.grantees));
       } else {
-
         output.push('GRANT');
         if (node.privileges) {
           output.push(this.list(node.privileges));
@@ -1396,19 +1395,16 @@ export default class Deparser {
           output.push('ALL');
         }
         output.push('ON');
-        output.push(getType(node));
+        output.push(getTypeFromNode(node));
         output.push(this.list(node.objects));
         output.push('TO');
         output.push(this.list(node.grantees));
-
         if (node.grant_option) {
-          output.push('WITH GRANT OPTION')
+          output.push('WITH GRANT OPTION');
         }
-
       }
-
       if (Number(node.behavior) === 1) {
-        output.push('CASCADE')
+        output.push('CASCADE');
       }
     }
 
@@ -1439,14 +1435,14 @@ export default class Deparser {
   ['CreateRoleStmt'](node) {
     const output = [];
 
-    const roleOption = (node, i, val1, val2) => {
-      const val = Number(dotty.get(node, `options.${i}.DefElem.arg.Integer.ival`));
+    const roleOption = (nodeObj, i, val1, val2) => {
+      const val = Number(dotty.get(nodeObj, `options.${i}.DefElem.arg.Integer.ival`));
       if (val > 0) {
         output.push(val1);
       } else {
         output.push(val2);
       }
-    }
+    };
 
     output.push('CREATE');
     if (Number(node.stmt_type) === 1) {
@@ -1463,24 +1459,25 @@ export default class Deparser {
       const opts = dotty.search(node, 'options.*.DefElem.defname');
 
       if (opts.length === 1 && opts[0] === 'addroleto') {
-          // only one case
+        // only one case
       } else {
         output.push('WITH');
       }
 
-      opts.forEach((option, i)=>{
+      opts.forEach((option, i) => {
+        let value = '';
         switch (option) {
           case 'canlogin':
             roleOption(node, i, 'LOGIN', 'NOLOGIN');
             break;
           case 'addroleto':
-            output.push('IN ROLE')
+            output.push('IN ROLE');
             output.push(dotty.search(node, `options.${i}.DefElem.arg.*.RoleSpec.rolename`).join(','));
             break;
           case 'password':
             output.push('PASSWORD');
-            const pswd = dotty.get(node, `options.${i}.DefElem.arg.String.str`);
-            output.push(`'${pswd}'`);
+            value = dotty.get(node, `options.${i}.DefElem.arg.String.str`);
+            output.push(`'${value}'`);
             break;
           case 'adminmembers':
             output.push('ADMIN');
@@ -1510,65 +1507,67 @@ export default class Deparser {
             break;
           case 'validUntil':
             output.push('VALID UNTIL');
-            const validUntil = dotty.get(node, `options.${i}.DefElem.arg.String.str`);
-            output.push(`'${validUntil}'`);
+            value = dotty.get(node, `options.${i}.DefElem.arg.String.str`);
+            output.push(`'${value}'`);
             break;
           default:
         }
       });
-
     }
     return output.join(' ');
   }
 
   ['TransactionStmt'](node) {
     const output = [];
+
+    const begin = (nodeOpts) => {
+      const opts = dotty.search(nodeOpts, 'options.*.DefElem.defname');
+      if (opts.includes('transaction_read_only')) {
+        const index = opts.indexOf('transaction_read_only');
+        const obj = nodeOpts.options[index];
+        let set = false;
+        const flag = Number(this.deparse(dotty.get(obj, 'DefElem.arg')));
+        if (flag > 0) {
+          set = true;
+        }
+        if (set) {
+          return 'BEGIN TRANSACTION READ ONLY';
+        }
+        return 'BEGIN TRANSACTION READ WRITE';
+      }
+      if (opts.includes('transaction_isolation')) {
+        const index = opts.indexOf('transaction_isolation');
+        const obj = nodeOpts.options[index];
+        const lopts = this.deparse(dotty.get(obj, 'DefElem.arg')).replace(/['"]+/g, '');
+        return `BEGIN TRANSACTION ISOLATION LEVEL ${lopts.toUpperCase()}`;
+      }
+      return 'BEGIN';
+    };
+
+    const start = (nodeOpts) => {
+      const opts = dotty.search(nodeOpts, 'options.*.DefElem.defname');
+      if (opts.includes('transaction_read_only')) {
+        const index = opts.indexOf('transaction_read_only');
+        const obj = nodeOpts.options[index];
+        let set = false;
+        const flag = Number(this.deparse(dotty.get(obj, 'DefElem.arg')));
+        if (flag > 0) {
+          set = true;
+        }
+        if (set) {
+          return 'START TRANSACTION READ ONLY';
+        }
+        return 'START TRANSACTION READ WRITE';
+      }
+
+      return 'START TRANSACTION';
+    };
+
     switch (node.kind) {
       case 0:
-        const opts = dotty.search(node, 'options.*.DefElem.defname');
-        if (opts.includes('transaction_read_only')) {
-          const index = opts.indexOf('transaction_read_only');
-          const obj = node.options[index];
-          let set = false;
-          const flag = Number(this.deparse(dotty.get(obj, `DefElem.arg`)));
-          if (flag > 0) {
-            set = true;
-          }
-          if (set) {
-            return 'BEGIN TRANSACTION READ ONLY'
-          } else {
-            return 'BEGIN TRANSACTION READ WRITE'
-          }
-        }
-        if (opts.includes('transaction_isolation')) {
-          const index = opts.indexOf('transaction_isolation');
-          const obj = node.options[index];
-          // const lopts = this.deparse(dotty.get(obj, `DefElem.arg`));
-          const lopts = this.deparse(dotty.get(obj, `DefElem.arg`)).replace(/['"]+/g,'');
-          return `BEGIN TRANSACTION ISOLATION LEVEL ${lopts.toUpperCase()}`;
-        }
-        // if (dotty.search(node, 'options.*.DefElem.defname').includes('transaction_isolation')) {
-        //   return 'BEGIN TRANSACTION ISOLATION LEVEL REPEATABLE READ'
-        // }
-        return 'BEGIN';
+        return begin(node);
       case 1:
-        const startOpts = dotty.search(node, 'options.*.DefElem.defname');
-        if (startOpts.includes('transaction_read_only')) {
-          const index = startOpts.indexOf('transaction_read_only');
-          const obj = node.options[index];
-          let set = false;
-          const flag = Number(this.deparse(dotty.get(obj, `DefElem.arg`)));
-          if (flag > 0) {
-            set = true;
-          }
-          if (set) {
-            return 'START TRANSACTION READ ONLY'
-          } else {
-            return 'START TRANSACTION READ WRITE'
-          }
-        }
-
-        return 'START TRANSACTION';
+        return start(node);
       case 2:
         return 'COMMIT';
       case 3:
