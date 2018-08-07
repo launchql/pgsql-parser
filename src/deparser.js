@@ -1130,14 +1130,14 @@ export default class Deparser {
     output.push(node.funcname.map(name => this.deparse(name)).join('.'));
     output.push('(');
     output.push(
-      node.parameters
+      (node.parameters||[])
         .filter(({ FunctionParameter }) => FunctionParameter.mode === 105)
         .map(param => this.deparse(param))
         .join(', ')
     );
     output.push(')');
 
-    const returns = node.parameters.filter(
+    const returns = (node.parameters||[]).filter(
       ({ FunctionParameter }) => FunctionParameter.mode === 116
     );
     // var setof = node.parameters.filter(
@@ -1180,10 +1180,22 @@ export default class Deparser {
       }
     });
 
-    output.push(`
-AS $$${this.deparse(elems.as.DefElem.arg[0])}$$
-LANGUAGE '${this.deparse(elems.language.DefElem.arg)}' ${this.deparse(elems.volatility.DefElem.arg).toUpperCase()};
-`);
+    let body = this.deparse(elems.as.DefElem.arg[0]);
+    if (elems.language) {
+      let lang = this.deparse(elems.language.DefElem.arg);
+      if ( elems.volatility ) {
+        let vol = this.deparse(elems.volatility.DefElem.arg).toUpperCase();
+        output.push(`
+        AS $$${body}$$
+        LANGUAGE '${lang}' ${vol};
+        `);
+      } else {
+        output.push(`
+        AS $$${body}$$
+        LANGUAGE '${lang}';
+        `);
+      }
+    }
 
     return output.join(' ');
   }
