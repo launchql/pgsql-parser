@@ -1143,6 +1143,9 @@ export default class Deparser {
 
     if (node.mode === 118) {
       output.push('variadic');
+    if (node.mode === 111) {
+      output.push('OUT');
+    }
     }
 
     output.push(node.name);
