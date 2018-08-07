@@ -1234,6 +1234,14 @@ export default class Deparser {
     return output.join(' ');
   }
 
+  ['RoleSpec'](node) {
+    if (node.roletype === 0) {
+      return node.rolename;
+    }
+    if (node.roletype === 3) {
+      return 'public';
+    }
+  }
   ['TransactionStmt'](node) {
     switch (node.kind) {
       case 0:
