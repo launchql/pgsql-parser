@@ -1355,6 +1355,8 @@ export default class Deparser {
         break;
       case 2:
         return 'COMMIT';
+      case 3:
+        return 'ROLLBACK';
       default:
     }
     return '';
