@@ -1264,6 +1264,89 @@ export default class Deparser {
 
     return output.join(' ');
   }
+
+  ['GrantRoleStmt'](node) {
+    const output = [];
+
+    output.push('GRANT');
+    output.push(dotty.search(node, 'granted_roles.*.AccessPriv.priv_name').join(','));
+    output.push('TO');
+    output.push(dotty.search(node, 'grantee_roles.*.RoleSpec.rolename').join(','));
+
+    return output.join(' ');
+  }
+
+  ['CreateRoleStmt'](node) {
+    const output = [];
+
+    const roleOption = (node, i, val1, val2) => {
+      const val = Number(dotty.get(node, `options.${i}.DefElem.arg.Integer.ival`));
+      if (val > 0) {
+        output.push(val1);
+      } else {
+        output.push(val2);
+      }
+    }
+
+    output.push('CREATE');
+    if (Number(node.stmt_type) === 1) {
+      output.push('USER');
+    } else {
+      output.push('ROLE');
+    }
+    output.push(node.role);
+    if (node.options) {
+      const opts = dotty.search(node, 'options.*.DefElem.defname');
+
+      if (opts.length === 1 && opts[0] === 'addroleto') {
+          // only one case
+      } else {
+        output.push('WITH');
+      }
+
+      opts.forEach((option, i)=>{
+        switch (option) {
+          case 'canlogin':
+            roleOption(node, i, 'LOGIN', 'NOLOGIN');
+            break;
+          case 'addroleto':
+            output.push('IN ROLE')
+            output.push(dotty.search(node, `options.${i}.DefElem.arg.*.RoleSpec.rolename`).join(','));
+            break;
+          case 'password':
+            output.push('PASSWORD');
+            const pswd = dotty.get(node, `options.${i}.DefElem.arg.String.str`);
+            output.push(`'${pswd}'`);
+            break;
+          case 'adminmembers':
+            output.push('ADMIN');
+            output.push(dotty.get(node, `options.${i}.DefElem.arg.0.RoleSpec.rolename`));
+            break;
+          case 'createdb':
+            roleOption(node, i, 'CREATEDB', 'NOCREATEDB');
+            break;
+          case 'inherit':
+            roleOption(node, i, 'INHERIT', 'NOINHERIT');
+            break;
+          case 'superuser':
+            roleOption(node, i, 'SUPERUSER', 'NOSUPERUSER');
+            break;
+          case 'createrole':
+            roleOption(node, i, 'CREATEROLE', 'NOCREATEROLE');
+            break;
+          case 'validUntil':
+            output.push('VALID UNTIL');
+            const validUntil = dotty.get(node, `options.${i}.DefElem.arg.String.str`);
+            output.push(`'${validUntil}'`);
+            break;
+          default:
+        }
+      });
+
+    }
+    return output.join(' ');
+  }
+
   ['TransactionStmt'](node) {
     switch (node.kind) {
       case 0:
