@@ -1177,39 +1177,40 @@ export default class Deparser {
     output.push('(');
     let parameters = [];
     if (node.parameters) {
-      parameters = node.parameters;
+      parameters = [ ...node.parameters];
     }
-    output.push(
-      parameters
-        .filter(({ FunctionParameter }) =>
-        FunctionParameter.mode === 105 ||
-        FunctionParameter.mode === 118
-      )
-        .map(param => this.deparse(param))
-        .join(', ')
+    const parametersList = parameters.filter(
+      ({ FunctionParameter }) =>
+        FunctionParameter.mode === 118 ||
+        FunctionParameter.mode === 111 ||
+        FunctionParameter.mode === 98 ||
+        FunctionParameter.mode === 105
     );
+    output.push(this.list(parametersList))
     output.push(')');
 
     const returns = parameters.filter(
       ({ FunctionParameter }) => FunctionParameter.mode === 116
     );
-    
+
+    const outs = parameters.filter(
+      ({ FunctionParameter }) => FunctionParameter.mode === 111
+    );
+
     // var setof = node.parameters.filter(
     //   ({ FunctionParameter }) => FunctionParameter.mode === 109
     // );
 
-    output.push('RETURNS');
-    if (returns.length) {
+    // if (outs.length === 0) {
+    // }
+    if (returns.length > 0) {
+      output.push('RETURNS');
       output.push('TABLE');
       output.push('(');
-      output.push(
-        node.parameters
-          .filter(({ FunctionParameter }) => FunctionParameter.mode === 116)
-          .map(param => this.deparse(param))
-          .join(', ')
-      );
+      output.push(this.list(returns));
       output.push(')');
-    } else {
+    } else if (node.returnType) {
+      output.push('RETURNS');
       output.push(this.deparse(node.returnType));
     }
 
