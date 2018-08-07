@@ -1121,6 +1121,10 @@ export default class Deparser {
       output.push(this.ExclusionConstraint(node));
     }
 
+    if (node.deferrable) {
+      output.push('deferrable');
+    }
+
     return output.join(' ');
   }
 
