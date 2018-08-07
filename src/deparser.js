@@ -1242,6 +1242,28 @@ export default class Deparser {
       return 'public';
     }
   }
+
+  ['GrantStmt'](node) {
+    const output = [];
+
+    if (node.objtype === 10) {
+      if (!node.is_grant) {
+        output.push('REVOKE');
+        output.push('ALL ON SCHEMA');
+        output.push(dotty.search(node, 'objects.*.String.str').join(','));
+        output.push('FROM');
+        output.push(this.list(node.grantees))
+      } else {
+        output.push('GRANT');
+        output.push('ALL ON SCHEMA');
+        output.push(dotty.search(node, 'objects.*.String.str').join(','));
+        output.push('TO');
+        output.push(this.list(node.grantees));
+      }
+    }
+
+    return output.join(' ');
+  }
   ['TransactionStmt'](node) {
     switch (node.kind) {
       case 0:
