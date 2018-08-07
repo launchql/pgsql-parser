@@ -49,7 +49,7 @@ export default class Deparser {
   }
 
   deparseNodes(nodes) {
-    return nodes.map(node => this.deparse(node));
+    return nodes.map(node => _.isArray(node) ? this.list(node) : this.deparse(node));
   }
 
   list(nodes, separator = ', ') {
