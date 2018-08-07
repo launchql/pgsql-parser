@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { format } from 'util';
+const dotty = require('dotty');
 
 const CONSTRAINT_TYPES = [
   'NULL',
@@ -807,7 +808,7 @@ export default class Deparser {
     }
 
     if (node.relpersistence === 't') {
-      output.push('TEMPORARY');
+      output.push('TEMPORARY TABLE');
     }
 
     if (node.schemaname != null) {
@@ -973,11 +974,25 @@ export default class Deparser {
 
   ['CreateStmt'](node) {
     const output = [];
-    output.push('CREATE TABLE');
+    const relpersistence = dotty.get(node, 'relation.RangeVar.relpersistence');
+    if (relpersistence === 't') {
+      output.push('CREATE');
+    } else {
+      output.push('CREATE TABLE');
+    }
     output.push(this.deparse(node.relation));
     output.push('(');
     output.push(this.list(node.tableElts));
     output.push(')');
+
+    if (relpersistence === 'p' &&
+      node.hasOwnProperty('inhRelations') ) {
+      output.push('INHERITS');
+      output.push('(');
+      output.push(this.deparse(node.inhRelations[0]));
+      output.push(')');
+    }
+
     output.push(';');
     return output.join(' ');
   }
