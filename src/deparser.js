@@ -1238,6 +1238,14 @@ export default class Deparser {
                 output.push('INVOKER');
               }
               break;
+
+            case 'leakproof':
+              const leakproof = Number(option.DefElem.arg.Integer.ival);
+              if (leakproof > 0) {
+                output.push('LEAKPROOF');
+              }
+              break;
+
             case 'strict':
               output.push('STRICT');
               break;
