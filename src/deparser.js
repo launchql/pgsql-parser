@@ -1129,15 +1129,19 @@ export default class Deparser {
 
     output.push(node.funcname.map(name => this.deparse(name)).join('.'));
     output.push('(');
+    let parameters = [];
+    if (node.parameters) {
+      parameters = node.parameters;
+    }
     output.push(
-      (node.parameters||[])
+      parameters
         .filter(({ FunctionParameter }) => FunctionParameter.mode === 105)
         .map(param => this.deparse(param))
         .join(', ')
     );
     output.push(')');
 
-    const returns = (node.parameters||[]).filter(
+    const returns = parameters.filter(
       ({ FunctionParameter }) => FunctionParameter.mode === 116
     );
     // var setof = node.parameters.filter(
@@ -1180,11 +1184,11 @@ export default class Deparser {
       }
     });
 
-    let body = this.deparse(elems.as.DefElem.arg[0]);
+    const body = this.deparse(elems.as.DefElem.arg[0]);
     if (elems.language) {
-      let lang = this.deparse(elems.language.DefElem.arg);
-      if ( elems.volatility ) {
-        let vol = this.deparse(elems.volatility.DefElem.arg).toUpperCase();
+      const lang = this.deparse(elems.language.DefElem.arg);
+      if (elems.volatility) {
+        const vol = this.deparse(elems.volatility.DefElem.arg).toUpperCase();
         output.push(`
         AS $$${body}$$
         LANGUAGE '${lang}' ${vol};
