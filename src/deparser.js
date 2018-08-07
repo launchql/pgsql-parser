@@ -1160,9 +1160,6 @@ export default class Deparser {
     output.push('(');
     output.push(this.list(node.funcargs));
     output.push(')');
-    console.log(output);
-    console.log(output);
-    console.log(output);
     return output.join(' ');
   }
 
