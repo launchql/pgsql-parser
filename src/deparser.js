@@ -1247,7 +1247,13 @@ export default class Deparser {
               break;
 
             case 'strict':
-              output.push('STRICT');
+              const strict = Number(option.DefElem.arg.Integer.ival);
+              if (strict > 0) {
+                output.push('STRICT');
+              } else {
+                output.push('CALLED ON NULL INPUT');
+              }
+              break;
               break;
 
             case 'volatility':
