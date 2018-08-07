@@ -1246,6 +1246,13 @@ export default class Deparser {
               }
               break;
 
+            case 'window':
+              const window = Number(option.DefElem.arg.Integer.ival);
+              if (window > 0) {
+                output.push('WINDOW');
+              }
+              break;
+
             case 'strict':
               const strict = Number(option.DefElem.arg.Integer.ival);
               if (strict > 0) {
@@ -1264,6 +1271,7 @@ export default class Deparser {
               const vol = this.deparse(option.DefElem.arg);
               output.push(vol.toUpperCase());
               break;
+
             default:
           }
         }
