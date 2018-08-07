@@ -1337,15 +1337,27 @@ export default class Deparser {
     const getType = (node) => {
       switch (node.objtype) {
         case 1:
+            if (node.targtype === 1) {
+              return 'ALL TABLES IN SCHEMA';
+            }
             return 'TABLE';
         case 3:
             return 'DATABASE';
+        case 4:
+            return 'DOMAIN';
         case 5:
             return 'FOREIGN DATA WRAPPER';
         case 6:
             return 'FOREIGN SERVER';
         case 7:
+            if (node.targtype === 1) {
+              return 'ALL FUNCTIONS IN SCHEMA';
+            }
             return 'FUNCTION';
+        case 8:
+            return 'LANGUAGE';
+        case 9:
+            return 'LARGE OBJECT';
         case 10:
             return 'SCHEMA';
         case 12:
@@ -1354,14 +1366,19 @@ export default class Deparser {
       }
     }
 
-    if ([1,3,5,6,7,10,12].includes(node.objtype)) {
+    if ([1,3,4,5,6,7,8,9,10,12].includes(node.objtype)) {
       if (!node.is_grant) {
         output.push('REVOKE');
+        if (node.grant_option) {
+          output.push('GRANT OPTION')
+          output.push('FOR')
+        }
         if (node.privileges) {
           output.push(this.list(node.privileges));
         } else {
           output.push('ALL');
         }
+
         output.push('ON');
         output.push(getType(node));
         output.push(this.list(node.objects));
@@ -1384,6 +1401,7 @@ export default class Deparser {
         if (node.grant_option) {
           output.push('WITH GRANT OPTION')
         }
+
       }
 
       if (Number(node.behavior) === 1) {
@@ -1408,6 +1426,9 @@ export default class Deparser {
       output.push('TO');
       output.push(this.list(node.grantee_roles));
     }
+    if (node.admin_opt) {
+      output.push('WITH ADMIN OPTION');
+    }
 
     return output.join(' ');
   }
@@ -1427,6 +1448,8 @@ export default class Deparser {
     output.push('CREATE');
     if (Number(node.stmt_type) === 1) {
       output.push('USER');
+    } else if (Number(node.stmt_type) === 2) {
+      output.push('GROUP');
     } else {
       output.push('ROLE');
     }
