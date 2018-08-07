@@ -1156,6 +1156,11 @@ export default class Deparser {
     output.push(node.name);
     output.push(this.deparse(node.argType));
 
+    if (node.defexpr) {
+      output.push('DEFAULT');
+      output.push(this.deparse(node.defexpr));
+    }
+
     return output.join(' ');
   }
 
