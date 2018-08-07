@@ -5,10 +5,8 @@
   "homepage": "http://github.com/pyramation/pgsql-parser",
   "main": "dist/index.js",
   "scripts": {
-    "test":
-      "./node_modules/.bin/mocha --reporter dot test/setup.js test/test.js",
-    "simpletest":
-      "node_modules/.bin/mocha ./test/setup.js ./test/test.js ./test/elements/*.js",
+    "test": "./node_modules/.bin/mocha --reporter dot test/setup.js test/test.js",
+    "simpletest": "node_modules/.bin/mocha ./test/setup.js ./test/test.js ./test/elements/*.js",
     "prepublish": "npm run lint && npm run clean && npm run build",
     "lint": "node_modules/.bin/eslint src/* src/**/*",
     "build": "node_modules/.bin/babel src --out-dir dist --source-maps",
@@ -53,8 +51,16 @@
     "watchify": "^3.7.0"
   },
   "dependencies": {
+    "dotty": "^0.1.0",
     "lodash": "^4.13.1",
     "pg-query-native": "^1.1.0"
   },
-  "keywords": ["sql", "postgres", "postgresql", "pg", "query", "database"]
+  "keywords": [
+    "sql",
+    "postgres",
+    "postgresql",
+    "pg",
+    "query",
+    "database"
+  ]
 }
