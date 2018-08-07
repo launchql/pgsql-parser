@@ -1149,6 +1149,18 @@ export default class Deparser {
     return output.join(' ');
   }
 
+  ['FuncWithArgs'](node) {
+    const output = [];
+    output.push(this.deparse(node.funcname[0]));
+    output.push('(');
+    output.push(this.list(node.funcargs));
+    output.push(')');
+    console.log(output);
+    console.log(output);
+    console.log(output);
+    return output.join(' ');
+  }
+
   ['FunctionParameter'](node) {
     const output = [];
 
