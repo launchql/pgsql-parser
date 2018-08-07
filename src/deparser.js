@@ -1219,7 +1219,6 @@ export default class Deparser {
 
           switch (option.DefElem.defname) {
             case 'as':
-              delete option.DefElem.arg[0].defaction;
               const body = this.deparse(option.DefElem.arg[0]);
               output.push(`AS $EOFCODE$${body}$EOFCODE$`);
               break;
@@ -1230,6 +1229,15 @@ export default class Deparser {
               output.push(lang);
               break;
 
+            case 'security':
+              output.push('SECURITY');
+              const security = Number(option.DefElem.arg.Integer.ival);
+              if (security > 0) {
+                output.push('DEFINER');
+              } else {
+                output.push('INVOKER');
+              }
+              break;
             case 'strict':
               output.push('STRICT');
               break;
