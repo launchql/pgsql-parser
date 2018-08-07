@@ -5,8 +5,10 @@
   "homepage": "http://github.com/zhm/pg-query-parser",
   "main": "dist/index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter dot test/setup.js test/test.js",
-    "simpletest": "node_modules/.bin/mocha ./test/setup.js ./test/test.js ./test/elements/*.js",
+    "test":
+      "./node_modules/.bin/mocha --reporter dot test/setup.js test/test.js",
+    "simpletest":
+      "node_modules/.bin/mocha ./test/setup.js ./test/test.js ./test/elements/*.js",
     "prepublish": "npm run lint && npm run clean && npm run build",
     "lint": "node_modules/.bin/eslint src/* src/**/*",
     "build": "node_modules/.bin/babel src --out-dir dist --source-maps",
@@ -25,19 +27,19 @@
     "extends": "fulcrum"
   },
   "devDependencies": {
-    "babel-cli": "^6.9.0",
-    "babel-core": "^6.9.1",
-    "babel-eslint": "^6.0.4",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.2",
     "babel-preset-es2015-node5": "^1.2.0",
     "babel-preset-stage-1": "^6.5.0",
     "browserify": "^13.0.1",
     "chai": "^3.5.0",
     "coffee-script": "^1.10.0",
     "coffeeify": "^2.0.1",
-    "eslint": "^2.11.1",
-    "eslint-config-fulcrum": "^1.0.2",
-    "eslint-plugin-babel": "^3.3.0",
-    "eslint-plugin-react": "^5.1.1",
+    "eslint": "^4.18.1",
+    "eslint-config-fulcrum": "^1.5.4",
+    "eslint-plugin-babel": "^4.1.2",
+    "eslint-plugin-react": "^7.7.0",
     "glob": "^7.0.3",
     "mocha": "^2.5.3",
     "npm-check-updates": "^2.6.5",
@@ -50,12 +52,5 @@
     "lodash": "^4.13.1",
     "pg-query-native": "^1.1.0"
   },
-  "keywords": [
-    "sql",
-    "postgres",
-    "postgresql",
-    "pg",
-    "query",
-    "database"
-  ]
+  "keywords": ["sql", "postgres", "postgresql", "pg", "query", "database"]
 }

@@ -1,15 +1,31 @@
 import chai from 'chai';
 import fs from 'fs';
-import glob from 'glob';
+import { sync as glob } from 'glob';
 
 chai.should();
 
 import { deparse, parse, clean, byType } from '../src';
 
+const supportedStatements = [
+  'SelectStmt'
+  // 'CreateFunctionStmt',
+  // 'CreateStmt',
+  // 'TransactionStmt'
+];
+
+const isSupported = node => {
+  for (var i = 0; i < supportedStatements.length; i++) {
+    if (node[supportedStatements[i]] != null) return true;
+  }
+};
+
 const pattern = process.env.FILTER ? `*${process.env.FILTER}*.sql` : '*.sql';
 
-let files = glob.sync(`./test/fixtures/${pattern}`);
-files = files.concat(glob.sync(`./test/fixtures/upstream/${pattern}`));
+let files = glob(`./test/fixtures/${pattern}`)
+  .concat(glob(`./test/fixtures/create/${pattern}`))
+  .concat(glob(`./test/fixtures/functions/${pattern}`))
+  .concat(glob(`./test/fixtures/tranactions/${pattern}`))
+  .concat(glob(`./test/fixtures/upstream/${pattern}`));
 
 const log = (msg) => {
   fs.writeSync(1, `${msg}\n`);
@@ -41,7 +57,7 @@ const defineQueryTest = (sqlQuery, file) => {
       parsed = parse(sqlQuery);
 
       // Only SelectStmt's for now
-      if (parsed.query && parsed.query[0] && (parsed.query[0].SelectStmt != null)) {
+      if (parsed.query && parsed.query[0] && isSupported(parsed.query[0])) {
         check(sqlQuery);
       }
     } catch (ex) {

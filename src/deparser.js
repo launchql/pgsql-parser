@@ -1,6 +1,17 @@
 import _ from 'lodash';
 import { format } from 'util';
 
+const CONSTRAINT_TYPES = [
+  'NULL',
+  'NOT NULL',
+  'DEFAULT',
+  'CHECK',
+  'PRIMARY KEY',
+  'UNIQUE',
+  'EXCLUDE',
+  'REFERENCES'
+];
+
 const { keys } = _;
 
 const compact = o => {
@@ -624,8 +635,7 @@ export default class Deparser {
     }
 
     const wrapped =
-      (node.rarg.JoinExpr != null) || node.alias ? '(' + output.join(' ') + ')'
-                                                 : output.join(' ');
+      (node.rarg.JoinExpr != null) || node.alias ? '(' + output.join(' ') + ')' : output.join(' ');
 
     if (node.alias) {
       return wrapped + ' ' + this.deparse(node.alias);
@@ -959,6 +969,247 @@ export default class Deparser {
     }
 
     return output.join(' ');
+  }
+
+  ['CreateStmt'](node) {
+    const output = [];
+    output.push('CREATE TABLE');
+    output.push(this.deparse(node.relation));
+    output.push('(');
+    output.push(this.list(node.tableElts));
+    output.push(')');
+    output.push(';');
+    return output.join(' ');
+  }
+
+  ['ConstraintStmt'](node) {
+    const output = [];
+    const constraint = CONSTRAINT_TYPES[node.contype];
+
+    if (node.conname) {
+      output.push(`CONSTRAINT ${node.conname} ${constraint}`);
+    } else {
+      output.push(constraint);
+    }
+
+    return output.join(' ');
+  }
+
+  ['ReferenceConstraint'](node) {
+    const output = [];
+    if (node.pk_attrs && node.fk_attrs) {
+      output.push('FOREIGN KEY');
+      output.push('(');
+      output.push(this.list(node.fk_attrs));
+      output.push(')');
+      output.push('REFERENCES');
+      output.push(this.deparse(node.pktable));
+      output.push('(');
+      output.push(this.list(node.pk_attrs));
+      output.push(')');
+    } else if (node.pk_attrs) {
+      output.push(this.ConstraintStmt(node));
+      output.push(this.deparse(node.pktable));
+      output.push('(');
+      output.push(this.list(node.pk_attrs));
+      output.push(')');
+    } else {
+      output.push(this.ConstraintStmt(node));
+      output.push(this.deparse(node.pktable));
+    }
+    return output.join(' ');
+  }
+
+  ['ExclusionConstraint'](node) {
+    const output = [];
+    function getExclusionGroup(nde) {
+      const out = [];
+      const a = nde.exclusions.map(excl => {
+        if (excl[0].IndexElem.name) {
+          return excl[0].IndexElem.name;
+        }
+        return excl[0].IndexElem.expr ? this.deparse(excl[0].IndexElem.expr) : null;
+      });
+
+      const b = nde.exclusions.map(excl => this.deparse(excl[1][0]));
+
+      for (let i = 0; i < a.length; i++) {
+        out.push(`${a[i]} WITH ${b[i]}`);
+        if (i !== a.length - 1) {
+          out.push(',');
+        }
+      }
+
+      return out.join(' ');
+    }
+
+    if (node.exclusions && node.access_method) {
+      output.push('USING');
+      output.push(node.access_method);
+      output.push('(');
+      output.push(getExclusionGroup.call(this, node));
+      output.push(')');
+    }
+
+    return output.join(' ');
+  }
+
+  ['Constraint'](node) {
+    const output = [];
+
+    const constraint = CONSTRAINT_TYPES[node.contype];
+    if (!constraint) {
+      throw new Error('type not implemented: ' + node.contype);
+    }
+
+    if (constraint === 'REFERENCES') {
+      output.push(this.ReferenceConstraint(node));
+    } else {
+      output.push(this.ConstraintStmt(node));
+    }
+
+    if (node.keys) {
+      output.push('(');
+      output.push(this.list(node.keys));
+      output.push(')');
+    }
+
+    if (node.raw_expr) {
+      output.push(this.deparse(node.raw_expr));
+    }
+
+    if (node.fk_del_action) {
+      switch (node.fk_del_action) {
+        case 'r':
+          output.push('ON DELETE RESTRICT');
+          break;
+        case 'c':
+          output.push('ON DELETE CASCADE');
+          break;
+        default:
+      }
+    }
+
+    if (node.fk_upd_action) {
+      switch (node.fk_upd_action) {
+        case 'r':
+          output.push('ON UPDATE RESTRICT');
+          break;
+        case 'c':
+          output.push('ON UPDATE CASCADE');
+          break;
+        default:
+      }
+    }
+
+    if (constraint === 'EXCLUDE') {
+      output.push(this.ExclusionConstraint(node));
+    }
+
+    return output.join(' ');
+  }
+
+  ['FunctionParameter'](node) {
+    const output = [];
+
+    output.push(node.name);
+    output.push(this.deparse(node.argType));
+
+    return output.join(' ');
+  }
+
+  ['CreateFunctionStmt'](node) {
+    const output = [];
+
+    output.push('CREATE');
+    if (node.replace) {
+      output.push('OR REPLACE');
+    }
+    output.push('FUNCTION');
+
+    output.push(node.funcname.map(name => this.deparse(name)).join('.'));
+    output.push('(');
+    output.push(
+      node.parameters
+        .filter(({ FunctionParameter }) => FunctionParameter.mode === 105)
+        .map(param => this.deparse(param))
+        .join(', ')
+    );
+    output.push(')');
+
+    const returns = node.parameters.filter(
+      ({ FunctionParameter }) => FunctionParameter.mode === 116
+    );
+    // var setof = node.parameters.filter(
+    //   ({ FunctionParameter }) => FunctionParameter.mode === 109
+    // );
+
+    output.push('RETURNS');
+    if (returns.length) {
+      output.push('TABLE');
+      output.push('(');
+      output.push(
+        node.parameters
+          .filter(({ FunctionParameter }) => FunctionParameter.mode === 116)
+          .map(param => this.deparse(param))
+          .join(', ')
+      );
+      output.push(')');
+    } else {
+      output.push(this.deparse(node.returnType));
+    }
+
+    const elems = {};
+
+    node.options.forEach(option => {
+      if (option && option.DefElem) {
+        switch (option.DefElem.defname) {
+          case 'as':
+            elems.as = option;
+            break;
+
+          case 'language':
+            elems.language = option;
+            break;
+
+          case 'volatility':
+            elems.volatility = option;
+            break;
+          default:
+        }
+      }
+    });
+
+    output.push(`
+AS $$${this.deparse(elems.as.DefElem.arg[0])}$$
+LANGUAGE '${this.deparse(elems.language.DefElem.arg)}' ${this.deparse(elems.volatility.DefElem.arg).toUpperCase()};
+`);
+
+    return output.join(' ');
+  }
+  ['CreateSchemaStmt'](node) {
+    const output = [];
+
+    output.push('CREATE');
+    if (node.replace) {
+      output.push('OR REPLACE');
+    }
+    output.push('SCHEMA');
+    output.push(node.schemaname);
+    return output.join(' ');
+  }
+
+  ['TransactionStmt'](node) {
+    switch (node.kind) {
+      case 0:
+        return 'BEGIN';
+      case 1:
+        break;
+      case 2:
+        return 'COMMIT';
+      default:
+    }
+    return '';
   }
 
   ['SortBy'](node) {
@@ -1299,13 +1550,13 @@ export default class Deparser {
       this.INTERVALS[(1 << this.BITS.HOUR)] = [ 'hour' ];
       this.INTERVALS[(1 << this.BITS.MINUTE)] = [ 'minute' ];
       this.INTERVALS[(1 << this.BITS.SECOND)] = [ 'second' ];
-      this.INTERVALS[(1 << this.BITS.YEAR | 1 << this.BITS.MONTH)] = [ 'year', 'month' ];
-      this.INTERVALS[(1 << this.BITS.DAY | 1 << this.BITS.HOUR)] = [ 'day', 'hour' ];
-      this.INTERVALS[(1 << this.BITS.DAY | 1 << this.BITS.HOUR | 1 << this.BITS.MINUTE)] = [ 'day', 'minute' ];
-      this.INTERVALS[(1 << this.BITS.DAY | 1 << this.BITS.HOUR | 1 << this.BITS.MINUTE | 1 << this.BITS.SECOND)] = [ 'day', 'second' ];
-      this.INTERVALS[(1 << this.BITS.HOUR | 1 << this.BITS.MINUTE)] = [ 'hour', 'minute' ];
-      this.INTERVALS[(1 << this.BITS.HOUR | 1 << this.BITS.MINUTE | 1 << this.BITS.SECOND)] = [ 'hour', 'second' ];
-      this.INTERVALS[(1 << this.BITS.MINUTE | 1 << this.BITS.SECOND)] = [ 'minute', 'second' ];
+      this.INTERVALS[((1 << this.BITS.YEAR) | (1 << this.BITS.MONTH))] = [ 'year', 'month' ];
+      this.INTERVALS[((1 << this.BITS.DAY) | (1 << this.BITS.HOUR))] = [ 'day', 'hour' ];
+      this.INTERVALS[((1 << this.BITS.DAY) | (1 << this.BITS.HOUR) | (1 << this.BITS.MINUTE))] = [ 'day', 'minute' ];
+      this.INTERVALS[((1 << this.BITS.DAY) | (1 << this.BITS.HOUR) | (1 << this.BITS.MINUTE) | (1 << this.BITS.SECOND))] = [ 'day', 'second' ];
+      this.INTERVALS[((1 << this.BITS.HOUR) | (1 << this.BITS.MINUTE))] = [ 'hour', 'minute' ];
+      this.INTERVALS[((1 << this.BITS.HOUR) | (1 << this.BITS.MINUTE) | (1 << this.BITS.SECOND))] = [ 'hour', 'second' ];
+      this.INTERVALS[((1 << this.BITS.MINUTE) | (1 << this.BITS.SECOND))] = [ 'minute', 'second' ];
 
       // utils/timestamp.h
       // #define INTERVAL_FULL_RANGE (0x7FFF)
