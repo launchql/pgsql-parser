@@ -1,8 +1,8 @@
 {
-  "name": "pg-query-parser",
-  "version": "0.2.1",
+  "name": "pgsql-parser",
+  "version": "0.2.2",
   "description": "The real PostgreSQL query parser",
-  "homepage": "http://github.com/zhm/pg-query-parser",
+  "homepage": "http://github.com/pyramation/pgsql-parser",
   "main": "dist/index.js",
   "scripts": {
     "test":
@@ -17,11 +17,15 @@
     "check-deps": "node_modules/.bin/ncu",
     "update-deps": "node_modules/.bin/ncu -u"
   },
-  "author": "Zac McCormick <zac.mccormick@gmail.com> (http://github.com/zhm)",
+  "author": "Dan Lynch <pyramation@gmail.com> (http://github.com/pyramation)",
+  "contributors": [
+    "Zac McCormick <zac.mccormick@gmail.com> (http://github.com/zhm)",
+    "Dan Lynch <pyramation@gmail.com> (http://github.com/pyramation)"
+  ],
   "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
-    "url": "git://github.com/zhm/pg-query-parser.git"
+    "url": "git://github.com/pyramation/pgsql-parser.git"
   },
   "eslintConfig": {
     "extends": "fulcrum"
