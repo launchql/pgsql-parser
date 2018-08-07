@@ -1130,7 +1130,11 @@ export default class Deparser {
 
   ['AccessPriv'](node) {
     const output = [];
-    output.push(node.priv_name);
+    if (node.priv_name) {
+      output.push(node.priv_name.toUpperCase());
+    } else {
+      output.push('ALL');
+    }
     if (node.cols) {
       output.push('(');
       output.push(this.list(node.cols));
