@@ -14,6 +14,10 @@ var _util = require('util');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+const dotty = require('dotty');
+
+const CONSTRAINT_TYPES = ['NULL', 'NOT NULL', 'DEFAULT', 'CHECK', 'PRIMARY KEY', 'UNIQUE', 'EXCLUDE', 'REFERENCES'];
+
 const keys = _lodash2.default.keys;
 
 
@@ -36,7 +40,7 @@ const parens = string => {
 };
 
 const indent = function indent(text) {
-  let count = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
+  let count = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
   return text;
 };
 
@@ -50,15 +54,17 @@ class Deparser {
   }
 
   deparseQuery() {
-    return this.tree.map(node => this.deparse(node)).join('\n\n');
+    return this.tree.map(node => this.deparse(node)).join(';\n\n');
   }
 
   deparseNodes(nodes) {
-    return nodes.map(node => this.deparse(node));
+    return nodes.map(node => {
+      return _lodash2.default.isArray(node) ? this.list(node) : this.deparse(node);
+    });
   }
 
   list(nodes) {
-    let separator = arguments.length <= 1 || arguments[1] === undefined ? ', ' : arguments[1];
+    let separator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ', ';
 
     if (!nodes) {
       return '';
@@ -132,12 +138,11 @@ class Deparser {
   }
 
   type(names, args) {
-    var _names$map = names.map(name => this.deparse(name));
+    var _names$map = names.map(name => this.deparse(name)),
+        _names$map2 = _slicedToArray(_names$map, 2);
 
-    var _names$map2 = _slicedToArray(_names$map, 2);
-
-    const catalog = _names$map2[0];
-    const type = _names$map2[1];
+    const catalog = _names$map2[0],
+          type = _names$map2[1];
 
 
     const mods = (name, size) => {
@@ -194,7 +199,7 @@ class Deparser {
         if (node.name.length > 1) {
           const schema = this.deparse(node.name[0]);
           const operator = this.deparse(node.name[1]);
-          output.push(`OPERATOR(${ schema }.${ operator })`);
+          output.push(`OPERATOR(${schema}.${operator})`);
         } else {
           output.push(this.deparse(node.name[0]));
         }
@@ -213,13 +218,13 @@ class Deparser {
         // AEXPR_OP_ANY
         output.push(this.deparse(node.lexpr));
         output.push((0, _util.format)('ANY (%s)', this.deparse(node.rexpr)));
-        return output.join(` ${ this.deparse(node.name[0]) } `);
+        return output.join(` ${this.deparse(node.name[0])} `);
 
       case 2:
         // AEXPR_OP_ALL
         output.push(this.deparse(node.lexpr));
         output.push((0, _util.format)('ALL (%s)', this.deparse(node.rexpr)));
-        return output.join(` ${ this.deparse(node.name[0]) } `);
+        return output.join(` ${this.deparse(node.name[0])} `);
 
       case 3:
         // AEXPR_DISTINCT
@@ -333,7 +338,7 @@ class Deparser {
   }
 
   ['A_Indirection'](node) {
-    const output = [`(${ this.deparse(node.arg) })`];
+    const output = [`(${this.deparse(node.arg)})`];
 
     // TODO(zhm) figure out the actual rules for when a '.' is needed
     //
@@ -348,7 +353,7 @@ class Deparser {
       if (subnode.String || subnode.A_Star) {
         const value = subnode.A_Star ? '*' : this.quote(subnode.String.str);
 
-        output.push(`.${ value }`);
+        output.push(`.${value}`);
       } else {
         output.push(this.deparse(subnode));
       }
@@ -363,7 +368,7 @@ class Deparser {
 
   ['BitString'](node) {
     const prefix = node.str[0];
-    return `${ prefix }'${ node.str.substring(1) }'`;
+    return `${prefix}'${node.str.substring(1)}'`;
   }
 
   ['BoolExpr'](node) {
@@ -478,7 +483,7 @@ class Deparser {
   ['Float'](node) {
     // wrap negative numbers in parens, SELECT (-2147483648)::int4 * (-1)::int4
     if (node.str[0] === '-') {
-      return `(${ node.str })`;
+      return `(${node.str})`;
     }
 
     return node.str;
@@ -585,7 +590,7 @@ class Deparser {
 
   ['Integer'](node) {
     if (node.ival < 0) {
-      return `(${ node.ival })`;
+      return `(${node.ival})`;
     }
 
     return node.ival.toString();
@@ -642,20 +647,20 @@ class Deparser {
       // wrap nested join expressions in parens to make the following symmetric:
       // select * from int8_tbl x cross join (int4_tbl x cross join lateral (select x.f1) ss)
       if (node.rarg.JoinExpr != null && !(node.rarg.JoinExpr.alias != null)) {
-        output.push(`(${ this.deparse(node.rarg) })`);
+        output.push(`(${this.deparse(node.rarg)})`);
       } else {
         output.push(this.deparse(node.rarg));
       }
     }
 
     if (node.quals) {
-      output.push(`ON ${ this.deparse(node.quals) }`);
+      output.push(`ON ${this.deparse(node.quals)}`);
     }
 
     if (node.usingClause) {
       const using = this.quote(this.deparseNodes(node.usingClause)).join(', ');
 
-      output.push(`USING (${ using })`);
+      output.push(`USING (${using})`);
     }
 
     const wrapped = node.rarg.JoinExpr != null || node.alias ? '(' + output.join(' ') + ')' : output.join(' ');
@@ -753,7 +758,7 @@ class Deparser {
     const calls = funcs.join(', ');
 
     if (node.is_rowsfrom) {
-      output.push(`ROWS FROM (${ calls })`);
+      output.push(`ROWS FROM (${calls})`);
     } else {
       output.push(calls);
     }
@@ -770,9 +775,9 @@ class Deparser {
       const defList = this.list(node.coldeflist);
 
       if (!node.alias) {
-        output.push(` AS (${ defList })`);
+        output.push(` AS (${defList})`);
       } else {
-        output.push(`(${ defList })`);
+        output.push(`(${defList})`);
       }
     }
 
@@ -825,7 +830,7 @@ class Deparser {
     }
 
     if (node.relpersistence === 't') {
-      output.push('TEMPORARY');
+      output.push('TEMPORARY TABLE');
     }
 
     if (node.schemaname != null) {
@@ -894,7 +899,7 @@ class Deparser {
 
         const clause = node.distinctClause.map(e => this.deparse(e, 'select')).join(',\n');
 
-        output.push(`(${ clause })`);
+        output.push(`(${clause})`);
       } else {
         output.push('DISTINCT');
       }
@@ -923,7 +928,7 @@ class Deparser {
       output.push('VALUES');
 
       const lists = node.valuesLists.map(list => {
-        return `(${ list.map(v => this.deparse(v)).join(', ') })`;
+        return `(${list.map(v => this.deparse(v)).join(', ')})`;
       });
 
       output.push(lists.join(', '));
@@ -984,6 +989,628 @@ class Deparser {
     return output.join(' ');
   }
 
+  ['CreateStmt'](node) {
+    const output = [];
+    const relpersistence = dotty.get(node, 'relation.RangeVar.relpersistence');
+    if (relpersistence === 't') {
+      output.push('CREATE');
+    } else {
+      output.push('CREATE TABLE');
+    }
+    output.push(this.deparse(node.relation));
+    output.push('(');
+    output.push(this.list(node.tableElts));
+    output.push(')');
+
+    if (relpersistence === 'p' && node.hasOwnProperty('inhRelations')) {
+      output.push('INHERITS');
+      output.push('(');
+      output.push(this.deparse(node.inhRelations[0]));
+      output.push(')');
+    }
+
+    output.push(';');
+    return output.join(' ');
+  }
+
+  ['ConstraintStmt'](node) {
+    const output = [];
+    const constraint = CONSTRAINT_TYPES[node.contype];
+
+    if (node.conname) {
+      output.push(`CONSTRAINT ${node.conname} ${constraint}`);
+    } else {
+      output.push(constraint);
+    }
+
+    return output.join(' ');
+  }
+
+  ['ReferenceConstraint'](node) {
+    const output = [];
+    if (node.pk_attrs && node.fk_attrs) {
+      output.push('FOREIGN KEY');
+      output.push('(');
+      output.push(this.list(node.fk_attrs));
+      output.push(')');
+      output.push('REFERENCES');
+      output.push(this.deparse(node.pktable));
+      output.push('(');
+      output.push(this.list(node.pk_attrs));
+      output.push(')');
+    } else if (node.pk_attrs) {
+      output.push(this.ConstraintStmt(node));
+      output.push(this.deparse(node.pktable));
+      output.push('(');
+      output.push(this.list(node.pk_attrs));
+      output.push(')');
+    } else {
+      output.push(this.ConstraintStmt(node));
+      output.push(this.deparse(node.pktable));
+    }
+    return output.join(' ');
+  }
+
+  ['ExclusionConstraint'](node) {
+    const output = [];
+    function getExclusionGroup(nde) {
+      const out = [];
+      const a = nde.exclusions.map(excl => {
+        if (excl[0].IndexElem.name) {
+          return excl[0].IndexElem.name;
+        }
+        return excl[0].IndexElem.expr ? this.deparse(excl[0].IndexElem.expr) : null;
+      });
+
+      const b = nde.exclusions.map(excl => this.deparse(excl[1][0]));
+
+      for (let i = 0; i < a.length; i++) {
+        out.push(`${a[i]} WITH ${b[i]}`);
+        if (i !== a.length - 1) {
+          out.push(',');
+        }
+      }
+
+      return out.join(' ');
+    }
+
+    if (node.exclusions && node.access_method) {
+      output.push('USING');
+      output.push(node.access_method);
+      output.push('(');
+      output.push(getExclusionGroup.call(this, node));
+      output.push(')');
+    }
+
+    return output.join(' ');
+  }
+
+  ['Constraint'](node) {
+    const output = [];
+
+    const constraint = CONSTRAINT_TYPES[node.contype];
+    if (!constraint) {
+      throw new Error('type not implemented: ' + node.contype);
+    }
+
+    if (constraint === 'REFERENCES') {
+      output.push(this.ReferenceConstraint(node));
+    } else {
+      output.push(this.ConstraintStmt(node));
+    }
+
+    if (node.keys) {
+      output.push('(');
+      output.push(this.list(node.keys));
+      output.push(')');
+    }
+
+    if (node.raw_expr) {
+      output.push(this.deparse(node.raw_expr));
+    }
+
+    if (node.fk_del_action) {
+      switch (node.fk_del_action) {
+        case 'r':
+          output.push('ON DELETE RESTRICT');
+          break;
+        case 'c':
+          output.push('ON DELETE CASCADE');
+          break;
+        default:
+      }
+    }
+
+    if (node.fk_upd_action) {
+      switch (node.fk_upd_action) {
+        case 'r':
+          output.push('ON UPDATE RESTRICT');
+          break;
+        case 'c':
+          output.push('ON UPDATE CASCADE');
+          break;
+        default:
+      }
+    }
+
+    if (constraint === 'EXCLUDE') {
+      output.push(this.ExclusionConstraint(node));
+    }
+
+    if (node.deferrable) {
+      output.push('deferrable');
+    }
+
+    return output.join(' ');
+  }
+
+  ['AccessPriv'](node) {
+    const output = [];
+    if (node.priv_name) {
+      output.push(node.priv_name.toUpperCase());
+    } else {
+      output.push('ALL');
+    }
+    if (node.cols) {
+      output.push('(');
+      output.push(this.list(node.cols));
+      output.push(')');
+    }
+    return output.join(' ');
+  }
+
+  ['VariableSetStmt'](node) {
+    const output = [];
+    if (node.kind === 0) {
+      output.push(node.name);
+      output.push('=');
+      output.push(this.deparse(node.args[0]));
+    }
+    return output.join(' ');
+  }
+
+  ['FuncWithArgs'](node) {
+    const output = [];
+    output.push(this.deparse(node.funcname[0]));
+    output.push('(');
+    output.push(this.list(node.funcargs));
+    output.push(')');
+    return output.join(' ');
+  }
+
+  ['FunctionParameter'](node) {
+    const output = [];
+
+    if (node.mode === 118) {
+      output.push('VARIADIC');
+    }
+
+    if (node.mode === 111) {
+      output.push('OUT');
+    }
+
+    if (node.mode === 98) {
+      output.push('INOUT');
+    }
+
+    output.push(node.name);
+    output.push(this.deparse(node.argType));
+
+    if (node.defexpr) {
+      output.push('DEFAULT');
+      output.push(this.deparse(node.defexpr));
+    }
+
+    return output.join(' ');
+  }
+
+  ['CreateFunctionStmt'](node) {
+    const output = [];
+
+    output.push('CREATE');
+    if (node.replace) {
+      output.push('OR REPLACE');
+    }
+    output.push('FUNCTION');
+
+    output.push(node.funcname.map(name => this.deparse(name)).join('.'));
+    output.push('(');
+    let parameters = [];
+    if (node.parameters) {
+      parameters = [...node.parameters];
+    }
+    const parametersList = parameters.filter((_ref) => {
+      let FunctionParameter = _ref.FunctionParameter;
+      return FunctionParameter.mode === 118 || FunctionParameter.mode === 111 || FunctionParameter.mode === 98 || FunctionParameter.mode === 105;
+    });
+    output.push(this.list(parametersList));
+    output.push(')');
+
+    const returns = parameters.filter((_ref2) => {
+      let FunctionParameter = _ref2.FunctionParameter;
+      return FunctionParameter.mode === 116;
+    });
+
+    // const outs = parameters.filter(
+    //   ({ FunctionParameter }) => FunctionParameter.mode === 111
+    // );
+
+    // var setof = node.parameters.filter(
+    //   ({ FunctionParameter }) => FunctionParameter.mode === 109
+    // );
+
+    if (returns.length > 0) {
+      output.push('RETURNS');
+      output.push('TABLE');
+      output.push('(');
+      output.push(this.list(returns));
+      output.push(')');
+    } else if (node.returnType) {
+      output.push('RETURNS');
+      output.push(this.deparse(node.returnType));
+    }
+
+    node.options.forEach((option, i) => {
+      if (option && option.DefElem) {
+        let value = '';
+        switch (option.DefElem.defname) {
+          case 'as':
+            value = this.deparse(option.DefElem.arg[0]);
+            output.push(`AS $EOFCODE$${value}$EOFCODE$`);
+            break;
+
+          case 'language':
+            value = this.deparse(option.DefElem.arg);
+            output.push('LANGUAGE');
+            output.push(value);
+            break;
+
+          case 'security':
+            output.push('SECURITY');
+            value = Number(option.DefElem.arg.Integer.ival);
+            if (value > 0) {
+              output.push('DEFINER');
+            } else {
+              output.push('INVOKER');
+            }
+            break;
+
+          case 'leakproof':
+            value = Number(option.DefElem.arg.Integer.ival);
+            if (value > 0) {
+              output.push('LEAKPROOF');
+            }
+            break;
+
+          case 'window':
+            value = Number(option.DefElem.arg.Integer.ival);
+            if (value > 0) {
+              output.push('WINDOW');
+            }
+            break;
+
+          case 'strict':
+            value = Number(option.DefElem.arg.Integer.ival);
+            if (value > 0) {
+              output.push('STRICT');
+            } else {
+              output.push('CALLED ON NULL INPUT');
+            }
+            break;
+
+          case 'set':
+            output.push('SET');
+            output.push(this.deparse(option.DefElem.arg));
+            break;
+
+          case 'volatility':
+            value = this.deparse(option.DefElem.arg);
+            output.push(value.toUpperCase());
+            break;
+
+          default:
+        }
+      }
+    });
+    output.push(';');
+
+    return output.join(' ');
+  }
+  ['CreateSchemaStmt'](node) {
+    const output = [];
+
+    output.push('CREATE');
+    if (node.replace) {
+      output.push('OR REPLACE');
+    }
+    output.push('SCHEMA');
+    output.push(node.schemaname);
+    return output.join(' ');
+  }
+
+  ['RoleSpec'](node) {
+    if (node.roletype === 0) {
+      return `"${node.rolename}"`;
+    }
+    if (node.roletype === 1) {
+      return 'CURRENT_USER';
+    }
+    if (node.roletype === 2) {
+      return 'SESSION_USER';
+    }
+    if (node.roletype === 3) {
+      return 'PUBLIC';
+    }
+    return '';
+  }
+
+  ['GrantStmt'](node) {
+    const output = [];
+
+    const getTypeFromNode = nodeObj => {
+      switch (nodeObj.objtype) {
+        case 1:
+          if (nodeObj.targtype === 1) {
+            return 'ALL TABLES IN SCHEMA';
+          }
+          return 'TABLE';
+        case 3:
+          return 'DATABASE';
+        case 4:
+          return 'DOMAIN';
+        case 5:
+          return 'FOREIGN DATA WRAPPER';
+        case 6:
+          return 'FOREIGN SERVER';
+        case 7:
+          if (nodeObj.targtype === 1) {
+            return 'ALL FUNCTIONS IN SCHEMA';
+          }
+          return 'FUNCTION';
+        case 8:
+          return 'LANGUAGE';
+        case 9:
+          return 'LARGE OBJECT';
+        case 10:
+          return 'SCHEMA';
+        case 12:
+          return 'TYPE';
+        default:
+      }
+      return '';
+    };
+
+    if ([1, 3, 4, 5, 6, 7, 8, 9, 10, 12].includes(node.objtype)) {
+      if (!node.is_grant) {
+        output.push('REVOKE');
+        if (node.grant_option) {
+          output.push('GRANT OPTION');
+          output.push('FOR');
+        }
+        if (node.privileges) {
+          output.push(this.list(node.privileges));
+        } else {
+          output.push('ALL');
+        }
+        output.push('ON');
+        output.push(getTypeFromNode(node));
+        output.push(this.list(node.objects));
+        output.push('FROM');
+        output.push(this.list(node.grantees));
+      } else {
+        output.push('GRANT');
+        if (node.privileges) {
+          output.push(this.list(node.privileges));
+        } else {
+          output.push('ALL');
+        }
+        output.push('ON');
+        output.push(getTypeFromNode(node));
+        output.push(this.list(node.objects));
+        output.push('TO');
+        output.push(this.list(node.grantees));
+        if (node.grant_option) {
+          output.push('WITH GRANT OPTION');
+        }
+      }
+      if (Number(node.behavior) === 1) {
+        output.push('CASCADE');
+      }
+    }
+
+    return output.join(' ');
+  }
+
+  ['GrantRoleStmt'](node) {
+    const output = [];
+
+    if (!node.is_grant) {
+      output.push('REVOKE');
+      output.push(this.list(node.granted_roles));
+      output.push('FROM');
+      output.push(this.list(node.grantee_roles));
+    } else {
+      output.push('GRANT');
+      output.push(this.list(node.granted_roles));
+      output.push('TO');
+      output.push(this.list(node.grantee_roles));
+    }
+    if (node.admin_opt) {
+      output.push('WITH ADMIN OPTION');
+    }
+
+    return output.join(' ');
+  }
+
+  ['CreateRoleStmt'](node) {
+    const output = [];
+
+    const roleOption = (nodeObj, i, val1, val2) => {
+      const val = Number(dotty.get(nodeObj, `options.${i}.DefElem.arg.Integer.ival`));
+      if (val > 0) {
+        output.push(val1);
+      } else {
+        output.push(val2);
+      }
+    };
+
+    output.push('CREATE');
+    if (Number(node.stmt_type) === 1) {
+      output.push('USER');
+    } else if (Number(node.stmt_type) === 2) {
+      output.push('GROUP');
+    } else {
+      output.push('ROLE');
+    }
+
+    output.push(`"${node.role}"`);
+
+    if (node.options) {
+      const opts = dotty.search(node, 'options.*.DefElem.defname');
+
+      if (opts.length === 1 && opts[0] === 'addroleto') {
+        // only one case
+      } else {
+        output.push('WITH');
+      }
+
+      opts.forEach((option, i) => {
+        let value = '';
+        switch (option) {
+          case 'canlogin':
+            roleOption(node, i, 'LOGIN', 'NOLOGIN');
+            break;
+          case 'addroleto':
+            output.push('IN ROLE');
+            output.push(dotty.search(node, `options.${i}.DefElem.arg.*.RoleSpec.rolename`).join(','));
+            break;
+          case 'password':
+            output.push('PASSWORD');
+            value = dotty.get(node, `options.${i}.DefElem.arg.String.str`);
+            output.push(`'${value}'`);
+            break;
+          case 'adminmembers':
+            output.push('ADMIN');
+            output.push(this.list(node.options[i].DefElem.arg));
+            break;
+          case 'rolemembers':
+            output.push('USER');
+            output.push(this.list(node.options[i].DefElem.arg));
+            break;
+          case 'createdb':
+            roleOption(node, i, 'CREATEDB', 'NOCREATEDB');
+            break;
+          case 'isreplication':
+            roleOption(node, i, 'REPLICATION', 'NOREPLICATION');
+            break;
+          case 'bypassrls':
+            roleOption(node, i, 'BYPASSRLS', 'NOBYPASSRLS');
+            break;
+          case 'inherit':
+            roleOption(node, i, 'INHERIT', 'NOINHERIT');
+            break;
+          case 'superuser':
+            roleOption(node, i, 'SUPERUSER', 'NOSUPERUSER');
+            break;
+          case 'createrole':
+            roleOption(node, i, 'CREATEROLE', 'NOCREATEROLE');
+            break;
+          case 'validUntil':
+            output.push('VALID UNTIL');
+            value = dotty.get(node, `options.${i}.DefElem.arg.String.str`);
+            output.push(`'${value}'`);
+            break;
+          default:
+        }
+      });
+    }
+    return output.join(' ');
+  }
+
+  ['TransactionStmt'](node) {
+    const output = [];
+
+    const begin = nodeOpts => {
+      const opts = dotty.search(nodeOpts, 'options.*.DefElem.defname');
+      if (opts.includes('transaction_read_only')) {
+        const index = opts.indexOf('transaction_read_only');
+        const obj = nodeOpts.options[index];
+        let set = false;
+        const flag = Number(this.deparse(dotty.get(obj, 'DefElem.arg')));
+        if (flag > 0) {
+          set = true;
+        }
+        if (set) {
+          return 'BEGIN TRANSACTION READ ONLY';
+        }
+        return 'BEGIN TRANSACTION READ WRITE';
+      }
+      if (opts.includes('transaction_isolation')) {
+        const index = opts.indexOf('transaction_isolation');
+        const obj = nodeOpts.options[index];
+        const lopts = this.deparse(dotty.get(obj, 'DefElem.arg')).replace(/['"]+/g, '');
+        return `BEGIN TRANSACTION ISOLATION LEVEL ${lopts.toUpperCase()}`;
+      }
+      return 'BEGIN';
+    };
+
+    const start = nodeOpts => {
+      const opts = dotty.search(nodeOpts, 'options.*.DefElem.defname');
+      if (opts.includes('transaction_read_only')) {
+        const index = opts.indexOf('transaction_read_only');
+        const obj = nodeOpts.options[index];
+        let set = false;
+        const flag = Number(this.deparse(dotty.get(obj, 'DefElem.arg')));
+        if (flag > 0) {
+          set = true;
+        }
+        if (set) {
+          return 'START TRANSACTION READ ONLY';
+        }
+        return 'START TRANSACTION READ WRITE';
+      }
+
+      return 'START TRANSACTION';
+    };
+
+    switch (node.kind) {
+      case 0:
+        return begin(node);
+      case 1:
+        return start(node);
+      case 2:
+        return 'COMMIT';
+      case 3:
+        return 'ROLLBACK';
+      case 4:
+        output.push('SAVEPOINT');
+        output.push(this.deparse(node.options[0].DefElem.arg));
+        break;
+      case 5:
+        output.push('RELEASE SAVEPOINT');
+        output.push(this.deparse(node.options[0].DefElem.arg));
+        break;
+      case 6:
+        output.push('ROLLBACK TO');
+        output.push(this.deparse(node.options[0].DefElem.arg));
+        break;
+      case 7:
+        output.push('PREPARE TRANSACTION');
+        output.push(`'${node.gid}'`);
+        break;
+      case 8:
+        output.push('COMMIT PREPARED');
+        output.push(`'${node.gid}'`);
+        break;
+      case 9:
+        output.push('ROLLBACK PREPARED');
+        output.push(`'${node.gid}'`);
+        break;
+      default:
+    }
+    return output.join(' ');
+  }
+
   ['SortBy'](node) {
     const output = [];
 
@@ -998,7 +1625,7 @@ class Deparser {
     }
 
     if (node.sortby_dir === 3) {
-      output.push(`USING ${ this.deparseNodes(node.useOp) }`);
+      output.push(`USING ${this.deparseNodes(node.useOp)}`);
     }
 
     if (node.sortby_nulls === 1) {
@@ -1257,7 +1884,7 @@ class Deparser {
 
       // SELECT interval(0) '1 day 01:23:45.6789'
       if (node.typmods[0] && node.typmods[0].A_Const && node.typmods[0].A_Const.val.Integer.ival === 32767 && node.typmods[1] && node.typmods[1].A_Const != null) {
-        intervals = [`(${ node.typmods[1].A_Const.val.Integer.ival })`];
+        intervals = [`(${node.typmods[1].A_Const.val.Integer.ival})`];
       } else {
         intervals = intervals.map(part => {
           if (part === 'second' && typmods.length === 2) {

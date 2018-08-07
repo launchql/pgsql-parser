@@ -1,4 +1,6 @@
-# pg-query-parser [![Build Status](https://travis-ci.org/zhm/pg-query-parser.svg?branch=master)](https://travis-ci.org/zhm/pg-query-parser)
+# pgsql-parser [![Build Status](https://travis-ci.org/pyramation/pgsql-parser.svg?branch=master)](https://travis-ci.org/pyramation/pgsql-parser)
+
+## This is really just https://github.com/zhm/pg-query-parser with some added functionality.
 
 The real PostgreSQL parser for nodejs. The primary objective of this module is to provide symmetric parsing
 and deparsing of SQL statements. With this module you can modify parts of a SQL query statement and
@@ -9,7 +11,7 @@ The main functionality provided by this module is deparsing, which PostgreSQL do
 ## Installation
 
 ```sh
-npm install pg-query-parser
+npm install pgsql-parser
 ```
 
 ## Example
@@ -17,7 +19,7 @@ npm install pg-query-parser
 Rewrite part of a SQL query:
 
 ```js
-const parser = require('pg-query-parser');
+const parser = require('pgsql-parser');
 
 const query = parser.parse('SELECT * FROM test_table').query;
 
