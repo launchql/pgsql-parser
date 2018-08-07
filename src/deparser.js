@@ -1128,6 +1128,16 @@ export default class Deparser {
     return output.join(' ');
   }
 
+  ['VariableSetStmt'](node) {
+    const output = [];
+    if (node.kind === 0) {
+      output.push(node.name);
+      output.push('=');
+      output.push(this.deparse(node.args[0]));
+    }
+    return output.join(' ');
+  }
+
   ['FunctionParameter'](node) {
     const output = [];
 
