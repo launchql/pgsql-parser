@@ -1254,6 +1254,10 @@ export default class Deparser {
                 output.push('CALLED ON NULL INPUT');
               }
               break;
+
+            case 'set':
+              output.push('SET');
+              output.push(this.deparse(option.DefElem.arg));
               break;
 
             case 'volatility':
