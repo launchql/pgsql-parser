@@ -16,7 +16,6 @@ var _utils = require('./utils');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const deparse = _deparser2.default.deparse;
-
 const verify = query => {
   const result = deparse((0, _pgQueryNative.parse)(query).query);
 

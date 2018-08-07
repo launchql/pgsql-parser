@@ -3,7 +3,6 @@ import Deparser from './deparser';
 import { walk, all, first, tables, byType, clean } from './utils';
 
 const deparse = Deparser.deparse;
-
 const verify = (query) => {
   const result = deparse(parse(query).query);
 
