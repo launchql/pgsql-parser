@@ -7,10 +7,13 @@ chai.should();
 import { deparse, parse, clean, byType } from '../src';
 
 const supportedStatements = [
-  'SelectStmt'
-  // 'CreateFunctionStmt',
+  'SelectStmt',
+  'CreateFunctionStmt',
+  'GrantStmt',
+  'GrantRoleStmt',
+  'CreateRoleStmt',
   // 'CreateStmt',
-  // 'TransactionStmt'
+  'TransactionStmt'
 ];
 
 const isSupported = node => {
@@ -21,10 +24,12 @@ const isSupported = node => {
 
 const pattern = process.env.FILTER ? `*${process.env.FILTER}*.sql` : '*.sql';
 
-let files = glob(`./test/fixtures/${pattern}`)
+let files = []
+  .concat(glob(`./test/fixtures/${pattern}`))
+  .concat(glob(`./test/fixtures/roles/${pattern}`))
   .concat(glob(`./test/fixtures/create/${pattern}`))
   .concat(glob(`./test/fixtures/functions/${pattern}`))
-  .concat(glob(`./test/fixtures/tranactions/${pattern}`))
+  .concat(glob(`./test/fixtures/transactions/${pattern}`))
   .concat(glob(`./test/fixtures/upstream/${pattern}`));
 
 const log = (msg) => {

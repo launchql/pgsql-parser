@@ -1321,10 +1321,13 @@ export default class Deparser {
 
   ['RoleSpec'](node) {
     if (node.roletype === 0) {
-      return node.rolename;
+      return `"${node.rolename}"`;
     }
     if (node.roletype === 1) {
       return 'CURRENT_USER';
+    }
+    if (node.roletype === 2) {
+      return 'SESSION_USER';
     }
     if (node.roletype === 3) {
       return 'PUBLIC';
@@ -1453,7 +1456,9 @@ export default class Deparser {
     } else {
       output.push('ROLE');
     }
-    output.push(node.role);
+
+    output.push(`"${node.role}"`);
+
     if (node.options) {
       const opts = dotty.search(node, 'options.*.DefElem.defname');
 
@@ -1517,18 +1522,84 @@ export default class Deparser {
   }
 
   ['TransactionStmt'](node) {
+    const output = [];
     switch (node.kind) {
       case 0:
+        const opts = dotty.search(node, 'options.*.DefElem.defname');
+        if (opts.includes('transaction_read_only')) {
+          const index = opts.indexOf('transaction_read_only');
+          const obj = node.options[index];
+          let set = false;
+          const flag = Number(this.deparse(dotty.get(obj, `DefElem.arg`)));
+          if (flag > 0) {
+            set = true;
+          }
+          if (set) {
+            return 'BEGIN TRANSACTION READ ONLY'
+          } else {
+            return 'BEGIN TRANSACTION READ WRITE'
+          }
+        }
+        if (opts.includes('transaction_isolation')) {
+          const index = opts.indexOf('transaction_isolation');
+          const obj = node.options[index];
+          // const lopts = this.deparse(dotty.get(obj, `DefElem.arg`));
+          const lopts = this.deparse(dotty.get(obj, `DefElem.arg`)).replace(/['"]+/g,'');
+          return `BEGIN TRANSACTION ISOLATION LEVEL ${lopts.toUpperCase()}`;
+        }
+        // if (dotty.search(node, 'options.*.DefElem.defname').includes('transaction_isolation')) {
+        //   return 'BEGIN TRANSACTION ISOLATION LEVEL REPEATABLE READ'
+        // }
         return 'BEGIN';
       case 1:
-        break;
+        const startOpts = dotty.search(node, 'options.*.DefElem.defname');
+        if (startOpts.includes('transaction_read_only')) {
+          const index = startOpts.indexOf('transaction_read_only');
+          const obj = node.options[index];
+          let set = false;
+          const flag = Number(this.deparse(dotty.get(obj, `DefElem.arg`)));
+          if (flag > 0) {
+            set = true;
+          }
+          if (set) {
+            return 'START TRANSACTION READ ONLY'
+          } else {
+            return 'START TRANSACTION READ WRITE'
+          }
+        }
+
+        return 'START TRANSACTION';
       case 2:
         return 'COMMIT';
       case 3:
         return 'ROLLBACK';
+      case 4:
+        output.push('SAVEPOINT');
+        output.push(this.deparse(node.options[0].DefElem.arg));
+        break;
+      case 5:
+        output.push('RELEASE SAVEPOINT');
+        output.push(this.deparse(node.options[0].DefElem.arg));
+        break;
+      case 6:
+        output.push('ROLLBACK TO');
+        output.push(this.deparse(node.options[0].DefElem.arg));
+        break;
+      case 7:
+        output.push('PREPARE TRANSACTION');
+        output.push(`'${node.gid}'`);
+        break;
+      case 8:
+        output.push('COMMIT PREPARED');
+        output.push(`'${node.gid}'`);
+        break;
+      case 9:
+        output.push('ROLLBACK PREPARED');
+        output.push(`'${node.gid}'`);
+        break;
       default:
     }
-    return '';
+    return output.join(' ');
   }
 
   ['SortBy'](node) {
