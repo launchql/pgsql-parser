@@ -1131,6 +1131,10 @@ export default class Deparser {
   ['FunctionParameter'](node) {
     const output = [];
 
+    if (node.mode === 118) {
+      output.push('variadic');
+    }
+
     output.push(node.name);
     output.push(this.deparse(node.argType));
 
@@ -1154,7 +1158,10 @@ export default class Deparser {
     }
     output.push(
       parameters
-        .filter(({ FunctionParameter }) => FunctionParameter.mode === 105)
+        .filter(({ FunctionParameter }) =>
+        FunctionParameter.mode === 105 ||
+        FunctionParameter.mode === 118
+      )
         .map(param => this.deparse(param))
         .join(', ')
     );
@@ -1163,6 +1170,7 @@ export default class Deparser {
     const returns = parameters.filter(
       ({ FunctionParameter }) => FunctionParameter.mode === 116
     );
+    
     // var setof = node.parameters.filter(
     //   ({ FunctionParameter }) => FunctionParameter.mode === 109
     // );
