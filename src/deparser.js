@@ -1479,10 +1479,20 @@ export default class Deparser {
             break;
           case 'adminmembers':
             output.push('ADMIN');
-            output.push(dotty.get(node, `options.${i}.DefElem.arg.0.RoleSpec.rolename`));
+            output.push(this.list(node.options[i].DefElem.arg));
+            break;
+          case 'rolemembers':
+            output.push('USER');
+            output.push(this.list(node.options[i].DefElem.arg));
             break;
           case 'createdb':
             roleOption(node, i, 'CREATEDB', 'NOCREATEDB');
+            break;
+          case 'isreplication':
+            roleOption(node, i, 'REPLICATION', 'NOREPLICATION');
+            break;
+          case 'bypassrls':
+            roleOption(node, i, 'BYPASSRLS', 'NOBYPASSRLS');
             break;
           case 'inherit':
             roleOption(node, i, 'INHERIT', 'NOINHERIT');
