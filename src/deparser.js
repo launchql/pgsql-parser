@@ -59,7 +59,7 @@ export default class Deparser {
       return '';
     }
 
-    return this.deparseNodes(nodes, context).join(separator);
+    return this.deparseNodes(nodes).join(separator);
   }
 
   listQuotes(nodes, separator = ', ') {
