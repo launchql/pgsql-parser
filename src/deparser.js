@@ -1184,8 +1184,20 @@ export default class Deparser {
     if (relpersistence === 'p' && node.hasOwnProperty('inhRelations')) {
       output.push('INHERITS');
       output.push('(');
-      output.push(this.deparse(node.inhRelations[0]));
+      output.push(this.list(node.inhRelations));
       output.push(')');
+    }
+
+    if (node.options) {
+      node.options.forEach(opt => {
+        if (dotty.get(opt, 'DefElem.defname') === 'oids') {
+          if (Number(dotty.get(opt, 'DefElem.arg.Integer.ival')) === 1) {
+            output.push('WITH OIDS')
+          } else {
+            output.push('WITHOUT OIDS')
+          }
+        }
+      });
     }
 
     output.push(';');
