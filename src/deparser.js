@@ -48,9 +48,9 @@ export default class Deparser {
     return (this.tree.map(node => this.deparse(node))).join(';\n\n');
   }
 
-  deparseNodes(nodes) {
+  deparseNodes(nodes, context) {
     return nodes.map(node => {
-      return _.isArray(node) ? this.list(node) : this.deparse(node);
+      return _.isArray(node) ? this.list(node) : this.deparse(node, context);
     });
   }
 
@@ -59,7 +59,7 @@ export default class Deparser {
       return '';
     }
 
-    return this.deparseNodes(nodes).join(separator);
+    return this.deparseNodes(nodes, context).join(separator);
   }
 
   listQuotes(nodes, separator = ', ') {
@@ -299,10 +299,10 @@ export default class Deparser {
 
   ['A_Const'](node, context) {
     if (node.val.String) {
-      return this.escape(this.deparse(node.val));
+      return this.escape(this.deparse(node.val, context));
     }
 
-    return this.deparse(node.val);
+    return this.deparse(node.val, context);
   }
 
   ['A_Indices'](node) {
@@ -469,6 +469,36 @@ export default class Deparser {
     return output.join(' ');
   }
 
+  ['DefElem'](node) {
+    if (node.defname === 'transaction_isolation') {
+      return format('ISOLATION LEVEL %s', node.arg.A_Const.val.String.str.toUpperCase());
+    }
+
+    if (node.defname === 'transaction_read_only') {
+      return node.arg.A_Const.val.Integer.ival === 0 ? 'READ WRITE' : 'READ ONLY';
+    }
+
+    if (node.defname === 'transaction_deferrable') {
+      return node.arg.A_Const.val.Integer.ival === 0 ? 'NOT DEFERRABLE' : 'DEFERRABLE';
+    }
+
+    if (node.defname === 'set') {
+      return this.deparse(node.arg);
+    }
+
+    let name = node.defname;
+    if (node.defnamespace) {
+      name = `${node.defnamespace}.${node.defname}`;
+    }
+
+    if (node.arg) {
+      return `${name} = ${this.deparse(node.arg)}`;
+    } else {
+      return name;
+    }
+
+  }
+
   ['Float'](node) {
     // wrap negative numbers in parens, SELECT (-2147483648)::int4 * (-1)::int4
     if (node.str[0] === '-') {
@@ -572,8 +602,8 @@ export default class Deparser {
     }
   }
 
-  ['Integer'](node) {
-    if (node.ival < 0) {
+  ['Integer'](node, context) {
+    if (node.ival < 0 && context !== 'simple') {
       return `(${node.ival})`;
     }
 
@@ -984,19 +1014,6 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['DefElem'](node) {
-    let name = node.defname;
-    if (node.defnamespace) {
-      name = `${node.defnamespace}.${node.defname}`;
-    }
-
-    if (node.arg) {
-      return `${name} = ${this.deparse(node.arg)}`;
-    } else {
-      return name;
-    }
-  }
-
   ['AlterTableStmt'](node) {
     const output = [];
     output.push('ALTER');
@@ -1386,13 +1403,33 @@ export default class Deparser {
   }
 
   ['VariableSetStmt'](node) {
-    const output = [];
-    if (node.kind === 0) {
-      output.push(node.name);
-      output.push('=');
-      output.push(this.deparse(node.args[0]));
+    if (node.kind === 4) {
+      return format('RESET %s', node.name);
     }
-    return output.join(' ');
+
+    if (node.kind === 3) {
+      const name = {
+        'TRANSACTION': 'TRANSACTION',
+        'SESSION CHARACTERISTICS': 'SESSION CHARACTERISTICS AS TRANSACTION'
+      }[node.name];
+
+      return format('SET %s %s',
+                    name,
+                    this.deparseNodes(node.args, 'simple').join(', '));
+    }
+
+    if (node.kind === 1) {
+      return format('SET %s TO DEFAULT', node.name);
+    }
+
+    return format('SET %s%s = %s',
+                  node.is_local ? 'LOCAL ' : '',
+                  node.name,
+                  this.deparseNodes(node.args, 'simple').join(', '));
+  }
+
+  ['VariableShowStmt'](node) {
+    return format('SHOW %s', node.name);
   }
 
   ['FuncWithArgs'](node) {
@@ -1527,8 +1564,7 @@ export default class Deparser {
             break;
 
           case 'set':
-            output.push('SET');
-            output.push(this.deparse(option.DefElem.arg));
+            output.push(this.deparse(option));
             break;
 
           case 'volatility':

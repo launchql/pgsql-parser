@@ -14,6 +14,8 @@ const supportedStatements = [
   'CreateRoleStmt',
   // 'AlterTableStmt',
   // 'CreateStmt',
+  'VariableSetStmt',
+  'VariableShowStmt',
   'ConstraintStmt',
   'ReferenceConstraint',
   'TransactionStmt'
