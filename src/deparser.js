@@ -984,6 +984,19 @@ export default class Deparser {
     return output.join(' ');
   }
 
+  ['DefElem'](node) {
+    let name = node.defname;
+    if (node.defnamespace) {
+      name = `${node.defnamespace}.${node.defname}`;
+    }
+
+    if (node.arg) {
+      return `${name} = ${this.deparse(node.arg)}`;
+    } else {
+      return name;
+    }
+  }
+
   ['CreateStmt'](node) {
     const output = [];
     const relpersistence = dotty.get(node, 'relation.RangeVar.relpersistence');
