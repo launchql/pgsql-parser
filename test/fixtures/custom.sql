@@ -35,3 +35,11 @@ SELECT 1 WHERE 'abc' SIMILAR TO test('test');
 SELECT 1 WHERE 'abc' SIMILAR TO test('test') ESCAPE 't';
 
 select 1::bit;
+
+SET client_encoding='UNICODE';
+
+SET client_encoding TO 'UNICODE';
+
+SET client_min_messages=notice;
+
+SHOW client_encoding;

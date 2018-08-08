@@ -12,7 +12,12 @@ const supportedStatements = [
   'GrantStmt',
   'GrantRoleStmt',
   'CreateRoleStmt',
+  // 'AlterTableStmt',
   // 'CreateStmt',
+  'VariableSetStmt',
+  'VariableShowStmt',
+  'ConstraintStmt',
+  'ReferenceConstraint',
   'TransactionStmt'
 ];
 
@@ -28,6 +33,7 @@ let files = []
   .concat(glob(`./test/fixtures/${pattern}`))
   .concat(glob(`./test/fixtures/roles/${pattern}`))
   .concat(glob(`./test/fixtures/create/${pattern}`))
+  .concat(glob(`./test/fixtures/alter/${pattern}`))
   .concat(glob(`./test/fixtures/functions/${pattern}`))
   .concat(glob(`./test/fixtures/transactions/${pattern}`))
   .concat(glob(`./test/fixtures/upstream/${pattern}`));

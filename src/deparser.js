@@ -48,9 +48,9 @@ export default class Deparser {
     return (this.tree.map(node => this.deparse(node))).join(';\n\n');
   }
 
-  deparseNodes(nodes) {
+  deparseNodes(nodes, context) {
     return nodes.map(node => {
-      return _.isArray(node) ? this.list(node) : this.deparse(node);
+      return _.isArray(node) ? this.list(node) : this.deparse(node, context);
     });
   }
 
@@ -60,6 +60,10 @@ export default class Deparser {
     }
 
     return this.deparseNodes(nodes).join(separator);
+  }
+
+  listQuotes(nodes, separator = ', ') {
+    return this.list(nodes).split(separator).map(a => this.quote(a.trim())).join(separator);
   }
 
   quote(value) {
@@ -295,10 +299,10 @@ export default class Deparser {
 
   ['A_Const'](node, context) {
     if (node.val.String) {
-      return this.escape(this.deparse(node.val));
+      return this.escape(this.deparse(node.val, context));
     }
 
-    return this.deparse(node.val);
+    return this.deparse(node.val, context);
   }
 
   ['A_Indices'](node) {
@@ -430,6 +434,12 @@ export default class Deparser {
       output.push(this.list(node.constraints, ' '));
     }
 
+    if (node.collClause) {
+      output.push('COLLATE');
+      const str = dotty.get(node, 'collClause.CollateClause.collname.0.String.str');
+      output.push(this.quote(str));
+    }
+
     return _.compact(output).join(' ');
   }
 
@@ -457,6 +467,34 @@ export default class Deparser {
     output.push(format('AS (%s)', this.deparse(node.ctequery)));
 
     return output.join(' ');
+  }
+
+  ['DefElem'](node) {
+    if (node.defname === 'transaction_isolation') {
+      return format('ISOLATION LEVEL %s', node.arg.A_Const.val.String.str.toUpperCase());
+    }
+
+    if (node.defname === 'transaction_read_only') {
+      return node.arg.A_Const.val.Integer.ival === 0 ? 'READ WRITE' : 'READ ONLY';
+    }
+
+    if (node.defname === 'transaction_deferrable') {
+      return node.arg.A_Const.val.Integer.ival === 0 ? 'NOT DEFERRABLE' : 'DEFERRABLE';
+    }
+
+    if (node.defname === 'set') {
+      return this.deparse(node.arg);
+    }
+
+    let name = node.defname;
+    if (node.defnamespace) {
+      name = `${node.defnamespace}.${node.defname}`;
+    }
+
+    if (node.arg) {
+      return `${name} = ${this.deparse(node.arg)}`;
+    }
+    return name;
   }
 
   ['Float'](node) {
@@ -562,8 +600,8 @@ export default class Deparser {
     }
   }
 
-  ['Integer'](node) {
-    if (node.ival < 0) {
+  ['Integer'](node, context) {
+    if (node.ival < 0 && context !== 'simple') {
       return `(${node.ival})`;
     }
 
@@ -974,6 +1012,177 @@ export default class Deparser {
     return output.join(' ');
   }
 
+  ['AlterTableStmt'](node) {
+    const output = [];
+    output.push('ALTER');
+    if (node.relkind === 32) {
+      output.push('TABLE');
+    } else if (node.relkind === 42) {
+      output.push('VIEW');
+    } else if (node.relkind === 40) {
+      output.push('TYPE');
+    } else {
+      output.push('TABLE');
+    }
+    if (node.missing_ok) {
+      output.push('IF EXISTS');
+    }
+    output.push(this.deparse(node.relation));
+    output.push(this.list(node.cmds));
+
+    return output.join(' ');
+  }
+
+  ['AlterTableCmd'](node) {
+    const output = [];
+
+    if (node.subtype === 0) {
+      output.push('ADD COLUMN');
+      output.push(this.quote(node.name));
+      output.push(this.deparse(node.def));
+    }
+
+    if (node.subtype === 3) {
+      output.push('ALTER COLUMN');
+      output.push(this.quote(node.name));
+      if (node.def) {
+        output.push('SET DEFAULT');
+        output.push(this.deparse(node.def));
+      } else {
+        output.push('DROP DEFAULT');
+      }
+    }
+
+    if (node.subtype === 4) {
+      output.push('ALTER COLUMN');
+      output.push(this.quote(node.name));
+      output.push('DROP NOT NULL');
+    }
+
+    if (node.subtype === 5) {
+      output.push('ALTER COLUMN');
+      output.push(this.quote(node.name));
+      output.push('SET NOT NULL');
+    }
+
+    if (node.subtype === 6) {
+      output.push('ALTER');
+      output.push(this.quote(node.name));
+      output.push('SET STATISTICS');
+      output.push(dotty.get(node, 'def.Integer.ival'));
+    }
+
+    if (node.subtype === 7) {
+      output.push('ALTER COLUMN');
+      output.push(this.quote(node.name));
+      output.push('SET');
+      output.push('(');
+      output.push(this.list(node.def));
+      output.push(')');
+    }
+
+    if (node.subtype === 9) {
+      output.push('ALTER');
+      output.push(this.quote(node.name));
+      output.push('SET STORAGE');
+      if (node.def) {
+        output.push(this.deparse(node.def));
+      } else {
+        output.push('PLAIN');
+      }
+    }
+
+    if (node.subtype === 10) {
+      output.push('DROP');
+      if (node.missing_ok) {
+        output.push('IF EXISTS');
+      }
+      output.push(this.quote(node.name));
+    }
+
+    if (node.subtype === 14) {
+      // output.push('ADD CONSTRAINT');
+      output.push('ADD');
+      output.push(this.deparse(node.def));
+    }
+
+    if (node.subtype === 18) {
+      output.push('VALIDATE CONSTRAINT');
+      output.push(this.quote(node.name));
+    }
+
+    if (node.subtype === 22) {
+      output.push('DROP CONSTRAINT');
+      if (node.missing_ok) {
+        output.push('IF EXISTS');
+      }
+      output.push(this.quote(node.name));
+    }
+
+    if (node.subtype === 25) {
+      output.push('ALTER COLUMN');
+      output.push(this.quote(node.name));
+      output.push('TYPE');
+      output.push(this.deparse(node.def));
+    }
+
+    if (node.subtype === 28) {
+      output.push('CLUSTER ON');
+      output.push(this.quote(node.name));
+    }
+
+    if (node.subtype === 29) {
+      output.push('SET WITHOUT CLUSTER');
+    }
+
+    if (node.subtype === 32) {
+      output.push('SET WITH OIDS');
+    }
+
+    if (node.subtype === 34) {
+      output.push('SET WITHOUT OIDS');
+    }
+
+    if (node.subtype === 36) {
+      output.push('SET');
+      output.push('(');
+      output.push(this.list(node.def));
+      output.push(')');
+    }
+
+    if (node.subtype === 37) {
+      output.push('RESET');
+      output.push('(');
+      output.push(this.list(node.def));
+      output.push(')');
+    }
+
+    if (node.subtype === 51) {
+      output.push('INHERIT');
+      output.push(this.deparse(node.def));
+    }
+
+    if (node.subtype === 52) {
+      output.push('NO INHERIT');
+      output.push(this.deparse(node.def));
+    }
+
+    if (node.subtype === 56) {
+      output.push('ENABLE ROW LEVEL SECURITY');
+    }
+    if (node.subtype === 57) {
+      output.push('DISABLE ROW LEVEL SECURITY');
+    }
+    if (node.subtype === 58) {
+      output.push('FORCE ROW SECURITY');
+    }
+    if (node.subtype === 59) {
+      output.push('NO FORCE ROW SECURITY');
+    }
+
+    return output.join(' ');
+  }
+
   ['CreateStmt'](node) {
     const output = [];
     const relpersistence = dotty.get(node, 'relation.RangeVar.relpersistence');
@@ -990,10 +1199,21 @@ export default class Deparser {
     if (relpersistence === 'p' && node.hasOwnProperty('inhRelations')) {
       output.push('INHERITS');
       output.push('(');
-      output.push(this.deparse(node.inhRelations[0]));
+      output.push(this.list(node.inhRelations));
       output.push(')');
     }
 
+    if (node.options) {
+      node.options.forEach(opt => {
+        if (dotty.get(opt, 'DefElem.defname') === 'oids') {
+          if (Number(dotty.get(opt, 'DefElem.arg.Integer.ival')) === 1) {
+            output.push('WITH OIDS');
+          } else {
+            output.push('WITHOUT OIDS');
+          }
+        }
+      });
+    }
     output.push(';');
     return output.join(' ');
   }
@@ -1001,34 +1221,51 @@ export default class Deparser {
   ['ConstraintStmt'](node) {
     const output = [];
     const constraint = CONSTRAINT_TYPES[node.contype];
-
     if (node.conname) {
-      output.push(`CONSTRAINT ${node.conname} ${constraint}`);
+      output.push('CONSTRAINT');
+      output.push(node.conname);
+      if (!node.pktable) {
+        output.push(constraint);
+      }
     } else {
       output.push(constraint);
     }
-
     return output.join(' ');
   }
 
   ['ReferenceConstraint'](node) {
     const output = [];
     if (node.pk_attrs && node.fk_attrs) {
+      if (node.conname) {
+        output.push('CONSTRAINT');
+        output.push(node.conname);
+      }
       output.push('FOREIGN KEY');
       output.push('(');
-      output.push(this.list(node.fk_attrs));
+      output.push(this.listQuotes(node.fk_attrs));
       output.push(')');
       output.push('REFERENCES');
       output.push(this.deparse(node.pktable));
       output.push('(');
-      output.push(this.list(node.pk_attrs));
+      output.push(this.listQuotes(node.pk_attrs));
       output.push(')');
     } else if (node.pk_attrs) {
       output.push(this.ConstraintStmt(node));
       output.push(this.deparse(node.pktable));
       output.push('(');
-      output.push(this.list(node.pk_attrs));
+      output.push(this.listQuotes(node.pk_attrs));
       output.push(')');
+    } else if (node.fk_attrs) {
+      if (node.conname) {
+        output.push('CONSTRAINT');
+        output.push(node.conname);
+      }
+      output.push('FOREIGN KEY');
+      output.push('(');
+      output.push(this.listQuotes(node.fk_attrs));
+      output.push(')');
+      output.push('REFERENCES');
+      output.push(this.deparse(node.pktable));
     } else {
       output.push(this.ConstraintStmt(node));
       output.push(this.deparse(node.pktable));
@@ -1086,12 +1323,14 @@ export default class Deparser {
 
     if (node.keys) {
       output.push('(');
-      output.push(this.list(node.keys));
+      output.push(this.listQuotes(node.keys));
       output.push(')');
     }
 
     if (node.raw_expr) {
+      output.push('(');
       output.push(this.deparse(node.raw_expr));
+      output.push(')');
     }
 
     if (node.fk_del_action) {
@@ -1116,6 +1355,18 @@ export default class Deparser {
           break;
         default:
       }
+    }
+
+    if (node.fk_matchtype === 'f') {
+      output.push('MATCH FULL');
+    }
+
+    if (node.is_no_inherit === true) {
+      output.push('NO INHERIT');
+    }
+
+    if (node.skip_validation === true) {
+      output.push('NOT VALID');
     }
 
     if (constraint === 'EXCLUDE') {
@@ -1145,13 +1396,33 @@ export default class Deparser {
   }
 
   ['VariableSetStmt'](node) {
-    const output = [];
-    if (node.kind === 0) {
-      output.push(node.name);
-      output.push('=');
-      output.push(this.deparse(node.args[0]));
+    if (node.kind === 4) {
+      return format('RESET %s', node.name);
     }
-    return output.join(' ');
+
+    if (node.kind === 3) {
+      const name = {
+        'TRANSACTION': 'TRANSACTION',
+        'SESSION CHARACTERISTICS': 'SESSION CHARACTERISTICS AS TRANSACTION'
+      }[node.name];
+
+      return format('SET %s %s',
+                    name,
+                    this.deparseNodes(node.args, 'simple').join(', '));
+    }
+
+    if (node.kind === 1) {
+      return format('SET %s TO DEFAULT', node.name);
+    }
+
+    return format('SET %s%s = %s',
+                  node.is_local ? 'LOCAL ' : '',
+                  node.name,
+                  this.deparseNodes(node.args, 'simple').join(', '));
+  }
+
+  ['VariableShowStmt'](node) {
+    return format('SHOW %s', node.name);
   }
 
   ['FuncWithArgs'](node) {
@@ -1286,8 +1557,7 @@ export default class Deparser {
             break;
 
           case 'set':
-            output.push('SET');
-            output.push(this.deparse(option.DefElem.arg));
+            output.push(this.deparse(option));
             break;
 
           case 'volatility':
@@ -1657,6 +1927,16 @@ export default class Deparser {
   }
 
   ['TypeCast'](node) {
+    const type = this.deparse(node.typeName);
+    if (type === 'boolean' && dotty.exists(node, 'arg.A_Const.val.String.str')) {
+      const value = dotty.get(node, 'arg.A_Const.val.String.str');
+      if (value === 'f') {
+        return '(FALSE)';
+      }
+      if (value === 't') {
+        return '(TRUE)';
+      }
+    }
     return this.deparse(node.arg) + '::' + this.deparse(node.typeName);
   }
 
