@@ -1343,7 +1343,6 @@ class Deparser {
         }
       });
     }
-    output.push(';');
     return output.join(' ');
   }
 
@@ -1691,8 +1690,6 @@ class Deparser {
         }
       }
     });
-    output.push(';');
-
     return output.join(' ');
   }
   ['CreateSchemaStmt'](node) {
