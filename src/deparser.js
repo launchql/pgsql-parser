@@ -1017,6 +1017,157 @@ export default class Deparser {
 
     return output.join(' ');
   }
+
+  ['AlterTableCmd'](node) {
+    const output = [];
+
+    if (node.subtype === 0) {
+      output.push('ADD COLUMN');
+      output.push(this.quote(node.name));
+      output.push(this.deparse(node.def));
+    }
+
+    if (node.subtype === 3) {
+      output.push('ALTER COLUMN');
+      output.push(this.quote(node.name));
+      if (node.def) {
+        output.push('SET DEFAULT');
+        output.push(this.deparse(node.def));
+      } else {
+        output.push('DROP DEFAULT');
+      }
+    }
+
+    if (node.subtype === 4) {
+      output.push('ALTER COLUMN');
+      output.push(this.quote(node.name));
+      output.push('DROP NOT NULL');
+    }
+
+    if (node.subtype === 5) {
+      output.push('ALTER COLUMN');
+      output.push(this.quote(node.name));
+      output.push('SET NOT NULL');
+    }
+
+    if (node.subtype === 6) {
+      output.push('ALTER');
+      output.push(this.quote(node.name));
+      output.push('SET STATISTICS');
+      output.push(dotty.get(node, 'def.Integer.ival'));
+    }
+
+    if (node.subtype === 7) {
+      output.push('ALTER COLUMN');
+      output.push(this.quote(node.name));
+      output.push('SET');
+      output.push('(');
+      output.push(this.list(node.def));
+      output.push(')');
+    }
+
+    if (node.subtype === 9) {
+      output.push('ALTER');
+      output.push(this.quote(node.name));
+      output.push('SET STORAGE');
+      if (node.def) {
+        output.push(this.deparse(node.def));
+      } else {
+        output.push('PLAIN');
+      }
+    }
+
+    if (node.subtype === 10) {
+      output.push('DROP');
+      if (node.missing_ok) {
+        output.push('IF EXISTS');
+      }
+      output.push(this.quote(node.name));
+    }
+
+    if (node.subtype === 14) {
+      // output.push('ADD CONSTRAINT');
+      output.push('ADD');
+      output.push(this.deparse(node.def));
+    }
+
+    if (node.subtype === 18) {
+      output.push('VALIDATE CONSTRAINT');
+      output.push(this.quote(node.name));
+    }
+
+    if (node.subtype === 22) {
+      output.push('DROP CONSTRAINT');
+      if (node.missing_ok) {
+        output.push('IF EXISTS');
+      }
+      output.push(this.quote(node.name));
+    }
+
+    if (node.subtype === 25) {
+      output.push('ALTER COLUMN');
+      output.push(this.quote(node.name));
+      output.push('TYPE');
+      output.push(this.deparse(node.def));
+    }
+
+    if (node.subtype === 28) {
+      output.push('CLUSTER ON');
+      output.push(this.quote(node.name));
+    }
+
+    if (node.subtype === 29) {
+      output.push('SET WITHOUT CLUSTER');
+    }
+
+    if (node.subtype === 32) {
+      output.push('SET WITH OIDS');
+    }
+
+    if (node.subtype === 34) {
+      output.push('SET WITHOUT OIDS');
+    }
+
+    if (node.subtype === 36) {
+      output.push('SET');
+      output.push('(');
+      output.push(this.list(node.def))
+      output.push(')');
+    }
+
+    if (node.subtype === 37) {
+      output.push('RESET');
+      output.push('(');
+      output.push(this.list(node.def))
+      output.push(')');
+    }
+
+    if (node.subtype === 51) {
+      output.push('INHERIT');
+      output.push(this.deparse(node.def));
+    }
+
+    if (node.subtype === 52) {
+      output.push('NO INHERIT');
+      output.push(this.deparse(node.def));
+    }
+
+    if (node.subtype === 56) {
+      output.push('ENABLE ROW LEVEL SECURITY');
+    }
+    if (node.subtype === 57) {
+      output.push('DISABLE ROW LEVEL SECURITY');
+    }
+    if (node.subtype === 58) {
+      output.push('FORCE ROW SECURITY');
+    }
+    if (node.subtype === 59) {
+      output.push('NO FORCE ROW SECURITY');
+    }
+
+    return output.join(' ');
+  }
+
   ['CreateStmt'](node) {
     const output = [];
     const relpersistence = dotty.get(node, 'relation.RangeVar.relpersistence');
