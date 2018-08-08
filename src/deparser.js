@@ -62,6 +62,10 @@ export default class Deparser {
     return this.deparseNodes(nodes).join(separator);
   }
 
+  listQuotes(nodes, separator = ', ') {
+    return this.list(nodes).split(separator).map(a=>this.quote(a.trim())).join(separator);
+  }
+
   quote(value) {
     if (value == null) {
       return null;
