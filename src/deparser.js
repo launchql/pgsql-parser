@@ -1209,7 +1209,13 @@ export default class Deparser {
     const constraint = CONSTRAINT_TYPES[node.contype];
 
     if (node.conname) {
-      output.push(`CONSTRAINT ${node.conname} ${constraint}`);
+
+      output.push('CONSTRAINT');
+      output.push(node.conname);
+
+      if (!node.pktable) {
+        output.push(constraint);
+      }
     } else {
       output.push(constraint);
     }
@@ -1220,21 +1226,36 @@ export default class Deparser {
   ['ReferenceConstraint'](node) {
     const output = [];
     if (node.pk_attrs && node.fk_attrs) {
+      if (node.conname) {
+        output.push('CONSTRAINT');
+        output.push(node.conname);
+      }
       output.push('FOREIGN KEY');
       output.push('(');
-      output.push(this.list(node.fk_attrs));
+      output.push(this.listQuotes(node.fk_attrs));
       output.push(')');
       output.push('REFERENCES');
       output.push(this.deparse(node.pktable));
       output.push('(');
-      output.push(this.list(node.pk_attrs));
+      output.push(this.listQuotes(node.pk_attrs));
       output.push(')');
     } else if (node.pk_attrs) {
       output.push(this.ConstraintStmt(node));
       output.push(this.deparse(node.pktable));
       output.push('(');
-      output.push(this.list(node.pk_attrs));
+      output.push(this.listQuotes(node.pk_attrs));
       output.push(')');
+    } else if (node.fk_attrs) {
+      if (node.conname) {
+        output.push('CONSTRAINT');
+        output.push(node.conname);
+      }
+      output.push('FOREIGN KEY');
+      output.push('(');
+      output.push(this.listQuotes(node.fk_attrs));
+      output.push(')');
+      output.push('REFERENCES');
+      output.push(this.deparse(node.pktable));
     } else {
       output.push(this.ConstraintStmt(node));
       output.push(this.deparse(node.pktable));
@@ -1292,12 +1313,14 @@ export default class Deparser {
 
     if (node.keys) {
       output.push('(');
-      output.push(this.list(node.keys));
+      output.push(this.listQuotes(node.keys));
       output.push(')');
     }
 
     if (node.raw_expr) {
+      output.push('(');
       output.push(this.deparse(node.raw_expr));
+      output.push(')');
     }
 
     if (node.fk_del_action) {
