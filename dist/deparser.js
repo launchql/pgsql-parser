@@ -516,9 +516,8 @@ class Deparser {
 
     if (node.arg) {
       return `${name} = ${this.deparse(node.arg)}`;
-    } else {
-      return name;
     }
+    return name;
   }
 
   ['Float'](node) {
@@ -1232,7 +1231,6 @@ class Deparser {
         }
       });
     }
-
     output.push(';');
     return output.join(' ');
   }
@@ -1240,19 +1238,15 @@ class Deparser {
   ['ConstraintStmt'](node) {
     const output = [];
     const constraint = CONSTRAINT_TYPES[node.contype];
-
     if (node.conname) {
-
       output.push('CONSTRAINT');
       output.push(node.conname);
-
       if (!node.pktable) {
         output.push(constraint);
       }
     } else {
       output.push(constraint);
     }
-
     return output.join(' ');
   }
 
@@ -1944,9 +1938,8 @@ class Deparser {
 
   ['TypeCast'](node) {
     const type = this.deparse(node.typeName);
-    const arg = this.deparse(node.arg);
     if (type === 'boolean' && dotty.exists(node, 'arg.A_Const.val.String.str')) {
-      var value = dotty.get(node, 'arg.A_Const.val.String.str');
+      const value = dotty.get(node, 'arg.A_Const.val.String.str');
       if (value === 'f') {
         return '(FALSE)';
       }

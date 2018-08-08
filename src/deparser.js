@@ -63,7 +63,7 @@ export default class Deparser {
   }
 
   listQuotes(nodes, separator = ', ') {
-    return this.list(nodes).split(separator).map(a=>this.quote(a.trim())).join(separator);
+    return this.list(nodes).split(separator).map(a => this.quote(a.trim())).join(separator);
   }
 
   quote(value) {
@@ -436,7 +436,7 @@ export default class Deparser {
 
     if (node.collClause) {
       output.push('COLLATE');
-      const str = dotty.get(node, 'collClause.CollateClause.collname.0.String.str')
+      const str = dotty.get(node, 'collClause.CollateClause.collname.0.String.str');
       output.push(this.quote(str));
     }
 
@@ -493,10 +493,8 @@ export default class Deparser {
 
     if (node.arg) {
       return `${name} = ${this.deparse(node.arg)}`;
-    } else {
-      return name;
     }
-
+    return name;
   }
 
   ['Float'](node) {
@@ -1148,14 +1146,14 @@ export default class Deparser {
     if (node.subtype === 36) {
       output.push('SET');
       output.push('(');
-      output.push(this.list(node.def))
+      output.push(this.list(node.def));
       output.push(')');
     }
 
     if (node.subtype === 37) {
       output.push('RESET');
       output.push('(');
-      output.push(this.list(node.def))
+      output.push(this.list(node.def));
       output.push(')');
     }
 
@@ -1209,14 +1207,13 @@ export default class Deparser {
       node.options.forEach(opt => {
         if (dotty.get(opt, 'DefElem.defname') === 'oids') {
           if (Number(dotty.get(opt, 'DefElem.arg.Integer.ival')) === 1) {
-            output.push('WITH OIDS')
+            output.push('WITH OIDS');
           } else {
-            output.push('WITHOUT OIDS')
+            output.push('WITHOUT OIDS');
           }
         }
       });
     }
-
     output.push(';');
     return output.join(' ');
   }
@@ -1224,19 +1221,15 @@ export default class Deparser {
   ['ConstraintStmt'](node) {
     const output = [];
     const constraint = CONSTRAINT_TYPES[node.contype];
-
     if (node.conname) {
-
       output.push('CONSTRAINT');
       output.push(node.conname);
-
       if (!node.pktable) {
         output.push(constraint);
       }
     } else {
       output.push(constraint);
     }
-
     return output.join(' ');
   }
 
@@ -1935,14 +1928,13 @@ export default class Deparser {
 
   ['TypeCast'](node) {
     const type = this.deparse(node.typeName);
-    const arg = this.deparse(node.arg);
     if (type === 'boolean' && dotty.exists(node, 'arg.A_Const.val.String.str')) {
-      var value = dotty.get(node, 'arg.A_Const.val.String.str');
+      const value = dotty.get(node, 'arg.A_Const.val.String.str');
       if (value === 'f') {
-          return '(FALSE)'
+        return '(FALSE)';
       }
       if (value === 't') {
-          return '(TRUE)'
+        return '(TRUE)';
       }
     }
     return this.deparse(node.arg) + '::' + this.deparse(node.typeName);
