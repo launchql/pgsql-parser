@@ -188,11 +188,11 @@ export default class Deparser {
           const operator = this.deparse(node.name[1]);
           output.push(`OPERATOR(${schema}.${operator})`);
         } else {
-          output.push(this.deparse(node.name[0]));
+          output.push(this.deparse(node.name[0], context));
         }
 
         if (node.rexpr) {
-          output.push(parens(this.deparse(node.rexpr)));
+          output.push(parens(this.deparse(node.rexpr, context)));
         }
 
         if (output.length === 2) {
@@ -203,75 +203,75 @@ export default class Deparser {
 
       case 1: // AEXPR_OP_ANY
         output.push(this.deparse(node.lexpr));
-        output.push(format('ANY (%s)', this.deparse(node.rexpr)));
-        return output.join(` ${this.deparse(node.name[0])} `);
+        output.push(format('ANY (%s)', this.deparse(node.rexpr, context)));
+        return output.join(` ${this.deparse(node.name[0], context)} `);
 
       case 2: // AEXPR_OP_ALL
-        output.push(this.deparse(node.lexpr));
-        output.push(format('ALL (%s)', this.deparse(node.rexpr)));
-        return output.join(` ${this.deparse(node.name[0])} `);
+        output.push(this.deparse(node.lexpr, context));
+        output.push(format('ALL (%s)', this.deparse(node.rexpr, context)));
+        return output.join(` ${this.deparse(node.name[0], context)} `);
 
       case 3: // AEXPR_DISTINCT
-        return format('%s IS DISTINCT FROM %s', this.deparse(node.lexpr), this.deparse(node.rexpr));
+        return format('%s IS DISTINCT FROM %s', this.deparse(node.lexpr, context), this.deparse(node.rexpr, context));
 
       case 4: // AEXPR_NULLIF
-        return format('NULLIF(%s, %s)', this.deparse(node.lexpr), this.deparse(node.rexpr));
+        return format('NULLIF(%s, %s)', this.deparse(node.lexpr, context), this.deparse(node.rexpr, context));
 
       case 5: { // AEXPR_OF
         const op = node.name[0].String.str === '=' ? 'IS OF' : 'IS NOT OF';
-        return format('%s %s (%s)', this.deparse(node.lexpr), op, this.list(node.rexpr));
+        return format('%s %s (%s)', this.deparse(node.lexpr, context), op, this.list(node.rexpr, context));
       }
 
       case 6: { // AEXPR_IN
         const operator = node.name[0].String.str === '=' ? 'IN' : 'NOT IN';
 
-        return format('%s %s (%s)', this.deparse(node.lexpr), operator, this.list(node.rexpr));
+        return format('%s %s (%s)', this.deparse(node.lexpr, context), operator, this.list(node.rexpr, context));
       }
 
       case 7: // AEXPR_LIKE
-        output.push(this.deparse(node.lexpr));
+        output.push(this.deparse(node.lexpr, context));
 
         if (node.name[0].String.str === '!~~') {
-          output.push(format('NOT LIKE (%s)', this.deparse(node.rexpr)));
+          output.push(format('NOT LIKE (%s)', this.deparse(node.rexpr, context)));
         } else {
-          output.push(format('LIKE (%s)', this.deparse(node.rexpr)));
+          output.push(format('LIKE (%s)', this.deparse(node.rexpr, context)));
         }
 
         return output.join(' ');
 
       case 8: // AEXPR_ILIKE
-        output.push(this.deparse(node.lexpr));
+        output.push(this.deparse(node.lexpr, context));
 
         if (node.name[0].String.str === '!~~*') {
-          output.push(format('NOT ILIKE (%s)', this.deparse(node.rexpr)));
+          output.push(format('NOT ILIKE (%s)', this.deparse(node.rexpr, context)));
         } else {
-          output.push(format('ILIKE (%s)', this.deparse(node.rexpr)));
+          output.push(format('ILIKE (%s)', this.deparse(node.rexpr, context)));
         }
 
         return output.join(' ');
 
       case 9: // AEXPR_SIMILAR
         // SIMILAR TO emits a similar_escape FuncCall node with the first argument
-        output.push(this.deparse(node.lexpr));
+        output.push(this.deparse(node.lexpr, context));
 
-        if (this.deparse(node.rexpr.FuncCall.args[1].Null)) {
-          output.push(format('SIMILAR TO %s', this.deparse(node.rexpr.FuncCall.args[0])));
+        if (this.deparse(node.rexpr.FuncCall.args[1].Null, context)) {
+          output.push(format('SIMILAR TO %s', this.deparse(node.rexpr.FuncCall.args[0], context)));
         } else {
           output.push(format('SIMILAR TO %s ESCAPE %s',
-                             this.deparse(node.rexpr.FuncCall.args[0]),
-                             this.deparse(node.rexpr.FuncCall.args[1])));
+                             this.deparse(node.rexpr.FuncCall.args[0], context),
+                             this.deparse(node.rexpr.FuncCall.args[1], context)));
         }
 
         return output.join(' ');
 
       case 10: // AEXPR_BETWEEN TODO(zhm) untested
-        output.push(this.deparse(node.lexpr));
-        output.push(format('BETWEEN %s AND %s', this.deparse(node.rexpr[0]), this.deparse(node.rexpr[1])));
+        output.push(this.deparse(node.lexpr, context));
+        output.push(format('BETWEEN %s AND %s', this.deparse(node.rexpr[0], context), this.deparse(node.rexpr[1], context)));
         return output.join(' ');
 
       case 11: // AEXPR_NOT_BETWEEN TODO(zhm) untested
-        output.push(this.deparse(node.lexpr));
-        output.push(format('NOT BETWEEN %s AND %s', this.deparse(node.rexpr[0]), this.deparse(node.rexpr[1])));
+        output.push(this.deparse(node.lexpr, context));
+        output.push(format('NOT BETWEEN %s AND %s', this.deparse(node.rexpr[0], context), this.deparse(node.rexpr[1], context)));
         return output.join(' ');
 
       default:
@@ -443,15 +443,19 @@ export default class Deparser {
     return _.compact(output).join(' ');
   }
 
-  ['ColumnRef'](node) {
+  ['ColumnRef'](node, context) {
+    const KEYWORDS = [ 'old', 'new' ];
     const fields = node.fields.map(field => {
       if (field.String) {
-        return this.quote(this.deparse(field));
+        const value = this.deparse(field);
+        if (context === 'trigger' && KEYWORDS.includes(value.toLowerCase())) {
+          return value.toUpperCase();
+        }
+        return this.quote(value);
       }
 
       return this.deparse(field);
     });
-
     return fields.join('.');
   }
 
@@ -1179,6 +1183,95 @@ export default class Deparser {
     if (node.subtype === 59) {
       output.push('NO FORCE ROW SECURITY');
     }
+
+    return output.join(' ');
+  }
+
+  ['CreateTrigStmt'](node) {
+    const output = [];
+    output.push('CREATE TRIGGER');
+    output.push(this.quote(node.trigname));
+    output.push('\n');
+
+    // int16 timing;  BEFORE, AFTER, or INSTEAD
+
+    if (node.timing === 64) {
+      output.push('INSTEAD OF');
+    } else if (node.timing === 2) {
+      output.push('BEFORE');
+    } else {
+      output.push('AFTER');
+    }
+
+    // int16 events;  "OR" of INSERT/UPDATE/DELETE/TRUNCATE
+
+    //  4 = 0b000100 (insert)
+    //  8 = 0b001000 (delete)
+    // 16 = 0b010000 (update)
+    // 32 = 0b100000 (TRUNCATE)
+
+    const TRIGGER_EVENTS = {
+      INSERT: 4,
+      DELETE: 8,
+      UPDATE: 16,
+      TRUNCATE: 32
+    };
+
+    const events = [];
+    if ((TRIGGER_EVENTS.INSERT & node.events) === TRIGGER_EVENTS.INSERT) {
+      events.push('INSERT');
+    }
+    if ((TRIGGER_EVENTS.UPDATE & node.events) === TRIGGER_EVENTS.UPDATE) {
+      events.push('UPDATE');
+    }
+    if ((TRIGGER_EVENTS.DELETE & node.events) === TRIGGER_EVENTS.DELETE) {
+      events.push('DELETE');
+    }
+    if ((TRIGGER_EVENTS.TRUNCATE & node.events) === TRIGGER_EVENTS.TRUNCATE) {
+      events.push('TRUNCATE');
+    }
+
+    output.push(events.join(' OR '));
+
+    if (node.columns) {
+      output.push('OF');
+      output.push(this.list(node.columns));
+    }
+
+    output.push('ON');
+    output.push(this.deparse(node.relation));
+    output.push('\n');
+
+    if (node.row) {
+      output.push('FOR EACH ROW\n');
+    } else {
+      output.push('FOR EACH STATEMENT\n');
+    }
+
+    if (node.whenClause) {
+      output.push('WHEN');
+      output.push('(');
+      output.push(this.deparse(node.whenClause, 'trigger'));
+      output.push(')');
+      output.push('\n');
+    }
+
+    output.push('EXECUTE PROCEDURE');
+    output.push(this.listQuotes(node.funcname).split(',').join('.'));
+    output.push('(');
+    let args = [];
+    if (node.args) {
+      args = node.args;
+    }
+    // seems that it's only parsing strings?
+    args = args.map(arg => {
+      if (dotty.exists(arg, 'String.str')) {
+        return `'${dotty.get(arg, 'String.str')}'`;
+      }
+      return this.deparse(arg);
+    }).filter(a => a);
+    output.push(args.join(','));
+    output.push(')');
 
     return output.join(' ');
   }
