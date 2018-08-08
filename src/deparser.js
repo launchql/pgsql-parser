@@ -1189,7 +1189,12 @@ export default class Deparser {
 
   ['CreateTrigStmt'](node) {
     const output = [];
-    output.push('CREATE TRIGGER');
+
+    output.push('CREATE');
+    if (node.isconstraint) {
+      output.push('CONSTRAINT');
+    }
+    output.push('TRIGGER');
     output.push(this.quote(node.trigname));
     output.push('\n');
 
@@ -1231,16 +1236,30 @@ export default class Deparser {
       events.push('TRUNCATE');
     }
 
+    // events
     output.push(events.join(' OR '));
 
+    // columns
     if (node.columns) {
       output.push('OF');
       output.push(this.list(node.columns));
     }
 
+    // ON
     output.push('ON');
     output.push(this.deparse(node.relation));
     output.push('\n');
+
+    // opts
+    if (node.deferrable || node.initdeferred) {
+      if (node.deferrable) {
+        output.push('DEFERRABLE');
+      }
+      if (node.deferrable) {
+        output.push('INITIALLY DEFERRED');
+      }
+      output.push('\n');
+    }
 
     if (node.row) {
       output.push('FOR EACH ROW\n');

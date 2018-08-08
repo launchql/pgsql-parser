@@ -12,9 +12,11 @@ const supportedStatements = [
   'GrantStmt',
   'GrantRoleStmt',
   'CreateRoleStmt',
+
   // 'AlterTableStmt',
   // 'CreateStmt',
-  // 'CreateTrigStmt',
+
+  'CreateTrigStmt',
   'VariableSetStmt',
   'VariableShowStmt',
   'ConstraintStmt',
@@ -23,14 +25,17 @@ const supportedStatements = [
 ];
 
 const isSupported = node => {
-  for (var i = 0; i < supportedStatements.length; i++) {
-    if (node[supportedStatements[i]] != null) return true;
+  for (let i = 0; i < supportedStatements.length; i++) {
+    if (node[supportedStatements[i]] != null) {
+      return true;
+    }
   }
+  return false;
 };
 
 const pattern = process.env.FILTER ? `*${process.env.FILTER}*.sql` : '*.sql';
 
-let files = []
+const files = []
   .concat(glob(`./test/fixtures/${pattern}`))
   .concat(glob(`./test/fixtures/roles/${pattern}`))
   .concat(glob(`./test/fixtures/create/${pattern}`))
