@@ -1118,6 +1118,18 @@ export default class Deparser {
       }
     }
 
+    if (node.fk_matchtype === 'f') {
+      output.push('MATCH FULL');
+    }
+
+    if (node.is_no_inherit === true) {
+      output.push('NO INHERIT');
+    }
+
+    if (node.skip_validation === true) {
+      output.push('NOT VALID');
+    }
+
     if (constraint === 'EXCLUDE') {
       output.push(this.ExclusionConstraint(node));
     }
