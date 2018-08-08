@@ -997,6 +997,26 @@ export default class Deparser {
     }
   }
 
+  ['AlterTableStmt'](node) {
+    const output = [];
+    output.push('ALTER');
+    if (node.relkind === 32) {
+      output.push('TABLE');
+    } else if (node.relkind === 42) {
+      output.push('VIEW');
+    } else if (node.relkind === 40) {
+      output.push('TYPE');
+    } else {
+      output.push('TABLE');
+    }
+    if (node.missing_ok) {
+      output.push('IF EXISTS');
+    }
+    output.push(this.deparse(node.relation));
+    output.push(this.list(node.cmds));
+
+    return output.join(' ');
+  }
   ['CreateStmt'](node) {
     const output = [];
     const relpersistence = dotty.get(node, 'relation.RangeVar.relpersistence');
