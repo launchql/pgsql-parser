@@ -1898,6 +1898,17 @@ export default class Deparser {
   }
 
   ['TypeCast'](node) {
+    const type = this.deparse(node.typeName);
+    const arg = this.deparse(node.arg);
+    if (type === 'boolean' && dotty.exists(node, 'arg.A_Const.val.String.str')) {
+      var value = dotty.get(node, 'arg.A_Const.val.String.str');
+      if (value === 'f') {
+          return '(FALSE)'
+      }
+      if (value === 't') {
+          return '(TRUE)'
+      }
+    }
     return this.deparse(node.arg) + '::' + this.deparse(node.typeName);
   }
 
