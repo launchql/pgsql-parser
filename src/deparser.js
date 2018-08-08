@@ -434,6 +434,12 @@ export default class Deparser {
       output.push(this.list(node.constraints, ' '));
     }
 
+    if (node.collClause) {
+      output.push('COLLATE');
+      const str = dotty.get(node, 'collClause.CollateClause.collname.0.String.str')
+      output.push(this.quote(str));
+    }
+
     return _.compact(output).join(' ');
   }
 
