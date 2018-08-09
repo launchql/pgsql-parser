@@ -571,14 +571,10 @@ class Deparser {
     }
     output.push('IS');
     if (node.comment) {
-      output.push(`'${node.comment}'`);
+      output.push(`E'${node.comment}'`);
     } else {
       output.push('NULL');
     }
-
-    console.log(output.join(' '));
-    console.log(output.join(' '));
-    console.log(output.join(' '));
 
     return output.join(' ');
   }
