@@ -646,6 +646,10 @@ export default class Deparser {
     return name;
   }
 
+  ['DoStmt'](node) {
+    return `DO $$\n  ${dotty.get(node, 'args.0.DefElem.arg.String.str').trim()} $$`;
+  }
+
   ['Float'](node) {
     // wrap negative numbers in parens, SELECT (-2147483648)::int4 * (-1)::int4
     if (node.str[0] === '-') {

@@ -17,6 +17,7 @@ const supportedStatements = [
   // 'CreateStmt',
   // 'CommentStmt',
 
+  // 'DoStmt',
   'CreateTrigStmt',
   'VariableSetStmt',
   'VariableShowStmt',
@@ -75,7 +76,6 @@ const defineQueryTest = (sqlQuery, file) => {
 
     try {
       parsed = parse(sqlQuery);
-
       // Only SelectStmt's for now
       if (parsed.query && parsed.query[0] && isSupported(parsed.query[0])) {
         check(sqlQuery);
