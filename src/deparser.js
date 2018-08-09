@@ -13,6 +13,57 @@ const CONSTRAINT_TYPES = [
   'REFERENCES'
 ];
 
+const POSTGRES_TYPES = [
+  'AGGREGATE',
+  '',
+  '',
+  '',
+  'CAST',
+  'COLUMN',
+  'COLLATION',
+  'CONVERSION',
+  'DATABASE',
+  '',
+  '',
+  'DOMAIN',
+  'CONSTRAINT', // ON DOMAIN
+  '',
+  'EXTENSION',
+  'FOREIGN DATA WRAPPER',
+  'SERVER',
+  'FOREIGN TABLE',
+  'FUNCTION',
+  'INDEX',
+  'LANGUAGE',
+  'LARGE OBJECT',
+  'MATERIALIZED VIEW',
+  'OPERATOR CLASS',
+  'OPERATOR',
+  'OPERATOR FAMILY',
+  'POLICY',
+  'ROLE',
+  'RULE',
+  'SCHEMA',
+  'SEQUENCE',
+  'CONSTRAINT',
+  'TABLE',
+  'TABLESPACE',
+  'TRANSFORM',
+  'TRIGGER',
+  'TEXT SEARCH CONFIGURATION',
+  'TEXT SEARCH DICTIONARY',
+  'TEXT SEARCH PARSER',
+  'TEXT SEARCH TEMPLATE',
+  'TYPE',
+  '',
+  'VIEW',
+  '',
+  '',
+  '',
+  '',
+  ''
+];
+
 const { keys } = _;
 
 const compact = o => {
@@ -63,7 +114,7 @@ export default class Deparser {
   }
 
   listQuotes(nodes, separator = ', ') {
-    return this.list(nodes).split(separator).map(a => this.quote(a.trim())).join(separator);
+    return this.list(nodes, separator).split(separator).map(a => this.quote(a.trim())).join(separator);
   }
 
   quote(value) {
@@ -457,6 +508,104 @@ export default class Deparser {
       return this.deparse(field);
     });
     return fields.join('.');
+  }
+
+  ['CommentStmt'](node) {
+    const output = [];
+
+    output.push('COMMENT');
+    output.push('ON');
+    output.push(POSTGRES_TYPES[node.objtype]);
+
+    if (node.objtype === 4) {
+      // CAST
+      output.push('(');
+      output.push(this.listQuotes(node.objname, '.'));
+      output.push('AS');
+      output.push(this.list(node.objargs));
+      output.push(')');
+    } else if (node.objtype === 12) {
+      // CONSTRAINT ON Domain
+      // COMMENT ON CONSTRAINT dom_col_constr ON DOMAIN dom IS 'Constrains col of domain'
+      output.push(this.listQuotes(node.objargs));
+      output.push('ON');
+      output.push('DOMAIN');
+      output.push(this.listQuotes(node.objname));
+    } else if (node.objtype === 23 || node.objtype === 25) {
+      // OPERATOR CLASS
+      // OPERATOR FAMILY
+      output.push(this.deparse(node.objname[1]));
+      output.push('USING');
+      output.push(this.deparse(node.objname[0]));
+    } else if (node.objtype === 24) {
+      // OPERATOR
+      output.push(dotty.get(node, 'objname.0.String.str'));
+
+      if (node.objargs) {
+        output.push('(');
+        output.push(node.objargs.map(arg => {
+          if (arg === null) {
+            return 'NONE';
+          }
+          return this.deparse(arg);
+        }).join(','));
+        // output.push(this.list(node.objargs));
+        output.push(')');
+      }
+    } else if (node.objtype === 26) {
+      // POLICY
+      output.push(this.deparse(node.objname[1]));
+      output.push('ON');
+      output.push(this.deparse(node.objname[0]));
+    } else if (node.objtype === 27) {
+      // ROLE
+      output.push(dotty.get(node, 'objname.0.String.str'));
+    } else if (node.objtype === 28) {
+      // RULE
+      output.push(this.deparse(node.objname[1]));
+      output.push('ON');
+      output.push(this.deparse(node.objname[0]));
+    } else if (node.objtype === 31) {
+      // CONSTRAINT
+      output.push(this.deparse(node.objname[1]));
+      output.push('ON');
+      output.push(this.deparse(node.objname[0]));
+    } else if (node.objtype === 34) {
+      // TRANSFORM
+      output.push('FOR');
+      output.push(this.listQuotes(node.objname));
+      output.push('LANGUAGE');
+      output.push(dotty.get(node, 'objargs.0.String.str'));
+    } else if (node.objtype === 35) {
+      // TRIGGER
+      output.push(this.deparse(node.objname[1]));
+      output.push('ON');
+      output.push(this.deparse(node.objname[0]));
+    } else {
+      if (node.objtype === 21) {
+        output.push(dotty.get(node, 'objname.0.Integer.ival'));
+      } else {
+        output.push(this.listQuotes(node.objname, '.'));
+      }
+
+      if (node.objargs) {
+        output.push('(');
+        output.push(this.list(node.objargs));
+        output.push(')');
+      }
+    }
+    output.push('IS');
+    if (node.comment) {
+      output.push(`'${node.comment}'`);
+    } else {
+      output.push('NULL');
+    }
+
+    console.log(output.join(' '));
+    console.log(output.join(' '));
+    console.log(output.join(' '));
+
+    return output.join(' ');
   }
 
   ['CommonTableExpr'](node) {

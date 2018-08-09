@@ -15,6 +15,7 @@ const supportedStatements = [
 
   // 'AlterTableStmt',
   // 'CreateStmt',
+  // 'CommentStmt',
 
   'CreateTrigStmt',
   'VariableSetStmt',
@@ -37,12 +38,13 @@ const pattern = process.env.FILTER ? `*${process.env.FILTER}*.sql` : '*.sql';
 
 const files = []
   .concat(glob(`./test/fixtures/${pattern}`))
-  .concat(glob(`./test/fixtures/roles/${pattern}`))
-  .concat(glob(`./test/fixtures/create/${pattern}`))
-  .concat(glob(`./test/fixtures/triggers/${pattern}`))
   .concat(glob(`./test/fixtures/alter/${pattern}`))
+  .concat(glob(`./test/fixtures/comments/${pattern}`))
+  .concat(glob(`./test/fixtures/create/${pattern}`))
   .concat(glob(`./test/fixtures/functions/${pattern}`))
+  .concat(glob(`./test/fixtures/roles/${pattern}`))
   .concat(glob(`./test/fixtures/transactions/${pattern}`))
+  .concat(glob(`./test/fixtures/triggers/${pattern}`))
   .concat(glob(`./test/fixtures/upstream/${pattern}`));
 
 const log = (msg) => {
