@@ -1,6 +1,6 @@
 COMMENT ON TABLE schema.mytable IS E'@omit\nHandy method to get the current user ID for use in RLS policies, etc; in GraphQL, use `currentUser{id}` instead.';
 
-comment on function  app_public.current_user_id() is
+comment on function  app_public.current_user_id is
   E'@omit\nHandy method to get the current user ID for use in RLS policies, etc; in GraphQL, use `currentUser{id}` instead.';
 
 

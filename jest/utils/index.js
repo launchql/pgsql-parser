@@ -51,7 +51,7 @@ export const transform = (obj, props) => {
   throw new Error("Unable to copy obj! Its type isn't supported.");
 };
 
-const noop = () => null;
+const noop = () => undefined;
 
 export const cleanTree = (tree) => {
   return transform(tree, {

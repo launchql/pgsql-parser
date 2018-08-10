@@ -270,12 +270,15 @@ export default class Deparser {
 
         return output.join(' ');
 
-      case 10: // AEXPR_BETWEEN TODO(zhm) untested
+      case 10:
+        return fail('A_Expr', node);
+
+      case 11:
         output.push(this.deparse(node.lexpr, context));
         output.push(format('BETWEEN %s AND %s', this.deparse(node.rexpr[0], context), this.deparse(node.rexpr[1], context)));
         return output.join(' ');
 
-      case 11: // AEXPR_NOT_BETWEEN TODO(zhm) untested
+      case 12:
         output.push(this.deparse(node.lexpr, context));
         output.push(format('NOT BETWEEN %s AND %s', this.deparse(node.rexpr[0], context), this.deparse(node.rexpr[1], context)));
         return output.join(' ');
@@ -426,6 +429,28 @@ export default class Deparser {
     return output.join(' ');
   }
 
+  ['RenameStmt'](node) {
+    const output = [ ];
+
+    if (!objtypeIs(node.renameType, 'OBJECT_COLUMN')) {
+      throw new Error('renameType not yet implemented');
+    }
+    if (!objtypeIs(node.relationType, 'OBJECT_TABLE')) {
+      throw new Error('relationType not yet implemented');
+    }
+
+    output.push('ALTER');
+    output.push('TABLE');
+    output.push(this.deparse(node.relation));
+    output.push('RENAME');
+    output.push('COLUMN');
+    output.push(node.subname);
+    output.push('TO');
+    output.push(node.newname);
+
+    return output.join(' ');
+  }
+
   ['ColumnDef'](node) {
     const output = [ this.quote(node.colname) ];
 
@@ -447,6 +472,22 @@ export default class Deparser {
     }
 
     return _.compact(output).join(' ');
+  }
+
+  ['SQLValueFunction'](node) {
+    if (node.op === 0) {
+      return 'CURRENT_DATE';
+    }
+    if (node.op === 3) {
+      return 'CURRENT_TIMESTAMP';
+    }
+    if (node.op === 10) {
+      return 'CURRENT_USER';
+    }
+    if (node.op === 12) {
+      return 'SESSION_USER';
+    }
+    throw new Error(`op=${node.op} SQLValueFunction not implemented`);
   }
 
   ['ColumnRef'](node, context) {
@@ -1288,6 +1329,20 @@ export default class Deparser {
     return output.join(' ');
   }
 
+  ['DropStmt'](node) {
+    const output = [];
+    output.push('DROP');
+    if (node.missing_ok) {
+      output.push('IF EXISTS');
+    }
+    output.push(objtypeName(node.removeType));
+    output.push(this.listQuotes(node.objects));
+    if (node.behavior) {
+      output.push('CASCADE');
+    }
+    return output.join(' ');
+  }
+
   ['CreatePolicyStmt'](node) {
     const output = [];
     output.push('CREATE POLICY');
@@ -1423,6 +1478,7 @@ export default class Deparser {
     } else {
       output.push('CREATE TABLE');
     }
+
     output.push(this.deparse(node.relation));
     output.push('(');
     output.push(this.list(node.tableElts));
@@ -1809,7 +1865,13 @@ export default class Deparser {
     if (node.replace) {
       output.push('OR REPLACE');
     }
+
     output.push('SCHEMA');
+
+    if (node.if_not_exists) {
+      output.push('IF NOT EXISTS');
+    }
+
     output.push(node.schemaname);
     return output.join(' ');
   }
@@ -1972,7 +2034,7 @@ export default class Deparser {
             break;
           case 'password':
             output.push('PASSWORD');
-            value = dotty.get(node, `options.${i}.DefElem.arg.String.str`);
+            value = dotty.get(node, `options.${i}.DefElem.arg.A_Const.val.String.str`);
             output.push(`'${value}'`);
             break;
           case 'adminmembers':
