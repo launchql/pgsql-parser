@@ -2135,7 +2135,6 @@ class Deparser {
     return output.join(' ');
   }
 
-  // https://doxygen.postgresql.org/structObjectWithArgs.html
   ['ObjectWithArgs'](node, context) {
     const output = [];
 
