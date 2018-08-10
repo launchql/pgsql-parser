@@ -262,7 +262,9 @@ class Deparser {
         }
 
       case 7:
-        // AEXPR_LIKE
+        return fail('A_Expr', node);
+
+      case 8:
         output.push(this.deparse(node.lexpr, context));
 
         if (node.name[0].String.str === '!~~') {
@@ -273,8 +275,8 @@ class Deparser {
 
         return output.join(' ');
 
-      case 8:
-        // AEXPR_ILIKE
+      case 9:
+
         output.push(this.deparse(node.lexpr, context));
 
         if (node.name[0].String.str === '!~~*') {
@@ -285,12 +287,17 @@ class Deparser {
 
         return output.join(' ');
 
-      case 9:
-        // AEXPR_SIMILAR
+      case 10:
         // SIMILAR TO emits a similar_escape FuncCall node with the first argument
         output.push(this.deparse(node.lexpr, context));
 
-        if (this.deparse(node.rexpr.FuncCall.args[1].Null, context)) {
+        if (node.name[0].String.str === '!~') {
+          if (this.deparse(node.rexpr.FuncCall.args[1].Null, context)) {
+            output.push((0, _util.format)('NOT SIMILAR TO %s', this.deparse(node.rexpr.FuncCall.args[0], context)));
+          } else {
+            output.push((0, _util.format)('NOT SIMILAR TO %s ESCAPE %s', this.deparse(node.rexpr.FuncCall.args[0], context), this.deparse(node.rexpr.FuncCall.args[1], context)));
+          }
+        } else if (this.deparse(node.rexpr.FuncCall.args[1].Null, context)) {
           output.push((0, _util.format)('SIMILAR TO %s', this.deparse(node.rexpr.FuncCall.args[0], context)));
         } else {
           output.push((0, _util.format)('SIMILAR TO %s ESCAPE %s', this.deparse(node.rexpr.FuncCall.args[0], context), this.deparse(node.rexpr.FuncCall.args[1], context)));
@@ -298,14 +305,12 @@ class Deparser {
 
         return output.join(' ');
 
-      case 10:
-        // AEXPR_BETWEEN TODO(zhm) untested
+      case 11:
         output.push(this.deparse(node.lexpr, context));
         output.push((0, _util.format)('BETWEEN %s AND %s', this.deparse(node.rexpr[0], context), this.deparse(node.rexpr[1], context)));
         return output.join(' ');
 
-      case 11:
-        // AEXPR_NOT_BETWEEN TODO(zhm) untested
+      case 12:
         output.push(this.deparse(node.lexpr, context));
         output.push((0, _util.format)('NOT BETWEEN %s AND %s', this.deparse(node.rexpr[0], context), this.deparse(node.rexpr[1], context)));
         return output.join(' ');
@@ -449,6 +454,28 @@ class Deparser {
     return output.join(' ');
   }
 
+  ['RenameStmt'](node) {
+    const output = [];
+
+    if (!(0, _types.objtypeIs)(node.renameType, 'OBJECT_COLUMN')) {
+      throw new Error('renameType not yet implemented');
+    }
+    if (!(0, _types.objtypeIs)(node.relationType, 'OBJECT_TABLE')) {
+      throw new Error('relationType not yet implemented');
+    }
+
+    output.push('ALTER');
+    output.push('TABLE');
+    output.push(this.deparse(node.relation));
+    output.push('RENAME');
+    output.push('COLUMN');
+    output.push(node.subname);
+    output.push('TO');
+    output.push(node.newname);
+
+    return output.join(' ');
+  }
+
   ['ColumnDef'](node) {
     const output = [this.quote(node.colname)];
 
@@ -470,6 +497,22 @@ class Deparser {
     }
 
     return _lodash2.default.compact(output).join(' ');
+  }
+
+  ['SQLValueFunction'](node) {
+    if (node.op === 0) {
+      return 'CURRENT_DATE';
+    }
+    if (node.op === 3) {
+      return 'CURRENT_TIMESTAMP';
+    }
+    if (node.op === 10) {
+      return 'CURRENT_USER';
+    }
+    if (node.op === 12) {
+      return 'SESSION_USER';
+    }
+    throw new Error(`op=${node.op} SQLValueFunction not implemented`);
   }
 
   ['ColumnRef'](node, context) {
@@ -1305,6 +1348,20 @@ class Deparser {
     return output.join(' ');
   }
 
+  ['DropStmt'](node) {
+    const output = [];
+    output.push('DROP');
+    output.push((0, _types.objtypeName)(node.removeType));
+    if (node.missing_ok) {
+      output.push('IF EXISTS');
+    }
+    output.push(this.listQuotes(node.objects));
+    if (node.behavior) {
+      output.push('CASCADE');
+    }
+    return output.join(' ');
+  }
+
   ['CreatePolicyStmt'](node) {
     const output = [];
     output.push('CREATE POLICY');
@@ -1387,6 +1444,19 @@ class Deparser {
     output.push(this.deparse(node.relation));
     output.push('\n');
 
+    if (node.transitionRels) {
+      output.push('REFERENCING');
+      node.transitionRels.forEach((_ref) => {
+        let TriggerTransition = _ref.TriggerTransition;
+
+        if (TriggerTransition.isNew === true && TriggerTransition.isTable === true) {
+          output.push(`NEW TABLE AS ${TriggerTransition.name}`);
+        } else if (TriggerTransition.isNew !== true && TriggerTransition.isTable === true) {
+          output.push(`OLD TABLE AS ${TriggerTransition.name}`);
+        }
+      });
+    }
+
     // opts
     if (node.deferrable || node.initdeferred) {
       if (node.deferrable) {
@@ -1440,6 +1510,7 @@ class Deparser {
     } else {
       output.push('CREATE TABLE');
     }
+
     output.push(this.deparse(node.relation));
     output.push('(');
     output.push(this.list(node.tableElts));
@@ -1718,15 +1789,15 @@ class Deparser {
     if (node.parameters) {
       parameters = [...node.parameters];
     }
-    const parametersList = parameters.filter((_ref) => {
-      let FunctionParameter = _ref.FunctionParameter;
+    const parametersList = parameters.filter((_ref2) => {
+      let FunctionParameter = _ref2.FunctionParameter;
       return FunctionParameter.mode === 118 || FunctionParameter.mode === 111 || FunctionParameter.mode === 98 || FunctionParameter.mode === 105;
     });
     output.push(this.list(parametersList));
     output.push(')');
 
-    const returns = parameters.filter((_ref2) => {
-      let FunctionParameter = _ref2.FunctionParameter;
+    const returns = parameters.filter((_ref3) => {
+      let FunctionParameter = _ref3.FunctionParameter;
       return FunctionParameter.mode === 116;
     });
 
@@ -1798,7 +1869,11 @@ class Deparser {
             break;
 
           case 'set':
-            output.push(this.deparse(option));
+            if (dotty.get(option, 'DefElem.arg.VariableSetStmt.kind') === 2 && dotty.get(option, 'DefElem.arg.VariableSetStmt.name') === 'search_path') {
+              output.push('SET search_path FROM CURRENT');
+            } else {
+              output.push(this.deparse(option));
+            }
             break;
 
           case 'volatility':
@@ -1819,7 +1894,13 @@ class Deparser {
     if (node.replace) {
       output.push('OR REPLACE');
     }
+
     output.push('SCHEMA');
+
+    if (node.if_not_exists) {
+      output.push('IF NOT EXISTS');
+    }
+
     output.push(node.schemaname);
     return output.join(' ');
   }
@@ -1982,7 +2063,7 @@ class Deparser {
             break;
           case 'password':
             output.push('PASSWORD');
-            value = dotty.get(node, `options.${i}.DefElem.arg.String.str`);
+            value = dotty.get(node, `options.${i}.DefElem.arg.A_Const.val.String.str`);
             output.push(`'${value}'`);
             break;
           case 'adminmembers':
