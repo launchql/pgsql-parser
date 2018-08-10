@@ -1,0 +1,375 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`custom parse and deparse 1`] = `
+Object {
+  "query": Array [
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "AlterTableStmt": Object {
+            "cmds": Array [
+              Object {
+                "AlterTableCmd": Object {
+                  "behavior": 0,
+                  "def": Object {
+                    "Constraint": Object {
+                      "conname": "fk_myschema_role_actor_id",
+                      "contype": 8,
+                      "fk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "actor_id",
+                          },
+                        },
+                      ],
+                      "fk_del_action": "c",
+                      "fk_matchtype": "s",
+                      "fk_upd_action": "a",
+                      "initially_valid": true,
+                      "location": 34,
+                      "pk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "id",
+                          },
+                        },
+                      ],
+                      "pktable": Object {
+                        "RangeVar": Object {
+                          "inh": true,
+                          "location": 113,
+                          "relname": "actor",
+                          "relpersistence": "p",
+                          "schemaname": "actors",
+                        },
+                      },
+                    },
+                  },
+                  "subtype": 14,
+                },
+              },
+            ],
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 12,
+                "relname": "role",
+                "relpersistence": "p",
+                "schemaname": "myschema",
+              },
+            },
+            "relkind": 37,
+          },
+        },
+        "stmt_len": 152,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CreateStmt": Object {
+            "oncommit": 0,
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 288,
+                "relname": "actor_info",
+                "relpersistence": "p",
+                "schemaname": "actors_private",
+              },
+            },
+            "tableElts": Array [
+              Object {
+                "ColumnDef": Object {
+                  "colname": "actor_id",
+                  "constraints": Array [
+                    Object {
+                      "Constraint": Object {
+                        "contype": 5,
+                        "location": 334,
+                      },
+                    },
+                    Object {
+                      "Constraint": Object {
+                        "contype": 8,
+                        "fk_del_action": "c",
+                        "fk_matchtype": "s",
+                        "fk_upd_action": "a",
+                        "initially_valid": true,
+                        "location": 346,
+                        "pk_attrs": Array [
+                          Object {
+                            "String": Object {
+                              "str": "id",
+                            },
+                          },
+                        ],
+                        "pktable": Object {
+                          "RangeVar": Object {
+                            "inh": true,
+                            "location": 357,
+                            "relname": "actor",
+                            "relpersistence": "p",
+                            "schemaname": "actors",
+                          },
+                        },
+                      },
+                    },
+                  ],
+                  "is_local": true,
+                  "location": 320,
+                  "typeName": Object {
+                    "TypeName": Object {
+                      "location": 329,
+                      "names": Array [
+                        Object {
+                          "String": Object {
+                            "str": "uuid",
+                          },
+                        },
+                      ],
+                      "typemod": -1,
+                    },
+                  },
+                },
+              },
+              Object {
+                "ColumnDef": Object {
+                  "colname": "email",
+                  "constraints": Array [
+                    Object {
+                      "Constraint": Object {
+                        "contype": 1,
+                        "location": 409,
+                      },
+                    },
+                    Object {
+                      "Constraint": Object {
+                        "contype": 6,
+                        "location": 418,
+                      },
+                    },
+                    Object {
+                      "Constraint": Object {
+                        "contype": 4,
+                        "initially_valid": true,
+                        "location": 425,
+                        "raw_expr": Object {
+                          "A_Expr": Object {
+                            "kind": 0,
+                            "lexpr": Object {
+                              "ColumnRef": Object {
+                                "fields": Array [
+                                  Object {
+                                    "String": Object {
+                                      "str": "email",
+                                    },
+                                  },
+                                ],
+                                "location": 432,
+                              },
+                            },
+                            "location": 438,
+                            "name": Array [
+                              Object {
+                                "String": Object {
+                                  "str": "~*",
+                                },
+                              },
+                            ],
+                            "rexpr": Object {
+                              "A_Const": Object {
+                                "location": 441,
+                                "val": Object {
+                                  "String": Object {
+                                    "str": "^.+@.+\\\\..+$",
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  ],
+                  "is_local": true,
+                  "location": 398,
+                  "typeName": Object {
+                    "TypeName": Object {
+                      "location": 404,
+                      "names": Array [
+                        Object {
+                          "String": Object {
+                            "str": "text",
+                          },
+                        },
+                      ],
+                      "typemod": -1,
+                    },
+                  },
+                },
+              },
+              Object {
+                "ColumnDef": Object {
+                  "colname": "password_hash",
+                  "constraints": Array [
+                    Object {
+                      "Constraint": Object {
+                        "contype": 1,
+                        "location": 480,
+                      },
+                    },
+                  ],
+                  "is_local": true,
+                  "location": 461,
+                  "typeName": Object {
+                    "TypeName": Object {
+                      "location": 475,
+                      "names": Array [
+                        Object {
+                          "String": Object {
+                            "str": "text",
+                          },
+                        },
+                      ],
+                      "typemod": -1,
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        },
+        "stmt_len": 337,
+        "stmt_location": 153,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Private information about a actor’s info.",
+            "object": Array [
+              Object {
+                "String": Object {
+                  "str": "actors_private",
+                },
+              },
+              Object {
+                "String": Object {
+                  "str": "actor_info",
+                },
+              },
+            ],
+            "objtype": 37,
+          },
+        },
+        "stmt_len": 352,
+        "stmt_location": 491,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "The id of the actor associated with this info.",
+            "object": Array [
+              Object {
+                "String": Object {
+                  "str": "actors_private",
+                },
+              },
+              Object {
+                "String": Object {
+                  "str": "actor_info",
+                },
+              },
+              Object {
+                "String": Object {
+                  "str": "actor_id",
+                },
+              },
+            ],
+            "objtype": 6,
+          },
+        },
+        "stmt_len": 106,
+        "stmt_location": 844,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "The email address of the actor.",
+            "object": Array [
+              Object {
+                "String": Object {
+                  "str": "actors_private",
+                },
+              },
+              Object {
+                "String": Object {
+                  "str": "actor_info",
+                },
+              },
+              Object {
+                "String": Object {
+                  "str": "email",
+                },
+              },
+            ],
+            "objtype": 6,
+          },
+        },
+        "stmt_len": 88,
+        "stmt_location": 951,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "An opaque hash of the actor’s password.",
+            "object": Array [
+              Object {
+                "String": Object {
+                  "str": "actors_private",
+                },
+              },
+              Object {
+                "String": Object {
+                  "str": "actor_info",
+                },
+              },
+              Object {
+                "String": Object {
+                  "str": "password_hash",
+                },
+              },
+            ],
+            "objtype": 6,
+          },
+        },
+        "stmt_len": 106,
+        "stmt_location": 1040,
+      },
+    },
+  ],
+  "stderr": "",
+}
+`;
+
+exports[`custom parse and deparse 2`] = `
+"ALTER TABLE \\"myschema\\" . \\"role\\" ADD CONSTRAINT fk_myschema_role_actor_id ON DELETE CASCADE;
+
+CREATE TABLE \\"actors_private\\" . \\"actor_info\\" ( \\"actor_id\\" uuid UNIQUE FOREIGN KEY ON DELETE CASCADE, \\"email\\" text NOT NULL EXCLUDE  PRIMARY KEY ( ((\\"email\\") ~* ('^.+@.+\\\\..+$')) ), \\"password_hash\\" text NOT NULL );
+
+COMMENT ON TEXT SEARCH DICTIONARY \\"\\" IS E'Private information about a actor’s info.';
+
+COMMENT ON COLLATION \\"\\" IS E'The id of the actor associated with this info.';
+
+COMMENT ON COLLATION \\"\\" IS E'The email address of the actor.';
+
+COMMENT ON COLLATION \\"\\" IS E'An opaque hash of the actor’s password.';"
+`;

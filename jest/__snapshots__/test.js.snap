@@ -4,13 +4,15 @@ exports[`first parse and deparse 1`] = `
 Object {
   "query": Array [
     Object {
-      "DoStmt": Object {
-        "args": Array [
-          Object {
-            "DefElem": Object {
-              "arg": Object {
-                "String": Object {
-                  "str": "
+      "RawStmt": Object {
+        "stmt": Object {
+          "DoStmt": Object {
+            "args": Array [
+              Object {
+                "DefElem": Object {
+                  "arg": Object {
+                    "String": Object {
+                      "str": "
   BEGIN
       IF NOT EXISTS (
               SELECT
@@ -23,13 +25,17 @@ Object {
               COMMENT ON ROLE administrator IS 'Administration group';
       END IF;
   END ",
+                    },
+                  },
+                  "defaction": 0,
+                  "defname": "as",
+                  "location": 6,
                 },
               },
-              "defaction": 0,
-              "defname": "as",
-            },
+            ],
           },
-        ],
+        },
+        "stmt_len": 330,
       },
     },
   ],

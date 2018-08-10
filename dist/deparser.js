@@ -621,6 +621,10 @@ class Deparser {
     return name;
   }
 
+  ['DoStmt'](node) {
+    return `DO $$\n  ${dotty.get(node, 'args.0.DefElem.arg.String.str').trim()} $$`;
+  }
+
   ['Float'](node) {
     // wrap negative numbers in parens, SELECT (-2147483648)::int4 * (-1)::int4
     if (node.str[0] === '-') {
@@ -1301,6 +1305,25 @@ class Deparser {
     return output.join(' ');
   }
 
+  ['CreateExtensionStmt'](node) {
+    const output = [];
+    output.push('CREATE EXTENSION');
+    if (node.if_not_exists) {
+      output.push('IF NOT EXISTS');
+    }
+    output.push(this.quote(node.extname));
+    return output.join(' ');
+  }
+
+  ['CreatePolicyStmt'](node) {
+    const output = [];
+    output.push('CREATE POLICY');
+    output.push(this.quote(node.policy_name));
+    output.push('USING');
+    output.push(this.deparse(node.qual));
+    return output.join(' ');
+  }
+
   ['CreateTrigStmt'](node) {
     const output = [];
 
@@ -1411,6 +1434,7 @@ class Deparser {
 
   ['CreateStmt'](node) {
     const output = [];
+    console.log(node);
     const relpersistence = dotty.get(node, 'relation.RangeVar.relpersistence');
     if (relpersistence === 't') {
       output.push('CREATE');
@@ -2110,6 +2134,10 @@ class Deparser {
     }
 
     return output.join(' ');
+  }
+
+  ['ObjectWithArgs'](node) {
+    return this.listQuotes(node.objname);
   }
 
   ['String'](node) {

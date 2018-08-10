@@ -1,4 +1,4 @@
-import { parse } from 'pg-query-native';
+import { parse } from 'pg-query-native-latest';
 import Deparser from './deparser';
 import { walk, all, first, tables, byType, clean } from './utils';
 
