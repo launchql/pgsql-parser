@@ -21,7 +21,7 @@ describe('kitchen sink', () => {
   it('comments', () => {
     check('comments/custom.sql');
   });
-  xdescribe('create', () => {
+  describe('create', () => {
     it('check', () => {
       check('create/check.sql');
     });
@@ -47,7 +47,7 @@ describe('kitchen sink', () => {
       check('create/unique.sql');
     });
   });
-  xdescribe('functions', () => {
+  describe('functions', () => {
     it('basic', () => {
       check('functions/basic.sql');
     });
@@ -72,7 +72,7 @@ describe('kitchen sink', () => {
       check('functions/setof.sql');
     });
   });
-  xdescribe('roles', () => {
+  describe('roles', () => {
     it('create', () => {
       check('roles/create.sql');
     });
@@ -80,7 +80,7 @@ describe('kitchen sink', () => {
       check('roles/grants.sql');
     });
   });
-  xdescribe('transactions', () => {
+  describe('transactions', () => {
     it('begin_commit', () => {
       check('transactions/begin_commit.sql');
     });
@@ -93,7 +93,7 @@ describe('kitchen sink', () => {
       check('triggers/custom.sql');
     });
   });
-  xdescribe('fixtures', () => {
+  describe('fixtures', () => {
     it('complex.sql', () => {
       check('complex.sql');
     });
@@ -116,7 +116,7 @@ describe('kitchen sink', () => {
       check('simple.sql');
     });
   });
-  xdescribe('upstream', () => {
+  describe('upstream', () => {
     it('upstream/abstime.sql', () => {
       check('upstream/upstream/abstime.sql');
     });
@@ -616,10 +616,4 @@ describe('kitchen sink', () => {
       check('upstream/upstream/xmlmap.sql');
     });
   });
-
-  // xdescribe('upstream', () => {
-  //   it('go', () => {
-  //     check('upstream/*.sql');
-  //   });
-  // });
 });

@@ -1,3 +1,4 @@
+DROP SCHEMA IF EXISTS fb;
 DROP SCHEMA IF EXISTS fb CASCADE;
 CREATE SCHEMA fb;
 SET search_path TO fb,"$user",public;

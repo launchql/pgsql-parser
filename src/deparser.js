@@ -234,7 +234,10 @@ export default class Deparser {
         return format('%s %s (%s)', this.deparse(node.lexpr, context), operator, this.list(node.rexpr, context));
       }
 
-      case 7: // AEXPR_LIKE
+      case 7:
+        return fail('A_Expr', node);
+
+      case 8:
         output.push(this.deparse(node.lexpr, context));
 
         if (node.name[0].String.str === '!~~') {
@@ -245,7 +248,8 @@ export default class Deparser {
 
         return output.join(' ');
 
-      case 8: // AEXPR_ILIKE
+      case 9:
+
         output.push(this.deparse(node.lexpr, context));
 
         if (node.name[0].String.str === '!~~*') {
@@ -256,11 +260,19 @@ export default class Deparser {
 
         return output.join(' ');
 
-      case 9: // AEXPR_SIMILAR
+      case 10:
         // SIMILAR TO emits a similar_escape FuncCall node with the first argument
         output.push(this.deparse(node.lexpr, context));
 
-        if (this.deparse(node.rexpr.FuncCall.args[1].Null, context)) {
+        if (node.name[0].String.str === '!~') {
+          if (this.deparse(node.rexpr.FuncCall.args[1].Null, context)) {
+            output.push(format('NOT SIMILAR TO %s', this.deparse(node.rexpr.FuncCall.args[0], context)));
+          } else {
+            output.push(format('NOT SIMILAR TO %s ESCAPE %s',
+                               this.deparse(node.rexpr.FuncCall.args[0], context),
+                               this.deparse(node.rexpr.FuncCall.args[1], context)));
+          }
+        } else if (this.deparse(node.rexpr.FuncCall.args[1].Null, context)) {
           output.push(format('SIMILAR TO %s', this.deparse(node.rexpr.FuncCall.args[0], context)));
         } else {
           output.push(format('SIMILAR TO %s ESCAPE %s',
@@ -269,9 +281,6 @@ export default class Deparser {
         }
 
         return output.join(' ');
-
-      case 10:
-        return fail('A_Expr', node);
 
       case 11:
         output.push(this.deparse(node.lexpr, context));
@@ -1332,10 +1341,10 @@ export default class Deparser {
   ['DropStmt'](node) {
     const output = [];
     output.push('DROP');
+    output.push(objtypeName(node.removeType));
     if (node.missing_ok) {
       output.push('IF EXISTS');
     }
-    output.push(objtypeName(node.removeType));
     output.push(this.listQuotes(node.objects));
     if (node.behavior) {
       output.push('CASCADE');
@@ -1424,6 +1433,17 @@ export default class Deparser {
     output.push('ON');
     output.push(this.deparse(node.relation));
     output.push('\n');
+
+    if (node.transitionRels) {
+      output.push('REFERENCING');
+      node.transitionRels.forEach(({TriggerTransition}) => {
+        if (TriggerTransition.isNew === true && TriggerTransition.isTable === true) {
+          output.push(`NEW TABLE AS ${TriggerTransition.name}`);
+        } else if (TriggerTransition.isNew !== true && TriggerTransition.isTable === true) {
+          output.push(`OLD TABLE AS ${TriggerTransition.name}`);
+        }
+      });
+    }
 
     // opts
     if (node.deferrable || node.initdeferred) {
@@ -1844,7 +1864,14 @@ export default class Deparser {
             break;
 
           case 'set':
-            output.push(this.deparse(option));
+            if (
+              dotty.get(option, 'DefElem.arg.VariableSetStmt.kind') === 2 &&
+              dotty.get(option, 'DefElem.arg.VariableSetStmt.name') === 'search_path'
+            ) {
+              output.push('SET search_path FROM CURRENT');
+            } else {
+              output.push(this.deparse(option));
+            }
             break;
 
           case 'volatility':

@@ -7479,6 +7479,34 @@ Object {
 }
 `;
 
+exports[`kitchen sink fixtures custom.sql 2`] = `
+"SELECT * FROM \\"tab\\" ORDER BY \\"col\\" USING <;
+SELECT * FROM \\"tab\\" ORDER BY \\"col\\" USING >;
+SELECT * FROM \\"tab\\" ORDER BY \\"col\\" USING =;
+SELECT * FROM \\"tab\\" ORDER BY \\"col\\" USING = NULLS FIRST,
+\\"col2\\" USING < NULLS LAST;
+SELECT mleast(VARIADIC arr := ARRAY[10, (-1), 5, 4.4]);
+SELECT encode('''123\\\\000\\\\001', 'base64');
+SELECT 'слон';
+SELECT 'data';
+SELECT ((3) OPERATOR(pg_catalog.+) (4));
+SELECT * FROM ROWS FROM (getfoo6(1) AS (\\"fooid\\" int, \\"foosubid\\" int, \\"fooname\\" text), getfoo7(1) AS (\\"fooid\\" int, \\"foosubid\\" int, \\"fooname\\" text))  AS (\\"fooid\\" int, \\"foosubid\\" int, \\"fooname\\" text);
+SELECT \\"a\\" FROM \\"b\\" WHERE ((\\"a\\") < ((SELECT 1)));
+SELECT \\"a\\" FROM \\"b\\" WHERE \\"a\\" < ALL (SELECT 1);
+SELECT \\"a\\" FROM \\"b\\" WHERE \\"a\\" < ANY (SELECT 1);
+SELECT \\"a\\" FROM \\"b\\" WHERE EXISTS (SELECT 1);
+SELECT \\"a\\" FROM \\"b\\" WHERE ((\\"a\\") < (ARRAY (SELECT DISTINCT (SELECT 1),
+(SELECT DISTINCT 1 GROUP BY 7 HAVING ((1) < ((SELECT 1)))))));
+SELECT 1 WHERE 'abc' SIMILAR TO 'abc' ESCAPE NULL;
+SELECT 1 WHERE 'abc' SIMILAR TO test('test') ESCAPE NULL;
+SELECT 1 WHERE 'abc' SIMILAR TO test('test') ESCAPE 't';
+SELECT 1::bit(1);
+SET client_encoding = 'UNICODE';
+SET client_encoding = 'UNICODE';
+SET client_min_messages = 'notice';
+SHOW client_encoding;"
+`;
+
 exports[`kitchen sink fixtures param-ref.sql 1`] = `
 Object {
   "query": Array [
@@ -8968,10 +8996,10 @@ Object {
                               },
                             },
                           ],
-                          "location": 67,
+                          "location": 69,
                         },
                       },
-                      "location": 77,
+                      "location": 79,
                       "name": Array [
                         Object {
                           "String": Object {
@@ -8981,7 +9009,7 @@ Object {
                       ],
                       "rexpr": Object {
                         "A_Const": Object {
-                          "location": 82,
+                          "location": 84,
                           "val": Object {
                             "String": Object {
                               "str": "%'test'%",
@@ -8998,7 +9026,864 @@ Object {
             },
           },
         },
-        "stmt_len": 94,
+        "stmt_len": 96,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "SelectStmt": Object {
+            "fromClause": Array [
+              Object {
+                "RangeVar": Object {
+                  "inh": true,
+                  "location": 117,
+                  "relname": "table_name",
+                  "relpersistence": "p",
+                },
+              },
+            ],
+            "op": 0,
+            "targetList": Array [
+              Object {
+                "ResTarget": Object {
+                  "location": 108,
+                  "val": Object {
+                    "ColumnRef": Object {
+                      "fields": Array [
+                        Object {
+                          "A_Star": Object {},
+                        },
+                      ],
+                      "location": 108,
+                    },
+                  },
+                },
+              },
+            ],
+            "whereClause": Object {
+              "BoolExpr": Object {
+                "args": Array [
+                  Object {
+                    "A_Expr": Object {
+                      "kind": 0,
+                      "lexpr": Object {
+                        "ColumnRef": Object {
+                          "fields": Array [
+                            Object {
+                              "String": Object {
+                                "str": "name",
+                              },
+                            },
+                          ],
+                          "location": 136,
+                        },
+                      },
+                      "location": 141,
+                      "name": Array [
+                        Object {
+                          "String": Object {
+                            "str": "=",
+                          },
+                        },
+                      ],
+                      "rexpr": Object {
+                        "A_Const": Object {
+                          "location": 143,
+                          "val": Object {
+                            "String": Object {
+                              "str": "test",
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                  Object {
+                    "A_Expr": Object {
+                      "kind": 0,
+                      "lexpr": Object {
+                        "ColumnRef": Object {
+                          "fields": Array [
+                            Object {
+                              "String": Object {
+                                "str": "num",
+                              },
+                            },
+                          ],
+                          "location": 154,
+                        },
+                      },
+                      "location": 158,
+                      "name": Array [
+                        Object {
+                          "String": Object {
+                            "str": ">",
+                          },
+                        },
+                      ],
+                      "rexpr": Object {
+                        "A_Const": Object {
+                          "location": 160,
+                          "val": Object {
+                            "Integer": Object {
+                              "ival": 7,
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                  Object {
+                    "A_Expr": Object {
+                      "kind": 8,
+                      "lexpr": Object {
+                        "ColumnRef": Object {
+                          "fields": Array [
+                            Object {
+                              "String": Object {
+                                "str": "last_name",
+                              },
+                            },
+                          ],
+                          "location": 168,
+                        },
+                      },
+                      "location": 178,
+                      "name": Array [
+                        Object {
+                          "String": Object {
+                            "str": "!~~",
+                          },
+                        },
+                      ],
+                      "rexpr": Object {
+                        "A_Const": Object {
+                          "location": 187,
+                          "val": Object {
+                            "String": Object {
+                              "str": "%'test'%",
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                ],
+                "boolop": 0,
+                "location": 150,
+              },
+            },
+          },
+        },
+        "stmt_len": 102,
+        "stmt_location": 97,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "SelectStmt": Object {
+            "fromClause": Array [
+              Object {
+                "RangeVar": Object {
+                  "inh": true,
+                  "location": 220,
+                  "relname": "table_name",
+                  "relpersistence": "p",
+                },
+              },
+            ],
+            "op": 0,
+            "targetList": Array [
+              Object {
+                "ResTarget": Object {
+                  "location": 211,
+                  "val": Object {
+                    "ColumnRef": Object {
+                      "fields": Array [
+                        Object {
+                          "A_Star": Object {},
+                        },
+                      ],
+                      "location": 211,
+                    },
+                  },
+                },
+              },
+            ],
+            "whereClause": Object {
+              "BoolExpr": Object {
+                "args": Array [
+                  Object {
+                    "A_Expr": Object {
+                      "kind": 0,
+                      "lexpr": Object {
+                        "ColumnRef": Object {
+                          "fields": Array [
+                            Object {
+                              "String": Object {
+                                "str": "name",
+                              },
+                            },
+                          ],
+                          "location": 239,
+                        },
+                      },
+                      "location": 244,
+                      "name": Array [
+                        Object {
+                          "String": Object {
+                            "str": "=",
+                          },
+                        },
+                      ],
+                      "rexpr": Object {
+                        "A_Const": Object {
+                          "location": 246,
+                          "val": Object {
+                            "String": Object {
+                              "str": "test",
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                  Object {
+                    "A_Expr": Object {
+                      "kind": 0,
+                      "lexpr": Object {
+                        "ColumnRef": Object {
+                          "fields": Array [
+                            Object {
+                              "String": Object {
+                                "str": "num",
+                              },
+                            },
+                          ],
+                          "location": 257,
+                        },
+                      },
+                      "location": 261,
+                      "name": Array [
+                        Object {
+                          "String": Object {
+                            "str": ">",
+                          },
+                        },
+                      ],
+                      "rexpr": Object {
+                        "A_Const": Object {
+                          "location": 263,
+                          "val": Object {
+                            "Integer": Object {
+                              "ival": 7,
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                  Object {
+                    "A_Expr": Object {
+                      "kind": 9,
+                      "lexpr": Object {
+                        "ColumnRef": Object {
+                          "fields": Array [
+                            Object {
+                              "String": Object {
+                                "str": "last_name",
+                              },
+                            },
+                          ],
+                          "location": 271,
+                        },
+                      },
+                      "location": 281,
+                      "name": Array [
+                        Object {
+                          "String": Object {
+                            "str": "~~*",
+                          },
+                        },
+                      ],
+                      "rexpr": Object {
+                        "A_Const": Object {
+                          "location": 287,
+                          "val": Object {
+                            "String": Object {
+                              "str": "%'test'%",
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                ],
+                "boolop": 0,
+                "location": 253,
+              },
+            },
+          },
+        },
+        "stmt_len": 99,
+        "stmt_location": 200,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "SelectStmt": Object {
+            "fromClause": Array [
+              Object {
+                "RangeVar": Object {
+                  "inh": true,
+                  "location": 320,
+                  "relname": "table_name",
+                  "relpersistence": "p",
+                },
+              },
+            ],
+            "op": 0,
+            "targetList": Array [
+              Object {
+                "ResTarget": Object {
+                  "location": 311,
+                  "val": Object {
+                    "ColumnRef": Object {
+                      "fields": Array [
+                        Object {
+                          "A_Star": Object {},
+                        },
+                      ],
+                      "location": 311,
+                    },
+                  },
+                },
+              },
+            ],
+            "whereClause": Object {
+              "BoolExpr": Object {
+                "args": Array [
+                  Object {
+                    "A_Expr": Object {
+                      "kind": 0,
+                      "lexpr": Object {
+                        "ColumnRef": Object {
+                          "fields": Array [
+                            Object {
+                              "String": Object {
+                                "str": "name",
+                              },
+                            },
+                          ],
+                          "location": 339,
+                        },
+                      },
+                      "location": 344,
+                      "name": Array [
+                        Object {
+                          "String": Object {
+                            "str": "=",
+                          },
+                        },
+                      ],
+                      "rexpr": Object {
+                        "A_Const": Object {
+                          "location": 346,
+                          "val": Object {
+                            "String": Object {
+                              "str": "test",
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                  Object {
+                    "A_Expr": Object {
+                      "kind": 0,
+                      "lexpr": Object {
+                        "ColumnRef": Object {
+                          "fields": Array [
+                            Object {
+                              "String": Object {
+                                "str": "num",
+                              },
+                            },
+                          ],
+                          "location": 357,
+                        },
+                      },
+                      "location": 361,
+                      "name": Array [
+                        Object {
+                          "String": Object {
+                            "str": ">",
+                          },
+                        },
+                      ],
+                      "rexpr": Object {
+                        "A_Const": Object {
+                          "location": 363,
+                          "val": Object {
+                            "Integer": Object {
+                              "ival": 7,
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                  Object {
+                    "A_Expr": Object {
+                      "kind": 9,
+                      "lexpr": Object {
+                        "ColumnRef": Object {
+                          "fields": Array [
+                            Object {
+                              "String": Object {
+                                "str": "last_name",
+                              },
+                            },
+                          ],
+                          "location": 371,
+                        },
+                      },
+                      "location": 381,
+                      "name": Array [
+                        Object {
+                          "String": Object {
+                            "str": "!~~*",
+                          },
+                        },
+                      ],
+                      "rexpr": Object {
+                        "A_Const": Object {
+                          "location": 391,
+                          "val": Object {
+                            "String": Object {
+                              "str": "%'test'%",
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                ],
+                "boolop": 0,
+                "location": 353,
+              },
+            },
+          },
+        },
+        "stmt_len": 103,
+        "stmt_location": 300,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "SelectStmt": Object {
+            "fromClause": Array [
+              Object {
+                "RangeVar": Object {
+                  "inh": true,
+                  "location": 424,
+                  "relname": "table_name",
+                  "relpersistence": "p",
+                },
+              },
+            ],
+            "op": 0,
+            "targetList": Array [
+              Object {
+                "ResTarget": Object {
+                  "location": 415,
+                  "val": Object {
+                    "ColumnRef": Object {
+                      "fields": Array [
+                        Object {
+                          "A_Star": Object {},
+                        },
+                      ],
+                      "location": 415,
+                    },
+                  },
+                },
+              },
+            ],
+            "whereClause": Object {
+              "A_Expr": Object {
+                "kind": 10,
+                "lexpr": Object {
+                  "ColumnRef": Object {
+                    "fields": Array [
+                      Object {
+                        "String": Object {
+                          "str": "last_name",
+                        },
+                      },
+                    ],
+                    "location": 443,
+                  },
+                },
+                "location": 453,
+                "name": Array [
+                  Object {
+                    "String": Object {
+                      "str": "~",
+                    },
+                  },
+                ],
+                "rexpr": Object {
+                  "FuncCall": Object {
+                    "args": Array [
+                      Object {
+                        "A_Const": Object {
+                          "location": 464,
+                          "val": Object {
+                            "String": Object {
+                              "str": "%(b|d)%",
+                            },
+                          },
+                        },
+                      },
+                      Object {
+                        "A_Const": Object {
+                          "location": -1,
+                          "val": Object {
+                            "Null": Object {},
+                          },
+                        },
+                      },
+                    ],
+                    "funcname": Array [
+                      Object {
+                        "String": Object {
+                          "str": "pg_catalog",
+                        },
+                      },
+                      Object {
+                        "String": Object {
+                          "str": "similar_escape",
+                        },
+                      },
+                    ],
+                    "location": 453,
+                  },
+                },
+              },
+            },
+          },
+        },
+        "stmt_len": 69,
+        "stmt_location": 404,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "SelectStmt": Object {
+            "fromClause": Array [
+              Object {
+                "RangeVar": Object {
+                  "inh": true,
+                  "location": 494,
+                  "relname": "table_name",
+                  "relpersistence": "p",
+                },
+              },
+            ],
+            "op": 0,
+            "targetList": Array [
+              Object {
+                "ResTarget": Object {
+                  "location": 485,
+                  "val": Object {
+                    "ColumnRef": Object {
+                      "fields": Array [
+                        Object {
+                          "A_Star": Object {},
+                        },
+                      ],
+                      "location": 485,
+                    },
+                  },
+                },
+              },
+            ],
+            "whereClause": Object {
+              "A_Expr": Object {
+                "kind": 10,
+                "lexpr": Object {
+                  "ColumnRef": Object {
+                    "fields": Array [
+                      Object {
+                        "String": Object {
+                          "str": "last_name",
+                        },
+                      },
+                    ],
+                    "location": 513,
+                  },
+                },
+                "location": 523,
+                "name": Array [
+                  Object {
+                    "String": Object {
+                      "str": "~",
+                    },
+                  },
+                ],
+                "rexpr": Object {
+                  "FuncCall": Object {
+                    "args": Array [
+                      Object {
+                        "A_Const": Object {
+                          "location": 534,
+                          "val": Object {
+                            "String": Object {
+                              "str": "%(b|d)%",
+                            },
+                          },
+                        },
+                      },
+                      Object {
+                        "A_Const": Object {
+                          "location": 551,
+                          "val": Object {
+                            "String": Object {
+                              "str": "a",
+                            },
+                          },
+                        },
+                      },
+                    ],
+                    "funcname": Array [
+                      Object {
+                        "String": Object {
+                          "str": "pg_catalog",
+                        },
+                      },
+                      Object {
+                        "String": Object {
+                          "str": "similar_escape",
+                        },
+                      },
+                    ],
+                    "location": 523,
+                  },
+                },
+              },
+            },
+          },
+        },
+        "stmt_len": 80,
+        "stmt_location": 474,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "SelectStmt": Object {
+            "fromClause": Array [
+              Object {
+                "RangeVar": Object {
+                  "inh": true,
+                  "location": 575,
+                  "relname": "table_name",
+                  "relpersistence": "p",
+                },
+              },
+            ],
+            "op": 0,
+            "targetList": Array [
+              Object {
+                "ResTarget": Object {
+                  "location": 566,
+                  "val": Object {
+                    "ColumnRef": Object {
+                      "fields": Array [
+                        Object {
+                          "A_Star": Object {},
+                        },
+                      ],
+                      "location": 566,
+                    },
+                  },
+                },
+              },
+            ],
+            "whereClause": Object {
+              "A_Expr": Object {
+                "kind": 10,
+                "lexpr": Object {
+                  "ColumnRef": Object {
+                    "fields": Array [
+                      Object {
+                        "String": Object {
+                          "str": "last_name",
+                        },
+                      },
+                    ],
+                    "location": 594,
+                  },
+                },
+                "location": 604,
+                "name": Array [
+                  Object {
+                    "String": Object {
+                      "str": "!~",
+                    },
+                  },
+                ],
+                "rexpr": Object {
+                  "FuncCall": Object {
+                    "args": Array [
+                      Object {
+                        "A_Const": Object {
+                          "location": 619,
+                          "val": Object {
+                            "String": Object {
+                              "str": "%(b|d)%",
+                            },
+                          },
+                        },
+                      },
+                      Object {
+                        "A_Const": Object {
+                          "location": -1,
+                          "val": Object {
+                            "Null": Object {},
+                          },
+                        },
+                      },
+                    ],
+                    "funcname": Array [
+                      Object {
+                        "String": Object {
+                          "str": "pg_catalog",
+                        },
+                      },
+                      Object {
+                        "String": Object {
+                          "str": "similar_escape",
+                        },
+                      },
+                    ],
+                    "location": 604,
+                  },
+                },
+              },
+            },
+          },
+        },
+        "stmt_len": 73,
+        "stmt_location": 555,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "SelectStmt": Object {
+            "fromClause": Array [
+              Object {
+                "RangeVar": Object {
+                  "inh": true,
+                  "location": 649,
+                  "relname": "table_name",
+                  "relpersistence": "p",
+                },
+              },
+            ],
+            "op": 0,
+            "targetList": Array [
+              Object {
+                "ResTarget": Object {
+                  "location": 640,
+                  "val": Object {
+                    "ColumnRef": Object {
+                      "fields": Array [
+                        Object {
+                          "A_Star": Object {},
+                        },
+                      ],
+                      "location": 640,
+                    },
+                  },
+                },
+              },
+            ],
+            "whereClause": Object {
+              "A_Expr": Object {
+                "kind": 10,
+                "lexpr": Object {
+                  "ColumnRef": Object {
+                    "fields": Array [
+                      Object {
+                        "String": Object {
+                          "str": "last_name",
+                        },
+                      },
+                    ],
+                    "location": 668,
+                  },
+                },
+                "location": 678,
+                "name": Array [
+                  Object {
+                    "String": Object {
+                      "str": "!~",
+                    },
+                  },
+                ],
+                "rexpr": Object {
+                  "FuncCall": Object {
+                    "args": Array [
+                      Object {
+                        "A_Const": Object {
+                          "location": 693,
+                          "val": Object {
+                            "String": Object {
+                              "str": "%(b|d)%",
+                            },
+                          },
+                        },
+                      },
+                      Object {
+                        "A_Const": Object {
+                          "location": 710,
+                          "val": Object {
+                            "String": Object {
+                              "str": "a",
+                            },
+                          },
+                        },
+                      },
+                    ],
+                    "funcname": Array [
+                      Object {
+                        "String": Object {
+                          "str": "pg_catalog",
+                        },
+                      },
+                      Object {
+                        "String": Object {
+                          "str": "similar_escape",
+                        },
+                      },
+                    ],
+                    "location": 678,
+                  },
+                },
+              },
+            },
+          },
+        },
+        "stmt_len": 84,
+        "stmt_location": 629,
       },
     },
   ],
@@ -9006,7 +9891,16 @@ Object {
 }
 `;
 
-exports[`kitchen sink fixtures simple.sql 2`] = `"SELECT * FROM \\"table_name\\" WHERE (((\\"name\\") = ('test')) AND ((\\"num\\") > (7)) AND \\"last_name\\" ILIKE ('%''test''%'));"`;
+exports[`kitchen sink fixtures simple.sql 2`] = `
+"SELECT * FROM \\"table_name\\" WHERE (((\\"name\\") = ('test')) AND ((\\"num\\") > (7)) AND \\"last_name\\" LIKE ('%''test''%'));
+SELECT * FROM \\"table_name\\" WHERE (((\\"name\\") = ('test')) AND ((\\"num\\") > (7)) AND \\"last_name\\" NOT LIKE ('%''test''%'));
+SELECT * FROM \\"table_name\\" WHERE (((\\"name\\") = ('test')) AND ((\\"num\\") > (7)) AND \\"last_name\\" ILIKE ('%''test''%'));
+SELECT * FROM \\"table_name\\" WHERE (((\\"name\\") = ('test')) AND ((\\"num\\") > (7)) AND \\"last_name\\" NOT ILIKE ('%''test''%'));
+SELECT * FROM \\"table_name\\" WHERE \\"last_name\\" SIMILAR TO '%(b|d)%' ESCAPE NULL;
+SELECT * FROM \\"table_name\\" WHERE \\"last_name\\" SIMILAR TO '%(b|d)%' ESCAPE 'a';
+SELECT * FROM \\"table_name\\" WHERE \\"last_name\\" NOT SIMILAR TO '%(b|d)%' ESCAPE NULL;
+SELECT * FROM \\"table_name\\" WHERE \\"last_name\\" NOT SIMILAR TO '%(b|d)%' ESCAPE 'a';"
+`;
 
 exports[`kitchen sink functions basic 1`] = `
 Object {
@@ -11175,15 +12069,104 @@ Object {
         "stmt_location": 1454,
       },
     },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CreateTrigStmt": Object {
+            "events": 16,
+            "funcname": Array [
+              Object {
+                "String": Object {
+                  "str": "check_matching_pairs",
+                },
+              },
+            ],
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 1699,
+                "relname": "paired_items",
+                "relpersistence": "p",
+              },
+            },
+            "row": true,
+            "transitionRels": Array [
+              Object {
+                "TriggerTransition": Object {
+                  "isTable": true,
+                  "name": "oldtab",
+                },
+              },
+              Object {
+                "TriggerTransition": Object {
+                  "isNew": true,
+                  "isTable": true,
+                  "name": "newtab",
+                },
+              },
+            ],
+            "trigname": "paired_items_update",
+          },
+        },
+        "stmt_len": 187,
+        "stmt_location": 1642,
+      },
+    },
   ],
   "stderr": "",
 }
 `;
 
 exports[`kitchen sink triggers create 2`] = `
-"CREATE TRIGGER \\"paired_items_update\\"
+"CREATE TRIGGER \\"_100_timestamps\\"
+BEFORE INSERT OR UPDATE ON \\"app_jobs\\" . \\"jobs\\"
+FOR EACH ROW
+EXECUTE PROCEDURE \\"app_jobs\\". \\"update_timestamps\\" (  );
+CREATE TRIGGER \\"_500_increase_job_queue_count\\"
+AFTER INSERT ON \\"app_jobs\\" . \\"jobs\\"
+FOR EACH ROW
+EXECUTE PROCEDURE \\"app_jobs\\". \\"jobs__increase_job_queue_count\\" (  );
+CREATE TRIGGER \\"_500_decrease_job_queue_count\\"
+BEFORE DELETE ON \\"app_jobs\\" . \\"jobs\\"
+FOR EACH ROW
+EXECUTE PROCEDURE \\"app_jobs\\". \\"jobs__decrease_job_queue_count\\" (  );
+CREATE TRIGGER \\"_900_notify_worker\\"
+AFTER INSERT ON \\"app_jobs\\" . \\"jobs\\"
+FOR EACH STATEMENT
+EXECUTE PROCEDURE \\"app_jobs\\". \\"do_notify\\" ( 'jobs:insert' );
+CREATE TRIGGER \\"check_update\\"
+BEFORE UPDATE OF balance ON \\"accounts\\"
+FOR EACH ROW
+EXECUTE PROCEDURE \\"check_account_update\\" (  );
+CREATE TRIGGER \\"check_update\\"
+BEFORE UPDATE ON \\"accounts\\"
+FOR EACH ROW
+EXECUTE PROCEDURE \\"check_account_update\\" (  );
+CREATE TRIGGER \\"check_update\\"
+BEFORE UPDATE ON \\"accounts\\"
+FOR EACH ROW
+WHEN ( OLD.\\"balance\\" IS DISTINCT FROM NEW.\\"balance\\" )
+EXECUTE PROCEDURE \\"check_account_update\\" (  );
+CREATE TRIGGER \\"log_update\\"
+AFTER UPDATE ON \\"accounts\\"
+FOR EACH ROW
+WHEN ( OLD.* IS DISTINCT FROM NEW.* )
+EXECUTE PROCEDURE \\"log_account_update\\" (  );
+CREATE TRIGGER \\"view_insert\\"
+INSTEAD OF INSERT ON \\"my_view\\"
+FOR EACH ROW
+EXECUTE PROCEDURE \\"view_insert_row\\" (  );
+CREATE TRIGGER \\"transfer_insert\\"
+AFTER INSERT ON \\"transfer\\"
+REFERENCING NEW TABLE AS inserted FOR EACH STATEMENT
+EXECUTE PROCEDURE \\"check_transfer_balances_to_zero\\" (  );
+CREATE TRIGGER \\"paired_items_update\\"
 AFTER UPDATE ON \\"paired_items\\"
 REFERENCING NEW TABLE AS newtab OLD TABLE AS oldtab FOR EACH ROW
+EXECUTE PROCEDURE \\"check_matching_pairs\\" (  );
+CREATE TRIGGER \\"paired_items_update\\"
+AFTER UPDATE ON \\"paired_items\\"
+REFERENCING OLD TABLE AS oldtab NEW TABLE AS newtab FOR EACH ROW
 EXECUTE PROCEDURE \\"check_matching_pairs\\" (  );"
 `;
 
@@ -11951,8 +12934,31 @@ END
 `;
 
 exports[`kitchen sink triggers custom 2`] = `
-"DROP IF EXISTS SCHEMA \\"fb\\";
-DROP IF EXISTS SCHEMA \\"fb\\" CASCADE;"
+"DROP SCHEMA IF EXISTS \\"fb\\";
+DROP SCHEMA IF EXISTS \\"fb\\" CASCADE;
+CREATE SCHEMA fb;
+SET search_path = 'fb', '$user', 'public';
+CREATE EXTENSION \\"uuid-ossp\\";
+CREATE TABLE \\"user\\" ( \\"id\\" uuid PRIMARY KEY DEFAULT ( uuid_generate_v4() ), \\"created\\" timestamptz NOT NULL DEFAULT ( now() ), \\"full_name\\" text NOT NULL DEFAULT ( '' ) );
+CREATE TABLE \\"post\\" ( \\"id\\" uuid PRIMARY KEY DEFAULT ( uuid_generate_v4() ), \\"created\\" timestamptz NOT NULL DEFAULT ( now() ), \\"content\\" text NOT NULL DEFAULT ( '' ), \\"user\\" uuid REFERENCES \\"user\\" NOT NULL );
+CREATE TABLE \\"friendship\\" ( \\"first\\" uuid REFERENCES \\"user\\" NOT NULL, \\"second\\" uuid REFERENCES \\"user\\" NOT NULL, \\"created\\" timestamptz NOT NULL DEFAULT ( now() ), UNIQUE ( \\"first\\", \\"second\\" ) );
+CREATE FUNCTION check_friendship_symmetry (  ) RETURNS trigger AS $EOFCODE$
+DECLARE
+link friendship;
+BEGIN
+SELECT * INTO link FROM friendship
+WHERE second = NEW.first AND first = NEW.second;
+IF NOT FOUND THEN
+RAISE EXCEPTION 'Friendships must be INSERTed as pairs.';
+END IF;
+RETURN NEW;
+END
+$EOFCODE$ LANGUAGE plpgsql SET search_path FROM CURRENT;
+CREATE CONSTRAINT TRIGGER \\"friendship_symmetry\\"
+AFTER INSERT ON \\"friendship\\"
+DEFERRABLE INITIALLY DEFERRED
+FOR EACH ROW
+EXECUTE PROCEDURE \\"check_friendship_symmetry\\" (  );"
 `;
 
 exports[`kitchen sink upstream upstream/abstime.sql 1`] = `
