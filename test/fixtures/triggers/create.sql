@@ -48,3 +48,9 @@ CREATE TRIGGER paired_items_update
     REFERENCING NEW TABLE AS newtab OLD TABLE AS oldtab
     FOR EACH ROW
     EXECUTE PROCEDURE check_matching_pairs();
+
+CREATE TRIGGER paired_items_update
+    AFTER UPDATE ON paired_items
+    REFERENCING OLD TABLE AS oldtab NEW TABLE AS newtab
+    FOR EACH ROW
+    EXECUTE PROCEDURE check_matching_pairs();

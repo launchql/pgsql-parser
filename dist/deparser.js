@@ -12,11 +12,13 @@ var _lodash2 = _interopRequireDefault(_lodash);
 
 var _util = require('util');
 
+var _types = require('./types');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const dotty = require('dotty');
 
-const CONSTRAINT_TYPES = ['NULL', 'NOT NULL', 'DEFAULT', 'CHECK', 'PRIMARY KEY', 'UNIQUE', 'EXCLUDE', 'REFERENCES'];
+const CONSTRAINT_TYPES = ['NULL', 'NOT NULL', 'DEFAULT', null, 'CHECK', 'PRIMARY KEY', 'UNIQUE', 'EXCLUDE', 'REFERENCES'];
 
 const keys = _lodash2.default.keys;
 
@@ -54,7 +56,7 @@ class Deparser {
   }
 
   deparseQuery() {
-    return this.tree.map(node => this.deparse(node)).join(';\n\n');
+    return this.tree.map(node => `${this.deparse(node)};`).join('\n\n');
   }
 
   deparseNodes(nodes, context) {
@@ -76,7 +78,7 @@ class Deparser {
   listQuotes(nodes) {
     let separator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ', ';
 
-    return this.list(nodes).split(separator).map(a => this.quote(a.trim())).join(separator);
+    return this.list(nodes, separator).split(separator).map(a => this.quote(a.trim())).join(separator);
   }
 
   quote(value) {
@@ -192,6 +194,10 @@ class Deparser {
     return this[type](node, context);
   }
 
+  ['RawStmt'](node) {
+    return this.deparse(node.stmt);
+  }
+
   ['A_Expr'](node, context) {
     const output = [];
 
@@ -256,7 +262,9 @@ class Deparser {
         }
 
       case 7:
-        // AEXPR_LIKE
+        return fail('A_Expr', node);
+
+      case 8:
         output.push(this.deparse(node.lexpr, context));
 
         if (node.name[0].String.str === '!~~') {
@@ -267,8 +275,8 @@ class Deparser {
 
         return output.join(' ');
 
-      case 8:
-        // AEXPR_ILIKE
+      case 9:
+
         output.push(this.deparse(node.lexpr, context));
 
         if (node.name[0].String.str === '!~~*') {
@@ -279,12 +287,17 @@ class Deparser {
 
         return output.join(' ');
 
-      case 9:
-        // AEXPR_SIMILAR
+      case 10:
         // SIMILAR TO emits a similar_escape FuncCall node with the first argument
         output.push(this.deparse(node.lexpr, context));
 
-        if (this.deparse(node.rexpr.FuncCall.args[1].Null, context)) {
+        if (node.name[0].String.str === '!~') {
+          if (this.deparse(node.rexpr.FuncCall.args[1].Null, context)) {
+            output.push((0, _util.format)('NOT SIMILAR TO %s', this.deparse(node.rexpr.FuncCall.args[0], context)));
+          } else {
+            output.push((0, _util.format)('NOT SIMILAR TO %s ESCAPE %s', this.deparse(node.rexpr.FuncCall.args[0], context), this.deparse(node.rexpr.FuncCall.args[1], context)));
+          }
+        } else if (this.deparse(node.rexpr.FuncCall.args[1].Null, context)) {
           output.push((0, _util.format)('SIMILAR TO %s', this.deparse(node.rexpr.FuncCall.args[0], context)));
         } else {
           output.push((0, _util.format)('SIMILAR TO %s ESCAPE %s', this.deparse(node.rexpr.FuncCall.args[0], context), this.deparse(node.rexpr.FuncCall.args[1], context)));
@@ -292,14 +305,12 @@ class Deparser {
 
         return output.join(' ');
 
-      case 10:
-        // AEXPR_BETWEEN TODO(zhm) untested
+      case 11:
         output.push(this.deparse(node.lexpr, context));
         output.push((0, _util.format)('BETWEEN %s AND %s', this.deparse(node.rexpr[0], context), this.deparse(node.rexpr[1], context)));
         return output.join(' ');
 
-      case 11:
-        // AEXPR_NOT_BETWEEN TODO(zhm) untested
+      case 12:
         output.push(this.deparse(node.lexpr, context));
         output.push((0, _util.format)('NOT BETWEEN %s AND %s', this.deparse(node.rexpr[0], context), this.deparse(node.rexpr[1], context)));
         return output.join(' ');
@@ -443,6 +454,28 @@ class Deparser {
     return output.join(' ');
   }
 
+  ['RenameStmt'](node) {
+    const output = [];
+
+    if (!(0, _types.objtypeIs)(node.renameType, 'OBJECT_COLUMN')) {
+      throw new Error('renameType not yet implemented');
+    }
+    if (!(0, _types.objtypeIs)(node.relationType, 'OBJECT_TABLE')) {
+      throw new Error('relationType not yet implemented');
+    }
+
+    output.push('ALTER');
+    output.push('TABLE');
+    output.push(this.deparse(node.relation));
+    output.push('RENAME');
+    output.push('COLUMN');
+    output.push(node.subname);
+    output.push('TO');
+    output.push(node.newname);
+
+    return output.join(' ');
+  }
+
   ['ColumnDef'](node) {
     const output = [this.quote(node.colname)];
 
@@ -466,6 +499,22 @@ class Deparser {
     return _lodash2.default.compact(output).join(' ');
   }
 
+  ['SQLValueFunction'](node) {
+    if (node.op === 0) {
+      return 'CURRENT_DATE';
+    }
+    if (node.op === 3) {
+      return 'CURRENT_TIMESTAMP';
+    }
+    if (node.op === 10) {
+      return 'CURRENT_USER';
+    }
+    if (node.op === 12) {
+      return 'SESSION_USER';
+    }
+    throw new Error(`op=${node.op} SQLValueFunction not implemented`);
+  }
+
   ['ColumnRef'](node, context) {
     const KEYWORDS = ['old', 'new'];
     const fields = node.fields.map(field => {
@@ -480,6 +529,80 @@ class Deparser {
       return this.deparse(field);
     });
     return fields.join('.');
+  }
+
+  ['CommentStmt'](node) {
+    const output = [];
+
+    output.push('COMMENT');
+    output.push('ON');
+    output.push((0, _types.objtypeName)(node.objtype));
+
+    if ((0, _types.objtypeIs)(node.objtype, 'OBJECT_CAST')) {
+      output.push('(');
+      output.push(this.deparse(node.object[0]));
+      output.push('AS');
+      output.push(this.deparse(node.object[1]));
+      output.push(')');
+    } else if ((0, _types.objtypeIs)(node.objtype, 'OBJECT_DOMCONSTRAINT')) {
+      output.push(this.deparse(node.object[1]));
+      output.push('ON');
+      output.push('DOMAIN');
+      output.push(this.deparse(node.object[0]));
+    } else if ((0, _types.objtypeIs)(node.objtype, 'OBJECT_OPCLASS') || (0, _types.objtypeIs)(node.objtype, 'OBJECT_OPFAMILY')) {
+      output.push(this.deparse(node.object[1]));
+      output.push('USING');
+      output.push(this.deparse(node.object[0]));
+    } else if ((0, _types.objtypeIs)(node.objtype, 'OBJECT_OPERATOR')) {
+      output.push(this.deparse(node.object, 'noquotes'));
+    } else if ((0, _types.objtypeIs)(node.objtype, 'OBJECT_POLICY')) {
+      output.push(this.deparse(node.object[1]));
+      output.push('ON');
+      output.push(this.deparse(node.object[0]));
+    } else if ((0, _types.objtypeIs)(node.objtype, 'OBJECT_ROLE')) {
+      output.push(this.deparse(node.object));
+    } else if ((0, _types.objtypeIs)(node.objtype, 'OBJECT_RULE')) {
+      output.push(this.deparse(node.object[1]));
+      output.push('ON');
+      output.push(this.deparse(node.object[0]));
+    } else if ((0, _types.objtypeIs)(node.objtype, 'OBJECT_TABCONSTRAINT')) {
+      output.push(this.deparse(node.object[1]));
+      output.push('ON');
+      output.push(this.deparse(node.object[0]));
+    } else if ((0, _types.objtypeIs)(node.objtype, 'OBJECT_TRANSFORM')) {
+      output.push('FOR');
+      output.push(this.deparse(node.object[0]));
+      output.push('LANGUAGE');
+      output.push(this.deparse(node.object[1]));
+    } else if ((0, _types.objtypeIs)(node.objtype, 'OBJECT_TRIGGER')) {
+      output.push(this.deparse(node.object[1]));
+      output.push('ON');
+      output.push(this.deparse(node.object[0]));
+    } else {
+      if ((0, _types.objtypeIs)(node.objtype, 'OBJECT_LARGEOBJECT')) {
+        output.push(dotty.get(node, 'object.Integer.ival'));
+      } else if (node.object instanceof Array) {
+        output.push(this.listQuotes(node.object, '.'));
+      } else {
+        output.push(this.deparse(node.object));
+      }
+
+      if (node.objargs) {
+        output.push('(');
+        output.push(this.list(node.objargs));
+        output.push(')');
+      }
+    }
+
+    output.push('IS');
+
+    if (node.comment) {
+      output.push(`E'${node.comment}'`);
+    } else {
+      output.push('NULL');
+    }
+
+    return output.join(' ');
   }
 
   ['CommonTableExpr'](node) {
@@ -522,6 +645,10 @@ class Deparser {
       return `${name} = ${this.deparse(node.arg)}`;
     }
     return name;
+  }
+
+  ['DoStmt'](node) {
+    return `DO $$\n  ${dotty.get(node, 'args.0.DefElem.arg.String.str').trim()} $$`;
   }
 
   ['Float'](node) {
@@ -1204,6 +1331,56 @@ class Deparser {
     return output.join(' ');
   }
 
+  ['CreateExtensionStmt'](node) {
+    const output = [];
+    output.push('CREATE EXTENSION');
+    if (node.if_not_exists) {
+      output.push('IF NOT EXISTS');
+    }
+    output.push(this.quote(node.extname));
+    if (node.options) {
+      node.options.forEach(opt => {
+        if (opt.DefElem.defname === 'cascade' && opt.DefElem.arg.Integer.ival === 1) {
+          output.push('CASCADE');
+        }
+      });
+    }
+    return output.join(' ');
+  }
+
+  ['DropStmt'](node) {
+    const output = [];
+    output.push('DROP');
+    output.push((0, _types.objtypeName)(node.removeType));
+    if (node.missing_ok) {
+      output.push('IF EXISTS');
+    }
+    output.push(this.listQuotes(node.objects));
+    if (node.behavior) {
+      output.push('CASCADE');
+    }
+    return output.join(' ');
+  }
+
+  ['CreatePolicyStmt'](node) {
+    const output = [];
+    output.push('CREATE POLICY');
+    output.push(this.quote(node.policy_name));
+    if (node.table) {
+      output.push('ON');
+      output.push(this.deparse(node.table));
+    }
+    if (node.cmd_name) {
+      output.push('FOR');
+      output.push(node.cmd_name.toUpperCase());
+    }
+    output.push('TO');
+    output.push(this.list(node.roles));
+    output.push('USING');
+    output.push(this.deparse(node.qual));
+    return output.join(' ');
+  }
+
   ['CreateTrigStmt'](node) {
     const output = [];
 
@@ -1267,6 +1444,19 @@ class Deparser {
     output.push(this.deparse(node.relation));
     output.push('\n');
 
+    if (node.transitionRels) {
+      output.push('REFERENCING');
+      node.transitionRels.forEach((_ref) => {
+        let TriggerTransition = _ref.TriggerTransition;
+
+        if (TriggerTransition.isNew === true && TriggerTransition.isTable === true) {
+          output.push(`NEW TABLE AS ${TriggerTransition.name}`);
+        } else if (TriggerTransition.isNew !== true && TriggerTransition.isTable === true) {
+          output.push(`OLD TABLE AS ${TriggerTransition.name}`);
+        }
+      });
+    }
+
     // opts
     if (node.deferrable || node.initdeferred) {
       if (node.deferrable) {
@@ -1320,6 +1510,7 @@ class Deparser {
     } else {
       output.push('CREATE TABLE');
     }
+
     output.push(this.deparse(node.relation));
     output.push('(');
     output.push(this.list(node.tableElts));
@@ -1343,7 +1534,6 @@ class Deparser {
         }
       });
     }
-    output.push(';');
     return output.join(' ');
   }
 
@@ -1441,7 +1631,7 @@ class Deparser {
 
     const constraint = CONSTRAINT_TYPES[node.contype];
     if (!constraint) {
-      throw new Error('type not implemented: ' + node.contype);
+      throw new Error('contraint type not implemented: ' + node.contype);
     }
 
     if (constraint === 'REFERENCES') {
@@ -1599,15 +1789,15 @@ class Deparser {
     if (node.parameters) {
       parameters = [...node.parameters];
     }
-    const parametersList = parameters.filter((_ref) => {
-      let FunctionParameter = _ref.FunctionParameter;
+    const parametersList = parameters.filter((_ref2) => {
+      let FunctionParameter = _ref2.FunctionParameter;
       return FunctionParameter.mode === 118 || FunctionParameter.mode === 111 || FunctionParameter.mode === 98 || FunctionParameter.mode === 105;
     });
     output.push(this.list(parametersList));
     output.push(')');
 
-    const returns = parameters.filter((_ref2) => {
-      let FunctionParameter = _ref2.FunctionParameter;
+    const returns = parameters.filter((_ref3) => {
+      let FunctionParameter = _ref3.FunctionParameter;
       return FunctionParameter.mode === 116;
     });
 
@@ -1679,7 +1869,11 @@ class Deparser {
             break;
 
           case 'set':
-            output.push(this.deparse(option));
+            if (dotty.get(option, 'DefElem.arg.VariableSetStmt.kind') === 2 && dotty.get(option, 'DefElem.arg.VariableSetStmt.name') === 'search_path') {
+              output.push('SET search_path FROM CURRENT');
+            } else {
+              output.push(this.deparse(option));
+            }
             break;
 
           case 'volatility':
@@ -1691,8 +1885,6 @@ class Deparser {
         }
       }
     });
-    output.push(';');
-
     return output.join(' ');
   }
   ['CreateSchemaStmt'](node) {
@@ -1702,7 +1894,13 @@ class Deparser {
     if (node.replace) {
       output.push('OR REPLACE');
     }
+
     output.push('SCHEMA');
+
+    if (node.if_not_exists) {
+      output.push('IF NOT EXISTS');
+    }
+
     output.push(node.schemaname);
     return output.join(' ');
   }
@@ -1865,7 +2063,7 @@ class Deparser {
             break;
           case 'password':
             output.push('PASSWORD');
-            value = dotty.get(node, `options.${i}.DefElem.arg.String.str`);
+            value = dotty.get(node, `options.${i}.DefElem.arg.A_Const.val.String.str`);
             output.push(`'${value}'`);
             break;
           case 'adminmembers':
@@ -2013,6 +2211,28 @@ class Deparser {
 
     if (node.sortby_nulls === 2) {
       output.push('NULLS LAST');
+    }
+
+    return output.join(' ');
+  }
+
+  ['ObjectWithArgs'](node, context) {
+    const output = [];
+
+    if (context === 'noquotes') {
+      output.push(this.list(node.objname));
+    } else {
+      output.push(this.listQuotes(node.objname, '.'));
+    }
+    if (node.objargs && node.objargs.length) {
+      output.push('(');
+      output.push(node.objargs.map(arg => {
+        if (arg === null) {
+          return 'NONE';
+        }
+        return this.deparse(arg);
+      }).join(','));
+      output.push(')');
     }
 
     return output.join(' ');

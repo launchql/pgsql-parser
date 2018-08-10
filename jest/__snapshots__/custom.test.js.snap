@@ -1,0 +1,1408 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`custom parse and deparse 1`] = `
+Object {
+  "query": Array [
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "AlterTableStmt": Object {
+            "cmds": Array [
+              Object {
+                "AlterTableCmd": Object {
+                  "behavior": 0,
+                  "def": Object {
+                    "Constraint": Object {
+                      "conname": "fk_myschema_role_actor_id",
+                      "contype": 8,
+                      "fk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "actor_id",
+                          },
+                        },
+                      ],
+                      "fk_del_action": "c",
+                      "fk_matchtype": "s",
+                      "fk_upd_action": "a",
+                      "initially_valid": true,
+                      "location": 34,
+                      "pk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "id",
+                          },
+                        },
+                      ],
+                      "pktable": Object {
+                        "RangeVar": Object {
+                          "inh": true,
+                          "location": 113,
+                          "relname": "actor",
+                          "relpersistence": "p",
+                          "schemaname": "actors",
+                        },
+                      },
+                    },
+                  },
+                  "subtype": 14,
+                },
+              },
+            ],
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 12,
+                "relname": "role",
+                "relpersistence": "p",
+                "schemaname": "myschema",
+              },
+            },
+            "relkind": 37,
+          },
+        },
+        "stmt_len": 152,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CreateStmt": Object {
+            "oncommit": 0,
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 168,
+                "relname": "circles",
+                "relpersistence": "p",
+              },
+            },
+            "tableElts": Array [
+              Object {
+                "ColumnDef": Object {
+                  "colname": "c",
+                  "is_local": true,
+                  "location": 182,
+                  "typeName": Object {
+                    "TypeName": Object {
+                      "location": 184,
+                      "names": Array [
+                        Object {
+                          "String": Object {
+                            "str": "circle",
+                          },
+                        },
+                      ],
+                      "typemod": -1,
+                    },
+                  },
+                },
+              },
+              Object {
+                "Constraint": Object {
+                  "access_method": "gist",
+                  "contype": 7,
+                  "exclusions": Array [
+                    Array [
+                      Object {
+                        "IndexElem": Object {
+                          "name": "c",
+                          "nulls_ordering": 0,
+                          "ordering": 0,
+                        },
+                      },
+                      Array [
+                        Object {
+                          "String": Object {
+                            "str": "&&",
+                          },
+                        },
+                      ],
+                    ],
+                  ],
+                  "location": 196,
+                },
+              },
+            ],
+          },
+        },
+        "stmt_len": 75,
+        "stmt_location": 153,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CreateStmt": Object {
+            "oncommit": 0,
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 244,
+                "relname": "actor_info",
+                "relpersistence": "p",
+                "schemaname": "actors_private",
+              },
+            },
+            "tableElts": Array [
+              Object {
+                "ColumnDef": Object {
+                  "colname": "actor_id",
+                  "constraints": Array [
+                    Object {
+                      "Constraint": Object {
+                        "contype": 5,
+                        "location": 290,
+                      },
+                    },
+                    Object {
+                      "Constraint": Object {
+                        "contype": 8,
+                        "fk_del_action": "c",
+                        "fk_matchtype": "s",
+                        "fk_upd_action": "a",
+                        "initially_valid": true,
+                        "location": 302,
+                        "pk_attrs": Array [
+                          Object {
+                            "String": Object {
+                              "str": "id",
+                            },
+                          },
+                        ],
+                        "pktable": Object {
+                          "RangeVar": Object {
+                            "inh": true,
+                            "location": 313,
+                            "relname": "actor",
+                            "relpersistence": "p",
+                            "schemaname": "actors",
+                          },
+                        },
+                      },
+                    },
+                  ],
+                  "is_local": true,
+                  "location": 276,
+                  "typeName": Object {
+                    "TypeName": Object {
+                      "location": 285,
+                      "names": Array [
+                        Object {
+                          "String": Object {
+                            "str": "uuid",
+                          },
+                        },
+                      ],
+                      "typemod": -1,
+                    },
+                  },
+                },
+              },
+              Object {
+                "ColumnDef": Object {
+                  "colname": "email",
+                  "constraints": Array [
+                    Object {
+                      "Constraint": Object {
+                        "contype": 1,
+                        "location": 365,
+                      },
+                    },
+                    Object {
+                      "Constraint": Object {
+                        "contype": 6,
+                        "location": 374,
+                      },
+                    },
+                    Object {
+                      "Constraint": Object {
+                        "contype": 4,
+                        "initially_valid": true,
+                        "location": 381,
+                        "raw_expr": Object {
+                          "A_Expr": Object {
+                            "kind": 0,
+                            "lexpr": Object {
+                              "ColumnRef": Object {
+                                "fields": Array [
+                                  Object {
+                                    "String": Object {
+                                      "str": "email",
+                                    },
+                                  },
+                                ],
+                                "location": 388,
+                              },
+                            },
+                            "location": 394,
+                            "name": Array [
+                              Object {
+                                "String": Object {
+                                  "str": "~*",
+                                },
+                              },
+                            ],
+                            "rexpr": Object {
+                              "A_Const": Object {
+                                "location": 397,
+                                "val": Object {
+                                  "String": Object {
+                                    "str": "^.+@.+\\\\..+$",
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  ],
+                  "is_local": true,
+                  "location": 354,
+                  "typeName": Object {
+                    "TypeName": Object {
+                      "location": 360,
+                      "names": Array [
+                        Object {
+                          "String": Object {
+                            "str": "text",
+                          },
+                        },
+                      ],
+                      "typemod": -1,
+                    },
+                  },
+                },
+              },
+              Object {
+                "ColumnDef": Object {
+                  "colname": "password_hash",
+                  "constraints": Array [
+                    Object {
+                      "Constraint": Object {
+                        "contype": 1,
+                        "location": 436,
+                      },
+                    },
+                  ],
+                  "is_local": true,
+                  "location": 417,
+                  "typeName": Object {
+                    "TypeName": Object {
+                      "location": 431,
+                      "names": Array [
+                        Object {
+                          "String": Object {
+                            "str": "text",
+                          },
+                        },
+                      ],
+                      "typemod": -1,
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        },
+        "stmt_len": 217,
+        "stmt_location": 229,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "@omit
+Handy method to get the current user ID for use in RLS policies, etc; in GraphQL, use \`currentUser{id}\` instead.",
+            "object": Array [
+              Object {
+                "String": Object {
+                  "str": "schema",
+                },
+              },
+              Object {
+                "String": Object {
+                  "str": "mytable",
+                },
+              },
+            ],
+            "objtype": 37,
+          },
+        },
+        "stmt_len": 159,
+        "stmt_location": 447,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "@omit
+Handy method to get the current user ID for use in RLS policies, etc; in GraphQL, use \`currentUser{id}\` instead.",
+            "object": Object {
+              "ObjectWithArgs": Object {
+                "args_unspecified": true,
+                "objname": Array [
+                  Object {
+                    "String": Object {
+                      "str": "app_public",
+                    },
+                  },
+                  Object {
+                    "String": Object {
+                      "str": "current_user_id",
+                    },
+                  },
+                ],
+              },
+            },
+            "objtype": 19,
+          },
+        },
+        "stmt_len": 174,
+        "stmt_location": 607,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "R-Tree access method",
+            "object": Object {
+              "String": Object {
+                "str": "rtree",
+              },
+            },
+            "objtype": 0,
+          },
+        },
+        "stmt_len": 58,
+        "stmt_location": 782,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Computes sample variance",
+            "object": Object {
+              "ObjectWithArgs": Object {
+                "objargs": Array [
+                  Object {
+                    "TypeName": Object {
+                      "location": 877,
+                      "names": Array [
+                        Object {
+                          "String": Object {
+                            "str": "pg_catalog",
+                          },
+                        },
+                        Object {
+                          "String": Object {
+                            "str": "float8",
+                          },
+                        },
+                      ],
+                      "typemod": -1,
+                    },
+                  },
+                ],
+                "objname": Array [
+                  Object {
+                    "String": Object {
+                      "str": "my_aggregate",
+                    },
+                  },
+                ],
+              },
+            },
+            "objtype": 1,
+          },
+        },
+        "stmt_len": 83,
+        "stmt_location": 841,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Allow casts from text to int4",
+            "object": Array [
+              Object {
+                "TypeName": Object {
+                  "location": 943,
+                  "names": Array [
+                    Object {
+                      "String": Object {
+                        "str": "text",
+                      },
+                    },
+                  ],
+                  "typemod": -1,
+                },
+              },
+              Object {
+                "TypeName": Object {
+                  "location": 951,
+                  "names": Array [
+                    Object {
+                      "String": Object {
+                        "str": "int4",
+                      },
+                    },
+                  ],
+                  "typemod": -1,
+                },
+              },
+            ],
+            "objtype": 5,
+          },
+        },
+        "stmt_len": 66,
+        "stmt_location": 925,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Canadian French",
+            "object": Array [
+              Object {
+                "String": Object {
+                  "str": "fr_CA",
+                },
+              },
+            ],
+            "objtype": 7,
+          },
+        },
+        "stmt_len": 50,
+        "stmt_location": 992,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Employee ID number",
+            "object": Array [
+              Object {
+                "String": Object {
+                  "str": "my_table",
+                },
+              },
+              Object {
+                "String": Object {
+                  "str": "my_column",
+                },
+              },
+            ],
+            "objtype": 6,
+          },
+        },
+        "stmt_len": 61,
+        "stmt_location": 1043,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Conversion to UTF8",
+            "object": Array [
+              Object {
+                "String": Object {
+                  "str": "my_conv",
+                },
+              },
+            ],
+            "objtype": 8,
+          },
+        },
+        "stmt_len": 54,
+        "stmt_location": 1105,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Constrains column col",
+            "object": Array [
+              Object {
+                "String": Object {
+                  "str": "bar",
+                },
+              },
+              Object {
+                "String": Object {
+                  "str": "bar_col_cons",
+                },
+              },
+            ],
+            "objtype": 36,
+          },
+        },
+        "stmt_len": 69,
+        "stmt_location": 1160,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Constrains col of domain",
+            "object": Array [
+              Object {
+                "TypeName": Object {
+                  "location": -1,
+                  "names": Array [
+                    Object {
+                      "String": Object {
+                        "str": "dom",
+                      },
+                    },
+                  ],
+                  "typemod": -1,
+                },
+              },
+              Object {
+                "String": Object {
+                  "str": "dom_col_constr",
+                },
+              },
+            ],
+            "objtype": 13,
+          },
+        },
+        "stmt_len": 81,
+        "stmt_location": 1230,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Development Database",
+            "object": Object {
+              "String": Object {
+                "str": "my_database",
+              },
+            },
+            "objtype": 9,
+          },
+        },
+        "stmt_len": 60,
+        "stmt_location": 1312,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Email Address Domain",
+            "object": Object {
+              "TypeName": Object {
+                "location": 1392,
+                "names": Array [
+                  Object {
+                    "String": Object {
+                      "str": "my_domain",
+                    },
+                  },
+                ],
+                "typemod": -1,
+              },
+            },
+            "objtype": 12,
+          },
+        },
+        "stmt_len": 54,
+        "stmt_location": 1373,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "implements the hstore data type",
+            "object": Object {
+              "String": Object {
+                "str": "hstore",
+              },
+            },
+            "objtype": 15,
+          },
+        },
+        "stmt_len": 65,
+        "stmt_location": 1428,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "my foreign data wrapper",
+            "object": Object {
+              "String": Object {
+                "str": "mywrapper",
+              },
+            },
+            "objtype": 16,
+          },
+        },
+        "stmt_len": 71,
+        "stmt_location": 1494,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Employee Information in other database",
+            "object": Array [
+              Object {
+                "String": Object {
+                  "str": "my_foreign_table",
+                },
+              },
+            ],
+            "objtype": 18,
+          },
+        },
+        "stmt_len": 86,
+        "stmt_location": 1566,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Returns Roman Numeral",
+            "object": Object {
+              "ObjectWithArgs": Object {
+                "objargs": Array [
+                  Object {
+                    "TypeName": Object {
+                      "location": 1687,
+                      "names": Array [
+                        Object {
+                          "String": Object {
+                            "str": "pg_catalog",
+                          },
+                        },
+                        Object {
+                          "String": Object {
+                            "str": "timestamp",
+                          },
+                        },
+                      ],
+                      "typemod": -1,
+                    },
+                  },
+                ],
+                "objname": Array [
+                  Object {
+                    "String": Object {
+                      "str": "my_function",
+                    },
+                  },
+                ],
+              },
+            },
+            "objtype": 19,
+          },
+        },
+        "stmt_len": 71,
+        "stmt_location": 1653,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Enforces uniqueness on employee ID",
+            "object": Array [
+              Object {
+                "String": Object {
+                  "str": "my_index",
+                },
+              },
+            ],
+            "objtype": 20,
+          },
+        },
+        "stmt_len": 66,
+        "stmt_location": 1725,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Python support for stored procedures",
+            "object": Object {
+              "String": Object {
+                "str": "plpython",
+              },
+            },
+            "objtype": 21,
+          },
+        },
+        "stmt_len": 71,
+        "stmt_location": 1792,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Planning document",
+            "object": Object {
+              "Integer": Object {
+                "ival": 346344,
+              },
+            },
+            "objtype": 22,
+          },
+        },
+        "stmt_len": 54,
+        "stmt_location": 1864,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Summary of order history",
+            "object": Array [
+              Object {
+                "String": Object {
+                  "str": "my_matview",
+                },
+              },
+            ],
+            "objtype": 23,
+          },
+        },
+        "stmt_len": 70,
+        "stmt_location": 1919,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Performs intersection of two texts",
+            "object": Object {
+              "ObjectWithArgs": Object {
+                "objargs": Array [
+                  Object {
+                    "TypeName": Object {
+                      "location": 2014,
+                      "names": Array [
+                        Object {
+                          "String": Object {
+                            "str": "text",
+                          },
+                        },
+                      ],
+                      "typemod": -1,
+                    },
+                  },
+                  Object {
+                    "TypeName": Object {
+                      "location": 2020,
+                      "names": Array [
+                        Object {
+                          "String": Object {
+                            "str": "text",
+                          },
+                        },
+                      ],
+                      "typemod": -1,
+                    },
+                  },
+                ],
+                "objname": Array [
+                  Object {
+                    "String": Object {
+                      "str": "^",
+                    },
+                  },
+                ],
+              },
+            },
+            "objtype": 25,
+          },
+        },
+        "stmt_len": 75,
+        "stmt_location": 1990,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Unary minus",
+            "object": Object {
+              "ObjectWithArgs": Object {
+                "objargs": Array [
+                  null,
+                  Object {
+                    "TypeName": Object {
+                      "location": 2096,
+                      "names": Array [
+                        Object {
+                          "String": Object {
+                            "str": "pg_catalog",
+                          },
+                        },
+                        Object {
+                          "String": Object {
+                            "str": "int4",
+                          },
+                        },
+                      ],
+                      "typemod": -1,
+                    },
+                  },
+                ],
+                "objname": Array [
+                  Object {
+                    "String": Object {
+                      "str": "-",
+                    },
+                  },
+                ],
+              },
+            },
+            "objtype": 25,
+          },
+        },
+        "stmt_len": 55,
+        "stmt_location": 2066,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "4 byte integer operators for btrees",
+            "object": Array [
+              Object {
+                "String": Object {
+                  "str": "btree",
+                },
+              },
+              Object {
+                "String": Object {
+                  "str": "int4ops",
+                },
+              },
+            ],
+            "objtype": 24,
+          },
+        },
+        "stmt_len": 87,
+        "stmt_location": 2122,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "all integer operators for btrees",
+            "object": Array [
+              Object {
+                "String": Object {
+                  "str": "btree",
+                },
+              },
+              Object {
+                "String": Object {
+                  "str": "integer_ops",
+                },
+              },
+            ],
+            "objtype": 26,
+          },
+        },
+        "stmt_len": 89,
+        "stmt_location": 2210,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Filter rows by users",
+            "object": Array [
+              Object {
+                "String": Object {
+                  "str": "mytable",
+                },
+              },
+              Object {
+                "String": Object {
+                  "str": "my_policy",
+                },
+              },
+            ],
+            "objtype": 27,
+          },
+        },
+        "stmt_len": 65,
+        "stmt_location": 2300,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Administration group for finance tables",
+            "object": Object {
+              "String": Object {
+                "str": "my_role",
+              },
+            },
+            "objtype": 30,
+          },
+        },
+        "stmt_len": 69,
+        "stmt_location": 2366,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Logs updates of employee records",
+            "object": Array [
+              Object {
+                "String": Object {
+                  "str": "my_table",
+                },
+              },
+              Object {
+                "String": Object {
+                  "str": "my_rule",
+                },
+              },
+            ],
+            "objtype": 31,
+          },
+        },
+        "stmt_len": 74,
+        "stmt_location": 2436,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Departmental data",
+            "object": Object {
+              "String": Object {
+                "str": "my_schema",
+              },
+            },
+            "objtype": 32,
+          },
+        },
+        "stmt_len": 51,
+        "stmt_location": 2511,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Used to generate primary keys",
+            "object": Array [
+              Object {
+                "String": Object {
+                  "str": "my_sequence",
+                },
+              },
+            ],
+            "objtype": 33,
+          },
+        },
+        "stmt_len": 67,
+        "stmt_location": 2563,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "my foreign server",
+            "object": Object {
+              "String": Object {
+                "str": "myserver",
+              },
+            },
+            "objtype": 17,
+          },
+        },
+        "stmt_len": 50,
+        "stmt_location": 2631,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Improves planner row estimations",
+            "object": Array [
+              Object {
+                "String": Object {
+                  "str": "my_statistics",
+                },
+              },
+            ],
+            "objtype": 35,
+          },
+        },
+        "stmt_len": 74,
+        "stmt_location": 2682,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Employee Information",
+            "object": Array [
+              Object {
+                "String": Object {
+                  "str": "my_schema",
+                },
+              },
+              Object {
+                "String": Object {
+                  "str": "my_table",
+                },
+              },
+            ],
+            "objtype": 37,
+          },
+        },
+        "stmt_len": 62,
+        "stmt_location": 2757,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Tablespace for indexes",
+            "object": Object {
+              "String": Object {
+                "str": "my_tablespace",
+              },
+            },
+            "objtype": 38,
+          },
+        },
+        "stmt_len": 64,
+        "stmt_location": 2820,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Special word filtering",
+            "object": Array [
+              Object {
+                "String": Object {
+                  "str": "my_config",
+                },
+              },
+            ],
+            "objtype": 41,
+          },
+        },
+        "stmt_len": 75,
+        "stmt_location": 2885,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Snowball stemmer for Swedish language",
+            "object": Array [
+              Object {
+                "String": Object {
+                  "str": "swedish",
+                },
+              },
+            ],
+            "objtype": 42,
+          },
+        },
+        "stmt_len": 85,
+        "stmt_location": 2961,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Splits text into words",
+            "object": Array [
+              Object {
+                "String": Object {
+                  "str": "my_parser",
+                },
+              },
+            ],
+            "objtype": 43,
+          },
+        },
+        "stmt_len": 68,
+        "stmt_location": 3047,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Snowball stemmer",
+            "object": Array [
+              Object {
+                "String": Object {
+                  "str": "snowball",
+                },
+              },
+            ],
+            "objtype": 44,
+          },
+        },
+        "stmt_len": 63,
+        "stmt_location": 3116,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Transform between hstore and Python dict",
+            "object": Array [
+              Object {
+                "TypeName": Object {
+                  "location": 3206,
+                  "names": Array [
+                    Object {
+                      "String": Object {
+                        "str": "hstore",
+                      },
+                    },
+                  ],
+                  "typemod": -1,
+                },
+              },
+              Object {
+                "String": Object {
+                  "str": "plpythonu",
+                },
+              },
+            ],
+            "objtype": 39,
+          },
+        },
+        "stmt_len": 97,
+        "stmt_location": 3180,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Used for RI",
+            "object": Array [
+              Object {
+                "String": Object {
+                  "str": "my_table",
+                },
+              },
+              Object {
+                "String": Object {
+                  "str": "my_trigger",
+                },
+              },
+            ],
+            "objtype": 40,
+          },
+        },
+        "stmt_len": 59,
+        "stmt_location": 3278,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "Complex number data type",
+            "object": Object {
+              "TypeName": Object {
+                "location": 3355,
+                "names": Array [
+                  Object {
+                    "String": Object {
+                      "str": "complex",
+                    },
+                  },
+                ],
+                "typemod": -1,
+              },
+            },
+            "objtype": 45,
+          },
+        },
+        "stmt_len": 54,
+        "stmt_location": 3338,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "comment": "View of departmental costs",
+            "object": Array [
+              Object {
+                "String": Object {
+                  "str": "my_view",
+                },
+              },
+            ],
+            "objtype": 47,
+          },
+        },
+        "stmt_len": 56,
+        "stmt_location": 3393,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CommentStmt": Object {
+            "object": Array [
+              Object {
+                "String": Object {
+                  "str": "mytable",
+                },
+              },
+            ],
+            "objtype": 37,
+          },
+        },
+        "stmt_len": 34,
+        "stmt_location": 3450,
+      },
+    },
+  ],
+  "stderr": "",
+}
+`;
+
+exports[`custom parse and deparse 2`] = `
+"ALTER TABLE \\"myschema\\" . \\"role\\" ADD CONSTRAINT fk_myschema_role_actor_id FOREIGN KEY ( \\"actor_id\\" ) REFERENCES \\"actors\\" . \\"actor\\" ( \\"id\\" ) ON DELETE CASCADE;
+
+CREATE TABLE \\"circles\\" ( \\"c\\" circle, EXCLUDE USING gist ( c WITH && ) );
+
+CREATE TABLE \\"actors_private\\" . \\"actor_info\\" ( \\"actor_id\\" uuid PRIMARY KEY REFERENCES \\"actors\\" . \\"actor\\" ( \\"id\\" ) ON DELETE CASCADE, \\"email\\" text NOT NULL UNIQUE CHECK ( ((\\"email\\") ~* ('^.+@.+\\\\..+$')) ), \\"password_hash\\" text NOT NULL );
+
+COMMENT ON TABLE \\"schema\\".\\"mytable\\" IS E'@omit
+Handy method to get the current user ID for use in RLS policies, etc; in GraphQL, use \`currentUser{id}\` instead.';
+
+COMMENT ON FUNCTION \\"app_public\\".\\"current_user_id\\" IS E'@omit
+Handy method to get the current user ID for use in RLS policies, etc; in GraphQL, use \`currentUser{id}\` instead.';
+
+COMMENT ON ACCESS METHOD rtree IS E'R-Tree access method';
+
+COMMENT ON AGGREGATE \\"my_aggregate\\" ( pg_catalog.float8 ) IS E'Computes sample variance';
+
+COMMENT ON CAST ( text AS int4 ) IS E'Allow casts from text to int4';
+
+COMMENT ON COLLATION \\"fr_CA\\" IS E'Canadian French';
+
+COMMENT ON COLUMN \\"my_table\\".\\"my_column\\" IS E'Employee ID number';
+
+COMMENT ON CONVERSION \\"my_conv\\" IS E'Conversion to UTF8';
+
+COMMENT ON CONSTRAINT bar_col_cons ON bar IS E'Constrains column col';
+
+COMMENT ON CONSTRAINT dom_col_constr ON DOMAIN dom IS E'Constrains col of domain';
+
+COMMENT ON DATABASE my_database IS E'Development Database';
+
+COMMENT ON DOMAIN my_domain IS E'Email Address Domain';
+
+COMMENT ON EXTENSION hstore IS E'implements the hstore data type';
+
+COMMENT ON FOREIGN DATA WRAPPER mywrapper IS E'my foreign data wrapper';
+
+COMMENT ON FOREIGN TABLE \\"my_foreign_table\\" IS E'Employee Information in other database';
+
+COMMENT ON FUNCTION \\"my_function\\" ( timestamp ) IS E'Returns Roman Numeral';
+
+COMMENT ON INDEX \\"my_index\\" IS E'Enforces uniqueness on employee ID';
+
+COMMENT ON LANGUAGE plpython IS E'Python support for stored procedures';
+
+COMMENT ON LARGE OBJECT 346344 IS E'Planning document';
+
+COMMENT ON MATERIALIZED VIEW \\"my_matview\\" IS E'Summary of order history';
+
+COMMENT ON OPERATOR ^ ( text,text ) IS E'Performs intersection of two texts';
+
+COMMENT ON OPERATOR - ( NONE,int ) IS E'Unary minus';
+
+COMMENT ON OPERATOR CLASS int4ops USING btree IS E'4 byte integer operators for btrees';
+
+COMMENT ON OPERATOR FAMILY integer_ops USING btree IS E'all integer operators for btrees';
+
+COMMENT ON POLICY my_policy ON mytable IS E'Filter rows by users';
+
+COMMENT ON ROLE my_role IS E'Administration group for finance tables';
+
+COMMENT ON RULE my_rule ON my_table IS E'Logs updates of employee records';
+
+COMMENT ON SCHEMA my_schema IS E'Departmental data';
+
+COMMENT ON SEQUENCE \\"my_sequence\\" IS E'Used to generate primary keys';
+
+COMMENT ON SERVER myserver IS E'my foreign server';
+
+COMMENT ON STATISTICS \\"my_statistics\\" IS E'Improves planner row estimations';
+
+COMMENT ON TABLE \\"my_schema\\".\\"my_table\\" IS E'Employee Information';
+
+COMMENT ON TABLESPACE my_tablespace IS E'Tablespace for indexes';
+
+COMMENT ON TEXT SEARCH CONFIGURATION \\"my_config\\" IS E'Special word filtering';
+
+COMMENT ON TEXT SEARCH DICTIONARY \\"swedish\\" IS E'Snowball stemmer for Swedish language';
+
+COMMENT ON TEXT SEARCH PARSER \\"my_parser\\" IS E'Splits text into words';
+
+COMMENT ON TEXT SEARCH TEMPLATE \\"snowball\\" IS E'Snowball stemmer';
+
+COMMENT ON TRANSFORM FOR hstore LANGUAGE plpythonu IS E'Transform between hstore and Python dict';
+
+COMMENT ON TRIGGER my_trigger ON my_table IS E'Used for RI';
+
+COMMENT ON TYPE complex IS E'Complex number data type';
+
+COMMENT ON VIEW \\"my_view\\" IS E'View of departmental costs';
+
+COMMENT ON TABLE \\"mytable\\" IS NULL;"
+`;

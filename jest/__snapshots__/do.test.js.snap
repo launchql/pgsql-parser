@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`do parse and deparse 1`] = `
+Object {
+  "query": Array [
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "DoStmt": Object {
+            "args": Array [
+              Object {
+                "DefElem": Object {
+                  "arg": Object {
+                    "String": Object {
+                      "str": "
+BEGIN
+    IF NOT EXISTS (
+            SELECT
+                1
+            FROM
+                pg_roles
+            WHERE
+                rolname = 'administrator') THEN
+            CREATE ROLE administrator;
+            COMMENT ON ROLE administrator IS 'Administration group';
+    END IF;
+END ",
+                    },
+                  },
+                  "defaction": 0,
+                  "defname": "as",
+                  "location": 3,
+                },
+              },
+            ],
+          },
+        },
+        "stmt_len": 303,
+      },
+    },
+  ],
+  "stderr": "",
+}
+`;
+
+exports[`do parse and deparse 2`] = `
+"DO $$
+BEGIN
+IF NOT EXISTS (
+SELECT
+1
+FROM
+pg_roles
+WHERE
+rolname = 'administrator') THEN
+CREATE ROLE administrator;
+COMMENT ON ROLE administrator IS 'Administration group';
+END IF;
+END $$;"
+`;

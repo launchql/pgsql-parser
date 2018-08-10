@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const parser = require('pg-query-native');
+const parser = require('pg-query-native-latest');
 
 function runQuery(query) {
   const result = parser.parse(query).query;
@@ -22,4 +22,3 @@ if (process.argv[2]) {
     runQuery(content);
   });
 }
-

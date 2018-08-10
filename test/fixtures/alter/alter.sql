@@ -9,7 +9,6 @@ CREATE TABLE app_jobs.job_queues (
 
 ALTER TABLE app_jobs.job_queues ENABLE ROW LEVEL SECURITY;
 
-
 CREATE TABLE foo (
   name text,
   foo_timestamp timestampz DEFAULT CURRENT_DATE

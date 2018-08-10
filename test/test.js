@@ -12,10 +12,10 @@ const supportedStatements = [
   'GrantStmt',
   'GrantRoleStmt',
   'CreateRoleStmt',
-
-  // 'AlterTableStmt',
-  // 'CreateStmt',
-
+  'AlterTableStmt',
+  'CreateStmt',
+  'CommentStmt',
+  'DoStmt',
   'CreateTrigStmt',
   'VariableSetStmt',
   'VariableShowStmt',
@@ -37,12 +37,13 @@ const pattern = process.env.FILTER ? `*${process.env.FILTER}*.sql` : '*.sql';
 
 const files = []
   .concat(glob(`./test/fixtures/${pattern}`))
-  .concat(glob(`./test/fixtures/roles/${pattern}`))
-  .concat(glob(`./test/fixtures/create/${pattern}`))
-  .concat(glob(`./test/fixtures/triggers/${pattern}`))
   .concat(glob(`./test/fixtures/alter/${pattern}`))
+  .concat(glob(`./test/fixtures/comments/${pattern}`))
+  .concat(glob(`./test/fixtures/create/${pattern}`))
   .concat(glob(`./test/fixtures/functions/${pattern}`))
+  .concat(glob(`./test/fixtures/roles/${pattern}`))
   .concat(glob(`./test/fixtures/transactions/${pattern}`))
+  .concat(glob(`./test/fixtures/triggers/${pattern}`))
   .concat(glob(`./test/fixtures/upstream/${pattern}`));
 
 const log = (msg) => {
@@ -73,7 +74,6 @@ const defineQueryTest = (sqlQuery, file) => {
 
     try {
       parsed = parse(sqlQuery);
-
       // Only SelectStmt's for now
       if (parsed.query && parsed.query[0] && isSupported(parsed.query[0])) {
         check(sqlQuery);
