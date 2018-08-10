@@ -1,8 +1,23 @@
+ALTER TABLE myschema.role
+    ADD CONSTRAINT fk_myschema_role_actor_id
+    FOREIGN KEY (actor_id)
+    REFERENCES actors.actor (id)
+    ON DELETE CASCADE;
+
+CREATE TABLE circles (
+    c circle,
+    EXCLUDE USING gist (c WITH &&)
+);
+
+CREATE TABLE actors_private.actor_info (
+    actor_id uuid PRIMARY KEY REFERENCES actors.actor (id) ON DELETE CASCADE,
+    email text NOT NULL UNIQUE CHECK (email ~* '^.+@.+\..+$'),
+    password_hash text NOT NULL
+);
+
 COMMENT ON TABLE schema.mytable IS E'@omit\nHandy method to get the current user ID for use in RLS policies, etc; in GraphQL, use `currentUser{id}` instead.';
 
-comment on function  app_public.current_user_id is
-  E'@omit\nHandy method to get the current user ID for use in RLS policies, etc; in GraphQL, use `currentUser{id}` instead.';
-
+COMMENT ON FUNCTION app_public.current_user_id IS E'@omit\nHandy method to get the current user ID for use in RLS policies, etc; in GraphQL, use `currentUser{id}` instead.';
 
 COMMENT ON ACCESS METHOD rtree IS 'R-Tree access method';
 COMMENT ON AGGREGATE my_aggregate (double precision) IS 'Computes sample variance';
@@ -12,6 +27,8 @@ COMMENT ON COLUMN my_table.my_column IS 'Employee ID number';
 COMMENT ON CONVERSION my_conv IS 'Conversion to UTF8';
 COMMENT ON CONSTRAINT bar_col_cons ON bar IS 'Constrains column col';
 COMMENT ON CONSTRAINT dom_col_constr ON DOMAIN dom IS 'Constrains col of domain';
+
+
 COMMENT ON DATABASE my_database IS 'Development Database';
 COMMENT ON DOMAIN my_domain IS 'Email Address Domain';
 COMMENT ON EXTENSION hstore IS 'implements the hstore data type';
@@ -43,6 +60,5 @@ COMMENT ON TRANSFORM FOR hstore LANGUAGE plpythonu IS 'Transform between hstore 
 COMMENT ON TRIGGER my_trigger ON my_table IS 'Used for RI';
 COMMENT ON TYPE complex IS 'Complex number data type';
 COMMENT ON VIEW my_view IS 'View of departmental costs';
-
 
 COMMENT ON TABLE mytable IS NULL;

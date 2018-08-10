@@ -1,0 +1,156 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`grants parse and deparse 1`] = `
+Object {
+  "query": Array [
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "GrantStmt": Object {
+            "behavior": 0,
+            "grantees": Array [
+              Object {
+                "RoleSpec": Object {
+                  "location": 31,
+                  "rolename": "administrator",
+                  "roletype": 0,
+                },
+              },
+            ],
+            "is_grant": true,
+            "objects": Array [
+              Object {
+                "String": Object {
+                  "str": "users",
+                },
+              },
+            ],
+            "objtype": 10,
+            "privileges": Array [
+              Object {
+                "AccessPriv": Object {
+                  "priv_name": "usage",
+                },
+              },
+            ],
+            "targtype": 0,
+          },
+        },
+        "stmt_len": 44,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "GrantStmt": Object {
+            "behavior": 0,
+            "grantees": Array [
+              Object {
+                "RoleSpec": Object {
+                  "location": 93,
+                  "rolename": "anonymous",
+                  "roletype": 0,
+                },
+              },
+            ],
+            "is_grant": true,
+            "objects": Array [
+              Object {
+                "ObjectWithArgs": Object {
+                  "args_unspecified": true,
+                  "objname": Array [
+                    Object {
+                      "String": Object {
+                        "str": "auth",
+                      },
+                    },
+                    Object {
+                      "String": Object {
+                        "str": "authenticate",
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            "objtype": 7,
+            "privileges": Array [
+              Object {
+                "AccessPriv": Object {
+                  "priv_name": "execute",
+                },
+              },
+            ],
+            "targtype": 0,
+          },
+        },
+        "stmt_len": 57,
+        "stmt_location": 45,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "GrantStmt": Object {
+            "behavior": 0,
+            "grantees": Array [
+              Object {
+                "RoleSpec": Object {
+                  "location": 161,
+                  "rolename": "administrator",
+                  "roletype": 0,
+                },
+              },
+            ],
+            "is_grant": true,
+            "objects": Array [
+              Object {
+                "RangeVar": Object {
+                  "inh": true,
+                  "location": 147,
+                  "relname": "token",
+                  "relpersistence": "p",
+                  "schemaname": "auth",
+                },
+              },
+            ],
+            "objtype": 1,
+            "privileges": Array [
+              Object {
+                "AccessPriv": Object {
+                  "priv_name": "select",
+                },
+              },
+              Object {
+                "AccessPriv": Object {
+                  "priv_name": "insert",
+                },
+              },
+              Object {
+                "AccessPriv": Object {
+                  "priv_name": "update",
+                },
+              },
+              Object {
+                "AccessPriv": Object {
+                  "priv_name": "delete",
+                },
+              },
+            ],
+            "targtype": 0,
+          },
+        },
+        "stmt_len": 71,
+        "stmt_location": 103,
+      },
+    },
+  ],
+  "stderr": "",
+}
+`;
+
+exports[`grants parse and deparse 2`] = `
+"GRANT USAGE ON SCHEMA users TO \\"administrator\\";
+GRANT EXECUTE ON FUNCTION \\"auth\\".\\"authenticate\\" TO \\"anonymous\\";
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE \\"auth\\" . \\"token\\" TO \\"administrator\\";"
+`;

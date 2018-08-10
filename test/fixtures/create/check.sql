@@ -29,4 +29,7 @@ CREATE TABLE boomin (d date, CHECK (true) NO INHERIT NOT VALID);
 ALTER TABLE checkitout
   ADD CHECK (d between '2010-01-01'::date and '2010-12-31'::date) NOT VALID;
 
+ALTER TABLE checkitout2
+  ADD CHECK (d NOT BETWEEN '2010-01-01'::date and '2010-12-31'::date) NOT VALID;
+
 create table atacc3 (test3 int) inherits (atacc1, atacc2);

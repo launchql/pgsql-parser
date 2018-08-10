@@ -1,67 +1,18 @@
 import _ from 'lodash';
 import { format } from 'util';
+import { objtypeName, objtypeIs } from './types';
 const dotty = require('dotty');
 
 const CONSTRAINT_TYPES = [
   'NULL',
   'NOT NULL',
   'DEFAULT',
+  null,
   'CHECK',
   'PRIMARY KEY',
   'UNIQUE',
   'EXCLUDE',
   'REFERENCES'
-];
-
-const POSTGRES_TYPES = [
-  'AGGREGATE',
-  '',
-  '',
-  '',
-  'CAST',
-  'COLUMN',
-  'COLLATION',
-  'CONVERSION',
-  'DATABASE',
-  '',
-  '',
-  'DOMAIN',
-  'CONSTRAINT', // ON DOMAIN
-  '',
-  'EXTENSION',
-  'FOREIGN DATA WRAPPER',
-  'SERVER',
-  'FOREIGN TABLE',
-  'FUNCTION',
-  'INDEX',
-  'LANGUAGE',
-  'LARGE OBJECT',
-  'MATERIALIZED VIEW',
-  'OPERATOR CLASS',
-  'OPERATOR',
-  'OPERATOR FAMILY',
-  'POLICY',
-  'ROLE',
-  'RULE',
-  'SCHEMA',
-  'SEQUENCE',
-  'CONSTRAINT',
-  'TABLE',
-  'TABLESPACE',
-  'TRANSFORM',
-  'TRIGGER',
-  'TEXT SEARCH CONFIGURATION',
-  'TEXT SEARCH DICTIONARY',
-  'TEXT SEARCH PARSER',
-  'TEXT SEARCH TEMPLATE',
-  'TYPE',
-  '',
-  'VIEW',
-  '',
-  '',
-  '',
-  '',
-  ''
 ];
 
 const { keys } = _;
@@ -225,6 +176,10 @@ export default class Deparser {
     return this[type](node, context);
   }
 
+  ['RawStmt'](node) {
+    return this.deparse(node.stmt);
+  }
+
   ['A_Expr'](node, context) {
     const output = [];
 
@@ -279,7 +234,10 @@ export default class Deparser {
         return format('%s %s (%s)', this.deparse(node.lexpr, context), operator, this.list(node.rexpr, context));
       }
 
-      case 7: // AEXPR_LIKE
+      case 7:
+        return fail('A_Expr', node);
+
+      case 8:
         output.push(this.deparse(node.lexpr, context));
 
         if (node.name[0].String.str === '!~~') {
@@ -290,7 +248,8 @@ export default class Deparser {
 
         return output.join(' ');
 
-      case 8: // AEXPR_ILIKE
+      case 9:
+
         output.push(this.deparse(node.lexpr, context));
 
         if (node.name[0].String.str === '!~~*') {
@@ -301,11 +260,19 @@ export default class Deparser {
 
         return output.join(' ');
 
-      case 9: // AEXPR_SIMILAR
+      case 10:
         // SIMILAR TO emits a similar_escape FuncCall node with the first argument
         output.push(this.deparse(node.lexpr, context));
 
-        if (this.deparse(node.rexpr.FuncCall.args[1].Null, context)) {
+        if (node.name[0].String.str === '!~') {
+          if (this.deparse(node.rexpr.FuncCall.args[1].Null, context)) {
+            output.push(format('NOT SIMILAR TO %s', this.deparse(node.rexpr.FuncCall.args[0], context)));
+          } else {
+            output.push(format('NOT SIMILAR TO %s ESCAPE %s',
+                               this.deparse(node.rexpr.FuncCall.args[0], context),
+                               this.deparse(node.rexpr.FuncCall.args[1], context)));
+          }
+        } else if (this.deparse(node.rexpr.FuncCall.args[1].Null, context)) {
           output.push(format('SIMILAR TO %s', this.deparse(node.rexpr.FuncCall.args[0], context)));
         } else {
           output.push(format('SIMILAR TO %s ESCAPE %s',
@@ -315,12 +282,12 @@ export default class Deparser {
 
         return output.join(' ');
 
-      case 10: // AEXPR_BETWEEN TODO(zhm) untested
+      case 11:
         output.push(this.deparse(node.lexpr, context));
         output.push(format('BETWEEN %s AND %s', this.deparse(node.rexpr[0], context), this.deparse(node.rexpr[1], context)));
         return output.join(' ');
 
-      case 11: // AEXPR_NOT_BETWEEN TODO(zhm) untested
+      case 12:
         output.push(this.deparse(node.lexpr, context));
         output.push(format('NOT BETWEEN %s AND %s', this.deparse(node.rexpr[0], context), this.deparse(node.rexpr[1], context)));
         return output.join(' ');
@@ -471,6 +438,28 @@ export default class Deparser {
     return output.join(' ');
   }
 
+  ['RenameStmt'](node) {
+    const output = [ ];
+
+    if (!objtypeIs(node.renameType, 'OBJECT_COLUMN')) {
+      throw new Error('renameType not yet implemented');
+    }
+    if (!objtypeIs(node.relationType, 'OBJECT_TABLE')) {
+      throw new Error('relationType not yet implemented');
+    }
+
+    output.push('ALTER');
+    output.push('TABLE');
+    output.push(this.deparse(node.relation));
+    output.push('RENAME');
+    output.push('COLUMN');
+    output.push(node.subname);
+    output.push('TO');
+    output.push(node.newname);
+
+    return output.join(' ');
+  }
+
   ['ColumnDef'](node) {
     const output = [ this.quote(node.colname) ];
 
@@ -494,6 +483,22 @@ export default class Deparser {
     return _.compact(output).join(' ');
   }
 
+  ['SQLValueFunction'](node) {
+    if (node.op === 0) {
+      return 'CURRENT_DATE';
+    }
+    if (node.op === 3) {
+      return 'CURRENT_TIMESTAMP';
+    }
+    if (node.op === 10) {
+      return 'CURRENT_USER';
+    }
+    if (node.op === 12) {
+      return 'SESSION_USER';
+    }
+    throw new Error(`op=${node.op} SQLValueFunction not implemented`);
+  }
+
   ['ColumnRef'](node, context) {
     const KEYWORDS = [ 'old', 'new' ];
     const fields = node.fields.map(field => {
@@ -515,77 +520,55 @@ export default class Deparser {
 
     output.push('COMMENT');
     output.push('ON');
-    output.push(POSTGRES_TYPES[node.objtype]);
+    output.push(objtypeName(node.objtype));
 
-    if (node.objtype === 4) {
-      // CAST
+    if (objtypeIs(node.objtype, 'OBJECT_CAST')) {
       output.push('(');
-      output.push(this.listQuotes(node.objname, '.'));
+      output.push(this.deparse(node.object[0]));
       output.push('AS');
-      output.push(this.list(node.objargs));
+      output.push(this.deparse(node.object[1]));
       output.push(')');
-    } else if (node.objtype === 12) {
-      // CONSTRAINT ON Domain
-      // COMMENT ON CONSTRAINT dom_col_constr ON DOMAIN dom IS 'Constrains col of domain'
-      output.push(this.listQuotes(node.objargs));
+    } else if (objtypeIs(node.objtype, 'OBJECT_DOMCONSTRAINT')) {
+      output.push(this.deparse(node.object[1]));
       output.push('ON');
       output.push('DOMAIN');
-      output.push(this.listQuotes(node.objname));
-    } else if (node.objtype === 23 || node.objtype === 25) {
-      // OPERATOR CLASS
-      // OPERATOR FAMILY
-      output.push(this.deparse(node.objname[1]));
+      output.push(this.deparse(node.object[0]));
+    } else if (objtypeIs(node.objtype, 'OBJECT_OPCLASS') || objtypeIs(node.objtype, 'OBJECT_OPFAMILY')) {
+      output.push(this.deparse(node.object[1]));
       output.push('USING');
-      output.push(this.deparse(node.objname[0]));
-    } else if (node.objtype === 24) {
-      // OPERATOR
-      output.push(dotty.get(node, 'objname.0.String.str'));
-
-      if (node.objargs) {
-        output.push('(');
-        output.push(node.objargs.map(arg => {
-          if (arg === null) {
-            return 'NONE';
-          }
-          return this.deparse(arg);
-        }).join(','));
-        // output.push(this.list(node.objargs));
-        output.push(')');
-      }
-    } else if (node.objtype === 26) {
-      // POLICY
-      output.push(this.deparse(node.objname[1]));
+      output.push(this.deparse(node.object[0]));
+    } else if (objtypeIs(node.objtype, 'OBJECT_OPERATOR')) {
+      output.push(this.deparse(node.object, 'noquotes'));
+    } else if (objtypeIs(node.objtype, 'OBJECT_POLICY')) {
+      output.push(this.deparse(node.object[1]));
       output.push('ON');
-      output.push(this.deparse(node.objname[0]));
-    } else if (node.objtype === 27) {
-      // ROLE
-      output.push(dotty.get(node, 'objname.0.String.str'));
-    } else if (node.objtype === 28) {
-      // RULE
-      output.push(this.deparse(node.objname[1]));
+      output.push(this.deparse(node.object[0]));
+    } else if (objtypeIs(node.objtype, 'OBJECT_ROLE')) {
+      output.push(this.deparse(node.object));
+    } else if (objtypeIs(node.objtype, 'OBJECT_RULE')) {
+      output.push(this.deparse(node.object[1]));
       output.push('ON');
-      output.push(this.deparse(node.objname[0]));
-    } else if (node.objtype === 31) {
-      // CONSTRAINT
-      output.push(this.deparse(node.objname[1]));
+      output.push(this.deparse(node.object[0]));
+    } else if (objtypeIs(node.objtype, 'OBJECT_TABCONSTRAINT')) {
+      output.push(this.deparse(node.object[1]));
       output.push('ON');
-      output.push(this.deparse(node.objname[0]));
-    } else if (node.objtype === 34) {
-      // TRANSFORM
+      output.push(this.deparse(node.object[0]));
+    } else if (objtypeIs(node.objtype, 'OBJECT_TRANSFORM')) {
       output.push('FOR');
-      output.push(this.listQuotes(node.objname));
+      output.push(this.deparse(node.object[0]));
       output.push('LANGUAGE');
-      output.push(dotty.get(node, 'objargs.0.String.str'));
-    } else if (node.objtype === 35) {
-      // TRIGGER
-      output.push(this.deparse(node.objname[1]));
+      output.push(this.deparse(node.object[1]));
+    } else if (objtypeIs(node.objtype, 'OBJECT_TRIGGER')) {
+      output.push(this.deparse(node.object[1]));
       output.push('ON');
-      output.push(this.deparse(node.objname[0]));
+      output.push(this.deparse(node.object[0]));
     } else {
-      if (node.objtype === 21) {
-        output.push(dotty.get(node, 'objname.0.Integer.ival'));
+      if (objtypeIs(node.objtype, 'OBJECT_LARGEOBJECT')) {
+        output.push(dotty.get(node, 'object.Integer.ival'));
+      } else if (node.object instanceof Array) {
+        output.push(this.listQuotes(node.object, '.'));
       } else {
-        output.push(this.listQuotes(node.objname, '.'));
+        output.push(this.deparse(node.object));
       }
 
       if (node.objargs) {
@@ -594,7 +577,9 @@ export default class Deparser {
         output.push(')');
       }
     }
+
     output.push('IS');
+
     if (node.comment) {
       output.push(`E'${node.comment}'`);
     } else {
@@ -1336,6 +1321,56 @@ export default class Deparser {
     return output.join(' ');
   }
 
+  ['CreateExtensionStmt'](node) {
+    const output = [];
+    output.push('CREATE EXTENSION');
+    if (node.if_not_exists) {
+      output.push('IF NOT EXISTS');
+    }
+    output.push(this.quote(node.extname));
+    if (node.options) {
+      node.options.forEach(opt => {
+        if (opt.DefElem.defname === 'cascade' && opt.DefElem.arg.Integer.ival === 1) {
+          output.push('CASCADE');
+        }
+      });
+    }
+    return output.join(' ');
+  }
+
+  ['DropStmt'](node) {
+    const output = [];
+    output.push('DROP');
+    output.push(objtypeName(node.removeType));
+    if (node.missing_ok) {
+      output.push('IF EXISTS');
+    }
+    output.push(this.listQuotes(node.objects));
+    if (node.behavior) {
+      output.push('CASCADE');
+    }
+    return output.join(' ');
+  }
+
+  ['CreatePolicyStmt'](node) {
+    const output = [];
+    output.push('CREATE POLICY');
+    output.push(this.quote(node.policy_name));
+    if (node.table) {
+      output.push('ON');
+      output.push(this.deparse(node.table));
+    }
+    if (node.cmd_name) {
+      output.push('FOR');
+      output.push(node.cmd_name.toUpperCase());
+    }
+    output.push('TO');
+    output.push(this.list(node.roles));
+    output.push('USING');
+    output.push(this.deparse(node.qual));
+    return output.join(' ');
+  }
+
   ['CreateTrigStmt'](node) {
     const output = [];
 
@@ -1399,6 +1434,17 @@ export default class Deparser {
     output.push(this.deparse(node.relation));
     output.push('\n');
 
+    if (node.transitionRels) {
+      output.push('REFERENCING');
+      node.transitionRels.forEach(({TriggerTransition}) => {
+        if (TriggerTransition.isNew === true && TriggerTransition.isTable === true) {
+          output.push(`NEW TABLE AS ${TriggerTransition.name}`);
+        } else if (TriggerTransition.isNew !== true && TriggerTransition.isTable === true) {
+          output.push(`OLD TABLE AS ${TriggerTransition.name}`);
+        }
+      });
+    }
+
     // opts
     if (node.deferrable || node.initdeferred) {
       if (node.deferrable) {
@@ -1452,6 +1498,7 @@ export default class Deparser {
     } else {
       output.push('CREATE TABLE');
     }
+
     output.push(this.deparse(node.relation));
     output.push('(');
     output.push(this.list(node.tableElts));
@@ -1572,7 +1619,7 @@ export default class Deparser {
 
     const constraint = CONSTRAINT_TYPES[node.contype];
     if (!constraint) {
-      throw new Error('type not implemented: ' + node.contype);
+      throw new Error('contraint type not implemented: ' + node.contype);
     }
 
     if (constraint === 'REFERENCES') {
@@ -1817,7 +1864,14 @@ export default class Deparser {
             break;
 
           case 'set':
-            output.push(this.deparse(option));
+            if (
+              dotty.get(option, 'DefElem.arg.VariableSetStmt.kind') === 2 &&
+              dotty.get(option, 'DefElem.arg.VariableSetStmt.name') === 'search_path'
+            ) {
+              output.push('SET search_path FROM CURRENT');
+            } else {
+              output.push(this.deparse(option));
+            }
             break;
 
           case 'volatility':
@@ -1838,7 +1892,13 @@ export default class Deparser {
     if (node.replace) {
       output.push('OR REPLACE');
     }
+
     output.push('SCHEMA');
+
+    if (node.if_not_exists) {
+      output.push('IF NOT EXISTS');
+    }
+
     output.push(node.schemaname);
     return output.join(' ');
   }
@@ -2001,7 +2061,7 @@ export default class Deparser {
             break;
           case 'password':
             output.push('PASSWORD');
-            value = dotty.get(node, `options.${i}.DefElem.arg.String.str`);
+            value = dotty.get(node, `options.${i}.DefElem.arg.A_Const.val.String.str`);
             output.push(`'${value}'`);
             break;
           case 'adminmembers':
@@ -2149,6 +2209,28 @@ export default class Deparser {
 
     if (node.sortby_nulls === 2) {
       output.push('NULLS LAST');
+    }
+
+    return output.join(' ');
+  }
+
+  ['ObjectWithArgs'](node, context) {
+    const output = [];
+
+    if (context === 'noquotes') {
+      output.push(this.list(node.objname));
+    } else {
+      output.push(this.listQuotes(node.objname, '.'));
+    }
+    if (node.objargs && node.objargs.length) {
+      output.push('(');
+      output.push(node.objargs.map(arg => {
+        if (arg === null) {
+          return 'NONE';
+        }
+        return this.deparse(arg);
+      }).join(','));
+      output.push(')');
     }
 
     return output.join(' ');

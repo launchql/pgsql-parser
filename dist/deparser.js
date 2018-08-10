@@ -12,14 +12,13 @@ var _lodash2 = _interopRequireDefault(_lodash);
 
 var _util = require('util');
 
+var _types = require('./types');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const dotty = require('dotty');
 
-const CONSTRAINT_TYPES = ['NULL', 'NOT NULL', 'DEFAULT', 'CHECK', 'PRIMARY KEY', 'UNIQUE', 'EXCLUDE', 'REFERENCES'];
-
-const POSTGRES_TYPES = ['AGGREGATE', '', '', '', 'CAST', 'COLUMN', 'COLLATION', 'CONVERSION', 'DATABASE', '', '', 'DOMAIN', 'CONSTRAINT', // ON DOMAIN
-'', 'EXTENSION', 'FOREIGN DATA WRAPPER', 'SERVER', 'FOREIGN TABLE', 'FUNCTION', 'INDEX', 'LANGUAGE', 'LARGE OBJECT', 'MATERIALIZED VIEW', 'OPERATOR CLASS', 'OPERATOR', 'OPERATOR FAMILY', 'POLICY', 'ROLE', 'RULE', 'SCHEMA', 'SEQUENCE', 'CONSTRAINT', 'TABLE', 'TABLESPACE', 'TRANSFORM', 'TRIGGER', 'TEXT SEARCH CONFIGURATION', 'TEXT SEARCH DICTIONARY', 'TEXT SEARCH PARSER', 'TEXT SEARCH TEMPLATE', 'TYPE', '', 'VIEW', '', '', '', '', ''];
+const CONSTRAINT_TYPES = ['NULL', 'NOT NULL', 'DEFAULT', null, 'CHECK', 'PRIMARY KEY', 'UNIQUE', 'EXCLUDE', 'REFERENCES'];
 
 const keys = _lodash2.default.keys;
 
@@ -193,6 +192,10 @@ class Deparser {
     }
 
     return this[type](node, context);
+  }
+
+  ['RawStmt'](node) {
+    return this.deparse(node.stmt);
   }
 
   ['A_Expr'](node, context) {
@@ -490,77 +493,55 @@ class Deparser {
 
     output.push('COMMENT');
     output.push('ON');
-    output.push(POSTGRES_TYPES[node.objtype]);
+    output.push((0, _types.objtypeName)(node.objtype));
 
-    if (node.objtype === 4) {
-      // CAST
+    if ((0, _types.objtypeIs)(node.objtype, 'OBJECT_CAST')) {
       output.push('(');
-      output.push(this.listQuotes(node.objname, '.'));
+      output.push(this.deparse(node.object[0]));
       output.push('AS');
-      output.push(this.list(node.objargs));
+      output.push(this.deparse(node.object[1]));
       output.push(')');
-    } else if (node.objtype === 12) {
-      // CONSTRAINT ON Domain
-      // COMMENT ON CONSTRAINT dom_col_constr ON DOMAIN dom IS 'Constrains col of domain'
-      output.push(this.listQuotes(node.objargs));
+    } else if ((0, _types.objtypeIs)(node.objtype, 'OBJECT_DOMCONSTRAINT')) {
+      output.push(this.deparse(node.object[1]));
       output.push('ON');
       output.push('DOMAIN');
-      output.push(this.listQuotes(node.objname));
-    } else if (node.objtype === 23 || node.objtype === 25) {
-      // OPERATOR CLASS
-      // OPERATOR FAMILY
-      output.push(this.deparse(node.objname[1]));
+      output.push(this.deparse(node.object[0]));
+    } else if ((0, _types.objtypeIs)(node.objtype, 'OBJECT_OPCLASS') || (0, _types.objtypeIs)(node.objtype, 'OBJECT_OPFAMILY')) {
+      output.push(this.deparse(node.object[1]));
       output.push('USING');
-      output.push(this.deparse(node.objname[0]));
-    } else if (node.objtype === 24) {
-      // OPERATOR
-      output.push(dotty.get(node, 'objname.0.String.str'));
-
-      if (node.objargs) {
-        output.push('(');
-        output.push(node.objargs.map(arg => {
-          if (arg === null) {
-            return 'NONE';
-          }
-          return this.deparse(arg);
-        }).join(','));
-        // output.push(this.list(node.objargs));
-        output.push(')');
-      }
-    } else if (node.objtype === 26) {
-      // POLICY
-      output.push(this.deparse(node.objname[1]));
+      output.push(this.deparse(node.object[0]));
+    } else if ((0, _types.objtypeIs)(node.objtype, 'OBJECT_OPERATOR')) {
+      output.push(this.deparse(node.object, 'noquotes'));
+    } else if ((0, _types.objtypeIs)(node.objtype, 'OBJECT_POLICY')) {
+      output.push(this.deparse(node.object[1]));
       output.push('ON');
-      output.push(this.deparse(node.objname[0]));
-    } else if (node.objtype === 27) {
-      // ROLE
-      output.push(dotty.get(node, 'objname.0.String.str'));
-    } else if (node.objtype === 28) {
-      // RULE
-      output.push(this.deparse(node.objname[1]));
+      output.push(this.deparse(node.object[0]));
+    } else if ((0, _types.objtypeIs)(node.objtype, 'OBJECT_ROLE')) {
+      output.push(this.deparse(node.object));
+    } else if ((0, _types.objtypeIs)(node.objtype, 'OBJECT_RULE')) {
+      output.push(this.deparse(node.object[1]));
       output.push('ON');
-      output.push(this.deparse(node.objname[0]));
-    } else if (node.objtype === 31) {
-      // CONSTRAINT
-      output.push(this.deparse(node.objname[1]));
+      output.push(this.deparse(node.object[0]));
+    } else if ((0, _types.objtypeIs)(node.objtype, 'OBJECT_TABCONSTRAINT')) {
+      output.push(this.deparse(node.object[1]));
       output.push('ON');
-      output.push(this.deparse(node.objname[0]));
-    } else if (node.objtype === 34) {
-      // TRANSFORM
+      output.push(this.deparse(node.object[0]));
+    } else if ((0, _types.objtypeIs)(node.objtype, 'OBJECT_TRANSFORM')) {
       output.push('FOR');
-      output.push(this.listQuotes(node.objname));
+      output.push(this.deparse(node.object[0]));
       output.push('LANGUAGE');
-      output.push(dotty.get(node, 'objargs.0.String.str'));
-    } else if (node.objtype === 35) {
-      // TRIGGER
-      output.push(this.deparse(node.objname[1]));
+      output.push(this.deparse(node.object[1]));
+    } else if ((0, _types.objtypeIs)(node.objtype, 'OBJECT_TRIGGER')) {
+      output.push(this.deparse(node.object[1]));
       output.push('ON');
-      output.push(this.deparse(node.objname[0]));
+      output.push(this.deparse(node.object[0]));
     } else {
-      if (node.objtype === 21) {
-        output.push(dotty.get(node, 'objname.0.Integer.ival'));
+      if ((0, _types.objtypeIs)(node.objtype, 'OBJECT_LARGEOBJECT')) {
+        output.push(dotty.get(node, 'object.Integer.ival'));
+      } else if (node.object instanceof Array) {
+        output.push(this.listQuotes(node.object, '.'));
       } else {
-        output.push(this.listQuotes(node.objname, '.'));
+        output.push(this.deparse(node.object));
       }
 
       if (node.objargs) {
@@ -569,7 +550,9 @@ class Deparser {
         output.push(')');
       }
     }
+
     output.push('IS');
+
     if (node.comment) {
       output.push(`E'${node.comment}'`);
     } else {
@@ -619,6 +602,10 @@ class Deparser {
       return `${name} = ${this.deparse(node.arg)}`;
     }
     return name;
+  }
+
+  ['DoStmt'](node) {
+    return `DO $$\n  ${dotty.get(node, 'args.0.DefElem.arg.String.str').trim()} $$`;
   }
 
   ['Float'](node) {
@@ -1301,6 +1288,42 @@ class Deparser {
     return output.join(' ');
   }
 
+  ['CreateExtensionStmt'](node) {
+    const output = [];
+    output.push('CREATE EXTENSION');
+    if (node.if_not_exists) {
+      output.push('IF NOT EXISTS');
+    }
+    output.push(this.quote(node.extname));
+    if (node.options) {
+      node.options.forEach(opt => {
+        if (opt.DefElem.defname === 'cascade' && opt.DefElem.arg.Integer.ival === 1) {
+          output.push('CASCADE');
+        }
+      });
+    }
+    return output.join(' ');
+  }
+
+  ['CreatePolicyStmt'](node) {
+    const output = [];
+    output.push('CREATE POLICY');
+    output.push(this.quote(node.policy_name));
+    if (node.table) {
+      output.push('ON');
+      output.push(this.deparse(node.table));
+    }
+    if (node.cmd_name) {
+      output.push('FOR');
+      output.push(node.cmd_name.toUpperCase());
+    }
+    output.push('TO');
+    output.push(this.list(node.roles));
+    output.push('USING');
+    output.push(this.deparse(node.qual));
+    return output.join(' ');
+  }
+
   ['CreateTrigStmt'](node) {
     const output = [];
 
@@ -1537,7 +1560,7 @@ class Deparser {
 
     const constraint = CONSTRAINT_TYPES[node.contype];
     if (!constraint) {
-      throw new Error('type not implemented: ' + node.contype);
+      throw new Error('contraint type not implemented: ' + node.contype);
     }
 
     if (constraint === 'REFERENCES') {
@@ -2107,6 +2130,28 @@ class Deparser {
 
     if (node.sortby_nulls === 2) {
       output.push('NULLS LAST');
+    }
+
+    return output.join(' ');
+  }
+
+  ['ObjectWithArgs'](node, context) {
+    const output = [];
+
+    if (context === 'noquotes') {
+      output.push(this.list(node.objname));
+    } else {
+      output.push(this.listQuotes(node.objname, '.'));
+    }
+    if (node.objargs && node.objargs.length) {
+      output.push('(');
+      output.push(node.objargs.map(arg => {
+        if (arg === null) {
+          return 'NONE';
+        }
+        return this.deparse(arg);
+      }).join(','));
+      output.push(')');
     }
 
     return output.join(' ');
