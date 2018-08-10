@@ -1,4 +1,9 @@
-export const TYPES = {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+const TYPES = exports.TYPES = {
   OBJECT_ACCESS_METHOD: 0,
   OBJECT_AGGREGATE: 1,
   OBJECT_CAST: 5,
@@ -39,7 +44,7 @@ export const TYPES = {
   OBJECT_VIEW: 47
 };
 
-export const TYPE_NAMES = {
+const TYPE_NAMES = exports.TYPE_NAMES = {
   OBJECT_ACCESS_METHOD: 'ACCESS METHOD',
   OBJECT_AGGREGATE: 'AGGREGATE',
   OBJECT_CAST: 'CAST',
@@ -83,12 +88,12 @@ export const TYPE_NAMES = {
 const _TYPE_VALUES = Object.values(TYPES);
 const _TYPE_KEYS = Object.keys(TYPES);
 
-export const objtypeIs = (objtype, name) =>
-  TYPES[name] === objtype;
+const objtypeIs = exports.objtypeIs = (objtype, name) => TYPES[name] === objtype;
 
-export const objtypeName = (arg) => {
+const objtypeName = exports.objtypeName = arg => {
   if (typeof arg === 'string') {
-    return (TYPE_NAMES[arg]);
+    return TYPE_NAMES[arg];
   }
   return TYPE_NAMES[_TYPE_KEYS[_TYPE_VALUES.indexOf(arg)]];
 };
+//# sourceMappingURL=types.js.map

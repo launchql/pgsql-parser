@@ -1,7 +1,19 @@
 import _ from 'lodash';
 import { format } from 'util';
-import { objtypeName, objtypeIs, CONSTRAINT_TYPES } from './types';
+import { objtypeName, objtypeIs } from './types';
 const dotty = require('dotty');
+
+const CONSTRAINT_TYPES = [
+  'NULL',
+  'NOT NULL',
+  'DEFAULT',
+  null,
+  'CHECK',
+  'PRIMARY KEY',
+  'UNIQUE',
+  'EXCLUDE',
+  'REFERENCES'
+];
 
 const { keys } = _;
 
@@ -461,59 +473,46 @@ export default class Deparser {
     output.push(objtypeName(node.objtype));
 
     if (objtypeIs(node.objtype, 'OBJECT_CAST')) {
-      // CAST
       output.push('(');
       output.push(this.deparse(node.object[0]));
       output.push('AS');
       output.push(this.deparse(node.object[1]));
       output.push(')');
     } else if (objtypeIs(node.objtype, 'OBJECT_DOMCONSTRAINT')) {
-      // CONSTRAINT ON Domain
-      // COMMENT ON CONSTRAINT dom_col_constr ON DOMAIN dom IS 'Constrains col of domain'
       output.push(this.deparse(node.object[1]));
       output.push('ON');
       output.push('DOMAIN');
       output.push(this.deparse(node.object[0]));
     } else if (objtypeIs(node.objtype, 'OBJECT_OPCLASS') || objtypeIs(node.objtype, 'OBJECT_OPFAMILY')) {
-      // OPERATOR CLASS
-      // OPERATOR FAMILY
       output.push(this.deparse(node.object[1]));
       output.push('USING');
       output.push(this.deparse(node.object[0]));
     } else if (objtypeIs(node.objtype, 'OBJECT_OPERATOR')) {
-      // OPERATOR
-      output.push(this.deparse(node.object));
+      output.push(this.deparse(node.object, 'noquotes'));
     } else if (objtypeIs(node.objtype, 'OBJECT_POLICY')) {
-      // POLICY
       output.push(this.deparse(node.object[1]));
       output.push('ON');
       output.push(this.deparse(node.object[0]));
     } else if (objtypeIs(node.objtype, 'OBJECT_ROLE')) {
-      // ROLE
       output.push(this.deparse(node.object));
     } else if (objtypeIs(node.objtype, 'OBJECT_RULE')) {
-      // RULE
       output.push(this.deparse(node.object[1]));
       output.push('ON');
       output.push(this.deparse(node.object[0]));
     } else if (objtypeIs(node.objtype, 'OBJECT_TABCONSTRAINT')) {
-      // CONSTRAINT
       output.push(this.deparse(node.object[1]));
       output.push('ON');
       output.push(this.deparse(node.object[0]));
     } else if (objtypeIs(node.objtype, 'OBJECT_TRANSFORM')) {
-      // TRANSFORM
       output.push('FOR');
       output.push(this.deparse(node.object[0]));
       output.push('LANGUAGE');
       output.push(this.deparse(node.object[1]));
     } else if (objtypeIs(node.objtype, 'OBJECT_TRIGGER')) {
-      // TRIGGER
       output.push(this.deparse(node.object[1]));
       output.push('ON');
       output.push(this.deparse(node.object[0]));
     } else {
-
       if (objtypeIs(node.objtype, 'OBJECT_LARGEOBJECT')) {
         output.push(dotty.get(node, 'object.Integer.ival'));
       } else if (node.object instanceof Array) {
@@ -528,7 +527,9 @@ export default class Deparser {
         output.push(')');
       }
     }
+
     output.push('IS');
+
     if (node.comment) {
       output.push(`E'${node.comment}'`);
     } else {
@@ -2124,11 +2125,15 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  // https://doxygen.postgresql.org/structObjectWithArgs.html
-  ['ObjectWithArgs'](node) {
+  ['ObjectWithArgs'](node, context) {
     const output = [];
-    output.push(this.listQuotes(node.objname, '.'));
-    if (node.objargs) {
+
+    if (context === 'noquotes') {
+      output.push(this.list(node.objname));
+    } else {
+      output.push(this.listQuotes(node.objname, '.'));
+    }
+    if (node.objargs && node.objargs.length) {
       output.push('(');
       output.push(node.objargs.map(arg => {
         if (arg === null) {
@@ -2136,7 +2141,6 @@ export default class Deparser {
         }
         return this.deparse(arg);
       }).join(','));
-      // output.push(this.list(node.objargs));
       output.push(')');
     }
 

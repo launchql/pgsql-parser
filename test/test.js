@@ -13,11 +13,11 @@ const supportedStatements = [
   'GrantRoleStmt',
   'CreateRoleStmt',
 
-  // 'AlterTableStmt',
-  // 'CreateStmt',
-  // 'CommentStmt',
+  'AlterTableStmt',
+  'CreateStmt',
+  'CommentStmt',
 
-  // 'DoStmt',
+  'DoStmt',
   'CreateTrigStmt',
   'VariableSetStmt',
   'VariableShowStmt',
