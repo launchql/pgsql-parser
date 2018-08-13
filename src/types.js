@@ -1,4 +1,19 @@
-const LIBPG_ENUMS = require('./libpg_enums.json');
+const LIBPG_ENUMS = require('./libpg_enums');
+
+// nodes/parsenodes
+// ObjectType
+//
+// nodes/parsenodes
+// VariableSetKind
+
+export const VARIABLE_TYPES = LIBPG_ENUMS['nodes/parsenodes']
+  .VariableSetKind.values.reduce((m, v, i) => {
+    if (i === 0) {
+      return m;
+    } // skip first noop
+    m[v.name] = i - 1;
+    return m;
+  }, {});
 
 export const TYPES = LIBPG_ENUMS['nodes/parsenodes']
   .ObjectType.values.reduce((m, v, i) => {
