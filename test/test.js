@@ -19,6 +19,7 @@ const supportedStatements = [
   'CreateTrigStmt',
   'VariableSetStmt',
   'VariableShowStmt',
+  'CompositeTypeStmt',
   'ConstraintStmt',
   'ReferenceConstraint',
   'TransactionStmt'
@@ -39,7 +40,8 @@ const files = []
   .concat(glob(`./test/fixtures/${pattern}`))
   .concat(glob(`./test/fixtures/alter/${pattern}`))
   .concat(glob(`./test/fixtures/comments/${pattern}`))
-  .concat(glob(`./test/fixtures/create/${pattern}`))
+  .concat(glob(`./test/fixtures/types/${pattern}`))
+  .concat(glob(`./test/fixtures/tables/${pattern}`))
   .concat(glob(`./test/fixtures/functions/${pattern}`))
   .concat(glob(`./test/fixtures/roles/${pattern}`))
   .concat(glob(`./test/fixtures/transactions/${pattern}`))
