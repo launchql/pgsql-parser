@@ -454,6 +454,19 @@ class Deparser {
     return output.join(' ');
   }
 
+  ['CompositeTypeStmt'](node) {
+    const output = [];
+
+    output.push('CREATE TYPE');
+    output.push(this.deparse(node.typevar));
+    output.push('AS');
+    output.push('(');
+    output.push(this.list(node.coldeflist));
+    output.push(')');
+
+    return output.join(' ');
+  }
+
   ['RenameStmt'](node) {
     const output = [];
 
@@ -1005,11 +1018,10 @@ class Deparser {
     }
 
     if (node.schemaname != null) {
-      output.push(this.quote(node.schemaname));
-      output.push('.');
+      output.push(`${this.quote(node.schemaname)}.${this.quote(node.relname)}`);
+    } else {
+      output.push(this.quote(node.relname));
     }
-
-    output.push(this.quote(node.relname));
 
     if (node.alias) {
       output.push(this.deparse(node.alias));

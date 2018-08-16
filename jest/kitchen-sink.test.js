@@ -1,6 +1,7 @@
 const parser = require('../src');
 import { cleanTree, cleanLines } from './utils';
 import { readFileSync } from 'fs';
+import { resolve } from 'path';
 import { sync as glob } from 'glob';
 
 const FIXTURE_DIR = `${__dirname}/../test/fixtures`;
@@ -13,7 +14,6 @@ export const check = (file) => {
   expect(cleanLines(sql)).toMatchSnapshot();
   expect(cleanTree(parser.parse(sql))).toEqual(cleanTree(tree));
 };
-
 describe('kitchen sink', () => {
   it('alter', () => {
     check('alter/alter.sql');
@@ -21,43 +21,55 @@ describe('kitchen sink', () => {
   it('comments', () => {
     check('comments/custom.sql');
   });
-  describe('create', () => {
+  it('policies', () => {
+    check('policies/custom.sql');
+  });
+  it('grants', () => {
+    check('grants/custom.sql');
+  });
+  it('types', () => {
+    check('types/composite.sql');
+  });
+  it('do stmt', () => {
+    const dosql = readFileSync(resolve(__dirname + '/../test/fixtures/do/custom.sql')).toString();
+    const tree = parser.parse(dosql);
+    expect(tree).toMatchSnapshot();
+    const sql = parser.deparse(tree.query);
+    expect(cleanLines(sql)).toMatchSnapshot();
+    expect(cleanTree(parser.parse(cleanLines(sql)))).toEqual(cleanTree(parser.parse(cleanLines(dosql))));
+  });
+  describe('tables', () => {
+    it('custom', () => {
+      check('tables/custom.sql');
+    });
     it('check', () => {
-      check('create/check.sql');
+      check('tables/check.sql');
     });
     it('defaults', () => {
-      check('create/defaults.sql');
+      check('tables/defaults.sql');
     });
     it('exclude', () => {
-      check('create/exclude.sql');
+      check('tables/exclude.sql');
     });
     it('foreign', () => {
-      check('create/foreign.sql');
+      check('tables/foreign.sql');
     });
     it('nulls', () => {
-      check('create/nulls.sql');
+      check('tables/nulls.sql');
     });
     it('on_delete', () => {
-      check('create/on_delete.sql');
+      check('tables/on_delete.sql');
     });
     it('on_update', () => {
-      check('create/on_update.sql');
+      check('tables/on_update.sql');
     });
     it('unique', () => {
-      check('create/unique.sql');
+      check('tables/unique.sql');
     });
   });
   describe('functions', () => {
     it('basic', () => {
       check('functions/basic.sql');
-    });
-    it('do', () => {
-      const dosql = readFileSync(__dirname + '/fixtures/do.sql').toString();
-      const tree = parser.parse(dosql);
-      expect(tree).toMatchSnapshot();
-      const sql = parser.deparse(tree.query);
-      expect(cleanLines(sql)).toMatchSnapshot();
-      expect(cleanTree(parser.parse(cleanLines(sql)))).toEqual(cleanTree(parser.parse(cleanLines(dosql))));
     });
     it('basic', () => {
       check('functions/basic.sql');
