@@ -474,7 +474,7 @@ class Deparser {
     output.push(this.deparse(node.typevar));
     output.push('AS');
     output.push('(');
-    output.push(this.list(node.coldeflist, ',', '\t'));
+    output.push(this.list(node.coldeflist, ',\n', '\t'));
     output.push(')');
 
     return output.join(' ');
@@ -1538,13 +1538,7 @@ class Deparser {
 
     output.push(this.deparse(node.relation));
     output.push('(\n');
-    node.tableElts.forEach((elt, i) => {
-      if (i === node.tableElts.length - 1) {
-        output.push(`\t${this.deparse(elt)}`);
-      } else {
-        output.push(`\t${this.deparse(elt)},\n`);
-      }
-    });
+    output.push(this.list(node.tableElts, ',\n', '\t'));
     output.push('\n)');
 
     if (relpersistence === 'p' && node.hasOwnProperty('inhRelations')) {

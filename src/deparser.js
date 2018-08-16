@@ -539,7 +539,7 @@ export default class Deparser {
     output.push(this.deparse(node.typevar));
     output.push('AS');
     output.push('(');
-    output.push(this.list(node.coldeflist, ',', '\t'));
+    output.push(this.list(node.coldeflist, ',\n', '\t'));
     output.push(')');
 
     return output.join(' ');
