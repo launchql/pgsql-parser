@@ -4,7 +4,6 @@ CREATE SCHEMA fb;
 SET search_path TO fb,"$user",public;
 CREATE EXTENSION "uuid-ossp";
 
-
 CREATE TABLE "user" (
   id            uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
   created       timestamptz NOT NULL DEFAULT now(),
