@@ -489,11 +489,11 @@ Object {
 
 exports[`kitchen sink alter 2`] = `
 "CREATE SCHEMA IF NOT EXISTS app_jobs;
-CREATE TABLE \\"app_jobs\\".\\"job_queues\\" ( \\"queue_name\\" varchar NOT NULL PRIMARY KEY, \\"job_count\\" int DEFAULT ( 0 ) NOT NULL, \\"locked_at\\" pg_catalog.timestamptz, \\"locked_by\\" varchar );
-ALTER TABLE \\"app_jobs\\".\\"job_queues\\" ENABLE ROW LEVEL SECURITY;
-CREATE TABLE \\"foo\\" ( \\"name\\" text, \\"foo_timestamp\\" timestampz DEFAULT ( CURRENT_DATE ) );
-ALTER TABLE \\"foo\\" RENAME COLUMN name TO city;
-ALTER TABLE \\"foo\\" ALTER COLUMN \\"foo_timestamp\\" DROP DEFAULT, ALTER COLUMN \\"foo_timestamp\\" TYPE pg_catalog.timestamptz USING (('epoch'::pg_catalog.timestamptz) + (((\\"foo_timestamp\\") * ('1 second'::interval)))), ALTER COLUMN \\"foo_timestamp\\" SET DEFAULT now();"
+CREATE TABLE app_jobs.job_queues ( \\"queue_name\\" varchar NOT NULL PRIMARY KEY, \\"job_count\\" int DEFAULT ( 0 ) NOT NULL, \\"locked_at\\" pg_catalog.timestamptz, \\"locked_by\\" varchar );
+ALTER TABLE app_jobs.job_queues ENABLE ROW LEVEL SECURITY;
+CREATE TABLE foo ( \\"name\\" text, \\"foo_timestamp\\" timestampz DEFAULT ( CURRENT_DATE ) );
+ALTER TABLE foo RENAME COLUMN name TO city;
+ALTER TABLE foo ALTER COLUMN \\"foo_timestamp\\" DROP DEFAULT, ALTER COLUMN \\"foo_timestamp\\" TYPE pg_catalog.timestamptz USING (('epoch'::pg_catalog.timestamptz) + (((\\"foo_timestamp\\") * ('1 second'::interval)))), ALTER COLUMN \\"foo_timestamp\\" SET DEFAULT now();"
 `;
 
 exports[`kitchen sink comments 1`] = `
@@ -2166,9 +2166,9 @@ exports[`kitchen sink fixtures complex.sql 2`] = `
 "SELECT \\"p1\\".\\"playerid\\",
 \\"f1\\".\\"playername\\",
 \\"p2\\".\\"playerid\\",
-\\"f2\\".\\"playername\\" FROM \\"player\\" AS \\"f1\\",
-\\"player\\" AS \\"f2\\",
-\\"plays\\" AS \\"p1\\" FULL OUTER JOIN \\"plays\\" AS \\"p2\\" ON (((\\"p1\\".\\"playerid\\") < (\\"p2\\".\\"playerid\\")) AND ((\\"p1\\".\\"teamid\\") = (\\"p2\\".\\"teamid\\"))) GROUP BY \\"p1\\".\\"playerid\\",
+\\"f2\\".\\"playername\\" FROM player AS \\"f1\\",
+player AS \\"f2\\",
+plays AS \\"p1\\" FULL OUTER JOIN plays AS \\"p2\\" ON (((\\"p1\\".\\"playerid\\") < (\\"p2\\".\\"playerid\\")) AND ((\\"p1\\".\\"teamid\\") = (\\"p2\\".\\"teamid\\"))) GROUP BY \\"p1\\".\\"playerid\\",
 \\"f1\\".\\"playerid\\",
 \\"p2\\".\\"playerid\\",
 \\"f2\\".\\"playerid\\" HAVING (((count(\\"p1\\".\\"playerid\\")) = (count(*))) AND ((count(\\"p2\\".\\"playerid\\")) = (count(*))) AND ((\\"p1\\".\\"playerid\\") = (\\"f1\\".\\"playerid\\")) AND ((\\"p2\\".\\"playerid\\") = (\\"f2\\".\\"playerid\\")));"
@@ -4016,10 +4016,10 @@ Object {
 `;
 
 exports[`kitchen sink fixtures custom.sql 2`] = `
-"SELECT * FROM \\"tab\\" ORDER BY \\"col\\" USING <;
-SELECT * FROM \\"tab\\" ORDER BY \\"col\\" USING >;
-SELECT * FROM \\"tab\\" ORDER BY \\"col\\" USING =;
-SELECT * FROM \\"tab\\" ORDER BY \\"col\\" USING = NULLS FIRST,
+"SELECT * FROM tab ORDER BY \\"col\\" USING <;
+SELECT * FROM tab ORDER BY \\"col\\" USING >;
+SELECT * FROM tab ORDER BY \\"col\\" USING =;
+SELECT * FROM tab ORDER BY \\"col\\" USING = NULLS FIRST,
 \\"col2\\" USING < NULLS LAST;
 SELECT mleast(VARIADIC arr := ARRAY[10, (-1), 5, 4.4]);
 SELECT encode('''123\\\\000\\\\001', 'base64');
@@ -4027,11 +4027,11 @@ SELECT 'слон';
 SELECT 'data';
 SELECT ((3) OPERATOR(pg_catalog.+) (4));
 SELECT * FROM ROWS FROM (getfoo6(1) AS (\\"fooid\\" int, \\"foosubid\\" int, \\"fooname\\" text), getfoo7(1) AS (\\"fooid\\" int, \\"foosubid\\" int, \\"fooname\\" text))  AS (\\"fooid\\" int, \\"foosubid\\" int, \\"fooname\\" text);
-SELECT \\"a\\" FROM \\"b\\" WHERE ((\\"a\\") < ((SELECT 1)));
-SELECT \\"a\\" FROM \\"b\\" WHERE \\"a\\" < ALL (SELECT 1);
-SELECT \\"a\\" FROM \\"b\\" WHERE \\"a\\" < ANY (SELECT 1);
-SELECT \\"a\\" FROM \\"b\\" WHERE EXISTS (SELECT 1);
-SELECT \\"a\\" FROM \\"b\\" WHERE ((\\"a\\") < (ARRAY (SELECT DISTINCT (SELECT 1),
+SELECT \\"a\\" FROM b WHERE ((\\"a\\") < ((SELECT 1)));
+SELECT \\"a\\" FROM b WHERE \\"a\\" < ALL (SELECT 1);
+SELECT \\"a\\" FROM b WHERE \\"a\\" < ANY (SELECT 1);
+SELECT \\"a\\" FROM b WHERE EXISTS (SELECT 1);
+SELECT \\"a\\" FROM b WHERE ((\\"a\\") < (ARRAY (SELECT DISTINCT (SELECT 1),
 (SELECT DISTINCT 1 GROUP BY 7 HAVING ((1) < ((SELECT 1)))))));
 SELECT 1 WHERE 'abc' SIMILAR TO 'abc' ESCAPE NULL;
 SELECT 1 WHERE 'abc' SIMILAR TO test('test') ESCAPE NULL;
@@ -4231,8 +4231,8 @@ Object {
 `;
 
 exports[`kitchen sink fixtures param-ref.sql 2`] = `
-"SELECT * FROM \\"table_name\\" WHERE ((\\"name\\") = (?));
-SELECT * FROM \\"table_name\\" WHERE ((\\"name\\") = ($1));
+"SELECT * FROM table_name WHERE ((\\"name\\") = (?));
+SELECT * FROM table_name WHERE ((\\"name\\") = ($1));
 SELECT $1::text AS \\"name\\";"
 `;
 
@@ -5008,9 +5008,9 @@ exports[`kitchen sink fixtures query-001.sql 2`] = `
 \\"player_teams\\" FROM (SELECT DISTINCT \\"t1\\".\\"t1player\\" AS \\"players_dist\\",
 \\"t1\\".\\"player_teams\\" FROM (SELECT \\"p\\".\\"playerid\\" AS \\"t1id\\",
 concat(\\"p\\".\\"playerid\\", ':', \\"p\\".\\"playername\\", ' ') AS \\"t1player\\",
-array_agg(\\"pl\\".\\"teamid\\" ORDER BY \\"pl\\".\\"teamid\\") AS \\"player_teams\\" FROM \\"player\\" AS \\"p\\" LEFT OUTER JOIN \\"plays\\" AS \\"pl\\" ON ((\\"p\\".\\"playerid\\") = (\\"pl\\".\\"playerid\\")) GROUP BY \\"p\\".\\"playerid\\",
+array_agg(\\"pl\\".\\"teamid\\" ORDER BY \\"pl\\".\\"teamid\\") AS \\"player_teams\\" FROM player AS \\"p\\" LEFT OUTER JOIN plays AS \\"pl\\" ON ((\\"p\\".\\"playerid\\") = (\\"pl\\".\\"playerid\\")) GROUP BY \\"p\\".\\"playerid\\",
 \\"p\\".\\"playername\\") AS \\"t1\\" INNER JOIN (SELECT \\"p\\".\\"playerid\\" AS \\"t2id\\",
-array_agg(\\"pl\\".\\"teamid\\" ORDER BY \\"pl\\".\\"teamid\\") AS \\"player_teams\\" FROM \\"player\\" AS \\"p\\" LEFT OUTER JOIN \\"plays\\" AS \\"pl\\" ON ((\\"p\\".\\"playerid\\") = (\\"pl\\".\\"playerid\\")) GROUP BY \\"p\\".\\"playerid\\",
+array_agg(\\"pl\\".\\"teamid\\" ORDER BY \\"pl\\".\\"teamid\\") AS \\"player_teams\\" FROM player AS \\"p\\" LEFT OUTER JOIN plays AS \\"pl\\" ON ((\\"p\\".\\"playerid\\") = (\\"pl\\".\\"playerid\\")) GROUP BY \\"p\\".\\"playerid\\",
 \\"p\\".\\"playername\\") AS \\"t2\\" ON (((\\"t1\\".\\"player_teams\\") = (\\"t2\\".\\"player_teams\\")) AND ((\\"t1\\".\\"t1id\\") <> (\\"t2\\".\\"t2id\\")))) AS \\"innerquery\\" GROUP BY \\"player_teams\\";"
 `;
 
@@ -6428,14 +6428,14 @@ Object {
 `;
 
 exports[`kitchen sink fixtures simple.sql 2`] = `
-"SELECT * FROM \\"table_name\\" WHERE (((\\"name\\") = ('test')) AND ((\\"num\\") > (7)) AND \\"last_name\\" LIKE ('%''test''%'));
-SELECT * FROM \\"table_name\\" WHERE (((\\"name\\") = ('test')) AND ((\\"num\\") > (7)) AND \\"last_name\\" NOT LIKE ('%''test''%'));
-SELECT * FROM \\"table_name\\" WHERE (((\\"name\\") = ('test')) AND ((\\"num\\") > (7)) AND \\"last_name\\" ILIKE ('%''test''%'));
-SELECT * FROM \\"table_name\\" WHERE (((\\"name\\") = ('test')) AND ((\\"num\\") > (7)) AND \\"last_name\\" NOT ILIKE ('%''test''%'));
-SELECT * FROM \\"table_name\\" WHERE \\"last_name\\" SIMILAR TO '%(b|d)%' ESCAPE NULL;
-SELECT * FROM \\"table_name\\" WHERE \\"last_name\\" SIMILAR TO '%(b|d)%' ESCAPE 'a';
-SELECT * FROM \\"table_name\\" WHERE \\"last_name\\" NOT SIMILAR TO '%(b|d)%' ESCAPE NULL;
-SELECT * FROM \\"table_name\\" WHERE \\"last_name\\" NOT SIMILAR TO '%(b|d)%' ESCAPE 'a';"
+"SELECT * FROM table_name WHERE (((\\"name\\") = ('test')) AND ((\\"num\\") > (7)) AND \\"last_name\\" LIKE ('%''test''%'));
+SELECT * FROM table_name WHERE (((\\"name\\") = ('test')) AND ((\\"num\\") > (7)) AND \\"last_name\\" NOT LIKE ('%''test''%'));
+SELECT * FROM table_name WHERE (((\\"name\\") = ('test')) AND ((\\"num\\") > (7)) AND \\"last_name\\" ILIKE ('%''test''%'));
+SELECT * FROM table_name WHERE (((\\"name\\") = ('test')) AND ((\\"num\\") > (7)) AND \\"last_name\\" NOT ILIKE ('%''test''%'));
+SELECT * FROM table_name WHERE \\"last_name\\" SIMILAR TO '%(b|d)%' ESCAPE NULL;
+SELECT * FROM table_name WHERE \\"last_name\\" SIMILAR TO '%(b|d)%' ESCAPE 'a';
+SELECT * FROM table_name WHERE \\"last_name\\" NOT SIMILAR TO '%(b|d)%' ESCAPE NULL;
+SELECT * FROM table_name WHERE \\"last_name\\" NOT SIMILAR TO '%(b|d)%' ESCAPE 'a';"
 `;
 
 exports[`kitchen sink functions basic 1`] = `
@@ -7719,7 +7719,7 @@ Object {
 exports[`kitchen sink grants 2`] = `
 "GRANT USAGE ON SCHEMA users TO \\"administrator\\";
 GRANT EXECUTE ON FUNCTION \\"auth\\".\\"authenticate\\" TO \\"anonymous\\";
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE \\"auth\\".\\"token\\" TO \\"administrator\\";"
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE auth.token TO \\"administrator\\";"
 `;
 
 exports[`kitchen sink policies 1`] = `
@@ -7827,7 +7827,7 @@ Object {
 }
 `;
 
-exports[`kitchen sink policies 2`] = `"CREATE POLICY \\"delete_user\\" ON \\"users\\".\\"user\\" FOR DELETE TO \\"authenticated\\" USING ((\\"id\\") = (current_setting('user.id')::uuid));"`;
+exports[`kitchen sink policies 2`] = `"CREATE POLICY \\"delete_user\\" ON users.\\"user\\" FOR DELETE TO \\"authenticated\\" USING ((\\"id\\") = (current_setting('user.id')::uuid));"`;
 
 exports[`kitchen sink roles create 1`] = `
 Object {
@@ -9479,15 +9479,15 @@ Object {
 `;
 
 exports[`kitchen sink tables check 2`] = `
-"CREATE TABLE \\"products\\" ( \\"product_no\\" int, \\"name\\" text, \\"price\\" numeric CHECK ( ((\\"price\\") > (0)) ) );
-CREATE TABLE \\"products\\" ( \\"product_no\\" int, \\"name\\" text, \\"price\\" numeric CONSTRAINT positive_price CHECK ( ((\\"price\\") > (0)) ) );
-CREATE TABLE \\"products\\" ( \\"product_no\\" int, \\"name\\" text, \\"price\\" numeric CHECK ( ((\\"price\\") > (0)) ), \\"discounted_price\\" numeric CHECK ( ((\\"discounted_price\\") > (0)) ), CHECK ( ((\\"price\\") > (\\"discounted_price\\")) ) );
-CREATE TABLE \\"products\\" ( \\"product_no\\" int, \\"name\\" text, \\"price\\" numeric CHECK ( ((\\"price\\") > (0)) ), \\"discounted_price\\" numeric CONSTRAINT check_price CHECK ( ((\\"discounted_price\\") > (0)) ), CHECK ( ((\\"price\\") > (\\"discounted_price\\")) ) );
-CREATE TABLE \\"boomin\\" ( \\"d\\" date, CHECK ( (FALSE) ) NO INHERIT NOT VALID );
-CREATE TABLE \\"boomin\\" ( \\"d\\" date, CHECK ( (TRUE) ) NO INHERIT NOT VALID );
-ALTER TABLE \\"checkitout\\" ADD CHECK ( \\"d\\" BETWEEN '2010-01-01'::date AND '2010-12-31'::date ) NOT VALID;
-ALTER TABLE \\"checkitout2\\" ADD CHECK ( \\"d\\" NOT BETWEEN '2010-01-01'::date AND '2010-12-31'::date ) NOT VALID;
-CREATE TABLE \\"atacc3\\" ( \\"test3\\" int ) INHERITS ( \\"atacc1\\", \\"atacc2\\" );"
+"CREATE TABLE products ( \\"product_no\\" int, \\"name\\" text, \\"price\\" numeric CHECK ( ((\\"price\\") > (0)) ) );
+CREATE TABLE products ( \\"product_no\\" int, \\"name\\" text, \\"price\\" numeric CONSTRAINT positive_price CHECK ( ((\\"price\\") > (0)) ) );
+CREATE TABLE products ( \\"product_no\\" int, \\"name\\" text, \\"price\\" numeric CHECK ( ((\\"price\\") > (0)) ), \\"discounted_price\\" numeric CHECK ( ((\\"discounted_price\\") > (0)) ), CHECK ( ((\\"price\\") > (\\"discounted_price\\")) ) );
+CREATE TABLE products ( \\"product_no\\" int, \\"name\\" text, \\"price\\" numeric CHECK ( ((\\"price\\") > (0)) ), \\"discounted_price\\" numeric CONSTRAINT check_price CHECK ( ((\\"discounted_price\\") > (0)) ), CHECK ( ((\\"price\\") > (\\"discounted_price\\")) ) );
+CREATE TABLE boomin ( \\"d\\" date, CHECK ( (FALSE) ) NO INHERIT NOT VALID );
+CREATE TABLE boomin ( \\"d\\" date, CHECK ( (TRUE) ) NO INHERIT NOT VALID );
+ALTER TABLE checkitout ADD CHECK ( \\"d\\" BETWEEN '2010-01-01'::date AND '2010-12-31'::date ) NOT VALID;
+ALTER TABLE checkitout2 ADD CHECK ( \\"d\\" NOT BETWEEN '2010-01-01'::date AND '2010-12-31'::date ) NOT VALID;
+CREATE TABLE atacc3 ( \\"test3\\" int ) INHERITS ( atacc1, atacc2 );"
 `;
 
 exports[`kitchen sink tables custom 1`] = `
@@ -9806,9 +9806,9 @@ Object {
 `;
 
 exports[`kitchen sink tables custom 2`] = `
-"ALTER TABLE \\"myschema\\".\\"role\\" ADD CONSTRAINT fk_myschema_role_actor_id FOREIGN KEY ( \\"actor_id\\" ) REFERENCES \\"actors\\".\\"actor\\" ( \\"id\\" ) ON DELETE CASCADE;
-CREATE TABLE \\"circles\\" ( \\"c\\" circle, EXCLUDE USING gist ( c WITH && ) );
-CREATE TABLE \\"actors_private\\".\\"actor_info\\" ( \\"actor_id\\" uuid PRIMARY KEY REFERENCES \\"actors\\".\\"actor\\" ( \\"id\\" ) ON DELETE CASCADE, \\"email\\" text NOT NULL UNIQUE CHECK ( ((\\"email\\") ~* ('^.+@.+\\\\..+$')) ), \\"password_hash\\" text NOT NULL );"
+"ALTER TABLE myschema.role ADD CONSTRAINT fk_myschema_role_actor_id FOREIGN KEY ( \\"actor_id\\" ) REFERENCES actors.actor ( \\"id\\" ) ON DELETE CASCADE;
+CREATE TABLE circles ( \\"c\\" circle, EXCLUDE USING gist ( c WITH && ) );
+CREATE TABLE actors_private.actor_info ( \\"actor_id\\" uuid PRIMARY KEY REFERENCES actors.actor ( \\"id\\" ) ON DELETE CASCADE, \\"email\\" text NOT NULL UNIQUE CHECK ( ((\\"email\\") ~* ('^.+@.+\\\\..+$')) ), \\"password_hash\\" text NOT NULL );"
 `;
 
 exports[`kitchen sink tables defaults 1`] = `
@@ -9932,7 +9932,7 @@ Object {
 }
 `;
 
-exports[`kitchen sink tables defaults 2`] = `"CREATE TABLE \\"customer_product_categories\\" ( \\"id\\" serial PRIMARY KEY, \\"name\\" text NOT NULL, \\"effective\\" tstzrange DEFAULT ( '[-infinity,infinity]' ) );"`;
+exports[`kitchen sink tables defaults 2`] = `"CREATE TABLE customer_product_categories ( \\"id\\" serial PRIMARY KEY, \\"name\\" text NOT NULL, \\"effective\\" tstzrange DEFAULT ( '[-infinity,infinity]' ) );"`;
 
 exports[`kitchen sink tables exclude 1`] = `
 Object {
@@ -10188,8 +10188,8 @@ Object {
 `;
 
 exports[`kitchen sink tables exclude 2`] = `
-"CREATE TABLE \\"circles\\" ( \\"c\\" circle, EXCLUDE USING gist ( c WITH && ) );
-CREATE TABLE \\"customer_product_categories\\" ( \\"id\\" serial PRIMARY KEY, \\"name\\" text NOT NULL, \\"effective\\" tstzrange DEFAULT ( '[-infinity,infinity]' ), EXCLUDE USING gist ( lower(\\"name\\") WITH = , effective WITH && ) );"
+"CREATE TABLE circles ( \\"c\\" circle, EXCLUDE USING gist ( c WITH && ) );
+CREATE TABLE customer_product_categories ( \\"id\\" serial PRIMARY KEY, \\"name\\" text NOT NULL, \\"effective\\" tstzrange DEFAULT ( '[-infinity,infinity]' ), EXCLUDE USING gist ( lower(\\"name\\") WITH = , effective WITH && ) );"
 `;
 
 exports[`kitchen sink tables foreign 1`] = `
@@ -10928,12 +10928,12 @@ Object {
 `;
 
 exports[`kitchen sink tables foreign 2`] = `
-"CREATE TABLE \\"orders\\" ( \\"order_id\\" int PRIMARY KEY, \\"product_no\\" int REFERENCES \\"products\\" ( \\"product_no\\" ), \\"quantity\\" int );
-CREATE TABLE \\"orders\\" ( \\"order_id\\" int PRIMARY KEY, \\"product_no\\" int REFERENCES \\"products\\", \\"quantity\\" int );
-CREATE TABLE \\"t1\\" ( \\"a\\" int PRIMARY KEY, \\"b\\" int, \\"c\\" int, FOREIGN KEY ( \\"b\\", \\"c\\" ) REFERENCES \\"other_table\\" ( \\"c1\\", \\"c2\\" ) );
-CREATE TABLE \\"products\\" ( \\"product_no\\" int PRIMARY KEY, \\"name\\" text, \\"price\\" numeric );
-CREATE TABLE \\"orders\\" ( \\"order_id\\" int PRIMARY KEY, \\"shipping_address\\" text );
-CREATE TABLE \\"order_items\\" ( \\"product_no\\" int REFERENCES \\"products\\", \\"order_id\\" int REFERENCES \\"orders\\", \\"quantity\\" int, PRIMARY KEY ( \\"product_no\\", \\"order_id\\" ) );"
+"CREATE TABLE orders ( \\"order_id\\" int PRIMARY KEY, \\"product_no\\" int REFERENCES products ( \\"product_no\\" ), \\"quantity\\" int );
+CREATE TABLE orders ( \\"order_id\\" int PRIMARY KEY, \\"product_no\\" int REFERENCES products, \\"quantity\\" int );
+CREATE TABLE t1 ( \\"a\\" int PRIMARY KEY, \\"b\\" int, \\"c\\" int, FOREIGN KEY ( \\"b\\", \\"c\\" ) REFERENCES other_table ( \\"c1\\", \\"c2\\" ) );
+CREATE TABLE products ( \\"product_no\\" int PRIMARY KEY, \\"name\\" text, \\"price\\" numeric );
+CREATE TABLE orders ( \\"order_id\\" int PRIMARY KEY, \\"shipping_address\\" text );
+CREATE TABLE order_items ( \\"product_no\\" int REFERENCES products, \\"order_id\\" int REFERENCES orders, \\"quantity\\" int, PRIMARY KEY ( \\"product_no\\", \\"order_id\\" ) );"
 `;
 
 exports[`kitchen sink tables nulls 1`] = `
@@ -11323,9 +11323,9 @@ Object {
 `;
 
 exports[`kitchen sink tables nulls 2`] = `
-"CREATE TABLE \\"products\\" ( \\"product_no\\" int NOT NULL, \\"name\\" text NOT NULL, \\"price\\" numeric );
-CREATE TABLE \\"products\\" ( \\"product_no\\" int NULL, \\"name\\" text NULL, \\"price\\" numeric NULL );
-CREATE TABLE \\"products\\" ( \\"product_no\\" int NOT NULL, \\"name\\" text NOT NULL, \\"price\\" numeric NOT NULL CHECK ( ((\\"price\\") > (0)) ) );"
+"CREATE TABLE products ( \\"product_no\\" int NOT NULL, \\"name\\" text NOT NULL, \\"price\\" numeric );
+CREATE TABLE products ( \\"product_no\\" int NULL, \\"name\\" text NULL, \\"price\\" numeric NULL );
+CREATE TABLE products ( \\"product_no\\" int NOT NULL, \\"name\\" text NOT NULL, \\"price\\" numeric NOT NULL CHECK ( ((\\"price\\") > (0)) ) );"
 `;
 
 exports[`kitchen sink tables on_delete 1`] = `
@@ -11489,7 +11489,7 @@ Object {
 }
 `;
 
-exports[`kitchen sink tables on_delete 2`] = `"CREATE TABLE \\"order_items\\" ( \\"product_no\\" int REFERENCES \\"products\\" ON DELETE RESTRICT, \\"order_id\\" int REFERENCES \\"orders\\" ON DELETE CASCADE, \\"quantity\\" int, PRIMARY KEY ( \\"product_no\\", \\"order_id\\" ) );"`;
+exports[`kitchen sink tables on_delete 2`] = `"CREATE TABLE order_items ( \\"product_no\\" int REFERENCES products ON DELETE RESTRICT, \\"order_id\\" int REFERENCES orders ON DELETE CASCADE, \\"quantity\\" int, PRIMARY KEY ( \\"product_no\\", \\"order_id\\" ) );"`;
 
 exports[`kitchen sink tables on_update 1`] = `
 Object {
@@ -11652,7 +11652,7 @@ Object {
 }
 `;
 
-exports[`kitchen sink tables on_update 2`] = `"CREATE TABLE \\"order_items\\" ( \\"product_no\\" int REFERENCES \\"products\\" ON UPDATE RESTRICT, \\"order_id\\" int REFERENCES \\"orders\\" ON UPDATE CASCADE, \\"quantity\\" int, PRIMARY KEY ( \\"product_no\\", \\"order_id\\" ) );"`;
+exports[`kitchen sink tables on_update 2`] = `"CREATE TABLE order_items ( \\"product_no\\" int REFERENCES products ON UPDATE RESTRICT, \\"order_id\\" int REFERENCES orders ON UPDATE CASCADE, \\"quantity\\" int, PRIMARY KEY ( \\"product_no\\", \\"order_id\\" ) );"`;
 
 exports[`kitchen sink tables unique 1`] = `
 Object {
@@ -12079,10 +12079,10 @@ Object {
 `;
 
 exports[`kitchen sink tables unique 2`] = `
-"CREATE TABLE \\"products\\" ( \\"product_no\\" int UNIQUE, \\"name\\" text, \\"price\\" numeric );
-CREATE TABLE \\"products\\" ( \\"product_no\\" int, \\"name\\" text, \\"price\\" numeric, UNIQUE ( \\"product_no\\" ) );
-CREATE TABLE \\"example\\" ( \\"a\\" int, \\"b\\" int, \\"c\\" int, UNIQUE ( \\"a\\", \\"c\\" ) );
-CREATE TABLE \\"products\\" ( \\"product_no\\" int CONSTRAINT must_be_different UNIQUE, \\"name\\" text, \\"price\\" numeric );"
+"CREATE TABLE products ( \\"product_no\\" int UNIQUE, \\"name\\" text, \\"price\\" numeric );
+CREATE TABLE products ( \\"product_no\\" int, \\"name\\" text, \\"price\\" numeric, UNIQUE ( \\"product_no\\" ) );
+CREATE TABLE example ( \\"a\\" int, \\"b\\" int, \\"c\\" int, UNIQUE ( \\"a\\", \\"c\\" ) );
+CREATE TABLE products ( \\"product_no\\" int CONSTRAINT must_be_different UNIQUE, \\"name\\" text, \\"price\\" numeric );"
 `;
 
 exports[`kitchen sink transactions begin_commit 1`] = `
@@ -12182,7 +12182,7 @@ Object {
 
 exports[`kitchen sink transactions begin_commit 2`] = `
 "BEGIN;
-CREATE TABLE \\"products\\" ( \\"product_no\\" int, \\"name\\" text );
+CREATE TABLE products ( \\"product_no\\" int, \\"name\\" text );
 COMMIT;"
 `;
 
@@ -12702,53 +12702,53 @@ Object {
 
 exports[`kitchen sink triggers create 2`] = `
 "CREATE TRIGGER \\"_100_timestamps\\"
-BEFORE INSERT OR UPDATE ON \\"app_jobs\\".\\"jobs\\"
+BEFORE INSERT OR UPDATE ON app_jobs.jobs
 FOR EACH ROW
 EXECUTE PROCEDURE \\"app_jobs\\". \\"update_timestamps\\" (  );
 CREATE TRIGGER \\"_500_increase_job_queue_count\\"
-AFTER INSERT ON \\"app_jobs\\".\\"jobs\\"
+AFTER INSERT ON app_jobs.jobs
 FOR EACH ROW
 EXECUTE PROCEDURE \\"app_jobs\\". \\"jobs__increase_job_queue_count\\" (  );
 CREATE TRIGGER \\"_500_decrease_job_queue_count\\"
-BEFORE DELETE ON \\"app_jobs\\".\\"jobs\\"
+BEFORE DELETE ON app_jobs.jobs
 FOR EACH ROW
 EXECUTE PROCEDURE \\"app_jobs\\". \\"jobs__decrease_job_queue_count\\" (  );
 CREATE TRIGGER \\"_900_notify_worker\\"
-AFTER INSERT ON \\"app_jobs\\".\\"jobs\\"
+AFTER INSERT ON app_jobs.jobs
 FOR EACH STATEMENT
 EXECUTE PROCEDURE \\"app_jobs\\". \\"do_notify\\" ( 'jobs:insert' );
 CREATE TRIGGER \\"check_update\\"
-BEFORE UPDATE OF balance ON \\"accounts\\"
+BEFORE UPDATE OF balance ON accounts
 FOR EACH ROW
 EXECUTE PROCEDURE \\"check_account_update\\" (  );
 CREATE TRIGGER \\"check_update\\"
-BEFORE UPDATE ON \\"accounts\\"
+BEFORE UPDATE ON accounts
 FOR EACH ROW
 EXECUTE PROCEDURE \\"check_account_update\\" (  );
 CREATE TRIGGER \\"check_update\\"
-BEFORE UPDATE ON \\"accounts\\"
+BEFORE UPDATE ON accounts
 FOR EACH ROW
 WHEN ( OLD.\\"balance\\" IS DISTINCT FROM NEW.\\"balance\\" )
 EXECUTE PROCEDURE \\"check_account_update\\" (  );
 CREATE TRIGGER \\"log_update\\"
-AFTER UPDATE ON \\"accounts\\"
+AFTER UPDATE ON accounts
 FOR EACH ROW
 WHEN ( OLD.* IS DISTINCT FROM NEW.* )
 EXECUTE PROCEDURE \\"log_account_update\\" (  );
 CREATE TRIGGER \\"view_insert\\"
-INSTEAD OF INSERT ON \\"my_view\\"
+INSTEAD OF INSERT ON my_view
 FOR EACH ROW
 EXECUTE PROCEDURE \\"view_insert_row\\" (  );
 CREATE TRIGGER \\"transfer_insert\\"
-AFTER INSERT ON \\"transfer\\"
+AFTER INSERT ON transfer
 REFERENCING NEW TABLE AS inserted FOR EACH STATEMENT
 EXECUTE PROCEDURE \\"check_transfer_balances_to_zero\\" (  );
 CREATE TRIGGER \\"paired_items_update\\"
-AFTER UPDATE ON \\"paired_items\\"
+AFTER UPDATE ON paired_items
 REFERENCING NEW TABLE AS newtab OLD TABLE AS oldtab FOR EACH ROW
 EXECUTE PROCEDURE \\"check_matching_pairs\\" (  );
 CREATE TRIGGER \\"paired_items_update\\"
-AFTER UPDATE ON \\"paired_items\\"
+AFTER UPDATE ON paired_items
 REFERENCING OLD TABLE AS oldtab NEW TABLE AS newtab FOR EACH ROW
 EXECUTE PROCEDURE \\"check_matching_pairs\\" (  );"
 `;
@@ -13523,8 +13523,8 @@ CREATE SCHEMA fb;
 SET search_path = 'fb', '$user', 'public';
 CREATE EXTENSION \\"uuid-ossp\\";
 CREATE TABLE \\"user\\" ( \\"id\\" uuid PRIMARY KEY DEFAULT ( uuid_generate_v4() ), \\"created\\" timestamptz NOT NULL DEFAULT ( now() ), \\"full_name\\" text NOT NULL DEFAULT ( '' ) );
-CREATE TABLE \\"post\\" ( \\"id\\" uuid PRIMARY KEY DEFAULT ( uuid_generate_v4() ), \\"created\\" timestamptz NOT NULL DEFAULT ( now() ), \\"content\\" text NOT NULL DEFAULT ( '' ), \\"user\\" uuid REFERENCES \\"user\\" NOT NULL );
-CREATE TABLE \\"friendship\\" ( \\"first\\" uuid REFERENCES \\"user\\" NOT NULL, \\"second\\" uuid REFERENCES \\"user\\" NOT NULL, \\"created\\" timestamptz NOT NULL DEFAULT ( now() ), UNIQUE ( \\"first\\", \\"second\\" ) );
+CREATE TABLE post ( \\"id\\" uuid PRIMARY KEY DEFAULT ( uuid_generate_v4() ), \\"created\\" timestamptz NOT NULL DEFAULT ( now() ), \\"content\\" text NOT NULL DEFAULT ( '' ), \\"user\\" uuid REFERENCES \\"user\\" NOT NULL );
+CREATE TABLE friendship ( \\"first\\" uuid REFERENCES \\"user\\" NOT NULL, \\"second\\" uuid REFERENCES \\"user\\" NOT NULL, \\"created\\" timestamptz NOT NULL DEFAULT ( now() ), UNIQUE ( \\"first\\", \\"second\\" ) );
 CREATE FUNCTION check_friendship_symmetry (  ) RETURNS trigger AS $EOFCODE$
 DECLARE
 link friendship;
@@ -13538,7 +13538,7 @@ RETURN NEW;
 END
 $EOFCODE$ LANGUAGE plpgsql SET search_path FROM CURRENT;
 CREATE CONSTRAINT TRIGGER \\"friendship_symmetry\\"
-AFTER INSERT ON \\"friendship\\"
+AFTER INSERT ON friendship
 DEFERRABLE INITIALLY DEFERRED
 FOR EACH ROW
 EXECUTE PROCEDURE \\"check_friendship_symmetry\\" (  );"
@@ -13651,7 +13651,7 @@ Object {
 }
 `;
 
-exports[`kitchen sink types 2`] = `"CREATE TYPE \\"myschema\\".\\"mycustomtype\\" AS ( \\"id\\" uuid, \\"verify_code\\" text, \\"verify_code_expires_on\\" timestamptz, \\"actor_id\\" uuid );"`;
+exports[`kitchen sink types 2`] = `"CREATE TYPE myschema.mycustomtype AS ( \\"id\\" uuid, \\"verify_code\\" text, \\"verify_code_expires_on\\" timestamptz, \\"actor_id\\" uuid );"`;
 
 exports[`kitchen sink upstream upstream/abstime.sql 1`] = `
 Object {
