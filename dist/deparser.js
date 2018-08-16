@@ -20,6 +20,15 @@ const dotty = require('dotty');
 
 const CONSTRAINT_TYPES = ['NULL', 'NOT NULL', 'DEFAULT', null, 'CHECK', 'PRIMARY KEY', 'UNIQUE', 'EXCLUDE', 'REFERENCES'];
 
+// select word from pg_get_keywords() where catcode = 'R';
+const RESERVED_WORDS = ['all', 'analyse', 'analyze', 'and', 'any', 'array', 'as', 'asc', 'asymmetric', 'both', 'case', 'cast', 'check', 'collate', 'column', 'constraint', 'create', 'current_catalog', 'current_date', 'current_role', 'current_time', 'current_timestamp', 'current_user', 'default', 'deferrable', 'desc', 'distinct', 'do', 'else', 'end', 'except', 'false', 'fetch', 'for', 'foreign', 'from', 'grant', 'group', 'having', 'in', 'initially', 'intersect', 'into', 'lateral', 'leading', 'limit', 'localtime', 'localtimestamp', 'not', 'null', 'offset', 'on', 'only', 'or', 'order', 'placing', 'primary', 'references', 'returning', 'select', 'session_user', 'some', 'symmetric', 'table', 'then', 'to', 'trailing', 'true', 'union', 'unique', 'user', 'using', 'variadic', 'when', 'where', 'window', 'with'];
+
+const isReserved = value => RESERVED_WORDS.includes(value.toLowerCase());
+
+// usually the AST lowercases all the things, so if we
+// have both, the author most likely used double quotes
+const needsQuotes = value => value.match(/([a-z]+[A-Z]+|[A-Z]+[a-z]+)/);
+
 const keys = _lodash2.default.keys;
 
 
@@ -91,6 +100,24 @@ class Deparser {
     }
 
     return '"' + value + '"';
+  }
+
+  quoteIfNeeded(value) {
+    if (value == null) {
+      return null;
+    }
+
+    if (_lodash2.default.isArray(value)) {
+      return value.map(o => this.quoteIfNeeded(o));
+    }
+
+    if (isReserved(value)) {
+      return '"' + value + '"';
+    }
+    if (needsQuotes(value)) {
+      return '"' + value + '"';
+    }
+    return value;
   }
 
   // SELECT encode(E'''123\\000\\001', 'base64')
@@ -1018,9 +1045,9 @@ class Deparser {
     }
 
     if (node.schemaname != null) {
-      output.push(`${this.quote(node.schemaname)}.${this.quote(node.relname)}`);
+      output.push(`${this.quoteIfNeeded(node.schemaname)}.${this.quoteIfNeeded(node.relname)}`);
     } else {
-      output.push(this.quote(node.relname));
+      output.push(this.quoteIfNeeded(node.relname));
     }
 
     if (node.alias) {
