@@ -27,7 +27,7 @@ const isReserved = value => RESERVED_WORDS.includes(value.toLowerCase());
 
 // usually the AST lowercases all the things, so if we
 // have both, the author most likely used double quotes
-const needsQuotes = value => value.match(/([a-z]+[A-Z]+|[A-Z]+[a-z]+)/);
+const needsQuotes = value => value.match(/[a-z]+[\W\w]*[A-Z]+|[A-Z]+[\W\w]*[a-z]+/) || value.match(/\W/) || isReserved(value);
 
 const keys = _lodash2.default.keys;
 
@@ -76,12 +76,13 @@ class Deparser {
 
   list(nodes) {
     let separator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ', ';
+    let prefix = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
 
     if (!nodes) {
       return '';
     }
 
-    return this.deparseNodes(nodes).join(separator);
+    return this.deparseNodes(nodes).map(l => `${prefix}${l}`).join(separator);
   }
 
   listQuotes(nodes) {
@@ -99,21 +100,6 @@ class Deparser {
       return value.map(o => this.quote(o));
     }
 
-    return '"' + value + '"';
-  }
-
-  quoteIfNeeded(value) {
-    if (value == null) {
-      return null;
-    }
-
-    if (_lodash2.default.isArray(value)) {
-      return value.map(o => this.quoteIfNeeded(o));
-    }
-
-    if (isReserved(value)) {
-      return '"' + value + '"';
-    }
     if (needsQuotes(value)) {
       return '"' + value + '"';
     }
@@ -488,7 +474,7 @@ class Deparser {
     output.push(this.deparse(node.typevar));
     output.push('AS');
     output.push('(');
-    output.push(this.list(node.coldeflist));
+    output.push(this.list(node.coldeflist, ',\n', '\t'));
     output.push(')');
 
     return output.join(' ');
@@ -1045,9 +1031,9 @@ class Deparser {
     }
 
     if (node.schemaname != null) {
-      output.push(`${this.quoteIfNeeded(node.schemaname)}.${this.quoteIfNeeded(node.relname)}`);
+      output.push(`${this.quote(node.schemaname)}.${this.quote(node.relname)}`);
     } else {
-      output.push(this.quoteIfNeeded(node.relname));
+      output.push(this.quote(node.relname));
     }
 
     if (node.alias) {
@@ -1551,9 +1537,9 @@ class Deparser {
     }
 
     output.push(this.deparse(node.relation));
-    output.push('(');
-    output.push(this.list(node.tableElts));
-    output.push(')');
+    output.push('(\n');
+    output.push(this.list(node.tableElts, ',\n', '\t'));
+    output.push('\n)');
 
     if (relpersistence === 'p' && node.hasOwnProperty('inhRelations')) {
       output.push('INHERITS');
@@ -1944,9 +1930,10 @@ class Deparser {
     return output.join(' ');
   }
 
+  // TODO use RoleSpecType from libpg_enums
   ['RoleSpec'](node) {
     if (node.roletype === 0) {
-      return `"${node.rolename}"`;
+      return this.quote(node.rolename);
     }
     if (node.roletype === 1) {
       return 'CURRENT_USER';

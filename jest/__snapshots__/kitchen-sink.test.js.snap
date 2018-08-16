@@ -7725,9 +7725,9 @@ Object {
 `;
 
 exports[`kitchen sink grants 2`] = `
-"GRANT USAGE ON SCHEMA users TO \\"administrator\\";
-GRANT EXECUTE ON FUNCTION auth.authenticate TO \\"anonymous\\";
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE auth.token TO \\"administrator\\";"
+"GRANT USAGE ON SCHEMA users TO administrator;
+GRANT EXECUTE ON FUNCTION auth.authenticate TO anonymous;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE auth.token TO administrator;"
 `;
 
 exports[`kitchen sink policies 1`] = `
@@ -7835,7 +7835,7 @@ Object {
 }
 `;
 
-exports[`kitchen sink policies 2`] = `"CREATE POLICY delete_user ON users.\\"user\\" FOR DELETE TO \\"authenticated\\" USING ((id) = (current_setting('user.id')::uuid));"`;
+exports[`kitchen sink policies 2`] = `"CREATE POLICY delete_user ON users.\\"user\\" FOR DELETE TO authenticated USING ((id) = (current_setting('user.id')::uuid));"`;
 
 exports[`kitchen sink roles create 1`] = `
 Object {
@@ -8132,7 +8132,7 @@ CREATE ROLE \\"app_user\\" WITH LOGIN PASSWORD 'xyz';
 CREATE ROLE \\"miriam\\" WITH LOGIN PASSWORD 'jw8s0F4' VALID UNTIL '2005-01-01';
 CREATE ROLE \\"admin1\\" WITH LOGIN PASSWORD 'jw8s0F4' CREATEDB CREATEROLE INHERIT;
 CREATE ROLE \\"admin2\\" WITH NOLOGIN NOCREATEDB NOCREATEROLE;
-CREATE ROLE \\"authy\\" WITH ADMIN \\"app_authenticated\\";"
+CREATE ROLE \\"authy\\" WITH ADMIN app_authenticated;"
 `;
 
 exports[`kitchen sink roles grants 1`] = `
@@ -8244,9 +8244,9 @@ Object {
 `;
 
 exports[`kitchen sink roles grants 2`] = `
-"GRANT APP_AUTHENTICATED TO \\"app_user\\";
-GRANT APP_AUTHENTICATED, APP_ANONYMOUS TO \\"app_user\\";
-GRANT APP_AUTHENTICATED, APP_ANONYMOUS TO \\"app_user\\", \\"super_app_user\\";"
+"GRANT APP_AUTHENTICATED TO app_user;
+GRANT APP_AUTHENTICATED, APP_ANONYMOUS TO app_user;
+GRANT APP_AUTHENTICATED, APP_ANONYMOUS TO app_user, super_app_user;"
 `;
 
 exports[`kitchen sink tables check 1`] = `
@@ -13794,7 +13794,12 @@ Object {
 }
 `;
 
-exports[`kitchen sink types 2`] = `"CREATE TYPE myschema.mycustomtype AS ( id uuid, verify_code text, verify_code_expires_on timestamptz, actor_id uuid );"`;
+exports[`kitchen sink types 2`] = `
+"CREATE TYPE myschema.mycustomtype AS ( 	id uuid,
+verify_code text,
+verify_code_expires_on timestamptz,
+actor_id uuid );"
+`;
 
 exports[`kitchen sink upstream upstream/abstime.sql 1`] = `
 Object {
