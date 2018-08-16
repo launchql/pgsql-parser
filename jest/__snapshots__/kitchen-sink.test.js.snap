@@ -489,11 +489,19 @@ Object {
 
 exports[`kitchen sink alter 2`] = `
 "CREATE SCHEMA IF NOT EXISTS app_jobs;
-CREATE TABLE app_jobs.job_queues ( \\"queue_name\\" varchar NOT NULL PRIMARY KEY, \\"job_count\\" int DEFAULT ( 0 ) NOT NULL, \\"locked_at\\" pg_catalog.timestamptz, \\"locked_by\\" varchar );
+CREATE TABLE app_jobs.job_queues (
+queue_name varchar NOT NULL PRIMARY KEY,
+job_count int DEFAULT ( 0 ) NOT NULL,
+locked_at pg_catalog.timestamptz,
+locked_by varchar
+);
 ALTER TABLE app_jobs.job_queues ENABLE ROW LEVEL SECURITY;
-CREATE TABLE foo ( \\"name\\" text, \\"foo_timestamp\\" timestampz DEFAULT ( CURRENT_DATE ) );
+CREATE TABLE foo (
+name text,
+foo_timestamp timestampz DEFAULT ( CURRENT_DATE )
+);
 ALTER TABLE foo RENAME COLUMN name TO city;
-ALTER TABLE foo ALTER COLUMN \\"foo_timestamp\\" DROP DEFAULT, ALTER COLUMN \\"foo_timestamp\\" TYPE pg_catalog.timestamptz USING (('epoch'::pg_catalog.timestamptz) + (((\\"foo_timestamp\\") * ('1 second'::interval)))), ALTER COLUMN \\"foo_timestamp\\" SET DEFAULT now();"
+ALTER TABLE foo ALTER COLUMN foo_timestamp DROP DEFAULT, ALTER COLUMN foo_timestamp TYPE pg_catalog.timestamptz USING (('epoch'::pg_catalog.timestamptz) + (((foo_timestamp) * ('1 second'::interval)))), ALTER COLUMN foo_timestamp SET DEFAULT now();"
 `;
 
 exports[`kitchen sink comments 1`] = `
@@ -1502,28 +1510,28 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
 `;
 
 exports[`kitchen sink comments 2`] = `
-"COMMENT ON TABLE \\"schema\\".\\"mytable\\" IS E'@omit
+"COMMENT ON TABLE schema.mytable IS E'@omit
 Handy method to get the current user ID for use in RLS policies, etc; in GraphQL, use \`currentUser{id}\` instead.';
-COMMENT ON FUNCTION \\"app_public\\".\\"current_user_id\\" IS E'@omit
+COMMENT ON FUNCTION app_public.current_user_id IS E'@omit
 Handy method to get the current user ID for use in RLS policies, etc; in GraphQL, use \`currentUser{id}\` instead.';
 COMMENT ON ACCESS METHOD rtree IS E'R-Tree access method';
-COMMENT ON AGGREGATE \\"my_aggregate\\" ( pg_catalog.float8 ) IS E'Computes sample variance';
+COMMENT ON AGGREGATE my_aggregate ( pg_catalog.float8 ) IS E'Computes sample variance';
 COMMENT ON CAST ( text AS int4 ) IS E'Allow casts from text to int4';
 COMMENT ON COLLATION \\"fr_CA\\" IS E'Canadian French';
-COMMENT ON COLUMN \\"my_table\\".\\"my_column\\" IS E'Employee ID number';
-COMMENT ON CONVERSION \\"my_conv\\" IS E'Conversion to UTF8';
+COMMENT ON COLUMN my_table.my_column IS E'Employee ID number';
+COMMENT ON CONVERSION my_conv IS E'Conversion to UTF8';
 COMMENT ON CONSTRAINT bar_col_cons ON bar IS E'Constrains column col';
 COMMENT ON CONSTRAINT dom_col_constr ON DOMAIN dom IS E'Constrains col of domain';
 COMMENT ON DATABASE my_database IS E'Development Database';
 COMMENT ON DOMAIN my_domain IS E'Email Address Domain';
 COMMENT ON EXTENSION hstore IS E'implements the hstore data type';
 COMMENT ON FOREIGN DATA WRAPPER mywrapper IS E'my foreign data wrapper';
-COMMENT ON FOREIGN TABLE \\"my_foreign_table\\" IS E'Employee Information in other database';
-COMMENT ON FUNCTION \\"my_function\\" ( timestamp ) IS E'Returns Roman Numeral';
-COMMENT ON INDEX \\"my_index\\" IS E'Enforces uniqueness on employee ID';
+COMMENT ON FOREIGN TABLE my_foreign_table IS E'Employee Information in other database';
+COMMENT ON FUNCTION my_function ( timestamp ) IS E'Returns Roman Numeral';
+COMMENT ON INDEX my_index IS E'Enforces uniqueness on employee ID';
 COMMENT ON LANGUAGE plpython IS E'Python support for stored procedures';
 COMMENT ON LARGE OBJECT 346344 IS E'Planning document';
-COMMENT ON MATERIALIZED VIEW \\"my_matview\\" IS E'Summary of order history';
+COMMENT ON MATERIALIZED VIEW my_matview IS E'Summary of order history';
 COMMENT ON OPERATOR ^ ( text,text ) IS E'Performs intersection of two texts';
 COMMENT ON OPERATOR - ( NONE,int ) IS E'Unary minus';
 COMMENT ON OPERATOR CLASS int4ops USING btree IS E'4 byte integer operators for btrees';
@@ -1532,20 +1540,20 @@ COMMENT ON POLICY my_policy ON mytable IS E'Filter rows by users';
 COMMENT ON ROLE my_role IS E'Administration group for finance tables';
 COMMENT ON RULE my_rule ON my_table IS E'Logs updates of employee records';
 COMMENT ON SCHEMA my_schema IS E'Departmental data';
-COMMENT ON SEQUENCE \\"my_sequence\\" IS E'Used to generate primary keys';
+COMMENT ON SEQUENCE my_sequence IS E'Used to generate primary keys';
 COMMENT ON SERVER myserver IS E'my foreign server';
-COMMENT ON STATISTICS \\"my_statistics\\" IS E'Improves planner row estimations';
-COMMENT ON TABLE \\"my_schema\\".\\"my_table\\" IS E'Employee Information';
+COMMENT ON STATISTICS my_statistics IS E'Improves planner row estimations';
+COMMENT ON TABLE my_schema.my_table IS E'Employee Information';
 COMMENT ON TABLESPACE my_tablespace IS E'Tablespace for indexes';
-COMMENT ON TEXT SEARCH CONFIGURATION \\"my_config\\" IS E'Special word filtering';
-COMMENT ON TEXT SEARCH DICTIONARY \\"swedish\\" IS E'Snowball stemmer for Swedish language';
-COMMENT ON TEXT SEARCH PARSER \\"my_parser\\" IS E'Splits text into words';
-COMMENT ON TEXT SEARCH TEMPLATE \\"snowball\\" IS E'Snowball stemmer';
+COMMENT ON TEXT SEARCH CONFIGURATION my_config IS E'Special word filtering';
+COMMENT ON TEXT SEARCH DICTIONARY swedish IS E'Snowball stemmer for Swedish language';
+COMMENT ON TEXT SEARCH PARSER my_parser IS E'Splits text into words';
+COMMENT ON TEXT SEARCH TEMPLATE snowball IS E'Snowball stemmer';
 COMMENT ON TRANSFORM FOR hstore LANGUAGE plpythonu IS E'Transform between hstore and Python dict';
 COMMENT ON TRIGGER my_trigger ON my_table IS E'Used for RI';
 COMMENT ON TYPE complex IS E'Complex number data type';
-COMMENT ON VIEW \\"my_view\\" IS E'View of departmental costs';
-COMMENT ON TABLE \\"mytable\\" IS NULL;"
+COMMENT ON VIEW my_view IS E'View of departmental costs';
+COMMENT ON TABLE mytable IS NULL;"
 `;
 
 exports[`kitchen sink do stmt 1`] = `
@@ -2163,15 +2171,15 @@ Object {
 `;
 
 exports[`kitchen sink fixtures complex.sql 2`] = `
-"SELECT \\"p1\\".\\"playerid\\",
-\\"f1\\".\\"playername\\",
-\\"p2\\".\\"playerid\\",
-\\"f2\\".\\"playername\\" FROM player AS \\"f1\\",
-player AS \\"f2\\",
-plays AS \\"p1\\" FULL OUTER JOIN plays AS \\"p2\\" ON (((\\"p1\\".\\"playerid\\") < (\\"p2\\".\\"playerid\\")) AND ((\\"p1\\".\\"teamid\\") = (\\"p2\\".\\"teamid\\"))) GROUP BY \\"p1\\".\\"playerid\\",
-\\"f1\\".\\"playerid\\",
-\\"p2\\".\\"playerid\\",
-\\"f2\\".\\"playerid\\" HAVING (((count(\\"p1\\".\\"playerid\\")) = (count(*))) AND ((count(\\"p2\\".\\"playerid\\")) = (count(*))) AND ((\\"p1\\".\\"playerid\\") = (\\"f1\\".\\"playerid\\")) AND ((\\"p2\\".\\"playerid\\") = (\\"f2\\".\\"playerid\\")));"
+"SELECT p1.playerid,
+f1.playername,
+p2.playerid,
+f2.playername FROM player AS f1,
+player AS f2,
+plays AS p1 FULL OUTER JOIN plays AS p2 ON (((p1.playerid) < (p2.playerid)) AND ((p1.teamid) = (p2.teamid))) GROUP BY p1.playerid,
+f1.playerid,
+p2.playerid,
+f2.playerid HAVING (((count(p1.playerid)) = (count(*))) AND ((count(p2.playerid)) = (count(*))) AND ((p1.playerid) = (f1.playerid)) AND ((p2.playerid) = (f2.playerid)));"
 `;
 
 exports[`kitchen sink fixtures custom.sql 1`] = `
@@ -4016,22 +4024,22 @@ Object {
 `;
 
 exports[`kitchen sink fixtures custom.sql 2`] = `
-"SELECT * FROM tab ORDER BY \\"col\\" USING <;
-SELECT * FROM tab ORDER BY \\"col\\" USING >;
-SELECT * FROM tab ORDER BY \\"col\\" USING =;
-SELECT * FROM tab ORDER BY \\"col\\" USING = NULLS FIRST,
-\\"col2\\" USING < NULLS LAST;
+"SELECT * FROM tab ORDER BY col USING <;
+SELECT * FROM tab ORDER BY col USING >;
+SELECT * FROM tab ORDER BY col USING =;
+SELECT * FROM tab ORDER BY col USING = NULLS FIRST,
+col2 USING < NULLS LAST;
 SELECT mleast(VARIADIC arr := ARRAY[10, (-1), 5, 4.4]);
 SELECT encode('''123\\\\000\\\\001', 'base64');
 SELECT 'слон';
 SELECT 'data';
 SELECT ((3) OPERATOR(pg_catalog.+) (4));
-SELECT * FROM ROWS FROM (getfoo6(1) AS (\\"fooid\\" int, \\"foosubid\\" int, \\"fooname\\" text), getfoo7(1) AS (\\"fooid\\" int, \\"foosubid\\" int, \\"fooname\\" text))  AS (\\"fooid\\" int, \\"foosubid\\" int, \\"fooname\\" text);
-SELECT \\"a\\" FROM b WHERE ((\\"a\\") < ((SELECT 1)));
-SELECT \\"a\\" FROM b WHERE \\"a\\" < ALL (SELECT 1);
-SELECT \\"a\\" FROM b WHERE \\"a\\" < ANY (SELECT 1);
-SELECT \\"a\\" FROM b WHERE EXISTS (SELECT 1);
-SELECT \\"a\\" FROM b WHERE ((\\"a\\") < (ARRAY (SELECT DISTINCT (SELECT 1),
+SELECT * FROM ROWS FROM (getfoo6(1) AS (fooid int, foosubid int, fooname text), getfoo7(1) AS (fooid int, foosubid int, fooname text))  AS (fooid int, foosubid int, fooname text);
+SELECT a FROM b WHERE ((a) < ((SELECT 1)));
+SELECT a FROM b WHERE a < ALL (SELECT 1);
+SELECT a FROM b WHERE a < ANY (SELECT 1);
+SELECT a FROM b WHERE EXISTS (SELECT 1);
+SELECT a FROM b WHERE ((a) < (ARRAY (SELECT DISTINCT (SELECT 1),
 (SELECT DISTINCT 1 GROUP BY 7 HAVING ((1) < ((SELECT 1)))))));
 SELECT 1 WHERE 'abc' SIMILAR TO 'abc' ESCAPE NULL;
 SELECT 1 WHERE 'abc' SIMILAR TO test('test') ESCAPE NULL;
@@ -4231,9 +4239,9 @@ Object {
 `;
 
 exports[`kitchen sink fixtures param-ref.sql 2`] = `
-"SELECT * FROM table_name WHERE ((\\"name\\") = (?));
-SELECT * FROM table_name WHERE ((\\"name\\") = ($1));
-SELECT $1::text AS \\"name\\";"
+"SELECT * FROM table_name WHERE ((name) = (?));
+SELECT * FROM table_name WHERE ((name) = ($1));
+SELECT $1::text AS name;"
 `;
 
 exports[`kitchen sink fixtures query-001.sql 1`] = `
@@ -5004,14 +5012,14 @@ Object {
 `;
 
 exports[`kitchen sink fixtures query-001.sql 2`] = `
-"SELECT array_agg(\\"players\\"),
-\\"player_teams\\" FROM (SELECT DISTINCT \\"t1\\".\\"t1player\\" AS \\"players_dist\\",
-\\"t1\\".\\"player_teams\\" FROM (SELECT \\"p\\".\\"playerid\\" AS \\"t1id\\",
-concat(\\"p\\".\\"playerid\\", ':', \\"p\\".\\"playername\\", ' ') AS \\"t1player\\",
-array_agg(\\"pl\\".\\"teamid\\" ORDER BY \\"pl\\".\\"teamid\\") AS \\"player_teams\\" FROM player AS \\"p\\" LEFT OUTER JOIN plays AS \\"pl\\" ON ((\\"p\\".\\"playerid\\") = (\\"pl\\".\\"playerid\\")) GROUP BY \\"p\\".\\"playerid\\",
-\\"p\\".\\"playername\\") AS \\"t1\\" INNER JOIN (SELECT \\"p\\".\\"playerid\\" AS \\"t2id\\",
-array_agg(\\"pl\\".\\"teamid\\" ORDER BY \\"pl\\".\\"teamid\\") AS \\"player_teams\\" FROM player AS \\"p\\" LEFT OUTER JOIN plays AS \\"pl\\" ON ((\\"p\\".\\"playerid\\") = (\\"pl\\".\\"playerid\\")) GROUP BY \\"p\\".\\"playerid\\",
-\\"p\\".\\"playername\\") AS \\"t2\\" ON (((\\"t1\\".\\"player_teams\\") = (\\"t2\\".\\"player_teams\\")) AND ((\\"t1\\".\\"t1id\\") <> (\\"t2\\".\\"t2id\\")))) AS \\"innerquery\\" GROUP BY \\"player_teams\\";"
+"SELECT array_agg(players),
+player_teams FROM (SELECT DISTINCT t1.t1player AS players_dist,
+t1.player_teams FROM (SELECT p.playerid AS t1id,
+concat(p.playerid, ':', p.playername, ' ') AS t1player,
+array_agg(pl.teamid ORDER BY pl.teamid) AS player_teams FROM player AS p LEFT OUTER JOIN plays AS pl ON ((p.playerid) = (pl.playerid)) GROUP BY p.playerid,
+p.playername) AS t1 INNER JOIN (SELECT p.playerid AS t2id,
+array_agg(pl.teamid ORDER BY pl.teamid) AS player_teams FROM player AS p LEFT OUTER JOIN plays AS pl ON ((p.playerid) = (pl.playerid)) GROUP BY p.playerid,
+p.playername) AS t2 ON (((t1.player_teams) = (t2.player_teams)) AND ((t1.t1id) <> (t2.t2id)))) AS innerquery GROUP BY player_teams;"
 `;
 
 exports[`kitchen sink fixtures query-002.sql 1`] = `
@@ -5272,7 +5280,7 @@ Object {
 }
 `;
 
-exports[`kitchen sink fixtures query-002.sql 2`] = `"SELECT * FROM \\"Foo\\" AS \\"f1\\" WHERE ((\\"f1\\".\\"FooUID\\") = ((SELECT \\"f2\\".\\"FooUID\\" FROM \\"Foo\\" AS \\"f2\\" LEFT OUTER JOIN \\"Bar\\" AS \\"b\\" ON ((\\"f2\\".\\"BarUID\\") = (\\"b\\".\\"BarUID\\")) WHERE (\\"f2\\".\\"BarUID\\" IS NOT NULL AND \\"b\\".\\"BarUID\\" IS NULL) LIMIT 1)));"`;
+exports[`kitchen sink fixtures query-002.sql 2`] = `"SELECT * FROM \\"Foo\\" AS f1 WHERE ((f1.\\"FooUID\\") = ((SELECT f2.\\"FooUID\\" FROM \\"Foo\\" AS f2 LEFT OUTER JOIN \\"Bar\\" AS b ON ((f2.\\"BarUID\\") = (b.\\"BarUID\\")) WHERE (f2.\\"BarUID\\" IS NOT NULL AND b.\\"BarUID\\" IS NULL) LIMIT 1)));"`;
 
 exports[`kitchen sink fixtures query-003.sql 1`] = `
 Object {
@@ -6428,14 +6436,14 @@ Object {
 `;
 
 exports[`kitchen sink fixtures simple.sql 2`] = `
-"SELECT * FROM table_name WHERE (((\\"name\\") = ('test')) AND ((\\"num\\") > (7)) AND \\"last_name\\" LIKE ('%''test''%'));
-SELECT * FROM table_name WHERE (((\\"name\\") = ('test')) AND ((\\"num\\") > (7)) AND \\"last_name\\" NOT LIKE ('%''test''%'));
-SELECT * FROM table_name WHERE (((\\"name\\") = ('test')) AND ((\\"num\\") > (7)) AND \\"last_name\\" ILIKE ('%''test''%'));
-SELECT * FROM table_name WHERE (((\\"name\\") = ('test')) AND ((\\"num\\") > (7)) AND \\"last_name\\" NOT ILIKE ('%''test''%'));
-SELECT * FROM table_name WHERE \\"last_name\\" SIMILAR TO '%(b|d)%' ESCAPE NULL;
-SELECT * FROM table_name WHERE \\"last_name\\" SIMILAR TO '%(b|d)%' ESCAPE 'a';
-SELECT * FROM table_name WHERE \\"last_name\\" NOT SIMILAR TO '%(b|d)%' ESCAPE NULL;
-SELECT * FROM table_name WHERE \\"last_name\\" NOT SIMILAR TO '%(b|d)%' ESCAPE 'a';"
+"SELECT * FROM table_name WHERE (((name) = ('test')) AND ((num) > (7)) AND last_name LIKE ('%''test''%'));
+SELECT * FROM table_name WHERE (((name) = ('test')) AND ((num) > (7)) AND last_name NOT LIKE ('%''test''%'));
+SELECT * FROM table_name WHERE (((name) = ('test')) AND ((num) > (7)) AND last_name ILIKE ('%''test''%'));
+SELECT * FROM table_name WHERE (((name) = ('test')) AND ((num) > (7)) AND last_name NOT ILIKE ('%''test''%'));
+SELECT * FROM table_name WHERE last_name SIMILAR TO '%(b|d)%' ESCAPE NULL;
+SELECT * FROM table_name WHERE last_name SIMILAR TO '%(b|d)%' ESCAPE 'a';
+SELECT * FROM table_name WHERE last_name NOT SIMILAR TO '%(b|d)%' ESCAPE NULL;
+SELECT * FROM table_name WHERE last_name NOT SIMILAR TO '%(b|d)%' ESCAPE 'a';"
 `;
 
 exports[`kitchen sink functions basic 1`] = `
@@ -7718,7 +7726,7 @@ Object {
 
 exports[`kitchen sink grants 2`] = `
 "GRANT USAGE ON SCHEMA users TO \\"administrator\\";
-GRANT EXECUTE ON FUNCTION \\"auth\\".\\"authenticate\\" TO \\"anonymous\\";
+GRANT EXECUTE ON FUNCTION auth.authenticate TO \\"anonymous\\";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE auth.token TO \\"administrator\\";"
 `;
 
@@ -7827,7 +7835,7 @@ Object {
 }
 `;
 
-exports[`kitchen sink policies 2`] = `"CREATE POLICY \\"delete_user\\" ON users.\\"user\\" FOR DELETE TO \\"authenticated\\" USING ((\\"id\\") = (current_setting('user.id')::uuid));"`;
+exports[`kitchen sink policies 2`] = `"CREATE POLICY delete_user ON users.\\"user\\" FOR DELETE TO \\"authenticated\\" USING ((id) = (current_setting('user.id')::uuid));"`;
 
 exports[`kitchen sink roles create 1`] = `
 Object {
@@ -9479,15 +9487,43 @@ Object {
 `;
 
 exports[`kitchen sink tables check 2`] = `
-"CREATE TABLE products ( \\"product_no\\" int, \\"name\\" text, \\"price\\" numeric CHECK ( ((\\"price\\") > (0)) ) );
-CREATE TABLE products ( \\"product_no\\" int, \\"name\\" text, \\"price\\" numeric CONSTRAINT positive_price CHECK ( ((\\"price\\") > (0)) ) );
-CREATE TABLE products ( \\"product_no\\" int, \\"name\\" text, \\"price\\" numeric CHECK ( ((\\"price\\") > (0)) ), \\"discounted_price\\" numeric CHECK ( ((\\"discounted_price\\") > (0)) ), CHECK ( ((\\"price\\") > (\\"discounted_price\\")) ) );
-CREATE TABLE products ( \\"product_no\\" int, \\"name\\" text, \\"price\\" numeric CHECK ( ((\\"price\\") > (0)) ), \\"discounted_price\\" numeric CONSTRAINT check_price CHECK ( ((\\"discounted_price\\") > (0)) ), CHECK ( ((\\"price\\") > (\\"discounted_price\\")) ) );
-CREATE TABLE boomin ( \\"d\\" date, CHECK ( (FALSE) ) NO INHERIT NOT VALID );
-CREATE TABLE boomin ( \\"d\\" date, CHECK ( (TRUE) ) NO INHERIT NOT VALID );
-ALTER TABLE checkitout ADD CHECK ( \\"d\\" BETWEEN '2010-01-01'::date AND '2010-12-31'::date ) NOT VALID;
-ALTER TABLE checkitout2 ADD CHECK ( \\"d\\" NOT BETWEEN '2010-01-01'::date AND '2010-12-31'::date ) NOT VALID;
-CREATE TABLE atacc3 ( \\"test3\\" int ) INHERITS ( atacc1, atacc2 );"
+"CREATE TABLE products (
+product_no int,
+name text,
+price numeric CHECK ( ((price) > (0)) )
+);
+CREATE TABLE products (
+product_no int,
+name text,
+price numeric CONSTRAINT positive_price CHECK ( ((price) > (0)) )
+);
+CREATE TABLE products (
+product_no int,
+name text,
+price numeric CHECK ( ((price) > (0)) ),
+discounted_price numeric CHECK ( ((discounted_price) > (0)) ),
+CHECK ( ((price) > (discounted_price)) )
+);
+CREATE TABLE products (
+product_no int,
+name text,
+price numeric CHECK ( ((price) > (0)) ),
+discounted_price numeric CONSTRAINT check_price CHECK ( ((discounted_price) > (0)) ),
+CHECK ( ((price) > (discounted_price)) )
+);
+CREATE TABLE boomin (
+d date,
+CHECK ( (FALSE) ) NO INHERIT NOT VALID
+);
+CREATE TABLE boomin (
+d date,
+CHECK ( (TRUE) ) NO INHERIT NOT VALID
+);
+ALTER TABLE checkitout ADD CHECK ( d BETWEEN '2010-01-01'::date AND '2010-12-31'::date ) NOT VALID;
+ALTER TABLE checkitout2 ADD CHECK ( d NOT BETWEEN '2010-01-01'::date AND '2010-12-31'::date ) NOT VALID;
+CREATE TABLE atacc3 (
+test3 int
+) INHERITS ( atacc1, atacc2 );"
 `;
 
 exports[`kitchen sink tables custom 1`] = `
@@ -9806,9 +9842,16 @@ Object {
 `;
 
 exports[`kitchen sink tables custom 2`] = `
-"ALTER TABLE myschema.role ADD CONSTRAINT fk_myschema_role_actor_id FOREIGN KEY ( \\"actor_id\\" ) REFERENCES actors.actor ( \\"id\\" ) ON DELETE CASCADE;
-CREATE TABLE circles ( \\"c\\" circle, EXCLUDE USING gist ( c WITH && ) );
-CREATE TABLE actors_private.actor_info ( \\"actor_id\\" uuid PRIMARY KEY REFERENCES actors.actor ( \\"id\\" ) ON DELETE CASCADE, \\"email\\" text NOT NULL UNIQUE CHECK ( ((\\"email\\") ~* ('^.+@.+\\\\..+$')) ), \\"password_hash\\" text NOT NULL );"
+"ALTER TABLE myschema.role ADD CONSTRAINT fk_myschema_role_actor_id FOREIGN KEY ( actor_id ) REFERENCES actors.actor ( id ) ON DELETE CASCADE;
+CREATE TABLE circles (
+c circle,
+EXCLUDE USING gist ( c WITH && )
+);
+CREATE TABLE actors_private.actor_info (
+actor_id uuid PRIMARY KEY REFERENCES actors.actor ( id ) ON DELETE CASCADE,
+email text NOT NULL UNIQUE CHECK ( ((email) ~* ('^.+@.+\\\\..+$')) ),
+password_hash text NOT NULL
+);"
 `;
 
 exports[`kitchen sink tables defaults 1`] = `
@@ -9932,7 +9975,13 @@ Object {
 }
 `;
 
-exports[`kitchen sink tables defaults 2`] = `"CREATE TABLE customer_product_categories ( \\"id\\" serial PRIMARY KEY, \\"name\\" text NOT NULL, \\"effective\\" tstzrange DEFAULT ( '[-infinity,infinity]' ) );"`;
+exports[`kitchen sink tables defaults 2`] = `
+"CREATE TABLE customer_product_categories (
+id serial PRIMARY KEY,
+name text NOT NULL,
+effective tstzrange DEFAULT ( '[-infinity,infinity]' )
+);"
+`;
 
 exports[`kitchen sink tables exclude 1`] = `
 Object {
@@ -10188,8 +10237,16 @@ Object {
 `;
 
 exports[`kitchen sink tables exclude 2`] = `
-"CREATE TABLE circles ( \\"c\\" circle, EXCLUDE USING gist ( c WITH && ) );
-CREATE TABLE customer_product_categories ( \\"id\\" serial PRIMARY KEY, \\"name\\" text NOT NULL, \\"effective\\" tstzrange DEFAULT ( '[-infinity,infinity]' ), EXCLUDE USING gist ( lower(\\"name\\") WITH = , effective WITH && ) );"
+"CREATE TABLE circles (
+c circle,
+EXCLUDE USING gist ( c WITH && )
+);
+CREATE TABLE customer_product_categories (
+id serial PRIMARY KEY,
+name text NOT NULL,
+effective tstzrange DEFAULT ( '[-infinity,infinity]' ),
+EXCLUDE USING gist ( lower(name) WITH = , effective WITH && )
+);"
 `;
 
 exports[`kitchen sink tables foreign 1`] = `
@@ -10928,12 +10985,37 @@ Object {
 `;
 
 exports[`kitchen sink tables foreign 2`] = `
-"CREATE TABLE orders ( \\"order_id\\" int PRIMARY KEY, \\"product_no\\" int REFERENCES products ( \\"product_no\\" ), \\"quantity\\" int );
-CREATE TABLE orders ( \\"order_id\\" int PRIMARY KEY, \\"product_no\\" int REFERENCES products, \\"quantity\\" int );
-CREATE TABLE t1 ( \\"a\\" int PRIMARY KEY, \\"b\\" int, \\"c\\" int, FOREIGN KEY ( \\"b\\", \\"c\\" ) REFERENCES other_table ( \\"c1\\", \\"c2\\" ) );
-CREATE TABLE products ( \\"product_no\\" int PRIMARY KEY, \\"name\\" text, \\"price\\" numeric );
-CREATE TABLE orders ( \\"order_id\\" int PRIMARY KEY, \\"shipping_address\\" text );
-CREATE TABLE order_items ( \\"product_no\\" int REFERENCES products, \\"order_id\\" int REFERENCES orders, \\"quantity\\" int, PRIMARY KEY ( \\"product_no\\", \\"order_id\\" ) );"
+"CREATE TABLE orders (
+order_id int PRIMARY KEY,
+product_no int REFERENCES products ( product_no ),
+quantity int
+);
+CREATE TABLE orders (
+order_id int PRIMARY KEY,
+product_no int REFERENCES products,
+quantity int
+);
+CREATE TABLE t1 (
+a int PRIMARY KEY,
+b int,
+c int,
+FOREIGN KEY ( b, c ) REFERENCES other_table ( c1, c2 )
+);
+CREATE TABLE products (
+product_no int PRIMARY KEY,
+name text,
+price numeric
+);
+CREATE TABLE orders (
+order_id int PRIMARY KEY,
+shipping_address text
+);
+CREATE TABLE order_items (
+product_no int REFERENCES products,
+order_id int REFERENCES orders,
+quantity int,
+PRIMARY KEY ( product_no, order_id )
+);"
 `;
 
 exports[`kitchen sink tables nulls 1`] = `
@@ -11323,9 +11405,21 @@ Object {
 `;
 
 exports[`kitchen sink tables nulls 2`] = `
-"CREATE TABLE products ( \\"product_no\\" int NOT NULL, \\"name\\" text NOT NULL, \\"price\\" numeric );
-CREATE TABLE products ( \\"product_no\\" int NULL, \\"name\\" text NULL, \\"price\\" numeric NULL );
-CREATE TABLE products ( \\"product_no\\" int NOT NULL, \\"name\\" text NOT NULL, \\"price\\" numeric NOT NULL CHECK ( ((\\"price\\") > (0)) ) );"
+"CREATE TABLE products (
+product_no int NOT NULL,
+name text NOT NULL,
+price numeric
+);
+CREATE TABLE products (
+product_no int NULL,
+name text NULL,
+price numeric NULL
+);
+CREATE TABLE products (
+product_no int NOT NULL,
+name text NOT NULL,
+price numeric NOT NULL CHECK ( ((price) > (0)) )
+);"
 `;
 
 exports[`kitchen sink tables on_delete 1`] = `
@@ -11489,7 +11583,14 @@ Object {
 }
 `;
 
-exports[`kitchen sink tables on_delete 2`] = `"CREATE TABLE order_items ( \\"product_no\\" int REFERENCES products ON DELETE RESTRICT, \\"order_id\\" int REFERENCES orders ON DELETE CASCADE, \\"quantity\\" int, PRIMARY KEY ( \\"product_no\\", \\"order_id\\" ) );"`;
+exports[`kitchen sink tables on_delete 2`] = `
+"CREATE TABLE order_items (
+product_no int REFERENCES products ON DELETE RESTRICT,
+order_id int REFERENCES orders ON DELETE CASCADE,
+quantity int,
+PRIMARY KEY ( product_no, order_id )
+);"
+`;
 
 exports[`kitchen sink tables on_update 1`] = `
 Object {
@@ -11652,7 +11753,14 @@ Object {
 }
 `;
 
-exports[`kitchen sink tables on_update 2`] = `"CREATE TABLE order_items ( \\"product_no\\" int REFERENCES products ON UPDATE RESTRICT, \\"order_id\\" int REFERENCES orders ON UPDATE CASCADE, \\"quantity\\" int, PRIMARY KEY ( \\"product_no\\", \\"order_id\\" ) );"`;
+exports[`kitchen sink tables on_update 2`] = `
+"CREATE TABLE order_items (
+product_no int REFERENCES products ON UPDATE RESTRICT,
+order_id int REFERENCES orders ON UPDATE CASCADE,
+quantity int,
+PRIMARY KEY ( product_no, order_id )
+);"
+`;
 
 exports[`kitchen sink tables unique 1`] = `
 Object {
@@ -12079,10 +12187,28 @@ Object {
 `;
 
 exports[`kitchen sink tables unique 2`] = `
-"CREATE TABLE products ( \\"product_no\\" int UNIQUE, \\"name\\" text, \\"price\\" numeric );
-CREATE TABLE products ( \\"product_no\\" int, \\"name\\" text, \\"price\\" numeric, UNIQUE ( \\"product_no\\" ) );
-CREATE TABLE example ( \\"a\\" int, \\"b\\" int, \\"c\\" int, UNIQUE ( \\"a\\", \\"c\\" ) );
-CREATE TABLE products ( \\"product_no\\" int CONSTRAINT must_be_different UNIQUE, \\"name\\" text, \\"price\\" numeric );"
+"CREATE TABLE products (
+product_no int UNIQUE,
+name text,
+price numeric
+);
+CREATE TABLE products (
+product_no int,
+name text,
+price numeric,
+UNIQUE ( product_no )
+);
+CREATE TABLE example (
+a int,
+b int,
+c int,
+UNIQUE ( a, c )
+);
+CREATE TABLE products (
+product_no int CONSTRAINT must_be_different UNIQUE,
+name text,
+price numeric
+);"
 `;
 
 exports[`kitchen sink transactions begin_commit 1`] = `
@@ -12182,7 +12308,10 @@ Object {
 
 exports[`kitchen sink transactions begin_commit 2`] = `
 "BEGIN;
-CREATE TABLE products ( \\"product_no\\" int, \\"name\\" text );
+CREATE TABLE products (
+product_no int,
+name text
+);
 COMMIT;"
 `;
 
@@ -12701,56 +12830,56 @@ Object {
 `;
 
 exports[`kitchen sink triggers create 2`] = `
-"CREATE TRIGGER \\"_100_timestamps\\"
+"CREATE TRIGGER _100_timestamps
 BEFORE INSERT OR UPDATE ON app_jobs.jobs
 FOR EACH ROW
-EXECUTE PROCEDURE \\"app_jobs\\". \\"update_timestamps\\" (  );
-CREATE TRIGGER \\"_500_increase_job_queue_count\\"
+EXECUTE PROCEDURE app_jobs. update_timestamps (  );
+CREATE TRIGGER _500_increase_job_queue_count
 AFTER INSERT ON app_jobs.jobs
 FOR EACH ROW
-EXECUTE PROCEDURE \\"app_jobs\\". \\"jobs__increase_job_queue_count\\" (  );
-CREATE TRIGGER \\"_500_decrease_job_queue_count\\"
+EXECUTE PROCEDURE app_jobs. jobs__increase_job_queue_count (  );
+CREATE TRIGGER _500_decrease_job_queue_count
 BEFORE DELETE ON app_jobs.jobs
 FOR EACH ROW
-EXECUTE PROCEDURE \\"app_jobs\\". \\"jobs__decrease_job_queue_count\\" (  );
-CREATE TRIGGER \\"_900_notify_worker\\"
+EXECUTE PROCEDURE app_jobs. jobs__decrease_job_queue_count (  );
+CREATE TRIGGER _900_notify_worker
 AFTER INSERT ON app_jobs.jobs
 FOR EACH STATEMENT
-EXECUTE PROCEDURE \\"app_jobs\\". \\"do_notify\\" ( 'jobs:insert' );
-CREATE TRIGGER \\"check_update\\"
+EXECUTE PROCEDURE app_jobs. do_notify ( 'jobs:insert' );
+CREATE TRIGGER check_update
 BEFORE UPDATE OF balance ON accounts
 FOR EACH ROW
-EXECUTE PROCEDURE \\"check_account_update\\" (  );
-CREATE TRIGGER \\"check_update\\"
+EXECUTE PROCEDURE check_account_update (  );
+CREATE TRIGGER check_update
 BEFORE UPDATE ON accounts
 FOR EACH ROW
-EXECUTE PROCEDURE \\"check_account_update\\" (  );
-CREATE TRIGGER \\"check_update\\"
+EXECUTE PROCEDURE check_account_update (  );
+CREATE TRIGGER check_update
 BEFORE UPDATE ON accounts
 FOR EACH ROW
-WHEN ( OLD.\\"balance\\" IS DISTINCT FROM NEW.\\"balance\\" )
-EXECUTE PROCEDURE \\"check_account_update\\" (  );
-CREATE TRIGGER \\"log_update\\"
+WHEN ( OLD.balance IS DISTINCT FROM NEW.balance )
+EXECUTE PROCEDURE check_account_update (  );
+CREATE TRIGGER log_update
 AFTER UPDATE ON accounts
 FOR EACH ROW
 WHEN ( OLD.* IS DISTINCT FROM NEW.* )
-EXECUTE PROCEDURE \\"log_account_update\\" (  );
-CREATE TRIGGER \\"view_insert\\"
+EXECUTE PROCEDURE log_account_update (  );
+CREATE TRIGGER view_insert
 INSTEAD OF INSERT ON my_view
 FOR EACH ROW
-EXECUTE PROCEDURE \\"view_insert_row\\" (  );
-CREATE TRIGGER \\"transfer_insert\\"
+EXECUTE PROCEDURE view_insert_row (  );
+CREATE TRIGGER transfer_insert
 AFTER INSERT ON transfer
 REFERENCING NEW TABLE AS inserted FOR EACH STATEMENT
-EXECUTE PROCEDURE \\"check_transfer_balances_to_zero\\" (  );
-CREATE TRIGGER \\"paired_items_update\\"
+EXECUTE PROCEDURE check_transfer_balances_to_zero (  );
+CREATE TRIGGER paired_items_update
 AFTER UPDATE ON paired_items
 REFERENCING NEW TABLE AS newtab OLD TABLE AS oldtab FOR EACH ROW
-EXECUTE PROCEDURE \\"check_matching_pairs\\" (  );
-CREATE TRIGGER \\"paired_items_update\\"
+EXECUTE PROCEDURE check_matching_pairs (  );
+CREATE TRIGGER paired_items_update
 AFTER UPDATE ON paired_items
 REFERENCING OLD TABLE AS oldtab NEW TABLE AS newtab FOR EACH ROW
-EXECUTE PROCEDURE \\"check_matching_pairs\\" (  );"
+EXECUTE PROCEDURE check_matching_pairs (  );"
 `;
 
 exports[`kitchen sink triggers custom 1`] = `
@@ -12869,7 +12998,7 @@ Object {
             "relation": Object {
               "RangeVar": Object {
                 "inh": true,
-                "location": 161,
+                "location": 160,
                 "relname": "user",
                 "relpersistence": "p",
               },
@@ -12882,13 +13011,13 @@ Object {
                     Object {
                       "Constraint": Object {
                         "contype": 5,
-                        "location": 191,
+                        "location": 190,
                       },
                     },
                     Object {
                       "Constraint": Object {
                         "contype": 2,
-                        "location": 203,
+                        "location": 202,
                         "raw_expr": Object {
                           "FuncCall": Object {
                             "funcname": Array [
@@ -12898,17 +13027,17 @@ Object {
                                 },
                               },
                             ],
-                            "location": 211,
+                            "location": 210,
                           },
                         },
                       },
                     },
                   ],
                   "is_local": true,
-                  "location": 172,
+                  "location": 171,
                   "typeName": Object {
                     "TypeName": Object {
-                      "location": 186,
+                      "location": 185,
                       "names": Array [
                         Object {
                           "String": Object {
@@ -12928,13 +13057,13 @@ Object {
                     Object {
                       "Constraint": Object {
                         "contype": 1,
-                        "location": 259,
+                        "location": 258,
                       },
                     },
                     Object {
                       "Constraint": Object {
                         "contype": 2,
-                        "location": 268,
+                        "location": 267,
                         "raw_expr": Object {
                           "FuncCall": Object {
                             "funcname": Array [
@@ -12944,17 +13073,17 @@ Object {
                                 },
                               },
                             ],
-                            "location": 276,
+                            "location": 275,
                           },
                         },
                       },
                     },
                   ],
                   "is_local": true,
-                  "location": 233,
+                  "location": 232,
                   "typeName": Object {
                     "TypeName": Object {
-                      "location": 247,
+                      "location": 246,
                       "names": Array [
                         Object {
                           "String": Object {
@@ -12974,16 +13103,16 @@ Object {
                     Object {
                       "Constraint": Object {
                         "contype": 1,
-                        "location": 304,
+                        "location": 303,
                       },
                     },
                     Object {
                       "Constraint": Object {
                         "contype": 2,
-                        "location": 313,
+                        "location": 312,
                         "raw_expr": Object {
                           "A_Const": Object {
-                            "location": 321,
+                            "location": 320,
                             "val": Object {
                               "String": Object {
                                 "str": "",
@@ -12995,10 +13124,10 @@ Object {
                     },
                   ],
                   "is_local": true,
-                  "location": 285,
+                  "location": 284,
                   "typeName": Object {
                     "TypeName": Object {
-                      "location": 299,
+                      "location": 298,
                       "names": Array [
                         Object {
                           "String": Object {
@@ -13014,7 +13143,7 @@ Object {
             ],
           },
         },
-        "stmt_len": 180,
+        "stmt_len": 179,
         "stmt_location": 145,
       },
     },
@@ -13026,7 +13155,7 @@ Object {
             "relation": Object {
               "RangeVar": Object {
                 "inh": true,
-                "location": 342,
+                "location": 341,
                 "relname": "post",
                 "relpersistence": "p",
               },
@@ -13039,13 +13168,13 @@ Object {
                     Object {
                       "Constraint": Object {
                         "contype": 5,
-                        "location": 370,
+                        "location": 369,
                       },
                     },
                     Object {
                       "Constraint": Object {
                         "contype": 2,
-                        "location": 382,
+                        "location": 381,
                         "raw_expr": Object {
                           "FuncCall": Object {
                             "funcname": Array [
@@ -13055,17 +13184,17 @@ Object {
                                 },
                               },
                             ],
-                            "location": 390,
+                            "location": 389,
                           },
                         },
                       },
                     },
                   ],
                   "is_local": true,
-                  "location": 351,
+                  "location": 350,
                   "typeName": Object {
                     "TypeName": Object {
-                      "location": 365,
+                      "location": 364,
                       "names": Array [
                         Object {
                           "String": Object {
@@ -13085,13 +13214,13 @@ Object {
                     Object {
                       "Constraint": Object {
                         "contype": 1,
-                        "location": 438,
+                        "location": 437,
                       },
                     },
                     Object {
                       "Constraint": Object {
                         "contype": 2,
-                        "location": 447,
+                        "location": 446,
                         "raw_expr": Object {
                           "FuncCall": Object {
                             "funcname": Array [
@@ -13101,17 +13230,17 @@ Object {
                                 },
                               },
                             ],
-                            "location": 455,
+                            "location": 454,
                           },
                         },
                       },
                     },
                   ],
                   "is_local": true,
-                  "location": 412,
+                  "location": 411,
                   "typeName": Object {
                     "TypeName": Object {
-                      "location": 426,
+                      "location": 425,
                       "names": Array [
                         Object {
                           "String": Object {
@@ -13131,16 +13260,16 @@ Object {
                     Object {
                       "Constraint": Object {
                         "contype": 1,
-                        "location": 483,
+                        "location": 482,
                       },
                     },
                     Object {
                       "Constraint": Object {
                         "contype": 2,
-                        "location": 492,
+                        "location": 491,
                         "raw_expr": Object {
                           "A_Const": Object {
-                            "location": 500,
+                            "location": 499,
                             "val": Object {
                               "String": Object {
                                 "str": "",
@@ -13152,10 +13281,10 @@ Object {
                     },
                   ],
                   "is_local": true,
-                  "location": 464,
+                  "location": 463,
                   "typeName": Object {
                     "TypeName": Object {
-                      "location": 478,
+                      "location": 477,
                       "names": Array [
                         Object {
                           "String": Object {
@@ -13179,11 +13308,11 @@ Object {
                         "fk_matchtype": "s",
                         "fk_upd_action": "a",
                         "initially_valid": true,
-                        "location": 525,
+                        "location": 524,
                         "pktable": Object {
                           "RangeVar": Object {
                             "inh": true,
-                            "location": 536,
+                            "location": 535,
                             "relname": "user",
                             "relpersistence": "p",
                           },
@@ -13193,15 +13322,15 @@ Object {
                     Object {
                       "Constraint": Object {
                         "contype": 1,
-                        "location": 543,
+                        "location": 542,
                       },
                     },
                   ],
                   "is_local": true,
-                  "location": 506,
+                  "location": 505,
                   "typeName": Object {
                     "TypeName": Object {
-                      "location": 520,
+                      "location": 519,
                       "names": Array [
                         Object {
                           "String": Object {
@@ -13218,7 +13347,7 @@ Object {
           },
         },
         "stmt_len": 227,
-        "stmt_location": 326,
+        "stmt_location": 325,
       },
     },
     Object {
@@ -13229,7 +13358,7 @@ Object {
             "relation": Object {
               "RangeVar": Object {
                 "inh": true,
-                "location": 570,
+                "location": 569,
                 "relname": "friendship",
                 "relpersistence": "p",
               },
@@ -13246,11 +13375,11 @@ Object {
                         "fk_matchtype": "s",
                         "fk_upd_action": "a",
                         "initially_valid": true,
-                        "location": 604,
+                        "location": 603,
                         "pktable": Object {
                           "RangeVar": Object {
                             "inh": true,
-                            "location": 615,
+                            "location": 614,
                             "relname": "user",
                             "relpersistence": "p",
                           },
@@ -13260,15 +13389,15 @@ Object {
                     Object {
                       "Constraint": Object {
                         "contype": 1,
-                        "location": 622,
+                        "location": 621,
                       },
                     },
                   ],
                   "is_local": true,
-                  "location": 585,
+                  "location": 584,
                   "typeName": Object {
                     "TypeName": Object {
-                      "location": 599,
+                      "location": 598,
                       "names": Array [
                         Object {
                           "String": Object {
@@ -13292,11 +13421,11 @@ Object {
                         "fk_matchtype": "s",
                         "fk_upd_action": "a",
                         "initially_valid": true,
-                        "location": 653,
+                        "location": 652,
                         "pktable": Object {
                           "RangeVar": Object {
                             "inh": true,
-                            "location": 664,
+                            "location": 663,
                             "relname": "user",
                             "relpersistence": "p",
                           },
@@ -13306,15 +13435,15 @@ Object {
                     Object {
                       "Constraint": Object {
                         "contype": 1,
-                        "location": 671,
+                        "location": 670,
                       },
                     },
                   ],
                   "is_local": true,
-                  "location": 634,
+                  "location": 633,
                   "typeName": Object {
                     "TypeName": Object {
-                      "location": 648,
+                      "location": 647,
                       "names": Array [
                         Object {
                           "String": Object {
@@ -13334,13 +13463,13 @@ Object {
                     Object {
                       "Constraint": Object {
                         "contype": 1,
-                        "location": 709,
+                        "location": 708,
                       },
                     },
                     Object {
                       "Constraint": Object {
                         "contype": 2,
-                        "location": 718,
+                        "location": 717,
                         "raw_expr": Object {
                           "FuncCall": Object {
                             "funcname": Array [
@@ -13350,17 +13479,17 @@ Object {
                                 },
                               },
                             ],
-                            "location": 726,
+                            "location": 725,
                           },
                         },
                       },
                     },
                   ],
                   "is_local": true,
-                  "location": 683,
+                  "location": 682,
                   "typeName": Object {
                     "TypeName": Object {
-                      "location": 697,
+                      "location": 696,
                       "names": Array [
                         Object {
                           "String": Object {
@@ -13388,14 +13517,14 @@ Object {
                       },
                     },
                   ],
-                  "location": 735,
+                  "location": 734,
                 },
               },
             ],
           },
         },
         "stmt_len": 205,
-        "stmt_location": 554,
+        "stmt_location": 553,
       },
     },
     Object {
@@ -13432,7 +13561,7 @@ END
                   ],
                   "defaction": 0,
                   "defname": "as",
-                  "location": 822,
+                  "location": 821,
                 },
               },
               Object {
@@ -13444,7 +13573,7 @@ END
                   },
                   "defaction": 0,
                   "defname": "language",
-                  "location": 1063,
+                  "location": 1062,
                 },
               },
               Object {
@@ -13457,13 +13586,13 @@ END
                   },
                   "defaction": 0,
                   "defname": "set",
-                  "location": 1083,
+                  "location": 1082,
                 },
               },
             ],
             "returnType": Object {
               "TypeName": Object {
-                "location": 814,
+                "location": 813,
                 "names": Array [
                   Object {
                     "String": Object {
@@ -13477,7 +13606,7 @@ END
           },
         },
         "stmt_len": 351,
-        "stmt_location": 760,
+        "stmt_location": 759,
       },
     },
     Object {
@@ -13498,7 +13627,7 @@ END
             "relation": Object {
               "RangeVar": Object {
                 "inh": true,
-                "location": 1176,
+                "location": 1175,
                 "relname": "friendship",
                 "relpersistence": "p",
               },
@@ -13508,7 +13637,7 @@ END
           },
         },
         "stmt_len": 163,
-        "stmt_location": 1112,
+        "stmt_location": 1111,
       },
     },
   ],
@@ -13517,14 +13646,28 @@ END
 `;
 
 exports[`kitchen sink triggers custom 2`] = `
-"DROP SCHEMA IF EXISTS \\"fb\\";
-DROP SCHEMA IF EXISTS \\"fb\\" CASCADE;
+"DROP SCHEMA IF EXISTS fb;
+DROP SCHEMA IF EXISTS fb CASCADE;
 CREATE SCHEMA fb;
 SET search_path = 'fb', '$user', 'public';
 CREATE EXTENSION \\"uuid-ossp\\";
-CREATE TABLE \\"user\\" ( \\"id\\" uuid PRIMARY KEY DEFAULT ( uuid_generate_v4() ), \\"created\\" timestamptz NOT NULL DEFAULT ( now() ), \\"full_name\\" text NOT NULL DEFAULT ( '' ) );
-CREATE TABLE post ( \\"id\\" uuid PRIMARY KEY DEFAULT ( uuid_generate_v4() ), \\"created\\" timestamptz NOT NULL DEFAULT ( now() ), \\"content\\" text NOT NULL DEFAULT ( '' ), \\"user\\" uuid REFERENCES \\"user\\" NOT NULL );
-CREATE TABLE friendship ( \\"first\\" uuid REFERENCES \\"user\\" NOT NULL, \\"second\\" uuid REFERENCES \\"user\\" NOT NULL, \\"created\\" timestamptz NOT NULL DEFAULT ( now() ), UNIQUE ( \\"first\\", \\"second\\" ) );
+CREATE TABLE \\"user\\" (
+id uuid PRIMARY KEY DEFAULT ( uuid_generate_v4() ),
+created timestamptz NOT NULL DEFAULT ( now() ),
+full_name text NOT NULL DEFAULT ( '' )
+);
+CREATE TABLE post (
+id uuid PRIMARY KEY DEFAULT ( uuid_generate_v4() ),
+created timestamptz NOT NULL DEFAULT ( now() ),
+content text NOT NULL DEFAULT ( '' ),
+\\"user\\" uuid REFERENCES \\"user\\" NOT NULL
+);
+CREATE TABLE friendship (
+first uuid REFERENCES \\"user\\" NOT NULL,
+second uuid REFERENCES \\"user\\" NOT NULL,
+created timestamptz NOT NULL DEFAULT ( now() ),
+UNIQUE ( first, second )
+);
 CREATE FUNCTION check_friendship_symmetry (  ) RETURNS trigger AS $EOFCODE$
 DECLARE
 link friendship;
@@ -13537,11 +13680,11 @@ END IF;
 RETURN NEW;
 END
 $EOFCODE$ LANGUAGE plpgsql SET search_path FROM CURRENT;
-CREATE CONSTRAINT TRIGGER \\"friendship_symmetry\\"
+CREATE CONSTRAINT TRIGGER friendship_symmetry
 AFTER INSERT ON friendship
 DEFERRABLE INITIALLY DEFERRED
 FOR EACH ROW
-EXECUTE PROCEDURE \\"check_friendship_symmetry\\" (  );"
+EXECUTE PROCEDURE check_friendship_symmetry (  );"
 `;
 
 exports[`kitchen sink types 1`] = `
@@ -13651,7 +13794,7 @@ Object {
 }
 `;
 
-exports[`kitchen sink types 2`] = `"CREATE TYPE myschema.mycustomtype AS ( \\"id\\" uuid, \\"verify_code\\" text, \\"verify_code_expires_on\\" timestamptz, \\"actor_id\\" uuid );"`;
+exports[`kitchen sink types 2`] = `"CREATE TYPE myschema.mycustomtype AS ( id uuid, verify_code text, verify_code_expires_on timestamptz, actor_id uuid );"`;
 
 exports[`kitchen sink upstream upstream/abstime.sql 1`] = `
 Object {

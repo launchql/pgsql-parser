@@ -102,7 +102,9 @@ const isReserved = (value) =>
 // usually the AST lowercases all the things, so if we
 // have both, the author most likely used double quotes
 const needsQuotes = (value) =>
-  value.match(/([a-z]+[A-Z]+|[A-Z]+[a-z]+)/);
+  value.match(/[a-z]+[\W\w]*[A-Z]+|[A-Z]+[\W\w]*[a-z]+/) ||
+  value.match(/\W/) ||
+  isReserved(value);
 
 const { keys } = _;
 
@@ -166,21 +168,6 @@ export default class Deparser {
       return value.map(o => this.quote(o));
     }
 
-    return '"' + value + '"';
-  }
-
-  quoteIfNeeded(value) {
-    if (value == null) {
-      return null;
-    }
-
-    if (_.isArray(value)) {
-      return value.map(o => this.quoteIfNeeded(o));
-    }
-
-    if (isReserved(value)) {
-      return '"' + value + '"';
-    }
     if (needsQuotes(value)) {
       return '"' + value + '"';
     }
@@ -1110,9 +1097,9 @@ export default class Deparser {
     }
 
     if (node.schemaname != null) {
-      output.push(`${this.quoteIfNeeded(node.schemaname)}.${this.quoteIfNeeded(node.relname)}`);
+      output.push(`${this.quote(node.schemaname)}.${this.quote(node.relname)}`);
     } else {
-      output.push(this.quoteIfNeeded(node.relname));
+      output.push(this.quote(node.relname));
     }
 
     if (node.alias) {
@@ -1619,9 +1606,15 @@ export default class Deparser {
     }
 
     output.push(this.deparse(node.relation));
-    output.push('(');
-    output.push(this.list(node.tableElts));
-    output.push(')');
+    output.push('(\n');
+    node.tableElts.forEach((elt, i) => {
+      if (i === node.tableElts.length - 1) {
+        output.push(`\t${this.deparse(elt)}`);
+      } else {
+        output.push(`\t${this.deparse(elt)},\n`);
+      }
+    });
+    output.push('\n)');
 
     if (relpersistence === 'p' && node.hasOwnProperty('inhRelations')) {
       output.push('INHERITS');
