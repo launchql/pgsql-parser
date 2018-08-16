@@ -7830,12 +7830,275 @@ Object {
         "stmt_len": 119,
       },
     },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CreatePolicyStmt": Object {
+            "cmd_name": "delete",
+            "permissive": true,
+            "policy_name": "delete_user_no_to",
+            "qual": Object {
+              "A_Expr": Object {
+                "kind": 0,
+                "lexpr": Object {
+                  "ColumnRef": Object {
+                    "fields": Array [
+                      Object {
+                        "String": Object {
+                          "str": "id",
+                        },
+                      },
+                    ],
+                    "location": 191,
+                  },
+                },
+                "location": 194,
+                "name": Array [
+                  Object {
+                    "String": Object {
+                      "str": "=",
+                    },
+                  },
+                ],
+                "rexpr": Object {
+                  "TypeCast": Object {
+                    "arg": Object {
+                      "FuncCall": Object {
+                        "args": Array [
+                          Object {
+                            "A_Const": Object {
+                              "location": 212,
+                              "val": Object {
+                                "String": Object {
+                                  "str": "user.id",
+                                },
+                              },
+                            },
+                          },
+                        ],
+                        "funcname": Array [
+                          Object {
+                            "String": Object {
+                              "str": "current_setting",
+                            },
+                          },
+                        ],
+                        "location": 196,
+                      },
+                    },
+                    "location": 222,
+                    "typeName": Object {
+                      "TypeName": Object {
+                        "location": 224,
+                        "names": Array [
+                          Object {
+                            "String": Object {
+                              "str": "uuid",
+                            },
+                          },
+                        ],
+                        "typemod": -1,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            "roles": Array [
+              Object {
+                "RoleSpec": Object {
+                  "location": -1,
+                  "roletype": 3,
+                },
+              },
+            ],
+            "table": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 157,
+                "relname": "user",
+                "relpersistence": "p",
+                "schemaname": "users",
+              },
+            },
+          },
+        },
+        "stmt_len": 110,
+        "stmt_location": 120,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CreatePolicyStmt": Object {
+            "cmd_name": "delete",
+            "permissive": true,
+            "policy_name": "delete_user",
+            "qual": Object {
+              "A_Expr": Object {
+                "kind": 0,
+                "lexpr": Object {
+                  "ColumnRef": Object {
+                    "fields": Array [
+                      Object {
+                        "String": Object {
+                          "str": "id",
+                        },
+                      },
+                    ],
+                    "location": 311,
+                  },
+                },
+                "location": 315,
+                "name": Array [
+                  Object {
+                    "String": Object {
+                      "str": "=",
+                    },
+                  },
+                ],
+                "rexpr": Object {
+                  "TypeCast": Object {
+                    "arg": Object {
+                      "FuncCall": Object {
+                        "args": Array [
+                          Object {
+                            "A_Const": Object {
+                              "location": 334,
+                              "val": Object {
+                                "String": Object {
+                                  "str": "user.id",
+                                },
+                              },
+                            },
+                          },
+                        ],
+                        "funcname": Array [
+                          Object {
+                            "String": Object {
+                              "str": "current_setting",
+                            },
+                          },
+                        ],
+                        "location": 318,
+                      },
+                    },
+                    "location": 344,
+                    "typeName": Object {
+                      "TypeName": Object {
+                        "location": 346,
+                        "names": Array [
+                          Object {
+                            "String": Object {
+                              "str": "uuid",
+                            },
+                          },
+                        ],
+                        "typemod": -1,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            "roles": Array [
+              Object {
+                "RoleSpec": Object {
+                  "location": 289,
+                  "rolename": "authenticated",
+                  "roletype": 0,
+                },
+              },
+            ],
+            "table": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 262,
+                "relname": "user",
+                "relpersistence": "p",
+                "schemaname": "users",
+              },
+            },
+          },
+        },
+        "stmt_len": 121,
+        "stmt_location": 231,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CreatePolicyStmt": Object {
+            "cmd_name": "select",
+            "permissive": true,
+            "policy_name": "select_user",
+            "qual": Object {
+              "TypeCast": Object {
+                "arg": Object {
+                  "A_Const": Object {
+                    "location": 425,
+                    "val": Object {
+                      "String": Object {
+                        "str": "t",
+                      },
+                    },
+                  },
+                },
+                "location": -1,
+                "typeName": Object {
+                  "TypeName": Object {
+                    "location": -1,
+                    "names": Array [
+                      Object {
+                        "String": Object {
+                          "str": "pg_catalog",
+                        },
+                      },
+                      Object {
+                        "String": Object {
+                          "str": "bool",
+                        },
+                      },
+                    ],
+                    "typemod": -1,
+                  },
+                },
+              },
+            },
+            "roles": Array [
+              Object {
+                "RoleSpec": Object {
+                  "location": 411,
+                  "roletype": 3,
+                },
+              },
+            ],
+            "table": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 384,
+                "relname": "user",
+                "relpersistence": "p",
+                "schemaname": "users",
+              },
+            },
+          },
+        },
+        "stmt_len": 77,
+        "stmt_location": 353,
+      },
+    },
   ],
   "stderr": "",
 }
 `;
 
-exports[`kitchen sink policies 2`] = `"CREATE POLICY delete_user ON users.\\"user\\" FOR DELETE TO authenticated USING ((id) = (current_setting('user.id')::uuid));"`;
+exports[`kitchen sink policies 2`] = `
+"CREATE POLICY delete_user ON users.\\"user\\" FOR DELETE TO authenticated USING ((id) = (current_setting('user.id')::uuid));
+CREATE POLICY delete_user_no_to ON users.\\"user\\" FOR DELETE TO PUBLIC USING ((id) = (current_setting('user.id')::uuid));
+CREATE POLICY delete_user ON users.\\"user\\" FOR DELETE TO authenticated USING ((id) = (current_setting('user.id')::uuid));
+CREATE POLICY select_user ON users.\\"user\\" FOR SELECT TO PUBLIC USING (TRUE);"
+`;
 
 exports[`kitchen sink roles create 1`] = `
 Object {
