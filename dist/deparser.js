@@ -1390,6 +1390,7 @@ class Deparser {
   ['CreatePolicyStmt'](node) {
     const output = [];
     output.push('CREATE POLICY');
+
     output.push(this.quote(node.policy_name));
     if (node.table) {
       output.push('ON');
@@ -1401,8 +1402,15 @@ class Deparser {
     }
     output.push('TO');
     output.push(this.list(node.roles));
-    output.push('USING');
-    output.push(this.deparse(node.qual));
+
+    if (node.with_check) {
+      output.push('WITH CHECK');
+      output.push(this.deparse(node.with_check));
+    } else {
+      output.push('USING');
+      output.push(this.deparse(node.qual));
+    }
+
     return output.join(' ');
   }
 
