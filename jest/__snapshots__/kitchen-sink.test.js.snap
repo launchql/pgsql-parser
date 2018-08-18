@@ -1615,6 +1615,94 @@ END IF;
 END $$;"
 `;
 
+exports[`kitchen sink domain 1`] = `
+Object {
+  "query": Array [
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CreateDomainStmt": Object {
+            "domainname": Array [
+              Object {
+                "String": Object {
+                  "str": "v8",
+                },
+              },
+              Object {
+                "String": Object {
+                  "str": "json",
+                },
+              },
+            ],
+            "typeName": Object {
+              "TypeName": Object {
+                "location": 25,
+                "names": Array [
+                  Object {
+                    "String": Object {
+                      "str": "json",
+                    },
+                  },
+                ],
+                "typemod": -1,
+              },
+            },
+          },
+        },
+        "stmt_len": 29,
+      },
+    },
+  ],
+  "stderr": "",
+}
+`;
+
+exports[`kitchen sink domain 2`] = `"CREATE DOMAIN v8.json json;"`;
+
+exports[`kitchen sink domains 1`] = `
+Object {
+  "query": Array [
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CreateDomainStmt": Object {
+            "domainname": Array [
+              Object {
+                "String": Object {
+                  "str": "v8",
+                },
+              },
+              Object {
+                "String": Object {
+                  "str": "json",
+                },
+              },
+            ],
+            "typeName": Object {
+              "TypeName": Object {
+                "location": 25,
+                "names": Array [
+                  Object {
+                    "String": Object {
+                      "str": "json",
+                    },
+                  },
+                ],
+                "typemod": -1,
+              },
+            },
+          },
+        },
+        "stmt_len": 29,
+      },
+    },
+  ],
+  "stderr": "",
+}
+`;
+
+exports[`kitchen sink domains 2`] = `"CREATE DOMAIN v8.json json;"`;
+
 exports[`kitchen sink fixtures complex.sql 1`] = `
 Object {
   "query": Array [

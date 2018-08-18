@@ -1617,6 +1617,14 @@ export default class Deparser {
     return output.join(' ');
   }
 
+  ['CreateDomainStmt'](node) {
+    const output = [];
+    output.push('CREATE DOMAIN');
+    output.push(this.list(node.domainname, '.'));
+    output.push(this.deparse(node.typeName));
+    return output.join(' ');
+  }
+
   ['CreateStmt'](node) {
     const output = [];
     const relpersistence = dotty.get(node, 'relation.RangeVar.relpersistence');

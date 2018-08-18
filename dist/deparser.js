@@ -352,11 +352,8 @@ class Deparser {
   }
 
   ['A_Const'](node, context) {
-    return '$special$' + this.escape(node.val.String.str) + '$special$';
     if (node.val.String) {
-      // if (node.val.String.str && /\\r|\\n/.exec(node.val.String.str)) {
-      // }
-      // return this.escape(this.deparse(node.val, context));
+      return this.escape(this.deparse(node.val, context));
     }
 
     return this.deparse(node.val, context);
@@ -788,6 +785,19 @@ class Deparser {
     }
   }
 
+  ['InsertStmt'](node) {
+    const output = [];
+
+    output.push('INSERT INTO');
+    output.push(this.deparse(node.relation));
+    output.push('(');
+    output.push(this.list(node.cols));
+    output.push(')');
+    output.push(this.deparse(node.selectStmt));
+
+    return output.join(' ');
+  }
+
   ['Integer'](node, context) {
     if (node.ival < 0 && context !== 'simple') {
       return `(${node.ival})`;
@@ -1127,7 +1137,7 @@ class Deparser {
       output.push('VALUES');
 
       const lists = node.valuesLists.map(list => {
-        return `(${list.map(v => this.deparse(v)).join(', ')})`;
+        return `(${this.list(list)})`;
       });
 
       output.push(lists.join(', '));
@@ -1535,6 +1545,14 @@ class Deparser {
     output.push(args.join(','));
     output.push(')');
 
+    return output.join(' ');
+  }
+
+  ['CreateDomainStmt'](node) {
+    const output = [];
+    output.push('CREATE DOMAIN');
+    output.push(this.list(node.domainname, '.'));
+    output.push(this.deparse(node.typeName));
     return output.join(' ');
   }
 

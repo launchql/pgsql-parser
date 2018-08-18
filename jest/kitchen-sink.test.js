@@ -15,8 +15,6 @@ export const check = (file) => {
   expect(cleanTree(parser.parse(sql))).toEqual(cleanTree(tree));
 };
 
-
-
 describe('kitchen sink', () => {
   it('alter', () => {
     check('alter/alter.sql');
@@ -33,6 +31,9 @@ describe('kitchen sink', () => {
   it('types', () => {
     check('types/composite.sql');
   });
+  it('domains', () => {
+    check('domains/create.sql');
+  });
   it('do stmt', () => {
     const dosql = readFileSync(resolve(__dirname + '/../test/fixtures/do/custom.sql')).toString();
     const tree = parser.parse(dosql);
@@ -43,6 +44,9 @@ describe('kitchen sink', () => {
   });
   it('insert', () => {
     check('statements/insert.sql');
+  });
+  it('domain', () => {
+    check('domains/create.sql');
   });
   describe('tables', () => {
     it('custom', () => {
