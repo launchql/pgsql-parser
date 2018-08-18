@@ -352,8 +352,11 @@ class Deparser {
   }
 
   ['A_Const'](node, context) {
+    return '$special$' + this.escape(node.val.String.str) + '$special$';
     if (node.val.String) {
-      return this.escape(this.deparse(node.val, context));
+      // if (node.val.String.str && /\\r|\\n/.exec(node.val.String.str)) {
+      // }
+      // return this.escape(this.deparse(node.val, context));
     }
 
     return this.deparse(node.val, context);

@@ -15,6 +15,8 @@ export const check = (file) => {
   expect(cleanTree(parser.parse(sql))).toEqual(cleanTree(tree));
 };
 
+
+
 describe('kitchen sink', () => {
   it('alter', () => {
     check('alter/alter.sql');
@@ -38,6 +40,9 @@ describe('kitchen sink', () => {
     const sql = parser.deparse(tree.query);
     expect(cleanLines(sql)).toMatchSnapshot();
     expect(cleanTree(parser.parse(cleanLines(sql)))).toEqual(cleanTree(parser.parse(cleanLines(dosql))));
+  });
+  it('insert', () => {
+    check('statements/insert.sql');
   });
   describe('tables', () => {
     it('custom', () => {

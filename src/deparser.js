@@ -845,6 +845,19 @@ export default class Deparser {
     }
   }
 
+  ['InsertStmt'](node) {
+    const output = [];
+
+    output.push('INSERT INTO');
+    output.push(this.deparse(node.relation));
+    output.push('(');
+    output.push(this.list(node.cols));
+    output.push(')');
+    output.push(this.deparse(node.selectStmt));
+
+    return output.join(' ');
+  }
+
   ['Integer'](node, context) {
     if (node.ival < 0 && context !== 'simple') {
       return `(${node.ival})`;
@@ -1195,7 +1208,7 @@ export default class Deparser {
       output.push('VALUES');
 
       const lists = node.valuesLists.map(list => {
-        return `(${(list.map(v => this.deparse(v))).join(', ')})`;
+        return `(${this.list(list)})`;
       });
 
       output.push(lists.join(', '));
