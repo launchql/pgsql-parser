@@ -878,6 +878,7 @@ export default class Deparser {
     if (node.expr) {
       return this.deparse(node.expr);
     }
+    return fail('IndexElem', node);
   }
 
   ['InsertStmt'](node) {
@@ -2087,9 +2088,10 @@ export default class Deparser {
     if (node.roletype === 3) {
       return 'PUBLIC';
     }
-    return '';
+    return fail('RoleSpec', node);
   }
 
+  // TO DO use enums
   ['GrantStmt'](node) {
     const output = [];
 
@@ -2123,7 +2125,7 @@ export default class Deparser {
           return 'TYPE';
         default:
       }
-      return '';
+      return fail('GrantStmt', node);
     };
 
     if ([ 1, 3, 4, 5, 6, 7, 8, 9, 10, 12 ].includes(node.objtype)) {

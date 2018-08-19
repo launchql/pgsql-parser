@@ -1973,7 +1973,7 @@ class Deparser {
     if (node.roletype === 3) {
       return 'PUBLIC';
     }
-    return '';
+    return fail('RoleSpec', node);
   }
 
   ['GrantStmt'](node) {
