@@ -868,6 +868,11 @@ export default class Deparser {
       output.push(')');
     }
 
+    if (node.whereClause) {
+      output.push('WHERE');
+      output.push(this.deparse(node.whereClause));
+    }
+
     return output.join(' ');
   }
 

@@ -8043,6 +8043,62 @@ Object {
         "stmt_location": 236,
       },
     },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "IndexStmt": Object {
+            "accessMethod": "btree",
+            "idxname": "uniq_service_when_not_null",
+            "indexParams": Array [
+              Object {
+                "IndexElem": Object {
+                  "name": "uid",
+                  "nulls_ordering": 0,
+                  "ordering": 0,
+                },
+              },
+              Object {
+                "IndexElem": Object {
+                  "name": "svc",
+                  "nulls_ordering": 0,
+                  "ordering": 0,
+                },
+              },
+            ],
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 406,
+                "relname": "table3",
+                "relpersistence": "p",
+                "schemaname": "schema2",
+              },
+            },
+            "unique": true,
+            "whereClause": Object {
+              "NullTest": Object {
+                "arg": Object {
+                  "ColumnRef": Object {
+                    "fields": Array [
+                      Object {
+                        "String": Object {
+                          "str": "svc",
+                        },
+                      },
+                    ],
+                    "location": 440,
+                  },
+                },
+                "location": 444,
+                "nulltesttype": 1,
+              },
+            },
+          },
+        },
+        "stmt_len": 103,
+        "stmt_location": 352,
+      },
+    },
   ],
   "stderr": "",
 }
@@ -8051,7 +8107,8 @@ Object {
 exports[`kitchen sink indexes 2`] = `
 "CREATE INDEX CONCURRENTLY boom_merkle_tree_tag_created_reference_idx ON boom.merkle_tree ( tag, created, reference );
 CREATE UNIQUE INDEX databases_database_unique_name_idx ON databases.database ( tenant_id, database_name_hash(name) );
-CREATE UNIQUE INDEX boom_worktree_idx ON boom.worktree ( tag, reference, created, decode(md5(lower(path)), 'hex') );"
+CREATE UNIQUE INDEX boom_worktree_idx ON boom.worktree ( tag, reference, created, decode(md5(lower(path)), 'hex') );
+CREATE UNIQUE INDEX uniq_service_when_not_null ON schema2.table3 ( uid, svc ) WHERE svc IS NOT NULL;"
 `;
 
 exports[`kitchen sink insert 1`] = `

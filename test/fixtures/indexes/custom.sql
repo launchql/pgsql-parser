@@ -5,3 +5,7 @@ CREATE UNIQUE INDEX databases_database_unique_name_idx ON databases.database (
 );
 
 CREATE UNIQUE INDEX boom_worktree_idx ON boom.worktree (tag, reference, created, DECODE(MD5(LOWER(path)), 'hex'));
+
+CREATE UNIQUE INDEX uniq_service_when_not_null
+  ON schema2.table3 (uid, svc)
+  WHERE svc IS NOT NULL;
