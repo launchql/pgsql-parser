@@ -7818,6 +7818,242 @@ GRANT EXECUTE ON FUNCTION auth.authenticate TO anonymous;
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE auth.token TO administrator;"
 `;
 
+exports[`kitchen sink indexes 1`] = `
+Object {
+  "query": Array [
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "IndexStmt": Object {
+            "accessMethod": "btree",
+            "concurrent": true,
+            "idxname": "boom_merkle_tree_tag_created_reference_idx",
+            "indexParams": Array [
+              Object {
+                "IndexElem": Object {
+                  "name": "tag",
+                  "nulls_ordering": 0,
+                  "ordering": 0,
+                },
+              },
+              Object {
+                "IndexElem": Object {
+                  "name": "created",
+                  "nulls_ordering": 0,
+                  "ordering": 0,
+                },
+              },
+              Object {
+                "IndexElem": Object {
+                  "name": "reference",
+                  "nulls_ordering": 0,
+                  "ordering": 0,
+                },
+              },
+            ],
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 72,
+                "relname": "merkle_tree",
+                "relpersistence": "p",
+                "schemaname": "boom",
+              },
+            },
+          },
+        },
+        "stmt_len": 114,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "IndexStmt": Object {
+            "accessMethod": "btree",
+            "idxname": "databases_database_unique_name_idx",
+            "indexParams": Array [
+              Object {
+                "IndexElem": Object {
+                  "name": "tenant_id",
+                  "nulls_ordering": 0,
+                  "ordering": 0,
+                },
+              },
+              Object {
+                "IndexElem": Object {
+                  "expr": Object {
+                    "FuncCall": Object {
+                      "args": Array [
+                        Object {
+                          "ColumnRef": Object {
+                            "fields": Array [
+                              Object {
+                                "String": Object {
+                                  "str": "name",
+                                },
+                              },
+                            ],
+                            "location": 228,
+                          },
+                        },
+                      ],
+                      "funcname": Array [
+                        Object {
+                          "String": Object {
+                            "str": "database_name_hash",
+                          },
+                        },
+                      ],
+                      "location": 209,
+                    },
+                  },
+                  "nulls_ordering": 0,
+                  "ordering": 0,
+                },
+              },
+            ],
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 175,
+                "relname": "database",
+                "relpersistence": "p",
+                "schemaname": "databases",
+              },
+            },
+            "unique": true,
+          },
+        },
+        "stmt_len": 120,
+        "stmt_location": 115,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "IndexStmt": Object {
+            "accessMethod": "btree",
+            "idxname": "boom_worktree_idx",
+            "indexParams": Array [
+              Object {
+                "IndexElem": Object {
+                  "name": "tag",
+                  "nulls_ordering": 0,
+                  "ordering": 0,
+                },
+              },
+              Object {
+                "IndexElem": Object {
+                  "name": "reference",
+                  "nulls_ordering": 0,
+                  "ordering": 0,
+                },
+              },
+              Object {
+                "IndexElem": Object {
+                  "name": "created",
+                  "nulls_ordering": 0,
+                  "ordering": 0,
+                },
+              },
+              Object {
+                "IndexElem": Object {
+                  "expr": Object {
+                    "FuncCall": Object {
+                      "args": Array [
+                        Object {
+                          "FuncCall": Object {
+                            "args": Array [
+                              Object {
+                                "FuncCall": Object {
+                                  "args": Array [
+                                    Object {
+                                      "ColumnRef": Object {
+                                        "fields": Array [
+                                          Object {
+                                            "String": Object {
+                                              "str": "path",
+                                            },
+                                          },
+                                        ],
+                                        "location": 336,
+                                      },
+                                    },
+                                  ],
+                                  "funcname": Array [
+                                    Object {
+                                      "String": Object {
+                                        "str": "lower",
+                                      },
+                                    },
+                                  ],
+                                  "location": 330,
+                                },
+                              },
+                            ],
+                            "funcname": Array [
+                              Object {
+                                "String": Object {
+                                  "str": "md5",
+                                },
+                              },
+                            ],
+                            "location": 326,
+                          },
+                        },
+                        Object {
+                          "A_Const": Object {
+                            "location": 344,
+                            "val": Object {
+                              "String": Object {
+                                "str": "hex",
+                              },
+                            },
+                          },
+                        },
+                      ],
+                      "funcname": Array [
+                        Object {
+                          "String": Object {
+                            "str": "decode",
+                          },
+                        },
+                      ],
+                      "location": 319,
+                    },
+                  },
+                  "nulls_ordering": 0,
+                  "ordering": 0,
+                },
+              },
+            ],
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 279,
+                "relname": "worktree",
+                "relpersistence": "p",
+                "schemaname": "boom",
+              },
+            },
+            "unique": true,
+          },
+        },
+        "stmt_len": 115,
+        "stmt_location": 236,
+      },
+    },
+  ],
+  "stderr": "",
+}
+`;
+
+exports[`kitchen sink indexes 2`] = `
+"CREATE INDEX CONCURRENTLY boom_merkle_tree_tag_created_reference_idx ON boom.merkle_tree ( tag, created, reference );
+CREATE UNIQUE INDEX databases_database_unique_name_idx ON databases.database ( tenant_id, database_name_hash(name) );
+CREATE UNIQUE INDEX boom_worktree_idx ON boom.worktree ( tag, reference, created, decode(md5(lower(path)), 'hex') );"
+`;
+
 exports[`kitchen sink insert 1`] = `
 Object {
   "query": Array [

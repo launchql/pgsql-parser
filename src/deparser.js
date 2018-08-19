@@ -845,6 +845,41 @@ export default class Deparser {
     }
   }
 
+  ['IndexStmt'](node) {
+    const output = [];
+    output.push('CREATE');
+    if (node.unique) {
+      output.push('UNIQUE');
+    }
+    output.push('INDEX');
+    if (node.concurrent) {
+      output.push('CONCURRENTLY');
+    }
+
+    if (node.idxname) {
+      output.push(node.idxname);
+    }
+    output.push('ON');
+    output.push(this.deparse(node.relation));
+
+    if (node.indexParams) {
+      output.push('(');
+      output.push(this.list(node.indexParams));
+      output.push(')');
+    }
+
+    return output.join(' ');
+  }
+
+  ['IndexElem'](node) {
+    if (node.name) {
+      return node.name;
+    }
+    if (node.expr) {
+      return this.deparse(node.expr);
+    }
+  }
+
   ['InsertStmt'](node) {
     const output = [];
 

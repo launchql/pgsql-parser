@@ -34,6 +34,9 @@ describe('kitchen sink', () => {
   it('domains', () => {
     check('domains/create.sql');
   });
+  it('indexes', () => {
+    check('indexes/custom.sql');
+  });
   it('do stmt', () => {
     const dosql = readFileSync(resolve(__dirname + '/../test/fixtures/do/custom.sql')).toString();
     const tree = parser.parse(dosql);
