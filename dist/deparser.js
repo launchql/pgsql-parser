@@ -785,6 +785,60 @@ class Deparser {
     }
   }
 
+  ['IndexStmt'](node) {
+    const output = [];
+    output.push('CREATE');
+    if (node.unique) {
+      output.push('UNIQUE');
+    }
+    output.push('INDEX');
+    if (node.concurrent) {
+      output.push('CONCURRENTLY');
+    }
+
+    if (node.idxname) {
+      output.push(node.idxname);
+    }
+    output.push('ON');
+    output.push(this.deparse(node.relation));
+
+    if (node.indexParams) {
+      output.push('(');
+      output.push(this.list(node.indexParams));
+      output.push(')');
+    }
+
+    if (node.whereClause) {
+      output.push('WHERE');
+      output.push(this.deparse(node.whereClause));
+    }
+
+    return output.join(' ');
+  }
+
+  ['IndexElem'](node) {
+    if (node.name) {
+      return node.name;
+    }
+    if (node.expr) {
+      return this.deparse(node.expr);
+    }
+    return fail('IndexElem', node);
+  }
+
+  ['InsertStmt'](node) {
+    const output = [];
+
+    output.push('INSERT INTO');
+    output.push(this.deparse(node.relation));
+    output.push('(');
+    output.push(this.list(node.cols));
+    output.push(')');
+    output.push(this.deparse(node.selectStmt));
+
+    return output.join(' ');
+  }
+
   ['Integer'](node, context) {
     if (node.ival < 0 && context !== 'simple') {
       return `(${node.ival})`;
@@ -1124,7 +1178,7 @@ class Deparser {
       output.push('VALUES');
 
       const lists = node.valuesLists.map(list => {
-        return `(${list.map(v => this.deparse(v)).join(', ')})`;
+        return `(${this.list(list)})`;
       });
 
       output.push(lists.join(', '));
@@ -1390,6 +1444,7 @@ class Deparser {
   ['CreatePolicyStmt'](node) {
     const output = [];
     output.push('CREATE POLICY');
+
     output.push(this.quote(node.policy_name));
     if (node.table) {
       output.push('ON');
@@ -1401,8 +1456,15 @@ class Deparser {
     }
     output.push('TO');
     output.push(this.list(node.roles));
-    output.push('USING');
-    output.push(this.deparse(node.qual));
+
+    if (node.with_check) {
+      output.push('WITH CHECK');
+      output.push(this.deparse(node.with_check));
+    } else {
+      output.push('USING');
+      output.push(this.deparse(node.qual));
+    }
+
     return output.join(' ');
   }
 
@@ -1524,6 +1586,14 @@ class Deparser {
     output.push(args.join(','));
     output.push(')');
 
+    return output.join(' ');
+  }
+
+  ['CreateDomainStmt'](node) {
+    const output = [];
+    output.push('CREATE DOMAIN');
+    output.push(this.list(node.domainname, '.'));
+    output.push(this.deparse(node.typeName));
     return output.join(' ');
   }
 
@@ -1944,9 +2014,10 @@ class Deparser {
     if (node.roletype === 3) {
       return 'PUBLIC';
     }
-    return '';
+    return fail('RoleSpec', node);
   }
 
+  // TO DO use enums
   ['GrantStmt'](node) {
     const output = [];
 
@@ -1980,7 +2051,7 @@ class Deparser {
           return 'TYPE';
         default:
       }
-      return '';
+      return fail('GrantStmt', node);
     };
 
     if ([1, 3, 4, 5, 6, 7, 8, 9, 10, 12].includes(node.objtype)) {

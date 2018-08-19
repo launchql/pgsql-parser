@@ -31,6 +31,12 @@ describe('kitchen sink', () => {
   it('types', () => {
     check('types/composite.sql');
   });
+  it('domains', () => {
+    check('domains/create.sql');
+  });
+  it('indexes', () => {
+    check('indexes/custom.sql');
+  });
   it('do stmt', () => {
     const dosql = readFileSync(resolve(__dirname + '/../test/fixtures/do/custom.sql')).toString();
     const tree = parser.parse(dosql);
@@ -38,6 +44,12 @@ describe('kitchen sink', () => {
     const sql = parser.deparse(tree.query);
     expect(cleanLines(sql)).toMatchSnapshot();
     expect(cleanTree(parser.parse(cleanLines(sql)))).toEqual(cleanTree(parser.parse(cleanLines(dosql))));
+  });
+  it('insert', () => {
+    check('statements/insert.sql');
+  });
+  it('domain', () => {
+    check('domains/create.sql');
   });
   describe('tables', () => {
     it('custom', () => {
