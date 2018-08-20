@@ -1703,6 +1703,54 @@ Object {
 
 exports[`kitchen sink domains 2`] = `"CREATE DOMAIN v8.json json;"`;
 
+exports[`kitchen sink enums 1`] = `
+Object {
+  "query": Array [
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CreateEnumStmt": Object {
+            "typeName": Array [
+              Object {
+                "String": Object {
+                  "str": "myschema",
+                },
+              },
+              Object {
+                "String": Object {
+                  "str": "special_type",
+                },
+              },
+            ],
+            "vals": Array [
+              Object {
+                "String": Object {
+                  "str": "oh",
+                },
+              },
+              Object {
+                "String": Object {
+                  "str": "yea",
+                },
+              },
+            ],
+          },
+        },
+        "stmt_len": 61,
+      },
+    },
+  ],
+  "stderr": "",
+}
+`;
+
+exports[`kitchen sink enums 2`] = `
+"CREATE TYPE myschema.special_type AS ENUM (
+'oh',
+'yea'
+);"
+`;
+
 exports[`kitchen sink fixtures complex.sql 1`] = `
 Object {
   "query": Array [

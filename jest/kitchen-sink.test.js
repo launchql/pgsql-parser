@@ -37,6 +37,9 @@ describe('kitchen sink', () => {
   it('indexes', () => {
     check('indexes/custom.sql');
   });
+  it('enums', () => {
+    check('enums/create.sql');
+  });
   it('do stmt', () => {
     const dosql = readFileSync(resolve(__dirname + '/../test/fixtures/do/custom.sql')).toString();
     const tree = parser.parse(dosql);
