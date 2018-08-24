@@ -19,6 +19,12 @@ describe('kitchen sink', () => {
   it('alter', () => {
     check('alter/alter.sql');
   });
+  it('default privs', () => {
+    check('alter/default-privs.sql');
+  });
+  it('set', () => {
+    check('set/custom.sql');
+  });
   it('comments', () => {
     check('comments/custom.sql');
   });

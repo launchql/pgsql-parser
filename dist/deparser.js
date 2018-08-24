@@ -1410,6 +1410,20 @@ class Deparser {
     return output.join(' ');
   }
 
+  ['CreateEnumStmt'](node) {
+    const output = [];
+    output.push('CREATE TYPE');
+    output.push(this.list(node.typeName, '.'));
+    output.push('AS ENUM');
+    output.push('(\n');
+    const vals = node.vals.map(val => {
+      return { String: { str: `'${val.String.str}'` } };
+    });
+    output.push(this.list(vals, ',\n', '\t'));
+    output.push('\n)');
+    return output.join(' ');
+  }
+
   ['CreateExtensionStmt'](node) {
     const output = [];
     output.push('CREATE EXTENSION');

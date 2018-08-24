@@ -1556,6 +1556,324 @@ COMMENT ON VIEW my_view IS E'View of departmental costs';
 COMMENT ON TABLE mytable IS NULL;"
 `;
 
+exports[`kitchen sink default privs 1`] = `
+Object {
+  "query": Array [
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "AlterDefaultPrivilegesStmt": Object {
+            "action": Object {
+              "GrantStmt": Object {
+                "behavior": 0,
+                "grantees": Array [
+                  Object {
+                    "RoleSpec": Object {
+                      "location": 88,
+                      "rolename": "authenticated",
+                      "roletype": 0,
+                    },
+                  },
+                ],
+                "is_grant": true,
+                "objtype": 7,
+                "privileges": Array [
+                  Object {
+                    "AccessPriv": Object {
+                      "priv_name": "execute",
+                    },
+                  },
+                ],
+                "targtype": 2,
+              },
+            },
+            "options": Array [
+              Object {
+                "DefElem": Object {
+                  "arg": Array [
+                    Object {
+                      "String": Object {
+                        "str": "objects_public",
+                      },
+                    },
+                  ],
+                  "defaction": 0,
+                  "defname": "schemas",
+                  "location": 25,
+                },
+              },
+            ],
+          },
+        },
+        "stmt_len": 101,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "AlterDefaultPrivilegesStmt": Object {
+            "action": Object {
+              "GrantStmt": Object {
+                "behavior": 0,
+                "grantees": Array [
+                  Object {
+                    "RoleSpec": Object {
+                      "location": 174,
+                      "roletype": 3,
+                    },
+                  },
+                ],
+                "is_grant": true,
+                "objtype": 1,
+                "privileges": Array [
+                  Object {
+                    "AccessPriv": Object {
+                      "priv_name": "select",
+                    },
+                  },
+                ],
+                "targtype": 2,
+              },
+            },
+            "options": Array [
+              Object {
+                "DefElem": Object {
+                  "arg": Array [
+                    Object {
+                      "String": Object {
+                        "str": "myschema",
+                      },
+                    },
+                  ],
+                  "defaction": 0,
+                  "defname": "schemas",
+                  "location": 129,
+                },
+              },
+            ],
+          },
+        },
+        "stmt_len": 78,
+        "stmt_location": 102,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "AlterDefaultPrivilegesStmt": Object {
+            "action": Object {
+              "GrantStmt": Object {
+                "behavior": 0,
+                "grantees": Array [
+                  Object {
+                    "RoleSpec": Object {
+                      "location": 253,
+                      "rolename": "webuser",
+                      "roletype": 0,
+                    },
+                  },
+                ],
+                "is_grant": true,
+                "objtype": 1,
+                "privileges": Array [
+                  Object {
+                    "AccessPriv": Object {
+                      "priv_name": "insert",
+                    },
+                  },
+                ],
+                "targtype": 2,
+              },
+            },
+            "options": Array [
+              Object {
+                "DefElem": Object {
+                  "arg": Array [
+                    Object {
+                      "String": Object {
+                        "str": "myschema",
+                      },
+                    },
+                  ],
+                  "defaction": 0,
+                  "defname": "schemas",
+                  "location": 208,
+                },
+              },
+            ],
+          },
+        },
+        "stmt_len": 79,
+        "stmt_location": 181,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "AlterDefaultPrivilegesStmt": Object {
+            "action": Object {
+              "GrantStmt": Object {
+                "behavior": 0,
+                "grantees": Array [
+                  Object {
+                    "RoleSpec": Object {
+                      "location": 337,
+                      "roletype": 3,
+                    },
+                  },
+                ],
+                "objtype": 1,
+                "privileges": Array [
+                  Object {
+                    "AccessPriv": Object {
+                      "priv_name": "select",
+                    },
+                  },
+                ],
+                "targtype": 2,
+              },
+            },
+            "options": Array [
+              Object {
+                "DefElem": Object {
+                  "arg": Array [
+                    Object {
+                      "String": Object {
+                        "str": "myschema",
+                      },
+                    },
+                  ],
+                  "defaction": 0,
+                  "defname": "schemas",
+                  "location": 289,
+                },
+              },
+            ],
+          },
+        },
+        "stmt_len": 82,
+        "stmt_location": 261,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "AlterDefaultPrivilegesStmt": Object {
+            "action": Object {
+              "GrantStmt": Object {
+                "behavior": 0,
+                "grantees": Array [
+                  Object {
+                    "RoleSpec": Object {
+                      "location": 418,
+                      "rolename": "webuser",
+                      "roletype": 0,
+                    },
+                  },
+                ],
+                "objtype": 1,
+                "privileges": Array [
+                  Object {
+                    "AccessPriv": Object {
+                      "priv_name": "insert",
+                    },
+                  },
+                ],
+                "targtype": 2,
+              },
+            },
+            "options": Array [
+              Object {
+                "DefElem": Object {
+                  "arg": Array [
+                    Object {
+                      "String": Object {
+                        "str": "myschema",
+                      },
+                    },
+                  ],
+                  "defaction": 0,
+                  "defname": "schemas",
+                  "location": 370,
+                },
+              },
+            ],
+          },
+        },
+        "stmt_len": 81,
+        "stmt_location": 344,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "AlterDefaultPrivilegesStmt": Object {
+            "action": Object {
+              "GrantStmt": Object {
+                "behavior": 0,
+                "grantees": Array [
+                  Object {
+                    "RoleSpec": Object {
+                      "location": 501,
+                      "roletype": 3,
+                    },
+                  },
+                ],
+                "objtype": 7,
+                "privileges": Array [
+                  Object {
+                    "AccessPriv": Object {
+                      "priv_name": "execute",
+                    },
+                  },
+                ],
+                "targtype": 2,
+              },
+            },
+            "options": Array [
+              Object {
+                "DefElem": Object {
+                  "arg": Array [
+                    Object {
+                      "RoleSpec": Object {
+                        "location": 462,
+                        "rolename": "admin",
+                        "roletype": 0,
+                      },
+                    },
+                  ],
+                  "defaction": 0,
+                  "defname": "roles",
+                  "location": 453,
+                },
+              },
+            ],
+          },
+        },
+        "stmt_len": 81,
+        "stmt_location": 426,
+      },
+    },
+  ],
+  "stderr": "",
+}
+`;
+
+exports[`kitchen sink default privs 2`] = `
+"ALTER DEFAULT PRIVILEGES IN SCHEMA objects_public
+GRANT EXECUTE ON FUNCTIONS  TO authenticated;
+ALTER DEFAULT PRIVILEGES IN SCHEMA myschema
+GRANT SELECT ON TABLES  TO PUBLIC;
+ALTER DEFAULT PRIVILEGES IN SCHEMA myschema
+GRANT INSERT ON TABLES  TO webuser;
+ALTER DEFAULT PRIVILEGES IN SCHEMA myschema
+REVOKE SELECT ON TABLES  FROM PUBLIC;
+ALTER DEFAULT PRIVILEGES IN SCHEMA myschema
+REVOKE INSERT ON TABLES  FROM webuser;
+ALTER DEFAULT PRIVILEGES FOR ROLE admin
+REVOKE EXECUTE ON FUNCTIONS  FROM PUBLIC;"
+`;
+
 exports[`kitchen sink do stmt 1`] = `
 Object {
   "query": Array [
@@ -24051,6 +24369,190 @@ exports[`kitchen sink roles grants 2`] = `
 "GRANT APP_AUTHENTICATED TO app_user;
 GRANT APP_AUTHENTICATED, APP_ANONYMOUS TO app_user;
 GRANT APP_AUTHENTICATED, APP_ANONYMOUS TO app_user, super_app_user;"
+`;
+
+exports[`kitchen sink set 1`] = `
+Object {
+  "query": Array [
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "VariableSetStmt": Object {
+            "kind": 2,
+            "name": "var",
+          },
+        },
+        "stmt_len": 20,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "VariableSetStmt": Object {
+            "kind": 4,
+            "name": "client_min_messages",
+          },
+        },
+        "stmt_len": 27,
+        "stmt_location": 21,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "VariableSetStmt": Object {
+            "args": Array [
+              Object {
+                "A_Const": Object {
+                  "location": 69,
+                  "val": Object {
+                    "String": Object {
+                      "str": "alt_nsp1",
+                    },
+                  },
+                },
+              },
+              Object {
+                "A_Const": Object {
+                  "location": 79,
+                  "val": Object {
+                    "String": Object {
+                      "str": "public",
+                    },
+                  },
+                },
+              },
+            ],
+            "kind": 0,
+            "name": "search_path",
+          },
+        },
+        "stmt_len": 36,
+        "stmt_location": 49,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "VariableSetStmt": Object {
+            "args": Array [
+              Object {
+                "A_Const": Object {
+                  "location": 114,
+                  "val": Object {
+                    "String": Object {
+                      "str": "regtest_alter_user1",
+                    },
+                  },
+                },
+              },
+            ],
+            "kind": 0,
+            "name": "session_authorization",
+          },
+        },
+        "stmt_len": 47,
+        "stmt_location": 86,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "VariableSetStmt": Object {
+            "args": Array [
+              Object {
+                "A_Const": Object {
+                  "location": 156,
+                  "val": Object {
+                    "String": Object {
+                      "str": "UNICODE",
+                    },
+                  },
+                },
+              },
+            ],
+            "kind": 0,
+            "name": "client_encoding",
+          },
+        },
+        "stmt_len": 31,
+        "stmt_location": 134,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "VariableSetStmt": Object {
+            "args": Array [
+              Object {
+                "A_Const": Object {
+                  "location": 191,
+                  "val": Object {
+                    "String": Object {
+                      "str": "UNICODE",
+                    },
+                  },
+                },
+              },
+            ],
+            "kind": 0,
+            "name": "client_encoding",
+          },
+        },
+        "stmt_len": 34,
+        "stmt_location": 166,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "VariableSetStmt": Object {
+            "args": Array [
+              Object {
+                "A_Const": Object {
+                  "location": 227,
+                  "val": Object {
+                    "String": Object {
+                      "str": "notice",
+                    },
+                  },
+                },
+              },
+            ],
+            "kind": 0,
+            "name": "client_min_messages",
+          },
+        },
+        "stmt_len": 32,
+        "stmt_location": 201,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "VariableSetStmt": Object {
+            "kind": 4,
+            "name": "session_authorization",
+          },
+        },
+        "stmt_len": 29,
+        "stmt_location": 234,
+      },
+    },
+  ],
+  "stderr": "",
+}
+`;
+
+exports[`kitchen sink set 2`] = `
+"SET var FROM CURRENT;
+RESET client_min_messages;
+SET search_path = 'alt_nsp1', 'public';
+SET session_authorization = 'regtest_alter_user1';
+SET client_encoding = 'UNICODE';
+SET client_encoding = 'UNICODE';
+SET client_min_messages = 'notice';
+RESET session_authorization;"
 `;
 
 exports[`kitchen sink tables check 1`] = `
