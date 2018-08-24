@@ -19,6 +19,12 @@ describe('kitchen sink', () => {
   it('alter', () => {
     check('alter/alter.sql');
   });
+  it('default privs', () => {
+    check('alter/default-privs.sql');
+  });
+  it('set', () => {
+    check('set/custom.sql');
+  });
   it('comments', () => {
     check('comments/custom.sql');
   });
@@ -36,6 +42,9 @@ describe('kitchen sink', () => {
   });
   it('indexes', () => {
     check('indexes/custom.sql');
+  });
+  it('enums', () => {
+    check('enums/create.sql');
   });
   it('do stmt', () => {
     const dosql = readFileSync(resolve(__dirname + '/../test/fixtures/do/custom.sql')).toString();
