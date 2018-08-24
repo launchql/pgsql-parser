@@ -18,7 +18,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 const dotty = require('dotty');
 
-const CONSTRAINT_TYPES = ['NULL', 'NOT NULL', 'DEFAULT', null, 'CHECK', 'PRIMARY KEY', 'UNIQUE', 'EXCLUDE', 'REFERENCES'];
+const fail = (type, node) => {
+  throw new Error((0, _util.format)('Unhandled %s node: %s', type, JSON.stringify(node)));
+};
 
 // select word from pg_get_keywords() where catcode = 'R';
 const RESERVED_WORDS = ['all', 'analyse', 'analyze', 'and', 'any', 'array', 'as', 'asc', 'asymmetric', 'both', 'case', 'cast', 'check', 'collate', 'column', 'constraint', 'create', 'current_catalog', 'current_date', 'current_role', 'current_time', 'current_timestamp', 'current_user', 'default', 'deferrable', 'desc', 'distinct', 'do', 'else', 'end', 'except', 'false', 'fetch', 'for', 'foreign', 'from', 'grant', 'group', 'having', 'in', 'initially', 'intersect', 'into', 'lateral', 'leading', 'limit', 'localtime', 'localtimestamp', 'not', 'null', 'offset', 'on', 'only', 'or', 'order', 'placing', 'primary', 'references', 'returning', 'select', 'session_user', 'some', 'symmetric', 'table', 'then', 'to', 'trailing', 'true', 'union', 'unique', 'user', 'using', 'variadic', 'when', 'where', 'window', 'with'];
@@ -40,10 +42,6 @@ const compact = o => {
 
     return p.toString().length;
   });
-};
-
-const fail = (type, node) => {
-  throw new Error((0, _util.format)('Unhandled %s node: %s', type, JSON.stringify(node)));
 };
 
 const parens = string => {
@@ -1239,6 +1237,27 @@ class Deparser {
     return output.join(' ');
   }
 
+  ['AlterDefaultPrivilegesStmt'](node) {
+    const output = [];
+    output.push('ALTER DEFAULT PRIVILEGES');
+
+    const elem = node.options.find(el => el.hasOwnProperty('DefElem'));
+
+    if (elem.DefElem.defname === 'schemas') {
+      output.push('IN SCHEMA');
+      output.push(dotty.get(elem, 'DefElem.arg.0.String.str'));
+    }
+    if (elem.DefElem.defname === 'roles') {
+      output.push('FOR ROLE');
+      const roleSpec = dotty.get(elem, 'DefElem.arg.0');
+      output.push(this.deparse(roleSpec));
+    }
+    output.push('\n');
+    output.push(this.deparse(node.action));
+
+    return output.join(' ');
+  }
+
   ['AlterTableStmt'](node) {
     const output = [];
     output.push('ALTER');
@@ -1648,7 +1667,7 @@ class Deparser {
 
   ['ConstraintStmt'](node) {
     const output = [];
-    const constraint = CONSTRAINT_TYPES[node.contype];
+    const constraint = (0, _types.getConstraintFromConstrType)(node.contype);
     if (node.conname) {
       output.push('CONSTRAINT');
       output.push(node.conname);
@@ -1738,12 +1757,7 @@ class Deparser {
   ['Constraint'](node) {
     const output = [];
 
-    const constraint = CONSTRAINT_TYPES[node.contype];
-    if (!constraint) {
-      throw new Error('contraint type not implemented: ' + node.contype);
-    }
-
-    if (constraint === 'REFERENCES') {
+    if (node.contype === _types.CONSTRAINT_TYPES.CONSTR_FOREIGN) {
       output.push(this.ReferenceConstraint(node));
     } else {
       output.push(this.ConstraintStmt(node));
@@ -1797,7 +1811,7 @@ class Deparser {
       output.push('NOT VALID');
     }
 
-    if (constraint === 'EXCLUDE') {
+    if (node.contype === _types.CONSTRAINT_TYPES.CONSTR_EXCLUSION) {
       output.push(this.ExclusionConstraint(node));
     }
 
@@ -1824,24 +1838,29 @@ class Deparser {
   }
 
   ['VariableSetStmt'](node) {
-    if (node.kind === 4) {
-      return (0, _util.format)('RESET %s', node.name);
+    switch (node.kind) {
+      case _types.VARIABLESET_TYPES.VAR_SET_VALUE:
+        return (0, _util.format)('SET %s%s = %s', node.is_local ? 'LOCAL ' : '', node.name, this.deparseNodes(node.args, 'simple').join(', '));
+      case _types.VARIABLESET_TYPES.VAR_SET_DEFAULT:
+        return (0, _util.format)('SET %s TO DEFAULT', node.name);
+      case _types.VARIABLESET_TYPES.VAR_SET_CURRENT:
+        return (0, _util.format)('SET %s FROM CURRENT', node.name);
+      case _types.VARIABLESET_TYPES.VAR_SET_MULTI:
+        {
+          const name = {
+            'TRANSACTION': 'TRANSACTION',
+            'SESSION CHARACTERISTICS': 'SESSION CHARACTERISTICS AS TRANSACTION'
+          }[node.name];
+
+          return (0, _util.format)('SET %s %s', name, this.deparseNodes(node.args, 'simple').join(', '));
+        }
+      case _types.VARIABLESET_TYPES.VAR_RESET:
+        return (0, _util.format)('RESET %s', node.name);
+      case _types.VARIABLESET_TYPES.VAR_RESET_ALL:
+        return 'RESET ALL';
+      default:
+        return fail('VariableSetKind', node);
     }
-
-    if (node.kind === 3) {
-      const name = {
-        'TRANSACTION': 'TRANSACTION',
-        'SESSION CHARACTERISTICS': 'SESSION CHARACTERISTICS AS TRANSACTION'
-      }[node.name];
-
-      return (0, _util.format)('SET %s %s', name, this.deparseNodes(node.args, 'simple').join(', '));
-    }
-
-    if (node.kind === 1) {
-      return (0, _util.format)('SET %s TO DEFAULT', node.name);
-    }
-
-    return (0, _util.format)('SET %s%s = %s', node.is_local ? 'LOCAL ' : '', node.name, this.deparseNodes(node.args, 'simple').join(', '));
   }
 
   ['VariableShowStmt'](node) {
@@ -2014,61 +2033,70 @@ class Deparser {
     return output.join(' ');
   }
 
-  // TODO use RoleSpecType from libpg_enums
   ['RoleSpec'](node) {
-    if (node.roletype === 0) {
-      return this.quote(node.rolename);
+    switch (node.roletype) {
+      case _types.ROLESPEC_TYPES.ROLESPEC_CSTRING:
+        return this.quote(node.rolename);
+      case _types.ROLESPEC_TYPES.ROLESPEC_CURRENT_USER:
+        return 'CURRENT_USER';
+      case _types.ROLESPEC_TYPES.ROLESPEC_SESSION_USER:
+        return 'SESSION_USER';
+      case _types.ROLESPEC_TYPES.ROLESPEC_PUBLIC:
+        return 'PUBLIC';
+      default:
+        return fail('RoleSpec', node);
     }
-    if (node.roletype === 1) {
-      return 'CURRENT_USER';
-    }
-    if (node.roletype === 2) {
-      return 'SESSION_USER';
-    }
-    if (node.roletype === 3) {
-      return 'PUBLIC';
-    }
-    return fail('RoleSpec', node);
   }
 
-  // TO DO use enums
   ['GrantStmt'](node) {
     const output = [];
 
     const getTypeFromNode = nodeObj => {
       switch (nodeObj.objtype) {
-        case 1:
-          if (nodeObj.targtype === 1) {
+        case _types.GRANTOBJECT_TYPES.ACL_OBJECT_RELATION:
+          if (nodeObj.targtype === _types.GRANTTARGET_TYPES.ACL_TARGET_ALL_IN_SCHEMA) {
             return 'ALL TABLES IN SCHEMA';
           }
+          if (nodeObj.targtype === _types.GRANTTARGET_TYPES.ACL_TARGET_DEFAULTS) {
+            return 'TABLES';
+          }
+          // todo could be view
           return 'TABLE';
-        case 3:
+        case _types.GRANTOBJECT_TYPES.ACL_OBJECT_SEQUENCE:
+          return 'SEQUENCE';
+        case _types.GRANTOBJECT_TYPES.ACL_OBJECT_DATABASE:
           return 'DATABASE';
-        case 4:
+        case _types.GRANTOBJECT_TYPES.ACL_OBJECT_DOMAIN:
           return 'DOMAIN';
-        case 5:
+        case _types.GRANTOBJECT_TYPES.ACL_OBJECT_FDW:
           return 'FOREIGN DATA WRAPPER';
-        case 6:
+        case _types.GRANTOBJECT_TYPES.ACL_OBJECT_FOREIGN_SERVER:
           return 'FOREIGN SERVER';
-        case 7:
-          if (nodeObj.targtype === 1) {
+        case _types.GRANTOBJECT_TYPES.ACL_OBJECT_FUNCTION:
+
+          if (nodeObj.targtype === _types.GRANTTARGET_TYPES.ACL_TARGET_ALL_IN_SCHEMA) {
             return 'ALL FUNCTIONS IN SCHEMA';
           }
+          if (nodeObj.targtype === _types.GRANTTARGET_TYPES.ACL_TARGET_DEFAULTS) {
+            return 'FUNCTIONS';
+          }
           return 'FUNCTION';
-        case 8:
+        case _types.GRANTOBJECT_TYPES.ACL_OBJECT_LANGUAGE:
           return 'LANGUAGE';
-        case 9:
+        case _types.GRANTOBJECT_TYPES.ACL_OBJECT_LARGEOBJECT:
           return 'LARGE OBJECT';
-        case 10:
+        case _types.GRANTOBJECT_TYPES.ACL_OBJECT_NAMESPACE:
           return 'SCHEMA';
-        case 12:
+        case _types.GRANTOBJECT_TYPES.ACL_OBJECT_TABLESPACE:
+          return 'TABLESPACE';
+        case _types.GRANTOBJECT_TYPES.ACL_OBJECT_TYPE:
           return 'TYPE';
         default:
       }
       return fail('GrantStmt', node);
     };
 
-    if ([1, 3, 4, 5, 6, 7, 8, 9, 10, 12].includes(node.objtype)) {
+    if (node.objtype !== _types.GRANTOBJECT_TYPES.ACL_OBJECT_COLUMN) {
       if (!node.is_grant) {
         output.push('REVOKE');
         if (node.grant_option) {
@@ -2143,12 +2171,15 @@ class Deparser {
     };
 
     output.push('CREATE');
-    if (Number(node.stmt_type) === 1) {
-      output.push('USER');
-    } else if (Number(node.stmt_type) === 2) {
-      output.push('GROUP');
-    } else {
-      output.push('ROLE');
+    switch (node.stmt_type) {
+      case _types.ROLESTMT_TYPES.ROLESTMT_USER:
+        output.push('USER');
+        break;
+      case _types.ROLESTMT_TYPES.ROLESTMT_GROUP:
+        output.push('GROUP');
+        break;
+      default:
+        output.push('ROLE');
     }
 
     output.push(`"${node.role}"`);
@@ -2262,35 +2293,35 @@ class Deparser {
     };
 
     switch (node.kind) {
-      case 0:
+      case _types.TRANSACTIONSTMT_TYPES.TRANS_STMT_BEGIN:
         return begin(node);
-      case 1:
+      case _types.TRANSACTIONSTMT_TYPES.TRANS_STMT_START:
         return start(node);
-      case 2:
+      case _types.TRANSACTIONSTMT_TYPES.TRANS_STMT_COMMIT:
         return 'COMMIT';
-      case 3:
+      case _types.TRANSACTIONSTMT_TYPES.TRANS_STMT_ROLLBACK:
         return 'ROLLBACK';
-      case 4:
+      case _types.TRANSACTIONSTMT_TYPES.TRANS_STMT_SAVEPOINT:
         output.push('SAVEPOINT');
         output.push(this.deparse(node.options[0].DefElem.arg));
         break;
-      case 5:
+      case _types.TRANSACTIONSTMT_TYPES.TRANS_STMT_RELEASE:
         output.push('RELEASE SAVEPOINT');
         output.push(this.deparse(node.options[0].DefElem.arg));
         break;
-      case 6:
+      case _types.TRANSACTIONSTMT_TYPES.TRANS_STMT_ROLLBACK_TO:
         output.push('ROLLBACK TO');
         output.push(this.deparse(node.options[0].DefElem.arg));
         break;
-      case 7:
+      case _types.TRANSACTIONSTMT_TYPES.TRANS_STMT_PREPARE:
         output.push('PREPARE TRANSACTION');
         output.push(`'${node.gid}'`);
         break;
-      case 8:
+      case _types.TRANSACTIONSTMT_TYPES.TRANS_STMT_COMMIT_PREPARED:
         output.push('COMMIT PREPARED');
         output.push(`'${node.gid}'`);
         break;
-      case 9:
+      case _types.TRANSACTIONSTMT_TYPES.TRANS_STMT_ROLLBACK_PREPARED:
         output.push('ROLLBACK PREPARED');
         output.push(`'${node.gid}'`);
         break;
@@ -2304,23 +2335,27 @@ class Deparser {
 
     output.push(this.deparse(node.node));
 
-    if (node.sortby_dir === 1) {
-      output.push('ASC');
+    switch (node.sortby_dir) {
+      case _types.SORTBYDIR_TYPES.SORTBY_ASC:
+        output.push('ASC');
+        break;
+      case _types.SORTBYDIR_TYPES.SORTBY_DESC:
+        output.push('DESC');
+        break;
+      case _types.SORTBYDIR_TYPES.SORTBY_USING:
+        output.push(`USING ${this.deparseNodes(node.useOp)}`);
+        break;
+      case _types.SORTBYDIR_TYPES.SORTBY_DEFAULT:
+        break;
+      default:
+        return fail('SortBy', node);
     }
 
-    if (node.sortby_dir === 2) {
-      output.push('DESC');
-    }
-
-    if (node.sortby_dir === 3) {
-      output.push(`USING ${this.deparseNodes(node.useOp)}`);
-    }
-
-    if (node.sortby_nulls === 1) {
+    if (node.sortby_nulls === _types.SORTBYNULLS_TYPES.SORTBY_NULLS_FIRST) {
       output.push('NULLS FIRST');
     }
 
-    if (node.sortby_nulls === 2) {
+    if (node.sortby_nulls === _types.SORTBYNULLS_TYPES.SORTBY_NULLS_LAST) {
       output.push('NULLS LAST');
     }
 
