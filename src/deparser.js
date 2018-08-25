@@ -1569,10 +1569,14 @@ export default class Deparser {
 
     if (node.with_check) {
       output.push('WITH CHECK');
+      output.push('(');
       output.push(this.deparse(node.with_check));
+      output.push(')');
     } else {
       output.push('USING');
+      output.push('(');
       output.push(this.deparse(node.qual));
+      output.push(')');
     }
 
     return output.join(' ');

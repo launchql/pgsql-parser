@@ -23894,7 +23894,7 @@ Object {
               "TypeCast": Object {
                 "arg": Object {
                   "A_Const": Object {
-                    "location": 541,
+                    "location": 540,
                     "val": Object {
                       "String": Object {
                         "str": "t",
@@ -23926,7 +23926,7 @@ Object {
             "roles": Array [
               Object {
                 "RoleSpec": Object {
-                  "location": 527,
+                  "location": 526,
                   "roletype": 3,
                 },
               },
@@ -23934,7 +23934,7 @@ Object {
             "table": Object {
               "RangeVar": Object {
                 "inh": true,
-                "location": 500,
+                "location": 499,
                 "relname": "user",
                 "relpersistence": "p",
                 "schemaname": "users",
@@ -23942,8 +23942,287 @@ Object {
             },
           },
         },
-        "stmt_len": 77,
+        "stmt_len": 76,
         "stmt_location": 469,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CreatePolicyStmt": Object {
+            "cmd_name": "delete",
+            "permissive": true,
+            "policy_name": "delete_own",
+            "qual": Object {
+              "A_Expr": Object {
+                "kind": 1,
+                "lexpr": Object {
+                  "ColumnRef": Object {
+                    "fields": Array [
+                      Object {
+                        "String": Object {
+                          "str": "group_id",
+                        },
+                      },
+                    ],
+                    "location": 621,
+                  },
+                },
+                "location": 630,
+                "name": Array [
+                  Object {
+                    "String": Object {
+                      "str": "=",
+                    },
+                  },
+                ],
+                "rexpr": Object {
+                  "FuncCall": Object {
+                    "funcname": Array [
+                      Object {
+                        "String": Object {
+                          "str": "otherschema",
+                        },
+                      },
+                      Object {
+                        "String": Object {
+                          "str": "my_policy_fn",
+                        },
+                      },
+                    ],
+                    "location": 637,
+                  },
+                },
+              },
+            },
+            "roles": Array [
+              Object {
+                "RoleSpec": Object {
+                  "location": 607,
+                  "roletype": 3,
+                },
+              },
+            ],
+            "table": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 576,
+                "relname": "mytable",
+                "relpersistence": "p",
+                "schemaname": "myschema",
+              },
+            },
+          },
+        },
+        "stmt_len": 119,
+        "stmt_location": 546,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CreatePolicyStmt": Object {
+            "cmd_name": "all",
+            "permissive": true,
+            "policy_name": "insert_own",
+            "roles": Array [
+              Object {
+                "RoleSpec": Object {
+                  "location": 723,
+                  "roletype": 3,
+                },
+              },
+            ],
+            "table": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 695,
+                "relname": "mytable",
+                "relpersistence": "p",
+                "schemaname": "myschema",
+              },
+            },
+            "with_check": Object {
+              "A_Expr": Object {
+                "kind": 1,
+                "lexpr": Object {
+                  "ColumnRef": Object {
+                    "fields": Array [
+                      Object {
+                        "String": Object {
+                          "str": "group_id",
+                        },
+                      },
+                    ],
+                    "location": 742,
+                  },
+                },
+                "location": 751,
+                "name": Array [
+                  Object {
+                    "String": Object {
+                      "str": "=",
+                    },
+                  },
+                ],
+                "rexpr": Object {
+                  "FuncCall": Object {
+                    "funcname": Array [
+                      Object {
+                        "String": Object {
+                          "str": "otherschema",
+                        },
+                      },
+                      Object {
+                        "String": Object {
+                          "str": "my_policy_fn",
+                        },
+                      },
+                    ],
+                    "location": 758,
+                  },
+                },
+              },
+            },
+          },
+        },
+        "stmt_len": 120,
+        "stmt_location": 666,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CreatePolicyStmt": Object {
+            "cmd_name": "select",
+            "permissive": true,
+            "policy_name": "select_any",
+            "qual": Object {
+              "TypeCast": Object {
+                "arg": Object {
+                  "A_Const": Object {
+                    "location": 861,
+                    "val": Object {
+                      "String": Object {
+                        "str": "t",
+                      },
+                    },
+                  },
+                },
+                "location": -1,
+                "typeName": Object {
+                  "TypeName": Object {
+                    "location": -1,
+                    "names": Array [
+                      Object {
+                        "String": Object {
+                          "str": "pg_catalog",
+                        },
+                      },
+                      Object {
+                        "String": Object {
+                          "str": "bool",
+                        },
+                      },
+                    ],
+                    "typemod": -1,
+                  },
+                },
+              },
+            },
+            "roles": Array [
+              Object {
+                "RoleSpec": Object {
+                  "location": 847,
+                  "roletype": 3,
+                },
+              },
+            ],
+            "table": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 816,
+                "relname": "mytable",
+                "relpersistence": "p",
+                "schemaname": "myschema",
+              },
+            },
+          },
+        },
+        "stmt_len": 79,
+        "stmt_location": 787,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CreatePolicyStmt": Object {
+            "cmd_name": "update",
+            "permissive": true,
+            "policy_name": "update_own",
+            "qual": Object {
+              "A_Expr": Object {
+                "kind": 1,
+                "lexpr": Object {
+                  "ColumnRef": Object {
+                    "fields": Array [
+                      Object {
+                        "String": Object {
+                          "str": "group_id",
+                        },
+                      },
+                    ],
+                    "location": 941,
+                  },
+                },
+                "location": 950,
+                "name": Array [
+                  Object {
+                    "String": Object {
+                      "str": "=",
+                    },
+                  },
+                ],
+                "rexpr": Object {
+                  "FuncCall": Object {
+                    "funcname": Array [
+                      Object {
+                        "String": Object {
+                          "str": "otherschema",
+                        },
+                      },
+                      Object {
+                        "String": Object {
+                          "str": "my_policy_fn",
+                        },
+                      },
+                    ],
+                    "location": 957,
+                  },
+                },
+              },
+            },
+            "roles": Array [
+              Object {
+                "RoleSpec": Object {
+                  "location": 927,
+                  "roletype": 3,
+                },
+              },
+            ],
+            "table": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 896,
+                "relname": "mytable",
+                "relpersistence": "p",
+                "schemaname": "myschema",
+              },
+            },
+          },
+        },
+        "stmt_len": 118,
+        "stmt_location": 867,
       },
     },
   ],
@@ -23952,11 +24231,15 @@ Object {
 `;
 
 exports[`kitchen sink policies 2`] = `
-"CREATE POLICY delete_user ON users.\\"user\\" FOR DELETE TO authenticated USING ((id) = (current_setting('user.id')::uuid));
-CREATE POLICY delete_user_no_to ON users.\\"user\\" FOR DELETE TO PUBLIC USING ((id) = (current_setting('user.id')::uuid));
-CREATE POLICY delete_user_no_to ON users.\\"user\\" FOR DELETE TO PUBLIC WITH CHECK ((id) = (current_setting('user.id')::uuid));
-CREATE POLICY delete_user ON users.\\"user\\" FOR DELETE TO authenticated USING ((id) = (current_setting('user.id')::uuid));
-CREATE POLICY select_user ON users.\\"user\\" FOR SELECT TO PUBLIC USING (TRUE);"
+"CREATE POLICY delete_user ON users.\\"user\\" FOR DELETE TO authenticated USING ( ((id) = (current_setting('user.id')::uuid)) );
+CREATE POLICY delete_user_no_to ON users.\\"user\\" FOR DELETE TO PUBLIC USING ( ((id) = (current_setting('user.id')::uuid)) );
+CREATE POLICY delete_user_no_to ON users.\\"user\\" FOR DELETE TO PUBLIC WITH CHECK ( ((id) = (current_setting('user.id')::uuid)) );
+CREATE POLICY delete_user ON users.\\"user\\" FOR DELETE TO authenticated USING ( ((id) = (current_setting('user.id')::uuid)) );
+CREATE POLICY select_user ON users.\\"user\\" FOR SELECT TO PUBLIC USING ( (TRUE) );
+CREATE POLICY delete_own ON myschema.mytable FOR DELETE TO PUBLIC USING ( group_id = ANY (otherschema.my_policy_fn()) );
+CREATE POLICY insert_own ON myschema.mytable FOR ALL TO PUBLIC WITH CHECK ( group_id = ANY (otherschema.my_policy_fn()) );
+CREATE POLICY select_any ON myschema.mytable FOR SELECT TO PUBLIC USING ( (TRUE) );
+CREATE POLICY update_own ON myschema.mytable FOR UPDATE TO PUBLIC USING ( group_id = ANY (otherschema.my_policy_fn()) );"
 `;
 
 exports[`kitchen sink roles create 1`] = `
