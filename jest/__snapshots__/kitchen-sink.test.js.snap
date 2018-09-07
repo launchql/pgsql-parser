@@ -1970,12 +1970,89 @@ Object {
         "stmt_len": 29,
       },
     },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CreateDomainStmt": Object {
+            "constraints": Array [
+              Object {
+                "Constraint": Object {
+                  "contype": 4,
+                  "initially_valid": true,
+                  "location": 64,
+                  "raw_expr": Object {
+                    "A_Expr": Object {
+                      "kind": 0,
+                      "lexpr": Object {
+                        "ColumnRef": Object {
+                          "fields": Array [
+                            Object {
+                              "String": Object {
+                                "str": "value",
+                              },
+                            },
+                          ],
+                          "location": 72,
+                        },
+                      },
+                      "location": 78,
+                      "name": Array [
+                        Object {
+                          "String": Object {
+                            "str": "~",
+                          },
+                        },
+                      ],
+                      "rexpr": Object {
+                        "A_Const": Object {
+                          "location": 80,
+                          "val": Object {
+                            "String": Object {
+                              "str": "^[a-zA-Z0-9.!#$%&'*+/=?^_\`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$",
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            ],
+            "domainname": Array [
+              Object {
+                "String": Object {
+                  "str": "email",
+                },
+              },
+            ],
+            "typeName": Object {
+              "TypeName": Object {
+                "location": 55,
+                "names": Array [
+                  Object {
+                    "String": Object {
+                      "str": "citext",
+                    },
+                  },
+                ],
+                "typemod": -1,
+              },
+            },
+          },
+        },
+        "stmt_len": 187,
+        "stmt_location": 30,
+      },
+    },
   ],
   "stderr": "",
 }
 `;
 
-exports[`kitchen sink domain 2`] = `"CREATE DOMAIN v8.json json;"`;
+exports[`kitchen sink domain 2`] = `
+"CREATE DOMAIN v8.json AS json;
+CREATE DOMAIN email AS citext CHECK ( ((value) ~ ('^[a-zA-Z0-9.!#$%&''*+/=?^_\`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$')) );"
+`;
 
 exports[`kitchen sink domains 1`] = `
 Object {
@@ -2014,12 +2091,89 @@ Object {
         "stmt_len": 29,
       },
     },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CreateDomainStmt": Object {
+            "constraints": Array [
+              Object {
+                "Constraint": Object {
+                  "contype": 4,
+                  "initially_valid": true,
+                  "location": 64,
+                  "raw_expr": Object {
+                    "A_Expr": Object {
+                      "kind": 0,
+                      "lexpr": Object {
+                        "ColumnRef": Object {
+                          "fields": Array [
+                            Object {
+                              "String": Object {
+                                "str": "value",
+                              },
+                            },
+                          ],
+                          "location": 72,
+                        },
+                      },
+                      "location": 78,
+                      "name": Array [
+                        Object {
+                          "String": Object {
+                            "str": "~",
+                          },
+                        },
+                      ],
+                      "rexpr": Object {
+                        "A_Const": Object {
+                          "location": 80,
+                          "val": Object {
+                            "String": Object {
+                              "str": "^[a-zA-Z0-9.!#$%&'*+/=?^_\`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$",
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            ],
+            "domainname": Array [
+              Object {
+                "String": Object {
+                  "str": "email",
+                },
+              },
+            ],
+            "typeName": Object {
+              "TypeName": Object {
+                "location": 55,
+                "names": Array [
+                  Object {
+                    "String": Object {
+                      "str": "citext",
+                    },
+                  },
+                ],
+                "typemod": -1,
+              },
+            },
+          },
+        },
+        "stmt_len": 187,
+        "stmt_location": 30,
+      },
+    },
   ],
   "stderr": "",
 }
 `;
 
-exports[`kitchen sink domains 2`] = `"CREATE DOMAIN v8.json json;"`;
+exports[`kitchen sink domains 2`] = `
+"CREATE DOMAIN v8.json AS json;
+CREATE DOMAIN email AS citext CHECK ( ((value) ~ ('^[a-zA-Z0-9.!#$%&''*+/=?^_\`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$')) );"
+`;
 
 exports[`kitchen sink enums 1`] = `
 Object {

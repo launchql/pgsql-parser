@@ -1705,7 +1705,11 @@ export default class Deparser {
     const output = [];
     output.push('CREATE DOMAIN');
     output.push(this.list(node.domainname, '.'));
+    output.push('AS');
     output.push(this.deparse(node.typeName));
+    if (node.constraints) {
+      output.push(this.list(node.constraints));
+    }
     return output.join(' ');
   }
 

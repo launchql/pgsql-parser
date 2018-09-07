@@ -1492,10 +1492,14 @@ class Deparser {
 
     if (node.with_check) {
       output.push('WITH CHECK');
+      output.push('(');
       output.push(this.deparse(node.with_check));
+      output.push(')');
     } else {
       output.push('USING');
+      output.push('(');
       output.push(this.deparse(node.qual));
+      output.push(')');
     }
 
     return output.join(' ');
@@ -1626,7 +1630,11 @@ class Deparser {
     const output = [];
     output.push('CREATE DOMAIN');
     output.push(this.list(node.domainname, '.'));
+    output.push('AS');
     output.push(this.deparse(node.typeName));
+    if (node.constraints) {
+      output.push(this.list(node.constraints));
+    }
     return output.join(' ');
   }
 
