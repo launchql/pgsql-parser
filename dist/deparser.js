@@ -130,7 +130,8 @@ class Deparser {
         return 'int';
       case 'int8':
         return 'bigint';
-      case 'real':case 'float4':
+      case 'real':
+      case 'float4':
         return 'real';
       case 'float8':
         return 'pg_catalog.float8';
@@ -287,7 +288,6 @@ class Deparser {
         return output.join(' ');
 
       case 9:
-
         output.push(this.deparse(node.lexpr, context));
 
         if (node.name[0].String.str === '!~~*') {
@@ -1241,18 +1241,22 @@ class Deparser {
     const output = [];
     output.push('ALTER DEFAULT PRIVILEGES');
 
-    const elem = node.options.find(el => el.hasOwnProperty('DefElem'));
+    const options = dotty.get(node, 'options');
 
-    if (elem.DefElem.defname === 'schemas') {
-      output.push('IN SCHEMA');
-      output.push(dotty.get(elem, 'DefElem.arg.0.String.str'));
+    if (options) {
+      const elem = node.options.find(el => el.hasOwnProperty('DefElem'));
+
+      if (elem.DefElem.defname === 'schemas') {
+        output.push('IN SCHEMA');
+        output.push(dotty.get(elem, 'DefElem.arg.0.String.str'));
+      }
+      if (elem.DefElem.defname === 'roles') {
+        output.push('FOR ROLE');
+        const roleSpec = dotty.get(elem, 'DefElem.arg.0');
+        output.push(this.deparse(roleSpec));
+      }
+      output.push('\n');
     }
-    if (elem.DefElem.defname === 'roles') {
-      output.push('FOR ROLE');
-      const roleSpec = dotty.get(elem, 'DefElem.arg.0');
-      output.push(this.deparse(roleSpec));
-    }
-    output.push('\n');
     output.push(this.deparse(node.action));
 
     return output.join(' ');
@@ -1856,7 +1860,7 @@ class Deparser {
       case _types.VARIABLESET_TYPES.VAR_SET_MULTI:
         {
           const name = {
-            'TRANSACTION': 'TRANSACTION',
+            TRANSACTION: 'TRANSACTION',
             'SESSION CHARACTERISTICS': 'SESSION CHARACTERISTICS AS TRANSACTION'
           }[node.name];
 
@@ -2081,7 +2085,6 @@ class Deparser {
         case _types.GRANTOBJECT_TYPES.ACL_OBJECT_FOREIGN_SERVER:
           return 'FOREIGN SERVER';
         case _types.GRANTOBJECT_TYPES.ACL_OBJECT_FUNCTION:
-
           if (nodeObj.targtype === _types.GRANTTARGET_TYPES.ACL_TARGET_ALL_IN_SCHEMA) {
             return 'ALL FUNCTIONS IN SCHEMA';
           }
