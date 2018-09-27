@@ -1618,42 +1618,25 @@ Object {
                 "grantees": Array [
                   Object {
                     "RoleSpec": Object {
-                      "location": 174,
+                      "location": 166,
                       "roletype": 3,
                     },
                   },
                 ],
-                "is_grant": true,
-                "objtype": 1,
+                "objtype": 7,
                 "privileges": Array [
                   Object {
                     "AccessPriv": Object {
-                      "priv_name": "select",
+                      "priv_name": "execute",
                     },
                   },
                 ],
                 "targtype": 2,
               },
             },
-            "options": Array [
-              Object {
-                "DefElem": Object {
-                  "arg": Array [
-                    Object {
-                      "String": Object {
-                        "str": "myschema",
-                      },
-                    },
-                  ],
-                  "defaction": 0,
-                  "defname": "schemas",
-                  "location": 129,
-                },
-              },
-            ],
           },
         },
-        "stmt_len": 78,
+        "stmt_len": 70,
         "stmt_location": 102,
       },
     },
@@ -1667,7 +1650,56 @@ Object {
                 "grantees": Array [
                   Object {
                     "RoleSpec": Object {
-                      "location": 253,
+                      "location": 246,
+                      "roletype": 3,
+                    },
+                  },
+                ],
+                "is_grant": true,
+                "objtype": 1,
+                "privileges": Array [
+                  Object {
+                    "AccessPriv": Object {
+                      "priv_name": "select",
+                    },
+                  },
+                ],
+                "targtype": 2,
+              },
+            },
+            "options": Array [
+              Object {
+                "DefElem": Object {
+                  "arg": Array [
+                    Object {
+                      "String": Object {
+                        "str": "myschema",
+                      },
+                    },
+                  ],
+                  "defaction": 0,
+                  "defname": "schemas",
+                  "location": 201,
+                },
+              },
+            ],
+          },
+        },
+        "stmt_len": 79,
+        "stmt_location": 173,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "AlterDefaultPrivilegesStmt": Object {
+            "action": Object {
+              "GrantStmt": Object {
+                "behavior": 0,
+                "grantees": Array [
+                  Object {
+                    "RoleSpec": Object {
+                      "location": 325,
                       "rolename": "webuser",
                       "roletype": 0,
                     },
@@ -1697,14 +1729,14 @@ Object {
                   ],
                   "defaction": 0,
                   "defname": "schemas",
-                  "location": 208,
+                  "location": 280,
                 },
               },
             ],
           },
         },
         "stmt_len": 79,
-        "stmt_location": 181,
+        "stmt_location": 253,
       },
     },
     Object {
@@ -1717,7 +1749,7 @@ Object {
                 "grantees": Array [
                   Object {
                     "RoleSpec": Object {
-                      "location": 337,
+                      "location": 409,
                       "roletype": 3,
                     },
                   },
@@ -1745,14 +1777,14 @@ Object {
                   ],
                   "defaction": 0,
                   "defname": "schemas",
-                  "location": 289,
+                  "location": 361,
                 },
               },
             ],
           },
         },
         "stmt_len": 82,
-        "stmt_location": 261,
+        "stmt_location": 333,
       },
     },
     Object {
@@ -1765,7 +1797,7 @@ Object {
                 "grantees": Array [
                   Object {
                     "RoleSpec": Object {
-                      "location": 418,
+                      "location": 490,
                       "rolename": "webuser",
                       "roletype": 0,
                     },
@@ -1794,14 +1826,14 @@ Object {
                   ],
                   "defaction": 0,
                   "defname": "schemas",
-                  "location": 370,
+                  "location": 442,
                 },
               },
             ],
           },
         },
         "stmt_len": 81,
-        "stmt_location": 344,
+        "stmt_location": 416,
       },
     },
     Object {
@@ -1814,7 +1846,7 @@ Object {
                 "grantees": Array [
                   Object {
                     "RoleSpec": Object {
-                      "location": 501,
+                      "location": 573,
                       "roletype": 3,
                     },
                   },
@@ -1836,7 +1868,7 @@ Object {
                   "arg": Array [
                     Object {
                       "RoleSpec": Object {
-                        "location": 462,
+                        "location": 534,
                         "rolename": "admin",
                         "roletype": 0,
                       },
@@ -1844,14 +1876,14 @@ Object {
                   ],
                   "defaction": 0,
                   "defname": "roles",
-                  "location": 453,
+                  "location": 525,
                 },
               },
             ],
           },
         },
         "stmt_len": 81,
-        "stmt_location": 426,
+        "stmt_location": 498,
       },
     },
   ],
@@ -1862,6 +1894,7 @@ Object {
 exports[`kitchen sink default privs 2`] = `
 "ALTER DEFAULT PRIVILEGES IN SCHEMA objects_public
 GRANT EXECUTE ON FUNCTIONS  TO authenticated;
+ALTER DEFAULT PRIVILEGES REVOKE EXECUTE ON FUNCTIONS  FROM PUBLIC;
 ALTER DEFAULT PRIVILEGES IN SCHEMA myschema
 GRANT SELECT ON TABLES  TO PUBLIC;
 ALTER DEFAULT PRIVILEGES IN SCHEMA myschema
