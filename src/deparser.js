@@ -1678,6 +1678,24 @@ export default class Deparser {
     return output.join(' ');
   }
 
+  ['ViewStmt'](node) {
+    const output = [];
+    output.push('CREATE VIEW');
+    output.push(this.deparse(node.view));
+    output.push('AS');
+    output.push(this.deparse(node.query));
+    return output.join(' ');
+  }
+
+  ['CreateTableAsStmt'](node) {
+    const output = [];
+    output.push('CREATE MATERIALIZED VIEW');
+    output.push(this.deparse(node.into));
+    output.push('AS');
+    output.push(this.deparse(node.query));
+    return output.join(' ');
+  }
+
   ['CreateTrigStmt'](node) {
     const output = [];
 

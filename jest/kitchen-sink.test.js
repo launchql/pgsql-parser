@@ -114,6 +114,11 @@ describe('kitchen sink', () => {
       check('roles/grants.sql');
     });
   });
+  describe('views', () => {
+    it.only('create', () => {
+      check('views/create.sql');
+    });
+  });
   describe('transactions', () => {
     it('begin_commit', () => {
       check('transactions/begin_commit.sql');
