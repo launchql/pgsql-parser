@@ -115,7 +115,7 @@ describe('kitchen sink', () => {
     });
   });
   describe('views', () => {
-    it.only('create', () => {
+    it('create', () => {
       check('views/create.sql');
     });
   });

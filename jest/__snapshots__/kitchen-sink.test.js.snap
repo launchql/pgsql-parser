@@ -511,272 +511,28 @@ Object {
       "RawStmt": Object {
         "stmt": Object {
           "CommentStmt": Object {
-            "comment": "@omit
-Handy method to get the current user ID for use in RLS policies, etc; in GraphQL, use \`currentUser{id}\` instead.",
+            "comment": "@fieldName parent",
             "object": Array [
               Object {
                 "String": Object {
-                  "str": "schema",
+                  "str": "roles_public",
                 },
               },
               Object {
                 "String": Object {
-                  "str": "mytable",
-                },
-              },
-            ],
-            "objtype": 37,
-          },
-        },
-        "stmt_len": 157,
-      },
-    },
-    Object {
-      "RawStmt": Object {
-        "stmt": Object {
-          "CommentStmt": Object {
-            "comment": "@omit
-Handy method to get the current user ID for use in RLS policies, etc; in GraphQL, use \`currentUser{id}\` instead.",
-            "object": Object {
-              "ObjectWithArgs": Object {
-                "args_unspecified": true,
-                "objname": Array [
-                  Object {
-                    "String": Object {
-                      "str": "app_public",
-                    },
-                  },
-                  Object {
-                    "String": Object {
-                      "str": "current_user_id",
-                    },
-                  },
-                ],
-              },
-            },
-            "objtype": 19,
-          },
-        },
-        "stmt_len": 177,
-        "stmt_location": 158,
-      },
-    },
-    Object {
-      "RawStmt": Object {
-        "stmt": Object {
-          "CommentStmt": Object {
-            "comment": "R-Tree access method",
-            "object": Object {
-              "String": Object {
-                "str": "rtree",
-              },
-            },
-            "objtype": 0,
-          },
-        },
-        "stmt_len": 59,
-        "stmt_location": 336,
-      },
-    },
-    Object {
-      "RawStmt": Object {
-        "stmt": Object {
-          "CommentStmt": Object {
-            "comment": "Computes sample variance",
-            "object": Object {
-              "ObjectWithArgs": Object {
-                "objargs": Array [
-                  Object {
-                    "TypeName": Object {
-                      "location": 432,
-                      "names": Array [
-                        Object {
-                          "String": Object {
-                            "str": "pg_catalog",
-                          },
-                        },
-                        Object {
-                          "String": Object {
-                            "str": "float8",
-                          },
-                        },
-                      ],
-                      "typemod": -1,
-                    },
-                  },
-                ],
-                "objname": Array [
-                  Object {
-                    "String": Object {
-                      "str": "my_aggregate",
-                    },
-                  },
-                ],
-              },
-            },
-            "objtype": 1,
-          },
-        },
-        "stmt_len": 83,
-        "stmt_location": 396,
-      },
-    },
-    Object {
-      "RawStmt": Object {
-        "stmt": Object {
-          "CommentStmt": Object {
-            "comment": "Allow casts from text to int4",
-            "object": Array [
-              Object {
-                "TypeName": Object {
-                  "location": 498,
-                  "names": Array [
-                    Object {
-                      "String": Object {
-                        "str": "text",
-                      },
-                    },
-                  ],
-                  "typemod": -1,
-                },
-              },
-              Object {
-                "TypeName": Object {
-                  "location": 506,
-                  "names": Array [
-                    Object {
-                      "String": Object {
-                        "str": "int4",
-                      },
-                    },
-                  ],
-                  "typemod": -1,
-                },
-              },
-            ],
-            "objtype": 5,
-          },
-        },
-        "stmt_len": 66,
-        "stmt_location": 480,
-      },
-    },
-    Object {
-      "RawStmt": Object {
-        "stmt": Object {
-          "CommentStmt": Object {
-            "comment": "Canadian French",
-            "object": Array [
-              Object {
-                "String": Object {
-                  "str": "fr_CA",
-                },
-              },
-            ],
-            "objtype": 7,
-          },
-        },
-        "stmt_len": 50,
-        "stmt_location": 547,
-      },
-    },
-    Object {
-      "RawStmt": Object {
-        "stmt": Object {
-          "CommentStmt": Object {
-            "comment": "Employee ID number",
-            "object": Array [
-              Object {
-                "String": Object {
-                  "str": "my_table",
+                  "str": "memberships",
                 },
               },
               Object {
                 "String": Object {
-                  "str": "my_column",
-                },
-              },
-            ],
-            "objtype": 6,
-          },
-        },
-        "stmt_len": 61,
-        "stmt_location": 598,
-      },
-    },
-    Object {
-      "RawStmt": Object {
-        "stmt": Object {
-          "CommentStmt": Object {
-            "comment": "Conversion to UTF8",
-            "object": Array [
-              Object {
-                "String": Object {
-                  "str": "my_conv",
-                },
-              },
-            ],
-            "objtype": 8,
-          },
-        },
-        "stmt_len": 54,
-        "stmt_location": 660,
-      },
-    },
-    Object {
-      "RawStmt": Object {
-        "stmt": Object {
-          "CommentStmt": Object {
-            "comment": "Constrains column col",
-            "object": Array [
-              Object {
-                "String": Object {
-                  "str": "bar",
-                },
-              },
-              Object {
-                "String": Object {
-                  "str": "bar_col_cons",
+                  "str": "memberships_membership_id_fkey",
                 },
               },
             ],
             "objtype": 36,
           },
         },
-        "stmt_len": 69,
-        "stmt_location": 715,
-      },
-    },
-    Object {
-      "RawStmt": Object {
-        "stmt": Object {
-          "CommentStmt": Object {
-            "comment": "Constrains col of domain",
-            "object": Array [
-              Object {
-                "TypeName": Object {
-                  "location": -1,
-                  "names": Array [
-                    Object {
-                      "String": Object {
-                        "str": "dom",
-                      },
-                    },
-                  ],
-                  "typemod": -1,
-                },
-              },
-              Object {
-                "String": Object {
-                  "str": "dom_col_constr",
-                },
-              },
-            ],
-            "objtype": 13,
-          },
-        },
-        "stmt_len": 81,
-        "stmt_location": 785,
+        "stmt_len": 105,
       },
     },
     Object {
@@ -793,7 +549,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 58,
-        "stmt_location": 867,
+        "stmt_location": 106,
       },
     },
     Object {
@@ -803,7 +559,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
             "comment": "Email Address Domain",
             "object": Object {
               "TypeName": Object {
-                "location": 945,
+                "location": 184,
                 "names": Array [
                   Object {
                     "String": Object {
@@ -818,7 +574,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 54,
-        "stmt_location": 926,
+        "stmt_location": 165,
       },
     },
     Object {
@@ -835,7 +591,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 65,
-        "stmt_location": 981,
+        "stmt_location": 220,
       },
     },
     Object {
@@ -852,7 +608,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 71,
-        "stmt_location": 1047,
+        "stmt_location": 286,
       },
     },
     Object {
@@ -871,7 +627,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 86,
-        "stmt_location": 1119,
+        "stmt_location": 358,
       },
     },
     Object {
@@ -884,7 +640,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
                 "objargs": Array [
                   Object {
                     "TypeName": Object {
-                      "location": 1240,
+                      "location": 479,
                       "names": Array [
                         Object {
                           "String": Object {
@@ -914,7 +670,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 71,
-        "stmt_location": 1206,
+        "stmt_location": 445,
       },
     },
     Object {
@@ -933,7 +689,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 66,
-        "stmt_location": 1278,
+        "stmt_location": 517,
       },
     },
     Object {
@@ -950,7 +706,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 71,
-        "stmt_location": 1345,
+        "stmt_location": 584,
       },
     },
     Object {
@@ -967,7 +723,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 54,
-        "stmt_location": 1417,
+        "stmt_location": 656,
       },
     },
     Object {
@@ -986,7 +742,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 70,
-        "stmt_location": 1472,
+        "stmt_location": 711,
       },
     },
     Object {
@@ -999,7 +755,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
                 "objargs": Array [
                   Object {
                     "TypeName": Object {
-                      "location": 1567,
+                      "location": 806,
                       "names": Array [
                         Object {
                           "String": Object {
@@ -1012,7 +768,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
                   },
                   Object {
                     "TypeName": Object {
-                      "location": 1573,
+                      "location": 812,
                       "names": Array [
                         Object {
                           "String": Object {
@@ -1037,7 +793,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 75,
-        "stmt_location": 1543,
+        "stmt_location": 782,
       },
     },
     Object {
@@ -1051,7 +807,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
                   null,
                   Object {
                     "TypeName": Object {
-                      "location": 1649,
+                      "location": 888,
                       "names": Array [
                         Object {
                           "String": Object {
@@ -1081,7 +837,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 55,
-        "stmt_location": 1619,
+        "stmt_location": 858,
       },
     },
     Object {
@@ -1105,7 +861,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 87,
-        "stmt_location": 1675,
+        "stmt_location": 914,
       },
     },
     Object {
@@ -1129,7 +885,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 89,
-        "stmt_location": 1763,
+        "stmt_location": 1002,
       },
     },
     Object {
@@ -1153,7 +909,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 65,
-        "stmt_location": 1853,
+        "stmt_location": 1092,
       },
     },
     Object {
@@ -1170,7 +926,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 69,
-        "stmt_location": 1919,
+        "stmt_location": 1158,
       },
     },
     Object {
@@ -1194,7 +950,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 74,
-        "stmt_location": 1989,
+        "stmt_location": 1228,
       },
     },
     Object {
@@ -1211,7 +967,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 51,
-        "stmt_location": 2064,
+        "stmt_location": 1303,
       },
     },
     Object {
@@ -1230,7 +986,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 67,
-        "stmt_location": 2116,
+        "stmt_location": 1355,
       },
     },
     Object {
@@ -1247,7 +1003,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 50,
-        "stmt_location": 2184,
+        "stmt_location": 1423,
       },
     },
     Object {
@@ -1266,7 +1022,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 74,
-        "stmt_location": 2235,
+        "stmt_location": 1474,
       },
     },
     Object {
@@ -1290,7 +1046,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 62,
-        "stmt_location": 2310,
+        "stmt_location": 1549,
       },
     },
     Object {
@@ -1307,7 +1063,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 64,
-        "stmt_location": 2373,
+        "stmt_location": 1612,
       },
     },
     Object {
@@ -1326,7 +1082,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 75,
-        "stmt_location": 2438,
+        "stmt_location": 1677,
       },
     },
     Object {
@@ -1345,7 +1101,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 85,
-        "stmt_location": 2514,
+        "stmt_location": 1753,
       },
     },
     Object {
@@ -1364,7 +1120,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 68,
-        "stmt_location": 2600,
+        "stmt_location": 1839,
       },
     },
     Object {
@@ -1383,7 +1139,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 63,
-        "stmt_location": 2669,
+        "stmt_location": 1908,
       },
     },
     Object {
@@ -1394,7 +1150,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
             "object": Array [
               Object {
                 "TypeName": Object {
-                  "location": 2759,
+                  "location": 1998,
                   "names": Array [
                     Object {
                       "String": Object {
@@ -1415,7 +1171,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 97,
-        "stmt_location": 2733,
+        "stmt_location": 1972,
       },
     },
     Object {
@@ -1439,7 +1195,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 59,
-        "stmt_location": 2831,
+        "stmt_location": 2070,
       },
     },
     Object {
@@ -1449,7 +1205,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
             "comment": "Complex number data type",
             "object": Object {
               "TypeName": Object {
-                "location": 2908,
+                "location": 2147,
                 "names": Array [
                   Object {
                     "String": Object {
@@ -1464,7 +1220,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 54,
-        "stmt_location": 2891,
+        "stmt_location": 2130,
       },
     },
     Object {
@@ -1483,7 +1239,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 56,
-        "stmt_location": 2946,
+        "stmt_location": 2185,
       },
     },
     Object {
@@ -1501,7 +1257,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
           },
         },
         "stmt_len": 35,
-        "stmt_location": 3003,
+        "stmt_location": 2242,
       },
     },
   ],
@@ -1510,18 +1266,7 @@ Handy method to get the current user ID for use in RLS policies, etc; in GraphQL
 `;
 
 exports[`kitchen sink comments 2`] = `
-"COMMENT ON TABLE schema.mytable IS E'@omit
-Handy method to get the current user ID for use in RLS policies, etc; in GraphQL, use \`currentUser{id}\` instead.';
-COMMENT ON FUNCTION app_public.current_user_id IS E'@omit
-Handy method to get the current user ID for use in RLS policies, etc; in GraphQL, use \`currentUser{id}\` instead.';
-COMMENT ON ACCESS METHOD rtree IS E'R-Tree access method';
-COMMENT ON AGGREGATE my_aggregate ( pg_catalog.float8 ) IS E'Computes sample variance';
-COMMENT ON CAST ( text AS int4 ) IS E'Allow casts from text to int4';
-COMMENT ON COLLATION \\"fr_CA\\" IS E'Canadian French';
-COMMENT ON COLUMN my_table.my_column IS E'Employee ID number';
-COMMENT ON CONVERSION my_conv IS E'Conversion to UTF8';
-COMMENT ON CONSTRAINT bar_col_cons ON bar IS E'Constrains column col';
-COMMENT ON CONSTRAINT dom_col_constr ON DOMAIN dom IS E'Constrains col of domain';
+"COMMENT ON CONSTRAINT memberships_membership_id_fkey ON roles_public . memberships IS E'@fieldName parent';
 COMMENT ON DATABASE my_database IS E'Development Database';
 COMMENT ON DOMAIN my_domain IS E'Email Address Domain';
 COMMENT ON EXTENSION hstore IS E'implements the hstore data type';
@@ -32084,7 +31829,7 @@ Object {
                   Object {
                     "RangeVar": Object {
                       "inh": true,
-                      "location": 76,
+                      "location": 73,
                       "relname": "permits",
                       "relpersistence": "p",
                     },
@@ -32094,7 +31839,7 @@ Object {
                 "targetList": Array [
                   Object {
                     "ResTarget": Object {
-                      "location": 69,
+                      "location": 66,
                       "val": Object {
                         "ColumnRef": Object {
                           "fields": Array [
@@ -32102,7 +31847,7 @@ Object {
                               "A_Star": Object {},
                             },
                           ],
-                          "location": 69,
+                          "location": 66,
                         },
                       },
                     },
@@ -32113,7 +31858,7 @@ Object {
             "view": Object {
               "RangeVar": Object {
                 "inh": true,
-                "location": 15,
+                "location": 12,
                 "relname": "direct_project_permits",
                 "relpersistence": "p",
                 "schemaname": "collaboration_public",
@@ -32122,7 +31867,7 @@ Object {
             "withCheckOption": 0,
           },
         },
-        "stmt_len": 83,
+        "stmt_len": 80,
       },
     },
     Object {
@@ -32135,7 +31880,7 @@ Object {
                 "rel": Object {
                   "RangeVar": Object {
                     "inh": true,
-                    "location": 111,
+                    "location": 108,
                     "relname": "direct_project_permits",
                     "relpersistence": "p",
                     "schemaname": "collaboration_public",
@@ -32149,7 +31894,7 @@ Object {
                   Object {
                     "RangeVar": Object {
                       "inh": true,
-                      "location": 172,
+                      "location": 169,
                       "relname": "permits",
                       "relpersistence": "p",
                     },
@@ -32159,7 +31904,7 @@ Object {
                 "targetList": Array [
                   Object {
                     "ResTarget": Object {
-                      "location": 165,
+                      "location": 162,
                       "val": Object {
                         "ColumnRef": Object {
                           "fields": Array [
@@ -32167,7 +31912,7 @@ Object {
                               "A_Star": Object {},
                             },
                           ],
-                          "location": 165,
+                          "location": 162,
                         },
                       },
                     },
@@ -32179,998 +31924,7 @@ Object {
           },
         },
         "stmt_len": 95,
-        "stmt_location": 84,
-      },
-    },
-    Object {
-      "RawStmt": Object {
-        "stmt": Object {
-          "ViewStmt": Object {
-            "query": Object {
-              "SelectStmt": Object {
-                "fromClause": Array [
-                  Object {
-                    "JoinExpr": Object {
-                      "jointype": 0,
-                      "larg": Object {
-                        "JoinExpr": Object {
-                          "jointype": 0,
-                          "larg": Object {
-                            "JoinExpr": Object {
-                              "jointype": 0,
-                              "larg": Object {
-                                "JoinExpr": Object {
-                                  "jointype": 0,
-                                  "larg": Object {
-                                    "JoinExpr": Object {
-                                      "jointype": 0,
-                                      "larg": Object {
-                                        "RangeVar": Object {
-                                          "alias": Object {
-                                            "Alias": Object {
-                                              "aliasname": "jtbl",
-                                            },
-                                          },
-                                          "inh": true,
-                                          "location": 1154,
-                                          "relname": "profile_permissions",
-                                          "relpersistence": "p",
-                                          "schemaname": "permissions_public",
-                                        },
-                                      },
-                                      "quals": Object {
-                                        "A_Expr": Object {
-                                          "kind": 0,
-                                          "lexpr": Object {
-                                            "ColumnRef": Object {
-                                              "fields": Array [
-                                                Object {
-                                                  "String": Object {
-                                                    "str": "jtbl",
-                                                  },
-                                                },
-                                                Object {
-                                                  "String": Object {
-                                                    "str": "permission_id",
-                                                  },
-                                                },
-                                              ],
-                                              "location": 1255,
-                                            },
-                                          },
-                                          "location": 1274,
-                                          "name": Array [
-                                            Object {
-                                              "String": Object {
-                                                "str": "=",
-                                              },
-                                            },
-                                          ],
-                                          "rexpr": Object {
-                                            "ColumnRef": Object {
-                                              "fields": Array [
-                                                Object {
-                                                  "String": Object {
-                                                    "str": "perm",
-                                                  },
-                                                },
-                                                Object {
-                                                  "String": Object {
-                                                    "str": "id",
-                                                  },
-                                                },
-                                              ],
-                                              "location": 1276,
-                                            },
-                                          },
-                                        },
-                                      },
-                                      "rarg": Object {
-                                        "RangeVar": Object {
-                                          "alias": Object {
-                                            "Alias": Object {
-                                              "aliasname": "perm",
-                                            },
-                                          },
-                                          "inh": true,
-                                          "location": 1209,
-                                          "relname": "permission",
-                                          "relpersistence": "p",
-                                          "schemaname": "permissions_public",
-                                        },
-                                      },
-                                    },
-                                  },
-                                  "quals": Object {
-                                    "A_Expr": Object {
-                                      "kind": 0,
-                                      "lexpr": Object {
-                                        "ColumnRef": Object {
-                                          "fields": Array [
-                                            Object {
-                                              "String": Object {
-                                                "str": "jtbl",
-                                              },
-                                            },
-                                            Object {
-                                              "String": Object {
-                                                "str": "profile_id",
-                                              },
-                                            },
-                                          ],
-                                          "location": 1343,
-                                        },
-                                      },
-                                      "location": 1359,
-                                      "name": Array [
-                                        Object {
-                                          "String": Object {
-                                            "str": "=",
-                                          },
-                                        },
-                                      ],
-                                      "rexpr": Object {
-                                        "ColumnRef": Object {
-                                          "fields": Array [
-                                            Object {
-                                              "String": Object {
-                                                "str": "c",
-                                              },
-                                            },
-                                            Object {
-                                              "String": Object {
-                                                "str": "profile_id",
-                                              },
-                                            },
-                                          ],
-                                          "location": 1361,
-                                        },
-                                      },
-                                    },
-                                  },
-                                  "rarg": Object {
-                                    "RangeVar": Object {
-                                      "alias": Object {
-                                        "Alias": Object {
-                                          "aliasname": "c",
-                                        },
-                                      },
-                                      "inh": true,
-                                      "location": 1295,
-                                      "relname": "collaboration",
-                                      "relpersistence": "p",
-                                      "schemaname": "collaboration_public",
-                                    },
-                                  },
-                                },
-                              },
-                              "quals": Object {
-                                "A_Expr": Object {
-                                  "kind": 0,
-                                  "lexpr": Object {
-                                    "ColumnRef": Object {
-                                      "fields": Array [
-                                        Object {
-                                          "String": Object {
-                                            "str": "m",
-                                          },
-                                        },
-                                        Object {
-                                          "String": Object {
-                                            "str": "group_id",
-                                          },
-                                        },
-                                      ],
-                                      "location": 1520,
-                                    },
-                                  },
-                                  "location": 1531,
-                                  "name": Array [
-                                    Object {
-                                      "String": Object {
-                                        "str": "=",
-                                      },
-                                    },
-                                  ],
-                                  "rexpr": Object {
-                                    "ColumnRef": Object {
-                                      "fields": Array [
-                                        Object {
-                                          "String": Object {
-                                            "str": "c",
-                                          },
-                                        },
-                                        Object {
-                                          "String": Object {
-                                            "str": "role_id",
-                                          },
-                                        },
-                                      ],
-                                      "location": 1533,
-                                    },
-                                  },
-                                },
-                              },
-                              "rarg": Object {
-                                "RangeVar": Object {
-                                  "alias": Object {
-                                    "Alias": Object {
-                                      "aliasname": "m",
-                                    },
-                                  },
-                                  "inh": true,
-                                  "location": 1385,
-                                  "relname": "memberships",
-                                  "relpersistence": "p",
-                                  "schemaname": "roles_public",
-                                },
-                              },
-                            },
-                          },
-                          "quals": Object {
-                            "A_Expr": Object {
-                              "kind": 0,
-                              "lexpr": Object {
-                                "ColumnRef": Object {
-                                  "fields": Array [
-                                    Object {
-                                      "String": Object {
-                                        "str": "m",
-                                      },
-                                    },
-                                    Object {
-                                      "String": Object {
-                                        "str": "role_id",
-                                      },
-                                    },
-                                  ],
-                                  "location": 1587,
-                                },
-                              },
-                              "location": 1597,
-                              "name": Array [
-                                Object {
-                                  "String": Object {
-                                    "str": "=",
-                                  },
-                                },
-                              ],
-                              "rexpr": Object {
-                                "ColumnRef": Object {
-                                  "fields": Array [
-                                    Object {
-                                      "String": Object {
-                                        "str": "r2",
-                                      },
-                                    },
-                                    Object {
-                                      "String": Object {
-                                        "str": "id",
-                                      },
-                                    },
-                                  ],
-                                  "location": 1599,
-                                },
-                              },
-                            },
-                          },
-                          "rarg": Object {
-                            "RangeVar": Object {
-                              "alias": Object {
-                                "Alias": Object {
-                                  "aliasname": "r2",
-                                },
-                              },
-                              "inh": true,
-                              "location": 1554,
-                              "relname": "roles",
-                              "relpersistence": "p",
-                              "schemaname": "roles_public",
-                            },
-                          },
-                        },
-                      },
-                      "quals": Object {
-                        "A_Expr": Object {
-                          "kind": 0,
-                          "lexpr": Object {
-                            "ColumnRef": Object {
-                              "fields": Array [
-                                Object {
-                                  "String": Object {
-                                    "str": "c",
-                                  },
-                                },
-                                Object {
-                                  "String": Object {
-                                    "str": "role_id",
-                                  },
-                                },
-                              ],
-                              "location": 1648,
-                            },
-                          },
-                          "location": 1658,
-                          "name": Array [
-                            Object {
-                              "String": Object {
-                                "str": "=",
-                              },
-                            },
-                          ],
-                          "rexpr": Object {
-                            "ColumnRef": Object {
-                              "fields": Array [
-                                Object {
-                                  "String": Object {
-                                    "str": "r",
-                                  },
-                                },
-                                Object {
-                                  "String": Object {
-                                    "str": "id",
-                                  },
-                                },
-                              ],
-                              "location": 1660,
-                            },
-                          },
-                        },
-                      },
-                      "rarg": Object {
-                        "RangeVar": Object {
-                          "alias": Object {
-                            "Alias": Object {
-                              "aliasname": "r",
-                            },
-                          },
-                          "inh": true,
-                          "location": 1616,
-                          "relname": "roles",
-                          "relpersistence": "p",
-                          "schemaname": "roles_public",
-                        },
-                      },
-                    },
-                  },
-                ],
-                "op": 0,
-                "targetList": Array [
-                  Object {
-                    "ResTarget": Object {
-                      "location": 251,
-                      "name": "permission_id",
-                      "val": Object {
-                        "ColumnRef": Object {
-                          "fields": Array [
-                            Object {
-                              "String": Object {
-                                "str": "perm",
-                              },
-                            },
-                            Object {
-                              "String": Object {
-                                "str": "id",
-                              },
-                            },
-                          ],
-                          "location": 251,
-                        },
-                      },
-                    },
-                  },
-                  Object {
-                    "ResTarget": Object {
-                      "location": 452,
-                      "name": "project_id",
-                      "val": Object {
-                        "ColumnRef": Object {
-                          "fields": Array [
-                            Object {
-                              "String": Object {
-                                "str": "c",
-                              },
-                            },
-                            Object {
-                              "String": Object {
-                                "str": "project_id",
-                              },
-                            },
-                          ],
-                          "location": 452,
-                        },
-                      },
-                    },
-                  },
-                  Object {
-                    "ResTarget": Object {
-                      "location": 486,
-                      "name": "role_id",
-                      "val": Object {
-                        "ColumnRef": Object {
-                          "fields": Array [
-                            Object {
-                              "String": Object {
-                                "str": "c",
-                              },
-                            },
-                            Object {
-                              "String": Object {
-                                "str": "role_id",
-                              },
-                            },
-                          ],
-                          "location": 486,
-                        },
-                      },
-                    },
-                  },
-                  Object {
-                    "ResTarget": Object {
-                      "location": 1056,
-                      "name": "actor_id",
-                      "val": Object {
-                        "ColumnRef": Object {
-                          "fields": Array [
-                            Object {
-                              "String": Object {
-                                "str": "m",
-                              },
-                            },
-                            Object {
-                              "String": Object {
-                                "str": "role_id",
-                              },
-                            },
-                          ],
-                          "location": 1056,
-                        },
-                      },
-                    },
-                  },
-                  Object {
-                    "ResTarget": Object {
-                      "location": 1085,
-                      "val": Object {
-                        "ColumnRef": Object {
-                          "fields": Array [
-                            Object {
-                              "String": Object {
-                                "str": "r2",
-                              },
-                            },
-                            Object {
-                              "String": Object {
-                                "str": "username",
-                              },
-                            },
-                          ],
-                          "location": 1085,
-                        },
-                      },
-                    },
-                  },
-                  Object {
-                    "ResTarget": Object {
-                      "location": 1105,
-                      "name": "name",
-                      "val": Object {
-                        "ColumnRef": Object {
-                          "fields": Array [
-                            Object {
-                              "String": Object {
-                                "str": "perm",
-                              },
-                            },
-                            Object {
-                              "String": Object {
-                                "str": "name",
-                              },
-                            },
-                          ],
-                          "location": 1105,
-                        },
-                      },
-                    },
-                  },
-                ],
-                "whereClause": Object {
-                  "A_Expr": Object {
-                    "kind": 0,
-                    "lexpr": Object {
-                      "ColumnRef": Object {
-                        "fields": Array [
-                          Object {
-                            "String": Object {
-                              "str": "r",
-                            },
-                          },
-                          Object {
-                            "String": Object {
-                              "str": "type",
-                            },
-                          },
-                        ],
-                        "location": 1685,
-                      },
-                    },
-                    "location": 1692,
-                    "name": Array [
-                      Object {
-                        "String": Object {
-                          "str": "=",
-                        },
-                      },
-                    ],
-                    "rexpr": Object {
-                      "TypeCast": Object {
-                        "arg": Object {
-                          "A_Const": Object {
-                            "location": 1694,
-                            "val": Object {
-                              "String": Object {
-                                "str": "Team",
-                              },
-                            },
-                          },
-                        },
-                        "location": 1700,
-                        "typeName": Object {
-                          "TypeName": Object {
-                            "location": 1702,
-                            "names": Array [
-                              Object {
-                                "String": Object {
-                                  "str": "roles_public",
-                                },
-                              },
-                              Object {
-                                "String": Object {
-                                  "str": "role_type",
-                                },
-                              },
-                            ],
-                            "typemod": -1,
-                          },
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-            "view": Object {
-              "RangeVar": Object {
-                "inh": true,
-                "location": 197,
-                "relname": "project_permits",
-                "relpersistence": "p",
-                "schemaname": "collaboration_public",
-              },
-            },
-            "withCheckOption": 0,
-          },
-        },
-        "stmt_len": 1552,
-        "stmt_location": 180,
-      },
-    },
-    Object {
-      "RawStmt": Object {
-        "stmt": Object {
-          "ViewStmt": Object {
-            "query": Object {
-              "SelectStmt": Object {
-                "fromClause": Array [
-                  Object {
-                    "JoinExpr": Object {
-                      "jointype": 0,
-                      "larg": Object {
-                        "JoinExpr": Object {
-                          "jointype": 0,
-                          "larg": Object {
-                            "JoinExpr": Object {
-                              "jointype": 0,
-                              "larg": Object {
-                                "RangeVar": Object {
-                                  "alias": Object {
-                                    "Alias": Object {
-                                      "aliasname": "c",
-                                    },
-                                  },
-                                  "inh": true,
-                                  "location": 2171,
-                                  "relname": "collaboration",
-                                  "relpersistence": "p",
-                                  "schemaname": "collaboration_public",
-                                },
-                              },
-                              "quals": Object {
-                                "A_Expr": Object {
-                                  "kind": 0,
-                                  "lexpr": Object {
-                                    "ColumnRef": Object {
-                                      "fields": Array [
-                                        Object {
-                                          "String": Object {
-                                            "str": "jtbl",
-                                          },
-                                        },
-                                        Object {
-                                          "String": Object {
-                                            "str": "profile_id",
-                                          },
-                                        },
-                                      ],
-                                      "location": 2273,
-                                    },
-                                  },
-                                  "location": 2289,
-                                  "name": Array [
-                                    Object {
-                                      "String": Object {
-                                        "str": "=",
-                                      },
-                                    },
-                                  ],
-                                  "rexpr": Object {
-                                    "ColumnRef": Object {
-                                      "fields": Array [
-                                        Object {
-                                          "String": Object {
-                                            "str": "c",
-                                          },
-                                        },
-                                        Object {
-                                          "String": Object {
-                                            "str": "profile_id",
-                                          },
-                                        },
-                                      ],
-                                      "location": 2291,
-                                    },
-                                  },
-                                },
-                              },
-                              "rarg": Object {
-                                "RangeVar": Object {
-                                  "alias": Object {
-                                    "Alias": Object {
-                                      "aliasname": "jtbl",
-                                    },
-                                  },
-                                  "inh": true,
-                                  "location": 2219,
-                                  "relname": "profile_permissions",
-                                  "relpersistence": "p",
-                                  "schemaname": "permissions_public",
-                                },
-                              },
-                            },
-                          },
-                          "quals": Object {
-                            "A_Expr": Object {
-                              "kind": 0,
-                              "lexpr": Object {
-                                "ColumnRef": Object {
-                                  "fields": Array [
-                                    Object {
-                                      "String": Object {
-                                        "str": "jtbl",
-                                      },
-                                    },
-                                    Object {
-                                      "String": Object {
-                                        "str": "permission_id",
-                                      },
-                                    },
-                                  ],
-                                  "location": 2361,
-                                },
-                              },
-                              "location": 2380,
-                              "name": Array [
-                                Object {
-                                  "String": Object {
-                                    "str": "=",
-                                  },
-                                },
-                              ],
-                              "rexpr": Object {
-                                "ColumnRef": Object {
-                                  "fields": Array [
-                                    Object {
-                                      "String": Object {
-                                        "str": "perm",
-                                      },
-                                    },
-                                    Object {
-                                      "String": Object {
-                                        "str": "id",
-                                      },
-                                    },
-                                  ],
-                                  "location": 2382,
-                                },
-                              },
-                            },
-                          },
-                          "rarg": Object {
-                            "RangeVar": Object {
-                              "alias": Object {
-                                "Alias": Object {
-                                  "aliasname": "perm",
-                                },
-                              },
-                              "inh": true,
-                              "location": 2315,
-                              "relname": "permission",
-                              "relpersistence": "p",
-                              "schemaname": "permissions_public",
-                            },
-                          },
-                        },
-                      },
-                      "quals": Object {
-                        "A_Expr": Object {
-                          "kind": 0,
-                          "lexpr": Object {
-                            "ColumnRef": Object {
-                              "fields": Array [
-                                Object {
-                                  "String": Object {
-                                    "str": "c",
-                                  },
-                                },
-                                Object {
-                                  "String": Object {
-                                    "str": "role_id",
-                                  },
-                                },
-                              ],
-                              "location": 2433,
-                            },
-                          },
-                          "location": 2443,
-                          "name": Array [
-                            Object {
-                              "String": Object {
-                                "str": "=",
-                              },
-                            },
-                          ],
-                          "rexpr": Object {
-                            "ColumnRef": Object {
-                              "fields": Array [
-                                Object {
-                                  "String": Object {
-                                    "str": "r",
-                                  },
-                                },
-                                Object {
-                                  "String": Object {
-                                    "str": "id",
-                                  },
-                                },
-                              ],
-                              "location": 2445,
-                            },
-                          },
-                        },
-                      },
-                      "rarg": Object {
-                        "RangeVar": Object {
-                          "alias": Object {
-                            "Alias": Object {
-                              "aliasname": "r",
-                            },
-                          },
-                          "inh": true,
-                          "location": 2401,
-                          "relname": "roles",
-                          "relpersistence": "p",
-                          "schemaname": "roles_public",
-                        },
-                      },
-                    },
-                  },
-                ],
-                "op": 0,
-                "targetList": Array [
-                  Object {
-                    "ResTarget": Object {
-                      "location": 1808,
-                      "name": "permission_id",
-                      "val": Object {
-                        "ColumnRef": Object {
-                          "fields": Array [
-                            Object {
-                              "String": Object {
-                                "str": "perm",
-                              },
-                            },
-                            Object {
-                              "String": Object {
-                                "str": "id",
-                              },
-                            },
-                          ],
-                          "location": 1808,
-                        },
-                      },
-                    },
-                  },
-                  Object {
-                    "ResTarget": Object {
-                      "location": 2009,
-                      "name": "project_id",
-                      "val": Object {
-                        "ColumnRef": Object {
-                          "fields": Array [
-                            Object {
-                              "String": Object {
-                                "str": "c",
-                              },
-                            },
-                            Object {
-                              "String": Object {
-                                "str": "project_id",
-                              },
-                            },
-                          ],
-                          "location": 2009,
-                        },
-                      },
-                    },
-                  },
-                  Object {
-                    "ResTarget": Object {
-                      "location": 2043,
-                      "name": "role_id",
-                      "val": Object {
-                        "ColumnRef": Object {
-                          "fields": Array [
-                            Object {
-                              "String": Object {
-                                "str": "c",
-                              },
-                            },
-                            Object {
-                              "String": Object {
-                                "str": "role_id",
-                              },
-                            },
-                          ],
-                          "location": 2043,
-                        },
-                      },
-                    },
-                  },
-                  Object {
-                    "ResTarget": Object {
-                      "location": 2104,
-                      "val": Object {
-                        "ColumnRef": Object {
-                          "fields": Array [
-                            Object {
-                              "String": Object {
-                                "str": "r",
-                              },
-                            },
-                            Object {
-                              "String": Object {
-                                "str": "username",
-                              },
-                            },
-                          ],
-                          "location": 2104,
-                        },
-                      },
-                    },
-                  },
-                  Object {
-                    "ResTarget": Object {
-                      "location": 2122,
-                      "name": "name",
-                      "val": Object {
-                        "ColumnRef": Object {
-                          "fields": Array [
-                            Object {
-                              "String": Object {
-                                "str": "perm",
-                              },
-                            },
-                            Object {
-                              "String": Object {
-                                "str": "name",
-                              },
-                            },
-                          ],
-                          "location": 2122,
-                        },
-                      },
-                    },
-                  },
-                ],
-                "whereClause": Object {
-                  "A_Expr": Object {
-                    "kind": 0,
-                    "lexpr": Object {
-                      "ColumnRef": Object {
-                        "fields": Array [
-                          Object {
-                            "String": Object {
-                              "str": "r",
-                            },
-                          },
-                          Object {
-                            "String": Object {
-                              "str": "type",
-                            },
-                          },
-                        ],
-                        "location": 2470,
-                      },
-                    },
-                    "location": 2477,
-                    "name": Array [
-                      Object {
-                        "String": Object {
-                          "str": "=",
-                        },
-                      },
-                    ],
-                    "rexpr": Object {
-                      "TypeCast": Object {
-                        "arg": Object {
-                          "A_Const": Object {
-                            "location": 2479,
-                            "val": Object {
-                              "String": Object {
-                                "str": "User",
-                              },
-                            },
-                          },
-                        },
-                        "location": 2485,
-                        "typeName": Object {
-                          "TypeName": Object {
-                            "location": 2487,
-                            "names": Array [
-                              Object {
-                                "String": Object {
-                                  "str": "roles_public",
-                                },
-                              },
-                              Object {
-                                "String": Object {
-                                  "str": "role_type",
-                                },
-                              },
-                            ],
-                            "typemod": -1,
-                          },
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-            "view": Object {
-              "RangeVar": Object {
-                "inh": true,
-                "location": 1747,
-                "relname": "direct_project_permits",
-                "relpersistence": "p",
-                "schemaname": "collaboration_public",
-              },
-            },
-            "withCheckOption": 0,
-          },
-        },
-        "stmt_len": 960,
-        "stmt_location": 1733,
+        "stmt_location": 81,
       },
     },
   ],
@@ -33180,16 +31934,5 @@ Object {
 
 exports[`kitchen sink views create 2`] = `
 "CREATE VIEW collaboration_public.direct_project_permits AS SELECT * FROM permits;
-CREATE MATERIALIZED VIEW collaboration_public.direct_project_permits AS SELECT * FROM permits;
-CREATE VIEW collaboration_public.project_permits AS SELECT perm.id AS permission_id,
-c.project_id AS project_id,
-c.role_id AS role_id,
-m.role_id AS actor_id,
-r2.username,
-perm.name AS name FROM permissions_public.profile_permissions AS jtbl INNER JOIN permissions_public.permission AS perm ON ((jtbl.permission_id) = (perm.id)) INNER JOIN collaboration_public.collaboration AS c ON ((jtbl.profile_id) = (c.profile_id)) INNER JOIN roles_public.memberships AS m ON ((m.group_id) = (c.role_id)) INNER JOIN roles_public.roles AS r2 ON ((m.role_id) = (r2.id)) INNER JOIN roles_public.roles AS r ON ((c.role_id) = (r.id)) WHERE ((r.type) = ('Team'::roles_public.role_type));
-CREATE VIEW collaboration_public.direct_project_permits AS SELECT perm.id AS permission_id,
-c.project_id AS project_id,
-c.role_id AS role_id,
-r.username,
-perm.name AS name FROM collaboration_public.collaboration AS c INNER JOIN permissions_public.profile_permissions AS jtbl ON ((jtbl.profile_id) = (c.profile_id)) INNER JOIN permissions_public.permission AS perm ON ((jtbl.permission_id) = (perm.id)) INNER JOIN roles_public.roles AS r ON ((c.role_id) = (r.id)) WHERE ((r.type) = ('User'::roles_public.role_type));"
+CREATE MATERIALIZED VIEW collaboration_public.direct_project_permits AS SELECT * FROM permits;"
 `;

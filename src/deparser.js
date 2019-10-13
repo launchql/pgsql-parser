@@ -727,9 +727,17 @@ export default class Deparser {
       output.push('ON');
       output.push(this.deparse(node.object[0]));
     } else if (objtypeIs(node.objtype, 'OBJECT_TABCONSTRAINT')) {
-      output.push(this.deparse(node.object[1]));
-      output.push('ON');
-      output.push(this.deparse(node.object[0]));
+      if (node.object.length === 3) {
+        output.push(this.deparse(node.object[2]));
+        output.push('ON');
+        output.push(this.deparse(node.object[0]));
+        output.push('.');
+        output.push(this.deparse(node.object[1]));
+      } else {
+        output.push(this.deparse(node.object[1]));
+        output.push('ON');
+        output.push(this.deparse(node.object[0]));
+      }
     } else if (objtypeIs(node.objtype, 'OBJECT_TRANSFORM')) {
       output.push('FOR');
       output.push(this.deparse(node.object[0]));
