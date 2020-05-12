@@ -890,7 +890,10 @@ class Deparser {
       output.push(this.list(node.cols));
       output.push(')');
     }
-    output.push(this.deparse(node.selectStmt));
+
+    if (node.selectStmt) {
+      output.push(this.deparse(node.selectStmt));
+    }
 
     return output.join(' ');
   }
@@ -910,8 +913,10 @@ class Deparser {
     output.push('DELETE');
     output.push('FROM');
     output.push(this.deparse(node.relation));
-    output.push('WHERE');
-    output.push(this.deparse(node.whereClause));
+    if (node.whereClause) {
+      output.push('WHERE');
+      output.push(this.deparse(node.whereClause));
+    }
     return output.join(' ');
   }
 
@@ -1217,6 +1222,14 @@ class Deparser {
     }
 
     return (0, _util.format)('ROW(%s)', this.list(node.args));
+  }
+
+  ['ExplainStmt'](node) {
+    console.log(node);
+    const output = [];
+    output.push('EXPLAIN');
+    output.push(this.deparse(node.query));
+    return output.join(' ');
   }
 
   ['SelectStmt'](node, context) {
