@@ -57,6 +57,12 @@ describe('kitchen sink', () => {
   it('insert', () => {
     check('statements/insert.sql');
   });
+  it('update', () => {
+    check('statements/update.sql');
+  });
+  it('delete', () => {
+    check('statements/delete.sql');
+  });
   it('domain', () => {
     check('domains/create.sql');
   });
@@ -112,6 +118,11 @@ describe('kitchen sink', () => {
     });
     it('grants', () => {
       check('roles/grants.sql');
+    });
+  });
+  describe('rules', () => {
+    it('create', () => {
+      check('rules/create.sql');
     });
   });
   describe('views', () => {

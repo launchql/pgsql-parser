@@ -5,6 +5,14 @@
 
 BEGIN;
 
+INSERT INTO shoelace_data VALUES (
+        1,
+        2,
+        3,
+        'truth',
+        True
+);
+
 INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
 
   (function () {

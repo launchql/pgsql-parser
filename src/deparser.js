@@ -234,7 +234,7 @@ export default class Deparser {
   }
 
   type(names, args) {
-    const [ catalog, type ] = names.map(name => this.deparse(name));
+    const [catalog, type] = names.map(name => this.deparse(name));
 
     const mods = (name, size) => {
       if (size != null) {
@@ -279,6 +279,54 @@ export default class Deparser {
 
   ['RawStmt'](node) {
     return this.deparse(node.stmt);
+  }
+
+  ['RuleStmt'](node) {
+    const output = [];
+    output.push('CREATE');
+    output.push('RULE');
+    if (node.rulename === '_RETURN') {
+      // special rules
+      output.push('"_RETURN"');
+    } else {
+      output.push(node.rulename);
+    }
+    output.push('AS');
+    output.push('ON');
+    switch (node.event) {
+      case 1:
+        output.push('SELECT');
+        break;
+      case 2:
+        output.push('UPDATE');
+        break;
+      case 3:
+        output.push('INSERT');
+        break;
+      case 4:
+        output.push('DELETE');
+        break;
+      default:
+        throw new Error('event type not yet implemented for RuleStmt');
+    }
+    output.push('TO');
+    output.push(this.deparse(node.relation));
+    if (node.instead) {
+      output.push('DO');
+      output.push('INSTEAD');
+    }
+    if (node.whereClause) {
+      output.push('WHERE');
+      output.push(this.deparse(node.whereClause))
+      output.push('DO');
+    }
+    if (!node.actions || !node.actions.length) {
+      output.push('NOTHING');
+    } else {
+      // TODO how do multiple actions happen?
+      output.push(this.deparse(node.actions[0]));
+    }
+    return output.join(' ');
   }
 
   ['A_Expr'](node, context) {
@@ -454,7 +502,7 @@ export default class Deparser {
   ['Alias'](node, context) {
     const name = node.aliasname;
 
-    const output = [ 'AS' ];
+    const output = ['AS'];
 
     if (node.colnames) {
       output.push(name + parens(this.list(node.colnames)));
@@ -490,7 +538,7 @@ export default class Deparser {
   }
 
   ['A_Indirection'](node) {
-    const output = [ `(${this.deparse(node.arg)})` ];
+    const output = [`(${this.deparse(node.arg)})`];
 
     // TODO(zhm) figure out the actual rules for when a '.' is needed
     //
@@ -556,7 +604,7 @@ export default class Deparser {
   }
 
   ['CaseExpr'](node) {
-    const output = [ 'CASE' ];
+    const output = ['CASE'];
 
     if (node.arg) {
       output.push(this.deparse(node.arg));
@@ -632,7 +680,7 @@ export default class Deparser {
   }
 
   ['ColumnDef'](node) {
-    const output = [ this.quote(node.colname) ];
+    const output = [this.quote(node.colname)];
 
     output.push(this.deparse(node.typeName));
 
@@ -674,7 +722,7 @@ export default class Deparser {
   }
 
   ['ColumnRef'](node, context) {
-    const KEYWORDS = [ 'old', 'new' ];
+    const KEYWORDS = ['old', 'new'];
     const fields = node.fields.map(field => {
       if (field.String) {
         const value = this.deparse(field);
@@ -980,10 +1028,66 @@ export default class Deparser {
 
     output.push('INSERT INTO');
     output.push(this.deparse(node.relation));
-    output.push('(');
-    output.push(this.list(node.cols));
-    output.push(')');
+    if (node.cols && node.cols.length) {
+      output.push('(');
+      output.push(this.list(node.cols));
+      output.push(')');
+    }
     output.push(this.deparse(node.selectStmt));
+
+    return output.join(' ');
+  }
+
+  ['SetToDefault'](node) {
+    return 'DEFAULT';
+  }
+
+  ['MultiAssignRef'](node) {
+    const output = [];
+    output.push(this.deparse(node.source));
+    return output.join(' ');
+  }
+
+  ['DeleteStmt'](node) {
+    const output = [''];
+    output.push('DELETE');
+    output.push('FROM');
+    output.push(this.deparse(node.relation));
+    output.push('WHERE');
+    output.push(this.deparse(node.whereClause));
+    return output.join(' ');
+  }
+
+  ['UpdateStmt'](node) {
+    const output = [];
+    output.push('UPDATE');
+    output.push(this.deparse(node.relation));
+    output.push('SET');
+
+    if (node.targetList && node.targetList.length) {
+      if (
+        node.targetList[0].ResTarget &&
+        node.targetList[0].ResTarget.val &&
+        node.targetList[0].ResTarget.val.MultiAssignRef
+      ) {
+        output.push('(');
+        output.push(node.targetList.map(target => target.ResTarget.name).join(','));
+        output.push(')');
+        output.push('=');
+        output.push(this.deparse(node.targetList[0].ResTarget.val));
+      } else {
+        output.push(
+          node.targetList.map(
+            (target) => this.deparse(target, 'update')
+          ).join(',')
+        );
+      }
+    }
+
+    if (node.whereClause) {
+      output.push('WHERE');
+      output.push(this.deparse(node.whereClause));
+    }
 
     return output.join(' ');
   }
@@ -1128,7 +1232,7 @@ export default class Deparser {
   }
 
   ['NullTest'](node) {
-    const output = [ this.deparse(node.arg) ];
+    const output = [this.deparse(node.arg)];
 
     if (node.nulltesttype === 0) {
       output.push('IS NULL');
@@ -1141,7 +1245,7 @@ export default class Deparser {
 
   ['ParamRef'](node) {
     if (node.number >= 0) {
-      return [ '$', node.number ].join('');
+      return ['$', node.number].join('');
     }
     return '?';
   }
@@ -1157,7 +1261,7 @@ export default class Deparser {
 
     for (let i = 0; i < node.functions.length; i++) {
       const funcCall = node.functions[i];
-      const call = [ this.deparse(funcCall[0]) ];
+      const call = [this.deparse(funcCall[0])];
 
       if (funcCall[1] && funcCall[1].length) {
         call.push(format('AS (%s)', this.list(funcCall[1])));
@@ -1259,11 +1363,11 @@ export default class Deparser {
 
   ['ResTarget'](node, context) {
     if (context === 'select') {
-      return compact([ this.deparse(node.val), this.quote(node.name) ]).join(
+      return compact([this.deparse(node.val), this.quote(node.name)]).join(
         ' AS '
       );
     } else if (context === 'update') {
-      return compact([ node.name, this.deparse(node.val) ]).join(' = ');
+      return compact([node.name, this.deparse(node.val)]).join(' = ');
     } else if (!(node.val != null)) {
       return this.quote(node.name);
     }
@@ -1294,7 +1398,7 @@ export default class Deparser {
     } else {
       output.push(parens(this.deparse(node.larg)));
 
-      const sets = [ 'NONE', 'UNION', 'INTERSECT', 'EXCEPT' ];
+      const sets = ['NONE', 'UNION', 'INTERSECT', 'EXCEPT'];
 
       output.push(sets[node.op]);
 
@@ -2142,7 +2246,7 @@ export default class Deparser {
     output.push('(');
     let parameters = [];
     if (node.parameters) {
-      parameters = [ ...node.parameters ];
+      parameters = [...node.parameters];
     }
     const parametersList = parameters.filter(
       ({ FunctionParameter }) =>
@@ -2229,7 +2333,7 @@ export default class Deparser {
             if (
               dotty.get(option, 'DefElem.arg.VariableSetStmt.kind') === 2 &&
               dotty.get(option, 'DefElem.arg.VariableSetStmt.name') ===
-                'search_path'
+              'search_path'
             ) {
               output.push('SET search_path FROM CURRENT');
             } else {
@@ -2731,7 +2835,7 @@ export default class Deparser {
   }
 
   ['CaseWhen'](node) {
-    const output = [ 'WHEN' ];
+    const output = ['WHEN'];
 
     output.push(this.deparse(node.expr));
     output.push('THEN');
@@ -2773,7 +2877,7 @@ export default class Deparser {
     let useParens = false;
 
     if (node.partitionClause) {
-      const partition = [ 'PARTITION BY' ];
+      const partition = ['PARTITION BY'];
 
       const clause = node.partitionClause.map(item => this.deparse(item));
 
@@ -2808,7 +2912,7 @@ export default class Deparser {
   }
 
   ['WithClause'](node) {
-    const output = [ 'WITH' ];
+    const output = ['WITH'];
 
     if (node.recursive) {
       output.push('RECURSIVE');
@@ -2907,7 +3011,7 @@ export default class Deparser {
   }
 
   deparseInterval(node) {
-    const type = [ 'interval' ];
+    const type = ['interval'];
 
     if (node.arrayBounds != null) {
       type.push('[]');
@@ -2926,7 +3030,7 @@ export default class Deparser {
         node.typmods[1] &&
         node.typmods[1].A_Const != null
       ) {
-        intervals = [ `(${node.typmods[1].A_Const.val.Integer.ival})` ];
+        intervals = [`(${node.typmods[1].A_Const.val.Integer.ival})`];
       } else {
         intervals = intervals.map(part => {
           if (part === 'second' && typmods.length === 2) {
@@ -2985,12 +3089,12 @@ export default class Deparser {
 
     if (this.INTERVALS == null) {
       this.INTERVALS = {};
-      this.INTERVALS[1 << this.BITS.YEAR] = [ 'year' ];
-      this.INTERVALS[1 << this.BITS.MONTH] = [ 'month' ];
-      this.INTERVALS[1 << this.BITS.DAY] = [ 'day' ];
-      this.INTERVALS[1 << this.BITS.HOUR] = [ 'hour' ];
-      this.INTERVALS[1 << this.BITS.MINUTE] = [ 'minute' ];
-      this.INTERVALS[1 << this.BITS.SECOND] = [ 'second' ];
+      this.INTERVALS[1 << this.BITS.YEAR] = ['year'];
+      this.INTERVALS[1 << this.BITS.MONTH] = ['month'];
+      this.INTERVALS[1 << this.BITS.DAY] = ['day'];
+      this.INTERVALS[1 << this.BITS.HOUR] = ['hour'];
+      this.INTERVALS[1 << this.BITS.MINUTE] = ['minute'];
+      this.INTERVALS[1 << this.BITS.SECOND] = ['second'];
       this.INTERVALS[(1 << this.BITS.YEAR) | (1 << this.BITS.MONTH)] = [
         'year',
         'month'
@@ -3001,22 +3105,22 @@ export default class Deparser {
       ];
       this.INTERVALS[
         (1 << this.BITS.DAY) | (1 << this.BITS.HOUR) | (1 << this.BITS.MINUTE)
-      ] = [ 'day', 'minute' ];
+      ] = ['day', 'minute'];
       this.INTERVALS[
         (1 << this.BITS.DAY) |
-          (1 << this.BITS.HOUR) |
-          (1 << this.BITS.MINUTE) |
-          (1 << this.BITS.SECOND)
-      ] = [ 'day', 'second' ];
+        (1 << this.BITS.HOUR) |
+        (1 << this.BITS.MINUTE) |
+        (1 << this.BITS.SECOND)
+      ] = ['day', 'second'];
       this.INTERVALS[(1 << this.BITS.HOUR) | (1 << this.BITS.MINUTE)] = [
         'hour',
         'minute'
       ];
       this.INTERVALS[
         (1 << this.BITS.HOUR) |
-          (1 << this.BITS.MINUTE) |
-          (1 << this.BITS.SECOND)
-      ] = [ 'hour', 'second' ];
+        (1 << this.BITS.MINUTE) |
+        (1 << this.BITS.SECOND)
+      ] = ['hour', 'second'];
       this.INTERVALS[(1 << this.BITS.MINUTE) | (1 << this.BITS.SECOND)] = [
         'minute',
         'second'

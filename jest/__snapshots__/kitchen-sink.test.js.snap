@@ -1652,6 +1652,259 @@ ALTER DEFAULT PRIVILEGES FOR ROLE admin
 REVOKE EXECUTE ON FUNCTIONS  FROM PUBLIC;"
 `;
 
+exports[`kitchen sink delete 1`] = `
+Object {
+  "query": Array [
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "DeleteStmt": Object {
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 12,
+                "relname": "shoelace_data",
+                "relpersistence": "p",
+              },
+            },
+            "whereClause": Object {
+              "A_Expr": Object {
+                "kind": 0,
+                "lexpr": Object {
+                  "ColumnRef": Object {
+                    "fields": Array [
+                      Object {
+                        "String": Object {
+                          "str": "sl_name",
+                        },
+                      },
+                    ],
+                    "location": 37,
+                  },
+                },
+                "location": 45,
+                "name": Array [
+                  Object {
+                    "String": Object {
+                      "str": "=",
+                    },
+                  },
+                ],
+                "rexpr": Object {
+                  "ColumnRef": Object {
+                    "fields": Array [
+                      Object {
+                        "String": Object {
+                          "str": "old",
+                        },
+                      },
+                      Object {
+                        "String": Object {
+                          "str": "sl_name",
+                        },
+                      },
+                    ],
+                    "location": 47,
+                  },
+                },
+              },
+            },
+          },
+        },
+        "stmt_len": 58,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "DeleteStmt": Object {
+            "relation": Object {
+              "RangeVar": Object {
+                "alias": Object {
+                  "Alias": Object {
+                    "aliasname": "dt",
+                  },
+                },
+                "inh": true,
+                "location": 73,
+                "relname": "delete_test",
+                "relpersistence": "p",
+              },
+            },
+            "whereClause": Object {
+              "A_Expr": Object {
+                "kind": 0,
+                "lexpr": Object {
+                  "ColumnRef": Object {
+                    "fields": Array [
+                      Object {
+                        "String": Object {
+                          "str": "dt",
+                        },
+                      },
+                      Object {
+                        "String": Object {
+                          "str": "a",
+                        },
+                      },
+                    ],
+                    "location": 97,
+                  },
+                },
+                "location": 102,
+                "name": Array [
+                  Object {
+                    "String": Object {
+                      "str": ">",
+                    },
+                  },
+                ],
+                "rexpr": Object {
+                  "A_Const": Object {
+                    "location": 104,
+                    "val": Object {
+                      "Integer": Object {
+                        "ival": 75,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        "stmt_len": 47,
+        "stmt_location": 59,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "DeleteStmt": Object {
+            "relation": Object {
+              "RangeVar": Object {
+                "alias": Object {
+                  "Alias": Object {
+                    "aliasname": "dt",
+                  },
+                },
+                "inh": true,
+                "location": 121,
+                "relname": "delete_test",
+                "relpersistence": "p",
+              },
+            },
+            "whereClause": Object {
+              "A_Expr": Object {
+                "kind": 0,
+                "lexpr": Object {
+                  "ColumnRef": Object {
+                    "fields": Array [
+                      Object {
+                        "String": Object {
+                          "str": "delete_test",
+                        },
+                      },
+                      Object {
+                        "String": Object {
+                          "str": "a",
+                        },
+                      },
+                    ],
+                    "location": 142,
+                  },
+                },
+                "location": 156,
+                "name": Array [
+                  Object {
+                    "String": Object {
+                      "str": ">",
+                    },
+                  },
+                ],
+                "rexpr": Object {
+                  "A_Const": Object {
+                    "location": 158,
+                    "val": Object {
+                      "Integer": Object {
+                        "ival": 25,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        "stmt_len": 53,
+        "stmt_location": 107,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "DeleteStmt": Object {
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 175,
+                "relname": "delete_test",
+                "relpersistence": "p",
+              },
+            },
+            "whereClause": Object {
+              "A_Expr": Object {
+                "kind": 0,
+                "lexpr": Object {
+                  "ColumnRef": Object {
+                    "fields": Array [
+                      Object {
+                        "String": Object {
+                          "str": "a",
+                        },
+                      },
+                    ],
+                    "location": 193,
+                  },
+                },
+                "location": 195,
+                "name": Array [
+                  Object {
+                    "String": Object {
+                      "str": ">",
+                    },
+                  },
+                ],
+                "rexpr": Object {
+                  "A_Const": Object {
+                    "location": 197,
+                    "val": Object {
+                      "Integer": Object {
+                        "ival": 25,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        "stmt_len": 38,
+        "stmt_location": 161,
+      },
+    },
+  ],
+  "stderr": "",
+}
+`;
+
+exports[`kitchen sink delete 2`] = `
+"DELETE FROM shoelace_data WHERE ((sl_name) = (old.sl_name));
+DELETE FROM delete_test AS dt WHERE ((dt.a) > (75));
+DELETE FROM delete_test AS dt WHERE ((delete_test.a) > (25));
+DELETE FROM delete_test WHERE ((a) > (25));"
+`;
+
 exports[`kitchen sink do stmt 1`] = `
 Object {
   "query": Array [
@@ -8426,16 +8679,117 @@ Object {
       "RawStmt": Object {
         "stmt": Object {
           "InsertStmt": Object {
+            "override": 0,
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 153,
+                "relname": "shoelace_data",
+                "relpersistence": "p",
+              },
+            },
+            "selectStmt": Object {
+              "SelectStmt": Object {
+                "op": 0,
+                "valuesLists": Array [
+                  Array [
+                    Object {
+                      "A_Const": Object {
+                        "location": 184,
+                        "val": Object {
+                          "Integer": Object {
+                            "ival": 1,
+                          },
+                        },
+                      },
+                    },
+                    Object {
+                      "A_Const": Object {
+                        "location": 195,
+                        "val": Object {
+                          "Integer": Object {
+                            "ival": 2,
+                          },
+                        },
+                      },
+                    },
+                    Object {
+                      "A_Const": Object {
+                        "location": 206,
+                        "val": Object {
+                          "Integer": Object {
+                            "ival": 3,
+                          },
+                        },
+                      },
+                    },
+                    Object {
+                      "A_Const": Object {
+                        "location": 217,
+                        "val": Object {
+                          "String": Object {
+                            "str": "truth",
+                          },
+                        },
+                      },
+                    },
+                    Object {
+                      "TypeCast": Object {
+                        "arg": Object {
+                          "A_Const": Object {
+                            "location": 234,
+                            "val": Object {
+                              "String": Object {
+                                "str": "t",
+                              },
+                            },
+                          },
+                        },
+                        "location": -1,
+                        "typeName": Object {
+                          "TypeName": Object {
+                            "location": -1,
+                            "names": Array [
+                              Object {
+                                "String": Object {
+                                  "str": "pg_catalog",
+                                },
+                              },
+                              Object {
+                                "String": Object {
+                                  "str": "bool",
+                                },
+                              },
+                            ],
+                            "typemod": -1,
+                          },
+                        },
+                      },
+                    },
+                  ],
+                ],
+              },
+            },
+          },
+        },
+        "stmt_len": 101,
+        "stmt_location": 139,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "InsertStmt": Object {
             "cols": Array [
               Object {
                 "ResTarget": Object {
-                  "location": 165,
+                  "location": 267,
                   "name": "name",
                 },
               },
               Object {
                 "ResTarget": Object {
-                  "location": 171,
+                  "location": 273,
                   "name": "code",
                 },
               },
@@ -8444,7 +8798,7 @@ Object {
             "relation": Object {
               "RangeVar": Object {
                 "inh": true,
-                "location": 153,
+                "location": 255,
                 "relname": "modules",
                 "relpersistence": "p",
                 "schemaname": "v8",
@@ -8457,7 +8811,7 @@ Object {
                   Array [
                     Object {
                       "A_Const": Object {
-                        "location": 185,
+                        "location": 287,
                         "val": Object {
                           "String": Object {
                             "str": "ajv",
@@ -8467,7 +8821,7 @@ Object {
                     },
                     Object {
                       "A_Const": Object {
-                        "location": 192,
+                        "location": 294,
                         "val": Object {
                           "String": Object {
                             "str": "
@@ -16270,7 +16624,7 @@ Object {
           },
         },
         "stmt_len": 276141,
-        "stmt_location": 139,
+        "stmt_location": 241,
       },
     },
     Object {
@@ -16281,7 +16635,7 @@ Object {
           },
         },
         "stmt_len": 8,
-        "stmt_location": 276281,
+        "stmt_location": 276383,
       },
     },
   ],
@@ -16291,6 +16645,7 @@ Object {
 
 exports[`kitchen sink insert 2`] = `
 "BEGIN;
+INSERT INTO shoelace_data VALUES (1, 2, 3, 'truth', (TRUE));
 INSERT INTO v8.modules ( name, code ) VALUES ('ajv', '
 (function () {
 var module = {
@@ -24586,6 +24941,685 @@ GRANT APP_AUTHENTICATED, APP_ANONYMOUS TO app_user;
 GRANT APP_AUTHENTICATED, APP_ANONYMOUS TO app_user, super_app_user;"
 `;
 
+exports[`kitchen sink rules create 1`] = `
+Object {
+  "query": Array [
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "RuleStmt": Object {
+            "event": 3,
+            "instead": true,
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 52,
+                "relname": "collections",
+                "relpersistence": "p",
+                "schemaname": "dbs",
+              },
+            },
+            "rulename": "collections_ins_protect",
+          },
+        },
+        "stmt_len": 94,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "RuleStmt": Object {
+            "event": 2,
+            "instead": true,
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 153,
+                "relname": "collections",
+                "relpersistence": "p",
+                "schemaname": "dbs",
+              },
+            },
+            "rulename": "collections_upd_protect",
+          },
+        },
+        "stmt_len": 108,
+        "stmt_location": 95,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "RuleStmt": Object {
+            "event": 4,
+            "instead": true,
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 258,
+                "relname": "collections",
+                "relpersistence": "p",
+                "schemaname": "dbs",
+              },
+            },
+            "rulename": "collections_del_protect",
+          },
+        },
+        "stmt_len": 96,
+        "stmt_location": 204,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "RuleStmt": Object {
+            "actions": Array [
+              Object {
+                "UpdateStmt": Object {
+                  "relation": Object {
+                    "RangeVar": Object {
+                      "inh": true,
+                      "location": 379,
+                      "relname": "shoelace_data",
+                      "relpersistence": "p",
+                    },
+                  },
+                  "targetList": Array [
+                    Object {
+                      "ResTarget": Object {
+                        "location": 404,
+                        "name": "sl_name",
+                        "val": Object {
+                          "ColumnRef": Object {
+                            "fields": Array [
+                              Object {
+                                "String": Object {
+                                  "str": "new",
+                                },
+                              },
+                              Object {
+                                "String": Object {
+                                  "str": "sl_name",
+                                },
+                              },
+                            ],
+                            "location": 414,
+                          },
+                        },
+                      },
+                    },
+                    Object {
+                      "ResTarget": Object {
+                        "location": 438,
+                        "name": "sl_avail",
+                        "val": Object {
+                          "ColumnRef": Object {
+                            "fields": Array [
+                              Object {
+                                "String": Object {
+                                  "str": "new",
+                                },
+                              },
+                              Object {
+                                "String": Object {
+                                  "str": "sl_avail",
+                                },
+                              },
+                            ],
+                            "location": 449,
+                          },
+                        },
+                      },
+                    },
+                    Object {
+                      "ResTarget": Object {
+                        "location": 474,
+                        "name": "sl_color",
+                        "val": Object {
+                          "ColumnRef": Object {
+                            "fields": Array [
+                              Object {
+                                "String": Object {
+                                  "str": "new",
+                                },
+                              },
+                              Object {
+                                "String": Object {
+                                  "str": "sl_color",
+                                },
+                              },
+                            ],
+                            "location": 485,
+                          },
+                        },
+                      },
+                    },
+                    Object {
+                      "ResTarget": Object {
+                        "location": 510,
+                        "name": "sl_len",
+                        "val": Object {
+                          "ColumnRef": Object {
+                            "fields": Array [
+                              Object {
+                                "String": Object {
+                                  "str": "new",
+                                },
+                              },
+                              Object {
+                                "String": Object {
+                                  "str": "sl_len",
+                                },
+                              },
+                            ],
+                            "location": 519,
+                          },
+                        },
+                      },
+                    },
+                    Object {
+                      "ResTarget": Object {
+                        "location": 542,
+                        "name": "sl_unit",
+                        "val": Object {
+                          "ColumnRef": Object {
+                            "fields": Array [
+                              Object {
+                                "String": Object {
+                                  "str": "new",
+                                },
+                              },
+                              Object {
+                                "String": Object {
+                                  "str": "sl_unit",
+                                },
+                              },
+                            ],
+                            "location": 552,
+                          },
+                        },
+                      },
+                    },
+                  ],
+                  "whereClause": Object {
+                    "A_Expr": Object {
+                      "kind": 0,
+                      "lexpr": Object {
+                        "ColumnRef": Object {
+                          "fields": Array [
+                            Object {
+                              "String": Object {
+                                "str": "sl_name",
+                              },
+                            },
+                          ],
+                          "location": 575,
+                        },
+                      },
+                      "location": 583,
+                      "name": Array [
+                        Object {
+                          "String": Object {
+                            "str": "=",
+                          },
+                        },
+                      ],
+                      "rexpr": Object {
+                        "ColumnRef": Object {
+                          "fields": Array [
+                            Object {
+                              "String": Object {
+                                "str": "old",
+                              },
+                            },
+                            Object {
+                              "String": Object {
+                                "str": "sl_name",
+                              },
+                            },
+                          ],
+                          "location": 585,
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            ],
+            "event": 2,
+            "instead": true,
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 344,
+                "relname": "shoelace",
+                "relpersistence": "p",
+              },
+            },
+            "rulename": "shoelace_upd",
+          },
+        },
+        "stmt_len": 295,
+        "stmt_location": 301,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "RuleStmt": Object {
+            "actions": Array [
+              Object {
+                "DeleteStmt": Object {
+                  "relation": Object {
+                    "RangeVar": Object {
+                      "inh": true,
+                      "location": 680,
+                      "relname": "shoelace_data",
+                      "relpersistence": "p",
+                    },
+                  },
+                  "whereClause": Object {
+                    "A_Expr": Object {
+                      "kind": 0,
+                      "lexpr": Object {
+                        "ColumnRef": Object {
+                          "fields": Array [
+                            Object {
+                              "String": Object {
+                                "str": "sl_name",
+                              },
+                            },
+                          ],
+                          "location": 705,
+                        },
+                      },
+                      "location": 713,
+                      "name": Array [
+                        Object {
+                          "String": Object {
+                            "str": "=",
+                          },
+                        },
+                      ],
+                      "rexpr": Object {
+                        "ColumnRef": Object {
+                          "fields": Array [
+                            Object {
+                              "String": Object {
+                                "str": "old",
+                              },
+                            },
+                            Object {
+                              "String": Object {
+                                "str": "sl_name",
+                              },
+                            },
+                          ],
+                          "location": 715,
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            ],
+            "event": 4,
+            "instead": true,
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 640,
+                "relname": "shoelace",
+                "relpersistence": "p",
+              },
+            },
+            "rulename": "shoelace_del",
+          },
+        },
+        "stmt_len": 129,
+        "stmt_location": 597,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "RuleStmt": Object {
+            "actions": Array [
+              Object {
+                "SelectStmt": Object {
+                  "fromClause": Array [
+                    Object {
+                      "RangeVar": Object {
+                        "inh": true,
+                        "location": 813,
+                        "relname": "t1",
+                        "relpersistence": "p",
+                      },
+                    },
+                  ],
+                  "op": 0,
+                  "targetList": Array [
+                    Object {
+                      "ResTarget": Object {
+                        "location": 806,
+                        "val": Object {
+                          "ColumnRef": Object {
+                            "fields": Array [
+                              Object {
+                                "A_Star": Object {},
+                              },
+                            ],
+                            "location": 806,
+                          },
+                        },
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            "event": 1,
+            "instead": true,
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 772,
+                "relname": "t2",
+                "relpersistence": "p",
+              },
+            },
+            "rulename": "_RETURN",
+          },
+        },
+        "stmt_len": 88,
+        "stmt_location": 727,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "RuleStmt": Object {
+            "actions": Array [
+              Object {
+                "InsertStmt": Object {
+                  "override": 0,
+                  "relation": Object {
+                    "RangeVar": Object {
+                      "inh": true,
+                      "location": 931,
+                      "relname": "shoelace_log",
+                      "relpersistence": "p",
+                    },
+                  },
+                  "selectStmt": Object {
+                    "SelectStmt": Object {
+                      "op": 0,
+                      "valuesLists": Array [
+                        Array [
+                          Object {
+                            "ColumnRef": Object {
+                              "fields": Array [
+                                Object {
+                                  "String": Object {
+                                    "str": "new",
+                                  },
+                                },
+                                Object {
+                                  "String": Object {
+                                    "str": "sl_name",
+                                  },
+                                },
+                              ],
+                              "location": 989,
+                            },
+                          },
+                          Object {
+                            "ColumnRef": Object {
+                              "fields": Array [
+                                Object {
+                                  "String": Object {
+                                    "str": "new",
+                                  },
+                                },
+                                Object {
+                                  "String": Object {
+                                    "str": "sl_avail",
+                                  },
+                                },
+                              ],
+                              "location": 1038,
+                            },
+                          },
+                          Object {
+                            "SQLValueFunction": Object {
+                              "location": 1088,
+                              "op": 10,
+                              "typmod": -1,
+                            },
+                          },
+                          Object {
+                            "SQLValueFunction": Object {
+                              "location": 1138,
+                              "op": 3,
+                              "typmod": -1,
+                            },
+                          },
+                        ],
+                      ],
+                    },
+                  },
+                },
+              },
+            ],
+            "event": 2,
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 859,
+                "relname": "shoelace_data",
+                "relpersistence": "p",
+              },
+            },
+            "rulename": "log_shoelace",
+            "whereClause": Object {
+              "A_Expr": Object {
+                "kind": 0,
+                "lexpr": Object {
+                  "ColumnRef": Object {
+                    "fields": Array [
+                      Object {
+                        "String": Object {
+                          "str": "new",
+                        },
+                      },
+                      Object {
+                        "String": Object {
+                          "str": "sl_avail",
+                        },
+                      },
+                    ],
+                    "location": 883,
+                  },
+                },
+                "location": 896,
+                "name": Array [
+                  Object {
+                    "String": Object {
+                      "str": "<>",
+                    },
+                  },
+                ],
+                "rexpr": Object {
+                  "ColumnRef": Object {
+                    "fields": Array [
+                      Object {
+                        "String": Object {
+                          "str": "old",
+                        },
+                      },
+                      Object {
+                        "String": Object {
+                          "str": "sl_avail",
+                        },
+                      },
+                    ],
+                    "location": 899,
+                  },
+                },
+              },
+            },
+          },
+        },
+        "stmt_len": 373,
+        "stmt_location": 816,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "RuleStmt": Object {
+            "actions": Array [
+              Object {
+                "InsertStmt": Object {
+                  "override": 0,
+                  "relation": Object {
+                    "RangeVar": Object {
+                      "inh": true,
+                      "location": 1273,
+                      "relname": "shoelace_data",
+                      "relpersistence": "p",
+                    },
+                  },
+                  "selectStmt": Object {
+                    "SelectStmt": Object {
+                      "op": 0,
+                      "valuesLists": Array [
+                        Array [
+                          Object {
+                            "ColumnRef": Object {
+                              "fields": Array [
+                                Object {
+                                  "String": Object {
+                                    "str": "new",
+                                  },
+                                },
+                                Object {
+                                  "String": Object {
+                                    "str": "sl_name",
+                                  },
+                                },
+                              ],
+                              "location": 1307,
+                            },
+                          },
+                          Object {
+                            "ColumnRef": Object {
+                              "fields": Array [
+                                Object {
+                                  "String": Object {
+                                    "str": "new",
+                                  },
+                                },
+                                Object {
+                                  "String": Object {
+                                    "str": "sl_avail",
+                                  },
+                                },
+                              ],
+                              "location": 1331,
+                            },
+                          },
+                          Object {
+                            "ColumnRef": Object {
+                              "fields": Array [
+                                Object {
+                                  "String": Object {
+                                    "str": "new",
+                                  },
+                                },
+                                Object {
+                                  "String": Object {
+                                    "str": "sl_color",
+                                  },
+                                },
+                              ],
+                              "location": 1356,
+                            },
+                          },
+                          Object {
+                            "ColumnRef": Object {
+                              "fields": Array [
+                                Object {
+                                  "String": Object {
+                                    "str": "new",
+                                  },
+                                },
+                                Object {
+                                  "String": Object {
+                                    "str": "sl_len",
+                                  },
+                                },
+                              ],
+                              "location": 1381,
+                            },
+                          },
+                          Object {
+                            "ColumnRef": Object {
+                              "fields": Array [
+                                Object {
+                                  "String": Object {
+                                    "str": "new",
+                                  },
+                                },
+                                Object {
+                                  "String": Object {
+                                    "str": "sl_unit",
+                                  },
+                                },
+                              ],
+                              "location": 1404,
+                            },
+                          },
+                        ],
+                      ],
+                    },
+                  },
+                },
+              },
+            ],
+            "event": 3,
+            "instead": true,
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 1233,
+                "relname": "shoelace",
+                "relpersistence": "p",
+              },
+            },
+            "rulename": "shoelace_ins",
+          },
+        },
+        "stmt_len": 231,
+        "stmt_location": 1190,
+      },
+    },
+  ],
+  "stderr": "",
+}
+`;
+
+exports[`kitchen sink rules create 2`] = `
+"CREATE RULE collections_ins_protect AS ON INSERT TO dbs.collections DO INSTEAD NOTHING;
+CREATE RULE collections_upd_protect AS ON UPDATE TO dbs.collections DO INSTEAD NOTHING;
+CREATE RULE collections_del_protect AS ON DELETE TO dbs.collections DO INSTEAD NOTHING;
+CREATE RULE shoelace_upd AS ON UPDATE TO shoelace DO INSTEAD UPDATE shoelace_data SET sl_name = new.sl_name,sl_avail = new.sl_avail,sl_color = new.sl_color,sl_len = new.sl_len,sl_unit = new.sl_unit WHERE ((sl_name) = (old.sl_name));
+CREATE RULE shoelace_del AS ON DELETE TO shoelace DO INSTEAD  DELETE FROM shoelace_data WHERE ((sl_name) = (old.sl_name));
+CREATE RULE \\"_RETURN\\" AS ON SELECT TO t2 DO INSTEAD SELECT * FROM t1;
+CREATE RULE log_shoelace AS ON UPDATE TO shoelace_data WHERE ((new.sl_avail) <> (old.sl_avail)) DO INSERT INTO shoelace_log VALUES (new.sl_name, new.sl_avail, CURRENT_USER, CURRENT_TIMESTAMP);
+CREATE RULE shoelace_ins AS ON INSERT TO shoelace DO INSTEAD INSERT INTO shoelace_data VALUES (new.sl_name, new.sl_avail, new.sl_color, new.sl_len, new.sl_unit);"
+`;
+
 exports[`kitchen sink set 1`] = `
 Object {
   "query": Array [
@@ -30320,6 +31354,1003 @@ exports[`kitchen sink types 2`] = `
 verify_code text,
 verify_code_expires_on timestamptz,
 actor_id uuid );"
+`;
+
+exports[`kitchen sink update 1`] = `
+Object {
+  "query": Array [
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "UpdateStmt": Object {
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 7,
+                "relname": "update_test",
+                "relpersistence": "p",
+              },
+            },
+            "targetList": Array [
+              Object {
+                "ResTarget": Object {
+                  "location": 23,
+                  "name": "c",
+                  "val": Object {
+                    "FuncCall": Object {
+                      "args": Array [
+                        Object {
+                          "A_Const": Object {
+                            "location": 34,
+                            "val": Object {
+                              "String": Object {
+                                "str": "x",
+                              },
+                            },
+                          },
+                        },
+                        Object {
+                          "A_Const": Object {
+                            "location": 39,
+                            "val": Object {
+                              "Integer": Object {
+                                "ival": 10000,
+                              },
+                            },
+                          },
+                        },
+                      ],
+                      "funcname": Array [
+                        Object {
+                          "String": Object {
+                            "str": "repeat",
+                          },
+                        },
+                      ],
+                      "location": 27,
+                    },
+                  },
+                },
+              },
+            ],
+            "whereClause": Object {
+              "A_Expr": Object {
+                "kind": 0,
+                "lexpr": Object {
+                  "ColumnRef": Object {
+                    "fields": Array [
+                      Object {
+                        "String": Object {
+                          "str": "c",
+                        },
+                      },
+                    ],
+                    "location": 52,
+                  },
+                },
+                "location": 54,
+                "name": Array [
+                  Object {
+                    "String": Object {
+                      "str": "=",
+                    },
+                  },
+                ],
+                "rexpr": Object {
+                  "A_Const": Object {
+                    "location": 56,
+                    "val": Object {
+                      "String": Object {
+                        "str": "car",
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        "stmt_len": 61,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "UpdateStmt": Object {
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 71,
+                "relname": "update_test",
+                "relpersistence": "p",
+              },
+            },
+            "targetList": Array [
+              Object {
+                "ResTarget": Object {
+                  "location": 88,
+                  "name": "b",
+                  "val": Object {
+                    "MultiAssignRef": Object {
+                      "colno": 1,
+                      "ncolumns": 2,
+                      "source": Object {
+                        "SubLink": Object {
+                          "location": 95,
+                          "subLinkType": 4,
+                          "subselect": Object {
+                            "SelectStmt": Object {
+                              "fromClause": Array [
+                                Object {
+                                  "RangeVar": Object {
+                                    "inh": true,
+                                    "location": 114,
+                                    "relname": "update_test",
+                                    "relpersistence": "p",
+                                  },
+                                },
+                              ],
+                              "op": 0,
+                              "targetList": Array [
+                                Object {
+                                  "ResTarget": Object {
+                                    "location": 103,
+                                    "val": Object {
+                                      "A_Expr": Object {
+                                        "kind": 0,
+                                        "lexpr": Object {
+                                          "ColumnRef": Object {
+                                            "fields": Array [
+                                              Object {
+                                                "String": Object {
+                                                  "str": "a",
+                                                },
+                                              },
+                                            ],
+                                            "location": 103,
+                                          },
+                                        },
+                                        "location": 104,
+                                        "name": Array [
+                                          Object {
+                                            "String": Object {
+                                              "str": "+",
+                                            },
+                                          },
+                                        ],
+                                        "rexpr": Object {
+                                          "A_Const": Object {
+                                            "location": 105,
+                                            "val": Object {
+                                              "Integer": Object {
+                                                "ival": 1,
+                                              },
+                                            },
+                                          },
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                                Object {
+                                  "ResTarget": Object {
+                                    "location": 107,
+                                    "val": Object {
+                                      "ColumnRef": Object {
+                                        "fields": Array [
+                                          Object {
+                                            "String": Object {
+                                              "str": "b",
+                                            },
+                                          },
+                                        ],
+                                        "location": 107,
+                                      },
+                                    },
+                                  },
+                                },
+                              ],
+                              "whereClause": Object {
+                                "A_Expr": Object {
+                                  "kind": 0,
+                                  "lexpr": Object {
+                                    "ColumnRef": Object {
+                                      "fields": Array [
+                                        Object {
+                                          "String": Object {
+                                            "str": "a",
+                                          },
+                                        },
+                                      ],
+                                      "location": 132,
+                                    },
+                                  },
+                                  "location": 134,
+                                  "name": Array [
+                                    Object {
+                                      "String": Object {
+                                        "str": "=",
+                                      },
+                                    },
+                                  ],
+                                  "rexpr": Object {
+                                    "A_Const": Object {
+                                      "location": 136,
+                                      "val": Object {
+                                        "Integer": Object {
+                                          "ival": 1000,
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+              Object {
+                "ResTarget": Object {
+                  "location": 90,
+                  "name": "a",
+                  "val": Object {
+                    "MultiAssignRef": Object {
+                      "colno": 2,
+                      "ncolumns": 2,
+                      "source": Object {
+                        "SubLink": Object {
+                          "location": 95,
+                          "subLinkType": 4,
+                          "subselect": Object {
+                            "SelectStmt": Object {
+                              "fromClause": Array [
+                                Object {
+                                  "RangeVar": Object {
+                                    "inh": true,
+                                    "location": 114,
+                                    "relname": "update_test",
+                                    "relpersistence": "p",
+                                  },
+                                },
+                              ],
+                              "op": 0,
+                              "targetList": Array [
+                                Object {
+                                  "ResTarget": Object {
+                                    "location": 103,
+                                    "val": Object {
+                                      "A_Expr": Object {
+                                        "kind": 0,
+                                        "lexpr": Object {
+                                          "ColumnRef": Object {
+                                            "fields": Array [
+                                              Object {
+                                                "String": Object {
+                                                  "str": "a",
+                                                },
+                                              },
+                                            ],
+                                            "location": 103,
+                                          },
+                                        },
+                                        "location": 104,
+                                        "name": Array [
+                                          Object {
+                                            "String": Object {
+                                              "str": "+",
+                                            },
+                                          },
+                                        ],
+                                        "rexpr": Object {
+                                          "A_Const": Object {
+                                            "location": 105,
+                                            "val": Object {
+                                              "Integer": Object {
+                                                "ival": 1,
+                                              },
+                                            },
+                                          },
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                                Object {
+                                  "ResTarget": Object {
+                                    "location": 107,
+                                    "val": Object {
+                                      "ColumnRef": Object {
+                                        "fields": Array [
+                                          Object {
+                                            "String": Object {
+                                              "str": "b",
+                                            },
+                                          },
+                                        ],
+                                        "location": 107,
+                                      },
+                                    },
+                                  },
+                                },
+                              ],
+                              "whereClause": Object {
+                                "A_Expr": Object {
+                                  "kind": 0,
+                                  "lexpr": Object {
+                                    "ColumnRef": Object {
+                                      "fields": Array [
+                                        Object {
+                                          "String": Object {
+                                            "str": "a",
+                                          },
+                                        },
+                                      ],
+                                      "location": 132,
+                                    },
+                                  },
+                                  "location": 134,
+                                  "name": Array [
+                                    Object {
+                                      "String": Object {
+                                        "str": "=",
+                                      },
+                                    },
+                                  ],
+                                  "rexpr": Object {
+                                    "A_Const": Object {
+                                      "location": 136,
+                                      "val": Object {
+                                        "Integer": Object {
+                                          "ival": 1000,
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            ],
+            "whereClause": Object {
+              "A_Expr": Object {
+                "kind": 0,
+                "lexpr": Object {
+                  "ColumnRef": Object {
+                    "fields": Array [
+                      Object {
+                        "String": Object {
+                          "str": "a",
+                        },
+                      },
+                    ],
+                    "location": 150,
+                  },
+                },
+                "location": 152,
+                "name": Array [
+                  Object {
+                    "String": Object {
+                      "str": "=",
+                    },
+                  },
+                ],
+                "rexpr": Object {
+                  "A_Const": Object {
+                    "location": 154,
+                    "val": Object {
+                      "Integer": Object {
+                        "ival": 11,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        "stmt_len": 94,
+        "stmt_location": 62,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "UpdateStmt": Object {
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 166,
+                "relname": "something",
+                "relpersistence": "p",
+              },
+            },
+            "targetList": Array [
+              Object {
+                "ResTarget": Object {
+                  "location": 181,
+                  "name": "b",
+                  "val": Object {
+                    "MultiAssignRef": Object {
+                      "colno": 1,
+                      "ncolumns": 2,
+                      "source": Object {
+                        "RowExpr": Object {
+                          "args": Array [
+                            Object {
+                              "A_Const": Object {
+                                "location": 189,
+                                "val": Object {
+                                  "Integer": Object {
+                                    "ival": 1,
+                                  },
+                                },
+                              },
+                            },
+                            Object {
+                              "A_Const": Object {
+                                "location": 191,
+                                "val": Object {
+                                  "Integer": Object {
+                                    "ival": 2,
+                                  },
+                                },
+                              },
+                            },
+                          ],
+                          "location": 188,
+                          "row_format": 2,
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+              Object {
+                "ResTarget": Object {
+                  "location": 183,
+                  "name": "a",
+                  "val": Object {
+                    "MultiAssignRef": Object {
+                      "colno": 2,
+                      "ncolumns": 2,
+                      "source": Object {
+                        "RowExpr": Object {
+                          "args": Array [
+                            Object {
+                              "A_Const": Object {
+                                "location": 189,
+                                "val": Object {
+                                  "Integer": Object {
+                                    "ival": 1,
+                                  },
+                                },
+                              },
+                            },
+                            Object {
+                              "A_Const": Object {
+                                "location": 191,
+                                "val": Object {
+                                  "Integer": Object {
+                                    "ival": 2,
+                                  },
+                                },
+                              },
+                            },
+                          ],
+                          "location": 188,
+                          "row_format": 2,
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            ],
+            "whereClause": Object {
+              "A_Expr": Object {
+                "kind": 0,
+                "lexpr": Object {
+                  "ColumnRef": Object {
+                    "fields": Array [
+                      Object {
+                        "String": Object {
+                          "str": "a",
+                        },
+                      },
+                    ],
+                    "location": 202,
+                  },
+                },
+                "location": 204,
+                "name": Array [
+                  Object {
+                    "String": Object {
+                      "str": "=",
+                    },
+                  },
+                ],
+                "rexpr": Object {
+                  "A_Const": Object {
+                    "location": 206,
+                    "val": Object {
+                      "Integer": Object {
+                        "ival": 11,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        "stmt_len": 51,
+        "stmt_location": 157,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "UpdateStmt": Object {
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 219,
+                "relname": "update_test",
+                "relpersistence": "p",
+              },
+            },
+            "targetList": Array [
+              Object {
+                "ResTarget": Object {
+                  "location": 236,
+                  "name": "c",
+                  "val": Object {
+                    "MultiAssignRef": Object {
+                      "colno": 1,
+                      "ncolumns": 3,
+                      "source": Object {
+                        "RowExpr": Object {
+                          "args": Array [
+                            Object {
+                              "A_Const": Object {
+                                "location": 246,
+                                "val": Object {
+                                  "String": Object {
+                                    "str": "bugle",
+                                  },
+                                },
+                              },
+                            },
+                            Object {
+                              "A_Expr": Object {
+                                "kind": 0,
+                                "lexpr": Object {
+                                  "ColumnRef": Object {
+                                    "fields": Array [
+                                      Object {
+                                        "String": Object {
+                                          "str": "b",
+                                        },
+                                      },
+                                    ],
+                                    "location": 255,
+                                  },
+                                },
+                                "location": 256,
+                                "name": Array [
+                                  Object {
+                                    "String": Object {
+                                      "str": "+",
+                                    },
+                                  },
+                                ],
+                                "rexpr": Object {
+                                  "A_Const": Object {
+                                    "location": 257,
+                                    "val": Object {
+                                      "Integer": Object {
+                                        "ival": 11,
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                            Object {
+                              "SetToDefault": Object {
+                                "location": 261,
+                              },
+                            },
+                          ],
+                          "location": 245,
+                          "row_format": 2,
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+              Object {
+                "ResTarget": Object {
+                  "location": 238,
+                  "name": "b",
+                  "val": Object {
+                    "MultiAssignRef": Object {
+                      "colno": 2,
+                      "ncolumns": 3,
+                      "source": Object {
+                        "RowExpr": Object {
+                          "args": Array [
+                            Object {
+                              "A_Const": Object {
+                                "location": 246,
+                                "val": Object {
+                                  "String": Object {
+                                    "str": "bugle",
+                                  },
+                                },
+                              },
+                            },
+                            Object {
+                              "A_Expr": Object {
+                                "kind": 0,
+                                "lexpr": Object {
+                                  "ColumnRef": Object {
+                                    "fields": Array [
+                                      Object {
+                                        "String": Object {
+                                          "str": "b",
+                                        },
+                                      },
+                                    ],
+                                    "location": 255,
+                                  },
+                                },
+                                "location": 256,
+                                "name": Array [
+                                  Object {
+                                    "String": Object {
+                                      "str": "+",
+                                    },
+                                  },
+                                ],
+                                "rexpr": Object {
+                                  "A_Const": Object {
+                                    "location": 257,
+                                    "val": Object {
+                                      "Integer": Object {
+                                        "ival": 11,
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                            Object {
+                              "SetToDefault": Object {
+                                "location": 261,
+                              },
+                            },
+                          ],
+                          "location": 245,
+                          "row_format": 2,
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+              Object {
+                "ResTarget": Object {
+                  "location": 240,
+                  "name": "a",
+                  "val": Object {
+                    "MultiAssignRef": Object {
+                      "colno": 3,
+                      "ncolumns": 3,
+                      "source": Object {
+                        "RowExpr": Object {
+                          "args": Array [
+                            Object {
+                              "A_Const": Object {
+                                "location": 246,
+                                "val": Object {
+                                  "String": Object {
+                                    "str": "bugle",
+                                  },
+                                },
+                              },
+                            },
+                            Object {
+                              "A_Expr": Object {
+                                "kind": 0,
+                                "lexpr": Object {
+                                  "ColumnRef": Object {
+                                    "fields": Array [
+                                      Object {
+                                        "String": Object {
+                                          "str": "b",
+                                        },
+                                      },
+                                    ],
+                                    "location": 255,
+                                  },
+                                },
+                                "location": 256,
+                                "name": Array [
+                                  Object {
+                                    "String": Object {
+                                      "str": "+",
+                                    },
+                                  },
+                                ],
+                                "rexpr": Object {
+                                  "A_Const": Object {
+                                    "location": 257,
+                                    "val": Object {
+                                      "Integer": Object {
+                                        "ival": 11,
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                            Object {
+                              "SetToDefault": Object {
+                                "location": 261,
+                              },
+                            },
+                          ],
+                          "location": 245,
+                          "row_format": 2,
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            ],
+            "whereClause": Object {
+              "A_Expr": Object {
+                "kind": 0,
+                "lexpr": Object {
+                  "ColumnRef": Object {
+                    "fields": Array [
+                      Object {
+                        "String": Object {
+                          "str": "c",
+                        },
+                      },
+                    ],
+                    "location": 276,
+                  },
+                },
+                "location": 278,
+                "name": Array [
+                  Object {
+                    "String": Object {
+                      "str": "=",
+                    },
+                  },
+                ],
+                "rexpr": Object {
+                  "A_Const": Object {
+                    "location": 280,
+                    "val": Object {
+                      "String": Object {
+                        "str": "foo",
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        "stmt_len": 76,
+        "stmt_location": 209,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "UpdateStmt": Object {
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 295,
+                "relname": "shoelace_data",
+                "relpersistence": "p",
+              },
+            },
+            "targetList": Array [
+              Object {
+                "ResTarget": Object {
+                  "location": 320,
+                  "name": "sl_name",
+                  "val": Object {
+                    "ColumnRef": Object {
+                      "fields": Array [
+                        Object {
+                          "String": Object {
+                            "str": "new",
+                          },
+                        },
+                        Object {
+                          "String": Object {
+                            "str": "sl_name",
+                          },
+                        },
+                      ],
+                      "location": 330,
+                    },
+                  },
+                },
+              },
+              Object {
+                "ResTarget": Object {
+                  "location": 354,
+                  "name": "sl_avail",
+                  "val": Object {
+                    "ColumnRef": Object {
+                      "fields": Array [
+                        Object {
+                          "String": Object {
+                            "str": "new",
+                          },
+                        },
+                        Object {
+                          "String": Object {
+                            "str": "sl_avail",
+                          },
+                        },
+                      ],
+                      "location": 365,
+                    },
+                  },
+                },
+              },
+              Object {
+                "ResTarget": Object {
+                  "location": 390,
+                  "name": "sl_color",
+                  "val": Object {
+                    "ColumnRef": Object {
+                      "fields": Array [
+                        Object {
+                          "String": Object {
+                            "str": "new",
+                          },
+                        },
+                        Object {
+                          "String": Object {
+                            "str": "sl_color",
+                          },
+                        },
+                      ],
+                      "location": 401,
+                    },
+                  },
+                },
+              },
+              Object {
+                "ResTarget": Object {
+                  "location": 426,
+                  "name": "sl_len",
+                  "val": Object {
+                    "ColumnRef": Object {
+                      "fields": Array [
+                        Object {
+                          "String": Object {
+                            "str": "new",
+                          },
+                        },
+                        Object {
+                          "String": Object {
+                            "str": "sl_len",
+                          },
+                        },
+                      ],
+                      "location": 435,
+                    },
+                  },
+                },
+              },
+              Object {
+                "ResTarget": Object {
+                  "location": 458,
+                  "name": "sl_unit",
+                  "val": Object {
+                    "ColumnRef": Object {
+                      "fields": Array [
+                        Object {
+                          "String": Object {
+                            "str": "new",
+                          },
+                        },
+                        Object {
+                          "String": Object {
+                            "str": "sl_unit",
+                          },
+                        },
+                      ],
+                      "location": 468,
+                    },
+                  },
+                },
+              },
+            ],
+            "whereClause": Object {
+              "A_Expr": Object {
+                "kind": 0,
+                "lexpr": Object {
+                  "ColumnRef": Object {
+                    "fields": Array [
+                      Object {
+                        "String": Object {
+                          "str": "sl_name",
+                        },
+                      },
+                    ],
+                    "location": 491,
+                  },
+                },
+                "location": 499,
+                "name": Array [
+                  Object {
+                    "String": Object {
+                      "str": "=",
+                    },
+                  },
+                ],
+                "rexpr": Object {
+                  "ColumnRef": Object {
+                    "fields": Array [
+                      Object {
+                        "String": Object {
+                          "str": "old",
+                        },
+                      },
+                      Object {
+                        "String": Object {
+                          "str": "sl_name",
+                        },
+                      },
+                    ],
+                    "location": 501,
+                  },
+                },
+              },
+            },
+          },
+        },
+        "stmt_len": 226,
+        "stmt_location": 286,
+      },
+    },
+  ],
+  "stderr": "",
+}
+`;
+
+exports[`kitchen sink update 2`] = `
+"UPDATE update_test SET c = repeat('x', 10000) WHERE ((c) = ('car'));
+UPDATE update_test SET ( b,a ) = (SELECT ((a) + (1)),
+b FROM update_test WHERE ((a) = (1000))) WHERE ((a) = (11));
+UPDATE something SET ( b,a ) = (1, 2) WHERE ((a) = (11));
+UPDATE update_test SET ( c,b,a ) = ('bugle', ((b) + (11)), DEFAULT) WHERE ((c) = ('foo'));
+UPDATE shoelace_data SET sl_name = new.sl_name,sl_avail = new.sl_avail,sl_color = new.sl_color,sl_len = new.sl_len,sl_unit = new.sl_unit WHERE ((sl_name) = (old.sl_name));"
 `;
 
 exports[`kitchen sink upstream upstream/abstime.sql 1`] = `

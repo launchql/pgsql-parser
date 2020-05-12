@@ -210,6 +210,54 @@ class Deparser {
     return this.deparse(node.stmt);
   }
 
+  ['RuleStmt'](node) {
+    const output = [];
+    output.push('CREATE');
+    output.push('RULE');
+    if (node.rulename === '_RETURN') {
+      // special rules
+      output.push('"_RETURN"');
+    } else {
+      output.push(node.rulename);
+    }
+    output.push('AS');
+    output.push('ON');
+    switch (node.event) {
+      case 1:
+        output.push('SELECT');
+        break;
+      case 2:
+        output.push('UPDATE');
+        break;
+      case 3:
+        output.push('INSERT');
+        break;
+      case 4:
+        output.push('DELETE');
+        break;
+      default:
+        throw new Error('event type not yet implemented for RuleStmt');
+    }
+    output.push('TO');
+    output.push(this.deparse(node.relation));
+    if (node.instead) {
+      output.push('DO');
+      output.push('INSTEAD');
+    }
+    if (node.whereClause) {
+      output.push('WHERE');
+      output.push(this.deparse(node.whereClause));
+      output.push('DO');
+    }
+    if (!node.actions || !node.actions.length) {
+      output.push('NOTHING');
+    } else {
+      // TODO how do multiple actions happen?
+      output.push(this.deparse(node.actions[0]));
+    }
+    return output.join(' ');
+  }
+
   ['A_Expr'](node, context) {
     const output = [];
 
@@ -837,10 +885,58 @@ class Deparser {
 
     output.push('INSERT INTO');
     output.push(this.deparse(node.relation));
-    output.push('(');
-    output.push(this.list(node.cols));
-    output.push(')');
+    if (node.cols && node.cols.length) {
+      output.push('(');
+      output.push(this.list(node.cols));
+      output.push(')');
+    }
     output.push(this.deparse(node.selectStmt));
+
+    return output.join(' ');
+  }
+
+  ['SetToDefault'](node) {
+    return 'DEFAULT';
+  }
+
+  ['MultiAssignRef'](node) {
+    const output = [];
+    output.push(this.deparse(node.source));
+    return output.join(' ');
+  }
+
+  ['DeleteStmt'](node) {
+    const output = [''];
+    output.push('DELETE');
+    output.push('FROM');
+    output.push(this.deparse(node.relation));
+    output.push('WHERE');
+    output.push(this.deparse(node.whereClause));
+    return output.join(' ');
+  }
+
+  ['UpdateStmt'](node) {
+    const output = [];
+    output.push('UPDATE');
+    output.push(this.deparse(node.relation));
+    output.push('SET');
+
+    if (node.targetList && node.targetList.length) {
+      if (node.targetList[0].ResTarget && node.targetList[0].ResTarget.val && node.targetList[0].ResTarget.val.MultiAssignRef) {
+        output.push('(');
+        output.push(node.targetList.map(target => target.ResTarget.name).join(','));
+        output.push(')');
+        output.push('=');
+        output.push(this.deparse(node.targetList[0].ResTarget.val));
+      } else {
+        output.push(node.targetList.map(target => this.deparse(target, 'update')).join(','));
+      }
+    }
+
+    if (node.whereClause) {
+      output.push('WHERE');
+      output.push(this.deparse(node.whereClause));
+    }
 
     return output.join(' ');
   }
