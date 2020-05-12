@@ -1,8 +1,8 @@
 {
-  "name": "pgsql-parser",
-  "version": "0.6.1",
+  "name": "pg-query-parser",
+  "version": "0.6.2",
   "description": "The real PostgreSQL query parser",
-  "homepage": "http://github.com/pyramation/pgsql-parser",
+  "homepage": "http://github.com/pyramation/pg-query-parser",
   "main": "dist/index.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter dot test/setup.js test/test.js && jest",
@@ -27,7 +27,7 @@
   "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
-    "url": "git://github.com/pyramation/pgsql-parser.git"
+    "url": "git://github.com/pyramation/pg-query-parser.git"
   },
   "eslintConfig": {
     "extends": "fulcrum"
