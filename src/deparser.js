@@ -234,7 +234,7 @@ export default class Deparser {
   }
 
   type(names, args) {
-    const [catalog, type] = names.map(name => this.deparse(name));
+    const [ catalog, type ] = names.map(name => this.deparse(name));
 
     const mods = (name, size) => {
       if (size != null) {
@@ -317,7 +317,7 @@ export default class Deparser {
     }
     if (node.whereClause) {
       output.push('WHERE');
-      output.push(this.deparse(node.whereClause))
+      output.push(this.deparse(node.whereClause));
       output.push('DO');
     }
     if (!node.actions || !node.actions.length) {
@@ -502,7 +502,7 @@ export default class Deparser {
   ['Alias'](node, context) {
     const name = node.aliasname;
 
-    const output = ['AS'];
+    const output = [ 'AS' ];
 
     if (node.colnames) {
       output.push(name + parens(this.list(node.colnames)));
@@ -538,7 +538,7 @@ export default class Deparser {
   }
 
   ['A_Indirection'](node) {
-    const output = [`(${this.deparse(node.arg)})`];
+    const output = [ `(${this.deparse(node.arg)})` ];
 
     // TODO(zhm) figure out the actual rules for when a '.' is needed
     //
@@ -604,7 +604,7 @@ export default class Deparser {
   }
 
   ['CaseExpr'](node) {
-    const output = ['CASE'];
+    const output = [ 'CASE' ];
 
     if (node.arg) {
       output.push(this.deparse(node.arg));
@@ -680,7 +680,7 @@ export default class Deparser {
   }
 
   ['ColumnDef'](node) {
-    const output = [this.quote(node.colname)];
+    const output = [ this.quote(node.colname) ];
 
     output.push(this.deparse(node.typeName));
 
@@ -722,7 +722,7 @@ export default class Deparser {
   }
 
   ['ColumnRef'](node, context) {
-    const KEYWORDS = ['old', 'new'];
+    const KEYWORDS = [ 'old', 'new' ];
     const fields = node.fields.map(field => {
       if (field.String) {
         const value = this.deparse(field);
@@ -1049,7 +1049,7 @@ export default class Deparser {
   }
 
   ['DeleteStmt'](node) {
-    const output = [''];
+    const output = [ '' ];
     output.push('DELETE');
     output.push('FROM');
     output.push(this.deparse(node.relation));
@@ -1232,7 +1232,7 @@ export default class Deparser {
   }
 
   ['NullTest'](node) {
-    const output = [this.deparse(node.arg)];
+    const output = [ this.deparse(node.arg) ];
 
     if (node.nulltesttype === 0) {
       output.push('IS NULL');
@@ -1245,7 +1245,7 @@ export default class Deparser {
 
   ['ParamRef'](node) {
     if (node.number >= 0) {
-      return ['$', node.number].join('');
+      return [ '$', node.number ].join('');
     }
     return '?';
   }
@@ -1261,7 +1261,7 @@ export default class Deparser {
 
     for (let i = 0; i < node.functions.length; i++) {
       const funcCall = node.functions[i];
-      const call = [this.deparse(funcCall[0])];
+      const call = [ this.deparse(funcCall[0]) ];
 
       if (funcCall[1] && funcCall[1].length) {
         call.push(format('AS (%s)', this.list(funcCall[1])));
@@ -1363,11 +1363,11 @@ export default class Deparser {
 
   ['ResTarget'](node, context) {
     if (context === 'select') {
-      return compact([this.deparse(node.val), this.quote(node.name)]).join(
+      return compact([ this.deparse(node.val), this.quote(node.name) ]).join(
         ' AS '
       );
     } else if (context === 'update') {
-      return compact([node.name, this.deparse(node.val)]).join(' = ');
+      return compact([ node.name, this.deparse(node.val) ]).join(' = ');
     } else if (!(node.val != null)) {
       return this.quote(node.name);
     }
@@ -1398,7 +1398,7 @@ export default class Deparser {
     } else {
       output.push(parens(this.deparse(node.larg)));
 
-      const sets = ['NONE', 'UNION', 'INTERSECT', 'EXCEPT'];
+      const sets = [ 'NONE', 'UNION', 'INTERSECT', 'EXCEPT' ];
 
       output.push(sets[node.op]);
 
@@ -2246,7 +2246,7 @@ export default class Deparser {
     output.push('(');
     let parameters = [];
     if (node.parameters) {
-      parameters = [...node.parameters];
+      parameters = [ ...node.parameters ];
     }
     const parametersList = parameters.filter(
       ({ FunctionParameter }) =>
@@ -2835,7 +2835,7 @@ export default class Deparser {
   }
 
   ['CaseWhen'](node) {
-    const output = ['WHEN'];
+    const output = [ 'WHEN' ];
 
     output.push(this.deparse(node.expr));
     output.push('THEN');
@@ -2877,7 +2877,7 @@ export default class Deparser {
     let useParens = false;
 
     if (node.partitionClause) {
-      const partition = ['PARTITION BY'];
+      const partition = [ 'PARTITION BY' ];
 
       const clause = node.partitionClause.map(item => this.deparse(item));
 
@@ -2912,7 +2912,7 @@ export default class Deparser {
   }
 
   ['WithClause'](node) {
-    const output = ['WITH'];
+    const output = [ 'WITH' ];
 
     if (node.recursive) {
       output.push('RECURSIVE');
@@ -3011,7 +3011,7 @@ export default class Deparser {
   }
 
   deparseInterval(node) {
-    const type = ['interval'];
+    const type = [ 'interval' ];
 
     if (node.arrayBounds != null) {
       type.push('[]');
@@ -3030,7 +3030,7 @@ export default class Deparser {
         node.typmods[1] &&
         node.typmods[1].A_Const != null
       ) {
-        intervals = [`(${node.typmods[1].A_Const.val.Integer.ival})`];
+        intervals = [ `(${node.typmods[1].A_Const.val.Integer.ival})` ];
       } else {
         intervals = intervals.map(part => {
           if (part === 'second' && typmods.length === 2) {
@@ -3089,12 +3089,12 @@ export default class Deparser {
 
     if (this.INTERVALS == null) {
       this.INTERVALS = {};
-      this.INTERVALS[1 << this.BITS.YEAR] = ['year'];
-      this.INTERVALS[1 << this.BITS.MONTH] = ['month'];
-      this.INTERVALS[1 << this.BITS.DAY] = ['day'];
-      this.INTERVALS[1 << this.BITS.HOUR] = ['hour'];
-      this.INTERVALS[1 << this.BITS.MINUTE] = ['minute'];
-      this.INTERVALS[1 << this.BITS.SECOND] = ['second'];
+      this.INTERVALS[1 << this.BITS.YEAR] = [ 'year' ];
+      this.INTERVALS[1 << this.BITS.MONTH] = [ 'month' ];
+      this.INTERVALS[1 << this.BITS.DAY] = [ 'day' ];
+      this.INTERVALS[1 << this.BITS.HOUR] = [ 'hour' ];
+      this.INTERVALS[1 << this.BITS.MINUTE] = [ 'minute' ];
+      this.INTERVALS[1 << this.BITS.SECOND] = [ 'second' ];
       this.INTERVALS[(1 << this.BITS.YEAR) | (1 << this.BITS.MONTH)] = [
         'year',
         'month'
@@ -3105,13 +3105,13 @@ export default class Deparser {
       ];
       this.INTERVALS[
         (1 << this.BITS.DAY) | (1 << this.BITS.HOUR) | (1 << this.BITS.MINUTE)
-      ] = ['day', 'minute'];
+      ] = [ 'day', 'minute' ];
       this.INTERVALS[
         (1 << this.BITS.DAY) |
         (1 << this.BITS.HOUR) |
         (1 << this.BITS.MINUTE) |
         (1 << this.BITS.SECOND)
-      ] = ['day', 'second'];
+      ] = [ 'day', 'second' ];
       this.INTERVALS[(1 << this.BITS.HOUR) | (1 << this.BITS.MINUTE)] = [
         'hour',
         'minute'
@@ -3120,7 +3120,7 @@ export default class Deparser {
         (1 << this.BITS.HOUR) |
         (1 << this.BITS.MINUTE) |
         (1 << this.BITS.SECOND)
-      ] = ['hour', 'second'];
+      ] = [ 'hour', 'second' ];
       this.INTERVALS[(1 << this.BITS.MINUTE) | (1 << this.BITS.SECOND)] = [
         'minute',
         'second'
