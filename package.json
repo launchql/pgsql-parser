@@ -1,6 +1,6 @@
 {
   "name": "pgsql-parser",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "The real PostgreSQL query parser",
   "homepage": "http://github.com/pyramation/pg-query-parser",
   "main": "dist/index.js",
