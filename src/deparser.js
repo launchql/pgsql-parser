@@ -2119,6 +2119,15 @@ export default class Deparser {
         case 'c':
           output.push('ON DELETE CASCADE');
           break;
+        case 'n':
+          output.push('ON DELETE SET NULL');
+          break;
+        case 'd':
+          output.push('ON DELETE SET DEFAULT');
+          break;
+        case 'a':
+          // output.push('ON DELETE NO ACTION');
+          break;
         default:
       }
     }
@@ -2130,6 +2139,15 @@ export default class Deparser {
           break;
         case 'c':
           output.push('ON UPDATE CASCADE');
+          break;
+        case 'n':
+          output.push('ON UPDATE SET NULL');
+          break;
+        case 'd':
+          output.push('ON UPDATE SET DEFAULT');
+          break;
+        case 'a':
+          // output.push('ON UPDATE NO ACTION');
           break;
         default:
       }

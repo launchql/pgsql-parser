@@ -482,6 +482,894 @@ Object {
         "stmt_location": 402,
       },
     },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "AlterTableStmt": Object {
+            "cmds": Array [
+              Object {
+                "AlterTableCmd": Object {
+                  "behavior": 0,
+                  "def": Object {
+                    "Constraint": Object {
+                      "conname": "my_constraint_fey",
+                      "contype": 8,
+                      "fk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "order_id",
+                          },
+                        },
+                      ],
+                      "fk_del_action": "a",
+                      "fk_matchtype": "s",
+                      "fk_upd_action": "a",
+                      "initially_valid": true,
+                      "location": 695,
+                      "pk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "id",
+                          },
+                        },
+                      ],
+                      "pktable": Object {
+                        "RangeVar": Object {
+                          "inh": true,
+                          "location": 760,
+                          "relname": "orders",
+                          "relpersistence": "p",
+                          "schemaname": "othr",
+                        },
+                      },
+                    },
+                  },
+                  "subtype": 14,
+                },
+              },
+            ],
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 679,
+                "relname": "foo",
+                "relpersistence": "p",
+                "schemaname": "scha",
+              },
+            },
+            "relkind": 37,
+          },
+        },
+        "stmt_len": 111,
+        "stmt_location": 665,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "AlterTableStmt": Object {
+            "cmds": Array [
+              Object {
+                "AlterTableCmd": Object {
+                  "behavior": 0,
+                  "def": Object {
+                    "Constraint": Object {
+                      "conname": "my_constraint_fey",
+                      "contype": 8,
+                      "fk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "order_id",
+                          },
+                        },
+                      ],
+                      "fk_del_action": "c",
+                      "fk_matchtype": "s",
+                      "fk_upd_action": "a",
+                      "initially_valid": true,
+                      "location": 807,
+                      "pk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "id",
+                          },
+                        },
+                      ],
+                      "pktable": Object {
+                        "RangeVar": Object {
+                          "inh": true,
+                          "location": 872,
+                          "relname": "orders",
+                          "relpersistence": "p",
+                          "schemaname": "othr",
+                        },
+                      },
+                    },
+                  },
+                  "subtype": 14,
+                },
+              },
+            ],
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 791,
+                "relname": "foo",
+                "relpersistence": "p",
+                "schemaname": "scha",
+              },
+            },
+            "relkind": 37,
+          },
+        },
+        "stmt_len": 129,
+        "stmt_location": 777,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "AlterTableStmt": Object {
+            "cmds": Array [
+              Object {
+                "AlterTableCmd": Object {
+                  "behavior": 0,
+                  "def": Object {
+                    "Constraint": Object {
+                      "conname": "my_constraint_fey",
+                      "contype": 8,
+                      "fk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "order_id",
+                          },
+                        },
+                      ],
+                      "fk_del_action": "r",
+                      "fk_matchtype": "s",
+                      "fk_upd_action": "a",
+                      "initially_valid": true,
+                      "location": 937,
+                      "pk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "id",
+                          },
+                        },
+                      ],
+                      "pktable": Object {
+                        "RangeVar": Object {
+                          "inh": true,
+                          "location": 1002,
+                          "relname": "orders",
+                          "relpersistence": "p",
+                          "schemaname": "othr",
+                        },
+                      },
+                    },
+                  },
+                  "subtype": 14,
+                },
+              },
+            ],
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 921,
+                "relname": "foo",
+                "relpersistence": "p",
+                "schemaname": "scha",
+              },
+            },
+            "relkind": 37,
+          },
+        },
+        "stmt_len": 130,
+        "stmt_location": 907,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "AlterTableStmt": Object {
+            "cmds": Array [
+              Object {
+                "AlterTableCmd": Object {
+                  "behavior": 0,
+                  "def": Object {
+                    "Constraint": Object {
+                      "conname": "my_constraint_fey",
+                      "contype": 8,
+                      "fk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "order_id",
+                          },
+                        },
+                      ],
+                      "fk_del_action": "a",
+                      "fk_matchtype": "s",
+                      "fk_upd_action": "a",
+                      "initially_valid": true,
+                      "location": 1068,
+                      "pk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "id",
+                          },
+                        },
+                      ],
+                      "pktable": Object {
+                        "RangeVar": Object {
+                          "inh": true,
+                          "location": 1133,
+                          "relname": "orders",
+                          "relpersistence": "p",
+                          "schemaname": "othr",
+                        },
+                      },
+                    },
+                  },
+                  "subtype": 14,
+                },
+              },
+            ],
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 1052,
+                "relname": "foo",
+                "relpersistence": "p",
+                "schemaname": "scha",
+              },
+            },
+            "relkind": 37,
+          },
+        },
+        "stmt_len": 131,
+        "stmt_location": 1038,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "AlterTableStmt": Object {
+            "cmds": Array [
+              Object {
+                "AlterTableCmd": Object {
+                  "behavior": 0,
+                  "def": Object {
+                    "Constraint": Object {
+                      "conname": "my_constraint_fey",
+                      "contype": 8,
+                      "fk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "order_id",
+                          },
+                        },
+                      ],
+                      "fk_del_action": "n",
+                      "fk_matchtype": "s",
+                      "fk_upd_action": "a",
+                      "initially_valid": true,
+                      "location": 1200,
+                      "pk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "id",
+                          },
+                        },
+                      ],
+                      "pktable": Object {
+                        "RangeVar": Object {
+                          "inh": true,
+                          "location": 1265,
+                          "relname": "orders",
+                          "relpersistence": "p",
+                          "schemaname": "othr",
+                        },
+                      },
+                    },
+                  },
+                  "subtype": 14,
+                },
+              },
+            ],
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 1184,
+                "relname": "foo",
+                "relpersistence": "p",
+                "schemaname": "scha",
+              },
+            },
+            "relkind": 37,
+          },
+        },
+        "stmt_len": 130,
+        "stmt_location": 1170,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "AlterTableStmt": Object {
+            "cmds": Array [
+              Object {
+                "AlterTableCmd": Object {
+                  "behavior": 0,
+                  "def": Object {
+                    "Constraint": Object {
+                      "conname": "my_constraint_fey",
+                      "contype": 8,
+                      "fk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "order_id",
+                          },
+                        },
+                      ],
+                      "fk_del_action": "a",
+                      "fk_matchtype": "s",
+                      "fk_upd_action": "d",
+                      "initially_valid": true,
+                      "location": 1331,
+                      "pk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "id",
+                          },
+                        },
+                      ],
+                      "pktable": Object {
+                        "RangeVar": Object {
+                          "inh": true,
+                          "location": 1396,
+                          "relname": "orders",
+                          "relpersistence": "p",
+                          "schemaname": "othr",
+                        },
+                      },
+                    },
+                  },
+                  "subtype": 14,
+                },
+              },
+            ],
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 1315,
+                "relname": "foo",
+                "relpersistence": "p",
+                "schemaname": "scha",
+              },
+            },
+            "relkind": 37,
+          },
+        },
+        "stmt_len": 133,
+        "stmt_location": 1301,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "AlterTableStmt": Object {
+            "cmds": Array [
+              Object {
+                "AlterTableCmd": Object {
+                  "behavior": 0,
+                  "def": Object {
+                    "Constraint": Object {
+                      "conname": "my_constraint_fey",
+                      "contype": 8,
+                      "fk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "order_id",
+                          },
+                        },
+                      ],
+                      "fk_del_action": "a",
+                      "fk_matchtype": "s",
+                      "fk_upd_action": "c",
+                      "initially_valid": true,
+                      "location": 1465,
+                      "pk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "id",
+                          },
+                        },
+                      ],
+                      "pktable": Object {
+                        "RangeVar": Object {
+                          "inh": true,
+                          "location": 1530,
+                          "relname": "orders",
+                          "relpersistence": "p",
+                          "schemaname": "othr",
+                        },
+                      },
+                    },
+                  },
+                  "subtype": 14,
+                },
+              },
+            ],
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 1449,
+                "relname": "foo",
+                "relpersistence": "p",
+                "schemaname": "scha",
+              },
+            },
+            "relkind": 37,
+          },
+        },
+        "stmt_len": 129,
+        "stmt_location": 1435,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "AlterTableStmt": Object {
+            "cmds": Array [
+              Object {
+                "AlterTableCmd": Object {
+                  "behavior": 0,
+                  "def": Object {
+                    "Constraint": Object {
+                      "conname": "my_constraint_fey",
+                      "contype": 8,
+                      "fk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "order_id",
+                          },
+                        },
+                      ],
+                      "fk_del_action": "a",
+                      "fk_matchtype": "s",
+                      "fk_upd_action": "r",
+                      "initially_valid": true,
+                      "location": 1595,
+                      "pk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "id",
+                          },
+                        },
+                      ],
+                      "pktable": Object {
+                        "RangeVar": Object {
+                          "inh": true,
+                          "location": 1660,
+                          "relname": "orders",
+                          "relpersistence": "p",
+                          "schemaname": "othr",
+                        },
+                      },
+                    },
+                  },
+                  "subtype": 14,
+                },
+              },
+            ],
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 1579,
+                "relname": "foo",
+                "relpersistence": "p",
+                "schemaname": "scha",
+              },
+            },
+            "relkind": 37,
+          },
+        },
+        "stmt_len": 130,
+        "stmt_location": 1565,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "AlterTableStmt": Object {
+            "cmds": Array [
+              Object {
+                "AlterTableCmd": Object {
+                  "behavior": 0,
+                  "def": Object {
+                    "Constraint": Object {
+                      "conname": "my_constraint_fey",
+                      "contype": 8,
+                      "fk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "order_id",
+                          },
+                        },
+                      ],
+                      "fk_del_action": "a",
+                      "fk_matchtype": "s",
+                      "fk_upd_action": "a",
+                      "initially_valid": true,
+                      "location": 1726,
+                      "pk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "id",
+                          },
+                        },
+                      ],
+                      "pktable": Object {
+                        "RangeVar": Object {
+                          "inh": true,
+                          "location": 1791,
+                          "relname": "orders",
+                          "relpersistence": "p",
+                          "schemaname": "othr",
+                        },
+                      },
+                    },
+                  },
+                  "subtype": 14,
+                },
+              },
+            ],
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 1710,
+                "relname": "foo",
+                "relpersistence": "p",
+                "schemaname": "scha",
+              },
+            },
+            "relkind": 37,
+          },
+        },
+        "stmt_len": 131,
+        "stmt_location": 1696,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "AlterTableStmt": Object {
+            "cmds": Array [
+              Object {
+                "AlterTableCmd": Object {
+                  "behavior": 0,
+                  "def": Object {
+                    "Constraint": Object {
+                      "conname": "my_constraint_fey",
+                      "contype": 8,
+                      "fk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "order_id",
+                          },
+                        },
+                      ],
+                      "fk_del_action": "a",
+                      "fk_matchtype": "s",
+                      "fk_upd_action": "n",
+                      "initially_valid": true,
+                      "location": 1858,
+                      "pk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "id",
+                          },
+                        },
+                      ],
+                      "pktable": Object {
+                        "RangeVar": Object {
+                          "inh": true,
+                          "location": 1923,
+                          "relname": "orders",
+                          "relpersistence": "p",
+                          "schemaname": "othr",
+                        },
+                      },
+                    },
+                  },
+                  "subtype": 14,
+                },
+              },
+            ],
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 1842,
+                "relname": "foo",
+                "relpersistence": "p",
+                "schemaname": "scha",
+              },
+            },
+            "relkind": 37,
+          },
+        },
+        "stmt_len": 130,
+        "stmt_location": 1828,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "AlterTableStmt": Object {
+            "cmds": Array [
+              Object {
+                "AlterTableCmd": Object {
+                  "behavior": 0,
+                  "def": Object {
+                    "Constraint": Object {
+                      "conname": "my_constraint_fey",
+                      "contype": 8,
+                      "fk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "order_id",
+                          },
+                        },
+                      ],
+                      "fk_del_action": "a",
+                      "fk_matchtype": "s",
+                      "fk_upd_action": "d",
+                      "initially_valid": true,
+                      "location": 1989,
+                      "pk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "id",
+                          },
+                        },
+                      ],
+                      "pktable": Object {
+                        "RangeVar": Object {
+                          "inh": true,
+                          "location": 2054,
+                          "relname": "orders",
+                          "relpersistence": "p",
+                          "schemaname": "othr",
+                        },
+                      },
+                    },
+                  },
+                  "subtype": 14,
+                },
+              },
+            ],
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 1973,
+                "relname": "foo",
+                "relpersistence": "p",
+                "schemaname": "scha",
+              },
+            },
+            "relkind": 37,
+          },
+        },
+        "stmt_len": 133,
+        "stmt_location": 1959,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "AlterTableStmt": Object {
+            "cmds": Array [
+              Object {
+                "AlterTableCmd": Object {
+                  "behavior": 0,
+                  "def": Object {
+                    "Constraint": Object {
+                      "conname": "my_constraint_fey",
+                      "contype": 8,
+                      "fk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "order_id",
+                          },
+                        },
+                      ],
+                      "fk_del_action": "n",
+                      "fk_matchtype": "s",
+                      "fk_upd_action": "d",
+                      "initially_valid": true,
+                      "location": 2123,
+                      "pk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "id",
+                          },
+                        },
+                      ],
+                      "pktable": Object {
+                        "RangeVar": Object {
+                          "inh": true,
+                          "location": 2188,
+                          "relname": "orders",
+                          "relpersistence": "p",
+                          "schemaname": "othr",
+                        },
+                      },
+                    },
+                  },
+                  "subtype": 14,
+                },
+              },
+            ],
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 2107,
+                "relname": "foo",
+                "relpersistence": "p",
+                "schemaname": "scha",
+              },
+            },
+            "relkind": 37,
+          },
+        },
+        "stmt_len": 166,
+        "stmt_location": 2093,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "AlterTableStmt": Object {
+            "cmds": Array [
+              Object {
+                "AlterTableCmd": Object {
+                  "behavior": 0,
+                  "def": Object {
+                    "Constraint": Object {
+                      "conname": "my_constraint_fey",
+                      "contype": 8,
+                      "fk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "a",
+                          },
+                        },
+                        Object {
+                          "String": Object {
+                            "str": "b",
+                          },
+                        },
+                      ],
+                      "fk_del_action": "a",
+                      "fk_matchtype": "f",
+                      "fk_upd_action": "a",
+                      "initially_valid": true,
+                      "location": 2290,
+                      "pk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "c",
+                          },
+                        },
+                        Object {
+                          "String": Object {
+                            "str": "d",
+                          },
+                        },
+                      ],
+                      "pktable": Object {
+                        "RangeVar": Object {
+                          "inh": true,
+                          "location": 2350,
+                          "relname": "orders",
+                          "relpersistence": "p",
+                          "schemaname": "othr",
+                        },
+                      },
+                    },
+                  },
+                  "subtype": 14,
+                },
+              },
+            ],
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 2274,
+                "relname": "foo",
+                "relpersistence": "p",
+                "schemaname": "scha",
+              },
+            },
+            "relkind": 37,
+          },
+        },
+        "stmt_len": 118,
+        "stmt_location": 2260,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "AlterTableStmt": Object {
+            "cmds": Array [
+              Object {
+                "AlterTableCmd": Object {
+                  "behavior": 0,
+                  "def": Object {
+                    "Constraint": Object {
+                      "conname": "my_constraint_fey",
+                      "contype": 8,
+                      "fk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "a",
+                          },
+                        },
+                        Object {
+                          "String": Object {
+                            "str": "b",
+                          },
+                        },
+                      ],
+                      "fk_del_action": "a",
+                      "fk_matchtype": "s",
+                      "fk_upd_action": "a",
+                      "initially_valid": true,
+                      "location": 2409,
+                      "pk_attrs": Array [
+                        Object {
+                          "String": Object {
+                            "str": "c",
+                          },
+                        },
+                        Object {
+                          "String": Object {
+                            "str": "d",
+                          },
+                        },
+                      ],
+                      "pktable": Object {
+                        "RangeVar": Object {
+                          "inh": true,
+                          "location": 2470,
+                          "relname": "orders",
+                          "relpersistence": "p",
+                          "schemaname": "othr",
+                        },
+                      },
+                    },
+                  },
+                  "subtype": 14,
+                },
+              },
+            ],
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 2393,
+                "relname": "foo",
+                "relpersistence": "p",
+                "schemaname": "scha",
+              },
+            },
+            "relkind": 37,
+          },
+        },
+        "stmt_len": 121,
+        "stmt_location": 2379,
+      },
+    },
   ],
   "stderr": "",
 }
@@ -501,7 +1389,21 @@ name text,
 foo_timestamp timestampz DEFAULT ( CURRENT_DATE )
 );
 ALTER TABLE foo RENAME COLUMN name TO city;
-ALTER TABLE foo ALTER COLUMN foo_timestamp DROP DEFAULT, ALTER COLUMN foo_timestamp TYPE pg_catalog.timestamptz USING (('epoch'::pg_catalog.timestamptz) + (((foo_timestamp) * ('1 second'::interval)))), ALTER COLUMN foo_timestamp SET DEFAULT now();"
+ALTER TABLE foo ALTER COLUMN foo_timestamp DROP DEFAULT, ALTER COLUMN foo_timestamp TYPE pg_catalog.timestamptz USING (('epoch'::pg_catalog.timestamptz) + (((foo_timestamp) * ('1 second'::interval)))), ALTER COLUMN foo_timestamp SET DEFAULT now();
+ALTER TABLE scha.foo ADD CONSTRAINT my_constraint_fey FOREIGN KEY ( order_id ) REFERENCES othr.orders ( id );
+ALTER TABLE scha.foo ADD CONSTRAINT my_constraint_fey FOREIGN KEY ( order_id ) REFERENCES othr.orders ( id ) ON DELETE CASCADE;
+ALTER TABLE scha.foo ADD CONSTRAINT my_constraint_fey FOREIGN KEY ( order_id ) REFERENCES othr.orders ( id ) ON DELETE RESTRICT;
+ALTER TABLE scha.foo ADD CONSTRAINT my_constraint_fey FOREIGN KEY ( order_id ) REFERENCES othr.orders ( id );
+ALTER TABLE scha.foo ADD CONSTRAINT my_constraint_fey FOREIGN KEY ( order_id ) REFERENCES othr.orders ( id ) ON DELETE SET NULL;
+ALTER TABLE scha.foo ADD CONSTRAINT my_constraint_fey FOREIGN KEY ( order_id ) REFERENCES othr.orders ( id ) ON UPDATE SET DEFAULT;
+ALTER TABLE scha.foo ADD CONSTRAINT my_constraint_fey FOREIGN KEY ( order_id ) REFERENCES othr.orders ( id ) ON UPDATE CASCADE;
+ALTER TABLE scha.foo ADD CONSTRAINT my_constraint_fey FOREIGN KEY ( order_id ) REFERENCES othr.orders ( id ) ON UPDATE RESTRICT;
+ALTER TABLE scha.foo ADD CONSTRAINT my_constraint_fey FOREIGN KEY ( order_id ) REFERENCES othr.orders ( id );
+ALTER TABLE scha.foo ADD CONSTRAINT my_constraint_fey FOREIGN KEY ( order_id ) REFERENCES othr.orders ( id ) ON UPDATE SET NULL;
+ALTER TABLE scha.foo ADD CONSTRAINT my_constraint_fey FOREIGN KEY ( order_id ) REFERENCES othr.orders ( id ) ON UPDATE SET DEFAULT;
+ALTER TABLE scha.foo ADD CONSTRAINT my_constraint_fey FOREIGN KEY ( order_id ) REFERENCES othr.orders ( id ) ON DELETE SET NULL ON UPDATE SET DEFAULT;
+ALTER TABLE scha.foo ADD CONSTRAINT my_constraint_fey FOREIGN KEY ( a, b ) REFERENCES othr.orders ( c, d ) MATCH FULL;
+ALTER TABLE scha.foo ADD CONSTRAINT my_constraint_fey FOREIGN KEY ( a, b ) REFERENCES othr.orders ( c, d );"
 `;
 
 exports[`kitchen sink comments 1`] = `
@@ -27391,6 +28293,297 @@ Object {
         "stmt_location": 229,
       },
     },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CreateStmt": Object {
+            "oncommit": 0,
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 485,
+                "relname": "foo",
+                "relpersistence": "p",
+              },
+            },
+            "tableElts": Array [
+              Object {
+                "ColumnDef": Object {
+                  "colname": "a",
+                  "is_local": true,
+                  "location": 491,
+                  "typeName": Object {
+                    "TypeName": Object {
+                      "location": 493,
+                      "names": Array [
+                        Object {
+                          "String": Object {
+                            "str": "pg_catalog",
+                          },
+                        },
+                        Object {
+                          "String": Object {
+                            "str": "int4",
+                          },
+                        },
+                      ],
+                      "typemod": -1,
+                    },
+                  },
+                },
+              },
+              Object {
+                "ColumnDef": Object {
+                  "colname": "b",
+                  "is_local": true,
+                  "location": 498,
+                  "typeName": Object {
+                    "TypeName": Object {
+                      "location": 500,
+                      "names": Array [
+                        Object {
+                          "String": Object {
+                            "str": "pg_catalog",
+                          },
+                        },
+                        Object {
+                          "String": Object {
+                            "str": "int4",
+                          },
+                        },
+                      ],
+                      "typemod": -1,
+                    },
+                  },
+                },
+              },
+              Object {
+                "Constraint": Object {
+                  "contype": 5,
+                  "keys": Array [
+                    Object {
+                      "String": Object {
+                        "str": "a",
+                      },
+                    },
+                    Object {
+                      "String": Object {
+                        "str": "b",
+                      },
+                    },
+                  ],
+                  "location": 507,
+                },
+              },
+            ],
+          },
+        },
+        "stmt_len": 79,
+        "stmt_location": 447,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CreateStmt": Object {
+            "oncommit": 0,
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 585,
+                "relname": "t_full",
+                "relpersistence": "p",
+              },
+            },
+            "tableElts": Array [
+              Object {
+                "ColumnDef": Object {
+                  "colname": "a",
+                  "is_local": true,
+                  "location": 594,
+                  "typeName": Object {
+                    "TypeName": Object {
+                      "location": 596,
+                      "names": Array [
+                        Object {
+                          "String": Object {
+                            "str": "pg_catalog",
+                          },
+                        },
+                        Object {
+                          "String": Object {
+                            "str": "int4",
+                          },
+                        },
+                      ],
+                      "typemod": -1,
+                    },
+                  },
+                },
+              },
+              Object {
+                "ColumnDef": Object {
+                  "colname": "b",
+                  "is_local": true,
+                  "location": 601,
+                  "typeName": Object {
+                    "TypeName": Object {
+                      "location": 603,
+                      "names": Array [
+                        Object {
+                          "String": Object {
+                            "str": "pg_catalog",
+                          },
+                        },
+                        Object {
+                          "String": Object {
+                            "str": "int4",
+                          },
+                        },
+                      ],
+                      "typemod": -1,
+                    },
+                  },
+                },
+              },
+              Object {
+                "Constraint": Object {
+                  "contype": 8,
+                  "fk_attrs": Array [
+                    Object {
+                      "String": Object {
+                        "str": "a",
+                      },
+                    },
+                    Object {
+                      "String": Object {
+                        "str": "b",
+                      },
+                    },
+                  ],
+                  "fk_del_action": "a",
+                  "fk_matchtype": "f",
+                  "fk_upd_action": "a",
+                  "initially_valid": true,
+                  "location": 610,
+                  "pktable": Object {
+                    "RangeVar": Object {
+                      "inh": true,
+                      "location": 639,
+                      "relname": "foo",
+                      "relpersistence": "p",
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        },
+        "stmt_len": 128,
+        "stmt_location": 527,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CreateStmt": Object {
+            "oncommit": 0,
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 671,
+                "relname": "t_simple",
+                "relpersistence": "p",
+              },
+            },
+            "tableElts": Array [
+              Object {
+                "ColumnDef": Object {
+                  "colname": "a",
+                  "is_local": true,
+                  "location": 682,
+                  "typeName": Object {
+                    "TypeName": Object {
+                      "location": 684,
+                      "names": Array [
+                        Object {
+                          "String": Object {
+                            "str": "pg_catalog",
+                          },
+                        },
+                        Object {
+                          "String": Object {
+                            "str": "int4",
+                          },
+                        },
+                      ],
+                      "typemod": -1,
+                    },
+                  },
+                },
+              },
+              Object {
+                "ColumnDef": Object {
+                  "colname": "b",
+                  "is_local": true,
+                  "location": 689,
+                  "typeName": Object {
+                    "TypeName": Object {
+                      "location": 691,
+                      "names": Array [
+                        Object {
+                          "String": Object {
+                            "str": "pg_catalog",
+                          },
+                        },
+                        Object {
+                          "String": Object {
+                            "str": "int4",
+                          },
+                        },
+                      ],
+                      "typemod": -1,
+                    },
+                  },
+                },
+              },
+              Object {
+                "Constraint": Object {
+                  "contype": 8,
+                  "fk_attrs": Array [
+                    Object {
+                      "String": Object {
+                        "str": "a",
+                      },
+                    },
+                    Object {
+                      "String": Object {
+                        "str": "b",
+                      },
+                    },
+                  ],
+                  "fk_del_action": "a",
+                  "fk_matchtype": "s",
+                  "fk_upd_action": "a",
+                  "initially_valid": true,
+                  "location": 698,
+                  "pktable": Object {
+                    "RangeVar": Object {
+                      "inh": true,
+                      "location": 727,
+                      "relname": "foo",
+                      "relpersistence": "p",
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        },
+        "stmt_len": 89,
+        "stmt_location": 656,
+      },
+    },
   ],
   "stderr": "",
 }
@@ -27406,6 +28599,21 @@ CREATE TABLE actors_private.actor_info (
 actor_id uuid PRIMARY KEY REFERENCES actors.actor ( id ) ON DELETE CASCADE,
 email text NOT NULL UNIQUE CHECK ( ((email) ~* ('^.+@.+\\\\..+$')) ),
 password_hash text NOT NULL
+);
+CREATE TABLE foo (
+a int,
+b int,
+PRIMARY KEY ( a, b )
+);
+CREATE TABLE t_full (
+a int,
+b int,
+FOREIGN KEY ( a, b ) REFERENCES foo MATCH FULL
+);
+CREATE TABLE t_simple (
+a int,
+b int,
+FOREIGN KEY ( a, b ) REFERENCES foo
 );"
 `;
 
@@ -28573,6 +29781,274 @@ PRIMARY KEY ( product_no, order_id )
 );"
 `;
 
+exports[`kitchen sink tables match 1`] = `
+Object {
+  "query": Array [
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "DropStmt": Object {
+            "behavior": 1,
+            "missing_ok": true,
+            "objects": Array [
+              Array [
+                Object {
+                  "String": Object {
+                    "str": "users",
+                  },
+                },
+              ],
+            ],
+            "removeType": 37,
+          },
+        },
+        "stmt_len": 111,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CreateStmt": Object {
+            "oncommit": 0,
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 126,
+                "relname": "users",
+                "relpersistence": "p",
+              },
+            },
+            "tableElts": Array [
+              Object {
+                "ColumnDef": Object {
+                  "colname": "id",
+                  "constraints": Array [
+                    Object {
+                      "Constraint": Object {
+                        "contype": 1,
+                        "location": 147,
+                      },
+                    },
+                    Object {
+                      "Constraint": Object {
+                        "contype": 5,
+                        "location": 156,
+                      },
+                    },
+                  ],
+                  "is_local": true,
+                  "location": 136,
+                  "typeName": Object {
+                    "TypeName": Object {
+                      "location": 139,
+                      "names": Array [
+                        Object {
+                          "String": Object {
+                            "str": "pg_catalog",
+                          },
+                        },
+                        Object {
+                          "String": Object {
+                            "str": "int4",
+                          },
+                        },
+                      ],
+                      "typemod": -1,
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        },
+        "stmt_len": 57,
+        "stmt_location": 112,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "DropStmt": Object {
+            "behavior": 1,
+            "missing_ok": true,
+            "objects": Array [
+              Array [
+                Object {
+                  "String": Object {
+                    "str": "post_type",
+                  },
+                },
+              ],
+            ],
+            "removeType": 37,
+          },
+        },
+        "stmt_len": 40,
+        "stmt_location": 170,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CreateStmt": Object {
+            "oncommit": 0,
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 225,
+                "relname": "post_type",
+                "relpersistence": "p",
+              },
+            },
+            "tableElts": Array [
+              Object {
+                "ColumnDef": Object {
+                  "colname": "id",
+                  "constraints": Array [
+                    Object {
+                      "Constraint": Object {
+                        "contype": 1,
+                        "location": 250,
+                      },
+                    },
+                    Object {
+                      "Constraint": Object {
+                        "contype": 5,
+                        "location": 259,
+                      },
+                    },
+                  ],
+                  "is_local": true,
+                  "location": 239,
+                  "typeName": Object {
+                    "TypeName": Object {
+                      "location": 242,
+                      "names": Array [
+                        Object {
+                          "String": Object {
+                            "str": "pg_catalog",
+                          },
+                        },
+                        Object {
+                          "String": Object {
+                            "str": "int4",
+                          },
+                        },
+                      ],
+                      "typemod": -1,
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        },
+        "stmt_len": 61,
+        "stmt_location": 211,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "DropStmt": Object {
+            "behavior": 1,
+            "missing_ok": true,
+            "objects": Array [
+              Array [
+                Object {
+                  "String": Object {
+                    "str": "assembly_seat",
+                  },
+                },
+              ],
+            ],
+            "removeType": 37,
+          },
+        },
+        "stmt_len": 44,
+        "stmt_location": 273,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CreateStmt": Object {
+            "oncommit": 0,
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 332,
+                "relname": "assembly_seat",
+                "relpersistence": "p",
+              },
+            },
+            "tableElts": Array [
+              Object {
+                "ColumnDef": Object {
+                  "colname": "id",
+                  "constraints": Array [
+                    Object {
+                      "Constraint": Object {
+                        "contype": 1,
+                        "location": 361,
+                      },
+                    },
+                    Object {
+                      "Constraint": Object {
+                        "contype": 5,
+                        "location": 370,
+                      },
+                    },
+                  ],
+                  "is_local": true,
+                  "location": 350,
+                  "typeName": Object {
+                    "TypeName": Object {
+                      "location": 353,
+                      "names": Array [
+                        Object {
+                          "String": Object {
+                            "str": "pg_catalog",
+                          },
+                        },
+                        Object {
+                          "String": Object {
+                            "str": "int4",
+                          },
+                        },
+                      ],
+                      "typemod": -1,
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        },
+        "stmt_len": 65,
+        "stmt_location": 318,
+      },
+    },
+  ],
+  "stderr": "",
+}
+`;
+
+exports[`kitchen sink tables match 2`] = `
+"DROP TABLE IF EXISTS users CASCADE;
+CREATE TABLE users (
+id int NOT NULL PRIMARY KEY
+);
+DROP TABLE IF EXISTS post_type CASCADE;
+CREATE TABLE post_type (
+id int NOT NULL PRIMARY KEY
+);
+DROP TABLE IF EXISTS assembly_seat CASCADE;
+CREATE TABLE assembly_seat (
+id int NOT NULL PRIMARY KEY
+);"
+`;
+
 exports[`kitchen sink tables nulls 1`] = `
 Object {
   "query": Array [
@@ -29314,6 +30790,274 @@ product_no int REFERENCES products ON UPDATE RESTRICT,
 order_id int REFERENCES orders ON UPDATE CASCADE,
 quantity int,
 PRIMARY KEY ( product_no, order_id )
+);"
+`;
+
+exports[`kitchen sink tables temp 1`] = `
+Object {
+  "query": Array [
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "DropStmt": Object {
+            "behavior": 1,
+            "missing_ok": true,
+            "objects": Array [
+              Array [
+                Object {
+                  "String": Object {
+                    "str": "users",
+                  },
+                },
+              ],
+            ],
+            "removeType": 37,
+          },
+        },
+        "stmt_len": 35,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CreateStmt": Object {
+            "oncommit": 0,
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 55,
+                "relname": "users",
+                "relpersistence": "t",
+              },
+            },
+            "tableElts": Array [
+              Object {
+                "ColumnDef": Object {
+                  "colname": "id",
+                  "constraints": Array [
+                    Object {
+                      "Constraint": Object {
+                        "contype": 1,
+                        "location": 76,
+                      },
+                    },
+                    Object {
+                      "Constraint": Object {
+                        "contype": 5,
+                        "location": 85,
+                      },
+                    },
+                  ],
+                  "is_local": true,
+                  "location": 65,
+                  "typeName": Object {
+                    "TypeName": Object {
+                      "location": 68,
+                      "names": Array [
+                        Object {
+                          "String": Object {
+                            "str": "pg_catalog",
+                          },
+                        },
+                        Object {
+                          "String": Object {
+                            "str": "int4",
+                          },
+                        },
+                      ],
+                      "typemod": -1,
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        },
+        "stmt_len": 62,
+        "stmt_location": 36,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "DropStmt": Object {
+            "behavior": 1,
+            "missing_ok": true,
+            "objects": Array [
+              Array [
+                Object {
+                  "String": Object {
+                    "str": "post_type",
+                  },
+                },
+              ],
+            ],
+            "removeType": 37,
+          },
+        },
+        "stmt_len": 40,
+        "stmt_location": 99,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CreateStmt": Object {
+            "oncommit": 0,
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 159,
+                "relname": "post_type",
+                "relpersistence": "t",
+              },
+            },
+            "tableElts": Array [
+              Object {
+                "ColumnDef": Object {
+                  "colname": "id",
+                  "constraints": Array [
+                    Object {
+                      "Constraint": Object {
+                        "contype": 1,
+                        "location": 184,
+                      },
+                    },
+                    Object {
+                      "Constraint": Object {
+                        "contype": 5,
+                        "location": 193,
+                      },
+                    },
+                  ],
+                  "is_local": true,
+                  "location": 173,
+                  "typeName": Object {
+                    "TypeName": Object {
+                      "location": 176,
+                      "names": Array [
+                        Object {
+                          "String": Object {
+                            "str": "pg_catalog",
+                          },
+                        },
+                        Object {
+                          "String": Object {
+                            "str": "int4",
+                          },
+                        },
+                      ],
+                      "typemod": -1,
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        },
+        "stmt_len": 66,
+        "stmt_location": 140,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "DropStmt": Object {
+            "behavior": 1,
+            "missing_ok": true,
+            "objects": Array [
+              Array [
+                Object {
+                  "String": Object {
+                    "str": "assembly_seat",
+                  },
+                },
+              ],
+            ],
+            "removeType": 37,
+          },
+        },
+        "stmt_len": 44,
+        "stmt_location": 207,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CreateStmt": Object {
+            "oncommit": 0,
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 271,
+                "relname": "assembly_seat",
+                "relpersistence": "t",
+              },
+            },
+            "tableElts": Array [
+              Object {
+                "ColumnDef": Object {
+                  "colname": "id",
+                  "constraints": Array [
+                    Object {
+                      "Constraint": Object {
+                        "contype": 1,
+                        "location": 300,
+                      },
+                    },
+                    Object {
+                      "Constraint": Object {
+                        "contype": 5,
+                        "location": 309,
+                      },
+                    },
+                  ],
+                  "is_local": true,
+                  "location": 289,
+                  "typeName": Object {
+                    "TypeName": Object {
+                      "location": 292,
+                      "names": Array [
+                        Object {
+                          "String": Object {
+                            "str": "pg_catalog",
+                          },
+                        },
+                        Object {
+                          "String": Object {
+                            "str": "int4",
+                          },
+                        },
+                      ],
+                      "typemod": -1,
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        },
+        "stmt_len": 70,
+        "stmt_location": 252,
+      },
+    },
+  ],
+  "stderr": "",
+}
+`;
+
+exports[`kitchen sink tables temp 2`] = `
+"DROP TABLE IF EXISTS users CASCADE;
+CREATE TEMPORARY TABLE users (
+id int NOT NULL PRIMARY KEY
+);
+DROP TABLE IF EXISTS post_type CASCADE;
+CREATE TEMPORARY TABLE post_type (
+id int NOT NULL PRIMARY KEY
+);
+DROP TABLE IF EXISTS assembly_seat CASCADE;
+CREATE TEMPORARY TABLE assembly_seat (
+id int NOT NULL PRIMARY KEY
 );"
 `;
 

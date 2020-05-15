@@ -14,3 +14,20 @@ CREATE TABLE actors_private.actor_info (
     email text NOT NULL UNIQUE CHECK (email ~* '^.+@.+\..+$'),
     password_hash text NOT NULL
 );
+
+
+-- one row with (1,1)
+CREATE TABLE foo ( a int, b int,
+  PRIMARY KEY (a,b)
+);
+
+--
+-- two child tables to reference it
+-- 
+CREATE TABLE t_full ( a int, b int,
+  FOREIGN KEY (a,b) REFERENCES foo MATCH FULL
+);
+
+CREATE TABLE t_simple ( a int, b int,
+  FOREIGN KEY (a,b) REFERENCES foo MATCH SIMPLE
+);

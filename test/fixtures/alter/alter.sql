@@ -22,3 +22,76 @@ ALTER TABLE foo
     USING
         timestamp with time zone 'epoch' + foo_timestamp * interval '1 second',
     ALTER COLUMN foo_timestamp SET DEFAULT now();
+
+ALTER TABLE scha.foo 
+  ADD CONSTRAINT my_constraint_fey
+  FOREIGN KEY (order_id) REFERENCES othr.orders (id);
+
+ALTER TABLE scha.foo 
+  ADD CONSTRAINT my_constraint_fey
+  FOREIGN KEY (order_id) REFERENCES othr.orders (id) ON DELETE CASCADE;
+
+ALTER TABLE scha.foo 
+  ADD CONSTRAINT my_constraint_fey
+  FOREIGN KEY (order_id) REFERENCES othr.orders (id) ON DELETE RESTRICT;
+
+ALTER TABLE scha.foo 
+  ADD CONSTRAINT my_constraint_fey
+  FOREIGN KEY (order_id) REFERENCES othr.orders (id) ON DELETE NO ACTION;
+
+ALTER TABLE scha.foo 
+  ADD CONSTRAINT my_constraint_fey
+  FOREIGN KEY (order_id) REFERENCES othr.orders (id) ON DELETE SET NULL;
+
+ALTER TABLE scha.foo 
+  ADD CONSTRAINT my_constraint_fey
+  FOREIGN KEY (order_id) REFERENCES othr.orders (id) ON UPDATE SET DEFAULT;
+
+ALTER TABLE scha.foo 
+  ADD CONSTRAINT my_constraint_fey
+  FOREIGN KEY (order_id) REFERENCES othr.orders (id) ON UPDATE CASCADE;
+
+ALTER TABLE scha.foo 
+  ADD CONSTRAINT my_constraint_fey
+  FOREIGN KEY (order_id) REFERENCES othr.orders (id) ON UPDATE RESTRICT;
+
+ALTER TABLE scha.foo 
+  ADD CONSTRAINT my_constraint_fey
+  FOREIGN KEY (order_id) REFERENCES othr.orders (id) ON UPDATE NO ACTION;
+
+ALTER TABLE scha.foo 
+  ADD CONSTRAINT my_constraint_fey
+  FOREIGN KEY (order_id) REFERENCES othr.orders (id) ON UPDATE SET NULL;
+
+ALTER TABLE scha.foo 
+  ADD CONSTRAINT my_constraint_fey
+  FOREIGN KEY (order_id) REFERENCES othr.orders (id) ON UPDATE SET DEFAULT;
+
+ALTER TABLE scha.foo 
+  ADD CONSTRAINT my_constraint_fey
+  FOREIGN KEY (order_id) REFERENCES othr.orders (id) 
+    ON UPDATE SET DEFAULT
+    ON DELETE SET NULL
+    ;
+
+ALTER TABLE scha.foo 
+  ADD CONSTRAINT my_constraint_fey
+  FOREIGN KEY (a,b) REFERENCES othr.orders (c,d) MATCH FULL;
+
+ALTER TABLE scha.foo 
+  ADD CONSTRAINT my_constraint_fey
+  FOREIGN KEY (a, b) REFERENCES othr.orders (c,d) MATCH SIMPLE;
+
+-- ALTER TABLE scha.foo 
+--   ADD CONSTRAINT my_constraint_fey
+--   FOREIGN KEY (order_id) REFERENCES othr.orders (id) 
+--     MATCH FULL
+--     ON UPDATE SET DEFAULT
+--     ON DELETE SET NULL
+--     ;
+
+
+-- MATCH PARTIAL not yet implemented
+-- ALTER TABLE scha.foo 
+--   ADD CONSTRAINT my_constraint_fey
+--   FOREIGN KEY (a,b) REFERENCES othr.orders (c,d) MATCH PARTIAL;

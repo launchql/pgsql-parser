@@ -67,6 +67,12 @@ describe('kitchen sink', () => {
     check('domains/create.sql');
   });
   describe('tables', () => {
+    it('match', () => {
+      check('tables/match.sql');
+    });
+    it('temp', () => {
+      check('tables/temp.sql');
+    });
     it('custom', () => {
       check('tables/custom.sql');
     });
