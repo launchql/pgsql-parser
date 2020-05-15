@@ -82,6 +82,8 @@ ALTER TABLE scha.foo
   ADD CONSTRAINT my_constraint_fey
   FOREIGN KEY (a, b) REFERENCES othr.orders (c,d) MATCH SIMPLE;
 
+-- TODO MATCH after upgrading to newer engine: https://github.com/lfittl/libpg_query/issues/66
+
 -- ALTER TABLE scha.foo 
 --   ADD CONSTRAINT my_constraint_fey
 --   FOREIGN KEY (order_id) REFERENCES othr.orders (id) 
@@ -90,8 +92,8 @@ ALTER TABLE scha.foo
 --     ON DELETE SET NULL
 --     ;
 
-
 -- MATCH PARTIAL not yet implemented
+
 -- ALTER TABLE scha.foo 
 --   ADD CONSTRAINT my_constraint_fey
 --   FOREIGN KEY (a,b) REFERENCES othr.orders (c,d) MATCH PARTIAL;

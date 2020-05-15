@@ -14,7 +14,7 @@ CREATE TEMP TABLE assembly_seat (
   id integer NOT NULL PRIMARY KEY
 );
 
--- TODO MATCH:
+-- TODO MATCH after upgrading to newer engine: https://github.com/lfittl/libpg_query/issues/66
 
 -- DROP TABLE IF EXISTS post CASCADE;
 -- CREATE TEMP TABLE post (
