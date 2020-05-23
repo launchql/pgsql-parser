@@ -403,10 +403,20 @@ export default class Deparser {
         );
       }
 
-      case 7:
-        return fail('A_Expr', node);
+      case 7: {
+        // AEXPR_IN
+        const operator = node.name[0].String.str === '<>' ? 'NOT IN' : 'IN';
+
+        return format(
+          '%s %s (%s)',
+          this.deparse(node.lexpr, context),
+          operator,
+          this.list(node.rexpr, context)
+        );
+      }
 
       case 8:
+        // AEXPR_LIKE
         output.push(this.deparse(node.lexpr, context));
 
         if (node.name[0].String.str === '!~~') {
@@ -420,6 +430,7 @@ export default class Deparser {
         return output.join(' ');
 
       case 9:
+        // AEXPR_ILIKE
         output.push(this.deparse(node.lexpr, context));
 
         if (node.name[0].String.str === '!~~*') {
@@ -433,6 +444,7 @@ export default class Deparser {
         return output.join(' ');
 
       case 10:
+        // AEXPR_SIMILAR
         // SIMILAR TO emits a similar_escape FuncCall node with the first argument
         output.push(this.deparse(node.lexpr, context));
 
@@ -473,6 +485,7 @@ export default class Deparser {
         return output.join(' ');
 
       case 11:
+        // AEXPR_BETWEEN
         output.push(this.deparse(node.lexpr, context));
         output.push(
           format(
@@ -484,6 +497,7 @@ export default class Deparser {
         return output.join(' ');
 
       case 12:
+        // AEXPR_NOT_BETWEEN
         output.push(this.deparse(node.lexpr, context));
         output.push(
           format(

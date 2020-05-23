@@ -322,9 +322,15 @@ class Deparser {
         }
 
       case 7:
-        return fail('A_Expr', node);
+        {
+          // AEXPR_IN
+          const operator = node.name[0].String.str === '<>' ? 'NOT IN' : 'IN';
+
+          return (0, _util.format)('%s %s (%s)', this.deparse(node.lexpr, context), operator, this.list(node.rexpr, context));
+        }
 
       case 8:
+        // AEXPR_LIKE
         output.push(this.deparse(node.lexpr, context));
 
         if (node.name[0].String.str === '!~~') {
@@ -336,6 +342,7 @@ class Deparser {
         return output.join(' ');
 
       case 9:
+        // AEXPR_ILIKE
         output.push(this.deparse(node.lexpr, context));
 
         if (node.name[0].String.str === '!~~*') {
@@ -347,6 +354,7 @@ class Deparser {
         return output.join(' ');
 
       case 10:
+        // AEXPR_SIMILAR
         // SIMILAR TO emits a similar_escape FuncCall node with the first argument
         output.push(this.deparse(node.lexpr, context));
 
@@ -365,11 +373,13 @@ class Deparser {
         return output.join(' ');
 
       case 11:
+        // AEXPR_BETWEEN
         output.push(this.deparse(node.lexpr, context));
         output.push((0, _util.format)('BETWEEN %s AND %s', this.deparse(node.rexpr[0], context), this.deparse(node.rexpr[1], context)));
         return output.join(' ');
 
       case 12:
+        // AEXPR_NOT_BETWEEN
         output.push(this.deparse(node.lexpr, context));
         output.push((0, _util.format)('NOT BETWEEN %s AND %s', this.deparse(node.rexpr[0], context), this.deparse(node.rexpr[1], context)));
         return output.join(' ');

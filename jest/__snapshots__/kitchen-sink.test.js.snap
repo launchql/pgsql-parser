@@ -35702,6 +35702,946 @@ Object {
         "stmt_location": 81,
       },
     },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "ViewStmt": Object {
+            "query": Object {
+              "SelectStmt": Object {
+                "fromClause": Array [
+                  Object {
+                    "JoinExpr": Object {
+                      "jointype": 0,
+                      "larg": Object {
+                        "JoinExpr": Object {
+                          "jointype": 0,
+                          "larg": Object {
+                            "JoinExpr": Object {
+                              "jointype": 0,
+                              "larg": Object {
+                                "RangeVar": Object {
+                                  "alias": Object {
+                                    "Alias": Object {
+                                      "aliasname": "a",
+                                    },
+                                  },
+                                  "inh": true,
+                                  "location": 336,
+                                  "relname": "pg_attribute",
+                                  "relpersistence": "p",
+                                },
+                              },
+                              "quals": Object {
+                                "A_Expr": Object {
+                                  "kind": 0,
+                                  "lexpr": Object {
+                                    "ColumnRef": Object {
+                                      "fields": Array [
+                                        Object {
+                                          "String": Object {
+                                            "str": "t",
+                                          },
+                                        },
+                                        Object {
+                                          "String": Object {
+                                            "str": "oid",
+                                          },
+                                        },
+                                      ],
+                                      "location": 374,
+                                    },
+                                  },
+                                  "location": 380,
+                                  "name": Array [
+                                    Object {
+                                      "String": Object {
+                                        "str": "=",
+                                      },
+                                    },
+                                  ],
+                                  "rexpr": Object {
+                                    "ColumnRef": Object {
+                                      "fields": Array [
+                                        Object {
+                                          "String": Object {
+                                            "str": "a",
+                                          },
+                                        },
+                                        Object {
+                                          "String": Object {
+                                            "str": "atttypid",
+                                          },
+                                        },
+                                      ],
+                                      "location": 382,
+                                    },
+                                  },
+                                },
+                              },
+                              "rarg": Object {
+                                "RangeVar": Object {
+                                  "alias": Object {
+                                    "Alias": Object {
+                                      "aliasname": "t",
+                                    },
+                                  },
+                                  "inh": true,
+                                  "location": 360,
+                                  "relname": "pg_type",
+                                  "relpersistence": "p",
+                                },
+                              },
+                            },
+                          },
+                          "quals": Object {
+                            "A_Expr": Object {
+                              "kind": 0,
+                              "lexpr": Object {
+                                "ColumnRef": Object {
+                                  "fields": Array [
+                                    Object {
+                                      "String": Object {
+                                        "str": "c",
+                                      },
+                                    },
+                                    Object {
+                                      "String": Object {
+                                        "str": "oid",
+                                      },
+                                    },
+                                  ],
+                                  "location": 418,
+                                },
+                              },
+                              "location": 424,
+                              "name": Array [
+                                Object {
+                                  "String": Object {
+                                    "str": "=",
+                                  },
+                                },
+                              ],
+                              "rexpr": Object {
+                                "ColumnRef": Object {
+                                  "fields": Array [
+                                    Object {
+                                      "String": Object {
+                                        "str": "a",
+                                      },
+                                    },
+                                    Object {
+                                      "String": Object {
+                                        "str": "attrelid",
+                                      },
+                                    },
+                                  ],
+                                  "location": 426,
+                                },
+                              },
+                            },
+                          },
+                          "rarg": Object {
+                            "RangeVar": Object {
+                              "alias": Object {
+                                "Alias": Object {
+                                  "aliasname": "c",
+                                },
+                              },
+                              "inh": true,
+                              "location": 403,
+                              "relname": "pg_class",
+                              "relpersistence": "p",
+                            },
+                          },
+                        },
+                      },
+                      "quals": Object {
+                        "A_Expr": Object {
+                          "kind": 0,
+                          "lexpr": Object {
+                            "ColumnRef": Object {
+                              "fields": Array [
+                                Object {
+                                  "String": Object {
+                                    "str": "n",
+                                  },
+                                },
+                                Object {
+                                  "String": Object {
+                                    "str": "oid",
+                                  },
+                                },
+                              ],
+                              "location": 466,
+                            },
+                          },
+                          "location": 472,
+                          "name": Array [
+                            Object {
+                              "String": Object {
+                                "str": "=",
+                              },
+                            },
+                          ],
+                          "rexpr": Object {
+                            "ColumnRef": Object {
+                              "fields": Array [
+                                Object {
+                                  "String": Object {
+                                    "str": "c",
+                                  },
+                                },
+                                Object {
+                                  "String": Object {
+                                    "str": "relnamespace",
+                                  },
+                                },
+                              ],
+                              "location": 474,
+                            },
+                          },
+                        },
+                      },
+                      "rarg": Object {
+                        "RangeVar": Object {
+                          "alias": Object {
+                            "Alias": Object {
+                              "aliasname": "n",
+                            },
+                          },
+                          "inh": true,
+                          "location": 447,
+                          "relname": "pg_namespace",
+                          "relpersistence": "p",
+                        },
+                      },
+                    },
+                  },
+                ],
+                "op": 0,
+                "sortClause": Array [
+                  Object {
+                    "SortBy": Object {
+                      "location": -1,
+                      "node": Object {
+                        "ColumnRef": Object {
+                          "fields": Array [
+                            Object {
+                              "String": Object {
+                                "str": "attnum",
+                              },
+                            },
+                          ],
+                          "location": 623,
+                        },
+                      },
+                      "sortby_dir": 0,
+                      "sortby_nulls": 0,
+                    },
+                  },
+                ],
+                "targetList": Array [
+                  Object {
+                    "ResTarget": Object {
+                      "location": 229,
+                      "name": "name",
+                      "val": Object {
+                        "ColumnRef": Object {
+                          "fields": Array [
+                            Object {
+                              "String": Object {
+                                "str": "attname",
+                              },
+                            },
+                          ],
+                          "location": 229,
+                        },
+                      },
+                    },
+                  },
+                  Object {
+                    "ResTarget": Object {
+                      "location": 250,
+                      "name": "type",
+                      "val": Object {
+                        "ColumnRef": Object {
+                          "fields": Array [
+                            Object {
+                              "String": Object {
+                                "str": "t",
+                              },
+                            },
+                            Object {
+                              "String": Object {
+                                "str": "typname",
+                              },
+                            },
+                          ],
+                          "location": 250,
+                        },
+                      },
+                    },
+                  },
+                  Object {
+                    "ResTarget": Object {
+                      "location": 273,
+                      "name": "table_name",
+                      "val": Object {
+                        "ColumnRef": Object {
+                          "fields": Array [
+                            Object {
+                              "String": Object {
+                                "str": "c",
+                              },
+                            },
+                            Object {
+                              "String": Object {
+                                "str": "relname",
+                              },
+                            },
+                          ],
+                          "location": 273,
+                        },
+                      },
+                    },
+                  },
+                  Object {
+                    "ResTarget": Object {
+                      "location": 302,
+                      "name": "schema_name",
+                      "val": Object {
+                        "ColumnRef": Object {
+                          "fields": Array [
+                            Object {
+                              "String": Object {
+                                "str": "n",
+                              },
+                            },
+                            Object {
+                              "String": Object {
+                                "str": "nspname",
+                              },
+                            },
+                          ],
+                          "location": 302,
+                        },
+                      },
+                    },
+                  },
+                ],
+                "whereClause": Object {
+                  "BoolExpr": Object {
+                    "args": Array [
+                      Object {
+                        "A_Expr": Object {
+                          "kind": 7,
+                          "lexpr": Object {
+                            "ColumnRef": Object {
+                              "fields": Array [
+                                Object {
+                                  "String": Object {
+                                    "str": "n",
+                                  },
+                                },
+                                Object {
+                                  "String": Object {
+                                    "str": "nspname",
+                                  },
+                                },
+                              ],
+                              "location": 500,
+                            },
+                          },
+                          "location": 510,
+                          "name": Array [
+                            Object {
+                              "String": Object {
+                                "str": "<>",
+                              },
+                            },
+                          ],
+                          "rexpr": Array [
+                            Object {
+                              "A_Const": Object {
+                                "location": 518,
+                                "val": Object {
+                                  "String": Object {
+                                    "str": "pg_catalog",
+                                  },
+                                },
+                              },
+                            },
+                            Object {
+                              "A_Const": Object {
+                                "location": 532,
+                                "val": Object {
+                                  "String": Object {
+                                    "str": "information_schema",
+                                  },
+                                },
+                              },
+                            },
+                            Object {
+                              "A_Const": Object {
+                                "location": 554,
+                                "val": Object {
+                                  "String": Object {
+                                    "str": "pg_toast",
+                                  },
+                                },
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      Object {
+                        "A_Expr": Object {
+                          "kind": 0,
+                          "lexpr": Object {
+                            "ColumnRef": Object {
+                              "fields": Array [
+                                Object {
+                                  "String": Object {
+                                    "str": "attnum",
+                                  },
+                                },
+                              ],
+                              "location": 574,
+                            },
+                          },
+                          "location": 581,
+                          "name": Array [
+                            Object {
+                              "String": Object {
+                                "str": ">",
+                              },
+                            },
+                          ],
+                          "rexpr": Object {
+                            "A_Const": Object {
+                              "location": 583,
+                              "val": Object {
+                                "Integer": Object {
+                                  "ival": 0,
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                      Object {
+                        "BoolExpr": Object {
+                          "args": Array [
+                            Object {
+                              "ColumnRef": Object {
+                                "fields": Array [
+                                  Object {
+                                    "String": Object {
+                                      "str": "attisdropped",
+                                    },
+                                  },
+                                ],
+                                "location": 597,
+                              },
+                            },
+                          ],
+                          "boolop": 2,
+                          "location": 593,
+                        },
+                      },
+                    ],
+                    "boolop": 0,
+                    "location": 570,
+                  },
+                },
+              },
+            },
+            "view": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 191,
+                "relname": "app_columns",
+                "relpersistence": "p",
+                "schemaname": "superschema",
+              },
+            },
+            "withCheckOption": 0,
+          },
+        },
+        "stmt_len": 452,
+        "stmt_location": 177,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "ViewStmt": Object {
+            "query": Object {
+              "SelectStmt": Object {
+                "fromClause": Array [
+                  Object {
+                    "JoinExpr": Object {
+                      "jointype": 0,
+                      "larg": Object {
+                        "JoinExpr": Object {
+                          "jointype": 0,
+                          "larg": Object {
+                            "JoinExpr": Object {
+                              "jointype": 0,
+                              "larg": Object {
+                                "RangeVar": Object {
+                                  "alias": Object {
+                                    "Alias": Object {
+                                      "aliasname": "a",
+                                    },
+                                  },
+                                  "inh": true,
+                                  "location": 789,
+                                  "relname": "pg_attribute",
+                                  "relpersistence": "p",
+                                },
+                              },
+                              "quals": Object {
+                                "A_Expr": Object {
+                                  "kind": 0,
+                                  "lexpr": Object {
+                                    "ColumnRef": Object {
+                                      "fields": Array [
+                                        Object {
+                                          "String": Object {
+                                            "str": "t",
+                                          },
+                                        },
+                                        Object {
+                                          "String": Object {
+                                            "str": "oid",
+                                          },
+                                        },
+                                      ],
+                                      "location": 827,
+                                    },
+                                  },
+                                  "location": 833,
+                                  "name": Array [
+                                    Object {
+                                      "String": Object {
+                                        "str": "=",
+                                      },
+                                    },
+                                  ],
+                                  "rexpr": Object {
+                                    "ColumnRef": Object {
+                                      "fields": Array [
+                                        Object {
+                                          "String": Object {
+                                            "str": "a",
+                                          },
+                                        },
+                                        Object {
+                                          "String": Object {
+                                            "str": "atttypid",
+                                          },
+                                        },
+                                      ],
+                                      "location": 835,
+                                    },
+                                  },
+                                },
+                              },
+                              "rarg": Object {
+                                "RangeVar": Object {
+                                  "alias": Object {
+                                    "Alias": Object {
+                                      "aliasname": "t",
+                                    },
+                                  },
+                                  "inh": true,
+                                  "location": 813,
+                                  "relname": "pg_type",
+                                  "relpersistence": "p",
+                                },
+                              },
+                            },
+                          },
+                          "quals": Object {
+                            "A_Expr": Object {
+                              "kind": 0,
+                              "lexpr": Object {
+                                "ColumnRef": Object {
+                                  "fields": Array [
+                                    Object {
+                                      "String": Object {
+                                        "str": "c",
+                                      },
+                                    },
+                                    Object {
+                                      "String": Object {
+                                        "str": "oid",
+                                      },
+                                    },
+                                  ],
+                                  "location": 871,
+                                },
+                              },
+                              "location": 877,
+                              "name": Array [
+                                Object {
+                                  "String": Object {
+                                    "str": "=",
+                                  },
+                                },
+                              ],
+                              "rexpr": Object {
+                                "ColumnRef": Object {
+                                  "fields": Array [
+                                    Object {
+                                      "String": Object {
+                                        "str": "a",
+                                      },
+                                    },
+                                    Object {
+                                      "String": Object {
+                                        "str": "attrelid",
+                                      },
+                                    },
+                                  ],
+                                  "location": 879,
+                                },
+                              },
+                            },
+                          },
+                          "rarg": Object {
+                            "RangeVar": Object {
+                              "alias": Object {
+                                "Alias": Object {
+                                  "aliasname": "c",
+                                },
+                              },
+                              "inh": true,
+                              "location": 856,
+                              "relname": "pg_class",
+                              "relpersistence": "p",
+                            },
+                          },
+                        },
+                      },
+                      "quals": Object {
+                        "A_Expr": Object {
+                          "kind": 0,
+                          "lexpr": Object {
+                            "ColumnRef": Object {
+                              "fields": Array [
+                                Object {
+                                  "String": Object {
+                                    "str": "n",
+                                  },
+                                },
+                                Object {
+                                  "String": Object {
+                                    "str": "oid",
+                                  },
+                                },
+                              ],
+                              "location": 919,
+                            },
+                          },
+                          "location": 925,
+                          "name": Array [
+                            Object {
+                              "String": Object {
+                                "str": "=",
+                              },
+                            },
+                          ],
+                          "rexpr": Object {
+                            "ColumnRef": Object {
+                              "fields": Array [
+                                Object {
+                                  "String": Object {
+                                    "str": "c",
+                                  },
+                                },
+                                Object {
+                                  "String": Object {
+                                    "str": "relnamespace",
+                                  },
+                                },
+                              ],
+                              "location": 927,
+                            },
+                          },
+                        },
+                      },
+                      "rarg": Object {
+                        "RangeVar": Object {
+                          "alias": Object {
+                            "Alias": Object {
+                              "aliasname": "n",
+                            },
+                          },
+                          "inh": true,
+                          "location": 900,
+                          "relname": "pg_namespace",
+                          "relpersistence": "p",
+                        },
+                      },
+                    },
+                  },
+                ],
+                "op": 0,
+                "sortClause": Array [
+                  Object {
+                    "SortBy": Object {
+                      "location": -1,
+                      "node": Object {
+                        "ColumnRef": Object {
+                          "fields": Array [
+                            Object {
+                              "String": Object {
+                                "str": "attnum",
+                              },
+                            },
+                          ],
+                          "location": 1072,
+                        },
+                      },
+                      "sortby_dir": 0,
+                      "sortby_nulls": 0,
+                    },
+                  },
+                ],
+                "targetList": Array [
+                  Object {
+                    "ResTarget": Object {
+                      "location": 682,
+                      "name": "name",
+                      "val": Object {
+                        "ColumnRef": Object {
+                          "fields": Array [
+                            Object {
+                              "String": Object {
+                                "str": "attname",
+                              },
+                            },
+                          ],
+                          "location": 682,
+                        },
+                      },
+                    },
+                  },
+                  Object {
+                    "ResTarget": Object {
+                      "location": 703,
+                      "name": "type",
+                      "val": Object {
+                        "ColumnRef": Object {
+                          "fields": Array [
+                            Object {
+                              "String": Object {
+                                "str": "t",
+                              },
+                            },
+                            Object {
+                              "String": Object {
+                                "str": "typname",
+                              },
+                            },
+                          ],
+                          "location": 703,
+                        },
+                      },
+                    },
+                  },
+                  Object {
+                    "ResTarget": Object {
+                      "location": 726,
+                      "name": "table_name",
+                      "val": Object {
+                        "ColumnRef": Object {
+                          "fields": Array [
+                            Object {
+                              "String": Object {
+                                "str": "c",
+                              },
+                            },
+                            Object {
+                              "String": Object {
+                                "str": "relname",
+                              },
+                            },
+                          ],
+                          "location": 726,
+                        },
+                      },
+                    },
+                  },
+                  Object {
+                    "ResTarget": Object {
+                      "location": 755,
+                      "name": "schema_name",
+                      "val": Object {
+                        "ColumnRef": Object {
+                          "fields": Array [
+                            Object {
+                              "String": Object {
+                                "str": "n",
+                              },
+                            },
+                            Object {
+                              "String": Object {
+                                "str": "nspname",
+                              },
+                            },
+                          ],
+                          "location": 755,
+                        },
+                      },
+                    },
+                  },
+                ],
+                "whereClause": Object {
+                  "BoolExpr": Object {
+                    "args": Array [
+                      Object {
+                        "A_Expr": Object {
+                          "kind": 7,
+                          "lexpr": Object {
+                            "ColumnRef": Object {
+                              "fields": Array [
+                                Object {
+                                  "String": Object {
+                                    "str": "n",
+                                  },
+                                },
+                                Object {
+                                  "String": Object {
+                                    "str": "nspname",
+                                  },
+                                },
+                              ],
+                              "location": 953,
+                            },
+                          },
+                          "location": 963,
+                          "name": Array [
+                            Object {
+                              "String": Object {
+                                "str": "=",
+                              },
+                            },
+                          ],
+                          "rexpr": Array [
+                            Object {
+                              "A_Const": Object {
+                                "location": 967,
+                                "val": Object {
+                                  "String": Object {
+                                    "str": "pg_catalog",
+                                  },
+                                },
+                              },
+                            },
+                            Object {
+                              "A_Const": Object {
+                                "location": 981,
+                                "val": Object {
+                                  "String": Object {
+                                    "str": "information_schema",
+                                  },
+                                },
+                              },
+                            },
+                            Object {
+                              "A_Const": Object {
+                                "location": 1003,
+                                "val": Object {
+                                  "String": Object {
+                                    "str": "pg_toast",
+                                  },
+                                },
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      Object {
+                        "A_Expr": Object {
+                          "kind": 0,
+                          "lexpr": Object {
+                            "ColumnRef": Object {
+                              "fields": Array [
+                                Object {
+                                  "String": Object {
+                                    "str": "attnum",
+                                  },
+                                },
+                              ],
+                              "location": 1023,
+                            },
+                          },
+                          "location": 1030,
+                          "name": Array [
+                            Object {
+                              "String": Object {
+                                "str": ">",
+                              },
+                            },
+                          ],
+                          "rexpr": Object {
+                            "A_Const": Object {
+                              "location": 1032,
+                              "val": Object {
+                                "Integer": Object {
+                                  "ival": 0,
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                      Object {
+                        "BoolExpr": Object {
+                          "args": Array [
+                            Object {
+                              "ColumnRef": Object {
+                                "fields": Array [
+                                  Object {
+                                    "String": Object {
+                                      "str": "attisdropped",
+                                    },
+                                  },
+                                ],
+                                "location": 1046,
+                              },
+                            },
+                          ],
+                          "boolop": 2,
+                          "location": 1042,
+                        },
+                      },
+                    ],
+                    "boolop": 0,
+                    "location": 1019,
+                  },
+                },
+              },
+            },
+            "view": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 644,
+                "relname": "app_columns",
+                "relpersistence": "p",
+                "schemaname": "superschema",
+              },
+            },
+            "withCheckOption": 0,
+          },
+        },
+        "stmt_len": 448,
+        "stmt_location": 630,
+      },
+    },
   ],
   "stderr": "",
 }
@@ -35709,5 +36649,13 @@ Object {
 
 exports[`kitchen sink views create 2`] = `
 "CREATE VIEW collaboration_public.direct_project_permits AS SELECT * FROM permits;
-CREATE MATERIALIZED VIEW collaboration_public.direct_project_permits AS SELECT * FROM permits;"
+CREATE MATERIALIZED VIEW collaboration_public.direct_project_permits AS SELECT * FROM permits;
+CREATE VIEW superschema.app_columns AS SELECT attname AS name,
+t.typname AS type,
+c.relname AS table_name,
+n.nspname AS schema_name FROM pg_attribute AS a INNER JOIN pg_type AS t ON ((t.oid) = (a.atttypid)) INNER JOIN pg_class AS c ON ((c.oid) = (a.attrelid)) INNER JOIN pg_namespace AS n ON ((n.oid) = (c.relnamespace)) WHERE (n.nspname NOT IN ('pg_catalog', 'information_schema', 'pg_toast') AND ((attnum) > (0)) AND NOT (attisdropped)) ORDER BY attnum;
+CREATE VIEW superschema.app_columns AS SELECT attname AS name,
+t.typname AS type,
+c.relname AS table_name,
+n.nspname AS schema_name FROM pg_attribute AS a INNER JOIN pg_type AS t ON ((t.oid) = (a.atttypid)) INNER JOIN pg_class AS c ON ((c.oid) = (a.attrelid)) INNER JOIN pg_namespace AS n ON ((n.oid) = (c.relnamespace)) WHERE (n.nspname IN ('pg_catalog', 'information_schema', 'pg_toast') AND ((attnum) > (0)) AND NOT (attisdropped)) ORDER BY attnum;"
 `;
