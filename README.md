@@ -1,12 +1,12 @@
 # pgsql-parser [![Build Status](https://travis-ci.org/pyramation/pgsql-parser.svg?branch=master)](https://travis-ci.org/pyramation/pgsql-parser)
 
-## This is really just https://github.com/zhm/pg-query-parser with some added functionality.
-
 The real PostgreSQL parser for nodejs. The primary objective of this module is to provide symmetric parsing
 and deparsing of SQL statements. With this module you can modify parts of a SQL query statement and
 serialize the query tree back into a formatted SQL statement. It uses the *real* [PostgreSQL parser](https://github.com/lfittl/libpg_query).
 
 The main functionality provided by this module is deparsing, which PostgreSQL does not have internally.
+
+Thanks to https://github.com/zhm/pg-query-parser we've been able to start this repo and add a lot of functionality
 
 ## Installation
 
