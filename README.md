@@ -68,7 +68,12 @@ Returns a normalized formatted SQL string.
 
 ## Related
 
-* [pg-query-native](https://github.com/zhm/node-pg-query-native)
+* [pg-query-native-latest](https://github.com/pyramation/node-pg-query-native)
 * [libpg_query](https://github.com/lfittl/libpg_query)
 * [pg_query](https://github.com/lfittl/pg_query)
 * [pg_query.go](https://github.com/lfittl/pg_query.go)
+
+## Credits
+
+* [pg-query-parser](https://github.com/zhm/pg-query-parser)
+* [pg-query-native](https://github.com/zhm/node-pg-query-native)

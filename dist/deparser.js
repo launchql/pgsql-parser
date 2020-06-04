@@ -948,9 +948,19 @@ class Deparser {
       }
     }
 
+    if (node.fromClause) {
+      output.push('FROM');
+      output.push(node.fromClause.map(from => this.deparse(from)));
+    }
+
     if (node.whereClause) {
       output.push('WHERE');
       output.push(this.deparse(node.whereClause));
+    }
+
+    if (node.returningList) {
+      output.push('RETURNING');
+      output.push(node.returningList.map(returning => this.deparse(returning.ResTarget.val) + (returning.ResTarget.name ? ' AS ' + this.quote(returning.ResTarget.name) : '')).join(','));
     }
 
     return output.join(' ');
