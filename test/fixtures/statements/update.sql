@@ -16,3 +16,24 @@ UPDATE shoelace_data
            sl_len = NEW.sl_len,
            sl_unit = NEW.sl_unit
      WHERE sl_name = OLD.sl_name;
+
+UPDATE something SET a = 1
+RETURNING a;
+
+UPDATE something SET a = 1
+RETURNING a AS b, c;
+
+UPDATE something SET a = 1
+FROM b;
+
+UPDATE something SET a = 1, b = 'b'
+FROM c JOIN d ON (x = d.y), (SELECT * FROM e) f
+WHERE something.x = d.x AND LEAST(something.y, 0) = f.z + 1;
+
+UPDATE something SET a = 1
+RETURNING b AS "b#1";
+
+UPDATE something SET a = 1
+FROM b
+WHERE c
+RETURNING *;
