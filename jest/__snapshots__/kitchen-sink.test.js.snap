@@ -1710,6 +1710,89 @@ Object {
         "stmt_location": 2379,
       },
     },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "AlterTableStmt": Object {
+            "cmds": Array [
+              Object {
+                "AlterTableCmd": Object {
+                  "behavior": 0,
+                  "def": Object {
+                    "Constraint": Object {
+                      "conname": "col_field_pkey",
+                      "contype": 5,
+                      "keys": Array [
+                        Object {
+                          "String": Object {
+                            "str": "id",
+                          },
+                        },
+                      ],
+                      "location": 2547,
+                    },
+                  },
+                  "subtype": 14,
+                },
+              },
+            ],
+            "relation": Object {
+              "RangeVar": Object {
+                "location": 2520,
+                "relname": "mfield",
+                "relpersistence": "p",
+                "schemaname": "collections",
+              },
+            },
+            "relkind": 37,
+          },
+        },
+        "stmt_len": 88,
+        "stmt_location": 2501,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "AlterTableStmt": Object {
+            "cmds": Array [
+              Object {
+                "AlterTableCmd": Object {
+                  "behavior": 0,
+                  "def": Object {
+                    "Constraint": Object {
+                      "conname": "col_field_pkey",
+                      "contype": 5,
+                      "keys": Array [
+                        Object {
+                          "String": Object {
+                            "str": "id",
+                          },
+                        },
+                      ],
+                      "location": 2631,
+                    },
+                  },
+                  "subtype": 14,
+                },
+              },
+            ],
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 2604,
+                "relname": "mfield",
+                "relpersistence": "p",
+                "schemaname": "collections",
+              },
+            },
+            "relkind": 37,
+          },
+        },
+        "stmt_len": 83,
+        "stmt_location": 2590,
+      },
+    },
   ],
   "stderr": "",
 }
@@ -1743,7 +1826,9 @@ ALTER TABLE scha.foo ADD CONSTRAINT my_constraint_fey FOREIGN KEY ( order_id ) R
 ALTER TABLE scha.foo ADD CONSTRAINT my_constraint_fey FOREIGN KEY ( order_id ) REFERENCES othr.orders ( id ) ON UPDATE SET DEFAULT;
 ALTER TABLE scha.foo ADD CONSTRAINT my_constraint_fey FOREIGN KEY ( order_id ) REFERENCES othr.orders ( id ) ON DELETE SET NULL ON UPDATE SET DEFAULT;
 ALTER TABLE scha.foo ADD CONSTRAINT my_constraint_fey FOREIGN KEY ( a, b ) REFERENCES othr.orders ( c, d ) MATCH FULL;
-ALTER TABLE scha.foo ADD CONSTRAINT my_constraint_fey FOREIGN KEY ( a, b ) REFERENCES othr.orders ( c, d );"
+ALTER TABLE scha.foo ADD CONSTRAINT my_constraint_fey FOREIGN KEY ( a, b ) REFERENCES othr.orders ( c, d );
+ALTER TABLE ONLY collections.mfield ADD CONSTRAINT col_field_pkey PRIMARY KEY ( id );
+ALTER TABLE collections.mfield ADD CONSTRAINT col_field_pkey PRIMARY KEY ( id );"
 `;
 
 exports[`kitchen sink comments 1`] = `

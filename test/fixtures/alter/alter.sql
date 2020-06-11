@@ -82,6 +82,13 @@ ALTER TABLE scha.foo
   ADD CONSTRAINT my_constraint_fey
   FOREIGN KEY (a, b) REFERENCES othr.orders (c,d) MATCH SIMPLE;
 
+ALTER TABLE ONLY collections.mfield
+    ADD CONSTRAINT col_field_pkey PRIMARY KEY (id);
+
+ALTER TABLE collections.mfield
+    ADD CONSTRAINT col_field_pkey PRIMARY KEY (id);
+
+
 -- TODO MATCH after upgrading to newer engine: https://github.com/lfittl/libpg_query/issues/66
 
 -- ALTER TABLE scha.foo 

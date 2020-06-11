@@ -1436,6 +1436,10 @@ class Deparser {
       output.push('TYPE');
     } else {
       output.push('TABLE');
+      const inh = dotty.get(node, 'relation.RangeVar.inh');
+      if (!inh) {
+        output.push('ONLY');
+      }
     }
     if (node.missing_ok) {
       output.push('IF EXISTS');
