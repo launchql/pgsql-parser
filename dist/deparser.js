@@ -905,6 +905,32 @@ class Deparser {
       output.push(this.deparse(node.selectStmt));
     }
 
+    if (node.onConflictClause) {
+      const clause = node.onConflictClause.OnConflictClause;
+
+      output.push('ON CONFLICT');
+      if (clause.infer.InferClause.indexElems) {
+        output.push('(');
+        output.push(this.list(clause.infer.InferClause.indexElems));
+        output.push(')');
+      } else if (clause.infer.InferClause.conname) {
+        output.push('ON CONSTRAINT');
+        output.push(clause.infer.InferClause.conname);
+      }
+
+      switch (clause.action) {
+        case 1:
+          output.push('DO NOTHING');
+          break;
+        case 2:
+          output.push('DO');
+          output.push(this.UpdateStmt(clause));
+          break;
+        default:
+          throw new Error('unhandled CONFLICT CLAUSE');
+      }
+    }
+
     return output.join(' ');
   }
 

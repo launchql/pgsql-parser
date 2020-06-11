@@ -60,6 +60,9 @@ describe('kitchen sink', () => {
   it('update', () => {
     check('statements/update.sql');
   });
+  it('conflicts', () => {
+    check('statements/conflicts.sql');
+  });
   it('delete', () => {
     check('statements/delete.sql');
   });

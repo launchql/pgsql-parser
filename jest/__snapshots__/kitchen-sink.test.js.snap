@@ -2203,6 +2203,730 @@ COMMENT ON VIEW my_view IS E'View of departmental costs';
 COMMENT ON TABLE mytable IS NULL;"
 `;
 
+exports[`kitchen sink conflicts 1`] = `
+Object {
+  "query": Array [
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "InsertStmt": Object {
+            "cols": Array [
+              Object {
+                "ResTarget": Object {
+                  "location": 22,
+                  "name": "project_id",
+                },
+              },
+              Object {
+                "ResTarget": Object {
+                  "location": 34,
+                  "name": "name",
+                },
+              },
+              Object {
+                "ResTarget": Object {
+                  "location": 40,
+                  "name": "field_name",
+                },
+              },
+            ],
+            "onConflictClause": Object {
+              "OnConflictClause": Object {
+                "action": 2,
+                "infer": Object {
+                  "InferClause": Object {
+                    "indexElems": Array [
+                      Object {
+                        "IndexElem": Object {
+                          "name": "project_id",
+                          "nulls_ordering": 0,
+                          "ordering": 0,
+                        },
+                      },
+                      Object {
+                        "IndexElem": Object {
+                          "name": "name",
+                          "nulls_ordering": 0,
+                          "ordering": 0,
+                        },
+                      },
+                    ],
+                    "location": 128,
+                  },
+                },
+                "location": 116,
+                "targetList": Array [
+                  Object {
+                    "ResTarget": Object {
+                      "location": 171,
+                      "name": "field_name",
+                      "val": Object {
+                        "ColumnRef": Object {
+                          "fields": Array [
+                            Object {
+                              "String": Object {
+                                "str": "excluded",
+                              },
+                            },
+                            Object {
+                              "String": Object {
+                                "str": "field_name",
+                              },
+                            },
+                          ],
+                          "location": 184,
+                        },
+                      },
+                    },
+                  },
+                ],
+              },
+            },
+            "override": 0,
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 12,
+                "relname": "table",
+                "relpersistence": "p",
+                "schemaname": "yo",
+              },
+            },
+            "selectStmt": Object {
+              "SelectStmt": Object {
+                "op": 0,
+                "valuesLists": Array [
+                  Array [
+                    Object {
+                      "ColumnRef": Object {
+                        "fields": Array [
+                          Object {
+                            "String": Object {
+                              "str": "v_obj_key_id",
+                            },
+                          },
+                        ],
+                        "location": 62,
+                      },
+                    },
+                    Object {
+                      "TypeCast": Object {
+                        "arg": Object {
+                          "ColumnRef": Object {
+                            "fields": Array [
+                              Object {
+                                "String": Object {
+                                  "str": "v_secret_name",
+                                },
+                              },
+                            ],
+                            "location": 76,
+                          },
+                        },
+                        "location": 89,
+                        "typeName": Object {
+                          "TypeName": Object {
+                            "location": 91,
+                            "names": Array [
+                              Object {
+                                "String": Object {
+                                  "str": "bytea",
+                                },
+                              },
+                            ],
+                            "typemod": -1,
+                          },
+                        },
+                      },
+                    },
+                    Object {
+                      "ColumnRef": Object {
+                        "fields": Array [
+                          Object {
+                            "String": Object {
+                              "str": "v_secret_value",
+                            },
+                          },
+                        ],
+                        "location": 98,
+                      },
+                    },
+                  ],
+                ],
+              },
+            },
+          },
+        },
+        "stmt_len": 203,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "InsertStmt": Object {
+            "cols": Array [
+              Object {
+                "ResTarget": Object {
+                  "location": 229,
+                  "name": "project_id",
+                },
+              },
+              Object {
+                "ResTarget": Object {
+                  "location": 241,
+                  "name": "name",
+                },
+              },
+              Object {
+                "ResTarget": Object {
+                  "location": 247,
+                  "name": "field_name",
+                },
+              },
+            ],
+            "onConflictClause": Object {
+              "OnConflictClause": Object {
+                "action": 2,
+                "infer": Object {
+                  "InferClause": Object {
+                    "indexElems": Array [
+                      Object {
+                        "IndexElem": Object {
+                          "name": "project_id",
+                          "nulls_ordering": 0,
+                          "ordering": 0,
+                        },
+                      },
+                      Object {
+                        "IndexElem": Object {
+                          "name": "name",
+                          "nulls_ordering": 0,
+                          "ordering": 0,
+                        },
+                      },
+                    ],
+                    "location": 335,
+                  },
+                },
+                "location": 323,
+                "targetList": Array [
+                  Object {
+                    "ResTarget": Object {
+                      "location": 378,
+                      "name": "field_name",
+                      "val": Object {
+                        "ColumnRef": Object {
+                          "fields": Array [
+                            Object {
+                              "String": Object {
+                                "str": "excluded",
+                              },
+                            },
+                            Object {
+                              "String": Object {
+                                "str": "field_name",
+                              },
+                            },
+                          ],
+                          "location": 391,
+                        },
+                      },
+                    },
+                  },
+                ],
+                "whereClause": Object {
+                  "A_Expr": Object {
+                    "kind": 0,
+                    "lexpr": Object {
+                      "ColumnRef": Object {
+                        "fields": Array [
+                          Object {
+                            "String": Object {
+                              "str": "prop",
+                            },
+                          },
+                        ],
+                        "location": 419,
+                      },
+                    },
+                    "location": 424,
+                    "name": Array [
+                      Object {
+                        "String": Object {
+                          "str": "=",
+                        },
+                      },
+                    ],
+                    "rexpr": Object {
+                      "A_Const": Object {
+                        "location": 426,
+                        "val": Object {
+                          "Integer": Object {
+                            "ival": 1,
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            "override": 0,
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 219,
+                "relname": "table",
+                "relpersistence": "p",
+                "schemaname": "yo",
+              },
+            },
+            "selectStmt": Object {
+              "SelectStmt": Object {
+                "op": 0,
+                "valuesLists": Array [
+                  Array [
+                    Object {
+                      "ColumnRef": Object {
+                        "fields": Array [
+                          Object {
+                            "String": Object {
+                              "str": "v_obj_key_id",
+                            },
+                          },
+                        ],
+                        "location": 269,
+                      },
+                    },
+                    Object {
+                      "TypeCast": Object {
+                        "arg": Object {
+                          "ColumnRef": Object {
+                            "fields": Array [
+                              Object {
+                                "String": Object {
+                                  "str": "v_secret_name",
+                                },
+                              },
+                            ],
+                            "location": 283,
+                          },
+                        },
+                        "location": 296,
+                        "typeName": Object {
+                          "TypeName": Object {
+                            "location": 298,
+                            "names": Array [
+                              Object {
+                                "String": Object {
+                                  "str": "bytea",
+                                },
+                              },
+                            ],
+                            "typemod": -1,
+                          },
+                        },
+                      },
+                    },
+                    Object {
+                      "ColumnRef": Object {
+                        "fields": Array [
+                          Object {
+                            "String": Object {
+                              "str": "v_secret_value",
+                            },
+                          },
+                        ],
+                        "location": 305,
+                      },
+                    },
+                  ],
+                ],
+              },
+            },
+          },
+        },
+        "stmt_len": 223,
+        "stmt_location": 204,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "InsertStmt": Object {
+            "cols": Array [
+              Object {
+                "ResTarget": Object {
+                  "location": 452,
+                  "name": "project_id",
+                },
+              },
+              Object {
+                "ResTarget": Object {
+                  "location": 464,
+                  "name": "name",
+                },
+              },
+              Object {
+                "ResTarget": Object {
+                  "location": 470,
+                  "name": "field_name",
+                },
+              },
+            ],
+            "onConflictClause": Object {
+              "OnConflictClause": Object {
+                "action": 1,
+                "infer": Object {
+                  "InferClause": Object {
+                    "indexElems": Array [
+                      Object {
+                        "IndexElem": Object {
+                          "name": "project_id",
+                          "nulls_ordering": 0,
+                          "ordering": 0,
+                        },
+                      },
+                      Object {
+                        "IndexElem": Object {
+                          "name": "name",
+                          "nulls_ordering": 0,
+                          "ordering": 0,
+                        },
+                      },
+                    ],
+                    "location": 558,
+                  },
+                },
+                "location": 546,
+              },
+            },
+            "override": 0,
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 442,
+                "relname": "table",
+                "relpersistence": "p",
+                "schemaname": "yo",
+              },
+            },
+            "selectStmt": Object {
+              "SelectStmt": Object {
+                "op": 0,
+                "valuesLists": Array [
+                  Array [
+                    Object {
+                      "ColumnRef": Object {
+                        "fields": Array [
+                          Object {
+                            "String": Object {
+                              "str": "v_obj_key_id",
+                            },
+                          },
+                        ],
+                        "location": 492,
+                      },
+                    },
+                    Object {
+                      "TypeCast": Object {
+                        "arg": Object {
+                          "ColumnRef": Object {
+                            "fields": Array [
+                              Object {
+                                "String": Object {
+                                  "str": "v_secret_name",
+                                },
+                              },
+                            ],
+                            "location": 506,
+                          },
+                        },
+                        "location": 519,
+                        "typeName": Object {
+                          "TypeName": Object {
+                            "location": 521,
+                            "names": Array [
+                              Object {
+                                "String": Object {
+                                  "str": "bytea",
+                                },
+                              },
+                            ],
+                            "typemod": -1,
+                          },
+                        },
+                      },
+                    },
+                    Object {
+                      "ColumnRef": Object {
+                        "fields": Array [
+                          Object {
+                            "String": Object {
+                              "str": "v_secret_value",
+                            },
+                          },
+                        ],
+                        "location": 528,
+                      },
+                    },
+                  ],
+                ],
+              },
+            },
+          },
+        },
+        "stmt_len": 161,
+        "stmt_location": 428,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "InsertStmt": Object {
+            "cols": Array [
+              Object {
+                "ResTarget": Object {
+                  "location": 615,
+                  "name": "name",
+                },
+              },
+              Object {
+                "ResTarget": Object {
+                  "location": 621,
+                  "name": "email",
+                },
+              },
+            ],
+            "onConflictClause": Object {
+              "OnConflictClause": Object {
+                "action": 1,
+                "infer": Object {
+                  "InferClause": Object {
+                    "conname": "customers_name_key",
+                    "location": 696,
+                  },
+                },
+                "location": 683,
+              },
+            },
+            "override": 0,
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 604,
+                "relname": "customers",
+                "relpersistence": "p",
+              },
+            },
+            "selectStmt": Object {
+              "SelectStmt": Object {
+                "op": 0,
+                "valuesLists": Array [
+                  Array [
+                    Object {
+                      "A_Const": Object {
+                        "location": 640,
+                        "val": Object {
+                          "String": Object {
+                            "str": "Microsoft",
+                          },
+                        },
+                      },
+                    },
+                    Object {
+                      "A_Const": Object {
+                        "location": 655,
+                        "val": Object {
+                          "String": Object {
+                            "str": "hotline@microsoft.com",
+                          },
+                        },
+                      },
+                    },
+                  ],
+                ],
+              },
+            },
+          },
+        },
+        "stmt_len": 150,
+        "stmt_location": 590,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "InsertStmt": Object {
+            "cols": Array [
+              Object {
+                "ResTarget": Object {
+                  "location": 767,
+                  "name": "name",
+                },
+              },
+              Object {
+                "ResTarget": Object {
+                  "location": 773,
+                  "name": "email",
+                },
+              },
+            ],
+            "onConflictClause": Object {
+              "OnConflictClause": Object {
+                "action": 2,
+                "infer": Object {
+                  "InferClause": Object {
+                    "indexElems": Array [
+                      Object {
+                        "IndexElem": Object {
+                          "name": "name",
+                          "nulls_ordering": 0,
+                          "ordering": 0,
+                        },
+                      },
+                    ],
+                    "location": 847,
+                  },
+                },
+                "location": 835,
+                "targetList": Array [
+                  Object {
+                    "ResTarget": Object {
+                      "location": 874,
+                      "name": "email",
+                      "val": Object {
+                        "A_Expr": Object {
+                          "kind": 0,
+                          "lexpr": Object {
+                            "A_Expr": Object {
+                              "kind": 0,
+                              "lexpr": Object {
+                                "ColumnRef": Object {
+                                  "fields": Array [
+                                    Object {
+                                      "String": Object {
+                                        "str": "excluded",
+                                      },
+                                    },
+                                    Object {
+                                      "String": Object {
+                                        "str": "email",
+                                      },
+                                    },
+                                  ],
+                                  "location": 882,
+                                },
+                              },
+                              "location": 897,
+                              "name": Array [
+                                Object {
+                                  "String": Object {
+                                    "str": "||",
+                                  },
+                                },
+                              ],
+                              "rexpr": Object {
+                                "A_Const": Object {
+                                  "location": 900,
+                                  "val": Object {
+                                    "String": Object {
+                                      "str": ";",
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                          "location": 904,
+                          "name": Array [
+                            Object {
+                              "String": Object {
+                                "str": "||",
+                              },
+                            },
+                          ],
+                          "rexpr": Object {
+                            "ColumnRef": Object {
+                              "fields": Array [
+                                Object {
+                                  "String": Object {
+                                    "str": "customers",
+                                  },
+                                },
+                                Object {
+                                  "String": Object {
+                                    "str": "email",
+                                  },
+                                },
+                              ],
+                              "location": 907,
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                ],
+              },
+            },
+            "override": 0,
+            "relation": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 756,
+                "relname": "customers",
+                "relpersistence": "p",
+              },
+            },
+            "selectStmt": Object {
+              "SelectStmt": Object {
+                "op": 0,
+                "valuesLists": Array [
+                  Array [
+                    Object {
+                      "A_Const": Object {
+                        "location": 792,
+                        "val": Object {
+                          "String": Object {
+                            "str": "Microsoft",
+                          },
+                        },
+                      },
+                    },
+                    Object {
+                      "A_Const": Object {
+                        "location": 807,
+                        "val": Object {
+                          "String": Object {
+                            "str": "hotline@microsoft.com",
+                          },
+                        },
+                      },
+                    },
+                  ],
+                ],
+              },
+            },
+          },
+        },
+        "stmt_len": 181,
+        "stmt_location": 741,
+      },
+    },
+  ],
+  "stderr": "",
+}
+`;
+
+exports[`kitchen sink conflicts 2`] = `
+"INSERT INTO yo.\\"table\\" ( project_id, name, field_name ) VALUES (v_obj_key_id, v_secret_name::bytea, v_secret_value) ON CONFLICT ( project_id, name ) DO UPDATE  SET field_name = excluded.field_name;
+INSERT INTO yo.\\"table\\" ( project_id, name, field_name ) VALUES (v_obj_key_id, v_secret_name::bytea, v_secret_value) ON CONFLICT ( project_id, name ) DO UPDATE  SET field_name = excluded.field_name WHERE ((prop) = (1));
+INSERT INTO yo.\\"table\\" ( project_id, name, field_name ) VALUES (v_obj_key_id, v_secret_name::bytea, v_secret_value) ON CONFLICT ( project_id, name ) DO NOTHING;
+INSERT INTO customers ( name, email ) VALUES ('Microsoft', 'hotline@microsoft.com') ON CONFLICT ON CONSTRAINT customers_name_key DO NOTHING;
+INSERT INTO customers ( name, email ) VALUES ('Microsoft', 'hotline@microsoft.com') ON CONFLICT ( name ) DO UPDATE  SET email = ((((excluded.email) || (';'))) || (customers.email));"
+`;
+
 exports[`kitchen sink default privs 1`] = `
 Object {
   "query": Array [
