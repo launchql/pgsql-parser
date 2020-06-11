@@ -1,5 +1,345 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`kitchen sink alias 1`] = `
+Object {
+  "query": Array [
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "SelectStmt": Object {
+            "fromClause": Array [
+              Object {
+                "RangeFunction": Object {
+                  "alias": Object {
+                    "Alias": Object {
+                      "aliasname": "a#b",
+                    },
+                  },
+                  "functions": Array [
+                    Array [
+                      Object {
+                        "FuncCall": Object {
+                          "args": Array [
+                            Object {
+                              "A_Const": Object {
+                                "location": 30,
+                                "val": Object {
+                                  "Integer": Object {
+                                    "ival": 1,
+                                  },
+                                },
+                              },
+                            },
+                            Object {
+                              "A_Const": Object {
+                                "location": 33,
+                                "val": Object {
+                                  "Integer": Object {
+                                    "ival": 1,
+                                  },
+                                },
+                              },
+                            },
+                          ],
+                          "funcname": Array [
+                            Object {
+                              "String": Object {
+                                "str": "generate_series",
+                              },
+                            },
+                          ],
+                          "location": 14,
+                        },
+                      },
+                      null,
+                    ],
+                  ],
+                },
+              },
+            ],
+            "op": 0,
+            "targetList": Array [
+              Object {
+                "ResTarget": Object {
+                  "location": 7,
+                  "val": Object {
+                    "ColumnRef": Object {
+                      "fields": Array [
+                        Object {
+                          "A_Star": Object {},
+                        },
+                      ],
+                      "location": 7,
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        },
+        "stmt_len": 41,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "SelectStmt": Object {
+            "fromClause": Array [
+              Object {
+                "RangeFunction": Object {
+                  "alias": Object {
+                    "Alias": Object {
+                      "aliasname": "a#b",
+                      "colnames": Array [
+                        Object {
+                          "String": Object {
+                            "str": "c#d",
+                          },
+                        },
+                      ],
+                    },
+                  },
+                  "functions": Array [
+                    Array [
+                      Object {
+                        "FuncCall": Object {
+                          "args": Array [
+                            Object {
+                              "A_Const": Object {
+                                "location": 74,
+                                "val": Object {
+                                  "Integer": Object {
+                                    "ival": 1,
+                                  },
+                                },
+                              },
+                            },
+                            Object {
+                              "A_Const": Object {
+                                "location": 77,
+                                "val": Object {
+                                  "Integer": Object {
+                                    "ival": 1,
+                                  },
+                                },
+                              },
+                            },
+                          ],
+                          "funcname": Array [
+                            Object {
+                              "String": Object {
+                                "str": "generate_series",
+                              },
+                            },
+                          ],
+                          "location": 58,
+                        },
+                      },
+                      null,
+                    ],
+                  ],
+                },
+              },
+            ],
+            "op": 0,
+            "targetList": Array [
+              Object {
+                "ResTarget": Object {
+                  "location": 51,
+                  "val": Object {
+                    "ColumnRef": Object {
+                      "fields": Array [
+                        Object {
+                          "A_Star": Object {},
+                        },
+                      ],
+                      "location": 51,
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        },
+        "stmt_len": 50,
+        "stmt_location": 42,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "SelectStmt": Object {
+            "fromClause": Array [
+              Object {
+                "RangeFunction": Object {
+                  "alias": Object {
+                    "Alias": Object {
+                      "aliasname": "aba",
+                    },
+                  },
+                  "functions": Array [
+                    Array [
+                      Object {
+                        "FuncCall": Object {
+                          "args": Array [
+                            Object {
+                              "A_Const": Object {
+                                "location": 126,
+                                "val": Object {
+                                  "Integer": Object {
+                                    "ival": 1,
+                                  },
+                                },
+                              },
+                            },
+                            Object {
+                              "A_Const": Object {
+                                "location": 129,
+                                "val": Object {
+                                  "Integer": Object {
+                                    "ival": 1,
+                                  },
+                                },
+                              },
+                            },
+                          ],
+                          "funcname": Array [
+                            Object {
+                              "String": Object {
+                                "str": "generate_series",
+                              },
+                            },
+                          ],
+                          "location": 110,
+                        },
+                      },
+                      null,
+                    ],
+                  ],
+                },
+              },
+            ],
+            "op": 0,
+            "targetList": Array [
+              Object {
+                "ResTarget": Object {
+                  "location": 103,
+                  "val": Object {
+                    "ColumnRef": Object {
+                      "fields": Array [
+                        Object {
+                          "A_Star": Object {},
+                        },
+                      ],
+                      "location": 103,
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        },
+        "stmt_len": 44,
+        "stmt_location": 93,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "SelectStmt": Object {
+            "fromClause": Array [
+              Object {
+                "RangeFunction": Object {
+                  "alias": Object {
+                    "Alias": Object {
+                      "aliasname": "aba",
+                      "colnames": Array [
+                        Object {
+                          "String": Object {
+                            "str": "ccd",
+                          },
+                        },
+                      ],
+                    },
+                  },
+                  "functions": Array [
+                    Array [
+                      Object {
+                        "FuncCall": Object {
+                          "args": Array [
+                            Object {
+                              "A_Const": Object {
+                                "location": 170,
+                                "val": Object {
+                                  "Integer": Object {
+                                    "ival": 1,
+                                  },
+                                },
+                              },
+                            },
+                            Object {
+                              "A_Const": Object {
+                                "location": 173,
+                                "val": Object {
+                                  "Integer": Object {
+                                    "ival": 1,
+                                  },
+                                },
+                              },
+                            },
+                          ],
+                          "funcname": Array [
+                            Object {
+                              "String": Object {
+                                "str": "generate_series",
+                              },
+                            },
+                          ],
+                          "location": 154,
+                        },
+                      },
+                      null,
+                    ],
+                  ],
+                },
+              },
+            ],
+            "op": 0,
+            "targetList": Array [
+              Object {
+                "ResTarget": Object {
+                  "location": 147,
+                  "val": Object {
+                    "ColumnRef": Object {
+                      "fields": Array [
+                        Object {
+                          "A_Star": Object {},
+                        },
+                      ],
+                      "location": 147,
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        },
+        "stmt_len": 50,
+        "stmt_location": 138,
+      },
+    },
+  ],
+  "stderr": "",
+}
+`;
+
+exports[`kitchen sink alias 2`] = `
+"SELECT * FROM generate_series(1, 1) AS \\"a#b\\";
+SELECT * FROM generate_series(1, 1) AS \\"a#b\\"(\\"c#d\\");
+SELECT * FROM generate_series(1, 1) AS aba;
+SELECT * FROM generate_series(1, 1) AS aba(ccd);"
+`;
+
 exports[`kitchen sink alter 1`] = `
 Object {
   "query": Array [

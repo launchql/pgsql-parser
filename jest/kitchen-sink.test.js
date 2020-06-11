@@ -66,6 +66,9 @@ describe('kitchen sink', () => {
   it('delete', () => {
     check('statements/delete.sql');
   });
+  it('alias', () => {
+    check('statements/alias.sql');
+  });
   it('domain', () => {
     check('domains/create.sql');
   });

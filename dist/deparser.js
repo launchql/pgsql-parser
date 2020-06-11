@@ -395,7 +395,7 @@ class Deparser {
     const output = ['AS'];
 
     if (node.colnames) {
-      output.push(name + parens(this.list(node.colnames)));
+      output.push(this.quote(name) + parens(this.listQuotes(node.colnames)));
     } else {
       output.push(this.quote(name));
     }
