@@ -28,6 +28,9 @@ describe('kitchen sink', () => {
   it('comments', () => {
     check('comments/custom.sql');
   });
+  it('sequences', () => {
+    check('sequences/sequences.sql');
+  });
   it('policies', () => {
     check('policies/custom.sql');
   });

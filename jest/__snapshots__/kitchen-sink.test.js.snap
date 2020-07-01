@@ -27671,6 +27671,243 @@ CREATE RULE log_shoelace AS ON UPDATE TO shoelace_data WHERE ((new.sl_avail) <> 
 CREATE RULE shoelace_ins AS ON INSERT TO shoelace DO INSTEAD INSERT INTO shoelace_data VALUES (new.sl_name, new.sl_avail, new.sl_color, new.sl_len, new.sl_unit);"
 `;
 
+exports[`kitchen sink sequences 1`] = `
+Object {
+  "query": Array [
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CreateSeqStmt": Object {
+            "sequence": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 16,
+                "relname": "bar",
+                "relpersistence": "p",
+                "schemaname": "foo",
+              },
+            },
+          },
+        },
+        "stmt_len": 23,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CreateSeqStmt": Object {
+            "options": Array [
+              Object {
+                "DefElem": Object {
+                  "arg": Object {
+                    "Integer": Object {
+                      "ival": 5,
+                    },
+                  },
+                  "defaction": 0,
+                  "defname": "increment",
+                  "location": 53,
+                },
+              },
+              Object {
+                "DefElem": Object {
+                  "arg": Object {
+                    "Integer": Object {
+                      "ival": 100,
+                    },
+                  },
+                  "defaction": 0,
+                  "defname": "start",
+                  "location": 65,
+                },
+              },
+            ],
+            "sequence": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 42,
+                "relname": "mysequence",
+                "relpersistence": "p",
+              },
+            },
+          },
+        },
+        "stmt_len": 50,
+        "stmt_location": 24,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CreateSeqStmt": Object {
+            "options": Array [
+              Object {
+                "DefElem": Object {
+                  "arg": Object {
+                    "Integer": Object {
+                      "ival": -1,
+                    },
+                  },
+                  "defaction": 0,
+                  "defname": "increment",
+                  "location": 99,
+                },
+              },
+              Object {
+                "DefElem": Object {
+                  "arg": Object {
+                    "Integer": Object {
+                      "ival": 1,
+                    },
+                  },
+                  "defaction": 0,
+                  "defname": "minvalue",
+                  "location": 112,
+                },
+              },
+              Object {
+                "DefElem": Object {
+                  "arg": Object {
+                    "Integer": Object {
+                      "ival": 3,
+                    },
+                  },
+                  "defaction": 0,
+                  "defname": "maxvalue",
+                  "location": 124,
+                },
+              },
+              Object {
+                "DefElem": Object {
+                  "arg": Object {
+                    "Integer": Object {
+                      "ival": 3,
+                    },
+                  },
+                  "defaction": 0,
+                  "defname": "start",
+                  "location": 135,
+                },
+              },
+              Object {
+                "DefElem": Object {
+                  "arg": Object {
+                    "Integer": Object {
+                      "ival": 1,
+                    },
+                  },
+                  "defaction": 0,
+                  "defname": "cycle",
+                  "location": 143,
+                },
+              },
+            ],
+            "sequence": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 93,
+                "relname": "three",
+                "relpersistence": "p",
+              },
+            },
+          },
+        },
+        "stmt_len": 73,
+        "stmt_location": 75,
+      },
+    },
+    Object {
+      "RawStmt": Object {
+        "stmt": Object {
+          "CreateSeqStmt": Object {
+            "options": Array [
+              Object {
+                "DefElem": Object {
+                  "arg": Object {
+                    "Integer": Object {
+                      "ival": -1,
+                    },
+                  },
+                  "defaction": 0,
+                  "defname": "increment",
+                  "location": 174,
+                },
+              },
+              Object {
+                "DefElem": Object {
+                  "arg": Object {
+                    "Integer": Object {
+                      "ival": 1,
+                    },
+                  },
+                  "defaction": 0,
+                  "defname": "minvalue",
+                  "location": 187,
+                },
+              },
+              Object {
+                "DefElem": Object {
+                  "arg": Object {
+                    "Integer": Object {
+                      "ival": 3,
+                    },
+                  },
+                  "defaction": 0,
+                  "defname": "maxvalue",
+                  "location": 199,
+                },
+              },
+              Object {
+                "DefElem": Object {
+                  "arg": Object {
+                    "Integer": Object {
+                      "ival": 3,
+                    },
+                  },
+                  "defaction": 0,
+                  "defname": "start",
+                  "location": 210,
+                },
+              },
+              Object {
+                "DefElem": Object {
+                  "arg": Object {
+                    "Integer": Object {
+                      "ival": 0,
+                    },
+                  },
+                  "defaction": 0,
+                  "defname": "cycle",
+                  "location": 218,
+                },
+              },
+            ],
+            "sequence": Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": 167,
+                "relname": "three3",
+                "relpersistence": "p",
+              },
+            },
+          },
+        },
+        "stmt_len": 77,
+        "stmt_location": 149,
+      },
+    },
+  ],
+  "stderr": "",
+}
+`;
+
+exports[`kitchen sink sequences 2`] = `
+"CREATE SEQUENCE foo.bar;
+CREATE SEQUENCE mysequence increment 5 start 100;
+CREATE SEQUENCE three increment -1 minvalue 1 maxvalue 3 start 3 CYCLE;
+CREATE SEQUENCE three3 increment -1 minvalue 1 maxvalue 3 start 3 NO CYCLE;"
+`;
+
 exports[`kitchen sink set 1`] = `
 Object {
   "query": Array [
