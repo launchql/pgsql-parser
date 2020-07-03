@@ -5,7 +5,7 @@ require('babel-core/register')();
 const parser = require('./src');
 
 function runQuery(content) {
-  const result = parser.deparse(parser.parse(content).query);
+  const result = parser.deparse(parser.parse(content));
   console.log(result);
 }
 

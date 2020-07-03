@@ -65,7 +65,7 @@ const log = (msg) => {
 };
 
 const check = (text) => {
-  const reference = parse(text).query;
+  const reference = parse(text);
 
   const parsed = parse(deparse(reference));
 
@@ -73,10 +73,10 @@ const check = (text) => {
     throw new Error(parsed.error + ':\n' + deparse(reference));
   }
 
-  const result = deparse(parse(text).query);
+  const result = deparse(parse(text));
 
-  const json1 = JSON.stringify(clean(parse(text).query));
-  const json2 = JSON.stringify(clean(parse(result).query));
+  const json1 = JSON.stringify(clean(parse(text)));
+  const json2 = JSON.stringify(clean(parse(result)));
 
   return json1.should.eq(json2);
 };
@@ -88,7 +88,7 @@ const defineQueryTest = (sqlQuery, file) => {
     try {
       parsed = parse(sqlQuery);
       // Only SelectStmt's for now
-      if (parsed.query && parsed.query[0] && isSupported(parsed.query[0])) {
+      if (parsed && parsed[0] && isSupported(parsed[0])) {
         check(sqlQuery);
       }
     } catch (ex) {
@@ -103,7 +103,7 @@ const defineQueryTest = (sqlQuery, file) => {
       ];
 
       for (const type of unsupportedTypes) {
-        if (byType(parsed.query, type).length) {
+        if (byType(parsed, type).length) {
           unsupported = true;
         }
       }

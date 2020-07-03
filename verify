@@ -9,10 +9,10 @@ const exec = require('child_process').exec;
 const fs = require('fs');
 
 function runQuery(content) {
-  const result = parser.deparse(parser.parse(content).query);
+  const result = parser.deparse(parser.parse(content));
 
-  const json1 = parser.clean(parser.parse(content).query);
-  const json2 = parser.clean(parser.parse(result).query);
+  const json1 = parser.clean(parser.parse(content));
+  const json2 = parser.clean(parser.parse(result));
 
   const same = parser.verify(content);
 

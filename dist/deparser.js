@@ -709,7 +709,7 @@ class Deparser {
     return output.join(' ');
   }
 
-  ['DefElem'](node) {
+  ['DefElem'](node, context) {
     if (node.defname === 'transaction_isolation') {
       return (0, _util.format)('ISOLATION LEVEL %s', node.arg.A_Const.val.String.str.toUpperCase());
     }
@@ -731,9 +731,23 @@ class Deparser {
       name = `${node.defnamespace}.${node.defname}`;
     }
 
-    if (node.arg) {
+    if (context === 'sequence') {
+      switch (name) {
+        case 'cycle':
+          {
+            const on = this.deparse(node.arg) + '' === '1';
+            return on ? 'CYCLE' : 'NO CYCLE';
+          }
+        default:
+          if (node.arg) {
+            // we need 'simple' so it doesn't wrap negative numbers in parens
+            return `${name} ${this.deparse(node.arg, 'simple')}`;
+          }
+      }
+    } else if (node.arg) {
       return `${name} = ${this.deparse(node.arg)}`;
     }
+
     return name;
   }
 
@@ -1682,6 +1696,19 @@ class Deparser {
     output.push(this.deparse(node.view));
     output.push('AS');
     output.push(this.deparse(node.query));
+    return output.join(' ');
+  }
+
+  ['CreateSeqStmt'](node) {
+    const output = [];
+    output.push('CREATE SEQUENCE');
+    output.push(this.deparse(node.sequence));
+    if (node.options && node.options.length) {
+      // console.log(node.options);
+      node.options.forEach(opt => {
+        output.push(this.deparse(opt, 'sequence'));
+      });
+    }
     return output.join(' ');
   }
 

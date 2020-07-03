@@ -7,10 +7,10 @@ import { sync as glob } from 'glob';
 const FIXTURE_DIR = `${__dirname}/../test/fixtures`;
 
 export const check = (file) => {
-  const testsql = glob(`${FIXTURE_DIR}/${file}`).map(f => readFileSync(f).toString());
+  const testsql = glob(`${FIXTURE_DIR}/${file}`).map(f => readFileSync(f).toString())[0];
   const tree = parser.parse(testsql);
   expect(tree).toMatchSnapshot();
-  const sql = parser.deparse(tree.query);
+  const sql = parser.deparse(tree);
   expect(cleanLines(sql)).toMatchSnapshot();
   expect(cleanTree(parser.parse(sql))).toEqual(cleanTree(tree));
 };
@@ -53,7 +53,7 @@ describe('kitchen sink', () => {
     const dosql = readFileSync(resolve(__dirname + '/../test/fixtures/do/custom.sql')).toString();
     const tree = parser.parse(dosql);
     expect(tree).toMatchSnapshot();
-    const sql = parser.deparse(tree.query);
+    const sql = parser.deparse(tree);
     expect(cleanLines(sql)).toMatchSnapshot();
     expect(cleanTree(parser.parse(cleanLines(sql)))).toEqual(cleanTree(parser.parse(cleanLines(dosql))));
   });
@@ -181,504 +181,504 @@ describe('kitchen sink', () => {
       check('simple.sql');
     });
   });
-  describe('upstream', () => {
+  xdescribe('upstream', () => {
     it('upstream/abstime.sql', () => {
-      check('upstream/upstream/abstime.sql');
+      check('upstream/abstime.sql');
     });
     it('upstream/advisory_lock.sql', () => {
-      check('upstream/upstream/advisory_lock.sql');
+      check('upstream/advisory_lock.sql');
     });
     it('upstream/aggregates.sql', () => {
-      check('upstream/upstream/aggregates.sql');
+      check('upstream/aggregates.sql');
     });
     it('upstream/alter_generic.sql', () => {
-      check('upstream/upstream/alter_generic.sql');
+      check('upstream/alter_generic.sql');
     });
     it('upstream/alter_operator.sql', () => {
-      check('upstream/upstream/alter_operator.sql');
+      check('upstream/alter_operator.sql');
     });
     it('upstream/alter_table.sql', () => {
-      check('upstream/upstream/alter_table.sql');
+      check('upstream/alter_table.sql');
     });
     it('upstream/arrays.sql', () => {
-      check('upstream/upstream/arrays.sql');
+      check('upstream/arrays.sql');
     });
     it('upstream/async.sql', () => {
-      check('upstream/upstream/async.sql');
+      check('upstream/async.sql');
     });
     it('upstream/bit.sql', () => {
-      check('upstream/upstream/bit.sql');
+      check('upstream/bit.sql');
     });
     it('upstream/bitmapops.sql', () => {
-      check('upstream/upstream/bitmapops.sql');
+      check('upstream/bitmapops.sql');
     });
     it('upstream/boolean.sql', () => {
-      check('upstream/upstream/boolean.sql');
+      check('upstream/boolean.sql');
     });
     it('upstream/box.sql', () => {
-      check('upstream/upstream/box.sql');
+      check('upstream/box.sql');
     });
     it('upstream/brin.sql', () => {
-      check('upstream/upstream/brin.sql');
+      check('upstream/brin.sql');
     });
     it('upstream/btree_index.sql', () => {
-      check('upstream/upstream/btree_index.sql');
+      check('upstream/btree_index.sql');
     });
     it('upstream/case.sql', () => {
-      check('upstream/upstream/case.sql');
+      check('upstream/case.sql');
     });
     it('upstream/char.sql', () => {
-      check('upstream/upstream/char.sql');
+      check('upstream/char.sql');
     });
     it('upstream/circle.sql', () => {
-      check('upstream/upstream/circle.sql');
+      check('upstream/circle.sql');
     });
     it('upstream/cluster.sql', () => {
-      check('upstream/upstream/cluster.sql');
+      check('upstream/cluster.sql');
     });
     it('upstream/collate.linux.utf8.sql', () => {
-      check('upstream/upstream/collate.linux.utf8.sql');
+      check('upstream/collate.linux.utf8.sql');
     });
     it('upstream/collate.sql', () => {
-      check('upstream/upstream/collate.sql');
+      check('upstream/collate.sql');
     });
     it('upstream/combocid.sql', () => {
-      check('upstream/upstream/combocid.sql');
+      check('upstream/combocid.sql');
     });
     it('upstream/comments.sql', () => {
-      check('upstream/upstream/comments.sql');
+      check('upstream/comments.sql');
     });
     it('upstream/conversion.sql', () => {
-      check('upstream/upstream/conversion.sql');
+      check('upstream/conversion.sql');
     });
     it('upstream/copy2.sql', () => {
-      check('upstream/upstream/copy2.sql');
+      check('upstream/copy2.sql');
     });
     it('upstream/copydml.sql', () => {
-      check('upstream/upstream/copydml.sql');
+      check('upstream/copydml.sql');
     });
     it('upstream/copyselect.sql', () => {
-      check('upstream/upstream/copyselect.sql');
+      check('upstream/copyselect.sql');
     });
     it('upstream/create_aggregate.sql', () => {
-      check('upstream/upstream/create_aggregate.sql');
+      check('upstream/create_aggregate.sql');
     });
     it('upstream/create_am.sql', () => {
-      check('upstream/upstream/create_am.sql');
+      check('upstream/create_am.sql');
     });
     it('upstream/create_cast.sql', () => {
-      check('upstream/upstream/create_cast.sql');
+      check('upstream/create_cast.sql');
     });
     it('upstream/create_function_3.sql', () => {
-      check('upstream/upstream/create_function_3.sql');
+      check('upstream/create_function_3.sql');
     });
     it('upstream/create_index.sql', () => {
-      check('upstream/upstream/create_index.sql');
+      check('upstream/create_index.sql');
     });
     it('upstream/create_misc.sql', () => {
-      check('upstream/upstream/create_misc.sql');
+      check('upstream/create_misc.sql');
     });
     it('upstream/create_operator.sql', () => {
-      check('upstream/upstream/create_operator.sql');
+      check('upstream/create_operator.sql');
     });
     it('upstream/create_table.sql', () => {
-      check('upstream/upstream/create_table.sql');
+      check('upstream/create_table.sql');
     });
     it('upstream/create_table_like.sql', () => {
-      check('upstream/upstream/create_table_like.sql');
+      check('upstream/create_table_like.sql');
     });
     it('upstream/create_type.sql', () => {
-      check('upstream/upstream/create_type.sql');
+      check('upstream/create_type.sql');
     });
     it('upstream/create_view.sql', () => {
-      check('upstream/upstream/create_view.sql');
+      check('upstream/create_view.sql');
     });
     it('upstream/date.sql', () => {
-      check('upstream/upstream/date.sql');
+      check('upstream/date.sql');
     });
     it('upstream/dbsize.sql', () => {
-      check('upstream/upstream/dbsize.sql');
+      check('upstream/dbsize.sql');
     });
     it('upstream/delete.sql', () => {
-      check('upstream/upstream/delete.sql');
+      check('upstream/delete.sql');
     });
     it('upstream/dependency.sql', () => {
-      check('upstream/upstream/dependency.sql');
+      check('upstream/dependency.sql');
     });
     it('upstream/domain.sql', () => {
-      check('upstream/upstream/domain.sql');
+      check('upstream/domain.sql');
     });
     it('upstream/drop_if_exists.sql', () => {
-      check('upstream/upstream/drop_if_exists.sql');
+      check('upstream/drop_if_exists.sql');
     });
     it('upstream/drop_operator.sql', () => {
-      check('upstream/upstream/drop_operator.sql');
+      check('upstream/drop_operator.sql');
     });
     it('upstream/enum.sql', () => {
-      check('upstream/upstream/enum.sql');
+      check('upstream/enum.sql');
     });
     it('upstream/equivclass.sql', () => {
-      check('upstream/upstream/equivclass.sql');
+      check('upstream/equivclass.sql');
     });
     it('upstream/errors.sql', () => {
-      check('upstream/upstream/errors.sql');
+      check('upstream/errors.sql');
     });
     it('upstream/event_trigger.sql', () => {
-      check('upstream/upstream/event_trigger.sql');
+      check('upstream/event_trigger.sql');
     });
     it('upstream/float4.sql', () => {
-      check('upstream/upstream/float4.sql');
+      check('upstream/float4.sql');
     });
     it('upstream/float8.sql', () => {
-      check('upstream/upstream/float8.sql');
+      check('upstream/float8.sql');
     });
     it('upstream/foreign_data.sql', () => {
-      check('upstream/upstream/foreign_data.sql');
+      check('upstream/foreign_data.sql');
     });
     it('upstream/foreign_key.sql', () => {
-      check('upstream/upstream/foreign_key.sql');
+      check('upstream/foreign_key.sql');
     });
     it('upstream/functional_deps.sql', () => {
-      check('upstream/upstream/functional_deps.sql');
+      check('upstream/functional_deps.sql');
     });
     it('upstream/geometry.sql', () => {
-      check('upstream/upstream/geometry.sql');
+      check('upstream/geometry.sql');
     });
     it('upstream/gin.sql', () => {
-      check('upstream/upstream/gin.sql');
+      check('upstream/gin.sql');
     });
     it('upstream/gist.sql', () => {
-      check('upstream/upstream/gist.sql');
+      check('upstream/gist.sql');
     });
     it('upstream/groupingsets.sql', () => {
-      check('upstream/upstream/groupingsets.sql');
+      check('upstream/groupingsets.sql');
     });
     it('upstream/guc.sql', () => {
-      check('upstream/upstream/guc.sql');
+      check('upstream/guc.sql');
     });
     it('upstream/hash_index.sql', () => {
-      check('upstream/upstream/hash_index.sql');
+      check('upstream/hash_index.sql');
     });
     it('upstream/horology.sql', () => {
-      check('upstream/upstream/horology.sql');
+      check('upstream/horology.sql');
     });
     it('upstream/hs_primary_extremes.sql', () => {
-      check('upstream/upstream/hs_primary_extremes.sql');
+      check('upstream/hs_primary_extremes.sql');
     });
     it('upstream/hs_primary_setup.sql', () => {
-      check('upstream/upstream/hs_primary_setup.sql');
+      check('upstream/hs_primary_setup.sql');
     });
     it('upstream/hs_standby_allowed.sql', () => {
-      check('upstream/upstream/hs_standby_allowed.sql');
+      check('upstream/hs_standby_allowed.sql');
     });
     it('upstream/hs_standby_check.sql', () => {
-      check('upstream/upstream/hs_standby_check.sql');
+      check('upstream/hs_standby_check.sql');
     });
     it('upstream/hs_standby_disallowed.sql', () => {
-      check('upstream/upstream/hs_standby_disallowed.sql');
+      check('upstream/hs_standby_disallowed.sql');
     });
     it('upstream/hs_standby_functions.sql', () => {
-      check('upstream/upstream/hs_standby_functions.sql');
+      check('upstream/hs_standby_functions.sql');
     });
     it('upstream/indirect_toast.sql', () => {
-      check('upstream/upstream/indirect_toast.sql');
+      check('upstream/indirect_toast.sql');
     });
     it('upstream/inet.sql', () => {
-      check('upstream/upstream/inet.sql');
+      check('upstream/inet.sql');
     });
     it('upstream/inherit.sql', () => {
-      check('upstream/upstream/inherit.sql');
+      check('upstream/inherit.sql');
     });
     it('upstream/init_privs.sql', () => {
-      check('upstream/upstream/init_privs.sql');
+      check('upstream/init_privs.sql');
     });
     it('upstream/insert.sql', () => {
-      check('upstream/upstream/insert.sql');
+      check('upstream/insert.sql');
     });
     it('upstream/insert_conflict.sql', () => {
-      check('upstream/upstream/insert_conflict.sql');
+      check('upstream/insert_conflict.sql');
     });
     it('upstream/int2.sql', () => {
-      check('upstream/upstream/int2.sql');
+      check('upstream/int2.sql');
     });
     it('upstream/int4.sql', () => {
-      check('upstream/upstream/int4.sql');
+      check('upstream/int4.sql');
     });
     it('upstream/int8.sql', () => {
-      check('upstream/upstream/int8.sql');
+      check('upstream/int8.sql');
     });
     it('upstream/interval.sql', () => {
-      check('upstream/upstream/interval.sql');
+      check('upstream/interval.sql');
     });
     it('upstream/join.sql', () => {
-      check('upstream/upstream/join.sql');
+      check('upstream/join.sql');
     });
     it('upstream/json.sql', () => {
-      check('upstream/upstream/json.sql');
+      check('upstream/json.sql');
     });
     it('upstream/json_encoding.sql', () => {
-      check('upstream/upstream/json_encoding.sql');
+      check('upstream/json_encoding.sql');
     });
     it('upstream/jsonb.sql', () => {
-      check('upstream/upstream/jsonb.sql');
+      check('upstream/jsonb.sql');
     });
     it('upstream/limit.sql', () => {
-      check('upstream/upstream/limit.sql');
+      check('upstream/limit.sql');
     });
     it('upstream/line.sql', () => {
-      check('upstream/upstream/line.sql');
+      check('upstream/line.sql');
     });
     it('upstream/lock.sql', () => {
-      check('upstream/upstream/lock.sql');
+      check('upstream/lock.sql');
     });
     it('upstream/lseg.sql', () => {
-      check('upstream/upstream/lseg.sql');
+      check('upstream/lseg.sql');
     });
     it('upstream/macaddr.sql', () => {
-      check('upstream/upstream/macaddr.sql');
+      check('upstream/macaddr.sql');
     });
     it('upstream/matview.sql', () => {
-      check('upstream/upstream/matview.sql');
+      check('upstream/matview.sql');
     });
     it('upstream/misc_functions.sql', () => {
-      check('upstream/upstream/misc_functions.sql');
+      check('upstream/misc_functions.sql');
     });
     it('upstream/money.sql', () => {
-      check('upstream/upstream/money.sql');
+      check('upstream/money.sql');
     });
     it('upstream/name.sql', () => {
-      check('upstream/upstream/name.sql');
+      check('upstream/name.sql');
     });
     it('upstream/namespace.sql', () => {
-      check('upstream/upstream/namespace.sql');
+      check('upstream/namespace.sql');
     });
     it('upstream/numeric.sql', () => {
-      check('upstream/upstream/numeric.sql');
+      check('upstream/numeric.sql');
     });
     it('upstream/numeric_big.sql', () => {
-      check('upstream/upstream/numeric_big.sql');
+      check('upstream/numeric_big.sql');
     });
     it('upstream/numerology.sql', () => {
-      check('upstream/upstream/numerology.sql');
+      check('upstream/numerology.sql');
     });
     it('upstream/object_address.sql', () => {
-      check('upstream/upstream/object_address.sql');
+      check('upstream/object_address.sql');
     });
     it('upstream/oid.sql', () => {
-      check('upstream/upstream/oid.sql');
+      check('upstream/oid.sql');
     });
     it('upstream/oidjoins.sql', () => {
-      check('upstream/upstream/oidjoins.sql');
+      check('upstream/oidjoins.sql');
     });
     it('upstream/opr_sanity.sql', () => {
-      check('upstream/upstream/opr_sanity.sql');
+      check('upstream/opr_sanity.sql');
     });
     it('upstream/path.sql', () => {
-      check('upstream/upstream/path.sql');
+      check('upstream/path.sql');
     });
     it('upstream/pg_lsn.sql', () => {
-      check('upstream/upstream/pg_lsn.sql');
+      check('upstream/pg_lsn.sql');
     });
     it('upstream/plancache.sql', () => {
-      check('upstream/upstream/plancache.sql');
+      check('upstream/plancache.sql');
     });
     it('upstream/plpgsql.sql', () => {
-      check('upstream/upstream/plpgsql.sql');
+      check('upstream/plpgsql.sql');
     });
     it('upstream/point.sql', () => {
-      check('upstream/upstream/point.sql');
+      check('upstream/point.sql');
     });
     it('upstream/polygon.sql', () => {
-      check('upstream/upstream/polygon.sql');
+      check('upstream/polygon.sql');
     });
     it('upstream/polymorphism.sql', () => {
-      check('upstream/upstream/polymorphism.sql');
+      check('upstream/polymorphism.sql');
     });
     it('upstream/portals.sql', () => {
-      check('upstream/upstream/portals.sql');
+      check('upstream/portals.sql');
     });
     it('upstream/portals_p2.sql', () => {
-      check('upstream/upstream/portals_p2.sql');
+      check('upstream/portals_p2.sql');
     });
     it('upstream/prepare.sql', () => {
-      check('upstream/upstream/prepare.sql');
+      check('upstream/prepare.sql');
     });
     it('upstream/prepared_xacts.sql', () => {
-      check('upstream/upstream/prepared_xacts.sql');
+      check('upstream/prepared_xacts.sql');
     });
     it('upstream/privileges.sql', () => {
-      check('upstream/upstream/privileges.sql');
+      check('upstream/privileges.sql');
     });
     it('upstream/psql.sql', () => {
-      check('upstream/upstream/psql.sql');
+      check('upstream/psql.sql');
     });
     it('upstream/psql_crosstab.sql', () => {
-      check('upstream/upstream/psql_crosstab.sql');
+      check('upstream/psql_crosstab.sql');
     });
     it('upstream/random.sql', () => {
-      check('upstream/upstream/random.sql');
+      check('upstream/random.sql');
     });
     it('upstream/rangefuncs.sql', () => {
-      check('upstream/upstream/rangefuncs.sql');
+      check('upstream/rangefuncs.sql');
     });
     it('upstream/rangetypes.sql', () => {
-      check('upstream/upstream/rangetypes.sql');
+      check('upstream/rangetypes.sql');
     });
     it('upstream/regex.sql', () => {
-      check('upstream/upstream/regex.sql');
+      check('upstream/regex.sql');
     });
     it('upstream/regproc.sql', () => {
-      check('upstream/upstream/regproc.sql');
+      check('upstream/regproc.sql');
     });
     it('upstream/reltime.sql', () => {
-      check('upstream/upstream/reltime.sql');
+      check('upstream/reltime.sql');
     });
     it('upstream/replica_identity.sql', () => {
-      check('upstream/upstream/replica_identity.sql');
+      check('upstream/replica_identity.sql');
     });
     it('upstream/returning.sql', () => {
-      check('upstream/upstream/returning.sql');
+      check('upstream/returning.sql');
     });
     it('upstream/roleattributes.sql', () => {
-      check('upstream/upstream/roleattributes.sql');
+      check('upstream/roleattributes.sql');
     });
     it('upstream/rolenames.sql', () => {
-      check('upstream/upstream/rolenames.sql');
+      check('upstream/rolenames.sql');
     });
     it('upstream/rowsecurity.sql', () => {
-      check('upstream/upstream/rowsecurity.sql');
+      check('upstream/rowsecurity.sql');
     });
     it('upstream/rowtypes.sql', () => {
-      check('upstream/upstream/rowtypes.sql');
+      check('upstream/rowtypes.sql');
     });
     it('upstream/rules.sql', () => {
-      check('upstream/upstream/rules.sql');
+      check('upstream/rules.sql');
     });
     it('upstream/sanity_check.sql', () => {
-      check('upstream/upstream/sanity_check.sql');
+      check('upstream/sanity_check.sql');
     });
     it('upstream/security_label.sql', () => {
-      check('upstream/upstream/security_label.sql');
+      check('upstream/security_label.sql');
     });
     it('upstream/select.sql', () => {
-      check('upstream/upstream/select.sql');
+      check('upstream/select.sql');
     });
     it('upstream/select_distinct.sql', () => {
-      check('upstream/upstream/select_distinct.sql');
+      check('upstream/select_distinct.sql');
     });
     it('upstream/select_distinct_on.sql', () => {
-      check('upstream/upstream/select_distinct_on.sql');
+      check('upstream/select_distinct_on.sql');
     });
     it('upstream/select_having.sql', () => {
-      check('upstream/upstream/select_having.sql');
+      check('upstream/select_having.sql');
     });
     it('upstream/select_implicit.sql', () => {
-      check('upstream/upstream/select_implicit.sql');
+      check('upstream/select_implicit.sql');
     });
     it('upstream/select_into.sql', () => {
-      check('upstream/upstream/select_into.sql');
+      check('upstream/select_into.sql');
     });
     it('upstream/select_views.sql', () => {
-      check('upstream/upstream/select_views.sql');
+      check('upstream/select_views.sql');
     });
     it('upstream/sequence.sql', () => {
-      check('upstream/upstream/sequence.sql');
+      check('upstream/sequence.sql');
     });
     it('upstream/spgist.sql', () => {
-      check('upstream/upstream/spgist.sql');
+      check('upstream/spgist.sql');
     });
     it('upstream/stats.sql', () => {
-      check('upstream/upstream/stats.sql');
+      check('upstream/stats.sql');
     });
     it('upstream/strings.sql', () => {
-      check('upstream/upstream/strings.sql');
+      check('upstream/strings.sql');
     });
     it('upstream/subselect.sql', () => {
-      check('upstream/upstream/subselect.sql');
+      check('upstream/subselect.sql');
     });
     it('upstream/tablesample.sql', () => {
-      check('upstream/upstream/tablesample.sql');
+      check('upstream/tablesample.sql');
     });
     it('upstream/temp.sql', () => {
-      check('upstream/upstream/temp.sql');
+      check('upstream/temp.sql');
     });
     it('upstream/text.sql', () => {
-      check('upstream/upstream/text.sql');
+      check('upstream/text.sql');
     });
     it('upstream/time.sql', () => {
-      check('upstream/upstream/time.sql');
+      check('upstream/time.sql');
     });
     it('upstream/timestamp.sql', () => {
-      check('upstream/upstream/timestamp.sql');
+      check('upstream/timestamp.sql');
     });
     it('upstream/timestamptz.sql', () => {
-      check('upstream/upstream/timestamptz.sql');
+      check('upstream/timestamptz.sql');
     });
     it('upstream/timetz.sql', () => {
-      check('upstream/upstream/timetz.sql');
+      check('upstream/timetz.sql');
     });
     it('upstream/tinterval.sql', () => {
-      check('upstream/upstream/tinterval.sql');
+      check('upstream/tinterval.sql');
     });
     it('upstream/transactions.sql', () => {
-      check('upstream/upstream/transactions.sql');
+      check('upstream/transactions.sql');
     });
     it('upstream/triggers.sql', () => {
-      check('upstream/upstream/triggers.sql');
+      check('upstream/triggers.sql');
     });
     it('upstream/truncate.sql', () => {
-      check('upstream/upstream/truncate.sql');
+      check('upstream/truncate.sql');
     });
     it('upstream/tsdicts.sql', () => {
-      check('upstream/upstream/tsdicts.sql');
+      check('upstream/tsdicts.sql');
     });
     it('upstream/tsearch.sql', () => {
-      check('upstream/upstream/tsearch.sql');
+      check('upstream/tsearch.sql');
     });
     it('upstream/tstypes.sql', () => {
-      check('upstream/upstream/tstypes.sql');
+      check('upstream/tstypes.sql');
     });
     it('upstream/txid.sql', () => {
-      check('upstream/upstream/txid.sql');
+      check('upstream/txid.sql');
     });
     it('upstream/type_sanity.sql', () => {
-      check('upstream/upstream/type_sanity.sql');
+      check('upstream/type_sanity.sql');
     });
     it('upstream/typed_table.sql', () => {
-      check('upstream/upstream/typed_table.sql');
+      check('upstream/typed_table.sql');
     });
     it('upstream/union.sql', () => {
-      check('upstream/upstream/union.sql');
+      check('upstream/union.sql');
     });
     it('upstream/updatable_views.sql', () => {
-      check('upstream/upstream/updatable_views.sql');
+      check('upstream/updatable_views.sql');
     });
     it('upstream/update.sql', () => {
-      check('upstream/upstream/update.sql');
+      check('upstream/update.sql');
     });
     it('upstream/uuid.sql', () => {
-      check('upstream/upstream/uuid.sql');
+      check('upstream/uuid.sql');
     });
     it('upstream/vacuum.sql', () => {
-      check('upstream/upstream/vacuum.sql');
+      check('upstream/vacuum.sql');
     });
     it('upstream/varchar.sql', () => {
-      check('upstream/upstream/varchar.sql');
+      check('upstream/varchar.sql');
     });
     it('upstream/window.sql', () => {
-      check('upstream/upstream/window.sql');
+      check('upstream/window.sql');
     });
     it('upstream/with.sql', () => {
-      check('upstream/upstream/with.sql');
+      check('upstream/with.sql');
     });
     it('upstream/without_oid.sql', () => {
-      check('upstream/upstream/without_oid.sql');
+      check('upstream/without_oid.sql');
     });
     it('upstream/xml.sql', () => {
-      check('upstream/upstream/xml.sql');
+      check('upstream/xml.sql');
     });
     it('upstream/xmlmap.sql', () => {
-      check('upstream/upstream/xmlmap.sql');
+      check('upstream/xmlmap.sql');
     });
   });
 });

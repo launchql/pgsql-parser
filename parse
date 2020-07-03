@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-const parser = require('pg-query-native-latest');
+const parser = require('pg-plpgsql-query-native').parseQuerySync;
 
 function runQuery(query) {
-  const result = parser.parse(query).query;
+  const result = parser.parseQuerySync(query);
   console.log(JSON.stringify(result, null, '  '));
 }
 

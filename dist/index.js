@@ -5,8 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Deparser = exports.verify = exports.clean = exports.byType = exports.tables = exports.all = exports.first = exports.walk = exports.deparse = exports.parse = undefined;
 
-var _pgQueryNativeLatest = require('pg-query-native-latest');
-
 var _deparser = require('./deparser');
 
 var _deparser2 = _interopRequireDefault(_deparser);
@@ -15,17 +13,20 @@ var _utils = require('./utils');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+const parse = require('pg-plpgsql-query-native').parseQuerySync;
+
+
 const deparse = _deparser2.default.deparse;
 const verify = query => {
-  const result = deparse((0, _pgQueryNativeLatest.parse)(query).query);
+  const result = deparse(parse(query));
 
-  const json1 = (0, _utils.clean)((0, _pgQueryNativeLatest.parse)(query).query);
-  const json2 = (0, _utils.clean)((0, _pgQueryNativeLatest.parse)(result).query);
+  const json1 = (0, _utils.clean)(parse(query));
+  const json2 = (0, _utils.clean)(parse(result));
 
   return JSON.stringify(json1) === JSON.stringify(json2);
 };
 
-exports.parse = _pgQueryNativeLatest.parse;
+exports.parse = parse;
 exports.deparse = deparse;
 exports.walk = _utils.walk;
 exports.first = _utils.first;

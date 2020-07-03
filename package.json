@@ -1,6 +1,6 @@
 {
   "name": "pgsql-parser",
-  "version": "0.6.11",
+  "version": "0.7.0",
   "description": "The real PostgreSQL query parser",
   "homepage": "http://github.com/pyramation/pgsql-parser",
   "main": "dist/index.js",
@@ -57,7 +57,7 @@
   "dependencies": {
     "dotty": "^0.1.0",
     "lodash": "^4.13.1",
-    "pg-query-native-latest": "^1.1.0"
+    "pg-plpgsql-query-native": "1.2.1"
   },
   "jest": {
     "roots": ["jest"]

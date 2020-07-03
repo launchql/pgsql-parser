@@ -21,7 +21,7 @@ Rewrite part of a SQL query:
 ```js
 const parser = require('pgsql-parser');
 
-const query = parser.parse('SELECT * FROM test_table').query;
+const query = parser.parse('SELECT * FROM test_table');
 
 query[0].SelectStmt.fromClause[0].RangeVar.relname = 'another_table';
 
