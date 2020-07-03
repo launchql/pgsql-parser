@@ -1144,10 +1144,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
-"@pgql/parse@1.2.3":
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/@pgql/parse/-/parse-1.2.3.tgz#0252c07cab718643b409a335d3925397d6a1ef9e"
-  integrity sha512-psqCWIAgvbtyKndds7IfBoX8yOhCIKeSzEHIxM6eUaKDkkveTOnP0v0C22w+TW6i21Bvn1h801WPfhFXDVJJJw==
+"@pgql/parse@1.2.4":
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/@pgql/parse/-/parse-1.2.4.tgz#3460ecb7db7c5d27fee3bb023f03bb0e7ac73799"
+  integrity sha512-gfXcOVseG4YoKbo2APpWss+kPAD+nIVTlhE+NIqNyXK/T1Be33UYW7AxkOBsjlHGC2a4ArQ5uKbNyX5dKCTgMQ==
   dependencies:
     node-addon-api "^1.6.3"
     node-gyp "^3.3.1"
