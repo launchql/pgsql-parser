@@ -69,7 +69,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.4.2",
-    "@pgql/parse": "1.2.4",
+    "@pgql/parse": "1.2.5",
     "dotty": "^0.1.0",
     "lodash": "^4.13.1"
   }
