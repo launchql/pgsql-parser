@@ -6,8 +6,6 @@ serialize the query tree back into a formatted SQL statement. It uses the *real*
 
 The main functionality provided by this module is deparsing, which PostgreSQL does not have internally.
 
-Thanks to https://github.com/zhm/pg-query-parser we've been able to start this repo and add a lot of functionality
-
 ## Installation
 
 ```sh
@@ -77,3 +75,7 @@ Returns a normalized formatted SQL string.
 
 * [pg-query-parser](https://github.com/zhm/pg-query-parser)
 * [pg-query-native](https://github.com/zhm/node-pg-query-native)
+
+License: https://github.com/zhm/pg-query-parser/blob/master/LICENSE.md
+
+Thanks to https://github.com/zhm/pg-query-parser we've been able to start this repo and add a lot of functionality
