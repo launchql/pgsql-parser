@@ -4,7 +4,7 @@ const fail = (type, node) => {
 };
 const LIBPG_ENUMS = require('./libpg_enums');
 
-export const createTypeFromEnums = (type) =>
+export const createTypeFromEnums = type =>
   LIBPG_ENUMS['nodes/parsenodes'][type].values.reduce((m, v, i) => {
     if (i === 0) {
       return m;
@@ -69,17 +69,16 @@ export const TYPE_NAMES = {
 const _TYPE_VALUES = Object.values(OBJECT_TYPES);
 const _TYPE_KEYS = Object.keys(OBJECT_TYPES);
 
-export const objtypeIs = (objtype, name) =>
-  OBJECT_TYPES[name] === objtype;
+export const objtypeIs = (objtype, name) => OBJECT_TYPES[name] === objtype;
 
-export const objtypeName = (arg) => {
+export const objtypeName = arg => {
   if (typeof arg === 'string') {
-    return (TYPE_NAMES[arg]);
+    return TYPE_NAMES[arg];
   }
   return TYPE_NAMES[_TYPE_KEYS[_TYPE_VALUES.indexOf(arg)]];
 };
 
-export const getConstraintFromConstrType = (type) => {
+export const getConstraintFromConstrType = type => {
   switch (type) {
     case CONSTRAINT_TYPES.CONSTR_NULL:
       return 'NULL';

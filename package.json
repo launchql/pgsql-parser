@@ -1,67 +1,20 @@
 {
   "name": "pgsql-parser",
-  "version": "0.6.11",
+  "version": "0.7.1",
   "description": "The real PostgreSQL query parser",
-  "homepage": "http://github.com/pyramation/pgsql-parser",
-  "main": "dist/index.js",
-  "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter dot test/setup.js test/test.js && jest",
-    "simpletest": "node_modules/.bin/mocha ./test/setup.js ./test/test.js ./test/elements/*.js",
-    "mochatest": "./node_modules/.bin/mocha --reporter dot test/setup.js test/test.js",
-    "jesttest": "jest",
-    "test:watch": "jest --watch",
-    "prepublish": "npm run lint && npm run clean && npm run build",
-    "lint": "node_modules/.bin/eslint src/* src/**/*",
-    "lint:fix": "node_modules/.bin/eslint --fix src/* src/**/*",
-    "build": "node_modules/.bin/babel src --out-dir dist --source-maps",
-    "watch": "node_modules/.bin/babel src --out-dir dist --source-maps --watch",
-    "clean": "rm -rf dist",
-    "check-deps": "node_modules/.bin/ncu",
-    "update-deps": "node_modules/.bin/ncu -u"
+  "author": "Dan Lynch <pyramation@gmail.com>",
+  "homepage": "https://github.com/pyramation/pgsql-parser#readme",
+  "license": "SEE LICENSE IN LICENSE",
+  "main": "main/index.js",
+  "module": "module/index.js",
+  "directories": {
+    "lib": "src",
+    "test": "__tests__"
   },
-  "author": "Dan Lynch <pyramation@gmail.com> (http://github.com/pyramation)",
-  "contributors": [
-    "Zac McCormick <zac.mccormick@gmail.com> (http://github.com/zhm)",
-    "Dan Lynch <pyramation@gmail.com> (http://github.com/pyramation)"
+  "files": [
+    "main",
+    "module"
   ],
-  "license": "BSD-3-Clause",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/pyramation/pgsql-parser.git"
-  },
-  "eslintConfig": {
-    "extends": "fulcrum"
-  },
-  "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-eslint": "^8.2.2",
-    "babel-preset-es2015-node5": "^1.2.0",
-    "babel-preset-stage-1": "^6.5.0",
-    "browserify": "^13.0.1",
-    "chai": "^3.5.0",
-    "coffee-script": "^1.10.0",
-    "coffeeify": "^2.0.1",
-    "eslint": "^4.18.1",
-    "eslint-config-fulcrum": "^1.5.4",
-    "eslint-plugin-babel": "^4.1.2",
-    "eslint-plugin-react": "^7.7.0",
-    "glob": "^7.0.3",
-    "jest": "20.0.4",
-    "mocha": "^2.5.3",
-    "source-map-support": "^0.4.0",
-    "uglify-js": "^2.6.2",
-    "watch-cli": "^0.2.1",
-    "watchify": "^3.7.0"
-  },
-  "dependencies": {
-    "dotty": "^0.1.0",
-    "lodash": "^4.13.1",
-    "pg-query-native-latest": "^1.1.0"
-  },
-  "jest": {
-    "roots": ["jest"]
-  },
   "keywords": [
     "sql",
     "postgres",
@@ -69,5 +22,55 @@
     "pg",
     "query",
     "database"
-  ]
+  ],
+  "scripts": {
+    "build:main": "BABEL_ENV=production babel src --out-dir main --delete-dir-on-start",
+    "build:module": "MODULE=true babel src --out-dir module --delete-dir-on-start",
+    "build": "npm run build:module && npm run build:main",
+    "prepublish": "npm run build",
+    "lint": "eslint src --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:debug": "node --inspect node_modules/.bin/jest --runInBand"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pyramation/pgsql-parser"
+  },
+  "bugs": {
+    "url": "https://github.com/pyramation/pgsql-parser/issues"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.8.4",
+    "@babel/core": "7.8.4",
+    "@babel/plugin-proposal-class-properties": "7.8.3",
+    "@babel/plugin-proposal-export-default-from": "7.8.3",
+    "@babel/plugin-proposal-object-rest-spread": "7.9.6",
+    "@babel/plugin-transform-runtime": "7.9.6",
+    "@babel/preset-env": "7.9.6",
+    "@babel/preset-react": "7.9.4",
+    "babel-plugin-macros": "2.8.0",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "10.0.3",
+    "babel-jest": "25.1.0",
+    "eslint": "6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-config-react-app": "5.2.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react-hooks": "4.0.0",
+    "eslint-plugin-react": "^7.18.3",
+    "jest": "^24.5.0",
+    "jest-in-case": "^1.0.2",
+    "prettier": "^1.19.1",
+    "regenerator-runtime": "^0.13.2"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.4.2",
+    "dotty": "^0.1.0",
+    "lodash": "^4.13.1",
+    "pg-plpgsql-query-native": "1.2.1"
+  }
 }
