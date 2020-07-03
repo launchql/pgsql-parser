@@ -6,10 +6,6 @@ serialize the query tree back into a formatted SQL statement. It uses the *real*
 
 The main functionality provided by this module is deparsing, which PostgreSQL does not have internally.
 
-# Warning: new upgrade 0.7.x breaks linux, stay on 0.6.x
-
-Working it out now, but looks like the upgrade to the new C add on will take some more research. 
-
 ## Installation
 
 ```sh

@@ -1,6 +1,6 @@
 {
   "name": "pgsql-parser",
-  "version": "0.7.6",
+  "version": "0.7.7",
   "description": "The real PostgreSQL query parser",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/pyramation/pgsql-parser#readme",
