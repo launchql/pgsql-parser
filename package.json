@@ -69,8 +69,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.4.2",
+    "@pgql/parse": "1.2.2",
     "dotty": "^0.1.0",
-    "lodash": "^4.13.1",
-    "pg-plpgsql-query-native": "1.2.1"
+    "lodash": "^4.13.1"
   }
 }
