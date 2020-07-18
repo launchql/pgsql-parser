@@ -1,56 +1,62 @@
--- Deploy schemas/v8/tables/modules/fixtures/ajv to pg
+INSERT INTO shoelace_data
+  VALUES (1, 2, 3, 'truth', TRUE);
 
--- requires: schemas/v8/schema
--- requires: schemas/v8/tables/modules/table
+INSERT INTO shoelace_data (id, col1, col2, val1, bl2)
+  VALUES (1, 2, 3, 'truth', TRUE);
 
-BEGIN;
+INSERT INTO shoelace_data DEFAULT VALUES;
 
-INSERT INTO shoelace_data VALUES (
-        1,
-        2,
-        3,
-        'truth',
-        True
-);
+INSERT INTO v8.modules (name, code)
+  VALUES ('ajv', $code$ (FUNCTION () { var module = { exports: { } };
+var exports = module.exports;
 
-INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
-
-  (function () {
-    var module = {
-      exports: { }
-    };
-    var exports = module.exports;
-
-    /* plv8 bundle begins */
-  (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.ajv = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-  (function (global){
+/* plv8 bundle begins */
+(FUNCTION (f) {if(typeof exports == = "object" && typeof module != = "undefined") {module.exports=f()}else IF (typeof define == = "function" && define.amd) {define([], f) }else{var g;
+IF (typeof
+  WINDOW != = "undefined") {g=window}else IF (typeof global != = "undefined") {g=global}else IF (typeof self != = "undefined") {g=self}else{g=this}g.ajv = f () }})(function(){var define,
+module,
+exports;
+RETURN (FUNCTION e (t, n, r) {function s (o, u) {if(!n[o]){if(!t[o]){var a = typeof require == "function" && require;
+IF (! u && a)
+RETURN a (o,
+! 0);
+IF (i)
+RETURN i (o,
+! 0);
+var f = new Error ("Cannot find module '" + o + "'");
+throw f.code = "MODULE_NOT_FOUND",
+f }var l = n[o] = {exports : {}};
+t[o][0].CALL (l.exports, FUNCTION (e) {var n = t[o][1][e];
+RETURN s (n ? n:e) },
+l,
+l.exports,
+e,
+t,
+n,
+r) }return n[o].exports }var i = typeof require == "function" && require;
+FOR (var o = 0;
+o < r.length;
+o + +) s (r[o]);
+RETURN s })({1 :[FUNCTION (require, module, exports) { (FUNCTION (global) {
   /*! https://mths.be/punycode v1.4.1 by @mathias */
-  ;(function(root) {
-
+;
+(FUNCTION (root) {
   /** Detect free variables */
-  var freeExports = typeof exports == 'object' && exports &&
-    !exports.nodeType && exports;
-  var freeModule = typeof module == 'object' && module &&
-    !module.nodeType && module;
-  var freeGlobal = typeof global == 'object' && global;
-  if (
-    freeGlobal.global === freeGlobal ||
-    freeGlobal.window === freeGlobal ||
-    freeGlobal.self === freeGlobal
-  ) {
-    root = freeGlobal;
-  }
-
-  /**
-   * The `punycode` object.
-   * @name punycode
-   * @type Object
-   */
-  var punycode,
-
-  /** Highest positive signed 32-bit float value */
-  maxInt = 2147483647, // aka. 0x7FFFFFFF or 2^31-1
-
+  var freeExports = typeof exports == 'object' && exports && ! exports.nodeType && exports;
+var freeModule = typeof module == 'object' && module && ! module.nodeType && module;
+var freeGlobal = typeof global == 'object' && global;
+IF (freeGlobal.global == = freeGlobal || freeGlobal.window == = freeGlobal || freeGlobal.self == = freeGlobal) { root = freeGlobal;
+}
+/**
+ * The `punycode` object.
+ * @name punycode
+ * @type Object
+ */
+var punycode,
+/** Highest positive signed 32-bit float value */
+maxInt = 2147483647,
+/ / aka. 0x7FFFFFFF
+  OR 2 ^ 31 - 1
   /** Bootstring parameters */
   base = 36,
   tMin = 1,
@@ -58,123 +64,92 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   skew = 38,
   damp = 700,
   initialBias = 72,
-  initialN = 128, // 0x80
-  delimiter = '-', // '\x2D'
-
+  initialN = 128,
+  / / 0x80 DELIMITER = '-',
+  / / '\x2D'
   /** Regular expressions */
-  regexPunycode = /^xn--/,
-  regexNonASCII = /[^\x20-\x7E]/, // unprintable ASCII chars + non-ASCII chars
-  regexSeparators = /[\x2E\u3002\uFF0E\uFF61]/g, // RFC 3490 separators
-
+  regexPunycode = / ^ xn --/, regexNonASCII = /[^ x20 - x7E] /,
+  / / unprintable ASCII chars + non - ASCII chars regexSeparators = /[x2E u3002 uFF0E uFF61] / g,
+  / / RFC 3490 separators
   /** Error messages */
-  errors = {
-    'overflow': 'Overflow: input needs wider integers to process',
-    'not-basic': 'Illegal input >= 0x80 (not a basic code point)',
-    'invalid-input': 'Invalid input'
-  },
-
+  errors = { 'overflow' :'Overflow: input needs wider integers to process',
+  'not-basic' :'Illegal input >= 0x80 (not a basic code point)',
+  'invalid-input' :'Invalid input' },
   /** Convenience shortcuts */
   baseMinusTMin = base - tMin,
   floor = Math.floor,
   stringFromCharCode = String.fromCharCode,
-
   /** Temporary variable */
-  key;
+  KEY;
 
-  /*--------------------------------------------------------------------------*/
-
-  /**
-   * A generic error utility function.
-   * @private
-   * @param {String} type The error type.
-   * @returns {Error} Throws a `RangeError` with the applicable error message.
-   */
-  function error(type) {
-    throw new RangeError(errors[type]);
-  }
-
-  /**
-   * A generic `Array#map` utility function.
-   * @private
-   * @param {Array} array The array to iterate over.
-   * @param {Function} callback The function that gets called for every array
-   * item.
-   * @returns {Array} A new array of values returned by the callback function.
-   */
-  function map(array, fn) {
-    var length = array.length;
-    var result = [];
-    while (length--) {
-      result[length] = fn(array[length]);
-    }
-    return result;
-  }
-
-  /**
-   * A simple `Array#map`-like wrapper to work with domain name strings or email
-   * addresses.
-   * @private
-   * @param {String} domain The domain name or email address.
-   * @param {Function} callback The function that gets called for every
-   * character.
-   * @returns {Array} A new string of characters returned by the callback
-   * function.
-   */
-  function mapDomain(string, fn) {
-    var parts = string.split('@');
-    var result = '';
-    if (parts.length > 1) {
-      // In email addresses, only the domain name should be punycoded. Leave
-      // the local part (i.e. everything up to `@`) intact.
-      result = parts[0] + '@';
-      string = parts[1];
-    }
-    // Avoid `split(regex)` for IE8 compatibility. See #17.
-    string = string.replace(regexSeparators, '\x2E');
-    var labels = string.split('.');
-    var encoded = map(labels, fn).join('.');
-    return result + encoded;
-  }
-
-  /**
-   * Creates an array containing the numeric code points of each Unicode
-   * character in the string. While JavaScript uses UCS-2 internally,
-   * this function will convert a pair of surrogate halves (each of which
-   * UCS-2 exposes as separate characters) into a single code point,
-   * matching UTF-16.
-   * @see `punycode.ucs2.encode`
-   * @see <https://mathiasbynens.be/notes/javascript-encoding>
-   * @memberOf punycode.ucs2
-   * @name decode
-   * @param {String} string The Unicode input string (UCS-2).
-   * @returns {Array} The new array of code points.
-   */
-  function ucs2decode(string) {
-    var output = [],
-        counter = 0,
-        length = string.length,
-        value,
-        extra;
-    while (counter < length) {
-      value = string.charCodeAt(counter++);
-      if (value >= 0xD800 && value <= 0xDBFF && counter < length) {
-        // high surrogate, and there is a next character
-        extra = string.charCodeAt(counter++);
-        if ((extra & 0xFC00) == 0xDC00) { // low surrogate
-          output.push(((value & 0x3FF) << 10) + (extra & 0x3FF) + 0x10000);
-        } else {
-          // unmatched surrogate; only append this code unit, in case the next
-          // code unit is the high surrogate of a surrogate pair
-          output.push(value);
-          counter--;
-        }
-      } else {
-        output.push(value);
-      }
-    }
-    return output;
-  }
-
+/*--------------------------------------------------------------------------*/
+/**
+ * A generic error utility function.
+ * @private
+ * @param {String} type The error type.
+ * @returns {Error} Throws a `RangeError` with the applicable error message.
+ */
+FUNCTION error (TYPE) { throw new RangeError (errors[TYPE]);
+}
+/**
+ * A generic `Array#map` utility function.
+ * @private
+ * @param {Array} array The array to iterate over.
+ * @param {Function} callback The function that gets called for every array
+ * item.
+ * @returns {Array} A new array of values returned by the callback function.
+ */
+FUNCTION map (ARRAY, fn) { var length = array.length;
+var result =[];
+while (length --) { result[length] = fn (ARRAY[length]);
+  } RETURN result;
+}
+/**
+ * A simple `Array#map`-like wrapper to work with domain name strings or email
+ * addresses.
+ * @private
+ * @param {String} domain The domain name or email address.
+ * @param {Function} callback The function that gets called for every
+ * character.
+ * @returns {Array} A new string of characters returned by the callback
+ * function.
+ */
+FUNCTION mapDomain (string, fn) { var parts = string.split ('@');
+var result = '';
+IF (parts.length > 1) { / / IN email addresses,
+ONLY the DOMAIN name should be punycoded. Leave / / the local part (i.e. everything up TO `@`) intact. result = parts[0] + '@';
+string = parts[1];
+} / / Avoid `split(regex)` FOR IE8 compatibility. See # 17. string = string.replace(regexSeparators, '\x2E');
+var labels = string.split ('.');
+var encoded = map (labels, fn).
+JOIN ('.');
+RETURN result + encoded;
+}
+/**
+ * Creates an array containing the numeric code points of each Unicode
+ * character in the string. While JavaScript uses UCS-2 internally,
+ * this function will convert a pair of surrogate halves (each of which
+ * UCS-2 exposes as separate characters) into a single code point,
+ * matching UTF-16.
+ * @see `punycode.ucs2.encode`
+ * @see <https://mathiasbynens.be/notes/javascript-encoding>
+ * @memberOf punycode.ucs2
+ * @name decode
+ * @param {String} string The Unicode input string (UCS-2).
+ * @returns {Array} The new array of code points.
+ */
+FUNCTION ucs2decode (string) { var output =[], counter = 0, length = string.length, value, extra;
+while (counter < length) { value = string.charCodeAt (counter + +);
+IF (value >= 0xD800 && value <= 0xDBFF && counter < length) { / / high surrogate,
+AND there IS a NEXT character extra = string.charCodeAt (counter + +);
+IF ((extra & 0xFC00) == 0xDC00) { / / low surrogate output.push (((value & 0x3FF) << 10) + (extra & 0x3FF) + 0x10000);
+}
+ELSE
+  { / / unmatched surrogate;
+ONLY append this code unit,
+IN CASE the NEXT / / code unit IS the high surrogate OF a surrogate pair output.push (value); counter --; } }
+ELSE
+  { output.push (value); } } RETURN output; }
   /**
    * Creates a string based on an array of numeric code points.
    * @see `punycode.ucs2.decode`
@@ -183,82 +158,45 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
    * @param {Array} codePoints The array of numeric code points.
    * @returns {String} The new Unicode string (UCS-2).
    */
-  function ucs2encode(array) {
-    return map(array, function(value) {
-      var output = '';
-      if (value > 0xFFFF) {
-        value -= 0x10000;
-        output += stringFromCharCode(value >>> 10 & 0x3FF | 0xD800);
-        value = 0xDC00 | value & 0x3FF;
-      }
-      output += stringFromCharCode(value);
-      return output;
-    }).join('');
-  }
-
-  /**
-   * Converts a basic code point into a digit/integer.
-   * @see `digitToBasic()`
-   * @private
-   * @param {Number} codePoint The basic numeric code point value.
-   * @returns {Number} The numeric value of a basic code point (for use in
-   * representing integers) in the range `0` to `base - 1`, or `base` if
-   * the code point does not represent a value.
-   */
-  function basicToDigit(codePoint) {
-    if (codePoint - 48 < 10) {
-      return codePoint - 22;
-    }
-    if (codePoint - 65 < 26) {
-      return codePoint - 65;
-    }
-    if (codePoint - 97 < 26) {
-      return codePoint - 97;
-    }
-    return base;
-  }
-
-  /**
-   * Converts a digit/integer into a basic code point.
-   * @see `basicToDigit()`
-   * @private
-   * @param {Number} digit The numeric value of a basic code point.
-   * @returns {Number} The basic code point whose value (when used for
-   * representing integers) is `digit`, which needs to be in the range
-   * `0` to `base - 1`. If `flag` is non-zero, the uppercase form is
-   * used; else, the lowercase form is used. The behavior is undefined
-   * if `flag` is non-zero and `digit` has no uppercase form.
-   */
-  function digitToBasic(digit, flag) {
-    //  0..25 map to ASCII a..z or A..Z
-    // 26..35 map to ASCII 0..9
-    return digit + 22 + 75 * (digit < 26) - ((flag != 0) << 5);
-  }
-
-  /**
-   * Bias adaptation function as per section 3.4 of RFC 3492.
-   * https://tools.ietf.org/html/rfc3492#section-3.4
-   * @private
-   */
-  function adapt(delta, numPoints, firstTime) {
-    var k = 0;
-    delta = firstTime ? floor(delta / damp) : delta >> 1;
-    delta += floor(delta / numPoints);
-    for (/* no initialization */; delta > baseMinusTMin * tMax >> 1; k += base) {
-      delta = floor(delta / baseMinusTMin);
-    }
-    return floor(k + (baseMinusTMin + 1) * delta / (delta + skew));
-  }
-
-  /**
-   * Converts a Punycode string of ASCII-only symbols to a string of Unicode
-   * symbols.
-   * @memberOf punycode
-   * @param {String} input The Punycode string of ASCII-only symbols.
-   * @returns {String} The resulting string of Unicode symbols.
-   */
-  function decode(input) {
-    // Don't use UCS-2
+  FUNCTION ucs2encode (ARRAY) { RETURN map (ARRAY, FUNCTION (value) { var output = ''; IF (value > 0xFFFF) { value - = 0x10000; output + = stringFromCharCode (value >> > 10 & 0x3FF | 0xD800); value = 0xDC00 | value & 0x3FF; } output + = stringFromCharCode (value); RETURN output; }).join(''); }
+/**
+ * Converts a basic code point into a digit/integer.
+ * @see `digitToBasic()`
+ * @private
+ * @param {Number} codePoint The basic numeric code point value.
+ * @returns {Number} The numeric value of a basic code point (for use in
+ * representing integers) in the range `0` to `base - 1`, or `base` if
+ * the code point does not represent a value.
+ */
+FUNCTION basicToDigit (codePoint) { IF (codePoint - 48 < 10) { RETURN codePoint - 22; } IF (codePoint - 65 < 26) { RETURN codePoint - 65; } IF (codePoint - 97 < 26) { RETURN codePoint - 97; } RETURN base; }
+/**
+ * Converts a digit/integer into a basic code point.
+ * @see `basicToDigit()`
+ * @private
+ * @param {Number} digit The numeric value of a basic code point.
+ * @returns {Number} The basic code point whose value (when used for
+ * representing integers) is `digit`, which needs to be in the range
+ * `0` to `base - 1`. If `flag` is non-zero, the uppercase form is
+ * used; else, the lowercase form is used. The behavior is undefined
+ * if `flag` is non-zero and `digit` has no uppercase form.
+ */
+FUNCTION digitToBasic (digit, flag) { / / 0..25 map TO ASCII a..z OR A..Z / / 26..35 map TO ASCII 0..9 RETURN digit + 22 + 75 * (digit < 26) - ((flag != 0) << 5); }
+/**
+ * Bias adaptation function as per section 3.4 of RFC 3492.
+ * https://tools.ietf.org/html/rfc3492#section-3.4
+ * @private
+ */
+FUNCTION adapt (delta, numPoints, firstTime) { var k = 0; delta = firstTime ? floor(delta / damp) : delta >> 1; delta + = floor(delta / numPoints); FOR (
+/* no initialization */
+; delta > baseMinusTMin * tMax >> 1; k + = base) { delta = floor(delta / baseMinusTMin); } RETURN floor(k + (baseMinusTMin + 1) * delta / (delta + skew)); }
+/**
+ * Converts a Punycode string of ASCII-only symbols to a string of Unicode
+ * symbols.
+ * @memberOf punycode
+ * @param {String} input The Punycode string of ASCII-only symbols.
+ * @returns {String} The resulting string of Unicode symbols.
+ */
+FUNCTION decode(input) { / / Don 't use UCS-2
     var output = [],
         inputLength = input.length,
         out,
@@ -286,58 +224,33 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
     }
 
     for (j = 0; j < basic; ++j) {
-      // if it's not a basic code point
-      if (input.charCodeAt(j) >= 0x80) {
-        error('not-basic');
-      }
-      output.push(input.charCodeAt(j));
-    }
+      // if it' s NOT a basic code point IF (input.charCodeAt (j) >= 0x80) { error ('not-basic'); } output.push (input.charCodeAt (j)); } / / Main decoding loop: START just AFTER the LAST DELIMITER IF ANY basic code / / points were copied; START at the beginning otherwise. FOR (INDEX = basic > 0 ? basic + 1 : 0; INDEX < inputLength;
+  /* no final expression */) { / / `index` IS the INDEX OF the NEXT character TO be consumed. / / Decode a generalized variable - length integer INTO `delta`, / / which gets added TO `i`.The overflow checking IS easier / / IF we increase `i` AS we
+      go, THEN
+      subtract OFF its starting / / value at the
+    END TO obtain `delta`. FOR (oldi = i, w = 1, k = base;
 
-    // Main decoding loop: start just after the last delimiter if any basic code
-    // points were copied; start at the beginning otherwise.
-
-    for (index = basic > 0 ? basic + 1 : 0; index < inputLength; /* no final expression */) {
-
-      // `index` is the index of the next character to be consumed.
-      // Decode a generalized variable-length integer into `delta`,
-      // which gets added to `i`. The overflow checking is easier
-      // if we increase `i` as we go, then subtract off its starting
-      // value at the end to obtain `delta`.
-      for (oldi = i, w = 1, k = base; /* no condition */; k += base) {
-
-        if (index >= inputLength) {
-          error('invalid-input');
-        }
-
-        digit = basicToDigit(input.charCodeAt(index++));
-
-        if (digit >= base || digit > floor((maxInt - i) / w)) {
-          error('overflow');
-        }
-
-        i += digit * w;
-        t = k <= bias ? tMin : (k >= bias + tMax ? tMax : k - bias);
-
-        if (digit < t) {
-          break;
-        }
-
-        baseMinusT = base - t;
-        if (w > floor(maxInt / baseMinusT)) {
-          error('overflow');
-        }
-
-        w *= baseMinusT;
-
-      }
-
-      out = output.length + 1;
-      bias = adapt(i - oldi, out, oldi == 0);
-
-      // `i` was supposed to wrap around from `out` to `0`,
-      // incrementing `n` each time, so we'll fix that now:
+/* no condition */
+;
+k + = base) { IF (INDEX >= inputLength) { error ('invalid-input');
+} digit = basicToDigit (input.charCodeAt (INDEX + +));
+IF (digit >= base || digit > floor((maxInt - i) / w)) { error ('overflow');
+} i + = digit * w;
+t = k <= bias ? tMin : (k >= bias + tMax ? tMax : k - bias);
+IF (digit < t) { break;
+} baseMinusT = base - t;
+IF (w > floor(maxInt / baseMinusT)) { error ('overflow');
+} w *= baseMinusT;
+} out = output.length + 1;
+bias = adapt (i - oldi, out, oldi == 0);
+/ / `i` was supposed TO wrap around
+FROM
+  `out` TO `0`,
+  / / incrementing `n` EACH time,
+  so
+we 'll fix that now:
       if (floor(i / out) > maxInt - n) {
-        error('overflow');
+        error(' overflow ');
       }
 
       n += floor(i / out);
@@ -419,152 +332,200 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
         }
       }
 
-      // Increase `delta` enough to advance the decoder's <n,i> state to <m,0>,
-      // but guard against overflow
-      handledCPCountPlusOne = handledCPCount + 1;
-      if (m - n > floor((maxInt - delta) / handledCPCountPlusOne)) {
-        error('overflow');
-      }
+      // Increase `delta` enough to advance the decoder' s < n,
+i > state TO < m,
+0 >,
+/ / but guard against overflow handledCPCountPlusOne = handledCPCount + 1;
+IF (m - n > floor((maxInt - delta) / handledCPCountPlusOne)) { error ('overflow');
+} delta + = (m - n) * handledCPCountPlusOne;
+n = m;
+FOR (j = 0;
+j < inputLength;
++ + j) { currentValue = input[j];
+IF (currentValue < n && + + delta > maxInt) { error ('overflow');
+} IF (currentValue == n) { / / Represent delta AS a generalized variable - length integer FOR (q = delta,
+k = base;
 
-      delta += (m - n) * handledCPCountPlusOne;
-      n = m;
+/* no condition */
+;
+k + = base) { t = k <= bias ? tMin : (k >= bias + tMax ? tMax : k - bias);
+IF (q < t) { break;
+} qMinusT = q - t;
+baseMinusT = base - t;
+output.push (stringFromCharCode (digitToBasic (t + qMinusT % baseMinusT, 0)));
+q = floor(qMinusT / baseMinusT);
+} output.push (stringFromCharCode (digitToBasic (q, 0)));
+bias = adapt (delta, handledCPCountPlusOne, handledCPCount == basicLength);
+delta = 0;
++ + handledCPCount;
+} } + + delta;
++ + n;
+} RETURN output.join ('');
+}
+/**
+ * Converts a Punycode string representing a domain name or an email address
+ * to Unicode. Only the Punycoded parts of the input will be converted, i.e.
+ * it doesn't matter if you call it on a string that has already been
+ * converted to Unicode.
+ * @memberOf punycode
+ * @param {String} input The Punycoded domain name or email address to
+ * convert to Unicode.
+ * @returns {String} The Unicode representation of the given Punycode
+ * string.
+ */
+FUNCTION toUnicode (input) { RETURN mapDomain (input, FUNCTION (string) { RETURN regexPunycode.test (string) ? decode(string.slice (4).toLowerCase ()) : string;
+});
+}
+/**
+ * Converts a Unicode string representing a domain name or an email address to
+ * Punycode. Only the non-ASCII parts of the domain name will be converted,
+ * i.e. it doesn't matter if you call it with a domain that's already in
+ * ASCII.
+ * @memberOf punycode
+ * @param {String} input The domain name or email address to convert, as a
+ * Unicode string.
+ * @returns {String} The Punycode representation of the given domain name or
+ * email address.
+ */
+FUNCTION toASCII (input) { RETURN mapDomain (input, FUNCTION (string) { RETURN regexNonASCII.test (string) ? 'xn--' + encode(string) : string;
+});
+}
+/*--------------------------------------------------------------------------*/
+/** Define the public API */
+punycode = {
+/**
+ * A string representing the current Punycode.js version number.
+ * @memberOf punycode
+ * @type String
+ */
+'version' :'1.4.1',
+/**
+ * An object of methods to convert from JavaScript's internal character
+ * representation (UCS-2) to Unicode code points, and back.
+ * @see <https://mathiasbynens.be/notes/javascript-encoding>
+ * @memberOf punycode
+ * @type Object
+ */
+'ucs2' : { 'decode' : ucs2decode,
+'encode' : ucs2encode },
+'decode' : decode,
+'encode' : encode,
+'toASCII' : toASCII,
+'toUnicode' : toUnicode };
 
-      for (j = 0; j < inputLength; ++j) {
-        currentValue = input[j];
-
-        if (currentValue < n && ++delta > maxInt) {
-          error('overflow');
-        }
-
-        if (currentValue == n) {
-          // Represent delta as a generalized variable-length integer
-          for (q = delta, k = base; /* no condition */; k += base) {
-            t = k <= bias ? tMin : (k >= bias + tMax ? tMax : k - bias);
-            if (q < t) {
-              break;
-            }
-            qMinusT = q - t;
-            baseMinusT = base - t;
-            output.push(
-              stringFromCharCode(digitToBasic(t + qMinusT % baseMinusT, 0))
-            );
-            q = floor(qMinusT / baseMinusT);
-          }
-
-          output.push(stringFromCharCode(digitToBasic(q, 0)));
-          bias = adapt(delta, handledCPCountPlusOne, handledCPCount == basicLength);
-          delta = 0;
-          ++handledCPCount;
-        }
-      }
-
-      ++delta;
-      ++n;
-
-    }
-    return output.join('');
-  }
-
-  /**
-   * Converts a Punycode string representing a domain name or an email address
-   * to Unicode. Only the Punycoded parts of the input will be converted, i.e.
-   * it doesn't matter if you call it on a string that has already been
-   * converted to Unicode.
-   * @memberOf punycode
-   * @param {String} input The Punycoded domain name or email address to
-   * convert to Unicode.
-   * @returns {String} The Unicode representation of the given Punycode
-   * string.
-   */
-  function toUnicode(input) {
-    return mapDomain(input, function(string) {
-      return regexPunycode.test(string)
-        ? decode(string.slice(4).toLowerCase())
-        : string;
-    });
-  }
-
-  /**
-   * Converts a Unicode string representing a domain name or an email address to
-   * Punycode. Only the non-ASCII parts of the domain name will be converted,
-   * i.e. it doesn't matter if you call it with a domain that's already in
-   * ASCII.
-   * @memberOf punycode
-   * @param {String} input The domain name or email address to convert, as a
-   * Unicode string.
-   * @returns {String} The Punycode representation of the given domain name or
-   * email address.
-   */
-  function toASCII(input) {
-    return mapDomain(input, function(string) {
-      return regexNonASCII.test(string)
-        ? 'xn--' + encode(string)
-        : string;
-    });
-  }
-
-  /*--------------------------------------------------------------------------*/
-
-  /** Define the public API */
-  punycode = {
-    /**
-     * A string representing the current Punycode.js version number.
-     * @memberOf punycode
-     * @type String
-     */
-    'version': '1.4.1',
-    /**
-     * An object of methods to convert from JavaScript's internal character
-     * representation (UCS-2) to Unicode code points, and back.
-     * @see <https://mathiasbynens.be/notes/javascript-encoding>
-     * @memberOf punycode
-     * @type Object
-     */
-    'ucs2': {
-      'decode': ucs2decode,
-      'encode': ucs2encode
-    },
-    'decode': decode,
-    'encode': encode,
-    'toASCII': toASCII,
-    'toUnicode': toUnicode
-  };
-
-  /** Expose `punycode` */
-  // Some AMD build optimizers, like r.js, check for specific condition patterns
-  // like the following:
-  if (
-    typeof define == 'function' &&
-    typeof define.amd == 'object' &&
-    define.amd
-  ) {
-    define('punycode', function() {
-      return punycode;
-    });
-  } else if (freeExports && freeModule) {
-    if (module.exports == freeExports) {
-      // in Node.js, io.js, or RingoJS v0.8.0+
-      freeModule.exports = punycode;
-    } else {
-      // in Narwhal or RingoJS v0.7.0-
-      for (key in punycode) {
-        punycode.hasOwnProperty(key) && (freeExports[key] = punycode[key]);
-      }
-    }
-  } else {
-    // in Rhino or a web browser
-    root.punycode = punycode;
-  }
-
-  }(this));
-
-  }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-  },{}],2:[function(require,module,exports){
+/** Expose `punycode` */
+/ / SOME AMD build optimizers,
+LIKE r.js,
+CHECK FOR specific condition patterns / / LIKE the following: IF (typeof define == 'function' && typeof define.amd == 'object' && define.amd) { define ('punycode', FUNCTION () { RETURN punycode;
+});
+}
+ELSE
+  IF (freeExports && freeModule) { IF (module.exports == freeExports) { / / IN Node.js,
+  io.js,
+  OR RingoJS v0.8.0 + freeModule.exports = punycode;
+}
+ELSE
+  { / / IN Narwhal
+  OR RingoJS v0.7.0 - FOR (KEY IN punycode) { punycode.hasOwnProperty (KEY) && (freeExports[KEY] = punycode[KEY]);
+} } }
+ELSE
+  { / / IN Rhino
+  OR a web browser root.punycode = punycode;
+} }(this));
+}).call(this,
+typeof global != = "undefined" ? global : typeof self != = "undefined" ? self : typeof
+WINDOW != = "undefined" ?
+WINDOW : {}) },
+{}],
+2:[FUNCTION (require, module, exports) { / / Copyright Joyent, Inc.
+  AND other Node contributors. / / / / Permission IS hereby granted, free OF charge, TO ANY person obtaining a / / COPY OF this software
+  AND associated documentation files (the / / "Software"), TO deal IN the Software WITHOUT restriction, INCLUDING / / WITHOUT limitation the rights TO use, COPY, modify, merge, publish, / / distribute, sublicense,
+  AND /
+  OR sell copies OF the Software,
+  AND TO permit / / persons TO whom the Software IS furnished TO DO so, subject TO the / / FOLLOWING conditions: / / / / The above copyright notice
+  AND this permission notice shall be included / / IN ALL copies
+  OR substantial portions OF the Software. / / / / THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS / /
+  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF / / MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+  AND NONINFRINGEMENT. IN / / NO EVENT SHALL THE AUTHORS
+  OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, / / DAMAGES
+  OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+  OR / / OTHERWISE, ARISING
+FROM
+, OUT OF
+  OR IN CONNECTION WITH THE SOFTWARE
+  OR THE / / USE
+  OR OTHER DEALINGS IN THE SOFTWARE. 'use strict';
+/ / IF obj.hasOwnProperty has been overridden,
+  THEN
+  calling / / obj.hasOwnProperty (prop) will break. / / See: https: / / github.com / joyent / node / issues / 1707 FUNCTION hasOwnProperty (obj, prop) { RETURN Object.prototype.hasOwnProperty.call (obj, prop);
+} module.exports = FUNCTION (qs, sep, eq, options) { sep = sep || '&';
+eq = eq || '=';
+var obj = {};
+IF (typeof qs != = 'string' || qs.length == = 0) { RETURN obj;
+} var regexp = / + / g;
+qs = qs.split (sep);
+var maxKeys = 1000;
+IF (options && typeof options.maxKeys == = 'number') { maxKeys = options.maxKeys;
+} var len = qs.length;
+/ / maxKeys <= 0 means that we should NOT
+LIMIT keys count IF (maxKeys > 0 && len > maxKeys) { len = maxKeys;
+} FOR (var i = 0;
+i < len;
++ + i) { var x = qs[i].replace(regexp, '%20'),
+idx = x.indexOf (eq),
+kstr,
+vstr,
+k,
+v;
+IF (idx >= 0) { kstr = x.substr(0, idx);
+vstr = x.substr(idx + 1);
+}
+ELSE
+  { kstr = x;
+vstr = '';
+} k = decodeURIComponent (kstr);
+v = decodeURIComponent (vstr);
+IF (! hasOwnProperty (obj, k)) { obj[k] = v;
+}
+ELSE
+  IF (isArray (obj[k])) { obj[k].push (v);
+}
+ELSE
+  { obj[k] =[obj[k], v];
+} } RETURN obj;
+};
+var isArray = Array.isArray || FUNCTION (xs) { RETURN Object.prototype.toString.call (xs) == = '[object Array]';
+};
+},
+{}],
+3:[FUNCTION (require, module, exports) { / / Copyright Joyent, Inc.
+  AND other Node contributors. / / / / Permission IS hereby granted, free OF charge, TO ANY person obtaining a / / COPY OF this software
+  AND associated documentation files (the / / "Software"), TO deal IN the Software WITHOUT restriction, INCLUDING / / WITHOUT limitation the rights TO use, COPY, modify, merge, publish, / / distribute, sublicense,
+  AND /
+  OR sell copies OF the Software,
+  AND TO permit / / persons TO whom the Software IS furnished TO DO so, subject TO the / / FOLLOWING conditions: / / / / The above copyright notice
+  AND this permission notice shall be included / / IN ALL copies
+  OR substantial portions OF the Software. / / / / THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS / /
+  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF / / MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+  AND NONINFRINGEMENT. IN / / NO EVENT SHALL THE AUTHORS
+  OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, / / DAMAGES
+  OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+  OR / / OTHERWISE, ARISING
+FROM
+, OUT OF
+  OR IN CONNECTION WITH THE SOFTWARE
+  OR THE / / USE
+  OR OTHER DEALINGS IN THE SOFTWARE. 'use strict';
+var stringifyPrimitive = FUNCTION (v) { switch (typeof v) { CASE 'string' : RETURN v; CASE 'boolean' : RETURN v ? 'true' :'false'; CASE 'number' : RETURN isFinite(v) ? v : ''; default: RETURN ''; } }; module.exports = FUNCTION (obj, sep, eq, name) { sep = sep || '&'; eq = eq || '='; IF (obj == = NULL) { obj = undefined; } IF (typeof obj == = 'object') { RETURN map (objectKeys (obj), FUNCTION (k) { var ks = encodeURIComponent (stringifyPrimitive (k)) + eq; IF (isArray (obj[k])) { RETURN map (obj[k], FUNCTION (v) { RETURN ks + encodeURIComponent (stringifyPrimitive (v)); }).join(sep); }
+ELSE
+  { RETURN ks + encodeURIComponent (stringifyPrimitive (obj[k])); } }).join(sep); } IF (! name)
+RETURN ''; RETURN encodeURIComponent (stringifyPrimitive (name)) + eq + encodeURIComponent (stringifyPrimitive (obj)); }; var isArray = Array.isArray || FUNCTION (xs) { RETURN Object.prototype.toString.call (xs) == = '[object Array]'; }; FUNCTION map (xs, f) { IF (xs.map)
+RETURN xs.map (f); var res =[]; FOR (var i = 0; i < xs.length; i + +) { res.push (f (xs[i], i)); } RETURN res; } var objectKeys = Object.keys || FUNCTION (obj) { var res =[]; FOR (var KEY IN obj) { IF (Object.prototype.hasOwnProperty.call (obj, KEY)) res.push (KEY); } RETURN res; }; }, {}], 4:[FUNCTION (require, module, exports) { 'use strict'; exports.decode = exports.parse = require ('./decode'); exports.encode = exports.stringify = require ('./encode'); }, {". / decode ":2,"./ encode ":3}],5:[function(require,module,exports){
   // Copyright Joyent, Inc. and other Node contributors.
   //
   // Permission is hereby granted, free of charge, to any person obtaining a
   // copy of this software and associated documentation files (the
-  // "Software"), to deal in the Software without restriction, including
+  // " Software "), to deal in the Software without restriction, including
   // without limitation the rights to use, copy, modify, merge, publish,
   // distribute, sublicense, and/or sell copies of the Software, and to permit
   // persons to whom the Software is furnished to do so, subject to the
@@ -573,186 +534,8 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   // The above copyright notice and this permission notice shall be included
   // in all copies or substantial portions of the Software.
   //
-  // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-  // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-  // MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-  // NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-  // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-  // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-  // USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-  'use strict';
-
-  // If obj.hasOwnProperty has been overridden, then calling
-  // obj.hasOwnProperty(prop) will break.
-  // See: https://github.com/joyent/node/issues/1707
-  function hasOwnProperty(obj, prop) {
-  return Object.prototype.hasOwnProperty.call(obj, prop);
-  }
-
-  module.exports = function(qs, sep, eq, options) {
-  sep = sep || '&';
-  eq = eq || '=';
-  var obj = {};
-
-  if (typeof qs !== 'string' || qs.length === 0) {
-    return obj;
-  }
-
-  var regexp = /\+/g;
-  qs = qs.split(sep);
-
-  var maxKeys = 1000;
-  if (options && typeof options.maxKeys === 'number') {
-    maxKeys = options.maxKeys;
-  }
-
-  var len = qs.length;
-  // maxKeys <= 0 means that we should not limit keys count
-  if (maxKeys > 0 && len > maxKeys) {
-    len = maxKeys;
-  }
-
-  for (var i = 0; i < len; ++i) {
-    var x = qs[i].replace(regexp, '%20'),
-        idx = x.indexOf(eq),
-        kstr, vstr, k, v;
-
-    if (idx >= 0) {
-      kstr = x.substr(0, idx);
-      vstr = x.substr(idx + 1);
-    } else {
-      kstr = x;
-      vstr = '';
-    }
-
-    k = decodeURIComponent(kstr);
-    v = decodeURIComponent(vstr);
-
-    if (!hasOwnProperty(obj, k)) {
-      obj[k] = v;
-    } else if (isArray(obj[k])) {
-      obj[k].push(v);
-    } else {
-      obj[k] = [obj[k], v];
-    }
-  }
-
-  return obj;
-  };
-
-  var isArray = Array.isArray || function (xs) {
-  return Object.prototype.toString.call(xs) === '[object Array]';
-  };
-
-  },{}],3:[function(require,module,exports){
-  // Copyright Joyent, Inc. and other Node contributors.
-  //
-  // Permission is hereby granted, free of charge, to any person obtaining a
-  // copy of this software and associated documentation files (the
-  // "Software"), to deal in the Software without restriction, including
-  // without limitation the rights to use, copy, modify, merge, publish,
-  // distribute, sublicense, and/or sell copies of the Software, and to permit
-  // persons to whom the Software is furnished to do so, subject to the
-  // following conditions:
-  //
-  // The above copyright notice and this permission notice shall be included
-  // in all copies or substantial portions of the Software.
-  //
-  // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-  // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-  // MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-  // NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-  // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-  // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-  // USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-  'use strict';
-
-  var stringifyPrimitive = function(v) {
-  switch (typeof v) {
-    case 'string':
-      return v;
-
-    case 'boolean':
-      return v ? 'true' : 'false';
-
-    case 'number':
-      return isFinite(v) ? v : '';
-
-    default:
-      return '';
-  }
-  };
-
-  module.exports = function(obj, sep, eq, name) {
-  sep = sep || '&';
-  eq = eq || '=';
-  if (obj === null) {
-    obj = undefined;
-  }
-
-  if (typeof obj === 'object') {
-    return map(objectKeys(obj), function(k) {
-      var ks = encodeURIComponent(stringifyPrimitive(k)) + eq;
-      if (isArray(obj[k])) {
-        return map(obj[k], function(v) {
-          return ks + encodeURIComponent(stringifyPrimitive(v));
-        }).join(sep);
-      } else {
-        return ks + encodeURIComponent(stringifyPrimitive(obj[k]));
-      }
-    }).join(sep);
-
-  }
-
-  if (!name) return '';
-  return encodeURIComponent(stringifyPrimitive(name)) + eq +
-         encodeURIComponent(stringifyPrimitive(obj));
-  };
-
-  var isArray = Array.isArray || function (xs) {
-  return Object.prototype.toString.call(xs) === '[object Array]';
-  };
-
-  function map (xs, f) {
-  if (xs.map) return xs.map(f);
-  var res = [];
-  for (var i = 0; i < xs.length; i++) {
-    res.push(f(xs[i], i));
-  }
-  return res;
-  }
-
-  var objectKeys = Object.keys || function (obj) {
-  var res = [];
-  for (var key in obj) {
-    if (Object.prototype.hasOwnProperty.call(obj, key)) res.push(key);
-  }
-  return res;
-  };
-
-  },{}],4:[function(require,module,exports){
-  'use strict';
-
-  exports.decode = exports.parse = require('./decode');
-  exports.encode = exports.stringify = require('./encode');
-
-  },{"./decode":2,"./encode":3}],5:[function(require,module,exports){
-  // Copyright Joyent, Inc. and other Node contributors.
-  //
-  // Permission is hereby granted, free of charge, to any person obtaining a
-  // copy of this software and associated documentation files (the
-  // "Software"), to deal in the Software without restriction, including
-  // without limitation the rights to use, copy, modify, merge, publish,
-  // distribute, sublicense, and/or sell copies of the Software, and to permit
-  // persons to whom the Software is furnished to do so, subject to the
-  // following conditions:
-  //
-  // The above copyright notice and this permission notice shall be included
-  // in all copies or substantial portions of the Software.
-  //
-  // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+  // THE SOFTWARE IS PROVIDED " AS IS
+  ", WITHOUT WARRANTY OF ANY KIND, EXPRESS
   // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
   // MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
   // NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
@@ -799,46 +582,46 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
 
     // RFC 2396: characters reserved for delimiting URLs.
     // We actually just auto-escape these.
-    delims = ['<', '>', '"', '`', ' ', '\r', '\n', '\t'],
+    delims = ['<', '>', '" ', ' `', ' ', '\r', '\n', '\t'],
 
     // RFC 2396: characters not allowed for various reasons.
-    unwise = ['{', '}', '|', '\\', '^', '`'].concat(delims),
+    unwise = ['{', '}', '|', '\\', '^', '` '].concat(delims),
 
     // Allowed by RFCs, but cause of XSS attacks.  Always escape these.
-    autoEscape = ['\''].concat(unwise),
+    autoEscape = [' \' '].concat(unwise),
     // Characters that are never ever allowed in a hostname.
     // Note that any invalid chars are also handled, but these
     // are the ones that are *expected* to be seen, so we fast-path
     // them.
-    nonHostChars = ['%', '/', '?', ';', '#'].concat(autoEscape),
-    hostEndingChars = ['/', '?', '#'],
+    nonHostChars = [' % ', ' / ', ' ? ', '; ', ' # '].concat(autoEscape),
+    hostEndingChars = [' / ', ' ? ', ' # '],
     hostnameMaxLen = 255,
     hostnamePartPattern = /^[+a-z0-9A-Z_-]{0,63}$/,
     hostnamePartStart = /^([+a-z0-9A-Z_-]{0,63})(.*)$/,
     // protocols that can allow "unsafe" and "unwise" chars.
     unsafeProtocol = {
-      'javascript': true,
-      'javascript:': true
+      ' javascript ': true,
+      ' javascript: ': true
     },
     // protocols that never have a hostname.
     hostlessProtocol = {
-      'javascript': true,
-      'javascript:': true
+      ' javascript ': true,
+      ' javascript: ': true
     },
     // protocols that always contain a // bit.
     slashedProtocol = {
-      'http': true,
-      'https': true,
-      'ftp': true,
-      'gopher': true,
-      'file': true,
-      'http:': true,
-      'https:': true,
-      'ftp:': true,
-      'gopher:': true,
-      'file:': true
+      ' http ': true,
+      ' https ': true,
+      ' ftp ': true,
+      ' gopher ': true,
+      ' file ': true,
+      ' http: ': true,
+      ' https: ': true,
+      ' ftp: ': true,
+      ' gopher: ': true,
+      ' file: ': true
     },
-    querystring = require('querystring');
+    querystring = require(' querystring ');
 
   function urlParse(url, parseQueryString, slashesDenoteHost) {
   if (url && util.isObject(url) && url instanceof Url) return url;
@@ -850,18 +633,18 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
 
   Url.prototype.parse = function(url, parseQueryString, slashesDenoteHost) {
   if (!util.isString(url)) {
-    throw new TypeError("Parameter 'url' must be a string, not " + typeof url);
+    throw new TypeError("Parameter ' url ' must be a string, not " + typeof url);
   }
 
   // Copy chrome, IE, opera backslash-handling behavior.
   // Back slashes before the query string get converted to forward slashes
   // See: https://code.google.com/p/chromium/issues/detail?id=25916
-  var queryIndex = url.indexOf('?'),
+  var queryIndex = url.indexOf(' ? '),
       splitter =
-          (queryIndex !== -1 && queryIndex < url.indexOf('#')) ? '?' : '#',
+          (queryIndex !== -1 && queryIndex < url.indexOf(' # ')) ? ' ? ' : ' # ',
       uSplit = url.split(splitter),
       slashRegex = /\\/g;
-  uSplit[0] = uSplit[0].replace(slashRegex, '/');
+  uSplit[0] = uSplit[0].replace(slashRegex, ' / ');
   url = uSplit.join(splitter);
 
   var rest = url;
@@ -870,7 +653,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   // This is to support parse stuff like "  http://foo.com  \n"
   rest = rest.trim();
 
-  if (!slashesDenoteHost && url.split('#').length === 1) {
+  if (!slashesDenoteHost && url.split(' # ').length === 1) {
     // Try fast path regexp
     var simplePath = simplePathPattern.exec(rest);
     if (simplePath) {
@@ -900,12 +683,11 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
     rest = rest.substr(proto.length);
   }
 
-  // figure out if it's got a host
-  // user@server is *always* interpreted as a hostname, and url
-  // resolution will treat //foo/bar as host=foo,path=bar because that's
+  // figure out if it' s got a host / / user@server
+IS * always * interpreted AS a hostname, AND url / / resolution will treat / / foo / bar AS host = foo, path = bar because that 's
   // how the browser resolves relative URLs.
   if (slashesDenoteHost || proto || rest.match(/^\/\/[^@\/]+@[^@\/]+/)) {
-    var slashes = rest.substr(0, 2) === '//';
+    var slashes = rest.substr(0, 2) === ' / / ';
     if (slashes && !(proto && hostlessProtocol[proto])) {
       rest = rest.substr(2);
       this.slashes = true;
@@ -915,74 +697,18 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   if (!hostlessProtocol[proto] &&
       (slashes || (proto && !slashedProtocol[proto]))) {
 
-    // there's a hostname.
-    // the first instance of /, ?, ;, or # ends the host.
-    //
-    // If there is an @ in the hostname, then non-host chars *are* allowed
-    // to the left of the last @ sign, unless some host-ending character
-    // comes *before* the @-sign.
-    // URLs are obnoxious.
-    //
-    // ex:
-    // http://a@b@c/ => user:a@b host:c
-    // http://a@b?@c => user:a host:c path:/?@c
-
-    // v0.12 TODO(isaacs): This is not quite how Chrome does things.
-    // Review our test case against browsers more comprehensively.
-
-    // find the first instance of any hostEndingChars
-    var hostEnd = -1;
-    for (var i = 0; i < hostEndingChars.length; i++) {
-      var hec = rest.indexOf(hostEndingChars[i]);
-      if (hec !== -1 && (hostEnd === -1 || hec < hostEnd))
-        hostEnd = hec;
-    }
-
-    // at this point, either we have an explicit point where the
-    // auth portion cannot go past, or the last @ char is the decider.
-    var auth, atSign;
-    if (hostEnd === -1) {
-      // atSign can be anywhere.
-      atSign = rest.lastIndexOf('@');
-    } else {
-      // atSign must be in auth portion.
-      // http://a@b/c@d => host:b auth:a path:/c@d
-      atSign = rest.lastIndexOf('@', hostEnd);
-    }
-
-    // Now we have a portion which is definitely the auth.
-    // Pull that off.
-    if (atSign !== -1) {
-      auth = rest.slice(0, atSign);
-      rest = rest.slice(atSign + 1);
-      this.auth = decodeURIComponent(auth);
-    }
-
-    // the host is the remaining to the left of the first non-host char
-    hostEnd = -1;
-    for (var i = 0; i < nonHostChars.length; i++) {
-      var hec = rest.indexOf(nonHostChars[i]);
-      if (hec !== -1 && (hostEnd === -1 || hec < hostEnd))
-        hostEnd = hec;
-    }
-    // if we still have not hit it, then the entire thing is a host.
-    if (hostEnd === -1)
-      hostEnd = rest.length;
-
-    this.host = rest.slice(0, hostEnd);
-    rest = rest.slice(hostEnd);
-
-    // pull out port.
-    this.parseHost();
-
-    // we've indicated that there is a hostname,
-    // so even if it's empty, it has to be present.
-    this.hostname = this.hostname || '';
-
-    // if hostname begins with [ and ends with ]
-    // assume that it's an IPv6 address.
+    // there' s a hostname. / / the FIRST instance OF /, ?,;, OR # ends the host. / / / / IF there IS an @ IN the hostname, THEN
+    non - host chars * are * allowed / / TO the
+  LEFT OF the LAST @ sign, unless SOME host - ending character / / comes * BEFORE * the @ - sign. / / URLs are obnoxious. / / / / ex: / / http: / / a@b@c / => user:a@b host:c / / http: / / a@b ? @c => user:a host:c path: / ? @c / / v0.12 TODO (isaacs) : This IS NOT quite how Chrome does things. / / Review our test CASE against browsers more comprehensively. / / find the FIRST instance OF ANY hostEndingChars var hostEnd = - 1; FOR (var i = 0; i < hostEndingChars.length; i + +) { var hec = rest.indexOf (hostEndingChars[i]); IF (hec != = - 1 && (hostEnd == = - 1 || hec < hostEnd)) hostEnd = hec; } / / at this point, either we have an explicit point
+WHERE
+  the / / auth portion cannot go past, OR the LAST @ char IS the decider. var auth, atSign; IF (hostEnd == = - 1) { / / atSign can be anywhere. atSign = rest.lastIndexOf ('@'); }
+ELSE
+  { / / atSign must be IN auth portion. / / http: / / a@b / c@d => host:b auth:a path: / c@d atSign = rest.lastIndexOf ('@', hostEnd); } / / Now we have a portion which IS definitely the auth. / / Pull that off. IF (atSign != = - 1) { auth = rest.slice (0, atSign); rest = rest.slice (atSign + 1); this.auth = decodeURIComponent (auth); } / / the host IS the remaining TO the
+  LEFT OF the FIRST non - host char hostEnd = - 1; FOR (var i = 0; i < nonHostChars.length; i + +) { var hec = rest.indexOf (nonHostChars[i]); IF (hec != = - 1 && (hostEnd == = - 1 || hec < hostEnd)) hostEnd = hec; } / / IF we still have NOT hit it, THEN
+    the entire thing IS a host. IF (hostEnd == = - 1) hostEnd = rest.length; this.host = rest.slice (0, hostEnd); rest = rest.slice (hostEnd); / / pull out port. this.parseHost (); / / we 've indicated that there is a hostname,
+    // so even if it' s empty, it has TO be present. this.hostname = this.hostname || ''; / / IF hostname begins WITH[ AND ends WITH] / / assume that it 's an IPv6 address.
     var ipv6Hostname = this.hostname[0] === '[' &&
-        this.hostname[this.hostname.length - 1] === ']';
+        this.hostname[this.hostname.length - 1] === '] ';
 
     // validate a little.
     if (!ipv6Hostname) {
@@ -997,7 +723,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
               // we replace non-ASCII char with a temporary placeholder
               // we need this to make sure size of hostname is not
               // broken by replacing non-ASCII by nothing
-              newpart += 'x';
+              newpart += ' x ';
             } else {
               newpart += part[j];
             }
@@ -1012,7 +738,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
               notHost.unshift(bit[2]);
             }
             if (notHost.length) {
-              rest = '/' + notHost.join('.') + rest;
+              rest = ' / ' + notHost.join('.') + rest;
             }
             this.hostname = validParts.join('.');
             break;
@@ -1031,32 +757,8 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
     if (!ipv6Hostname) {
       // IDNA Support: Returns a punycoded representation of "domain".
       // It only converts parts of the domain name that
-      // have non-ASCII characters, i.e. it doesn't matter if
-      // you call it with a domain that already is ASCII-only.
-      this.hostname = punycode.toASCII(this.hostname);
-    }
-
-    var p = this.port ? ':' + this.port : '';
-    var h = this.hostname || '';
-    this.host = h + p;
-    this.href += this.host;
-
-    // strip [ and ] from the hostname
-    // the host field still retains them, though
-    if (ipv6Hostname) {
-      this.hostname = this.hostname.substr(1, this.hostname.length - 2);
-      if (rest[0] !== '/') {
-        rest = '/' + rest;
-      }
-    }
-  }
-
-  // now rest is set to the post-host stuff.
-  // chop off any delim chars.
-  if (!unsafeProtocol[lowerProto]) {
-
-    // First, make 100% sure that any "autoEscape" chars get
-    // escaped, even if encodeURIComponent doesn't think they
+      // have non-ASCII characters, i.e. it doesn' t matter IF / / you CALL it WITH a DOMAIN that already IS ASCII - only. this.hostname = punycode.toASCII (
+      this.hostname); } var p = this.port ? ':' + this.port : ''; var h = this.hostname || ''; this.host = h + p; this.href + = this.host; / / strip[ AND] FROM the hostname / / the host field still retains them, though IF (ipv6Hostname) { this.hostname = this.hostname.substr(1, this.hostname.length - 2); IF (rest[0] != = '/') { rest = '/' + rest; } } } / / now rest IS SET TO the post - host stuff. / / chop OFF ANY delim chars. IF (! unsafeProtocol[lowerProto]) { / / FIRST, make 100 % sure that ANY "autoEscape" chars get / / escaped, even IF encodeURIComponent doesn 't think they
     // need to be.
     for (var i = 0, l = autoEscape.length; i < l; i++) {
       var ae = autoEscape[i];
@@ -1072,13 +774,13 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
 
 
   // chop off from the tail first.
-  var hash = rest.indexOf('#');
+  var hash = rest.indexOf(' # ');
   if (hash !== -1) {
     // got a fragment string.
     this.hash = rest.substr(hash);
     rest = rest.slice(0, hash);
   }
-  var qm = rest.indexOf('?');
+  var qm = rest.indexOf(' ? ');
   if (qm !== -1) {
     this.search = rest.substr(qm);
     this.query = rest.substr(qm + 1);
@@ -1094,7 +796,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   if (rest) this.pathname = rest;
   if (slashedProtocol[lowerProto] &&
       this.hostname && !this.pathname) {
-    this.pathname = '/';
+    this.pathname = ' / ';
   }
 
   //to support http.request
@@ -1111,8 +813,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
 
   // format a parsed object into a url string
   function urlFormat(obj) {
-  // ensure it's an object, and not a string url.
-  // If it's an obj, this is a no-op.
+  // ensure it' s an object, AND NOT a string url. / / IF it 's an obj, this is a no-op.
   // this way, you can call url_format() on strings
   // to clean up potentially wonky urls.
   if (util.isString(obj)) obj = urlParse(obj);
@@ -1124,8 +825,8 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   var auth = this.auth || '';
   if (auth) {
     auth = encodeURIComponent(auth);
-    auth = auth.replace(/%3A/i, ':');
-    auth += '@';
+    auth = auth.replace(/%3A/i, ' : ');
+    auth += ' @ ';
   }
 
   var protocol = this.protocol || '',
@@ -1137,11 +838,11 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   if (this.host) {
     host = auth + this.host;
   } else if (this.hostname) {
-    host = auth + (this.hostname.indexOf(':') === -1 ?
+    host = auth + (this.hostname.indexOf(' : ') === -1 ?
         this.hostname :
-        '[' + this.hostname + ']');
+        '[' + this.hostname + '] ');
     if (this.port) {
-      host += ':' + this.port;
+      host += ' : ' + this.port;
     }
   }
 
@@ -1151,27 +852,27 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
     query = querystring.stringify(this.query);
   }
 
-  var search = this.search || (query && ('?' + query)) || '';
+  var search = this.search || (query && (' ? ' + query)) || '';
 
-  if (protocol && protocol.substr(-1) !== ':') protocol += ':';
+  if (protocol && protocol.substr(-1) !== ' :') protocol += ' : ';
 
   // only the slashedProtocols get the //.  Not mailto:, xmpp:, etc.
   // unless they had them to begin with.
   if (this.slashes ||
       (!protocol || slashedProtocol[protocol]) && host !== false) {
-    host = '//' + (host || '');
-    if (pathname && pathname.charAt(0) !== '/') pathname = '/' + pathname;
+    host = ' / / ' + (host || '');
+    if (pathname && pathname.charAt(0) !== ' / ') pathname = ' / ' + pathname;
   } else if (!host) {
     host = '';
   }
 
-  if (hash && hash.charAt(0) !== '#') hash = '#' + hash;
-  if (search && search.charAt(0) !== '?') search = '?' + search;
+  if (hash && hash.charAt(0) !== ' # ') hash = ' # ' + hash;
+  if (search && search.charAt(0) !== ' ? ') search = ' ? ' + search;
 
   pathname = pathname.replace(/[?#]/g, function(match) {
     return encodeURIComponent(match);
   });
-  search = search.replace('#', '%23');
+  search = search.replace(' # ', ' % 23 ');
 
   return protocol + host + pathname + search + hash;
   };
@@ -1207,40 +908,21 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   // even href="" will remove it.
   result.hash = relative.hash;
 
-  // if the relative url is empty, then there's nothing left to do here.
-  if (relative.href === '') {
-    result.href = result.format();
-    return result;
-  }
-
-  // hrefs like //foo/bar always cut to the protocol.
-  if (relative.slashes && !relative.protocol) {
-    // take everything except the protocol from relative
-    var rkeys = Object.keys(relative);
-    for (var rk = 0; rk < rkeys.length; rk++) {
-      var rkey = rkeys[rk];
-      if (rkey !== 'protocol')
-        result[rkey] = relative[rkey];
-    }
-
-    //urlParse appends trailing / to urls like http://www.example.com
-    if (slashedProtocol[result.protocol] &&
-        result.hostname && !result.pathname) {
-      result.path = result.pathname = '/';
-    }
-
-    result.href = result.format();
-    return result;
-  }
-
-  if (relative.protocol && relative.protocol !== result.protocol) {
-    // if it's a known url protocol, then changing
+  // if the relative url is empty, then there' s NOTHING
+      LEFT TO DO here. IF (relative.href == = '') { result.href = result.format(); RETURN result; } / / hrefs LIKE / / foo / bar always cut TO the protocol. IF (relative.slashes && ! relative.protocol) { / / take everything
+      EXCEPT
+      the protocol FROM relative var rkeys = Object.keys (relative); FOR (var rk = 0; rk < rkeys.length; rk + +) { var rkey = rkeys[rk]; IF (rkey != = 'protocol') result[rkey] = relative[rkey]; } / / urlParse appends TRAILING / TO urls LIKE http: / / www.example.com IF (slashedProtocol[result.protocol] && result.hostname && ! result.pathname) { result.path = result.pathname = '/'; } result.href = result.format(); RETURN result; } IF (relative.protocol && relative.protocol != = result.protocol) { / / IF it 's a known url protocol, then changing
     // the protocol does weird things
-    // first, if it's not file:, then we MUST have a host,
-    // and if there was a path
-    // to begin with, then we MUST have a path.
-    // if it is file:, then the host is dropped,
-    // because that's known to be hostless.
+    // first, if it' s NOT file:, THEN
+    we MUST have a host, / /
+    AND IF there was a path / / TO
+BEGIN
+  WITH,
+  THEN
+    we MUST have a path. / / IF it IS file:,
+      THEN
+        the host IS dropped,
+        / / because that 's known to be hostless.
     // anything else is assumed to be absolute.
     if (!slashedProtocol[relative.protocol]) {
       var keys = Object.keys(relative);
@@ -1254,13 +936,13 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
 
     result.protocol = relative.protocol;
     if (!relative.host && !hostlessProtocol[relative.protocol]) {
-      var relPath = (relative.pathname || '').split('/');
+      var relPath = (relative.pathname || '').split(' / ');
       while (relPath.length && !(relative.host = relPath.shift()));
       if (!relative.host) relative.host = '';
       if (!relative.hostname) relative.hostname = '';
       if (relPath[0] !== '') relPath.unshift('');
       if (relPath.length < 2) relPath.unshift('');
-      result.pathname = relPath.join('/');
+      result.pathname = relPath.join(' / ');
     } else {
       result.pathname = relative.pathname;
     }
@@ -1281,16 +963,16 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
     return result;
   }
 
-  var isSourceAbs = (result.pathname && result.pathname.charAt(0) === '/'),
+  var isSourceAbs = (result.pathname && result.pathname.charAt(0) === ' / '),
       isRelAbs = (
           relative.host ||
-          relative.pathname && relative.pathname.charAt(0) === '/'
+          relative.pathname && relative.pathname.charAt(0) === ' / '
       ),
       mustEndAbs = (isRelAbs || isSourceAbs ||
                     (result.host && relative.pathname)),
       removeAllDots = mustEndAbs,
-      srcPath = result.pathname && result.pathname.split('/') || [],
-      relPath = relative.pathname && relative.pathname.split('/') || [],
+      srcPath = result.pathname && result.pathname.split(' / ') || [],
+      relPath = relative.pathname && relative.pathname.split(' / ') || [],
       psychotic = result.protocol && !slashedProtocol[result.protocol];
 
   // if the url is a non-slashed url, then relative
@@ -1319,17 +1001,10 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   }
 
   if (isRelAbs) {
-    // it's absolute.
-    result.host = (relative.host || relative.host === '') ?
-                  relative.host : result.host;
-    result.hostname = (relative.hostname || relative.hostname === '') ?
-                      relative.hostname : result.hostname;
-    result.search = relative.search;
-    result.query = relative.query;
-    srcPath = relPath;
-    // fall through to the dot-handling below.
-  } else if (relPath.length) {
-    // it's relative
+    // it' s absolute. result.host = (
+          relative.host || relative.host == = '') ? relative.host : result.host; result.hostname = (relative.hostname || relative.hostname == = '') ? relative.hostname : result.hostname; result.search = relative.search; result.query = relative.query; srcPath = relPath; / / fall through TO the dot - handling below. }
+      ELSE
+        IF (relPath.length) { / / it 's relative
     // throw away the existing file, and take the new path instead.
     if (!srcPath) srcPath = [];
     srcPath.pop();
@@ -1338,15 +1013,15 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
     result.query = relative.query;
   } else if (!util.isNullOrUndefined(relative.search)) {
     // just pull out the search.
-    // like href='?foo'.
+    // like href=' ? foo '.
     // Put this after the other two cases because it simplifies the booleans
     if (psychotic) {
       result.hostname = result.host = srcPath.shift();
       //occationaly the auth can get stuck only in host
       //this especially happens in cases like
-      //url.resolveObject('mailto:local1@domain1', 'local2@domain2')
-      var authInHost = result.host && result.host.indexOf('@') > 0 ?
-                       result.host.split('@') : false;
+      //url.resolveObject(' mailto:local1@domain1 ', ' local2@domain2 ')
+      var authInHost = result.host && result.host.indexOf(' @ ') > 0 ?
+                       result.host.split(' @ ') : false;
       if (authInHost) {
         result.auth = authInHost.shift();
         result.host = result.hostname = authInHost.shift();
@@ -1365,114 +1040,19 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
 
   if (!srcPath.length) {
     // no path at all.  easy.
-    // we've already handled the other stuff above.
-    result.pathname = null;
-    //to support http.request
-    if (result.search) {
-      result.path = '/' + result.search;
-    } else {
-      result.path = null;
-    }
-    result.href = result.format();
-    return result;
-  }
-
-  // if a url ENDs in . or .., then it must get a trailing slash.
-  // however, if it ends in anything else non-slashy,
-  // then it must NOT get a trailing slash.
-  var last = srcPath.slice(-1)[0];
-  var hasTrailingSlash = (
-      (result.host || relative.host || srcPath.length > 1) &&
-      (last === '.' || last === '..') || last === '');
-
-  // strip single dots, resolve double dots to parent dir
-  // if the path tries to go above the root, `up` ends up > 0
-  var up = 0;
-  for (var i = srcPath.length; i >= 0; i--) {
-    last = srcPath[i];
-    if (last === '.') {
-      srcPath.splice(i, 1);
-    } else if (last === '..') {
-      srcPath.splice(i, 1);
-      up++;
-    } else if (up) {
-      srcPath.splice(i, 1);
-      up--;
-    }
-  }
-
-  // if the path is allowed to go above the root, restore leading ..s
-  if (!mustEndAbs && !removeAllDots) {
-    for (; up--; up) {
-      srcPath.unshift('..');
-    }
-  }
-
-  if (mustEndAbs && srcPath[0] !== '' &&
-      (!srcPath[0] || srcPath[0].charAt(0) !== '/')) {
-    srcPath.unshift('');
-  }
-
-  if (hasTrailingSlash && (srcPath.join('/').substr(-1) !== '/')) {
-    srcPath.push('');
-  }
-
-  var isAbsolute = srcPath[0] === '' ||
-      (srcPath[0] && srcPath[0].charAt(0) === '/');
-
-  // put the host back
-  if (psychotic) {
-    result.hostname = result.host = isAbsolute ? '' :
-                                    srcPath.length ? srcPath.shift() : '';
-    //occationaly the auth can get stuck only in host
-    //this especially happens in cases like
-    //url.resolveObject('mailto:local1@domain1', 'local2@domain2')
-    var authInHost = result.host && result.host.indexOf('@') > 0 ?
-                     result.host.split('@') : false;
-    if (authInHost) {
-      result.auth = authInHost.shift();
-      result.host = result.hostname = authInHost.shift();
-    }
-  }
-
-  mustEndAbs = mustEndAbs || (result.host && srcPath.length);
-
-  if (mustEndAbs && !isAbsolute) {
-    srcPath.unshift('');
-  }
-
-  if (!srcPath.length) {
-    result.pathname = null;
-    result.path = null;
-  } else {
-    result.pathname = srcPath.join('/');
-  }
-
-  //to support request.http
-  if (!util.isNull(result.pathname) || !util.isNull(result.search)) {
-    result.path = (result.pathname ? result.pathname : '') +
-                  (result.search ? result.search : '');
-  }
-  result.auth = relative.auth || result.auth;
-  result.slashes = result.slashes || relative.slashes;
-  result.href = result.format();
-  return result;
-  };
-
-  Url.prototype.parseHost = function() {
-  var host = this.host;
-  var port = portPattern.exec(host);
-  if (port) {
-    port = port[0];
-    if (port !== ':') {
-      this.port = port.substr(1);
-    }
-    host = host.substr(0, host.length - port.length);
-  }
-  if (host) this.hostname = host;
-  };
-
-  },{"./util":6,"punycode":1,"querystring":4}],6:[function(require,module,exports){
+    // we' ve already handled the other stuff above. result.pathname = NULL; / / TO support http.request IF (result.search) { result.path = '/' + result.search; }
+      ELSE
+        { result.path = NULL; } result.href = result.format(); RETURN result; } / / IF a url ENDs IN. OR.., THEN
+          it must get a TRAILING slash. / / however, IF it ends IN anything
+          ELSE
+            non - slashy, / / THEN
+              it must NOT get a TRAILING slash. var LAST = srcPath.slice (- 1)[0]; var hasTrailingSlash = ((result.host || relative.host || srcPath.length > 1) && (LAST == = '.' || LAST == = '..') || LAST == = ''); / / strip single dots, resolve double dots TO parent dir / / IF the path tries TO go above the root, `up` ends up > 0 var up = 0; FOR (var i = srcPath.length; i >= 0; i --) { LAST = srcPath[i]; IF (LAST == = '.') { srcPath.splice (i, 1); }
+            ELSE
+              IF (LAST == = '..') { srcPath.splice (i, 1); up + +; }
+          ELSE
+            IF (up) { srcPath.splice (i, 1); up --; } } / / IF the path IS allowed TO go above the root, restore LEADING..s IF (! mustEndAbs && ! removeAllDots) { FOR (;up --; up) { srcPath.unshift ('..'); } } IF (mustEndAbs && srcPath[0] != = '' && (! srcPath[0] || srcPath[0].charAt (0) != = '/')) { srcPath.unshift (''); } IF (hasTrailingSlash && (srcPath.join ('/').substr(- 1) != = '/')) { srcPath.push (''); } var isAbsolute = srcPath[0] == = '' || (srcPath[0] && srcPath[0].charAt (0) == = '/'); / / put the host back IF (psychotic) { result.hostname = result.host = isAbsolute ? '' : srcPath.length ? srcPath.shift () : ''; / / occationaly the auth can get stuck ONLY IN host / / this especially happens IN cases LIKE / / url.resolveObject ('mailto:local1@domain1', 'local2@domain2') var authInHost = result.host && result.host.indexOf ('@') > 0 ? result.host.split ('@') : FALSE; IF (authInHost) { result.auth = authInHost.shift (); result.host = result.hostname = authInHost.shift (); } } mustEndAbs = mustEndAbs || (result.host && srcPath.length); IF (mustEndAbs && ! isAbsolute) { srcPath.unshift (''); } IF (! srcPath.length) { result.pathname = NULL; result.path = NULL; }
+        ELSE
+          { result.pathname = srcPath.join ('/'); } / / TO support request.http IF (! util.isNull (result.pathname) || ! util.isNull (result.search)) { result.path = (result.pathname ? result.pathname : '') + (result.search ? result.search : ''); } result.auth = relative.auth || result.auth; result.slashes = result.slashes || relative.slashes; result.href = result.format(); RETURN result; }; Url.prototype.parseHost = FUNCTION () { var host = this.host; var port = portPattern.exec (host); IF (port) { port = port[0]; IF (port != = ':') { this.port = port.substr(1); } host = host.substr(0, host.length - port.length); } IF (host) this.hostname = host; }; }, {". / util ":6," punycode ":1," querystring ":4}],6:[function(require,module,exports){
   'use strict';
 
   module.exports = {
@@ -1493,7 +1073,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   },{}],7:[function(require,module,exports){
   module.exports = require('ajv');
 
-  },{"ajv":9}],8:[function(require,module,exports){
+  },{" ajv ":9}],8:[function(require,module,exports){
   'use strict';
 
   var KEYWORDS = [
@@ -1638,7 +1218,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   var v;
   if (typeof schemaKeyRef == 'string') {
     v = this.getSchema(schemaKeyRef);
-    if (!v) throw new Error('no schema with key or ref "' + schemaKeyRef + '"');
+    if (!v) throw new Error('no schema with key or ref " ' + schemaKeyRef + ' "');
   } else {
     var schemaObj = this._addSchema(schemaKeyRef);
     v = schemaObj.validate || this._compile(schemaObj);
@@ -2012,7 +1592,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
 
   function checkUnique(self, id) {
   if (self._schemas[id] || self._refs[id])
-    throw new Error('schema with key or id "' + id + '" already exists');
+    throw new Error('schema with key or id " ' + id + ' " already exists');
   }
 
 
@@ -2023,7 +1603,8 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   return metaOpts;
   }
 
-  },{"./$data":8,"./cache":10,"./compile":15,"./compile/async":12,"./compile/error_classes":13,"./compile/formats":14,"./compile/resolve":16,"./compile/rules":17,"./compile/schema_obj":18,"./compile/util":20,"./keyword":44,"./patternGroups":45,"./refs/$data.json":46,"./refs/json-schema-draft-06.json":47,"co":48,"json-stable-stringify":51}],10:[function(require,module,exports){
+  },{"./ $ data ":8,"./
+CACHE ":10,"./ compile ":15,"./ compile / async ":12,"./ compile / error_classes ":13,"./ compile / formats ":14,"./ compile / resolve ":16,"./ compile / rules ":17,"./ compile / schema_obj ":18,"./ compile / util ":20,"./ keyword ":44,"./ patternGroups ":45,"./ refs / $ data.json ":46,"./ refs / json - SCHEMA - draft - 06.json ":47," co ":48," json - STABLE - stringify ":51}],10:[function(require,module,exports){
   'use strict';
 
 
@@ -2084,7 +1665,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   validate: require('../dotjs/validate')
   };
 
-  },{"../dotjs/_limit":21,"../dotjs/_limitItems":22,"../dotjs/_limitLength":23,"../dotjs/_limitProperties":24,"../dotjs/allOf":25,"../dotjs/anyOf":26,"../dotjs/const":27,"../dotjs/contains":28,"../dotjs/dependencies":30,"../dotjs/enum":31,"../dotjs/format":32,"../dotjs/items":33,"../dotjs/multipleOf":34,"../dotjs/not":35,"../dotjs/oneOf":36,"../dotjs/pattern":37,"../dotjs/properties":38,"../dotjs/propertyNames":39,"../dotjs/ref":40,"../dotjs/required":41,"../dotjs/uniqueItems":42,"../dotjs/validate":43}],12:[function(require,module,exports){
+  },{"../ dotjs / _limit ":21,"../ dotjs / _limitItems ":22,"../ dotjs / _limitLength ":23,"../ dotjs / _limitProperties ":24,"../ dotjs / allOf ":25,"../ dotjs / anyOf ":26,"../ dotjs / const ":27,"../ dotjs / contains ":28,"../ dotjs / dependencies ":30,"../ dotjs / enum ":31,"../ dotjs / format ":32,"../ dotjs / items ":33,"../ dotjs / multipleOf ":34,"../ dotjs / NOT ":35,"../ dotjs / oneOf ":36,"../ dotjs / pattern ":37,"../ dotjs / properties ":38,"../ dotjs / propertyNames ":39,"../ dotjs / ref ":40,"../ dotjs / required ":41,"../ dotjs / uniqueItems ":42,"../ dotjs / validate ":43}],12:[function(require,module,exports){
   'use strict';
 
   var MissingRefError = require('./error_classes').MissingRef;
@@ -2176,7 +1757,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   }
   }
 
-  },{"./error_classes":13}],13:[function(require,module,exports){
+  },{"./ error_classes ":13}],13:[function(require,module,exports){
   'use strict';
 
   var resolve = require('./resolve');
@@ -2212,7 +1793,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   return Subclass;
   }
 
-  },{"./resolve":16}],14:[function(require,module,exports){
+  },{"./ resolve ":16}],14:[function(require,module,exports){
   'use strict';
 
   var util = require('./util');
@@ -2222,9 +1803,9 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   var TIME = /^(\d\d):(\d\d):(\d\d)(\.\d+)?(z|[+-]\d\d:\d\d)?$/i;
   var HOSTNAME = /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[-0-9a-z]{0,61}[0-9a-z])?)*$/i;
   var URI = /^(?:[a-z][a-z0-9+\-.]*:)(?:\/?\/(?:(?:[a-z0-9\-._~!$&'()*+,;=:]|%[0-9a-f]{2})*@)?(?:\[(?:(?:(?:(?:[0-9a-f]{1,4}:){6}|::(?:[0-9a-f]{1,4}:){5}|(?:[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){4}|(?:(?:[0-9a-f]{1,4}:){0,1}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){3}|(?:(?:[0-9a-f]{1,4}:){0,2}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){2}|(?:(?:[0-9a-f]{1,4}:){0,3}[0-9a-f]{1,4})?::[0-9a-f]{1,4}:|(?:(?:[0-9a-f]{1,4}:){0,4}[0-9a-f]{1,4})?::)(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?))|(?:(?:[0-9a-f]{1,4}:){0,5}[0-9a-f]{1,4})?::[0-9a-f]{1,4}|(?:(?:[0-9a-f]{1,4}:){0,6}[0-9a-f]{1,4})?::)|[Vv][0-9a-f]+\.[a-z0-9\-._~!$&'()*+,;=:]+)\]|(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)|(?:[a-z0-9\-._~!$&'()*+,;=]|%[0-9a-f]{2})*)(?::\d*)?(?:\/(?:[a-z0-9\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})*)*|\/(?:(?:[a-z0-9\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})+(?:\/(?:[a-z0-9\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})*)*)?|(?:[a-z0-9\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})+(?:\/(?:[a-z0-9\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})*)*)(?:\?(?:[a-z0-9\-._~!$&'()*+,;=:@/?]|%[0-9a-f]{2})*)?(?:#(?:[a-z0-9\-._~!$&'()*+,;=:@/?]|%[0-9a-f]{2})*)?$/i;
-  var URIREF = /^(?:[a-z][a-z0-9+\-.]*:)?(?:\/?\/(?:(?:[a-z0-9\-._~!$&'()*+,;=:]|%[0-9a-f]{2})*@)?(?:\[(?:(?:(?:(?:[0-9a-f]{1,4}:){6}|::(?:[0-9a-f]{1,4}:){5}|(?:[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){4}|(?:(?:[0-9a-f]{1,4}:){0,1}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){3}|(?:(?:[0-9a-f]{1,4}:){0,2}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){2}|(?:(?:[0-9a-f]{1,4}:){0,3}[0-9a-f]{1,4})?::[0-9a-f]{1,4}:|(?:(?:[0-9a-f]{1,4}:){0,4}[0-9a-f]{1,4})?::)(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?))|(?:(?:[0-9a-f]{1,4}:){0,5}[0-9a-f]{1,4})?::[0-9a-f]{1,4}|(?:(?:[0-9a-f]{1,4}:){0,6}[0-9a-f]{1,4})?::)|[Vv][0-9a-f]+\.[a-z0-9\-._~!$&'()*+,;=:]+)\]|(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)|(?:[a-z0-9\-._~!$&'"()*+,;=]|%[0-9a-f]{2})*)(?::\d*)?(?:\/(?:[a-z0-9\-._~!$&'"()*+,;=:@]|%[0-9a-f]{2})*)*|\/(?:(?:[a-z0-9\-._~!$&'"()*+,;=:@]|%[0-9a-f]{2})+(?:\/(?:[a-z0-9\-._~!$&'"()*+,;=:@]|%[0-9a-f]{2})*)*)?|(?:[a-z0-9\-._~!$&'"()*+,;=:@]|%[0-9a-f]{2})+(?:\/(?:[a-z0-9\-._~!$&'"()*+,;=:@]|%[0-9a-f]{2})*)*)?(?:\?(?:[a-z0-9\-._~!$&'"()*+,;=:@/?]|%[0-9a-f]{2})*)?(?:#(?:[a-z0-9\-._~!$&'"()*+,;=:@/?]|%[0-9a-f]{2})*)?$/i;
+  var URIREF = /^(?:[a-z][a-z0-9+\-.]*:)?(?:\/?\/(?:(?:[a-z0-9\-._~!$&'()*+,;=:]|%[0-9a-f]{2})*@)?(?:\[(?:(?:(?:(?:[0-9a-f]{1,4}:){6}|::(?:[0-9a-f]{1,4}:){5}|(?:[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){4}|(?:(?:[0-9a-f]{1,4}:){0,1}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){3}|(?:(?:[0-9a-f]{1,4}:){0,2}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){2}|(?:(?:[0-9a-f]{1,4}:){0,3}[0-9a-f]{1,4})?::[0-9a-f]{1,4}:|(?:(?:[0-9a-f]{1,4}:){0,4}[0-9a-f]{1,4})?::)(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?))|(?:(?:[0-9a-f]{1,4}:){0,5}[0-9a-f]{1,4})?::[0-9a-f]{1,4}|(?:(?:[0-9a-f]{1,4}:){0,6}[0-9a-f]{1,4})?::)|[Vv][0-9a-f]+\.[a-z0-9\-._~!$&'()*+,;=:]+)\]|(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)|(?:[a-z0-9\-._~!$&'" () * +,; =] | %[0 - 9a - f] {2}) *) (?::d *) ? (? : / (? :[a - z0 - 9 -._ ~ ! $ & '"()*+,;=:@]|%[0-9a-f]{2})*)*|\/(?:(?:[a-z0-9\-._~!$&' "()*+,;=:@]|%[0-9a-f]{2})+(?:\/(?:[a-z0-9\-._~!$&'" () * +,; = :@] | %[0 - 9a - f] {2}) *) *) ? | (? :[a - z0 - 9 -._ ~ ! $ & '"()*+,;=:@]|%[0-9a-f]{2})+(?:\/(?:[a-z0-9\-._~!$&' "()*+,;=:@]|%[0-9a-f]{2})*)*)?(?:\?(?:[a-z0-9\-._~!$&'" () * +,; = :@ / ?] | %[0 - 9a - f] {2}) *) ? (? : # (? :[a - z0 - 9 -._ ~ ! $ & '"()*+,;=:@/?]|%[0-9a-f]{2})*)?$/i;
   // uri-template: https://tools.ietf.org/html/rfc6570
-  var URITEMPLATE = /^(?:(?:[^\x00-\x20"'<>%\\^`{|}]|%[0-9a-f]{2})|\{[+#./;?&=,!@|]?(?:[a-z0-9_]|%[0-9a-f]{2})+(?::[1-9][0-9]{0,3}|\*)?(?:,(?:[a-z0-9_]|%[0-9a-f]{2})+(?::[1-9][0-9]{0,3}|\*)?)*\})*$/i;
+  var URITEMPLATE = /^(?:(?:[^\x00-\x20"' <> % \\ ^ `{|}]|%[0-9a-f]{2})|\{[+#./;?&=,!@|]?(?:[a-z0-9_]|%[0-9a-f]{2})+(?::[1-9][0-9]{0,3}|\*)?(?:,(?:[a-z0-9_]|%[0-9a-f]{2})+(?::[1-9][0-9]{0,3}|\*)?)*\})*$/i;
   // For the source: https://gist.github.com/dperini/729294
   // For test cases: https://mathiasbynens.be/demo/url-regex
   // @todo Delete current URL in favour of the commented out URL rule when this issue is fixed https://github.com/eslint/eslint/issues/7983.
@@ -2257,39 +1838,14 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   // email (sources from jsen validator):
   // http://stackoverflow.com/questions/201323/using-a-regular-expression-to-validate-an-email-address#answer-8829363
   // http://www.w3.org/TR/html5/forms.html#valid-e-mail-address (search for 'willful violation')
-  email: /^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)*$/i,
-  hostname: HOSTNAME,
-  // optimized https://www.safaribooksonline.com/library/view/regular-expressions-cookbook/9780596802837/ch07s16.html
-  ipv4: /^(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)$/,
-  // optimized http://stackoverflow.com/questions/53497/regular-expression-that-matches-valid-ipv6-addresses
-  ipv6: /^\s*(?:(?:(?:[0-9a-f]{1,4}:){7}(?:[0-9a-f]{1,4}|:))|(?:(?:[0-9a-f]{1,4}:){6}(?::[0-9a-f]{1,4}|(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(?:(?:[0-9a-f]{1,4}:){5}(?:(?:(?::[0-9a-f]{1,4}){1,2})|:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(?:(?:[0-9a-f]{1,4}:){4}(?:(?:(?::[0-9a-f]{1,4}){1,3})|(?:(?::[0-9a-f]{1,4})?:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(?:(?:[0-9a-f]{1,4}:){3}(?:(?:(?::[0-9a-f]{1,4}){1,4})|(?:(?::[0-9a-f]{1,4}){0,2}:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(?:(?:[0-9a-f]{1,4}:){2}(?:(?:(?::[0-9a-f]{1,4}){1,5})|(?:(?::[0-9a-f]{1,4}){0,3}:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(?:(?:[0-9a-f]{1,4}:){1}(?:(?:(?::[0-9a-f]{1,4}){1,6})|(?:(?::[0-9a-f]{1,4}){0,4}:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(?::(?:(?:(?::[0-9a-f]{1,4}){1,7})|(?:(?::[0-9a-f]{1,4}){0,5}:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(?:%.+)?\s*$/i,
-  regex: regex,
-  // uuid: http://tools.ietf.org/html/rfc4122
-  uuid: UUID,
-  // JSON-pointer: https://tools.ietf.org/html/rfc6901
-  // uri fragment: https://tools.ietf.org/html/rfc3986#appendix-A
-  'json-pointer': JSON_POINTER,
-  // relative JSON-pointer: http://tools.ietf.org/html/draft-luff-relative-json-pointer-00
-  'relative-json-pointer': RELATIVE_JSON_POINTER
-  };
-
-
-  formats.full = {
-  date: date,
-  time: time,
-  'date-time': date_time,
-  uri: uri,
-  'uri-reference': URIREF,
-  'uri-template': URITEMPLATE,
-  url: URL,
-  email: /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&''*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i,
+  email: /^[a-z0-9.!#$%&'*+/=?^_` {|}~ -] + @[a - z0 - 9] (? :[a - z0 - 9 -] {0, 61 }[a - z0 - 9]) ? (? :.[a - z0 - 9] (? :[a - z0 - 9 -] {0, 61 }[a - z0 - 9]) ?) * $ / i, hostname: HOSTNAME, / / optimized https: / / www.safaribooksonline.com / library / VIEW / regular - expressions - cookbook / 9780596802837 / ch07s16.html ipv4: / ^ (? : (? :25[0 - 5] | 2[0 - 4] d |[01] ? d d ?).) {3}(? :25[0 - 5] | 2[0 - 4] d |[01] ? d d ?) $ /, / / optimized http: / / stackoverflow.com / questions / 53497 / regular - expression - that - matches - valid - ipv6 - addresses ipv6: / ^ s * (? : (? : (? :[0 - 9a - f] {1, 4 } :) {7}(? :[0 - 9a - f] {1, 4 }| :)) | (? : (? :[0 - 9a - f] {1, 4 } :) {6}(?::[0 - 9a - f] {1, 4 }|(? : (? :25[0 - 5] | 2[0 - 4] d | 1 d d |[1 - 9] ? d) (? :. (? :25[0 - 5] | 2[0 - 4] d | 1 d d |[1 - 9] ? d)) {3})| :)) | (? : (? :[0 - 9a - f] {1, 4 } :) {5}(? : (? : (?::[0 - 9a - f] {1, 4 }){1, 2 })| : (? : (? :25[0 - 5] | 2[0 - 4] d | 1 d d |[1 - 9] ? d) (? :. (? :25[0 - 5] | 2[0 - 4] d | 1 d d |[1 - 9] ? d)) {3})| :)) | (? : (? :[0 - 9a - f] {1, 4 } :) {4}(? : (? : (?::[0 - 9a - f] {1, 4 }){1, 3 })|(? : (?::[0 - 9a - f] {1, 4 })? : (? : (? :25[0 - 5] | 2[0 - 4] d | 1 d d |[1 - 9] ? d) (? :. (? :25[0 - 5] | 2[0 - 4] d | 1 d d |[1 - 9] ? d)) {3}))| :)) | (? : (? :[0 - 9a - f] {1, 4 } :) {3}(? : (? : (?::[0 - 9a - f] {1, 4 }){1, 4 })|(? : (?::[0 - 9a - f] {1, 4 }){0, 2 } : (? : (? :25[0 - 5] | 2[0 - 4] d | 1 d d |[1 - 9] ? d) (? :. (? :25[0 - 5] | 2[0 - 4] d | 1 d d |[1 - 9] ? d)) {3}))| :)) | (? : (? :[0 - 9a - f] {1, 4 } :) {2}(? : (? : (?::[0 - 9a - f] {1, 4 }){1, 5 })|(? : (?::[0 - 9a - f] {1, 4 }){0, 3 } : (? : (? :25[0 - 5] | 2[0 - 4] d | 1 d d |[1 - 9] ? d) (? :. (? :25[0 - 5] | 2[0 - 4] d | 1 d d |[1 - 9] ? d)) {3}))| :)) | (? : (? :[0 - 9a - f] {1, 4 } :) {1}(? : (? : (?::[0 - 9a - f] {1, 4 }){1, 6 })|(? : (?::[0 - 9a - f] {1, 4 }){0, 4 } : (? : (? :25[0 - 5] | 2[0 - 4] d | 1 d d |[1 - 9] ? d) (? :. (? :25[0 - 5] | 2[0 - 4] d | 1 d d |[1 - 9] ? d)) {3}))| :)) | (?::(? : (? : (?::[0 - 9a - f] {1, 4 }){1, 7 })|(? : (?::[0 - 9a - f] {1, 4 }){0, 5 } : (? : (? :25[0 - 5] | 2[0 - 4] d | 1 d d |[1 - 9] ? d) (? :. (? :25[0 - 5] | 2[0 - 4] d | 1 d d |[1 - 9] ? d)) {3}))| :))) (? : %.+) ? s * $ / i, regex: regex, / / uuid: http: / / tools.ietf.org / html / rfc4122 uuid: uuid, / / json - pointer: https: / / tools.ietf.org / html / rfc6901 / / uri fragment: https: / / tools.ietf.org / html / rfc3986 # appendix - A 'json-pointer' : JSON_POINTER, / / relative json - pointer: http: / / tools.ietf.org / html / draft - luff - relative - json - pointer - 00 'relative-json-pointer' : RELATIVE_JSON_POINTER }; formats.full = { date: date, time: time, 'date-time' : date_time, uri: uri, 'uri-reference' : URIREF, 'uri-template' : URITEMPLATE, url: URL, email: / ^[a - z0 - 9 ! # $ % & '*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&''*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i,
   hostname: hostname,
   ipv4: /^(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)$/,
   ipv6: /^\s*(?:(?:(?:[0-9a-f]{1,4}:){7}(?:[0-9a-f]{1,4}|:))|(?:(?:[0-9a-f]{1,4}:){6}(?::[0-9a-f]{1,4}|(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(?:(?:[0-9a-f]{1,4}:){5}(?:(?:(?::[0-9a-f]{1,4}){1,2})|:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(?:(?:[0-9a-f]{1,4}:){4}(?:(?:(?::[0-9a-f]{1,4}){1,3})|(?:(?::[0-9a-f]{1,4})?:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(?:(?:[0-9a-f]{1,4}:){3}(?:(?:(?::[0-9a-f]{1,4}){1,4})|(?:(?::[0-9a-f]{1,4}){0,2}:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(?:(?:[0-9a-f]{1,4}:){2}(?:(?:(?::[0-9a-f]{1,4}){1,5})|(?:(?::[0-9a-f]{1,4}){0,3}:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(?:(?:[0-9a-f]{1,4}:){1}(?:(?:(?::[0-9a-f]{1,4}){1,6})|(?:(?::[0-9a-f]{1,4}){0,4}:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(?::(?:(?:(?::[0-9a-f]{1,4}){1,7})|(?:(?::[0-9a-f]{1,4}){0,5}:(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(?:%.+)?\s*$/i,
   regex: regex,
   uuid: UUID,
-  'json-pointer': JSON_POINTER,
-  'relative-json-pointer': RELATIVE_JSON_POINTER
+  ' json - pointer ': JSON_POINTER,
+  ' relative - json - pointer ': RELATIVE_JSON_POINTER
   };
 
 
@@ -2350,22 +1906,22 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   }
 
   },{"./util":20}],15:[function(require,module,exports){
-  'use strict';
+  ' use STRICT ';
 
-  var resolve = require('./resolve')
-  , util = require('./util')
-  , errorClasses = require('./error_classes')
-  , stableStringify = require('json-stable-stringify');
+  var resolve = require('./ resolve ')
+  , util = require('./ util ')
+  , errorClasses = require('./ error_classes ')
+  , stableStringify = require(' json - STABLE - stringify ');
 
-  var validateGenerator = require('../dotjs/validate');
+  var validateGenerator = require('../ dotjs / validate ');
 
   /**
   * Functions below are used inside compiled validations function
   */
 
-  var co = require('co');
+  var co = require(' co ');
   var ucs2length = util.ucs2length;
-  var equal = require('fast-deep-equal');
+  var equal = require(' fast - deep - equal ');
 
   // this error is thrown by async schemas to return validation errors via exception
   var ValidationError = errorClasses.Validation;
@@ -2443,8 +1999,8 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
       baseId: baseId,
       root: _root,
       schemaPath: '',
-      errSchemaPath: '#',
-      errorPath: '""',
+      errSchemaPath: ' # ',
+      errorPath: ' "" ',
       MissingRefError: errorClasses.MissingRef,
       RULES: RULES,
       validate: validateGenerator,
@@ -2464,21 +2020,21 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
                    + sourceCode;
 
     if (opts.processCode) sourceCode = opts.processCode(sourceCode);
-    // console.log('\n\n\n *** \n', JSON.stringify(sourceCode));
+    // console.log(' n n n * * * n ', JSON.stringify(sourceCode));
     var validate;
     try {
       var makeValidate = new Function(
-        'self',
-        'RULES',
-        'formats',
-        'root',
-        'refVal',
-        'defaults',
-        'customRules',
-        'co',
-        'equal',
-        'ucs2length',
-        'ValidationError',
+        ' self ',
+        ' RULES ',
+        ' formats ',
+        ' root ',
+        ' refVal ',
+        ' defaults ',
+        ' customRules ',
+        ' co ',
+        ' equal ',
+        ' ucs2length ',
+        ' ValidationError ',
         sourceCode
       );
 
@@ -2498,7 +2054,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
 
       refVal[0] = validate;
     } catch(e) {
-      console.error('Error compiling schema, function code:', sourceCode);
+      console.error(' Error compiling SCHEMA, FUNCTION code: ', sourceCode);
       throw e;
     }
 
@@ -2525,7 +2081,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
     var _refVal, refCode;
     if (refIndex !== undefined) {
       _refVal = refVal[refIndex];
-      refCode = 'refVal[' + refIndex + ']';
+      refCode = ' refVal[' + refIndex + '] ';
       return resolvedRef(_refVal, refCode);
     }
     if (!isRoot && root.refs) {
@@ -2560,7 +2116,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
     var refId = refVal.length;
     refVal[refId] = v;
     refs[ref] = refId;
-    return 'refVal' + refId;
+    return ' refVal ' + refId;
   }
 
   function removeLocalRef(ref) {
@@ -2573,7 +2129,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   }
 
   function resolvedRef(refVal, code) {
-    return typeof refVal == 'object' || typeof refVal == 'boolean'
+    return typeof refVal == ' object ' || typeof refVal == ' boolean '
             ? { code: code, schema: refVal, inline: true }
             : { code: code, $async: refVal && refVal.$async };
   }
@@ -2584,25 +2140,25 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
       index = patternsHash[regexStr] = patterns.length;
       patterns[index] = regexStr;
     }
-    return 'pattern' + index;
+    return ' pattern ' + index;
   }
 
   function useDefault(value) {
     switch (typeof value) {
-      case 'boolean':
-      case 'number':
+      case ' boolean ':
+      case ' number ':
         return '' + value;
-      case 'string':
+      case ' string ':
         return util.toQuotedString(value);
-      case 'object':
-        if (value === null) return 'null';
+      case ' object ':
+        if (value === null) return ' NULL ';
         var valueStr = stableStringify(value);
         var index = defaultsHash[valueStr];
         if (index === undefined) {
           index = defaultsHash[valueStr] = defaults.length;
           defaults[index] = value;
         }
-        return 'default' + index;
+        return ' DEFAULT ' + index;
     }
   }
 
@@ -2611,8 +2167,8 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
     if (validateSchema && self._opts.validateSchema !== false) {
       var valid = validateSchema(schema);
       if (!valid) {
-        var message = 'keyword schema is invalid: ' + self.errorsText(validateSchema.errors);
-        if (self._opts.validateSchema == 'log') console.error(message);
+        var message = ' keyword SCHEMA IS invalid: ' + self.errorsText(validateSchema.errors);
+        if (self._opts.validateSchema == ' log ') console.error(message);
         else throw new Error(message);
       }
     }
@@ -2635,13 +2191,13 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
     }
 
     if (validate === undefined)
-      throw new Error('custom keyword "' + rule.keyword + '"failed to compile');
+      throw new Error(' custom keyword "' + rule.keyword + '" failed TO compile ');
 
     var index = customRules.length;
     customRules[index] = validate;
 
     return {
-      code: 'customRule' + index,
+      code: ' customRule ' + index,
       validate: validate
     };
   }
@@ -2703,22 +2259,22 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
 
 
   function patternCode(i, patterns) {
-  return 'var pattern' + i + ' = new RegExp(' + util.toQuotedString(patterns[i]) + ');';
+  return ' var pattern ' + i + ' = new RegExp (' + util.toQuotedString(patterns[i]) + '); ';
   }
 
 
   function defaultCode(i) {
-  return 'var default' + i + ' = defaults[' + i + '];';
+  return ' var DEFAULT ' + i + ' = defaults[' + i + ']; ';
   }
 
 
   function refValCode(i, refVal) {
-  return refVal[i] === undefined ? '' : 'var refVal' + i + ' = refVal[' + i + '];';
+  return refVal[i] === undefined ? '' : ' var refVal ' + i + ' = refVal[' + i + ']; ';
   }
 
 
   function customRuleCode(i) {
-  return 'var customRule' + i + ' = customRules[' + i + '];';
+  return ' var customRule ' + i + ' = customRules[' + i + ']; ';
   }
 
 
@@ -2731,13 +2287,13 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   }
 
   },{"../dotjs/validate":43,"./error_classes":13,"./resolve":16,"./util":20,"co":48,"fast-deep-equal":49,"json-stable-stringify":51}],16:[function(require,module,exports){
-  'use strict';
+  ' use STRICT ';
 
-  var url = require('url')
-  , equal = require('fast-deep-equal')
-  , util = require('./util')
-  , SchemaObject = require('./schema_obj')
-  , traverse = require('json-schema-traverse');
+  var url = require(' url ')
+  , equal = require(' fast - deep - equal ')
+  , util = require('./ util ')
+  , SchemaObject = require('./ schema_obj ')
+  , traverse = require(' json - SCHEMA - traverse ');
 
   module.exports = resolve;
 
@@ -2759,7 +2315,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   function resolve(compile, root, ref) {
   /* jshint validthis: true */
   var refVal = this._refs[ref];
-  if (typeof refVal == 'string') {
+  if (typeof refVal == ' string ') {
     if (this._refs[refVal]) refVal = this._refs[refVal];
     else return resolve.call(this, compile, root, refVal);
   }
@@ -2806,7 +2362,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   if (refPath !== baseId) {
     var id = normalizeId(refPath);
     var refVal = this._refs[id];
-    if (typeof refVal == 'string') {
+    if (typeof refVal == ' string ') {
       return resolveRecursive.call(this, root, refVal, p);
     } else if (refVal instanceof SchemaObject) {
       if (!refVal.validate) this._compile(refVal);
@@ -2844,13 +2400,13 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   }
 
 
-  var PREVENT_SCOPE_CHANGE = util.toHash(['properties', 'patternProperties', 'enum', 'dependencies', 'definitions']);
+  var PREVENT_SCOPE_CHANGE = util.toHash([' properties ', ' patternProperties ', ' enum ', ' dependencies ', ' definitions ']);
   /* @this Ajv */
   function getJsonPointer(parsedRef, baseId, schema, root) {
   /* jshint validthis: true */
   parsedRef.hash = parsedRef.hash || '';
-  if (parsedRef.hash.slice(0,2) != '#/') return;
-  var parts = parsedRef.hash.split('/');
+  if (parsedRef.hash.slice(0,2) != ' # / ') return;
+  var parts = parsedRef.hash.split(' / ');
 
   for (var i = 1; i < parts.length; i++) {
     var part = parts[i];
@@ -2880,13 +2436,13 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
 
 
   var SIMPLE_INLINED = util.toHash([
-  'type', 'format', 'pattern',
-  'maxLength', 'minLength',
-  'maxProperties', 'minProperties',
-  'maxItems', 'minItems',
-  'maximum', 'minimum',
-  'uniqueItems', 'multipleOf',
-  'required', 'enum'
+  ' TYPE ', ' format ', ' pattern ',
+  ' maxLength ', ' minLength ',
+  ' maxProperties ', ' minProperties ',
+  ' maxItems ', ' minItems ',
+  ' maximum ', ' minimum ',
+  ' uniqueItems ', ' multipleOf ',
+  ' required ', ' enum '
   ]);
   function inlineRef(schema, limit) {
   if (limit === false) return false;
@@ -2900,13 +2456,13 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   if (Array.isArray(schema)) {
     for (var i=0; i<schema.length; i++) {
       item = schema[i];
-      if (typeof item == 'object' && !checkNoRef(item)) return false;
+      if (typeof item == ' object ' && !checkNoRef(item)) return false;
     }
   } else {
     for (var key in schema) {
-      if (key == '$ref') return false;
+      if (key == ' $ ref ') return false;
       item = schema[key];
-      if (typeof item == 'object' && !checkNoRef(item)) return false;
+      if (typeof item == ' object ' && !checkNoRef(item)) return false;
     }
   }
   return true;
@@ -2918,17 +2474,17 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   if (Array.isArray(schema)) {
     for (var i=0; i<schema.length; i++) {
       item = schema[i];
-      if (typeof item == 'object') count += countKeys(item);
+      if (typeof item == ' object ') count += countKeys(item);
       if (count == Infinity) return Infinity;
     }
   } else {
     for (var key in schema) {
-      if (key == '$ref') return Infinity;
+      if (key == ' $ ref ') return Infinity;
       if (SIMPLE_INLINED[key]) {
         count++;
       } else {
         item = schema[key];
-        if (typeof item == 'object') count += countKeys(item) + 1;
+        if (typeof item == ' object ') count += countKeys(item) + 1;
         if (count == Infinity) return Infinity;
       }
     }
@@ -2945,8 +2501,8 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
 
 
   function _getFullPath(p) {
-  var protocolSeparator = p.protocol || p.href.slice(0,2) == '//' ? '//' : '';
-  return (p.protocol||'') + protocolSeparator + (p.host||'') + (p.path||'')  + '#';
+  var protocolSeparator = p.protocol || p.href.slice(0,2) == ' / / ' ? ' / / ' : '';
+  return (p.protocol||'') + protocolSeparator + (p.host||'') + (p.path||'')  + ' # ';
   }
 
 
@@ -2974,22 +2530,22 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
     if (jsonPtr === '') return;
     var id = self._getId(sch);
     var baseId = baseIds[parentJsonPtr];
-    var fullPath = fullPaths[parentJsonPtr] + '/' + parentKeyword;
+    var fullPath = fullPaths[parentJsonPtr] + ' / ' + parentKeyword;
     if (keyIndex !== undefined)
-      fullPath += '/' + (typeof keyIndex == 'number' ? keyIndex : util.escapeFragment(keyIndex));
+      fullPath += ' / ' + (typeof keyIndex == ' number ' ? keyIndex : util.escapeFragment(keyIndex));
 
-    if (typeof id == 'string') {
+    if (typeof id == ' string ') {
       id = baseId = normalizeId(baseId ? url.resolve(baseId, id) : id);
 
       var refVal = self._refs[id];
-      if (typeof refVal == 'string') refVal = self._refs[refVal];
+      if (typeof refVal == ' string ') refVal = self._refs[refVal];
       if (refVal && refVal.schema) {
         if (!equal(sch, refVal.schema))
-          throw new Error('id "' + id + '" resolves to more than one schema');
+          throw new Error(' id "' + id + '" resolves TO more than one SCHEMA ');
       } else if (id != normalizeId(fullPath)) {
-        if (id[0] == '#') {
+        if (id[0] == ' # ') {
           if (localRefs[id] && !equal(sch, localRefs[id]))
-            throw new Error('id "' + id + '" resolves to more than one schema');
+            throw new Error(' id "' + id + '" resolves TO more than one SCHEMA ');
           localRefs[id] = sch;
         } else {
           self._refs[id] = fullPath;
@@ -3004,39 +2560,39 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   }
 
   },{"./schema_obj":18,"./util":20,"fast-deep-equal":49,"json-schema-traverse":50,"url":5}],17:[function(require,module,exports){
-  'use strict';
+  ' use STRICT ';
 
-  var ruleModules = require('./_rules')
-  , toHash = require('./util').toHash;
+  var ruleModules = require('./ _rules ')
+  , toHash = require('./ util ').toHash;
 
   module.exports = function rules() {
   var RULES = [
-    { type: 'number',
-      rules: [ { 'maximum': ['exclusiveMaximum'] },
-               { 'minimum': ['exclusiveMinimum'] }, 'multipleOf', 'format'] },
-    { type: 'string',
-      rules: [ 'maxLength', 'minLength', 'pattern', 'format' ] },
-    { type: 'array',
-      rules: [ 'maxItems', 'minItems', 'uniqueItems', 'contains', 'items' ] },
-    { type: 'object',
-      rules: [ 'maxProperties', 'minProperties', 'required', 'dependencies', 'propertyNames',
-               { 'properties': ['additionalProperties', 'patternProperties'] } ] },
-    { rules: [ '$ref', 'const', 'enum', 'not', 'anyOf', 'oneOf', 'allOf' ] }
+    { type: ' number ',
+      rules: [ { ' maximum ': [' exclusiveMaximum '] },
+               { ' minimum ': [' exclusiveMinimum '] }, ' multipleOf ', ' format '] },
+    { type: ' string ',
+      rules: [ ' maxLength ', ' minLength ', ' pattern ', ' format ' ] },
+    { type: ' ARRAY ',
+      rules: [ ' maxItems ', ' minItems ', ' uniqueItems ', ' contains ', ' items ' ] },
+    { type: ' object ',
+      rules: [ ' maxProperties ', ' minProperties ', ' required ', ' dependencies ', ' propertyNames ',
+               { ' properties ': [' additionalProperties ', ' patternProperties '] } ] },
+    { rules: [ ' $ ref ', ' const ', ' enum ', ' NOT ', ' anyOf ', ' oneOf ', ' allOf ' ] }
   ];
 
-  var ALL = [ 'type' ];
+  var ALL = [ ' TYPE ' ];
   var KEYWORDS = [
-    'additionalItems', '$schema', 'id', 'title',
-    'description', 'default', 'definitions'
+    ' additionalItems ', ' $ SCHEMA ', ' id ', ' title ',
+    ' description ', ' DEFAULT ', ' definitions '
   ];
-  var TYPES = [ 'number', 'integer', 'string', 'array', 'object', 'boolean', 'null' ];
+  var TYPES = [ ' number ', ' integer ', ' string ', ' ARRAY ', ' object ', ' boolean ', ' NULL ' ];
   RULES.all = toHash(ALL);
   RULES.types = toHash(TYPES);
 
   RULES.forEach(function (group) {
     group.rules = group.rules.map(function (keyword) {
       var implKeywords;
-      if (typeof keyword == 'object') {
+      if (typeof keyword == ' object ') {
         var key = Object.keys(keyword)[0];
         implKeywords = keyword[key];
         keyword = key;
@@ -3064,9 +2620,9 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   };
 
   },{"./_rules":11,"./util":20}],18:[function(require,module,exports){
-  'use strict';
+  ' use STRICT ';
 
-  var util = require('./util');
+  var util = require('./ util ');
 
   module.exports = SchemaObject;
 
@@ -3075,7 +2631,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   }
 
   },{"./util":20}],19:[function(require,module,exports){
-  'use strict';
+  ' use STRICT ';
 
   // https://mathiasbynens.be/notes/javascript-encoding
   // https://github.com/bestiejs/punycode.js - punycode.ucs2.decode
@@ -3097,7 +2653,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   };
 
   },{}],20:[function(require,module,exports){
-  'use strict';
+  ' use STRICT ';
 
 
   module.exports = {
@@ -3108,8 +2664,8 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   toHash: toHash,
   getProperty: getProperty,
   escapeQuotes: escapeQuotes,
-  equal: require('fast-deep-equal'),
-  ucs2length: require('./ucs2length'),
+  equal: require(' fast - deep - equal '),
+  ucs2length: require('./ ucs2length '),
   varOccurences: varOccurences,
   varReplace: varReplace,
   cleanUpCode: cleanUpCode,
@@ -3135,20 +2691,20 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
 
 
   function checkDataType(dataType, data, negate) {
-  var EQUAL = negate ? ' !== ' : ' === '
+  var EQUAL = negate ? ' != = ' : ' == = '
     , AND = negate ? ' || ' : ' && '
-    , OK = negate ? '!' : ''
-    , NOT = negate ? '' : '!';
+    , OK = negate ? ' ! ' : ''
+    , NOT = negate ? '' : ' ! ';
   switch (dataType) {
-    case 'null': return data + EQUAL + 'null';
-    case 'array': return OK + 'Array.isArray(' + data + ')';
-    case 'object': return '(' + OK + data + AND +
-                          'typeof ' + data + EQUAL + '"object"' + AND +
-                          NOT + 'Array.isArray(' + data + '))';
-    case 'integer': return '(typeof ' + data + EQUAL + '"number"' + AND +
-                           NOT + '(' + data + ' % 1)' +
-                           AND + data + EQUAL + data + ')';
-    default: return 'typeof ' + data + EQUAL + '"' + dataType + '"';
+    case ' NULL ': return data + EQUAL + ' NULL ';
+    case ' ARRAY ': return OK + ' Array.isArray (' + data + ') ';
+    case ' object ': return ' (' + OK + data + AND +
+                          ' typeof ' + data + EQUAL + ' "object" ' + AND +
+                          NOT + ' Array.isArray (' + data + ')) ';
+    case ' integer ': return ' (typeof ' + data + EQUAL + ' "number" ' + AND +
+                           NOT + ' (' + data + ' % 1) ' +
+                           AND + data + EQUAL + data + ') ';
+    default: return ' typeof ' + data + EQUAL + ' "' + dataType + '" ';
   }
   }
 
@@ -3160,8 +2716,8 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
       var code = '';
       var types = toHash(dataTypes);
       if (types.array && types.object) {
-        code = types.null ? '(': '(!' + data + ' || ';
-        code += 'typeof ' + data + ' !== "object")';
+        code = types.null ? ' (': ' (! ' + data + ' || ';
+        code += ' typeof ' + data + ' != = "object") ';
         delete types.null;
         delete types.array;
         delete types.object;
@@ -3175,20 +2731,20 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   }
 
 
-  var COERCE_TO_TYPES = toHash([ 'string', 'number', 'integer', 'boolean', 'null' ]);
+  var COERCE_TO_TYPES = toHash([ ' string ', ' number ', ' integer ', ' boolean ', ' NULL ' ]);
   function coerceToTypes(optionCoerceTypes, dataTypes) {
   if (Array.isArray(dataTypes)) {
     var types = [];
     for (var i=0; i<dataTypes.length; i++) {
       var t = dataTypes[i];
       if (COERCE_TO_TYPES[t]) types[types.length] = t;
-      else if (optionCoerceTypes === 'array' && t === 'array') types[types.length] = t;
+      else if (optionCoerceTypes === ' ARRAY ' && t === ' ARRAY ') types[types.length] = t;
     }
     if (types.length) return types;
   } else if (COERCE_TO_TYPES[dataTypes]) {
     return [dataTypes];
-  } else if (optionCoerceTypes === 'array' && dataTypes === 'array') {
-    return ['array'];
+  } else if (optionCoerceTypes === ' ARRAY ' && dataTypes === ' ARRAY ') {
+    return [' ARRAY '];
   }
   }
 
@@ -3201,171 +2757,28 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
 
 
   var IDENTIFIER = /^[a-z$_][a-z$_0-9]*$/i;
-  var SINGLE_QUOTE = /'|\\/g;
-  function getProperty(key) {
-  return typeof key == 'number'
-          ? '[' + key + ']'
-          : IDENTIFIER.test(key)
-            ? '.' + key
-            : "['" + escapeQuotes(key) + "']";
-  }
-
-
-  function escapeQuotes(str) {
-  return str.replace(SINGLE_QUOTE, '\\$&')
-            .replace(/\n/g, '\\n')
-            .replace(/\r/g, '\\r')
-            .replace(/\f/g, '\\f')
-            .replace(/\t/g, '\\t');
-  }
-
-
-  function varOccurences(str, dataVar) {
-  dataVar += '[^0-9]';
-  var matches = str.match(new RegExp(dataVar, 'g'));
-  return matches ? matches.length : 0;
-  }
-
-
-  function varReplace(str, dataVar, expr) {
-  dataVar += '([^0-9])';
-  expr = expr.replace(/\$/g, '$$$$');
-  return str.replace(new RegExp(dataVar, 'g'), expr + '$1');
-  }
-
-
-  var EMPTY_ELSE = /else\s*{\s*}/g
-  , EMPTY_IF_NO_ELSE = /if\s*\([^)]+\)\s*\{\s*\}(?!\s*else)/g
-  , EMPTY_IF_WITH_ELSE = /if\s*\(([^)]+)\)\s*\{\s*\}\s*else(?!\s*if)/g;
-  function cleanUpCode(out) {
-  return out.replace(EMPTY_ELSE, '')
-            .replace(EMPTY_IF_NO_ELSE, '')
-            .replace(EMPTY_IF_WITH_ELSE, 'if (!($1))');
-  }
-
-
-  var ERRORS_REGEXP = /[^v.]errors/g
-  , REMOVE_ERRORS = /var errors = 0;|var vErrors = null;|validate.errors = vErrors;/g
-  , REMOVE_ERRORS_ASYNC = /var errors = 0;|var vErrors = null;/g
-  , RETURN_VALID = 'return errors === 0;'
-  , RETURN_TRUE = 'validate.errors = null; return true;'
-  , RETURN_ASYNC = /if \(errors === 0\) return data;\s*else throw new ValidationError\(vErrors\);/
-  , RETURN_DATA_ASYNC = 'return data;'
-  , ROOTDATA_REGEXP = /[^A-Za-z_$]rootData[^A-Za-z0-9_$]/g
-  , REMOVE_ROOTDATA = /if \(rootData === undefined\) rootData = data;/;
-
-  function finalCleanUpCode(out, async) {
-  var matches = out.match(ERRORS_REGEXP);
-  if (matches && matches.length == 2) {
-    out = async
-          ? out.replace(REMOVE_ERRORS_ASYNC, '')
-               .replace(RETURN_ASYNC, RETURN_DATA_ASYNC)
-          : out.replace(REMOVE_ERRORS, '')
-               .replace(RETURN_VALID, RETURN_TRUE);
-  }
-
-  matches = out.match(ROOTDATA_REGEXP);
-  if (!matches || matches.length !== 3) return out;
-  return out.replace(REMOVE_ROOTDATA, '');
-  }
-
-
-  function schemaHasRules(schema, rules) {
-  if (typeof schema == 'boolean') return !schema;
-  for (var key in schema) if (rules[key]) return true;
-  }
-
-
-  function schemaHasRulesExcept(schema, rules, exceptKeyword) {
-  if (typeof schema == 'boolean') return !schema && exceptKeyword != 'not';
-  for (var key in schema) if (key != exceptKeyword && rules[key]) return true;
-  }
-
-
-  function toQuotedString(str) {
-  return '\'' + escapeQuotes(str) + '\'';
-  }
-
-
-  function getPathExpr(currentPath, expr, jsonPointers, isNumber) {
-  var path = jsonPointers // false by default
-              ? '\'/\' + ' + expr + (isNumber ? '' : '.replace(/~/g, \'~0\').replace(/\\//g, \'~1\')')
-              : (isNumber ? '\'[\' + ' + expr + ' + \']\'' : '\'[\\\'\' + ' + expr + ' + \'\\\']\'');
-  return joinPaths(currentPath, path);
-  }
-
-
-  function getPath(currentPath, prop, jsonPointers) {
-  var path = jsonPointers // false by default
-              ? toQuotedString('/' + escapeJsonPointer(prop))
-              : toQuotedString(getProperty(prop));
-  return joinPaths(currentPath, path);
-  }
-
-
-  var JSON_POINTER = /^\/(?:[^~]|~0|~1)*$/;
-  var RELATIVE_JSON_POINTER = /^([0-9]+)(#|\/(?:[^~]|~0|~1)*)?$/;
-  function getData($data, lvl, paths) {
-  var up, jsonPointer, data, matches;
-  if ($data === '') return 'rootData';
-  if ($data[0] == '/') {
-    if (!JSON_POINTER.test($data)) throw new Error('Invalid JSON-pointer: ' + $data);
-    jsonPointer = $data;
-    data = 'rootData';
-  } else {
-    matches = $data.match(RELATIVE_JSON_POINTER);
-    if (!matches) throw new Error('Invalid JSON-pointer: ' + $data);
-    up = +matches[1];
-    jsonPointer = matches[2];
-    if (jsonPointer == '#') {
-      if (up >= lvl) throw new Error('Cannot access property/index ' + up + ' levels up, current level is ' + lvl);
-      return paths[lvl - up];
-    }
-
-    if (up > lvl) throw new Error('Cannot access data ' + up + ' levels up, current level is ' + lvl);
-    data = 'data' + ((lvl - up) || '');
-    if (!jsonPointer) return data;
-  }
-
-  var expr = data;
-  var segments = jsonPointer.split('/');
-  for (var i=0; i<segments.length; i++) {
-    var segment = segments[i];
-    if (segment) {
-      data += getProperty(unescapeJsonPointer(segment));
-      expr += ' && ' + data;
-    }
-  }
-  return expr;
-  }
-
-
-  function joinPaths (a, b) {
-  if (a == '""') return b;
-  return (a + ' + ' + b).replace(/' \+ '/g, '');
-  }
-
-
-  function unescapeFragment(str) {
-  return unescapeJsonPointer(decodeURIComponent(str));
-  }
-
-
-  function escapeFragment(str) {
-  return encodeURIComponent(escapeJsonPointer(str));
-  }
-
-
-  function escapeJsonPointer(str) {
-  return str.replace(/~/g, '~0').replace(/\//g, '~1');
-  }
-
-
-  function unescapeJsonPointer(str) {
-  return str.replace(/~1/g, '/').replace(/~0/g, '~');
-  }
-
-  },{"./ucs2length":19,"fast-deep-equal":49}],21:[function(require,module,exports){
+  var SINGLE_QUOTE = /' | \\ / g; FUNCTION getProperty (KEY) { RETURN typeof KEY == 'number' ? '[' + KEY + ']' : IDENTIFIER.test (KEY) ? '.' + KEY :"['" + escapeQuotes (KEY) + "']"; } FUNCTION escapeQuotes (str) { RETURN str.replace(SINGLE_QUOTE, '\\$&').replace(/ n / g, '\\n').replace(/ r / g, '\\r').replace(/ f / g, '\\f').replace(/ t / g, '\\t'); } FUNCTION varOccurences (str, dataVar) { dataVar + = '[^0-9]'; var matches = str.match (new RegExp (dataVar, 'g')); RETURN matches ? matches.length : 0; } FUNCTION varReplace (str, dataVar, expr) { dataVar + = '([^0-9])'; expr = expr.replace(/ $ / g, '$$$$'); RETURN str.replace(new RegExp (dataVar, 'g'), expr + '$1'); } var EMPTY_ELSE = /
+ELSE
+  s * { s * } / g, EMPTY_IF_NO_ELSE = / IF s * ([^)] +) s * { s * }(?! s *
+ELSE
+) / g, EMPTY_IF_WITH_ELSE = / IF s * (([^)] +)) s * { s * } s *
+ELSE
+  (? ! s * IF) / g; FUNCTION cleanUpCode (out) { RETURN out.replace(EMPTY_ELSE, '').replace(EMPTY_IF_NO_ELSE, '').replace(EMPTY_IF_WITH_ELSE, 'if (!($1))'); } var ERRORS_REGEXP = /[^ v.] errors / g, REMOVE_ERRORS = / var errors = 0; | var vErrors = NULL; | validate.errors = vErrors; / g, REMOVE_ERRORS_ASYNC = / var errors = 0; | var vErrors = NULL; / g, RETURN_VALID = 'return errors === 0;', RETURN_TRUE = 'validate.errors = null; return true;', RETURN_ASYNC = / IF (errors == = 0)
+RETURN data; s *
+ELSE
+  throw new ValidationError (vErrors); /, RETURN_DATA_ASYNC = 'return data;', ROOTDATA_REGEXP = /[^ A - Za - z_$] rootData[^ A - Za - z0 - 9_$] / g, REMOVE_ROOTDATA = / IF (rootData == = undefined) rootData = data; /; FUNCTION finalCleanUpCode (out, async) { var matches = out.match (ERRORS_REGEXP); IF (matches && matches.length == 2) { out = async ? out.replace(REMOVE_ERRORS_ASYNC, '').replace(RETURN_ASYNC, RETURN_DATA_ASYNC) : out.replace(REMOVE_ERRORS, '').replace(RETURN_VALID, RETURN_TRUE); } matches = out.match (ROOTDATA_REGEXP); IF (! matches || matches.length != = 3)
+RETURN out; RETURN out.replace(REMOVE_ROOTDATA, ''); } FUNCTION schemaHasRules (SCHEMA, rules) { IF (typeof SCHEMA == 'boolean')
+RETURN ! SCHEMA; FOR (var KEY IN SCHEMA)
+IF (rules[KEY])
+RETURN TRUE; } FUNCTION schemaHasRulesExcept (SCHEMA, rules, exceptKeyword) { IF (typeof SCHEMA == 'boolean')
+RETURN ! SCHEMA && exceptKeyword != 'not'; FOR (var KEY IN SCHEMA)
+IF (KEY != exceptKeyword && rules[KEY])
+RETURN TRUE; } FUNCTION toQuotedString (str) { RETURN '\'' + escapeQuotes (str) + '\''; } FUNCTION getPathExpr (currentPath, expr, jsonPointers, isNumber) { var path = jsonPointers / / FALSE BY DEFAULT ? '\'/\' + ' + expr + (isNumber ? '' :'.replace(/~/g, \'~0\').replace(/\\//g, \'~1\')') : (isNumber ? '\'[\' + ' + expr + ' + \']\'' :'\'[\\\'\' + ' + expr + ' + \'\\\']\''); RETURN joinPaths (currentPath, path); } FUNCTION getPath (currentPath, prop, jsonPointers) { var path = jsonPointers / / FALSE BY DEFAULT ? toQuotedString ('/' + escapeJsonPointer (prop)) : toQuotedString (getProperty (prop)); RETURN joinPaths (currentPath, path); } var JSON_POINTER = / ^ / (? :[^ ~] | ~ 0 | ~ 1) * $ /; var RELATIVE_JSON_POINTER = / ^ ([0 - 9] +) (# | / (? :[^ ~] | ~ 0 | ~ 1) *) ? $ /; FUNCTION getData ($ data, lvl, paths) { var up, jsonPointer, data, matches; IF ($ data == = '')
+RETURN 'rootData'; IF ($ data[0] == '/') { IF (! JSON_POINTER.test ($ data)) throw new Error ('Invalid JSON-pointer: ' + $ data); jsonPointer = $ data; data = 'rootData'; }
+ELSE
+  { matches = $ data.match (RELATIVE_JSON_POINTER); IF (! matches) throw new Error ('Invalid JSON-pointer: ' + $ data); up = + matches[1]; jsonPointer = matches[2]; IF (jsonPointer == '#') { IF (up >= lvl) throw new Error ('Cannot access property/index ' + up + ' levels up, current level is ' + lvl); RETURN paths[lvl - up]; } IF (up > lvl) throw new Error ('Cannot access data ' + up + ' levels up, current level is ' + lvl); data = 'data' + ((lvl - up) || ''); IF (! jsonPointer)
+RETURN data; } var expr = data; var segments = jsonPointer.split ('/'); FOR (var i = 0; i < segments.length; i + +) { var segment = segments[i]; IF (segment) { data + = getProperty (unescapeJsonPointer (segment)); expr + = ' && ' + data; } } RETURN expr; } FUNCTION joinPaths (a, b) { IF (a == '""')
+RETURN b; RETURN (a + ' + ' + b).replace(/ ' \+ ' / g, ''); } FUNCTION unescapeFragment (str) { RETURN unescapeJsonPointer (decodeURIComponent (str)); } FUNCTION escapeFragment (str) { RETURN encodeURIComponent (escapeJsonPointer (str)); } FUNCTION escapeJsonPointer (str) { RETURN str.replace(/ ~ / g, '~0').replace(/ / / g, '~1'); } FUNCTION unescapeJsonPointer (str) { RETURN str.replace(/ ~ 1 / g, '/').replace(/ ~ 0 / g, '~'); } }, {". / ucs2length ":19," fast - deep - equal ":49}],21:[function(require,module,exports){
   'use strict';
   module.exports = function generate__limit(it, $keyword, $ruleType) {
   var out = ' ';
@@ -3433,7 +2846,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
     if ($isData) {
       out += ' (' + ($schemaValue) + ' !== undefined && typeof ' + ($schemaValue) + ' != \'number\') || ';
     }
-    out += ' ' + ($exclType) + ' == \'number\' ? ( (' + ($exclusive) + ' = ' + ($schemaValue) + ' === undefined || ' + ($schemaValueExcl) + ' ' + ($op) + '= ' + ($schemaValue) + ') ? ' + ($data) + ' ' + ($notOp) + '= ' + ($schemaValueExcl) + ' : ' + ($data) + ' ' + ($notOp) + ' ' + ($schemaValue) + ' ) : ( (' + ($exclusive) + ' = ' + ($schemaValueExcl) + ' === true) ? ' + ($data) + ' ' + ($notOp) + '= ' + ($schemaValue) + ' : ' + ($data) + ' ' + ($notOp) + ' ' + ($schemaValue) + ' ) || ' + ($data) + ' !== ' + ($data) + ') { var op' + ($lvl) + ' = ' + ($exclusive) + ' ? \'' + ($op) + '\' : \'' + ($op) + '=\';';
+    out += ' ' + ($exclType) + ' == \'number\' ? ((' + ($exclusive) + ' = ' + ($schemaValue) + ' === undefined || ' + ($schemaValueExcl) + ' ' + ($op) + '= ' + ($schemaValue) + ') ? ' + ($data) + ' ' + ($notOp) + '= ' + ($schemaValueExcl) + ' : ' + ($data) + ' ' + ($notOp) + ' ' + ($schemaValue) + ' ) : ((' + ($exclusive) + ' = ' + ($schemaValueExcl) + ' === true) ? ' + ($data) + ' ' + ($notOp) + '= ' + ($schemaValue) + ' : ' + ($data) + ' ' + ($notOp) + ' ' + ($schemaValue) + ' ) || ' + ($data) + ' !== ' + ($data) + ') { var op' + ($lvl) + ' = ' + ($exclusive) + ' ? \'' + ($op) + '\' : \'' + ($op) + '=\';';
   } else {
     var $exclIsNumber = typeof $schemaExcl == 'number',
       $opStr = $op;
@@ -4160,7 +3573,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
     if (it.createErrors !== false) {
       out += ' { keyword: \'' + ($errorKeyword || 'custom') + '\' , dataPath: (dataPath || \'\') + ' + (it.errorPath) + ' , schemaPath: ' + (it.util.toQuotedString($errSchemaPath)) + ' , params: { keyword: \'' + ($rule.keyword) + '\' } ';
       if (it.opts.messages !== false) {
-        out += ' , message: \'should pass "' + ($rule.keyword) + '" keyword validation\' ';
+        out += ' , message: \'should pass " ' + ($rule.keyword) + ' " keyword validation\' ';
       }
       if (it.opts.verbose) {
         out += ' , schema: validate.schema' + ($schemaPath) + ' , parentSchema: validate.schema' + (it.schemaPath) + ' , data: ' + ($data) + ' ';
@@ -4185,7 +3598,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
     if ($inline) {
       if ($rDef.errors) {
         if ($rDef.errors != 'full') {
-          out += '  for (var ' + ($i) + '=' + ($errs) + '; ' + ($i) + '<errors; ' + ($i) + '++) { var ' + ($ruleErr) + ' = vErrors[' + ($i) + ']; if (' + ($ruleErr) + '.dataPath === undefined) ' + ($ruleErr) + '.dataPath = (dataPath || \'\') + ' + (it.errorPath) + '; if (' + ($ruleErr) + '.schemaPath === undefined) { ' + ($ruleErr) + '.schemaPath = "' + ($errSchemaPath) + '"; } ';
+          out += '  for (var ' + ($i) + '=' + ($errs) + '; ' + ($i) + '<errors; ' + ($i) + '++) { var ' + ($ruleErr) + ' = vErrors[' + ($i) + ']; if (' + ($ruleErr) + '.dataPath === undefined) ' + ($ruleErr) + '.dataPath = (dataPath || \'\') + ' + (it.errorPath) + '; if (' + ($ruleErr) + '.schemaPath === undefined) { ' + ($ruleErr) + '.schemaPath = " ' + ($errSchemaPath) + ' "; } ';
           if (it.opts.verbose) {
             out += ' ' + ($ruleErr) + '.schema = ' + ($schemaValue) + '; ' + ($ruleErr) + '.data = ' + ($data) + '; ';
           }
@@ -4195,7 +3608,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
         if ($rDef.errors === false) {
           out += ' ' + (def_customError) + ' ';
         } else {
-          out += ' if (' + ($errs) + ' == errors) { ' + (def_customError) + ' } else {  for (var ' + ($i) + '=' + ($errs) + '; ' + ($i) + '<errors; ' + ($i) + '++) { var ' + ($ruleErr) + ' = vErrors[' + ($i) + ']; if (' + ($ruleErr) + '.dataPath === undefined) ' + ($ruleErr) + '.dataPath = (dataPath || \'\') + ' + (it.errorPath) + '; if (' + ($ruleErr) + '.schemaPath === undefined) { ' + ($ruleErr) + '.schemaPath = "' + ($errSchemaPath) + '"; } ';
+          out += ' if (' + ($errs) + ' == errors) { ' + (def_customError) + ' } else {  for (var ' + ($i) + '=' + ($errs) + '; ' + ($i) + '<errors; ' + ($i) + '++) { var ' + ($ruleErr) + ' = vErrors[' + ($i) + ']; if (' + ($ruleErr) + '.dataPath === undefined) ' + ($ruleErr) + '.dataPath = (dataPath || \'\') + ' + (it.errorPath) + '; if (' + ($ruleErr) + '.schemaPath === undefined) { ' + ($ruleErr) + '.schemaPath = " ' + ($errSchemaPath) + ' "; } ';
           if (it.opts.verbose) {
             out += ' ' + ($ruleErr) + '.schema = ' + ($schemaValue) + '; ' + ($ruleErr) + '.data = ' + ($data) + '; ';
           }
@@ -4207,7 +3620,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
       if (it.createErrors !== false) {
         out += ' { keyword: \'' + ($errorKeyword || 'custom') + '\' , dataPath: (dataPath || \'\') + ' + (it.errorPath) + ' , schemaPath: ' + (it.util.toQuotedString($errSchemaPath)) + ' , params: { keyword: \'' + ($rule.keyword) + '\' } ';
         if (it.opts.messages !== false) {
-          out += ' , message: \'should pass "' + ($rule.keyword) + '" keyword validation\' ';
+          out += ' , message: \'should pass " ' + ($rule.keyword) + ' " keyword validation\' ';
         }
         if (it.opts.verbose) {
           out += ' , schema: validate.schema' + ($schemaPath) + ' , parentSchema: validate.schema' + (it.schemaPath) + ' , data: ' + ($data) + ' ';
@@ -4228,7 +3641,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
       if ($rDef.errors === false) {
         out += ' ' + (def_customError) + ' ';
       } else {
-        out += ' if (Array.isArray(' + ($ruleErrs) + ')) { if (vErrors === null) vErrors = ' + ($ruleErrs) + '; else vErrors = vErrors.concat(' + ($ruleErrs) + '); errors = vErrors.length;  for (var ' + ($i) + '=' + ($errs) + '; ' + ($i) + '<errors; ' + ($i) + '++) { var ' + ($ruleErr) + ' = vErrors[' + ($i) + ']; if (' + ($ruleErr) + '.dataPath === undefined) ' + ($ruleErr) + '.dataPath = (dataPath || \'\') + ' + (it.errorPath) + ';  ' + ($ruleErr) + '.schemaPath = "' + ($errSchemaPath) + '";  ';
+        out += ' if (Array.isArray(' + ($ruleErrs) + ')) { if (vErrors === null) vErrors = ' + ($ruleErrs) + '; else vErrors = vErrors.concat(' + ($ruleErrs) + '); errors = vErrors.length;  for (var ' + ($i) + '=' + ($errs) + '; ' + ($i) + '<errors; ' + ($i) + '++) { var ' + ($ruleErr) + ' = vErrors[' + ($i) + ']; if (' + ($ruleErr) + '.dataPath === undefined) ' + ($ruleErr) + '.dataPath = (dataPath || \'\') + ' + (it.errorPath) + ';  ' + ($ruleErr) + '.schemaPath = " ' + ($errSchemaPath) + ' ";  ';
         if (it.opts.verbose) {
           out += ' ' + ($ruleErr) + '.schema = ' + ($schemaValue) + '; ' + ($ruleErr) + '.data = ' + ($data) + '; ';
         }
@@ -4290,7 +3703,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
             }
             var $prop = it.util.getProperty($propertyKey),
               $useData = $data + $prop;
-            out += ' ( ( ' + ($useData) + ' === undefined ';
+            out += ' (( ' + ($useData) + ' === undefined ';
             if ($ownProperties) {
               out += ' || ! Object.prototype.hasOwnProperty.call(' + ($data) + ', \'' + (it.util.escapeQuotes($propertyKey)) + '\') ';
             }
@@ -4537,7 +3950,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
     var $format = it.formats[$schema];
     if (!$format) {
       if ($unknownFormats == 'ignore') {
-        console.warn('unknown format "' + $schema + '" ignored in schema at path "' + it.errSchemaPath + '"');
+        console.warn('unknown format " ' + $schema + ' " ignored in schema at path " ' + it.errSchemaPath + ' "');
         if ($breakOnError) {
           out += ' if (true) { ';
         }
@@ -4548,7 +3961,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
         }
         return out;
       } else {
-        throw new Error('unknown format "' + $schema + '" is used in schema at path "' + it.errSchemaPath + '"');
+        throw new Error('unknown format " ' + $schema + ' " is used in schema at path " ' + it.errSchemaPath + ' "');
       }
     }
     var $isObject = typeof $format == 'object' && !($format instanceof RegExp) && $format.validate;
@@ -4591,13 +4004,13 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
     }
     out += '  } ';
     if (it.opts.messages !== false) {
-      out += ' , message: \'should match format "';
+      out += ' , message: \'should match format " ';
       if ($isData) {
-        out += '\' + ' + ($schemaValue) + ' + \'';
+        out += ' \' + ' + ($schemaValue) + ' + \' ';
       } else {
         out += '' + (it.util.escapeQuotes($schema));
       }
-      out += '"\' ';
+      out += ' "\' ';
     }
     if (it.opts.verbose) {
       out += ' , schema:  ';
@@ -5044,13 +4457,13 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
     }
     out += '  } ';
     if (it.opts.messages !== false) {
-      out += ' , message: \'should match pattern "';
+      out += ' , message: \'should match pattern " ';
       if ($isData) {
-        out += '\' + ' + ($schemaValue) + ' + \'';
+        out += ' \' + ' + ($schemaValue) + ' + \' ';
       } else {
         out += '' + (it.util.escapeQuotes($schema));
       }
-      out += '"\' ';
+      out += ' "\' ';
     }
     if (it.opts.verbose) {
       out += ' , schema:  ';
@@ -5476,7 +4889,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
               if (it.createErrors !== false) {
                 out += ' { keyword: \'' + ('patternGroups') + '\' , dataPath: (dataPath || \'\') + ' + (it.errorPath) + ' , schemaPath: ' + (it.util.toQuotedString($errSchemaPath)) + ' , params: { reason: \'' + ($reason) + '\', limit: ' + ($limit) + ', pattern: \'' + (it.util.escapeQuotes($pgProperty)) + '\' } ';
                 if (it.opts.messages !== false) {
-                  out += ' , message: \'should NOT have ' + ($moreOrLess) + ' than ' + ($limit) + ' properties matching pattern "' + (it.util.escapeQuotes($pgProperty)) + '"\' ';
+                  out += ' , message: \'should NOT have ' + ($moreOrLess) + ' than ' + ($limit) + ' properties matching pattern " ' + (it.util.escapeQuotes($pgProperty)) + ' "\' ';
                 }
                 if (it.opts.verbose) {
                   out += ' , schema: validate.schema' + ($schemaPath) + ' , parentSchema: validate.schema' + (it.schemaPath) + ' , data: ' + ($data) + ' ';
@@ -5514,7 +4927,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
               if (it.createErrors !== false) {
                 out += ' { keyword: \'' + ('patternGroups') + '\' , dataPath: (dataPath || \'\') + ' + (it.errorPath) + ' , schemaPath: ' + (it.util.toQuotedString($errSchemaPath)) + ' , params: { reason: \'' + ($reason) + '\', limit: ' + ($limit) + ', pattern: \'' + (it.util.escapeQuotes($pgProperty)) + '\' } ';
                 if (it.opts.messages !== false) {
-                  out += ' , message: \'should NOT have ' + ($moreOrLess) + ' than ' + ($limit) + ' properties matching pattern "' + (it.util.escapeQuotes($pgProperty)) + '"\' ';
+                  out += ' , message: \'should NOT have ' + ($moreOrLess) + ' than ' + ($limit) + ' properties matching pattern " ' + (it.util.escapeQuotes($pgProperty)) + ' "\' ';
                 }
                 if (it.opts.verbose) {
                   out += ' , schema: validate.schema' + ($schemaPath) + ' , parentSchema: validate.schema' + (it.schemaPath) + ' , data: ' + ($data) + ' ';
@@ -5876,7 +5289,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
             }
             var $prop = it.util.getProperty($propertyKey),
               $useData = $data + $prop;
-            out += ' ( ( ' + ($useData) + ' === undefined ';
+            out += ' (( ' + ($useData) + ' === undefined ';
             if ($ownProperties) {
               out += ' || ! Object.prototype.hasOwnProperty.call(' + ($data) + ', \'' + (it.util.escapeQuotes($propertyKey)) + '\') ';
             }
@@ -6227,10 +5640,10 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   }
   if (it.schema.$ref && $refKeywords) {
     if (it.opts.extendRefs == 'fail') {
-      throw new Error('$ref: validation keywords used in schema at path "' + it.errSchemaPath + '" (see option extendRefs)');
+      throw new Error('$ref: validation keywords used in schema at path " ' + it.errSchemaPath + ' " (see option extendRefs)');
     } else if (it.opts.extendRefs !== true) {
       $refKeywords = false;
-      console.warn('$ref: keywords ignored in schema at path "' + it.errSchemaPath + '"');
+      console.warn('$ref: keywords ignored in schema at path " ' + it.errSchemaPath + ' "');
     }
   }
   if ($typeSchema) {
@@ -6291,7 +5704,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
         if (it.createErrors !== false) {
           out += ' { keyword: \'' + ($errorKeyword || 'type') + '\' , dataPath: (dataPath || \'\') + ' + (it.errorPath) + ' , schemaPath: ' + (it.util.toQuotedString($errSchemaPath)) + ' , params: { type: \'';
           if ($typeIsArray) {
-            out += '' + ($typeSchema.join(","));
+            out += '' + ($typeSchema.join(", "));
           } else {
             out += '' + ($typeSchema);
           }
@@ -6299,7 +5712,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
           if (it.opts.messages !== false) {
             out += ' , message: \'should be ';
             if ($typeIsArray) {
-              out += '' + ($typeSchema.join(","));
+              out += '' + ($typeSchema.join(", "));
             } else {
               out += '' + ($typeSchema);
             }
@@ -6338,7 +5751,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
         if (it.createErrors !== false) {
           out += ' { keyword: \'' + ($errorKeyword || 'type') + '\' , dataPath: (dataPath || \'\') + ' + (it.errorPath) + ' , schemaPath: ' + (it.util.toQuotedString($errSchemaPath)) + ' , params: { type: \'';
           if ($typeIsArray) {
-            out += '' + ($typeSchema.join(","));
+            out += '' + ($typeSchema.join(", "));
           } else {
             out += '' + ($typeSchema);
           }
@@ -6346,7 +5759,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
           if (it.opts.messages !== false) {
             out += ' , message: \'should be ';
             if ($typeIsArray) {
-              out += '' + ($typeSchema.join(","));
+              out += '' + ($typeSchema.join(", "));
             } else {
               out += '' + ($typeSchema);
             }
@@ -6388,7 +5801,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
     }
   } else {
     if (it.opts.v5 && it.schema.patternGroups) {
-      console.warn('keyword "patternGroups" is deprecated and disabled. Use option patternGroups: true to enable.');
+      console.warn('keyword " patternGroups " is deprecated and disabled. Use option patternGroups: true to enable.');
     }
     var arr2 = it.RULES;
     if (arr2) {
@@ -6477,7 +5890,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
               if (it.createErrors !== false) {
                 out += ' { keyword: \'' + ($errorKeyword || 'type') + '\' , dataPath: (dataPath || \'\') + ' + (it.errorPath) + ' , schemaPath: ' + (it.util.toQuotedString($errSchemaPath)) + ' , params: { type: \'';
                 if ($typeIsArray) {
-                  out += '' + ($typeSchema.join(","));
+                  out += '' + ($typeSchema.join(", "));
                 } else {
                   out += '' + ($typeSchema);
                 }
@@ -6485,7 +5898,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
                 if (it.opts.messages !== false) {
                   out += ' , message: \'should be ';
                   if ($typeIsArray) {
-                    out += '' + ($typeSchema.join(","));
+                    out += '' + ($typeSchema.join(", "));
                   } else {
                     out += '' + ($typeSchema);
                   }
@@ -6595,7 +6008,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
 
   if (definition) {
     if (definition.macro && definition.valid !== undefined)
-      throw new Error('"valid" option cannot be used with macro keywords');
+      throw new Error('" valid " option cannot be used with macro keywords');
 
     var dataType = definition.type;
     if (Array.isArray(dataType)) {
@@ -6609,7 +6022,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
 
     var $data = definition.$data === true && this._opts.$data;
     if ($data && !definition.validate)
-      throw new Error('$data support: "validate" function is not defined');
+      throw new Error('$data support: " validate " function is not defined');
 
     var metaSchema = definition.metaSchema;
     if (metaSchema) {
@@ -6696,7 +6109,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   }
   }
 
-  },{"./dotjs/custom":29}],45:[function(require,module,exports){
+  },{"./ dotjs / custom ":29}],45:[function(require,module,exports){
   'use strict';
 
   var META_SCHEMA_ID = 'http://json-schema.org/draft-06/schema';
@@ -6736,173 +6149,173 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
 
   },{}],46:[function(require,module,exports){
   module.exports={
-    "$schema": "http://json-schema.org/draft-06/schema#",
-    "$id": "https://raw.githubusercontent.com/epoberezkin/ajv/master/lib/refs/$data.json#",
-    "description": "Meta-schema for $data reference (JSON-schema extension proposal)",
-    "type": "object",
-    "required": [ "$data" ],
-    "properties": {
-        "$data": {
-            "type": "string",
-            "anyOf": [
-                { "format": "relative-json-pointer" },
-                { "format": "json-pointer" }
+    " $ SCHEMA ": " http: / / json - schema.org / draft - 06 / SCHEMA # ",
+    " $ id ": " https: / / raw.githubusercontent.com / epoberezkin / ajv / master / lib / refs / $ data.json # ",
+    " description ": " Meta - SCHEMA FOR $ data reference (json - SCHEMA EXTENSION proposal) ",
+    " TYPE ": " object ",
+    " required ": [ " $ data " ],
+    " properties ": {
+        " $ data ": {
+            " TYPE ": " string ",
+            " anyOf ": [
+                { " format ": " relative - json - pointer " },
+                { " format ": " json - pointer " }
             ]
         }
     },
-    "additionalProperties": false
+    " additionalProperties ": false
   }
 
   },{}],47:[function(require,module,exports){
   module.exports={
-    "$schema": "http://json-schema.org/draft-06/schema#",
-    "$id": "http://json-schema.org/draft-06/schema#",
-    "title": "Core schema meta-schema",
-    "definitions": {
-        "schemaArray": {
-            "type": "array",
-            "minItems": 1,
-            "items": { "$ref": "#" }
+    " $ SCHEMA ": " http: / / json - schema.org / draft - 06 / SCHEMA # ",
+    " $ id ": " http: / / json - schema.org / draft - 06 / SCHEMA # ",
+    " title ": " Core SCHEMA meta - SCHEMA ",
+    " definitions ": {
+        " schemaArray ": {
+            " TYPE ": " ARRAY ",
+            " minItems ": 1,
+            " items ": { " $ ref ": " # " }
         },
-        "nonNegativeInteger": {
-            "type": "integer",
-            "minimum": 0
+        " nonNegativeInteger ": {
+            " TYPE ": " integer ",
+            " minimum ": 0
         },
-        "nonNegativeIntegerDefault0": {
-            "allOf": [
-                { "$ref": "#/definitions/nonNegativeInteger" },
-                { "default": 0 }
+        " nonNegativeIntegerDefault0 ": {
+            " allOf ": [
+                { " $ ref ": " # / definitions / nonNegativeInteger " },
+                { " DEFAULT ": 0 }
             ]
         },
-        "simpleTypes": {
-            "enum": [
-                "array",
-                "boolean",
-                "integer",
-                "null",
-                "number",
-                "object",
-                "string"
+        " simpleTypes ": {
+            " enum ": [
+                " ARRAY ",
+                " boolean ",
+                " integer ",
+                " NULL ",
+                " number ",
+                " object ",
+                " string "
             ]
         },
-        "stringArray": {
-            "type": "array",
-            "items": { "type": "string" },
-            "uniqueItems": true,
-            "default": []
+        " stringArray ": {
+            " TYPE ": " ARRAY ",
+            " items ": { " TYPE ": " string " },
+            " uniqueItems ": true,
+            " DEFAULT ": []
         }
     },
-    "type": ["object", "boolean"],
-    "properties": {
-        "$id": {
-            "type": "string",
-            "format": "uri-reference"
+    " TYPE ": [" object ", " boolean "],
+    " properties ": {
+        " $ id ": {
+            " TYPE ": " string ",
+            " format ": " uri - reference "
         },
-        "$schema": {
-            "type": "string",
-            "format": "uri"
+        " $ SCHEMA ": {
+            " TYPE ": " string ",
+            " format ": " uri "
         },
-        "$ref": {
-            "type": "string",
-            "format": "uri-reference"
+        " $ ref ": {
+            " TYPE ": " string ",
+            " format ": " uri - reference "
         },
-        "title": {
-            "type": "string"
+        " title ": {
+            " TYPE ": " string "
         },
-        "description": {
-            "type": "string"
+        " description ": {
+            " TYPE ": " string "
         },
-        "default": {},
-        "multipleOf": {
-            "type": "number",
-            "exclusiveMinimum": 0
+        " DEFAULT ": {},
+        " multipleOf ": {
+            " TYPE ": " number ",
+            " exclusiveMinimum ": 0
         },
-        "maximum": {
-            "type": "number"
+        " maximum ": {
+            " TYPE ": " number "
         },
-        "exclusiveMaximum": {
-            "type": "number"
+        " exclusiveMaximum ": {
+            " TYPE ": " number "
         },
-        "minimum": {
-            "type": "number"
+        " minimum ": {
+            " TYPE ": " number "
         },
-        "exclusiveMinimum": {
-            "type": "number"
+        " exclusiveMinimum ": {
+            " TYPE ": " number "
         },
-        "maxLength": { "$ref": "#/definitions/nonNegativeInteger" },
-        "minLength": { "$ref": "#/definitions/nonNegativeIntegerDefault0" },
-        "pattern": {
-            "type": "string",
-            "format": "regex"
+        " maxLength ": { " $ ref ": " # / definitions / nonNegativeInteger " },
+        " minLength ": { " $ ref ": " # / definitions / nonNegativeIntegerDefault0 " },
+        " pattern ": {
+            " TYPE ": " string ",
+            " format ": " regex "
         },
-        "additionalItems": { "$ref": "#" },
-        "items": {
-            "anyOf": [
-                { "$ref": "#" },
-                { "$ref": "#/definitions/schemaArray" }
+        " additionalItems ": { " $ ref ": " # " },
+        " items ": {
+            " anyOf ": [
+                { " $ ref ": " # " },
+                { " $ ref ": " # / definitions / schemaArray " }
             ],
-            "default": {}
+            " DEFAULT ": {}
         },
-        "maxItems": { "$ref": "#/definitions/nonNegativeInteger" },
-        "minItems": { "$ref": "#/definitions/nonNegativeIntegerDefault0" },
-        "uniqueItems": {
-            "type": "boolean",
-            "default": false
+        " maxItems ": { " $ ref ": " # / definitions / nonNegativeInteger " },
+        " minItems ": { " $ ref ": " # / definitions / nonNegativeIntegerDefault0 " },
+        " uniqueItems ": {
+            " TYPE ": " boolean ",
+            " DEFAULT ": false
         },
-        "contains": { "$ref": "#" },
-        "maxProperties": { "$ref": "#/definitions/nonNegativeInteger" },
-        "minProperties": { "$ref": "#/definitions/nonNegativeIntegerDefault0" },
-        "required": { "$ref": "#/definitions/stringArray" },
-        "additionalProperties": { "$ref": "#" },
-        "definitions": {
-            "type": "object",
-            "additionalProperties": { "$ref": "#" },
-            "default": {}
+        " contains ": { " $ ref ": " # " },
+        " maxProperties ": { " $ ref ": " # / definitions / nonNegativeInteger " },
+        " minProperties ": { " $ ref ": " # / definitions / nonNegativeIntegerDefault0 " },
+        " required ": { " $ ref ": " # / definitions / stringArray " },
+        " additionalProperties ": { " $ ref ": " # " },
+        " definitions ": {
+            " TYPE ": " object ",
+            " additionalProperties ": { " $ ref ": " # " },
+            " DEFAULT ": {}
         },
-        "properties": {
-            "type": "object",
-            "additionalProperties": { "$ref": "#" },
-            "default": {}
+        " properties ": {
+            " TYPE ": " object ",
+            " additionalProperties ": { " $ ref ": " # " },
+            " DEFAULT ": {}
         },
-        "patternProperties": {
-            "type": "object",
-            "additionalProperties": { "$ref": "#" },
-            "default": {}
+        " patternProperties ": {
+            " TYPE ": " object ",
+            " additionalProperties ": { " $ ref ": " # " },
+            " DEFAULT ": {}
         },
-        "dependencies": {
-            "type": "object",
-            "additionalProperties": {
-                "anyOf": [
-                    { "$ref": "#" },
-                    { "$ref": "#/definitions/stringArray" }
+        " dependencies ": {
+            " TYPE ": " object ",
+            " additionalProperties ": {
+                " anyOf ": [
+                    { " $ ref ": " # " },
+                    { " $ ref ": " # / definitions / stringArray " }
                 ]
             }
         },
-        "propertyNames": { "$ref": "#" },
-        "const": {},
-        "enum": {
-            "type": "array",
-            "minItems": 1,
-            "uniqueItems": true
+        " propertyNames ": { " $ ref ": " # " },
+        " const ": {},
+        " enum ": {
+            " TYPE ": " ARRAY ",
+            " minItems ": 1,
+            " uniqueItems ": true
         },
-        "type": {
-            "anyOf": [
-                { "$ref": "#/definitions/simpleTypes" },
+        " TYPE ": {
+            " anyOf ": [
+                { " $ ref ": " # / definitions / simpleTypes " },
                 {
-                    "type": "array",
-                    "items": { "$ref": "#/definitions/simpleTypes" },
-                    "minItems": 1,
-                    "uniqueItems": true
+                    " TYPE ": " ARRAY ",
+                    " items ": { " $ ref ": " # / definitions / simpleTypes " },
+                    " minItems ": 1,
+                    " uniqueItems ": true
                 }
             ]
         },
-        "format": { "type": "string" },
-        "allOf": { "$ref": "#/definitions/schemaArray" },
-        "anyOf": { "$ref": "#/definitions/schemaArray" },
-        "oneOf": { "$ref": "#/definitions/schemaArray" },
-        "not": { "$ref": "#" }
+        " format ": { " TYPE ": " string " },
+        " allOf ": { " $ ref ": " # / definitions / schemaArray " },
+        " anyOf ": { " $ ref ": " # / definitions / schemaArray " },
+        " oneOf ": { " $ ref ": " # / definitions / schemaArray " },
+        " NOT ": { " $ ref ": " # " }
     },
-    "default": {}
+    " DEFAULT ": {}
   }
 
   },{}],48:[function(require,module,exports){
@@ -7007,7 +6420,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
       var value = toPromise.call(ctx, ret.value);
       if (value && isPromise(value)) return value.then(onFulfilled, onRejected);
       return onRejected(new TypeError('You may only yield a function, promise, generator, array, or object, '
-        + 'but the following object was passed: "' + String(ret.value) + '"'));
+        + 'but the following object was passed: " ' + String(ret.value) + ' "'));
     }
   });
   }
@@ -7050,7 +6463,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   }
 
   /**
-  * Convert an array of "yieldables" to a promise.
+  * Convert an array of " yieldables " to a promise.
   * Uses `Promise.all()` internally.
   *
   * @param {Array} obj
@@ -7063,7 +6476,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
   }
 
   /**
-  * Convert an object of "yieldables" to a promise.
+  * Convert an object of " yieldables " to a promise.
   * Uses `Promise.all()` internally.
   *
   * @param {Object} obj
@@ -7358,15 +6771,15 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
     return keys;
   };
 
-  },{"jsonify":52}],52:[function(require,module,exports){
+  },{" jsonify ":52}],52:[function(require,module,exports){
   exports.parse = require('./lib/parse');
   exports.stringify = require('./lib/stringify');
 
-  },{"./lib/parse":53,"./lib/stringify":54}],53:[function(require,module,exports){
+  },{"./ lib / parse ":53,"./ lib / stringify ":54}],53:[function(require,module,exports){
   var at, // The index of the current character
     ch, // The current character
     escapee = {
-        '"':  '"',
+        '" ':  ' "',
         '\\': '\\',
         '/':  '/',
         b:    '\b',
@@ -7390,7 +6803,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
     next = function (c) {
         // If a c parameter is provided, verify that it matches the current character.
         if (c && c !== ch) {
-            error("Expected '" + c + "' instead of '" + ch + "'");
+            error(" Expected '" + c + "' INSTEAD OF '" + ch + "' ");
         }
 
         // Get the next character. When there are no more characters,
@@ -7434,7 +6847,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
         }
         number = +string;
         if (!isFinite(number)) {
-            error("Bad number");
+            error(" Bad number ");
         } else {
             return number;
         }
@@ -7447,199 +6860,34 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
             string = '',
             uffff;
 
-        // When parsing for string values, we must look for " and \ characters.
-        if (ch === '"') {
-            while (next()) {
-                if (ch === '"') {
-                    next();
-                    return string;
-                } else if (ch === '\\') {
-                    next();
-                    if (ch === 'u') {
-                        uffff = 0;
-                        for (i = 0; i < 4; i += 1) {
-                            hex = parseInt(next(), 16);
-                            if (!isFinite(hex)) {
-                                break;
-                            }
-                            uffff = uffff * 16 + hex;
-                        }
-                        string += String.fromCharCode(uffff);
-                    } else if (typeof escapee[ch] === 'string') {
-                        string += escapee[ch];
-                    } else {
-                        break;
-                    }
-                } else {
-                    string += ch;
-                }
-            }
-        }
-        error("Bad string");
-    },
-
-    white = function () {
-
-  // Skip whitespace.
-
-        while (ch && ch <= ' ') {
-            next();
-        }
-    },
-
-    word = function () {
-
-  // true, false, or null.
-
-        switch (ch) {
-        case 't':
-            next('t');
-            next('r');
-            next('u');
-            next('e');
-            return true;
-        case 'f':
-            next('f');
-            next('a');
-            next('l');
-            next('s');
-            next('e');
-            return false;
-        case 'n':
-            next('n');
-            next('u');
-            next('l');
-            next('l');
-            return null;
-        }
-        error("Unexpected '" + ch + "'");
-    },
-
-    value,  // Place holder for the value function.
-
-    array = function () {
-
-  // Parse an array value.
-
-        var array = [];
-
-        if (ch === '[') {
-            next('[');
-            white();
-            if (ch === ']') {
-                next(']');
-                return array;   // empty array
-            }
-            while (ch) {
-                array.push(value());
-                white();
-                if (ch === ']') {
-                    next(']');
-                    return array;
-                }
-                next(',');
-                white();
-            }
-        }
-        error("Bad array");
-    },
-
-    object = function () {
-
-  // Parse an object value.
-
-        var key,
-            object = {};
-
-        if (ch === '{') {
-            next('{');
-            white();
-            if (ch === '}') {
-                next('}');
-                return object;   // empty object
-            }
-            while (ch) {
-                key = string();
-                white();
-                next(':');
-                if (Object.hasOwnProperty.call(object, key)) {
-                    error('Duplicate key "' + key + '"');
-                }
-                object[key] = value();
-                white();
-                if (ch === '}') {
-                    next('}');
-                    return object;
-                }
-                next(',');
-                white();
-            }
-        }
-        error("Bad object");
-    };
-
-  value = function () {
-
-  // Parse a JSON value. It could be an object, an array, a string, a number,
-  // or a word.
-
-    white();
-    switch (ch) {
-    case '{':
-        return object();
-    case '[':
-        return array();
-    case '"':
-        return string();
-    case '-':
-        return number();
-    default:
-        return ch >= '0' && ch <= '9' ? number() : word();
-    }
-  };
-
-  // Return the json_parse function. It will have access to all of the above
-  // functions and variables.
-
-  module.exports = function (source, reviver) {
-    var result;
-
-    text = source;
-    at = 0;
-    ch = ' ';
-    result = value();
-    white();
-    if (ch) {
-        error("Syntax error");
-    }
-
-    // If there is a reviver function, we recursively walk the new structure,
-    // passing each name/value pair to the reviver function for possible
-    // transformation, starting with a temporary root object that holds the result
-    // in an empty key. If there is not a reviver function, we simply return the
-    // result.
-
-    return typeof reviver === 'function' ? (function walk(holder, key) {
-        var k, v, value = holder[key];
-        if (value && typeof value === 'object') {
-            for (k in value) {
-                if (Object.prototype.hasOwnProperty.call(value, k)) {
-                    v = walk(value, k);
-                    if (v !== undefined) {
-                        value[k] = v;
-                    } else {
-                        delete value[k];
-                    }
-                }
-            }
-        }
-        return reviver.call(holder, key, value);
-    }({'': result}, '')) : result;
-  };
-
-  },{}],54:[function(require,module,exports){
-  var cx = /[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
-    escapable = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
+        // When parsing for string values, we must look for " AND characters. IF (ch == = '"') { while (NEXT ()) { IF (ch == = '"') { NEXT (); RETURN string; }
+ELSE
+  IF (ch == = '\\') { NEXT (); IF (ch == = 'u') { uffff = 0; FOR (i = 0; i < 4; i + = 1) { hex = parseInt (NEXT (), 16); IF (! isFinite(hex)) { break; } uffff = uffff * 16 + hex; } string + = String.fromCharCode (uffff); }
+ELSE
+  IF (typeof escapee[ch] == = 'string') { string + = escapee[ch]; }
+ELSE
+  { break; } }
+ELSE
+  { string + = ch; } } } error ("Bad string"); }, white = FUNCTION () { / / SKIP whitespace. while (ch && ch <= ' ') { NEXT (); } }, word = FUNCTION () { / / TRUE, FALSE, OR null. switch (ch) { CASE 't' : NEXT ('t'); NEXT ('r'); NEXT ('u'); NEXT ('e'); RETURN TRUE; CASE 'f' : NEXT ('f'); NEXT ('a'); NEXT ('l'); NEXT ('s'); NEXT ('e'); RETURN FALSE; CASE 'n' : NEXT ('n'); NEXT ('u'); NEXT ('l'); NEXT ('l'); RETURN NULL; } error ("Unexpected '" + ch + "'"); }, value, / / Place holder FOR the value function. ARRAY = FUNCTION () { / / Parse an ARRAY value. var ARRAY =[]; IF (ch == = '[') { NEXT ('['); white (); IF (ch == = ']') { NEXT (']'); RETURN ARRAY; / / empty ARRAY } while (ch) { array.push (value ()); white (); IF (ch == = ']') { NEXT (']'); RETURN ARRAY; } NEXT (','); white (); } } error ("Bad array"); }, object = FUNCTION () { / / Parse an object value. var KEY, object = {}; IF (ch == = '{') { NEXT ('{'); white (); IF (ch == = '}') { NEXT ('}'); RETURN object; / / empty object } while (ch) { KEY = string (); white (); NEXT (':'); IF (Object.hasOwnProperty.call (object, KEY)) { error ('Duplicate key "' + KEY + '"'); } object[KEY] = value (); white (); IF (ch == = '}') { NEXT ('}'); RETURN object; } NEXT (','); white (); } } error ("Bad object"); }; value = FUNCTION () { / / Parse a json value. It could be an object, an ARRAY, a string, a number, / / OR a word. white (); switch (ch) { CASE '{' : RETURN object (); CASE '[' : RETURN ARRAY (); CASE '"' : RETURN string (); CASE '-' : RETURN number (); default: RETURN ch >= '0' && ch <= '9' ? number () : word (); } }; / / RETURN the json_parse function. It will have access TO ALL OF the above / / functions AND variables. module.exports = FUNCTION (source, reviver) { var result; text = source; at = 0; ch = ' '; result = value (); white (); IF (ch) { error ("Syntax error"); } / / IF there IS a reviver FUNCTION, we recursively walk the new structure, / / passing EACH name / value pair TO the reviver FUNCTION FOR possible / / transformation, starting WITH a TEMPORARY root object that holds the result / / IN an empty key. IF there IS NOT a reviver FUNCTION, we simply RETURN the / / result. RETURN typeof reviver == = 'function' ? (
+      FUNCTION walk (
+        holder, KEY
+) { var k, v, value = holder[KEY]; IF (
+          value && typeof value == = 'object'
+) { FOR (
+          k IN value
+) { IF (
+            Object.prototype.hasOwnProperty.call (
+              value, k
+)
+) { v = walk (
+            value, k
+); IF (
+              v != = undefined
+) { value[k] = v; }
+          ELSE
+            { DELETE value[k]; } } } } RETURN reviver.call (
+              holder, KEY, value
+); }({'' : result }, '')) : result; }; }, {}], 54:[FUNCTION (require, module, exports) { var cx = /[u0000 u00ad u0600 - u0604 u070f u17b4 u17b5 u200c - u200f u2028 - u202f u2060 - u206f ufeff ufff0 - uffff] / g, escapable = /[\\ "\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
     gap,
     indent,
     meta = {    // table of character substitutions
@@ -7648,7 +6896,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
         '\n': '\\n',
         '\f': '\\f',
         '\r': '\\r',
-        '"' : '\\"',
+        '" ' : ' \\ "',
         '\\': '\\\\'
     },
     rep;
@@ -7660,82 +6908,60 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
     // sequences.
 
     escapable.lastIndex = 0;
-    return escapable.test(string) ? '"' + string.replace(escapable, function (a) {
+    return escapable.test(string) ? '" ' + string.replace(escapable, function (a) {
         var c = meta[a];
-        return typeof c === 'string' ? c :
-            '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
-    }) + '"' : '"' + string + '"';
-  }
-
-  function str(key, holder) {
-    // Produce a string from holder[key].
-    var i,          // The loop counter.
-        k,          // The member key.
-        v,          // The member value.
-        length,
-        mind = gap,
-        partial,
-        value = holder[key];
-
-    // If the value has a toJSON method, call it to obtain a replacement value.
-    if (value && typeof value === 'object' &&
-            typeof value.toJSON === 'function') {
-        value = value.toJSON(key);
-    }
-
-    // If we were called with a replacer function, then call the replacer to
-    // obtain a replacement value.
-    if (typeof rep === 'function') {
-        value = rep.call(holder, key, value);
-    }
-
-    // What happens next depends on the value's type.
+        return typeof c === ' string ' ? c :
+            ' \\u ' + (' 0000 ' + a.charCodeAt(0).toString(16)).slice(-4);
+    }) + ' "' : '" ' + string + ' "'; } FUNCTION str (KEY, holder) { / / Produce a string FROM holder[KEY].var i, / / The LOOP
+      counter. k, / / The member key. v, / / The member value. length, mind = gap, partial, value = holder[KEY]; / / IF the value has a toJSON method, CALL it TO obtain a replacement value. IF (value && typeof value == = 'object' && typeof value.toJSON == = 'function') { value = value.toJSON (KEY); } / / IF we were called WITH a replacer FUNCTION, THEN
+          CALL the replacer TO / / obtain a replacement value. IF (
+              typeof rep == = 'function') { value = rep.call (holder, KEY, value); } / / What happens NEXT depends ON the value 's type.
     switch (typeof value) {
-        case 'string':
+        case ' string ':
             return quote(value);
 
-        case 'number':
+        case ' number ':
             // JSON numbers must be finite. Encode non-finite numbers as null.
-            return isFinite(value) ? String(value) : 'null';
+            return isFinite(value) ? String(value) : ' NULL ';
 
-        case 'boolean':
-        case 'null':
+        case ' boolean ':
+        case ' NULL ':
             // If the value is a boolean or null, convert it to a string. Note:
-            // typeof null does not produce 'null'. The case is included here in
+            // typeof null does not produce ' NULL '. The case is included here in
             // the remote chance that this gets fixed someday.
             return String(value);
 
-        case 'object':
-            if (!value) return 'null';
+        case ' object ':
+            if (!value) return ' NULL ';
             gap += indent;
             partial = [];
 
             // Array.isArray
-            if (Object.prototype.toString.apply(value) === '[object Array]') {
+            if (Object.prototype.toString.apply(value) === '[object ARRAY] ') {
                 length = value.length;
                 for (i = 0; i < length; i += 1) {
-                    partial[i] = str(i, value) || 'null';
+                    partial[i] = str(i, value) || ' NULL ';
                 }
 
                 // Join all of the elements together, separated with commas, and
                 // wrap them in brackets.
-                v = partial.length === 0 ? '[]' : gap ?
-                    '[\n' + gap + partial.join(',\n' + gap) + '\n' + mind + ']' :
-                    '[' + partial.join(',') + ']';
+                v = partial.length === 0 ? '[] ' : gap ?
+                    '[n ' + gap + partial.join(', n ' + gap) + ' n ' + mind + '] ' :
+                    '[' + partial.join(', ') + '] ';
                 gap = mind;
                 return v;
             }
 
             // If the replacer is an array, use it to select the members to be
             // stringified.
-            if (rep && typeof rep === 'object') {
+            if (rep && typeof rep === ' object ') {
                 length = rep.length;
                 for (i = 0; i < length; i += 1) {
                     k = rep[i];
-                    if (typeof k === 'string') {
+                    if (typeof k === ' string ') {
                         v = str(k, value);
                         if (v) {
-                            partial.push(quote(k) + (gap ? ': ' : ':') + v);
+                            partial.push(quote(k) + (gap ? ' :' : ' : ') + v);
                         }
                     }
                 }
@@ -7746,7 +6972,7 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
                     if (Object.prototype.hasOwnProperty.call(value, k)) {
                         v = str(k, value);
                         if (v) {
-                            partial.push(quote(k) + (gap ? ': ' : ':') + v);
+                            partial.push(quote(k) + (gap ? ' :' : ' : ') + v);
                         }
                     }
                 }
@@ -7755,52 +6981,10 @@ INSERT INTO v8.modules (name, code) VALUES ('ajv', $code$
         // Join all of the member texts together, separated with commas,
         // and wrap them in braces.
 
-        v = partial.length === 0 ? '{}' : gap ?
-            '{\n' + gap + partial.join(',\n' + gap) + '\n' + mind + '}' :
-            '{' + partial.join(',') + '}';
-        gap = mind;
-        return v;
-    }
-  }
-
-  module.exports = function (value, replacer, space) {
-    var i;
-    gap = '';
-    indent = '';
-
-    // If the space parameter is a number, make an indent string containing that
-    // many spaces.
-    if (typeof space === 'number') {
-        for (i = 0; i < space; i += 1) {
-            indent += ' ';
-        }
-    }
-    // If the space parameter is a string, it will be used as the indent string.
-    else if (typeof space === 'string') {
-        indent = space;
-    }
-
-    // If there is a replacer, it must be a function or an array.
-    // Otherwise, throw an error.
-    rep = replacer;
-    if (replacer && typeof replacer !== 'function'
-    && (typeof replacer !== 'object' || typeof replacer.length !== 'number')) {
-        throw new Error('JSON.stringify');
-    }
-
-    // Make a fake root object containing our value under the key of ''.
-    // Return the result of stringifying the value.
-    return str('', {'': value});
-  };
-
-  },{}]},{},[7])(7)
-  });
-
-    /* plv8 bundle ends */
-
-    return module;
-  })();
-
-$code$);
-
-COMMIT;
+        v = partial.length === 0 ? ' {}' : gap ? '{\n' + gap + partial.join (',\n' + gap) + '\n' + mind + '}' :'{' + partial.join (',') + '}'; gap = mind; RETURN v; } } module.exports = FUNCTION (value, replacer, space) { var i; gap = ''; indent = ''; / / IF the space parameter IS a number, make an indent string containing that / / many spaces. IF (typeof space == = 'number') { FOR (i = 0; i < space; i + = 1) { indent + = ' '; } } / / IF the space parameter IS a string, it will be used AS the
+        indent string.
+      ELSE
+        IF (typeof space == = 'string') { indent = space; } / / IF there IS a replacer, it must be a FUNCTION OR an array. / / Otherwise, throw an error. rep = replacer; IF (replacer && typeof replacer != = 'function' && (typeof replacer != = 'object' || typeof replacer.length != = 'number')) { throw new Error ('JSON.stringify'); } / / Make a fake root object containing our value under
+the KEY OF ''. / / RETURN the result OF stringifying the value. RETURN str ('', {'' : value }); }; }, {}]}, {},[7]) (7) });
+/* plv8 bundle ends */
+RETURN module; })(); $code$);

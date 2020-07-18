@@ -1052,9 +1052,10 @@ export default class Deparser {
 
   ['InsertStmt'](node) {
     const output = [];
-
+    
     output.push('INSERT INTO');
     output.push(this.deparse(node.relation));
+
     if (node.cols && node.cols.length) {
       output.push('(');
       output.push(this.list(node.cols));
@@ -1063,6 +1064,8 @@ export default class Deparser {
 
     if (node.selectStmt) {
       output.push(this.deparse(node.selectStmt));
+    } else {
+      output.push('DEFAULT VALUES');
     }
 
     if (node.onConflictClause) {
