@@ -45,3 +45,7 @@ AFTER INSERT ON friendship
 DEFERRABLE INITIALLY DEFERRED
 FOR EACH ROW
 EXECUTE PROCEDURE check_friendship_symmetry();
+
+create trigger _500_increase_job_queue_count_update
+after update of queue_name on app.jobs
+for each row execute procedure app.jobs__increase_job_queue_count();
