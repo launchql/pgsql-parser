@@ -887,6 +887,14 @@ export default class Deparser {
           const on = this.deparse(node.arg) + '' === '1';
           return on ? 'CYCLE' : 'NO CYCLE';
         }
+        case 'minvalue': {
+          const off = !node.hasOwnProperty('arg');
+          return off ? 'NO MINVALUE' : `${name} ${this.deparse(node.arg, 'simple')}`;
+        }
+        case 'maxvalue': {
+          const off = !node.hasOwnProperty('arg');
+          return off ? 'NO MAXVALUE' : `${name} ${this.deparse(node.arg, 'simple')}`;
+        }
         default:
           if (node.arg) {
             // we need 'simple' so it doesn't wrap negative numbers in parens
@@ -1467,7 +1475,6 @@ export default class Deparser {
   }
 
   ['ExplainStmt'](node) {
-    console.log(node);
     const output = [];
     output.push('EXPLAIN');
     output.push(this.deparse(node.query));
@@ -1899,7 +1906,6 @@ export default class Deparser {
     output.push('CREATE SEQUENCE');
     output.push(this.deparse(node.sequence));
     if (node.options && node.options.length) {
-      // console.log(node.options);
       node.options.forEach(opt => {
         output.push(this.deparse(opt, 'sequence'));
       });
