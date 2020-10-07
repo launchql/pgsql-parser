@@ -9,6 +9,6 @@ module.exports = (api) => {
       '@babel/proposal-class-properties',
       '@babel/proposal-export-default-from'
     ],
-    presets: useESModules ? [''] : ['@babel/env', '']
+    presets: useESModules ? [] : ['@babel/env']
   };
 };
