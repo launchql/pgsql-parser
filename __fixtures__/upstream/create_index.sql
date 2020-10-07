@@ -10,7 +10,7 @@ CREATE INDEX onek_unique1 ON onek USING btree(unique1 int4_ops);
 
 CREATE INDEX IF NOT EXISTS onek_unique1 ON onek USING btree(unique1 int4_ops);
 
-CREATE INDEX IF NOT EXISTS ON onek USING btree(unique1 int4_ops);
+-- CREATE INDEX IF NOT EXISTS ON onek USING btree(unique1 int4_ops);
 
 CREATE INDEX onek_unique2 ON onek USING btree(unique2 int4_ops);
 
@@ -671,7 +671,8 @@ DROP TABLE array_gin_test;
 --
 CREATE INDEX gin_relopts_test ON array_index_op_test USING gin (i)
   WITH (FASTUPDATE=on, GIN_PENDING_LIST_LIMIT=128);
-\d+ gin_relopts_test
+
+
 
 --
 -- HASH
@@ -769,9 +770,11 @@ VACUUM FULL concur_heap;
 REINDEX TABLE concur_heap;
 DELETE FROM concur_heap WHERE f1 = 'b';
 VACUUM FULL concur_heap;
-\d concur_heap
+
+
 REINDEX TABLE concur_heap;
-\d concur_heap
+
+
 
 --
 -- Try some concurrent index drops
@@ -792,7 +795,8 @@ DROP INDEX CONCURRENTLY "concur_index5";
 DROP INDEX CONCURRENTLY "concur_index1";
 DROP INDEX CONCURRENTLY "concur_heap_expr_idx";
 
-\d concur_heap
+
+
 
 DROP TABLE concur_heap;
 
@@ -809,16 +813,20 @@ INSERT INTO cwi_test VALUES(1, 2), (3, 4), (5, 6);
 CREATE UNIQUE INDEX cwi_uniq_idx ON cwi_test(a , b);
 ALTER TABLE cwi_test ADD primary key USING INDEX cwi_uniq_idx;
 
-\d cwi_test
-\d cwi_uniq_idx
+
+
+
+
 
 CREATE UNIQUE INDEX cwi_uniq2_idx ON cwi_test(b , a);
 ALTER TABLE cwi_test DROP CONSTRAINT cwi_uniq_idx,
 	ADD CONSTRAINT cwi_replaced_pkey PRIMARY KEY
 		USING INDEX cwi_uniq2_idx;
 
-\d cwi_test
-\d cwi_replaced_pkey
+
+
+
+
 
 DROP INDEX cwi_replaced_pkey;	-- Should fail; a constraint depends on it
 
@@ -1004,7 +1012,7 @@ explain (costs off)
 -- REINDEX (VERBOSE)
 --
 CREATE TABLE reindex_verbose(id integer primary key);
-\set VERBOSITY terse
+-- \set VERBOSITY terse
 REINDEX (VERBOSE) TABLE reindex_verbose;
 DROP TABLE reindex_verbose;
 

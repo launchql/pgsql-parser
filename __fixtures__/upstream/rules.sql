@@ -182,11 +182,6 @@ select * from rtest_v1;
 insert into rtest_v1 values (2, 12);
 insert into rtest_v1 values (2, 13);
 select * from rtest_v1;
-** Remember the delete rule on rtest_v1: It says
-** DO INSTEAD DELETE FROM rtest_t1 WHERE a = old.a
-** So this time both rows with a = 2 must get deleted
-\p
-\r
 delete from rtest_v1 where b = 12;
 select * from rtest_v1;
 delete from rtest_v1;
@@ -773,7 +768,8 @@ drop table cchild;
 --
 
 -- temporarily disable fancy output, so view changes create less diff noise
-\a\t
+
+
 
 SELECT viewname, definition FROM pg_views WHERE schemaname <> 'information_schema' ORDER BY viewname;
 
@@ -781,7 +777,8 @@ SELECT tablename, rulename, definition FROM pg_rules
 	ORDER BY tablename, rulename;
 
 -- restore normal output mode
-\a\t
+
+
 
 --
 -- CREATE OR REPLACE RULE
@@ -994,14 +991,16 @@ update rules_src set f2 = f2 / 10;
 select * from rules_src;
 select * from rules_log;
 create rule r3 as on delete to rules_src do notify rules_src_deletion;
-\d+ rules_src
+
+
 
 --
 -- Ensure a aliased target relation for insert is correctly deparsed.
 --
 create rule r4 as on insert to rules_src do instead insert into rules_log AS trgt SELECT NEW.* RETURNING trgt.f1, trgt.f2;
 create rule r5 as on update to rules_src do instead UPDATE rules_log AS trgt SET tag = 'updated' WHERE trgt.f1 = new.f1;
-\d+ rules_src
+
+
 
 --
 -- check alter rename rule
@@ -1019,7 +1018,8 @@ ALTER RULE InsertRule ON rule_v1 RENAME to NewInsertRule;
 INSERT INTO rule_v1 VALUES(1);
 SELECT * FROM rule_v1;
 
-\d+ rule_v1
+
+
 
 --
 -- error conditions for alter rename rule
@@ -1035,16 +1035,20 @@ DROP TABLE rule_t1;
 -- check display of VALUES in view definitions
 --
 create view rule_v1 as values(1,2);
-\d+ rule_v1
+
+
 drop view rule_v1;
 create view rule_v1(x) as values(1,2);
-\d+ rule_v1
+
+
 drop view rule_v1;
 create view rule_v1(x) as select * from (values(1,2)) v;
-\d+ rule_v1
+
+
 drop view rule_v1;
 create view rule_v1(x) as select * from (values(1,2)) v(q,w);
-\d+ rule_v1
+
+
 drop view rule_v1;
 
 --

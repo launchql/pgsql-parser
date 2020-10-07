@@ -47,7 +47,8 @@ DROP TABLE temptest;
 
 CREATE TEMP TABLE temptest(col int);
 
-\c
+
+
 
 SELECT * FROM temptest;
 

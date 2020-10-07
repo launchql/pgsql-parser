@@ -195,7 +195,8 @@ select * from clstr_temp;
 drop table clstr_temp;
 
 -- clean up
-\c -
+
+
 DROP TABLE clustertest;
 DROP TABLE clstr_1;
 DROP TABLE clstr_2;

@@ -71,8 +71,8 @@ create event trigger regress_event_trigger2 on ddl_command_start
    execute procedure test_event_trigger();
 
 -- should fail, can't have arguments
-create event trigger regress_event_trigger2 on ddl_command_start
-   execute procedure test_event_trigger('argument not allowed');
+-- create event trigger regress_event_trigger2 on ddl_command_start
+--    execute procedure test_event_trigger('argument not allowed');
 
 -- OK
 create event trigger regress_event_trigger2 on ddl_command_start
@@ -83,7 +83,7 @@ create event trigger regress_event_trigger2 on ddl_command_start
 comment on event trigger regress_event_trigger is 'test comment';
 
 -- should fail, event triggers are not schema objects
-comment on event trigger wrong.regress_event_trigger is 'test comment';
+-- comment on event trigger wrong.regress_event_trigger is 'test comment';
 
 -- drop as non-superuser should fail
 create role regression_bob;

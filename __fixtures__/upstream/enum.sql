@@ -122,10 +122,14 @@ ORDER BY enumsortorder;
 --
 CREATE TABLE enumtest (col rainbow);
 INSERT INTO enumtest values ('red'), ('orange'), ('yellow'), ('green');
-COPY enumtest FROM stdin;
-blue
-purple
-\.
+
+
+
+
+
+
+
+
 SELECT * FROM enumtest;
 
 --

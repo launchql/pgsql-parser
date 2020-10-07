@@ -87,7 +87,6 @@ TRUNCATE atest2; -- fail
 BEGIN;
 LOCK atest2 IN ACCESS EXCLUSIVE MODE; -- fail
 COMMIT;
-COPY atest2 FROM stdin; -- fail
 GRANT ALL ON atest1 TO PUBLIC; -- fail
 
 -- checks in subquery, both ok
@@ -114,16 +113,12 @@ TRUNCATE atest2; -- fail
 BEGIN;
 LOCK atest2 IN ACCESS EXCLUSIVE MODE; -- ok
 COMMIT;
-COPY atest2 FROM stdin; -- fail
 
 -- checks in subquery, both fail
 SELECT * FROM atest1 WHERE ( b IN ( SELECT col1 FROM atest2 ) );
 SELECT * FROM atest2 WHERE ( col1 IN ( SELECT b FROM atest1 ) );
 
 SET SESSION AUTHORIZATION regressuser4;
-COPY atest2 FROM stdin; -- ok
-bar	true
-\.
 SELECT * FROM atest1; -- ok
 
 
@@ -204,11 +199,8 @@ INSERT INTO atest5 VALUES (1,2,3);
 SET SESSION AUTHORIZATION regressuser4;
 SELECT * FROM atest5; -- fail
 SELECT one FROM atest5; -- ok
-COPY atest5 (one) TO stdout; -- ok
 SELECT two FROM atest5; -- fail
-COPY atest5 (two) TO stdout; -- fail
 SELECT atest5 FROM atest5; -- fail
-COPY atest5 (one,two) TO stdout; -- fail
 SELECT 1 FROM atest5; -- ok
 SELECT 1 FROM atest5 a JOIN atest5 b USING (one); -- ok
 SELECT 1 FROM atest5 a JOIN atest5 b USING (two); -- fail
@@ -236,10 +228,6 @@ SELECT one, two FROM atest5 NATURAL JOIN atest6; -- ok now
 
 -- test column-level privileges for INSERT and UPDATE
 INSERT INTO atest5 (two) VALUES (3); -- ok
-COPY atest5 FROM stdin; -- fail
-COPY atest5 (two) FROM stdin; -- ok
-1
-\.
 INSERT INTO atest5 (three) VALUES (4); -- fail
 INSERT INTO atest5 VALUES (5,5,5); -- fail
 UPDATE atest5 SET three = 10; -- ok
@@ -271,7 +259,6 @@ SET SESSION AUTHORIZATION regressuser4;
 SELECT one FROM atest5; -- fail
 UPDATE atest5 SET one = 1; -- fail
 SELECT atest6 FROM atest6; -- ok
-COPY atest6 TO stdout; -- ok
 
 -- check error reporting with column privs
 SET SESSION AUTHORIZATION regressuser1;
@@ -356,7 +343,8 @@ SELECT oid FROM atestp2; -- ok
 -- privileges on functions, languages
 
 -- switch to superuser
-\c -
+
+
 
 REVOKE ALL PRIVILEGES ON LANGUAGE sql FROM PUBLIC;
 GRANT USAGE ON LANGUAGE sql TO regressuser1; -- ok
@@ -392,7 +380,8 @@ SELECT testfunc1(5); -- ok
 
 DROP FUNCTION testfunc1(int); -- fail
 
-\c -
+
+
 
 DROP FUNCTION testfunc1(int); -- ok
 -- restore to sanity
@@ -401,7 +390,8 @@ GRANT ALL PRIVILEGES ON LANGUAGE sql TO PUBLIC;
 -- privileges on types
 
 -- switch to superuser
-\c -
+
+
 
 CREATE TYPE testtype1 AS (a int, b text);
 REVOKE USAGE ON TYPE testtype1 FROM PUBLIC;
@@ -486,7 +476,8 @@ CREATE TABLE test11b AS (SELECT 1::testdomain1 AS a);
 
 REVOKE ALL ON TYPE testtype1 FROM PUBLIC;
 
-\c -
+
+
 DROP AGGREGATE testagg1b(testdomain1);
 DROP DOMAIN testdomain2b;
 DROP OPERATOR !! (NONE, testdomain1);
@@ -523,7 +514,8 @@ select has_table_privilege(-999999,'pg_authid','update');
 select has_table_privilege(1,'select');
 
 -- superuser
-\c -
+
+
 
 select has_table_privilege(current_user,'pg_authid','select');
 select has_table_privilege(current_user,'pg_authid','insert');
@@ -669,7 +661,8 @@ REVOKE regressgroup2 FROM regressuser5;
 
 
 -- has_sequence_privilege tests
-\c -
+
+
 
 CREATE SEQUENCE x_seq;
 
@@ -684,7 +677,8 @@ SET SESSION AUTHORIZATION regressuser2;
 SELECT has_sequence_privilege('x_seq', 'USAGE');
 
 -- largeobject privilege tests
-\c -
+
+
 SET SESSION AUTHORIZATION regressuser1;
 
 SELECT lo_create(1001);
@@ -703,7 +697,8 @@ GRANT SELECT, INSERT ON LARGE OBJECT 1001 TO PUBLIC;	-- to be failed
 GRANT SELECT, UPDATE ON LARGE OBJECT 1001 TO nosuchuser;	-- to be failed
 GRANT SELECT, UPDATE ON LARGE OBJECT  999 TO PUBLIC;	-- to be failed
 
-\c -
+
+
 SET SESSION AUTHORIZATION regressuser2;
 
 SELECT lo_create(2001);
@@ -727,7 +722,8 @@ GRANT ALL ON LARGE OBJECT 2001 TO regressuser3;
 SELECT lo_unlink(1001);		-- to be denied
 SELECT lo_unlink(2002);
 
-\c -
+
+
 -- confirm ACL setting
 SELECT oid, pg_get_userbyid(lomowner) ownername, lomacl FROM pg_largeobject_metadata;
 
@@ -741,7 +737,8 @@ SELECT lo_truncate(lo_open(1005, x'20000'::int), 10);	-- to be denied
 SELECT lo_truncate(lo_open(2001, x'20000'::int), 10);
 
 -- compatibility mode in largeobject permission
-\c -
+
+
 SET lo_compat_privileges = false;	-- default setting
 SET SESSION AUTHORIZATION regressuser4;
 
@@ -751,7 +748,8 @@ SELECT lo_truncate(lo_open(1002, x'20000'::int), 10);	-- to be denied
 SELECT lo_unlink(1002);					-- to be denied
 SELECT lo_export(1001, '/dev/null');			-- to be denied
 
-\c -
+
+
 SET lo_compat_privileges = true;	-- compatibility mode
 SET SESSION AUTHORIZATION regressuser4;
 
@@ -762,14 +760,16 @@ SELECT lo_unlink(1002);
 SELECT lo_export(1001, '/dev/null');			-- to be denied
 
 -- don't allow unpriv users to access pg_largeobject contents
-\c -
+
+
 SELECT * FROM pg_largeobject LIMIT 0;
 
 SET SESSION AUTHORIZATION regressuser1;
 SELECT * FROM pg_largeobject LIMIT 0;			-- to be denied
 
 -- test default ACLs
-\c -
+
+
 
 CREATE SCHEMA testns;
 GRANT ALL ON SCHEMA testns TO regressuser1;
@@ -851,7 +851,8 @@ SELECT d.*     -- check that entries went away
 
 
 -- Grant on all objects of given type in a schema
-\c -
+
+
 
 CREATE SCHEMA testns;
 CREATE TABLE testns.t1 (f1 int);
@@ -883,7 +884,8 @@ RESET client_min_messages;
 
 
 -- Change owner of the schema & and rename of new schema owner
-\c -
+
+
 
 CREATE ROLE schemauser1 superuser login;
 CREATE ROLE schemauser2 superuser login;
@@ -903,14 +905,16 @@ DROP SCHEMA testns CASCADE;
 RESET client_min_messages;
 
 -- clean up
-\c -
+
+
 
 DROP ROLE schemauser1;
 DROP ROLE schemauser_renamed;
 
 
 -- test that dependent privileges are revoked (or not) properly
-\c -
+
+
 
 set session role regressuser1;
 create table dep_priv_test (a int);
@@ -922,20 +926,24 @@ set session role regressuser3;
 grant select on dep_priv_test to regressuser4 with grant option;
 set session role regressuser4;
 grant select on dep_priv_test to regressuser5;
-\dp dep_priv_test
+
+
 set session role regressuser2;
 revoke select on dep_priv_test from regressuser4 cascade;
-\dp dep_priv_test
+
+
 set session role regressuser3;
 revoke select on dep_priv_test from regressuser4 cascade;
-\dp dep_priv_test
+
+
 set session role regressuser1;
 drop table dep_priv_test;
 
 
 -- clean up
 
-\c
+
+
 
 drop sequence x_seq;
 
@@ -993,7 +1001,8 @@ COMMIT;
 BEGIN;
 LOCK TABLE lock_table IN ACCESS EXCLUSIVE MODE; -- should fail
 ROLLBACK;
-\c
+
+
 REVOKE SELECT ON lock_table FROM locktable_user;
 
 -- LOCK TABLE and INSERT permission
@@ -1008,7 +1017,8 @@ ROLLBACK;
 BEGIN;
 LOCK TABLE lock_table IN ACCESS EXCLUSIVE MODE; -- should fail
 ROLLBACK;
-\c
+
+
 REVOKE INSERT ON lock_table FROM locktable_user;
 
 -- LOCK TABLE and UPDATE permission
@@ -1023,7 +1033,8 @@ ROLLBACK;
 BEGIN;
 LOCK TABLE lock_table IN ACCESS EXCLUSIVE MODE; -- should pass
 COMMIT;
-\c
+
+
 REVOKE UPDATE ON lock_table FROM locktable_user;
 
 -- LOCK TABLE and DELETE permission
@@ -1038,7 +1049,8 @@ ROLLBACK;
 BEGIN;
 LOCK TABLE lock_table IN ACCESS EXCLUSIVE MODE; -- should pass
 COMMIT;
-\c
+
+
 REVOKE DELETE ON lock_table FROM locktable_user;
 
 -- LOCK TABLE and TRUNCATE permission
@@ -1053,7 +1065,8 @@ ROLLBACK;
 BEGIN;
 LOCK TABLE lock_table IN ACCESS EXCLUSIVE MODE; -- should pass
 COMMIT;
-\c
+
+
 REVOKE TRUNCATE ON lock_table FROM locktable_user;
 
 -- clean up

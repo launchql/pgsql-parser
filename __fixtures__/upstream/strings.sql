@@ -10,11 +10,11 @@ SELECT 'first line'
 	' - third line'
 	AS "Three lines to one";
 
--- illegal string continuation syntax
-SELECT 'first line'
-' - next line' /* this comment is not allowed here */
-' - third line'
-	AS "Illegal comment within continuation";
+-- -- illegal string continuation syntax
+-- SELECT 'first line'
+-- ' - next line' /* this comment is not allowed here */
+-- ' - third line'
+-- 	AS "Illegal comment within continuation";
 
 -- Unicode escapes
 SET standard_conforming_strings TO on;
@@ -25,9 +25,9 @@ SELECT U&'d!0061t\+000061' UESCAPE '!' AS U&"d*0061t\+000061" UESCAPE '*';
 SELECT U&' \' UESCAPE '!' AS "tricky";
 SELECT 'tricky' AS U&"\" UESCAPE '!';
 
-SELECT U&'wrong: \061';
-SELECT U&'wrong: \+0061';
-SELECT U&'wrong: +0061' UESCAPE '+';
+-- SELECT U&'wrong: \061';
+-- SELECT U&'wrong: \+0061';
+-- SELECT U&'wrong: +0061' UESCAPE '+';
 
 SET standard_conforming_strings TO off;
 
@@ -37,9 +37,9 @@ SELECT U&'d!0061t\+000061' UESCAPE '!' AS U&"d*0061t\+000061" UESCAPE '*';
 SELECT U&' \' UESCAPE '!' AS "tricky";
 SELECT 'tricky' AS U&"\" UESCAPE '!';
 
-SELECT U&'wrong: \061';
-SELECT U&'wrong: \+0061';
-SELECT U&'wrong: +0061' UESCAPE '+';
+-- SELECT U&'wrong: \061';
+-- SELECT U&'wrong: \+0061';
+-- SELECT U&'wrong: +0061' UESCAPE '+';
 
 RESET standard_conforming_strings;
 
@@ -137,7 +137,8 @@ SELECT regexp_replace('AAA aaa', 'A+', 'Z', 'gi');
 SELECT regexp_replace('AAA aaa', 'A+', 'Z', 'z');
 
 -- set so we can tell NULL from empty string
-\pset null '\\N'
+
+
 
 -- return all matches from regexp
 SELECT regexp_matches('foobarbequebaz', $re$(bar)(beque)$re$);
@@ -196,7 +197,8 @@ SELECT foo, length(foo) FROM regexp_split_to_table('thE QUick bROWn FOx jUMPs ov
 SELECT regexp_split_to_array('thE QUick bROWn FOx jUMPs ovEr The lazy dOG', 'e', 'g');
 
 -- change NULL-display back
-\pset null ''
+
+
 
 -- E021-11 position expression
 SELECT POSITION('4' IN '1234567890') = '4' AS "4";
@@ -508,16 +510,16 @@ select 'a\bcd' as f1, 'a\b''cd' as f2, 'a\b''''cd' as f3, 'abcd\'   as f4, 'ab\'
 
 set standard_conforming_strings = off;
 
-select 'a\\bcd' as f1, 'a\\b\'cd' as f2, 'a\\b\'''cd' as f3, 'abcd\\'   as f4, 'ab\\\'cd' as f5, '\\\\' as f6;
+-- select 'a\\bcd' as f1, 'a\\b\'cd' as f2, 'a\\b\'''cd' as f3, 'abcd\\'   as f4, 'ab\\\'cd' as f5, '\\\\' as f6;
 
-set escape_string_warning = off;
-set standard_conforming_strings = on;
+-- set escape_string_warning = off;
+-- set standard_conforming_strings = on;
 
-select 'a\bcd' as f1, 'a\b''cd' as f2, 'a\b''''cd' as f3, 'abcd\'   as f4, 'ab\''cd' as f5, '\\' as f6;
+-- select 'a\bcd' as f1, 'a\b''cd' as f2, 'a\b''''cd' as f3, 'abcd\'   as f4, 'ab\''cd' as f5, '\\' as f6;
 
-set standard_conforming_strings = off;
+-- set standard_conforming_strings = off;
 
-select 'a\\bcd' as f1, 'a\\b\'cd' as f2, 'a\\b\'''cd' as f3, 'abcd\\'   as f4, 'ab\\\'cd' as f5, '\\\\' as f6;
+-- select 'a\\bcd' as f1, 'a\\b\'cd' as f2, 'a\\b\'''cd' as f3, 'abcd\\'   as f4, 'ab\\\'cd' as f5, '\\\\' as f6;
 
 
 --

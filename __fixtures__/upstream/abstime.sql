@@ -54,9 +54,9 @@ SELECT '' AS three, * FROM ABSTIME_TBL
 SELECT '' AS four, * FROM ABSTIME_TBL
    WHERE ABSTIME_TBL.f1 <= abstime 'Jan 14, 1973 03:14:21';
 
-SELECT '' AS four, * FROM ABSTIME_TBL
-  WHERE ABSTIME_TBL.f1 <?>
-	tinterval '["Apr 1 1950 00:00:00" "Dec 30 1999 23:00:00"]';
+-- SELECT '' AS four, * FROM ABSTIME_TBL
+--   WHERE ABSTIME_TBL.f1 <?>
+-- 	tinterval '["Apr 1 1950 00:00:00" "Dec 30 1999 23:00:00"]';
 
 SELECT '' AS four, f1 AS abstime,
   date_part('year', f1) AS year, date_part('month', f1) AS month,

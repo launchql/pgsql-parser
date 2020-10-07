@@ -102,7 +102,8 @@ alter aggregate my_percentile_disc(float8 ORDER BY anyelement)
 alter aggregate my_rank(VARIADIC "any" ORDER BY VARIADIC "any")
   rename to test_rank;
 
-\da test_*
+
+
 
 -- moving-aggregate options
 

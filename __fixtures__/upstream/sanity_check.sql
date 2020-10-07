@@ -8,7 +8,8 @@ VACUUM;
 --
 
 -- temporarily disable fancy output, so catalog changes create less diff noise
-\a\t
+
+
 
 SELECT relname, relhasindex
    FROM pg_class c LEFT JOIN pg_namespace n ON n.oid = relnamespace
@@ -16,7 +17,8 @@ SELECT relname, relhasindex
    ORDER BY relname;
 
 -- restore normal output mode
-\a\t
+
+
 
 --
 -- another sanity check: every system catalog that has OIDs should have

@@ -18,7 +18,8 @@ CREATE TABLE collate_test1 (
     b text COLLATE "C" NOT NULL
 );
 
-\d collate_test1
+
+
 
 CREATE TABLE collate_test_fail (
     a int COLLATE "C",
@@ -29,7 +30,8 @@ CREATE TABLE collate_test_like (
     LIKE collate_test1
 );
 
-\d collate_test_like
+
+
 
 CREATE TABLE collate_test2 (
     a int,
@@ -166,7 +168,7 @@ SELECT a, b, a < b as lt FROM
 
 -- casting
 
-SELECT CAST('42' AS text COLLATE "C");
+-- SELECT CAST('42' AS text COLLATE "C");
 
 SELECT a, CAST(b AS varchar) FROM collate_test1 ORDER BY 2;
 SELECT a, CAST(b AS varchar) FROM collate_test2 ORDER BY 2;

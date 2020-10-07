@@ -19,8 +19,10 @@ CREATE VIEW test_tablesample_v1 AS
   SELECT id FROM test_tablesample TABLESAMPLE SYSTEM (10*2) REPEATABLE (2);
 CREATE VIEW test_tablesample_v2 AS
   SELECT id FROM test_tablesample TABLESAMPLE SYSTEM (99);
-\d+ test_tablesample_v1
-\d+ test_tablesample_v2
+
+
+
+
 
 -- check a sampled query doesn't affect cursor in progress
 BEGIN;
@@ -96,7 +98,7 @@ SELECT id FROM test_tablesample TABLESAMPLE SYSTEM (200);
 SELECT id FROM test_tablesample_v1 TABLESAMPLE BERNOULLI (1);
 INSERT INTO test_tablesample_v1 VALUES(1);
 
-WITH query_select AS (SELECT * FROM test_tablesample)
-SELECT * FROM query_select TABLESAMPLE BERNOULLI (5.5) REPEATABLE (1);
+-- WITH query_select AS (SELECT * FROM test_tablesample)
+-- SELECT * FROM query_select TABLESAMPLE BERNOULLI (5.5) REPEATABLE (1);
 
-SELECT q.* FROM (SELECT * FROM test_tablesample) as q TABLESAMPLE BERNOULLI (5);
+-- SELECT q.* FROM (SELECT * FROM test_tablesample) as q TABLESAMPLE BERNOULLI (5);

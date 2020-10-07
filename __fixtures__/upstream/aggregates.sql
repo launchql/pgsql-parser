@@ -116,11 +116,11 @@ SELECT
   BIT_OR(i4)  AS "?"
 FROM bitwise_test;
 
-COPY bitwise_test FROM STDIN NULL 'null';
-1	1	1	1	1	B0101
-3	3	3	null	2	B0100
-7	7	7	3	4	B1100
-\.
+-- COPY bitwise_test FROM STDIN NULL 'null';
+-- 1	1	1	1	1	B0101
+-- 3	3	3	null	2	B0100
+-- 7	7	7	3	4	B1100
+-- \.
 
 SELECT
   BIT_AND(i2) AS "1",
@@ -183,11 +183,11 @@ SELECT
   BOOL_OR(b3)    AS "n"
 FROM bool_test;
 
-COPY bool_test FROM STDIN NULL 'null';
-TRUE	null	FALSE	null
-FALSE	TRUE	null	null
-null	TRUE	FALSE	null
-\.
+-- COPY bool_test FROM STDIN NULL 'null';
+-- TRUE	null	FALSE	null
+-- FALSE	TRUE	null	null
+-- null	TRUE	FALSE	null
+-- \.
 
 SELECT
   BOOL_AND(b1)     AS "f",
@@ -525,25 +525,25 @@ select aggfns(distinct a,b,c order by a,c using ~<~,b) filter (where a > 1)
 
 -- ordered-set aggregates
 
-select p, percentile_cont(p) within group (order by x::float8)
-from generate_series(1,5) x,
-     (values (0::float8),(0.1),(0.25),(0.4),(0.5),(0.6),(0.75),(0.9),(1)) v(p)
-group by p order by p;
+-- select p, percentile_cont(p) within group (order by x::float8)
+-- from generate_series(1,5) x,
+--      (values (0::float8),(0.1),(0.25),(0.4),(0.5),(0.6),(0.75),(0.9),(1)) v(p)
+-- group by p order by p;
 
-select p, percentile_cont(p order by p) within group (order by x)  -- error
-from generate_series(1,5) x,
-     (values (0::float8),(0.1),(0.25),(0.4),(0.5),(0.6),(0.75),(0.9),(1)) v(p)
-group by p order by p;
+-- select p, percentile_cont(p order by p) within group (order by x)  -- error
+-- from generate_series(1,5) x,
+--      (values (0::float8),(0.1),(0.25),(0.4),(0.5),(0.6),(0.75),(0.9),(1)) v(p)
+-- group by p order by p;
 
-select p, sum() within group (order by x::float8)  -- error
-from generate_series(1,5) x,
-     (values (0::float8),(0.1),(0.25),(0.4),(0.5),(0.6),(0.75),(0.9),(1)) v(p)
-group by p order by p;
+-- select p, sum() within group (order by x::float8)  -- error
+-- from generate_series(1,5) x,
+--      (values (0::float8),(0.1),(0.25),(0.4),(0.5),(0.6),(0.75),(0.9),(1)) v(p)
+-- group by p order by p;
 
-select p, percentile_cont(p,p)  -- error
-from generate_series(1,5) x,
-     (values (0::float8),(0.1),(0.25),(0.4),(0.5),(0.6),(0.75),(0.9),(1)) v(p)
-group by p order by p;
+-- select p, percentile_cont(p,p)  -- error
+-- from generate_series(1,5) x,
+--      (values (0::float8),(0.1),(0.25),(0.4),(0.5),(0.6),(0.75),(0.9),(1)) v(p)
+-- group by p order by p;
 
 select percentile_cont(0.5) within group (order by b) from aggtest;
 select percentile_cont(0.5) within group (order by b), sum(b) from aggtest;

@@ -157,70 +157,70 @@ SELECT four, ten,
 	last_value(ten) over (partition by four order by ten)
 FROM (select distinct ten, four from tenk1) ss;
 
-SELECT four, ten,
-	sum(ten) over (partition by four order by ten range between unbounded preceding and current row),
-	last_value(ten) over (partition by four order by ten range between unbounded preceding and current row)
-FROM (select distinct ten, four from tenk1) ss;
+-- SELECT four, ten,
+-- 	sum(ten) over (partition by four order by ten range between unbounded preceding and current row),
+-- 	last_value(ten) over (partition by four order by ten range between unbounded preceding and current row)
+-- FROM (select distinct ten, four from tenk1) ss;
 
-SELECT four, ten,
-	sum(ten) over (partition by four order by ten range between unbounded preceding and unbounded following),
-	last_value(ten) over (partition by four order by ten range between unbounded preceding and unbounded following)
-FROM (select distinct ten, four from tenk1) ss;
+-- SELECT four, ten,
+-- 	sum(ten) over (partition by four order by ten range between unbounded preceding and unbounded following),
+-- 	last_value(ten) over (partition by four order by ten range between unbounded preceding and unbounded following)
+-- FROM (select distinct ten, four from tenk1) ss;
 
-SELECT four, ten/4 as two,
-	sum(ten/4) over (partition by four order by ten/4 range between unbounded preceding and current row),
-	last_value(ten/4) over (partition by four order by ten/4 range between unbounded preceding and current row)
-FROM (select distinct ten, four from tenk1) ss;
+-- SELECT four, ten/4 as two,
+-- 	sum(ten/4) over (partition by four order by ten/4 range between unbounded preceding and current row),
+-- 	last_value(ten/4) over (partition by four order by ten/4 range between unbounded preceding and current row)
+-- FROM (select distinct ten, four from tenk1) ss;
 
-SELECT four, ten/4 as two,
-	sum(ten/4) over (partition by four order by ten/4 rows between unbounded preceding and current row),
-	last_value(ten/4) over (partition by four order by ten/4 rows between unbounded preceding and current row)
-FROM (select distinct ten, four from tenk1) ss;
+-- SELECT four, ten/4 as two,
+-- 	sum(ten/4) over (partition by four order by ten/4 rows between unbounded preceding and current row),
+-- 	last_value(ten/4) over (partition by four order by ten/4 rows between unbounded preceding and current row)
+-- FROM (select distinct ten, four from tenk1) ss;
 
-SELECT sum(unique1) over (order by four range between current row and unbounded following),
-	unique1, four
-FROM tenk1 WHERE unique1 < 10;
+-- SELECT sum(unique1) over (order by four range between current row and unbounded following),
+-- 	unique1, four
+-- FROM tenk1 WHERE unique1 < 10;
 
-SELECT sum(unique1) over (rows between current row and unbounded following),
-	unique1, four
-FROM tenk1 WHERE unique1 < 10;
+-- SELECT sum(unique1) over (rows between current row and unbounded following),
+-- 	unique1, four
+-- FROM tenk1 WHERE unique1 < 10;
 
-SELECT sum(unique1) over (rows between 2 preceding and 2 following),
-	unique1, four
-FROM tenk1 WHERE unique1 < 10;
+-- SELECT sum(unique1) over (rows between 2 preceding and 2 following),
+-- 	unique1, four
+-- FROM tenk1 WHERE unique1 < 10;
 
-SELECT sum(unique1) over (rows between 2 preceding and 1 preceding),
-	unique1, four
-FROM tenk1 WHERE unique1 < 10;
+-- SELECT sum(unique1) over (rows between 2 preceding and 1 preceding),
+-- 	unique1, four
+-- FROM tenk1 WHERE unique1 < 10;
 
-SELECT sum(unique1) over (rows between 1 following and 3 following),
-	unique1, four
-FROM tenk1 WHERE unique1 < 10;
+-- SELECT sum(unique1) over (rows between 1 following and 3 following),
+-- 	unique1, four
+-- FROM tenk1 WHERE unique1 < 10;
 
-SELECT sum(unique1) over (rows between unbounded preceding and 1 following),
-	unique1, four
-FROM tenk1 WHERE unique1 < 10;
+-- SELECT sum(unique1) over (rows between unbounded preceding and 1 following),
+-- 	unique1, four
+-- FROM tenk1 WHERE unique1 < 10;
 
-SELECT sum(unique1) over (w range between current row and unbounded following),
-	unique1, four
-FROM tenk1 WHERE unique1 < 10 WINDOW w AS (order by four);
+-- SELECT sum(unique1) over (w range between current row and unbounded following),
+-- 	unique1, four
+-- FROM tenk1 WHERE unique1 < 10 WINDOW w AS (order by four);
 
--- fail: not implemented yet
-SELECT sum(unique1) over (order by four range between 2::int8 preceding and 1::int2 preceding),
-	unique1, four
-FROM tenk1 WHERE unique1 < 10;
+-- -- fail: not implemented yet
+-- SELECT sum(unique1) over (order by four range between 2::int8 preceding and 1::int2 preceding),
+-- 	unique1, four
+-- FROM tenk1 WHERE unique1 < 10;
 
-SELECT first_value(unique1) over w,
-	nth_value(unique1, 2) over w AS nth_2,
-	last_value(unique1) over w, unique1, four
-FROM tenk1 WHERE unique1 < 10
-WINDOW w AS (order by four range between current row and unbounded following);
+-- SELECT first_value(unique1) over w,
+-- 	nth_value(unique1, 2) over w AS nth_2,
+-- 	last_value(unique1) over w, unique1, four
+-- FROM tenk1 WHERE unique1 < 10
+-- WINDOW w AS (order by four range between current row and unbounded following);
 
-SELECT sum(unique1) over
-	(order by unique1
-	 rows (SELECT unique1 FROM tenk1 ORDER BY unique1 LIMIT 1) + 1 PRECEDING),
-	unique1
-FROM tenk1 WHERE unique1 < 10;
+-- SELECT sum(unique1) over
+-- 	(order by unique1
+-- 	 rows (SELECT unique1 FROM tenk1 ORDER BY unique1 LIMIT 1) + 1 PRECEDING),
+-- 	unique1
+-- FROM tenk1 WHERE unique1 < 10;
 
 CREATE TEMP VIEW v_window AS
 	SELECT i, sum(i) over (order by i rows between 1 preceding and 1 following) as sum_rows
@@ -246,7 +246,7 @@ SELECT * FROM empsalary INNER JOIN tenk1 ON row_number() OVER (ORDER BY salary) 
 
 SELECT rank() OVER (ORDER BY 1), count(*) FROM empsalary GROUP BY 1;
 
-SELECT * FROM rank() OVER (ORDER BY random());
+-- SELECT * FROM rank() OVER (ORDER BY random());
 
 DELETE FROM empsalary WHERE (rank() OVER (ORDER BY random())) > 10;
 
@@ -254,7 +254,7 @@ DELETE FROM empsalary RETURNING rank() OVER (ORDER BY random());
 
 SELECT count(*) OVER w FROM tenk1 WINDOW w AS (ORDER BY unique1), w AS (ORDER BY unique1);
 
-SELECT rank() OVER (PARTITION BY four, ORDER BY ten) FROM tenk1;
+-- SELECT rank() OVER (PARTITION BY four, ORDER BY ten) FROM tenk1;
 
 SELECT count() OVER () FROM tenk1;
 

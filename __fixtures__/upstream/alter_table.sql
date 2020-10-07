@@ -209,23 +209,31 @@ ALTER TABLE onek DROP CONSTRAINT onek_unique1_constraint_foo;
 
 -- renaming constraints vs. inheritance
 CREATE TABLE constraint_rename_test (a int CONSTRAINT con1 CHECK (a > 0), b int, c int);
-\d constraint_rename_test
+
+
 CREATE TABLE constraint_rename_test2 (a int CONSTRAINT con1 CHECK (a > 0), d int) INHERITS (constraint_rename_test);
-\d constraint_rename_test2
+
+
 ALTER TABLE constraint_rename_test2 RENAME CONSTRAINT con1 TO con1foo; -- fail
 ALTER TABLE ONLY constraint_rename_test RENAME CONSTRAINT con1 TO con1foo; -- fail
 ALTER TABLE constraint_rename_test RENAME CONSTRAINT con1 TO con1foo; -- ok
-\d constraint_rename_test
-\d constraint_rename_test2
+
+
+
+
 ALTER TABLE constraint_rename_test ADD CONSTRAINT con2 CHECK (b > 0) NO INHERIT;
 ALTER TABLE ONLY constraint_rename_test RENAME CONSTRAINT con2 TO con2foo; -- ok
 ALTER TABLE constraint_rename_test RENAME CONSTRAINT con2foo TO con2bar; -- ok
-\d constraint_rename_test
-\d constraint_rename_test2
+
+
+
+
 ALTER TABLE constraint_rename_test ADD CONSTRAINT con3 PRIMARY KEY (a);
 ALTER TABLE constraint_rename_test RENAME CONSTRAINT con3 TO con3foo; -- ok
-\d constraint_rename_test
-\d constraint_rename_test2
+
+
+
+
 DROP TABLE constraint_rename_test2;
 DROP TABLE constraint_rename_test;
 ALTER TABLE IF EXISTS constraint_not_exist RENAME CONSTRAINT con3 TO con3foo; -- ok
@@ -329,7 +337,8 @@ DROP TABLE tmp2;
 set constraint_exclusion TO 'partition';
 create table nv_parent (d date, check (false) no inherit not valid);
 -- not valid constraint added at creation time should automatically become valid
-\d nv_parent
+
+
 
 create table nv_child_2010 () inherits (nv_parent);
 create table nv_child_2011 () inherits (nv_parent);
@@ -345,7 +354,8 @@ explain (costs off) select * from nv_parent where d between '2009-08-01'::date a
 
 -- add an inherited NOT VALID constraint
 alter table nv_parent add check (d between '2001-01-01'::date and '2099-12-31'::date) not valid;
-\d nv_child_2009
+
+
 -- we leave nv_parent and children around to help test pg_dump logic
 
 -- Foreign key adding test with mixed types
@@ -921,22 +931,8 @@ drop table parent;
 create table test (a int4, b int4, c int4);
 insert into test values (1,2,3);
 alter table test drop a;
-copy test to stdout;
-copy test(a) to stdout;
-copy test("........pg.dropped.1........") to stdout;
-copy test from stdin;
-10	11	12
-\.
 select * from test;
-copy test from stdin;
-21	22
-\.
 select * from test;
-copy test(a) from stdin;
-copy test("........pg.dropped.1........") from stdin;
-copy test(b,c) from stdin;
-31	32
-\.
 select * from test;
 drop table test;
 
@@ -1270,15 +1266,11 @@ where oid = 'test_storage'::regclass;
 -- ALTER COLUMN TYPE with a check constraint and a child table (bug #13779)
 CREATE TABLE test_inh_check (a float check (a > 10.2), b float);
 CREATE TABLE test_inh_check_child() INHERITS(test_inh_check);
-\d test_inh_check
-\d test_inh_check_child
 select relname, conname, coninhcount, conislocal, connoinherit
   from pg_constraint c, pg_class r
   where relname like 'test_inh_check%' and c.conrelid = r.oid
   order by 1, 2;
 ALTER TABLE test_inh_check ALTER COLUMN a TYPE numeric;
-\d test_inh_check
-\d test_inh_check_child
 select relname, conname, coninhcount, conislocal, connoinherit
   from pg_constraint c, pg_class r
   where relname like 'test_inh_check%' and c.conrelid = r.oid
@@ -1288,15 +1280,11 @@ ALTER TABLE test_inh_check ADD CONSTRAINT bnoinherit CHECK (b > 100) NO INHERIT;
 ALTER TABLE test_inh_check_child ADD CONSTRAINT blocal CHECK (b < 1000);
 ALTER TABLE test_inh_check_child ADD CONSTRAINT bmerged CHECK (b > 1);
 ALTER TABLE test_inh_check ADD CONSTRAINT bmerged CHECK (b > 1);
-\d test_inh_check
-\d test_inh_check_child
 select relname, conname, coninhcount, conislocal, connoinherit
   from pg_constraint c, pg_class r
   where relname like 'test_inh_check%' and c.conrelid = r.oid
   order by 1, 2;
 ALTER TABLE test_inh_check ALTER COLUMN b TYPE numeric;
-\d test_inh_check
-\d test_inh_check_child
 select relname, conname, coninhcount, conislocal, connoinherit
   from pg_constraint c, pg_class r
   where relname like 'test_inh_check%' and c.conrelid = r.oid
@@ -1309,7 +1297,6 @@ BEGIN;
 ALTER TABLE check_fk_presence_2 DROP CONSTRAINT check_fk_presence_2_id_fkey;
 ANALYZE check_fk_presence_2;
 ROLLBACK;
-\d check_fk_presence_2
 DROP TABLE check_fk_presence_1, check_fk_presence_2;
 
 --
@@ -1544,34 +1531,33 @@ drop schema alter2 cascade;
 --
 
 CREATE TYPE test_type AS (a int);
-\d test_type
 
 ALTER TYPE nosuchtype ADD ATTRIBUTE b text; -- fails
 
 ALTER TYPE test_type ADD ATTRIBUTE b text;
-\d test_type
 
 ALTER TYPE test_type ADD ATTRIBUTE b text; -- fails
 
 ALTER TYPE test_type ALTER ATTRIBUTE b SET DATA TYPE varchar;
-\d test_type
 
 ALTER TYPE test_type ALTER ATTRIBUTE b SET DATA TYPE integer;
-\d test_type
 
 ALTER TYPE test_type DROP ATTRIBUTE b;
-\d test_type
+
+
 
 ALTER TYPE test_type DROP ATTRIBUTE c; -- fails
 
 ALTER TYPE test_type DROP ATTRIBUTE IF EXISTS c;
 
 ALTER TYPE test_type DROP ATTRIBUTE a, ADD ATTRIBUTE d boolean;
-\d test_type
+
+
 
 ALTER TYPE test_type RENAME ATTRIBUTE a TO aa;
 ALTER TYPE test_type RENAME ATTRIBUTE d TO dd;
-\d test_type
+
+
 
 DROP TYPE test_type;
 
@@ -1582,29 +1568,40 @@ ALTER TYPE test_type1 ALTER ATTRIBUTE b TYPE varchar; -- fails
 CREATE TYPE test_type2 AS (a int, b text);
 CREATE TABLE test_tbl2 OF test_type2;
 CREATE TABLE test_tbl2_subclass () INHERITS (test_tbl2);
-\d test_type2
-\d test_tbl2
+
+
+
+
 
 ALTER TYPE test_type2 ADD ATTRIBUTE c text; -- fails
 ALTER TYPE test_type2 ADD ATTRIBUTE c text CASCADE;
-\d test_type2
-\d test_tbl2
+
+
+
+
 
 ALTER TYPE test_type2 ALTER ATTRIBUTE b TYPE varchar; -- fails
 ALTER TYPE test_type2 ALTER ATTRIBUTE b TYPE varchar CASCADE;
-\d test_type2
-\d test_tbl2
+
+
+
+
 
 ALTER TYPE test_type2 DROP ATTRIBUTE b; -- fails
 ALTER TYPE test_type2 DROP ATTRIBUTE b CASCADE;
-\d test_type2
-\d test_tbl2
+
+
+
+
 
 ALTER TYPE test_type2 RENAME ATTRIBUTE a TO aa; -- fails
 ALTER TYPE test_type2 RENAME ATTRIBUTE a TO aa CASCADE;
-\d test_type2
-\d test_tbl2
-\d test_tbl2_subclass
+
+
+
+
+
+
 
 DROP TABLE test_tbl2_subclass;
 
@@ -1646,7 +1643,8 @@ ALTER TABLE tt7 OF tt_t0;
 CREATE TYPE tt_t1 AS (x int, y numeric(8,2));
 ALTER TABLE tt7 OF tt_t1;			-- reassign an already-typed table
 ALTER TABLE tt7 NOT OF;
-\d tt7
+
+
 
 -- make sure we can drop a constraint on the parent but it remains on the child
 CREATE TABLE test_drop_constr_parent (c text CHECK (c IS NOT NULL));
@@ -1676,7 +1674,8 @@ ALTER TABLE IF EXISTS tt8 ALTER COLUMN f SET DEFAULT 0;
 ALTER TABLE IF EXISTS tt8 RENAME COLUMN f TO f1;
 ALTER TABLE IF EXISTS tt8 SET SCHEMA alter2;
 
-\d alter2.tt8
+
+
 
 DROP TABLE alter2.tt8;
 DROP SCHEMA alter2;
@@ -1814,31 +1813,39 @@ DROP TABLE logged1;
 
 -- test ADD COLUMN IF NOT EXISTS
 CREATE TABLE test_add_column(c1 integer);
-\d test_add_column
+
+
 ALTER TABLE test_add_column
 	ADD COLUMN c2 integer;
-\d test_add_column
+
+
 ALTER TABLE test_add_column
 	ADD COLUMN c2 integer; -- fail because c2 already exists
-\d test_add_column
+
+
 ALTER TABLE test_add_column
 	ADD COLUMN IF NOT EXISTS c2 integer; -- skipping because c2 already exists
-\d test_add_column
+
+
 ALTER TABLE test_add_column
 	ADD COLUMN c2 integer, -- fail because c2 already exists
 	ADD COLUMN c3 integer;
-\d test_add_column
+
+
 ALTER TABLE test_add_column
 	ADD COLUMN IF NOT EXISTS c2 integer, -- skipping because c2 already exists
 	ADD COLUMN c3 integer; -- fail because c3 already exists
-\d test_add_column
+
+
 ALTER TABLE test_add_column
 	ADD COLUMN IF NOT EXISTS c2 integer, -- skipping because c2 already exists
 	ADD COLUMN IF NOT EXISTS c3 integer; -- skipping because c3 already exists
-\d test_add_column
+
+
 ALTER TABLE test_add_column
 	ADD COLUMN IF NOT EXISTS c2 integer, -- skipping because c2 already exists
 	ADD COLUMN IF NOT EXISTS c3 integer, -- skipping because c3 already exists
 	ADD COLUMN c4 integer;
-\d test_add_column
+
+
 DROP TABLE test_add_column;

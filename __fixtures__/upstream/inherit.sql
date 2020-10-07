@@ -154,8 +154,10 @@ select pc.relname, pgc.conname, pgc.contype, pgc.conislocal, pgc.coninhcount, pg
 
 -- Test that child does not inherit NO INHERIT constraints
 create table c1 () inherits (p1);
-\d p1
-\d c1
+
+
+
+
 
 drop table p1 cascade;
 
@@ -243,20 +245,25 @@ insert into c1 values(1,1,2);
 alter table p2 add check (f2>0);
 insert into c1 values(1,-1,2);  -- fail
 create table c2(f3 int) inherits(p1,p2);
-\d c2
+
+
 create table c3 (f4 int) inherits(c1,c2);
-\d c3
+
+
 drop table p1 cascade;
 drop table p2 cascade;
 
 create table pp1 (f1 int);
 create table cc1 (f2 text, f3 int) inherits (pp1);
 alter table pp1 add column a1 int check (a1 > 0);
-\d cc1
+
+
 create table cc2(f4 float) inherits(pp1,cc1);
-\d cc2
+
+
 alter table pp1 add column a2 int check (a2 > 0);
-\d cc2
+
+
 drop table pp1 cascade;
 
 -- Test for renaming in simple multiple inheritance
@@ -268,7 +275,8 @@ ALTER TABLE inht1 RENAME a TO aa;
 ALTER TABLE inht1 RENAME b TO bb;                -- to be failed
 ALTER TABLE inhts RENAME aa TO aaa;      -- to be failed
 ALTER TABLE inhts RENAME d TO dd;
-\d+ inhts
+
+
 
 DROP TABLE inhts;
 
@@ -278,12 +286,14 @@ CREATE TABLE inht3 (y int) INHERITS (inht1);
 CREATE TABLE inht4 (z int) INHERITS (inht2, inht3);
 
 ALTER TABLE inht1 RENAME aa TO aaa;
-\d+ inht4
+
+
 
 CREATE TABLE inhts (d int) INHERITS (inht2, inhs1);
 ALTER TABLE inht1 RENAME aaa TO aaaa;
 ALTER TABLE inht1 RENAME b TO bb;                -- to be failed
-\d+ inhts
+
+
 
 WITH RECURSIVE r AS (
   SELECT 'inht1'::regclass AS inhrelid
@@ -302,10 +312,13 @@ DROP TABLE inht1, inhs1 CASCADE;
 -- Test non-inheritable indices [UNIQUE, EXCLUDE] constraints
 CREATE TABLE test_constraints (id int, val1 varchar, val2 int, UNIQUE(val1, val2));
 CREATE TABLE test_constraints_inh () INHERITS (test_constraints);
-\d+ test_constraints
+
+
 ALTER TABLE ONLY test_constraints DROP CONSTRAINT test_constraints_val1_val2_key;
-\d+ test_constraints
-\d+ test_constraints_inh
+
+
+
+
 DROP TABLE test_constraints_inh;
 DROP TABLE test_constraints;
 
@@ -314,10 +327,13 @@ CREATE TABLE test_ex_constraints (
     EXCLUDE USING gist (c WITH &&)
 );
 CREATE TABLE test_ex_constraints_inh () INHERITS (test_ex_constraints);
-\d+ test_ex_constraints
+
+
 ALTER TABLE test_ex_constraints DROP CONSTRAINT test_ex_constraints_c_excl;
-\d+ test_ex_constraints
-\d+ test_ex_constraints_inh
+
+
+
+
 DROP TABLE test_ex_constraints_inh;
 DROP TABLE test_ex_constraints;
 
@@ -325,11 +341,15 @@ DROP TABLE test_ex_constraints;
 CREATE TABLE test_primary_constraints(id int PRIMARY KEY);
 CREATE TABLE test_foreign_constraints(id1 int REFERENCES test_primary_constraints(id));
 CREATE TABLE test_foreign_constraints_inh () INHERITS (test_foreign_constraints);
-\d+ test_primary_constraints
-\d+ test_foreign_constraints
+
+
+
+
 ALTER TABLE test_foreign_constraints DROP CONSTRAINT test_foreign_constraints_id1_fkey;
-\d+ test_foreign_constraints
-\d+ test_foreign_constraints_inh
+
+
+
+
 DROP TABLE test_foreign_constraints_inh;
 DROP TABLE test_foreign_constraints;
 DROP TABLE test_primary_constraints;

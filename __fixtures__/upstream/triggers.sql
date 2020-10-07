@@ -210,13 +210,20 @@ CREATE TABLE log_table (tstamp timestamp default timeofday()::timestamp);
 
 CREATE TABLE main_table (a int unique, b int);
 
-COPY main_table (a,b) FROM stdin;
-5	10
-20	20
-30	10
-50	35
-80	15
-\.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 CREATE FUNCTION trigger_func() RETURNS trigger LANGUAGE plpgsql AS '
 BEGIN
@@ -256,10 +263,14 @@ UPDATE main_table SET a = a + 2 WHERE b > 100;
 ALTER TABLE main_table DROP CONSTRAINT main_table_a_key;
 
 -- COPY should fire per-row and per-statement INSERT triggers
-COPY main_table (a, b) FROM stdin;
-30	40
-50	60
-\.
+
+
+
+
+
+
+
+
 
 SELECT * FROM main_table ORDER BY a, b;
 
@@ -280,10 +291,14 @@ FOR EACH STATEMENT WHEN (true) EXECUTE PROCEDURE trigger_func('insert_when');
 CREATE TRIGGER delete_when AFTER DELETE ON main_table
 FOR EACH STATEMENT WHEN (true) EXECUTE PROCEDURE trigger_func('delete_when');
 INSERT INTO main_table (a) VALUES (123), (456);
-COPY main_table FROM stdin;
-123	999
-456	999
-\.
+
+
+
+
+
+
+
+
 DELETE FROM main_table WHERE a IN (123, 456);
 UPDATE main_table SET a = 50, b = 60;
 SELECT * FROM main_table ORDER BY a, b;
@@ -344,24 +359,24 @@ UPDATE some_t SET some_col = TRUE;
 DROP TABLE some_t;
 
 -- bogus cases
-CREATE TRIGGER error_upd_and_col BEFORE UPDATE OR UPDATE OF a ON main_table
-FOR EACH ROW EXECUTE PROCEDURE trigger_func('error_upd_and_col');
-CREATE TRIGGER error_upd_a_a BEFORE UPDATE OF a, a ON main_table
-FOR EACH ROW EXECUTE PROCEDURE trigger_func('error_upd_a_a');
-CREATE TRIGGER error_ins_a BEFORE INSERT OF a ON main_table
-FOR EACH ROW EXECUTE PROCEDURE trigger_func('error_ins_a');
-CREATE TRIGGER error_ins_when BEFORE INSERT OR UPDATE ON main_table
-FOR EACH ROW WHEN (OLD.a <> NEW.a)
-EXECUTE PROCEDURE trigger_func('error_ins_old');
-CREATE TRIGGER error_del_when BEFORE DELETE OR UPDATE ON main_table
-FOR EACH ROW WHEN (OLD.a <> NEW.a)
-EXECUTE PROCEDURE trigger_func('error_del_new');
-CREATE TRIGGER error_del_when BEFORE INSERT OR UPDATE ON main_table
-FOR EACH ROW WHEN (NEW.tableoid <> 0)
-EXECUTE PROCEDURE trigger_func('error_when_sys_column');
-CREATE TRIGGER error_stmt_when BEFORE UPDATE OF a ON main_table
-FOR EACH STATEMENT WHEN (OLD.* IS DISTINCT FROM NEW.*)
-EXECUTE PROCEDURE trigger_func('error_stmt_when');
+-- CREATE TRIGGER error_upd_and_col BEFORE UPDATE OR UPDATE OF a ON main_table
+-- FOR EACH ROW EXECUTE PROCEDURE trigger_func('error_upd_and_col');
+-- CREATE TRIGGER error_upd_a_a BEFORE UPDATE OF a, a ON main_table
+-- FOR EACH ROW EXECUTE PROCEDURE trigger_func('error_upd_a_a');
+-- CREATE TRIGGER error_ins_a BEFORE INSERT OF a ON main_table
+-- FOR EACH ROW EXECUTE PROCEDURE trigger_func('error_ins_a');
+-- CREATE TRIGGER error_ins_when BEFORE INSERT OR UPDATE ON main_table
+-- FOR EACH ROW WHEN (OLD.a <> NEW.a)
+-- EXECUTE PROCEDURE trigger_func('error_ins_old');
+-- CREATE TRIGGER error_del_when BEFORE DELETE OR UPDATE ON main_table
+-- FOR EACH ROW WHEN (OLD.a <> NEW.a)
+-- EXECUTE PROCEDURE trigger_func('error_del_new');
+-- CREATE TRIGGER error_del_when BEFORE INSERT OR UPDATE ON main_table
+-- FOR EACH ROW WHEN (NEW.tableoid <> 0)
+-- EXECUTE PROCEDURE trigger_func('error_when_sys_column');
+-- CREATE TRIGGER error_stmt_when BEFORE UPDATE OF a ON main_table
+-- FOR EACH STATEMENT WHEN (OLD.* IS DISTINCT FROM NEW.*)
+-- EXECUTE PROCEDURE trigger_func('error_stmt_when');
 
 -- check dependency restrictions
 ALTER TABLE main_table DROP COLUMN b;
@@ -590,7 +605,8 @@ CREATE TRIGGER z_min_update
 BEFORE UPDATE ON min_updates_test_oids
 FOR EACH ROW EXECUTE PROCEDURE suppress_redundant_updates_trigger();
 
-\set QUIET false
+
+
 
 UPDATE min_updates_test SET f1 = f1;
 
@@ -604,7 +620,8 @@ UPDATE min_updates_test_oids SET f2 = f2 + 1;
 
 UPDATE min_updates_test_oids SET f3 = 2 WHERE f3 is null;
 
-\set QUIET true
+
+
 
 SELECT * FROM min_updates_test;
 
@@ -740,7 +757,8 @@ FOR EACH STATEMENT EXECUTE PROCEDURE view_trigger('after_view_upd_stmt');
 CREATE TRIGGER after_del_stmt_trig AFTER DELETE ON main_view
 FOR EACH STATEMENT EXECUTE PROCEDURE view_trigger('after_view_del_stmt');
 
-\set QUIET false
+
+
 
 -- Insert into view using trigger
 INSERT INTO main_view VALUES (20, 30);
@@ -762,15 +780,18 @@ UPDATE main_view SET b = 0 WHERE false;
 DELETE FROM main_view WHERE a IN (20,21);
 DELETE FROM main_view WHERE a = 31 RETURNING a, b;
 
-\set QUIET true
+
+
 
 -- Describe view should list triggers
-\d main_view
+
+
 
 -- Test dropping view triggers
 DROP TRIGGER instead_of_insert_trig ON main_view;
 DROP TRIGGER instead_of_delete_trig ON main_view;
-\d+ main_view
+
+
 DROP VIEW main_view;
 
 --
@@ -871,7 +892,8 @@ $$;
 CREATE TRIGGER city_update_trig INSTEAD OF UPDATE ON city_view
 FOR EACH ROW EXECUTE PROCEDURE city_update();
 
-\set QUIET false
+
+
 
 -- INSERT .. RETURNING
 INSERT INTO city_view(city_name) VALUES('Tokyo') RETURNING *;
@@ -895,7 +917,8 @@ UPDATE city_view v1 SET country_name = v2.country_name FROM city_view v2
 -- DELETE .. RETURNING
 DELETE FROM city_view WHERE city_name = 'Birmingham' RETURNING *;
 
-\set QUIET true
+
+
 
 -- read-only view with WHERE clause
 CREATE VIEW european_city_view AS
@@ -908,13 +931,15 @@ AS 'begin RETURN NULL; end';
 CREATE TRIGGER no_op_trig INSTEAD OF INSERT OR UPDATE OR DELETE
 ON european_city_view FOR EACH ROW EXECUTE PROCEDURE no_op_trig_fn();
 
-\set QUIET false
+
+
 
 INSERT INTO european_city_view VALUES (0, 'x', 10000, 'y', 'z');
 UPDATE european_city_view SET population = 10000;
 DELETE FROM european_city_view;
 
-\set QUIET true
+
+
 
 -- rules bypassing no-op triggers
 CREATE RULE european_city_insert_rule AS ON INSERT TO european_city_view
@@ -933,7 +958,8 @@ RETURNING NEW.*;
 CREATE RULE european_city_delete_rule AS ON DELETE TO european_city_view
 DO INSTEAD DELETE FROM city_view WHERE city_id = OLD.city_id RETURNING *;
 
-\set QUIET false
+
+
 
 -- INSERT not limited by view's WHERE clause, but UPDATE AND DELETE are
 INSERT INTO european_city_view(city_name, country_name)
@@ -957,7 +983,8 @@ UPDATE city_view v SET population = 599657
     RETURNING co.country_id, v.country_name,
               v.city_id, v.city_name, v.population;
 
-\set QUIET true
+
+
 
 SELECT * FROM city_view;
 

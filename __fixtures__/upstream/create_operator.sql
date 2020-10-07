@@ -36,10 +36,10 @@ CREATE OPERATOR #%# (
 COMMENT ON OPERATOR ###### (int4, NONE) IS 'bad right unary';
 
 -- => is disallowed now
-CREATE OPERATOR => (
-   leftarg = int8,		-- right unary
-   procedure = numeric_fac
-);
+-- CREATE OPERATOR => (
+--    leftarg = int8,		-- right unary
+--    procedure = numeric_fac
+-- );
 
 -- Should fail. CREATE OPERATOR requires USAGE on SCHEMA
 BEGIN TRANSACTION;

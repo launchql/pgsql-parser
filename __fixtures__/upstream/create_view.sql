@@ -29,12 +29,18 @@ COMMENT ON VIEW toyemp IS NULL;
 --
 
 CREATE TABLE viewtest_tbl (a int, b int);
-COPY viewtest_tbl FROM stdin;
-5	10
-10	15
-15	20
-20	25
-\.
+
+
+
+
+
+
+
+
+
+
+
+
 
 CREATE OR REPLACE VIEW viewtest AS
 	SELECT * FROM viewtest_tbl;
@@ -243,48 +249,72 @@ CREATE VIEW aliased_view_4 AS
   select * from temp_view_test.tt1
     where exists (select 1 from tt1 where temp_view_test.tt1.y1 = tt1.f1);
 
-\d+ aliased_view_1
-\d+ aliased_view_2
-\d+ aliased_view_3
-\d+ aliased_view_4
+
+
+
+
+
+
+
+
 
 ALTER TABLE tx1 RENAME TO a1;
 
-\d+ aliased_view_1
-\d+ aliased_view_2
-\d+ aliased_view_3
-\d+ aliased_view_4
+
+
+
+
+
+
+
+
 
 ALTER TABLE tt1 RENAME TO a2;
 
-\d+ aliased_view_1
-\d+ aliased_view_2
-\d+ aliased_view_3
-\d+ aliased_view_4
+
+
+
+
+
+
+
+
 
 ALTER TABLE a1 RENAME TO tt1;
 
-\d+ aliased_view_1
-\d+ aliased_view_2
-\d+ aliased_view_3
-\d+ aliased_view_4
+
+
+
+
+
+
+
+
 
 ALTER TABLE a2 RENAME TO tx1;
 ALTER TABLE tx1 SET SCHEMA temp_view_test;
 
-\d+ aliased_view_1
-\d+ aliased_view_2
-\d+ aliased_view_3
-\d+ aliased_view_4
+
+
+
+
+
+
+
+
 
 ALTER TABLE temp_view_test.tt1 RENAME TO tmp1;
 ALTER TABLE temp_view_test.tmp1 SET SCHEMA testviewschm2;
 ALTER TABLE tmp1 RENAME TO tx1;
 
-\d+ aliased_view_1
-\d+ aliased_view_2
-\d+ aliased_view_3
-\d+ aliased_view_4
+
+
+
+
+
+
+
+
 
 -- Test view decompilation in the face of column addition/deletion/renaming
 

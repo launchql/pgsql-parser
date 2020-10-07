@@ -79,20 +79,26 @@ CREATE TABLE ctlt4 (a text, c text);
 ALTER TABLE ctlt4 ALTER COLUMN c SET STORAGE EXTERNAL;
 
 CREATE TABLE ctlt12_storage (LIKE ctlt1 INCLUDING STORAGE, LIKE ctlt2 INCLUDING STORAGE);
-\d+ ctlt12_storage
+
+
 CREATE TABLE ctlt12_comments (LIKE ctlt1 INCLUDING COMMENTS, LIKE ctlt2 INCLUDING COMMENTS);
-\d+ ctlt12_comments
+
+
 CREATE TABLE ctlt1_inh (LIKE ctlt1 INCLUDING CONSTRAINTS INCLUDING COMMENTS) INHERITS (ctlt1);
-\d+ ctlt1_inh
+
+
 SELECT description FROM pg_description, pg_constraint c WHERE classoid = 'pg_constraint'::regclass AND objoid = c.oid AND c.conrelid = 'ctlt1_inh'::regclass;
 CREATE TABLE ctlt13_inh () INHERITS (ctlt1, ctlt3);
-\d+ ctlt13_inh
+
+
 CREATE TABLE ctlt13_like (LIKE ctlt3 INCLUDING CONSTRAINTS INCLUDING COMMENTS INCLUDING STORAGE) INHERITS (ctlt1);
-\d+ ctlt13_like
+
+
 SELECT description FROM pg_description, pg_constraint c WHERE classoid = 'pg_constraint'::regclass AND objoid = c.oid AND c.conrelid = 'ctlt13_like'::regclass;
 
 CREATE TABLE ctlt_all (LIKE ctlt1 INCLUDING ALL);
-\d+ ctlt_all
+
+
 SELECT c.relname, objsubid, description FROM pg_description, pg_index i, pg_class c WHERE classoid = 'pg_class'::regclass AND objoid = i.indexrelid AND c.oid = i.indexrelid AND i.indrelid = 'ctlt_all'::regclass ORDER BY c.relname, objsubid;
 
 CREATE TABLE inh_error1 () INHERITS (ctlt1, ctlt4);

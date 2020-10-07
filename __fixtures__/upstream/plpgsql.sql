@@ -1904,11 +1904,16 @@ drop function sp_id_user(text);
 -- tests for refcursors
 --
 create table rc_test (a int, b int);
-copy rc_test from stdin;
-5	10
-50	100
-500	1000
-\.
+
+
+
+
+
+
+
+
+
+
 
 create function return_refcursor(rc refcursor) returns refcursor as $$
 begin

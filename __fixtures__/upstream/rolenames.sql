@@ -46,28 +46,29 @@ CREATE ROLE "current_user";
 CREATE ROLE "session_user";
 CREATE ROLE "user";
 
-CREATE ROLE current_user; -- error
-CREATE ROLE current_role; -- error
-CREATE ROLE session_user; -- error
-CREATE ROLE user; -- error
-CREATE ROLE all; -- error
+-- CREATE ROLE current_user; -- error
+-- CREATE ROLE current_role; -- error
+-- CREATE ROLE session_user; -- error
+-- CREATE ROLE user; -- error
+-- CREATE ROLE all; -- error
 
-CREATE ROLE public; -- error
-CREATE ROLE "public"; -- error
-CREATE ROLE none; -- error
-CREATE ROLE "none"; -- error
+-- CREATE ROLE public; -- error
+-- CREATE ROLE "public"; -- error
+-- CREATE ROLE none; -- error
+-- CREATE ROLE "none"; -- error
 
-CREATE ROLE pg_abc; -- error
-CREATE ROLE "pg_abc"; -- error
-CREATE ROLE pg_abcdef; -- error
-CREATE ROLE "pg_abcdef"; -- error
+-- CREATE ROLE pg_abc; -- error
+-- CREATE ROLE "pg_abc"; -- error
+-- CREATE ROLE pg_abcdef; -- error
+-- CREATE ROLE "pg_abcdef"; -- error
 
 CREATE ROLE testrol0 SUPERUSER LOGIN;
 CREATE ROLE testrolx SUPERUSER LOGIN;
 CREATE ROLE testrol2 SUPERUSER;
 CREATE ROLE testrol1 SUPERUSER LOGIN IN ROLE testrol2;
 
-\c -
+
+
 SET SESSION AUTHORIZATION testrol1;
 SET ROLE testrol2;
 
@@ -90,15 +91,15 @@ ALTER USER testrol2 WITH NOREPLICATION;
 SELECT * FROM chkrolattr();
 ROLLBACK;
 
-ALTER ROLE USER WITH LOGIN; -- error
-ALTER ROLE CURRENT_ROLE WITH LOGIN; --error
-ALTER ROLE ALL WITH REPLICATION; -- error
-ALTER ROLE SESSION_ROLE WITH NOREPLICATION; -- error
-ALTER ROLE PUBLIC WITH NOREPLICATION; -- error
-ALTER ROLE "public" WITH NOREPLICATION; -- error
-ALTER ROLE NONE WITH NOREPLICATION; -- error
-ALTER ROLE "none" WITH NOREPLICATION; -- error
-ALTER ROLE nonexistent WITH NOREPLICATION; -- error
+-- ALTER ROLE USER WITH LOGIN; -- error
+-- ALTER ROLE CURRENT_ROLE WITH LOGIN; --error
+-- ALTER ROLE ALL WITH REPLICATION; -- error
+-- ALTER ROLE SESSION_ROLE WITH NOREPLICATION; -- error
+-- ALTER ROLE PUBLIC WITH NOREPLICATION; -- error
+-- ALTER ROLE "public" WITH NOREPLICATION; -- error
+-- ALTER ROLE NONE WITH NOREPLICATION; -- error
+-- ALTER ROLE "none" WITH NOREPLICATION; -- error
+-- ALTER ROLE nonexistent WITH NOREPLICATION; -- error
 
 --  ALTER USER
 BEGIN;
@@ -119,15 +120,15 @@ ALTER USER testrol2 WITH NOREPLICATION;
 SELECT * FROM chkrolattr();
 ROLLBACK;
 
-ALTER USER USER WITH LOGIN; -- error
-ALTER USER CURRENT_ROLE WITH LOGIN; -- error
-ALTER USER ALL WITH REPLICATION; -- error
-ALTER USER SESSION_ROLE WITH NOREPLICATION; -- error
-ALTER USER PUBLIC WITH NOREPLICATION; -- error
-ALTER USER "public" WITH NOREPLICATION; -- error
-ALTER USER NONE WITH NOREPLICATION; -- error
-ALTER USER "none" WITH NOREPLICATION; -- error
-ALTER USER nonexistent WITH NOREPLICATION; -- error
+-- ALTER USER USER WITH LOGIN; -- error
+-- ALTER USER CURRENT_ROLE WITH LOGIN; -- error
+-- ALTER USER ALL WITH REPLICATION; -- error
+-- ALTER USER SESSION_ROLE WITH NOREPLICATION; -- error
+-- ALTER USER PUBLIC WITH NOREPLICATION; -- error
+-- ALTER USER "public" WITH NOREPLICATION; -- error
+-- ALTER USER NONE WITH NOREPLICATION; -- error
+-- ALTER USER "none" WITH NOREPLICATION; -- error
+-- ALTER USER nonexistent WITH NOREPLICATION; -- error
 
 --  ALTER ROLE SET/RESET
 SELECT * FROM chksetconfig();
@@ -147,10 +148,10 @@ ALTER ROLE ALL RESET application_name;
 SELECT * FROM chksetconfig();
 
 
-ALTER ROLE CURRENT_ROLE SET application_name to 'BAZ'; -- error
-ALTER ROLE USER SET application_name to 'BOOM'; -- error
-ALTER ROLE PUBLIC SET application_name to 'BOMB'; -- error
-ALTER ROLE nonexistent SET application_name to 'BOMB'; -- error
+-- ALTER ROLE CURRENT_ROLE SET application_name to 'BAZ'; -- error
+-- ALTER ROLE USER SET application_name to 'BOOM'; -- error
+-- ALTER ROLE PUBLIC SET application_name to 'BOMB'; -- error
+-- ALTER ROLE nonexistent SET application_name to 'BOMB'; -- error
 
 --  ALTER USER SET/RESET
 SELECT * FROM chksetconfig();
@@ -170,11 +171,11 @@ ALTER USER ALL RESET application_name;
 SELECT * FROM chksetconfig();
 
 
-ALTER USER CURRENT_USER SET application_name to 'BAZ'; -- error
-ALTER USER USER SET application_name to 'BOOM'; -- error
-ALTER USER PUBLIC SET application_name to 'BOMB'; -- error
-ALTER USER NONE SET application_name to 'BOMB'; -- error
-ALTER USER nonexistent SET application_name to 'BOMB'; -- error
+-- ALTER USER CURRENT_USER SET application_name to 'BAZ'; -- error
+-- ALTER USER USER SET application_name to 'BOOM'; -- error
+-- ALTER USER PUBLIC SET application_name to 'BOMB'; -- error
+-- ALTER USER NONE SET application_name to 'BOMB'; -- error
+-- ALTER USER nonexistent SET application_name to 'BOMB'; -- error
 
 -- CREAETE SCHEMA
 set client_min_messages to error;
@@ -184,12 +185,12 @@ CREATE SCHEMA newschema3 AUTHORIZATION SESSION_USER;
 CREATE SCHEMA newschema4 AUTHORIZATION testrolx;
 CREATE SCHEMA newschema5 AUTHORIZATION "Public";
 
-CREATE SCHEMA newschema6 AUTHORIZATION USER; -- error
-CREATE SCHEMA newschema6 AUTHORIZATION CURRENT_ROLE; -- error
-CREATE SCHEMA newschema6 AUTHORIZATION PUBLIC; -- error
-CREATE SCHEMA newschema6 AUTHORIZATION "public"; -- error
-CREATE SCHEMA newschema6 AUTHORIZATION NONE; -- error
-CREATE SCHEMA newschema6 AUTHORIZATION nonexistent; -- error
+-- CREATE SCHEMA newschema6 AUTHORIZATION USER; -- error
+-- CREATE SCHEMA newschema6 AUTHORIZATION CURRENT_ROLE; -- error
+-- CREATE SCHEMA newschema6 AUTHORIZATION PUBLIC; -- error
+-- CREATE SCHEMA newschema6 AUTHORIZATION "public"; -- error
+-- CREATE SCHEMA newschema6 AUTHORIZATION NONE; -- error
+-- CREATE SCHEMA newschema6 AUTHORIZATION nonexistent; -- error
 
 SELECT n.nspname, r.rolname FROM pg_namespace n
  JOIN pg_roles r ON (r.oid = n.nspowner)
@@ -201,19 +202,20 @@ CREATE SCHEMA IF NOT EXISTS newschema3 AUTHORIZATION SESSION_USER;
 CREATE SCHEMA IF NOT EXISTS newschema4 AUTHORIZATION testrolx;
 CREATE SCHEMA IF NOT EXISTS newschema5 AUTHORIZATION "Public";
 
-CREATE SCHEMA IF NOT EXISTS newschema6 AUTHORIZATION USER; -- error
-CREATE SCHEMA IF NOT EXISTS newschema6 AUTHORIZATION CURRENT_ROLE; -- error
-CREATE SCHEMA IF NOT EXISTS newschema6 AUTHORIZATION PUBLIC; -- error
-CREATE SCHEMA IF NOT EXISTS newschema6 AUTHORIZATION "public"; -- error
-CREATE SCHEMA IF NOT EXISTS newschema6 AUTHORIZATION NONE; -- error
-CREATE SCHEMA IF NOT EXISTS newschema6 AUTHORIZATION nonexistent; -- error
+-- CREATE SCHEMA IF NOT EXISTS newschema6 AUTHORIZATION USER; -- error
+-- CREATE SCHEMA IF NOT EXISTS newschema6 AUTHORIZATION CURRENT_ROLE; -- error
+-- CREATE SCHEMA IF NOT EXISTS newschema6 AUTHORIZATION PUBLIC; -- error
+-- CREATE SCHEMA IF NOT EXISTS newschema6 AUTHORIZATION "public"; -- error
+-- CREATE SCHEMA IF NOT EXISTS newschema6 AUTHORIZATION NONE; -- error
+-- CREATE SCHEMA IF NOT EXISTS newschema6 AUTHORIZATION nonexistent; -- error
 
 SELECT n.nspname, r.rolname FROM pg_namespace n
  JOIN pg_roles r ON (r.oid = n.nspowner)
  WHERE n.nspname LIKE 'newschema_' ORDER BY 1;
 
 -- ALTER TABLE OWNER TO
-\c -
+
+
 SET SESSION AUTHORIZATION testrol0;
 set client_min_messages to error;
 CREATE TABLE testtab1 (a int);
@@ -223,7 +225,8 @@ CREATE TABLE testtab4 (a int);
 CREATE TABLE testtab5 (a int);
 CREATE TABLE testtab6 (a int);
 
-\c -
+
+
 SET SESSION AUTHORIZATION testrol1;
 SET ROLE testrol2;
 
@@ -233,11 +236,11 @@ ALTER TABLE testtab3 OWNER TO SESSION_USER;
 ALTER TABLE testtab4 OWNER TO testrolx;
 ALTER TABLE testtab5 OWNER TO "Public";
 
-ALTER TABLE testtab6 OWNER TO CURRENT_ROLE; -- error
-ALTER TABLE testtab6 OWNER TO USER; --error
-ALTER TABLE testtab6 OWNER TO PUBLIC; -- error
-ALTER TABLE testtab6 OWNER TO "public"; -- error
-ALTER TABLE testtab6 OWNER TO nonexistent; -- error
+-- ALTER TABLE testtab6 OWNER TO CURRENT_ROLE; -- error
+-- ALTER TABLE testtab6 OWNER TO USER; --error
+-- ALTER TABLE testtab6 OWNER TO PUBLIC; -- error
+-- ALTER TABLE testtab6 OWNER TO "public"; -- error
+-- ALTER TABLE testtab6 OWNER TO nonexistent; -- error
 
 SELECT c.relname, r.rolname
  FROM pg_class c JOIN pg_roles r ON (r.oid = c.relowner)
@@ -248,7 +251,8 @@ SELECT c.relname, r.rolname
 -- changed their owner in the same way.
 
 -- ALTER AGGREGATE
-\c -
+
+
 SET SESSION AUTHORIZATION testrol0;
 CREATE AGGREGATE testagg1(int2) (SFUNC = int2_sum, STYPE = int8);
 CREATE AGGREGATE testagg2(int2) (SFUNC = int2_sum, STYPE = int8);
@@ -261,7 +265,8 @@ CREATE AGGREGATE testagg7(int2) (SFUNC = int2_sum, STYPE = int8);
 CREATE AGGREGATE testagg8(int2) (SFUNC = int2_sum, STYPE = int8);
 CREATE AGGREGATE testagg9(int2) (SFUNC = int2_sum, STYPE = int8);
 
-\c -
+
+
 SET SESSION AUTHORIZATION testrol1;
 SET ROLE testrol2;
 
@@ -271,11 +276,11 @@ ALTER AGGREGATE testagg3(int2) OWNER TO SESSION_USER;
 ALTER AGGREGATE testagg4(int2) OWNER TO testrolx;
 ALTER AGGREGATE testagg5(int2) OWNER TO "Public";
 
-ALTER AGGREGATE testagg5(int2) OWNER TO CURRENT_ROLE; -- error
-ALTER AGGREGATE testagg5(int2) OWNER TO USER; -- error
-ALTER AGGREGATE testagg5(int2) OWNER TO PUBLIC; -- error
-ALTER AGGREGATE testagg5(int2) OWNER TO "public"; -- error
-ALTER AGGREGATE testagg5(int2) OWNER TO nonexistent; -- error
+-- ALTER AGGREGATE testagg5(int2) OWNER TO CURRENT_ROLE; -- error
+-- ALTER AGGREGATE testagg5(int2) OWNER TO USER; -- error
+-- ALTER AGGREGATE testagg5(int2) OWNER TO PUBLIC; -- error
+-- ALTER AGGREGATE testagg5(int2) OWNER TO "public"; -- error
+-- ALTER AGGREGATE testagg5(int2) OWNER TO nonexistent; -- error
 
 SELECT p.proname, r.rolname
  FROM pg_proc p JOIN pg_roles r ON (r.oid = p.proowner)
@@ -303,10 +308,10 @@ CREATE USER MAPPING FOR PUBLIC SERVER sv6 OPTIONS (user 'PUBLIC');
 CREATE USER MAPPING FOR "Public" SERVER sv7 OPTIONS (user '"Public"');
 CREATE USER MAPPING FOR testrolx SERVER sv8 OPTIONS (user 'testrolx');
 
-CREATE USER MAPPING FOR CURRENT_ROLE SERVER sv9
-	    OPTIONS (user 'CURRENT_ROLE'); -- error
-CREATE USER MAPPING FOR nonexistent SERVER sv9
-	    OPTIONS (user 'nonexistent'); -- error;
+-- CREATE USER MAPPING FOR CURRENT_ROLE SERVER sv9
+-- 	    OPTIONS (user 'CURRENT_ROLE'); -- error
+-- CREATE USER MAPPING FOR nonexistent SERVER sv9
+-- 	    OPTIONS (user 'nonexistent'); -- error;
 
 SELECT * FROM chkumapping();
 
@@ -328,10 +333,10 @@ ALTER USER MAPPING FOR "Public" SERVER sv7
 ALTER USER MAPPING FOR testrolx SERVER sv8
  OPTIONS (SET user 'testrolx_alt');
 
-ALTER USER MAPPING FOR CURRENT_ROLE SERVER sv9
- OPTIONS (SET user 'CURRENT_ROLE_alt');
-ALTER USER MAPPING FOR nonexistent SERVER sv9
- OPTIONS (SET user 'nonexistent_alt'); -- error
+-- ALTER USER MAPPING FOR CURRENT_ROLE SERVER sv9
+--  OPTIONS (SET user 'CURRENT_ROLE_alt');
+-- ALTER USER MAPPING FOR nonexistent SERVER sv9
+--  OPTIONS (SET user 'nonexistent_alt'); -- error
 
 SELECT * FROM chkumapping();
 
@@ -345,8 +350,8 @@ DROP USER MAPPING FOR PUBLIC SERVER sv6;
 DROP USER MAPPING FOR "Public" SERVER sv7;
 DROP USER MAPPING FOR testrolx SERVER sv8;
 
-DROP USER MAPPING FOR CURRENT_ROLE SERVER sv9; -- error
-DROP USER MAPPING FOR nonexistent SERVER sv;  -- error
+-- DROP USER MAPPING FOR CURRENT_ROLE SERVER sv9; -- error
+-- DROP USER MAPPING FOR nonexistent SERVER sv;  -- error
 SELECT * FROM chkumapping();
 
 CREATE USER MAPPING FOR CURRENT_USER SERVER sv1 OPTIONS (user 'CURRENT_USER');
@@ -377,8 +382,8 @@ SELECT * FROM chkumapping();
 DROP USER MAPPING IF EXISTS FOR testrolx SERVER sv8;
 SELECT * FROM chkumapping();
 
-DROP USER MAPPING IF EXISTS FOR CURRENT_ROLE SERVER sv9; --error
-DROP USER MAPPING IF EXISTS FOR nonexistent SERVER sv9;  -- error
+-- DROP USER MAPPING IF EXISTS FOR CURRENT_ROLE SERVER sv9; --error
+-- DROP USER MAPPING IF EXISTS FOR nonexistent SERVER sv9;  -- error
 
 -- GRANT/REVOKE
 GRANT testrol0 TO pg_signal_backend; -- success
@@ -412,10 +417,10 @@ GRANT ALL PRIVILEGES ON FUNCTION testagg8(int2)
 
 SELECT proname, proacl FROM pg_proc WHERE proname LIKE 'testagg_';
 
-GRANT ALL PRIVILEGES ON FUNCTION testagg9(int2) TO CURRENT_ROLE; --error
-GRANT ALL PRIVILEGES ON FUNCTION testagg9(int2) TO USER; --error
-GRANT ALL PRIVILEGES ON FUNCTION testagg9(int2) TO NONE; --error
-GRANT ALL PRIVILEGES ON FUNCTION testagg9(int2) TO "none"; --error
+-- GRANT ALL PRIVILEGES ON FUNCTION testagg9(int2) TO CURRENT_ROLE; --error
+-- GRANT ALL PRIVILEGES ON FUNCTION testagg9(int2) TO USER; --error
+-- GRANT ALL PRIVILEGES ON FUNCTION testagg9(int2) TO NONE; --error
+-- GRANT ALL PRIVILEGES ON FUNCTION testagg9(int2) TO "none"; --error
 
 SELECT proname, proacl FROM pg_proc WHERE proname LIKE 'testagg_';
 
@@ -431,15 +436,16 @@ REVOKE ALL PRIVILEGES ON FUNCTION testagg8(int2)
 
 SELECT proname, proacl FROM pg_proc WHERE proname LIKE 'testagg_';
 
-REVOKE ALL PRIVILEGES ON FUNCTION testagg9(int2) FROM CURRENT_ROLE; --error
-REVOKE ALL PRIVILEGES ON FUNCTION testagg9(int2) FROM USER; --error
-REVOKE ALL PRIVILEGES ON FUNCTION testagg9(int2) FROM NONE; --error
-REVOKE ALL PRIVILEGES ON FUNCTION testagg9(int2) FROM "none"; --error
+-- REVOKE ALL PRIVILEGES ON FUNCTION testagg9(int2) FROM CURRENT_ROLE; --error
+-- REVOKE ALL PRIVILEGES ON FUNCTION testagg9(int2) FROM USER; --error
+-- REVOKE ALL PRIVILEGES ON FUNCTION testagg9(int2) FROM NONE; --error
+-- REVOKE ALL PRIVILEGES ON FUNCTION testagg9(int2) FROM "none"; --error
 
 SELECT proname, proacl FROM pg_proc WHERE proname LIKE 'testagg_';
 
 -- clean up
-\c
+
+
 
 DROP OWNED BY testrol0, "Public", "current_user", testrol1, testrol2, testrolx CASCADE;
 DROP ROLE testrol0, testrol1, testrol2, testrolx;

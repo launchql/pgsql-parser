@@ -51,7 +51,8 @@ SELECT relreplident FROM pg_class WHERE oid = 'test_replica_identity'::regclass;
 -- succeed, primary key
 ALTER TABLE test_replica_identity REPLICA IDENTITY USING INDEX test_replica_identity_pkey;
 SELECT relreplident FROM pg_class WHERE oid = 'test_replica_identity'::regclass;
-\d test_replica_identity
+
+
 
 -- succeed, oid unique index
 ALTER TABLE test_replica_identity REPLICA IDENTITY USING INDEX test_replica_identity_oid_idx;
@@ -63,7 +64,8 @@ ALTER TABLE test_replica_identity REPLICA IDENTITY USING INDEX test_replica_iden
 ALTER TABLE test_replica_identity REPLICA IDENTITY USING INDEX test_replica_identity_keyab_key;
 ALTER TABLE test_replica_identity REPLICA IDENTITY USING INDEX test_replica_identity_keyab_key;
 SELECT relreplident FROM pg_class WHERE oid = 'test_replica_identity'::regclass;
-\d test_replica_identity
+
+
 SELECT count(*) FROM pg_index WHERE indrelid = 'test_replica_identity'::regclass AND indisreplident;
 
 ----
@@ -75,7 +77,8 @@ SELECT count(*) FROM pg_index WHERE indrelid = 'test_replica_identity'::regclass
 
 ALTER TABLE test_replica_identity REPLICA IDENTITY FULL;
 SELECT relreplident FROM pg_class WHERE oid = 'test_replica_identity'::regclass;
-\d+ test_replica_identity
+
+
 ALTER TABLE test_replica_identity REPLICA IDENTITY NOTHING;
 SELECT relreplident FROM pg_class WHERE oid = 'test_replica_identity'::regclass;
 

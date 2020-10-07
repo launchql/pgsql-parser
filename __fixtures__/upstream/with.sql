@@ -202,7 +202,8 @@ UNION ALL
 )
 SELECT sum(n) FROM t;
 
-\d+ sums_1_100
+
+
 
 -- corner case in which sub-WITH gets initialized first
 with recursive q as (
@@ -1016,6 +1017,6 @@ VALUES(FALSE);
 DROP RULE y_rule ON y;
 
 -- check that parser lookahead for WITH doesn't cause any odd behavior
-create table foo (with baz);  -- fail, WITH is a reserved word
-create table foo (with ordinality);  -- fail, WITH is a reserved word
+-- create table foo (with baz);  -- fail, WITH is a reserved word
+-- create table foo (with ordinality);  -- fail, WITH is a reserved word
 with ordinality as (select 1 as x) select * from ordinality;
