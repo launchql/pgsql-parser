@@ -188,7 +188,7 @@ describe('kitchen sink', () => {
     });
   });
   describe('upstream', () => {
-    xit('upstream/abstime.sql', () => {
+    it('upstream/abstime.sql', () => {
       check('upstream/abstime.sql');
     });
     it('upstream/advisory_lock.sql', () => {
