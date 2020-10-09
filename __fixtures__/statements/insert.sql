@@ -6,6 +6,30 @@ INSERT INTO shoelace_data (id, col1, col2, val1, bl2)
 
 INSERT INTO shoelace_data DEFAULT VALUES;
 
+INSERT INTO foo (f2,f3)
+  VALUES ('test', DEFAULT), ('More', 11), (upper('more'), 7+9)
+  RETURNING *, f1+f3 AS sum;
+
+INSERT INTO customers (name, email)
+VALUES
+	(
+		'Microsoft',
+		'hotline@microsoft.com'
+	) 
+ON CONFLICT (id, project_id) 
+DO
+		UPDATE
+	  SET 
+        email = EXCLUDED.email || ';' || customers.email,
+        level = customers.level + 1,
+        other = EXCLUDED.other
+    RETURNING *;
+
+
+
+
+
+
 INSERT INTO v8.modules (name, code)
   VALUES ('ajv', $code$ (FUNCTION () { var module = { exports: { } };
 var exports = module.exports;

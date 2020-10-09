@@ -139,7 +139,7 @@ export default class Deparser {
   }
 
   deparseQuery() {
-    return this.tree.map(node => `${this.deparse(node)};`).join('\n\n');
+    return this.tree.map(node => this.deparse(node)).join('\n\n');
   }
 
   deparseNodes(nodes, context) {
@@ -278,6 +278,9 @@ export default class Deparser {
   }
 
   ['RawStmt'](node) {
+    if (node.stmt_len) {
+      return this.deparse(node.stmt) + ';';
+    }
     return this.deparse(node.stmt);
   }
 
@@ -889,11 +892,15 @@ export default class Deparser {
         }
         case 'minvalue': {
           const off = !node.hasOwnProperty('arg');
-          return off ? 'NO MINVALUE' : `${name} ${this.deparse(node.arg, 'simple')}`;
+          return off
+            ? 'NO MINVALUE'
+            : `${name} ${this.deparse(node.arg, 'simple')}`;
         }
         case 'maxvalue': {
           const off = !node.hasOwnProperty('arg');
-          return off ? 'NO MAXVALUE' : `${name} ${this.deparse(node.arg, 'simple')}`;
+          return off
+            ? 'NO MAXVALUE'
+            : `${name} ${this.deparse(node.arg, 'simple')}`;
         }
         default:
           if (node.arg) {
@@ -1034,6 +1041,14 @@ export default class Deparser {
     output.push('ON');
     output.push(this.deparse(node.relation));
 
+    if (node.accessMethod) {
+      const accessMethod = node.accessMethod.toUpperCase();
+      if (accessMethod !== 'BTREE') {
+        output.push('USING');
+        output.push(accessMethod);
+      }
+    }
+
     if (node.indexParams) {
       output.push('(');
       output.push(this.list(node.indexParams));
@@ -1060,7 +1075,7 @@ export default class Deparser {
 
   ['InsertStmt'](node) {
     const output = [];
-    
+
     output.push('INSERT INTO');
     output.push(this.deparse(node.relation));
 
@@ -1100,6 +1115,21 @@ export default class Deparser {
         default:
           throw new Error('unhandled CONFLICT CLAUSE');
       }
+    }
+
+    if (node.returningList) {
+      output.push('RETURNING');
+      output.push(
+        node.returningList
+          .map(
+            returning =>
+              this.deparse(returning.ResTarget.val) +
+              (returning.ResTarget.name
+                ? ' AS ' + this.quote(returning.ResTarget.name)
+                : '')
+          )
+          .join(',')
+      );
     }
 
     return output.join(' ');
