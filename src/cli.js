@@ -2,7 +2,7 @@
 import { resolve, join } from 'path';
 import { readFileSync } from 'fs';
 import { parse } from './index';
-import { cleanTreeWithStmt } from '../utils';
+import { cleanTreeWithStmt } from './utils';
 const args = process.argv.slice(2);
 if (args.length !== 1) {
   console.warn('Usage: pgsql-parser <sqlfile>');
