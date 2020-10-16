@@ -10,7 +10,10 @@ if (args.length !== 1) {
   console.warn('Usage: pgsql-parser <sqlfile>');
   process.exit(1);
 }
-const content = readFileSync(resolve(join(process.cwd(), args[0])), 'utf-8');
+const pth = args[0].startsWith('/')
+  ? args[0]
+  : resolve(join(process.cwd(), args[0]));
+const content = readFileSync(pth, 'utf-8');
 let query;
 if (argv.pl) {
   // plpgsql ONLY
