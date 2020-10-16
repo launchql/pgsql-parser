@@ -61,7 +61,21 @@ export const cleanTree = tree => {
   return transform(tree, {
     stmt_len: noop,
     stmt_location: noop,
-    location: noop
+    location: noop,
+    DefElem: obj => {
+      if (obj.defname === 'as') {
+        if (Array.isArray(obj.arg) && obj.arg.length) {
+          // function
+          obj.arg[0].String.str = obj.arg[0].String.str.trim();
+        } else {
+          // do stmt
+          obj.arg.String.str = obj.arg.String.str.trim();
+        }
+        return cleanTree(obj);
+      } else {
+        return cleanTree(obj);
+      }
+    }
   });
 };
 

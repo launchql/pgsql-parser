@@ -1187,7 +1187,7 @@ export default class Deparser {
 
     if (node.fromClause) {
       output.push('FROM');
-      output.push(node.fromClause.map(from => this.deparse(from)));
+      output.push(this.list(node.fromClause));
     }
 
     if (node.whereClause) {
@@ -1460,6 +1460,11 @@ export default class Deparser {
     if (node.inhOpt === 0) {
       output.push('ONLY');
     }
+
+    // TODO why does this seem to be what we really need vs the above?
+    // if (!node.inh) {
+    //   output.push('ONLY');
+    // }
 
     if (node.relpersistence === 'u') {
       output.push('UNLOGGED');
@@ -2188,7 +2193,6 @@ export default class Deparser {
   ['ExclusionConstraint'](node) {
     const output = [];
     function getExclusionGroup(nde) {
-      const out = [];
       const a = nde.exclusions.map(excl => {
         if (excl[0].IndexElem.name) {
           return excl[0].IndexElem.name;
@@ -2200,14 +2204,8 @@ export default class Deparser {
 
       const b = nde.exclusions.map(excl => this.deparse(excl[1][0]));
 
-      for (let i = 0; i < a.length; i++) {
-        out.push(`${a[i]} WITH ${b[i]}`);
-        if (i !== a.length - 1) {
-          out.push(',');
-        }
-      }
-
-      return out.join(' ');
+      const stmts = a.map((_v, i) => `${a[i]} WITH ${b[i]}`);
+      return stmts.join(', ');
     }
 
     if (node.exclusions && node.access_method) {
@@ -2492,15 +2490,7 @@ export default class Deparser {
             break;
 
           case 'set':
-            if (
-              dotty.get(option, 'DefElem.arg.VariableSetStmt.kind') === 2 &&
-              dotty.get(option, 'DefElem.arg.VariableSetStmt.name') ===
-                'search_path'
-            ) {
-              output.push('SET search_path FROM CURRENT');
-            } else {
-              output.push(this.deparse(option));
-            }
+            output.push(this.deparse(option));
             break;
 
           case 'volatility':

@@ -17,6 +17,10 @@ export const check = file => {
   expect(cleanTree(parser.parse(sql))).toEqual(cleanTree(tree));
 };
 
+it('parens', () => {
+  check('parens.sql');
+});
+
 describe('kitchen sink', () => {
   it('alter', () => {
     check('alter/alter.sql');
@@ -52,16 +56,7 @@ describe('kitchen sink', () => {
     check('enums/create.sql');
   });
   it('do stmt', () => {
-    const dosql = readFileSync(
-      resolve(__dirname + '/../__fixtures__/do/custom.sql')
-    ).toString();
-    const tree = parser.parse(dosql);
-    expect(tree).toMatchSnapshot();
-    const sql = parser.deparse(tree);
-    expect(cleanLines(sql)).toMatchSnapshot();
-    expect(cleanTree(parser.parse(cleanLines(sql)))).toEqual(
-      cleanTree(parser.parse(cleanLines(dosql)))
-    );
+    check('do/custom.sql');
   });
   it('insert', () => {
     check('statements/insert.sql');
@@ -117,9 +112,6 @@ describe('kitchen sink', () => {
     });
   });
   describe('functions', () => {
-    it('basic', () => {
-      check('functions/basic.sql');
-    });
     it('basic', () => {
       check('functions/basic.sql');
     });
