@@ -1,5 +1,9 @@
-export const cleanLines = (sql) => {
-  return sql.split('\n').map(l => l.trim()).filter(a => a).join('\n');
+export const cleanLines = sql => {
+  return sql
+    .split('\n')
+    .map(l => l.trim())
+    .filter(a => a)
+    .join('\n');
 };
 
 export const transform = (obj, props) => {
@@ -53,9 +57,16 @@ export const transform = (obj, props) => {
 
 const noop = () => undefined;
 
-export const cleanTree = (tree) => {
+export const cleanTree = tree => {
   return transform(tree, {
     stmt_len: noop,
+    stmt_location: noop,
+    location: noop
+  });
+};
+
+export const cleanTreeWithStmt = tree => {
+  return transform(tree, {
     stmt_location: noop,
     location: noop
   });
