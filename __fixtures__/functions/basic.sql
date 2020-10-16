@@ -5,7 +5,7 @@ UPDATE
 SET
     ref_id = new_ref_id
 WHERE
-    id = some_id
+    id = some_id;
 $$
 LANGUAGE 'sql' VOLATILE;
 
@@ -16,6 +16,6 @@ UPDATE
 SET
     ref_id = new_ref_id
 WHERE
-    id = some_id
+    id = some_id;
 $$
 LANGUAGE 'sql' VOLATILE;

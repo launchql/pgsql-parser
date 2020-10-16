@@ -71,6 +71,7 @@
     "@babel/runtime": "^7.11.2",
     "@pgql/parse": "1.2.6",
     "dotty": "^0.1.0",
-    "lodash": "^4.17.20"
+    "lodash": "^4.17.20",
+    "minimist": "^1.2.5"
   }
 }

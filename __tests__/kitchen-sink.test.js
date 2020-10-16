@@ -1,7 +1,6 @@
 const parser = require('../src');
 import { cleanTree, cleanLines } from '../src/utils';
 import { readFileSync } from 'fs';
-import { resolve } from 'path';
 import { sync as glob } from 'glob';
 
 const FIXTURE_DIR = `${__dirname}/../__fixtures__`;
