@@ -3322,9 +3322,9 @@ acorn-walk@^6.0.1:
   integrity sha512-7evsyfH1cLOCdAzZAd43Cic04yKydNx0cF+7tiA19p1XnLLPU4dpCQOqpjqwokFe//vS0QqfqqjCS2JkiIs0cA==
 
 acorn@^6.0.1:
-  version "6.4.0"
-  resolved "https://registry.npmjs.org/acorn/-/acorn-6.4.0.tgz#b659d2ffbafa24baf5db1cdbb2c94a983ecd2784"
-  integrity sha512-gac8OEcQ2Li1dxIEWGZzsp2BitJxwkwcOm0zHAJLcPJaVvm58FRnk6RkuLRpU1EujipU2ZFODv2P9DLMfnV8mw==
+  version "6.4.2"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-6.4.2.tgz#35866fd710528e92de10cf06016498e47e39e1e6"
+  integrity sha512-XtGIhXwF8YM8bJhGxG5kXgjkEuNGLTkoYqVE+KMR+aspr4KGYmKYg7yUe3KghyQ9yheNwLnjmzh/7+gfDBmHCQ==
 
 acorn@^7.1.0:
   version "7.1.0"
@@ -4712,7 +4712,7 @@ dot-prop@^4.2.0:
   dependencies:
     is-obj "^1.0.0"
 
-dotty@0.1.0, dotty@^0.1.0:
+dotty@0.1.0:
   version "0.1.0"
   resolved "https://registry.npmjs.org/dotty/-/dotty-0.1.0.tgz#da371ccd931a37282f8f7f77adada7d54539708a"
   integrity sha512-VJzcXJZEckXowvj6yGJC2JH66DLEEm1d1QOB0hik1EvlbUpULvcYt411JeFuy8rNC96FG8V2N7pMkyjvK8LYwQ==
@@ -7441,7 +7441,7 @@ lodash.uniq@^4.5.0:
   resolved "https://registry.npmjs.org/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
-lodash@4.17.20, lodash@^4.17.19, lodash@^4.17.20:
+lodash@4.17.20, lodash@^4.17.19:
   version "4.17.20"
   resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
   integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
@@ -8493,17 +8493,6 @@ performance-now@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npmjs.org/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
-
-pgsql-parser@0.8.6:
-  version "0.8.6"
-  resolved "https://registry.npmjs.org/pgsql-parser/-/pgsql-parser-0.8.6.tgz#b127c484ab7300a3487eff7e9cc906fb09387184"
-  integrity sha512-ynsiBazfp6KtjP9ldXxKWF01QaLC2YNZKkw05vaSkD/W+U8sQBbG4LZlapoL5tp8IHcCZRvg4ySd+MdOOQpbeA==
-  dependencies:
-    "@babel/runtime" "^7.11.2"
-    "@pgql/parse" "1.2.6"
-    dotty "^0.1.0"
-    lodash "^4.17.20"
-    minimist "^1.2.5"
 
 picomatch@^2.0.4, picomatch@^2.0.5:
   version "2.2.1"
