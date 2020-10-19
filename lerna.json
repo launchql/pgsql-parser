@@ -1,0 +1,25 @@
+{
+  "lerna": "3.4.2",
+  "useWorkspaces": true,
+  "conventionalCommits": true,
+  "npmClient": "yarn",
+  "npmClientArgs": [
+    "--no-lockfile"
+  ],
+  "packages": [
+    "packages/*"
+  ],
+  "version": "independent",
+  "registry": "https://registry.npmjs.org",
+  "command": {
+    "create": {
+      "homepage": "https://github.com/pyramation/pgsql-parser",
+      "license": "SEE LICENSE IN LICENSE",
+      "access": "restricted"
+    },
+    "publish": {
+      "allowBranch": "master",
+      "message": "chore(release): publish"
+    }
+  }
+}

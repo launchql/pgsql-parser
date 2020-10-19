@@ -1,77 +1,39 @@
 {
   "name": "pgsql-parser",
-  "version": "0.8.6",
-  "description": "The real PostgreSQL query parser",
-  "author": "Dan Lynch <pyramation@gmail.com>",
-  "homepage": "https://github.com/pyramation/pgsql-parser#readme",
-  "license": "SEE LICENSE IN LICENSE",
-  "main": "main/index.js",
-  "module": "module/index.js",
-  "directories": {
-    "lib": "src",
-    "test": "__tests__"
-  },
-  "files": [
-    "main",
-    "module"
-  ],
-  "bin": {
-    "pgsql-parser": "main/cli.js"
-  },
-  "keywords": [
-    "sql",
-    "postgres",
-    "postgresql",
-    "pg",
-    "query",
-    "database"
-  ],
-  "scripts": {
-    "build:main": "BABEL_ENV=production babel src --out-dir main --delete-dir-on-start",
-    "build:module": "MODULE=true babel src --out-dir module --delete-dir-on-start",
-    "build": "npm run build:module && npm run build:main",
-    "prepublish": "npm run build",
-    "lint": "eslint src --fix",
-    "cli": "NODE_ENV=development babel-node src/cli",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:debug": "node --inspect node_modules/.bin/jest --runInBand"
-  },
+  "version": "0.0.1",
   "publishConfig": {
-    "access": "public"
+    "access": "restricted"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/pyramation/pgsql-parser"
-  },
-  "bugs": {
-    "url": "https://github.com/pyramation/pgsql-parser/issues"
+  "private": true,
+  "scripts": {
+    "commit": "git-cz",
+    "build": "lerna run prepare --parallel",
+    "bootstrap": "lerna bootstrap --use-workspaces",
+    "lint": "eslint --ignore-path .gitignore .",
+    "lint:fix": "eslint --ignore-path .gitignore . --fix",
+    "pretest": "yarn lint",
+    "test:watch": "jest --watch",
+    "test": "jest"
   },
   "devDependencies": {
     "@babel/cli": "7.11.6",
     "@babel/core": "7.11.6",
-    "@babel/node": "^7.12.1",
-    "@babel/plugin-proposal-class-properties": "7.10.4",
-    "@babel/plugin-proposal-export-default-from": "7.10.4",
-    "@babel/plugin-proposal-object-rest-spread": "7.11.0",
-    "@babel/plugin-transform-runtime": "7.11.5",
-    "@babel/preset-env": "7.11.5",
+    "@pyramation/babel-preset-env": "0.1.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "10.1.0",
-    "babel-jest": "25.1.0",
+    "babel-jest": "^24.9.0",
     "eslint": "6.8.0",
-    "eslint-config-prettier": "^6.12.0",
+    "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-prettier": "^3.1.2",
-    "jest": "^24.5.0",
-    "jest-in-case": "^1.0.2",
-    "prettier": "^1.19.1",
-    "regenerator-runtime": "^0.13.7"
+    "jest": "25.1.0",
+    "lerna": "3.22.1",
+    "prettier": "2.1.2"
   },
-  "dependencies": {
-    "@babel/runtime": "^7.11.2",
-    "@pgql/parse": "1.2.6",
-    "dotty": "^0.1.0",
-    "lodash": "^4.17.20",
-    "minimist": "^1.2.5"
+  "workspaces": [
+    "packages/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pyramation/pgsql-parser"
   }
 }

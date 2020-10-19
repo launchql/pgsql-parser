@@ -31,7 +31,7 @@ module.exports = {
       0,
       {
         ignoreSiblings: true,
-        argsIgnorePattern: 'React|res|next|^_'
+        argsIgnorePattern: 'res|next|^_'
       }
     ],
     'prefer-const': [

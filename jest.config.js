@@ -1,8 +1,7 @@
 module.exports = {
-  setupFiles: ['<rootDir>/node_modules/regenerator-runtime/runtime'],
-  testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?)$',
-  testURL: 'http://localhost',
+  projects: ['<rootDir>/packages/*/jest.config.js'],
+  coverageDirectory: '<rootDir>/coverage',
   transform: {
-    '^.+\\.jsx?$': 'babel-jest'
-  }
+    '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
+  },
 };

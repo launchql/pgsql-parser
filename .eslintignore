@@ -1,5 +1,4 @@
-node_modules/
-dist/
-main/
-module/
-coverage/
+*.json
+*.md
+*.css
+*.d.ts
