@@ -1905,10 +1905,19 @@ export default class Deparser {
     output.push('CREATE POLICY');
 
     output.push(this.quote(node.policy_name));
+
     if (node.table) {
       output.push('ON');
       output.push(this.deparse(node.table));
     }
+
+    if (node.permissive) {
+      // permissive is the default!
+    } else {
+      output.push('AS');
+      output.push('RESTRICTIVE');
+    }
+
     if (node.cmd_name) {
       output.push('FOR');
       output.push(node.cmd_name.toUpperCase());
@@ -1921,7 +1930,7 @@ export default class Deparser {
       output.push('(');
       output.push(this.deparse(node.with_check));
       output.push(')');
-    } else {
+    } else if (node.qual) {
       output.push('USING');
       output.push('(');
       output.push(this.deparse(node.qual));

@@ -24,3 +24,19 @@ CREATE POLICY delete_own ON myschema.mytable FOR DELETE TO PUBLIC USING (group_i
 CREATE POLICY insert_own ON myschema.mytable FOR ALL TO PUBLIC WITH CHECK (group_id = ANY (otherschema.my_policy_fn()));
 CREATE POLICY select_any ON myschema.mytable FOR SELECT TO PUBLIC USING (TRUE);
 CREATE POLICY update_own ON myschema.mytable FOR UPDATE TO PUBLIC USING (group_id = ANY (otherschema.my_policy_fn()));
+
+
+CREATE POLICY delete_pol_permissive ON users.user
+AS PERMISSIVE
+FOR DELETE
+WITH CHECK (
+    id = current_setting('user.id')::uuid
+);
+
+CREATE POLICY delete_pol_restrictive ON users.user
+AS RESTRICTIVE
+FOR DELETE
+WITH CHECK (
+    id = current_setting('user.id')::uuid
+);
+
