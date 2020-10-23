@@ -250,7 +250,7 @@ export default class Deparser {
     }
 
     if (catalog !== 'pg_catalog') {
-      return mods(this.list(names, '.'), args);
+      return mods(this.listQuotes(names, '.'), args);
     }
 
     const res = this.convertTypeName(type, args);
@@ -1762,7 +1762,7 @@ export default class Deparser {
     }
 
     if (node.subtype === 10) {
-      output.push('DROP');
+      output.push('DROP COLUMN');
       if (node.missing_ok) {
         output.push('IF EXISTS');
       }
@@ -1893,7 +1893,55 @@ export default class Deparser {
     if (node.missing_ok) {
       output.push('IF EXISTS');
     }
-    output.push(this.listQuotes(node.objects));
+
+    const stmts = [];
+    for (let s = 0; s < node.objects.length; s++) {
+      const children = node.objects[s];
+
+      const stmt = [];
+      if (objtypeIs(node.removeType, 'OBJECT_TABLE')) {
+        if (children.length === 1) {
+          stmt.push(this.quote(this.deparse(children[0])));
+        } else if (children.length === 2) {
+          stmt.push(this.listQuotes(children, '.'));
+        } else {
+          throw new Error('bad drop table stmt');
+        }
+      } else if (objtypeIs(node.removeType, 'OBJECT_SCHEMA')) {
+        stmt.push(this.quote(this.deparse(children)));
+      } else if (objtypeIs(node.removeType, 'OBJECT_SEQUENCE')) {
+        // stmt.push(this.quote(this.deparse(children)));
+        stmt.push(this.listQuotes(children, '.'));
+      } else if (objtypeIs(node.removeType, 'OBJECT_POLICY')) {
+        if (children.length === 2) {
+          stmt.push(this.quote(this.deparse(children[1])));
+          stmt.push('ON');
+          stmt.push(this.quote(this.deparse(children[0])));
+        } else if (children.length === 3) {
+          stmt.push(this.quote(this.deparse(children[2])));
+          stmt.push('ON');
+          stmt.push(this.listQuotes([children[0], children[1]], '.'));
+        } else {
+          throw new Error(
+            'bad drop policy stmt: ' + JSON.stringify(node, null, 2)
+          );
+        }
+        // } else if (objtypeIs(node.removeType, 'OBJECT_CAST')) {
+        // } else if (objtypeIs(node.removeType, 'OBJECT_OPERATOR')) {
+        // } else if (objtypeIs(node.removeType, 'OBJECT_AGGREGATE')) {
+      } else if (objtypeIs(node.removeType, 'OBJECT_DOMAIN')) {
+        stmt.push(this.deparse(children)); // in this case children is not an array
+      } else if (objtypeIs(node.removeType, 'OBJECT_FUNCTION')) {
+        stmt.push(this.deparse(children)); // in this case children is not an array
+      } else if (objtypeIs(node.removeType, 'OBJECT_TYPE')) {
+        stmt.push(this.deparse(children)); // in this case children is not an array
+      } else {
+        throw new Error('bad drop stmt: ' + JSON.stringify(node, null, 2));
+      }
+      stmts.push(stmt.join(' '));
+    }
+    output.push(stmts.join(','));
+
     if (node.behavior) {
       output.push('CASCADE');
     }

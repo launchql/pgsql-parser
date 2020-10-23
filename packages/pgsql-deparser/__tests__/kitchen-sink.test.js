@@ -13,12 +13,17 @@ export const check = (file) => {
   const tree = parse(testsql);
   expect(tree).toMatchSnapshot();
   const sql = deparse(tree);
+  // console.log(sql);
   expect(cleanLines(sql)).toMatchSnapshot();
   expect(cleanTree(parse(sql))).toEqual(cleanTree(tree));
 };
 
 it('parens', () => {
   check('parens.sql');
+});
+
+it('drops', () => {
+  check('drops.sql');
 });
 
 describe('kitchen sink', () => {
