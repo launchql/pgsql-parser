@@ -21,6 +21,10 @@ it('parens', () => {
   check('parens.sql');
 });
 
+it('drops', () => {
+  check('drops.sql');
+});
+
 describe('kitchen sink', () => {
   it('alter', () => {
     check('alter/alter.sql');
