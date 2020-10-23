@@ -1899,18 +1899,26 @@ export default class Deparser {
       const children = node.objects[s];
 
       const stmt = [];
-      if (objtypeIs(node.removeType, 'OBJECT_TABLE')) {
+      if (
+        objtypeIs(node.removeType, 'OBJECT_TABLE') ||
+        objtypeIs(node.removeType, 'OBJECT_CONVERSION') ||
+        objtypeIs(node.removeType, 'OBJECT_COLLATION') ||
+        objtypeIs(node.removeType, 'OBJECT_MATVIEW') ||
+        objtypeIs(node.removeType, 'OBJECT_INDEX') ||
+        objtypeIs(node.removeType, 'OBJECT_FOREIGN_TABLE')
+      ) {
         if (children.length === 1) {
           stmt.push(this.quote(this.deparse(children[0])));
         } else if (children.length === 2) {
           stmt.push(this.listQuotes(children, '.'));
         } else {
-          throw new Error('bad drop table stmt');
+          throw new Error(
+            'bad case 2 drop stmt' + JSON.stringify(node, null, 2)
+          );
         }
       } else if (objtypeIs(node.removeType, 'OBJECT_SCHEMA')) {
         stmt.push(this.quote(this.deparse(children)));
       } else if (objtypeIs(node.removeType, 'OBJECT_SEQUENCE')) {
-        // stmt.push(this.quote(this.deparse(children)));
         stmt.push(this.listQuotes(children, '.'));
       } else if (objtypeIs(node.removeType, 'OBJECT_POLICY')) {
         if (children.length === 2) {
@@ -1926,9 +1934,61 @@ export default class Deparser {
             'bad drop policy stmt: ' + JSON.stringify(node, null, 2)
           );
         }
-        // } else if (objtypeIs(node.removeType, 'OBJECT_CAST')) {
+      } else if (objtypeIs(node.removeType, 'OBJECT_TRIGGER')) {
+        if (children.length === 2) {
+          stmt.push(this.quote(this.deparse(children[1])));
+          stmt.push('ON');
+          stmt.push(this.quote(this.deparse(children[0])));
+        } else if (children.length === 3) {
+          stmt.push(this.quote(this.deparse(children[2])));
+          stmt.push('ON');
+          stmt.push(this.listQuotes([children[0], children[1]], '.'));
+        } else {
+          throw new Error(
+            'bad drop trigger stmt: ' + JSON.stringify(node, null, 2)
+          );
+        }
+      } else if (objtypeIs(node.removeType, 'OBJECT_RULE')) {
+        if (children.length === 2) {
+          stmt.push(this.quote(this.deparse(children[1])));
+          stmt.push('ON');
+          stmt.push(this.quote(this.deparse(children[0])));
+        } else if (children.length === 3) {
+          stmt.push(this.quote(this.deparse(children[2])));
+          stmt.push('ON');
+          stmt.push(this.listQuotes([children[0], children[1]], '.'));
+        } else {
+          throw new Error(
+            'bad drop rule stmt: ' + JSON.stringify(node, null, 2)
+          );
+        }
+      } else if (objtypeIs(node.removeType, 'OBJECT_VIEW')) {
+        if (children.length === 1) {
+          stmt.push(this.quote(this.deparse(children[0])));
+        } else if (children.length === 2) {
+          stmt.push(this.listQuotes(children, '.'));
+        } else {
+          throw new Error(
+            'bad drop value stmt: ' + JSON.stringify(node, null, 2)
+          );
+        }
         // } else if (objtypeIs(node.removeType, 'OBJECT_OPERATOR')) {
-        // } else if (objtypeIs(node.removeType, 'OBJECT_AGGREGATE')) {
+      } else if (objtypeIs(node.removeType, 'OBJECT_CAST')) {
+        stmt.push('(');
+        stmt.push(this.deparse(children[0]));
+        stmt.push('AS');
+        stmt.push(this.deparse(children[1]));
+        stmt.push(')');
+        // } else if (objtypeIs(node.removeType, 'OBJECT_OPERATOR')) {
+        //   stmt.push(this.deparse(children, 'noquotes')); // in this case children is not an array
+      } else if (objtypeIs(node.removeType, 'OBJECT_AGGREGATE')) {
+        stmt.push(this.deparse(children)); // in this case children is not an array
+      } else if (objtypeIs(node.removeType, 'OBJECT_FDW')) {
+        stmt.push(this.deparse(children)); // in this case children is not an array
+      } else if (objtypeIs(node.removeType, 'OBJECT_FOREIGN_SERVER')) {
+        stmt.push(this.deparse(children)); // in this case children is not an array
+      } else if (objtypeIs(node.removeType, 'OBJECT_EXTENSION')) {
+        stmt.push(this.deparse(children)); // in this case children is not an array
       } else if (objtypeIs(node.removeType, 'OBJECT_DOMAIN')) {
         stmt.push(this.deparse(children)); // in this case children is not an array
       } else if (objtypeIs(node.removeType, 'OBJECT_FUNCTION')) {
