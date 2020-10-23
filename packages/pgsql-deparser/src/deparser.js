@@ -2371,7 +2371,7 @@ export default class Deparser {
     }
     if (node.cols) {
       output.push('(');
-      output.push(this.list(node.cols));
+      output.push(this.listQuotes(node.cols));
       output.push(')');
     }
     return output.join(' ');
