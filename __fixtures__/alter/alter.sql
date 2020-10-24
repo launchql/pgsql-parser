@@ -104,3 +104,13 @@ ALTER TABLE collections.mfield
 -- ALTER TABLE scha.foo 
 --   ADD CONSTRAINT my_constraint_fey
 --   FOREIGN KEY (a,b) REFERENCES othr.orders (c,d) MATCH PARTIAL;
+
+ALTER TABLE schema_name.table_name ALTER COLUMN column_name SET DATA TYPE new_column_type USING column_name::new_column_type;
+ALTER TABLE schema_name.table_name ALTER COLUMN column_name TYPE new_column_type USING column_name::new_column_type;
+
+ALTER TABLE schema_name.table_name ADD COLUMN column_name column_type;
+ALTER TABLE schema_name.table_name ADD COLUMN column_name Geometry(Polygon, 4326);
+ALTER TABLE schema_name.table_name ADD COLUMN "column-name" Geometry(Polygon, 4326);
+ALTER TABLE schema_name.table_name ADD COLUMN column_name int;
+
+ALTER TABLE schema_name.table_name DROP COLUMN column_name;

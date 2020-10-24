@@ -1,0 +1,78 @@
+{
+  "name": "pgsql-deparser",
+  "version": "1.0.4",
+  "description": "PostgreSQL AST Deparser",
+  "author": "Dan Lynch <pyramation@gmail.com>",
+  "homepage": "https://github.com/pyramation/pgsql-parser/tree/master/packages/pgsql-deparser#readme",
+  "license": "SEE LICENSE IN LICENSE",
+  "main": "main/index.js",
+  "module": "module/index.js",
+  "directories": {
+    "lib": "src",
+    "test": "__tests__"
+  },
+  "files": [
+    "main",
+    "module"
+  ],
+  "keywords": [
+    "sql",
+    "postgres",
+    "postgresql",
+    "pg",
+    "query",
+    "ast",
+    "deparser",
+    "database"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pyramation/pgsql-parser"
+  },
+  "scripts": {
+    "build:main": "cross-env BABEL_ENV=production babel src --out-dir main --delete-dir-on-start",
+    "build:module": "cross-env MODULE=true babel src --out-dir module --delete-dir-on-start",
+    "build": "npm run build:module && npm run build:main",
+    "prepare": "npm run build",
+    "lint": "eslint src --fix",
+    "dev": "cross-env NODE_ENV=development babel-node src/index",
+    "watch": "cross-env NODE_ENV=development babel-watch src/index",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:debug": "node --inspect node_modules/.bin/jest --runInBand"
+  },
+  "bugs": {
+    "url": "https://github.com/pyramation/pgsql-parser/issues"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.11.6",
+    "@babel/core": "7.11.6",
+    "@babel/node": "^7.12.1",
+    "@babel/plugin-proposal-class-properties": "7.10.4",
+    "@babel/plugin-proposal-export-default-from": "7.10.4",
+    "@babel/plugin-proposal-object-rest-spread": "7.11.0",
+    "@babel/plugin-transform-runtime": "7.11.5",
+    "@babel/preset-env": "7.11.5",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "10.1.0",
+    "babel-watch": "^7.0.0",
+    "cross-env": "^7.0.2",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "glob": "7.1.6",
+    "jest": "^25.1.0",
+    "pgsql-parser": "^1.0.4",
+    "prettier": "^2.1.2",
+    "regenerator-runtime": "^0.13.2"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.11.2",
+    "dotty": "0.1.0",
+    "lodash": "4.17.20",
+    "pgsql-enums": "^1.0.0"
+  }
+}
