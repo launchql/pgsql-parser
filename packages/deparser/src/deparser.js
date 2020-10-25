@@ -3,6 +3,7 @@ import { format } from 'util';
 import {
   objtypeName,
   objtypeIs,
+  getObjectType,
   getConstraintFromConstrType,
   ROLESPEC_TYPES,
   GRANTTARGET_TYPES,
@@ -677,21 +678,70 @@ export default class Deparser {
   ['RenameStmt'](node) {
     const output = [];
 
-    if (!objtypeIs(node.renameType, 'OBJECT_COLUMN')) {
-      throw new Error('renameType not yet implemented');
-    }
-    if (!objtypeIs(node.relationType, 'OBJECT_TABLE')) {
-      throw new Error('relationType not yet implemented');
+    if (
+      getObjectType(node.renameType) === 'OBJECT_FUNCTION' ||
+      getObjectType(node.renameType) === 'OBJECT_FOREIGN_TABLE' ||
+      getObjectType(node.renameType) === 'OBJECT_FDW' ||
+      getObjectType(node.renameType) === 'OBJECT_FOREIGN_SERVER'
+    ) {
+      output.push('ALTER');
+      output.push(objtypeName(node.renameType));
+      output.push(this.deparse(node.object));
+      output.push('RENAME');
+      output.push('TO');
+      output.push(node.newname);
+    } else {
+      output.push('ALTER');
+      output.push('TABLE');
+      output.push(this.deparse(node.relation));
+      output.push('RENAME');
+      output.push(objtypeName(node.renameType));
+      output.push(node.subname);
+      output.push('TO');
+      output.push(node.newname);
     }
 
-    output.push('ALTER');
-    output.push('TABLE');
-    output.push(this.deparse(node.relation));
-    output.push('RENAME');
-    output.push('COLUMN');
-    output.push(node.subname);
-    output.push('TO');
-    output.push(node.newname);
+    return output.join(' ');
+  }
+
+  ['AlterOwnerStmt'](node) {
+    const output = [];
+
+    if (
+      getObjectType(node.objectType) === 'OBJECT_FUNCTION' ||
+      getObjectType(node.objectType) === 'OBJECT_FOREIGN_TABLE' ||
+      getObjectType(node.objectType) === 'OBJECT_FDW' ||
+      getObjectType(node.objectType) === 'OBJECT_FOREIGN_SERVER'
+    ) {
+      output.push('ALTER');
+      output.push(objtypeName(node.objectType));
+      output.push(this.deparse(node.object));
+      output.push('OWNER');
+      output.push('TO');
+      output.push(this.deparse(node.newowner));
+    } else {
+      throw new Error('AlterOwnerStmt needs implementation');
+    }
+
+    return output.join(' ');
+  }
+
+  ['AlterObjectSchemaStmt'](node) {
+    const output = [];
+
+    if (getObjectType(node.objectType) === 'OBJECT_TABLE') {
+      output.push('ALTER');
+      output.push(objtypeName(node.objectType));
+      output.push(this.deparse(node.relation));
+      output.push('SET SCHEMA');
+      output.push(this.quote(node.newschema));
+    } else {
+      output.push('ALTER');
+      output.push(objtypeName(node.objectType));
+      output.push(this.deparse(node.object));
+      output.push('SET SCHEMA');
+      output.push(this.quote(node.newschema));
+    }
 
     return output.join(' ');
   }
@@ -1793,6 +1843,12 @@ export default class Deparser {
       output.push(this.quote(node.name));
       output.push('TYPE');
       output.push(this.deparse(node.def));
+    }
+
+    if (node.subtype === 27) {
+      output.push('OWNER');
+      output.push('TO');
+      output.push(this.deparse(node.newowner));
     }
 
     if (node.subtype === 28) {

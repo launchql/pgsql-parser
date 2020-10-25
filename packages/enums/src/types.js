@@ -14,6 +14,31 @@ export const createTypeFromEnums = (type) =>
     return m;
   }, {});
 
+export const createTypeFnFromEnums = (type) => {
+  const struct = LIBPG_ENUMS['nodes/parsenodes'][type].values.reduce(
+    (m, v, i) => {
+      if (i === 0) {
+        return m;
+      } // skip first noop
+      m.strToInt[v.name] = i - 1;
+      m.intToStr[i - 1] = v.name;
+      return m;
+    },
+    {
+      intToStr: {},
+      strToInt: {}
+    }
+  );
+  return (input) => {
+    if (typeof input === 'string') {
+      return struct.strToInt[input];
+    }
+    return struct.intToStr[input];
+  };
+};
+
+export const getObjectType = createTypeFnFromEnums('ObjectType');
+
 export const OBJECT_TYPES = createTypeFromEnums('ObjectType');
 export const VARIABLESET_TYPES = createTypeFromEnums('VariableSetKind');
 export const GRANTTARGET_TYPES = createTypeFromEnums('GrantTargetType');
