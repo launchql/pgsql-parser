@@ -145,16 +145,18 @@ export default class Deparser {
 
   deparseNodes(nodes, context) {
     return nodes.map((node) => {
-      return _.isArray(node) ? this.list(node) : this.deparse(node, context);
+      return _.isArray(node)
+        ? this.list(node, ', ', '', context)
+        : this.deparse(node, context);
     });
   }
 
-  list(nodes, separator = ', ', prefix = '') {
+  list(nodes, separator = ', ', prefix = '', context) {
     if (!nodes) {
       return '';
     }
 
-    return this.deparseNodes(nodes)
+    return this.deparseNodes(nodes, context)
       .map((l) => `${prefix}${l}`)
       .join(separator);
   }
@@ -686,19 +688,74 @@ export default class Deparser {
     ) {
       output.push('ALTER');
       output.push(objtypeName(node.renameType));
+      if (node.missing_ok) {
+        output.push('IF EXISTS');
+      }
       output.push(this.deparse(node.object));
       output.push('RENAME');
       output.push('TO');
-      output.push(node.newname);
-    } else {
+      output.push(this.quote(node.newname));
+    } else if (getObjectType(node.renameType) === 'OBJECT_ATTRIBUTE') {
       output.push('ALTER');
-      output.push('TABLE');
+      output.push(objtypeName(node.relationType));
+      if (node.missing_ok) {
+        output.push('IF EXISTS');
+      }
       output.push(this.deparse(node.relation));
       output.push('RENAME');
       output.push(objtypeName(node.renameType));
-      output.push(node.subname);
+      output.push(this.quote(node.subname));
       output.push('TO');
-      output.push(node.newname);
+      output.push(this.quote(node.newname));
+    } else if (
+      getObjectType(node.renameType) === 'OBJECT_DOMAIN' ||
+      getObjectType(node.renameType) === 'OBJECT_TYPE'
+    ) {
+      output.push('ALTER');
+      output.push(objtypeName(node.renameType));
+      if (node.missing_ok) {
+        output.push('IF EXISTS');
+      }
+      const typObj = {
+        TypeName: {
+          names: node.object
+        }
+      };
+      output.push(this.deparse(typObj));
+      output.push('RENAME');
+      output.push('TO');
+      output.push(this.quote(node.newname));
+    } else if (getObjectType(node.renameType) === 'OBJECT_DOMCONSTRAINT') {
+      output.push('ALTER');
+      output.push('DOMAIN');
+      if (node.missing_ok) {
+        output.push('IF EXISTS');
+      }
+      const typObj = {
+        TypeName: {
+          names: node.object
+        }
+      };
+      output.push(this.deparse(typObj));
+      output.push('RENAME CONSTRAINT');
+      output.push(this.quote(node.subname));
+      output.push('TO');
+      output.push(this.quote(node.newname));
+    } else {
+      output.push('ALTER');
+      output.push('TABLE');
+      if (node.missing_ok) {
+        output.push('IF EXISTS');
+      }
+      output.push(this.deparse(node.relation));
+      output.push('RENAME');
+      output.push(this.quote(node.subname));
+      output.push('TO');
+      output.push(this.quote(node.newname));
+    }
+
+    if (node.behavior === 1) {
+      output.push('CASCADE');
     }
 
     return output.join(' ');
@@ -732,12 +789,18 @@ export default class Deparser {
     if (getObjectType(node.objectType) === 'OBJECT_TABLE') {
       output.push('ALTER');
       output.push(objtypeName(node.objectType));
+      if (node.missing_ok) {
+        output.push('IF EXISTS');
+      }
       output.push(this.deparse(node.relation));
       output.push('SET SCHEMA');
       output.push(this.quote(node.newschema));
     } else {
       output.push('ALTER');
       output.push(objtypeName(node.objectType));
+      if (node.missing_ok) {
+        output.push('IF EXISTS');
+      }
       output.push(this.deparse(node.object));
       output.push('SET SCHEMA');
       output.push(this.quote(node.newschema));
@@ -1729,40 +1792,51 @@ export default class Deparser {
 
   ['AlterTableStmt'](node) {
     const output = [];
+    const ctx = {};
     output.push('ALTER');
-    if (node.relkind === 32) {
-      output.push('TABLE');
-    } else if (node.relkind === 42) {
-      output.push('VIEW');
-    } else if (node.relkind === 40) {
-      output.push('TYPE');
-    } else {
+    if (getObjectType(node.relkind) === 'OBJECT_TABLE') {
       output.push('TABLE');
       const inh = dotty.get(node, 'relation.RangeVar.inh');
       if (!inh) {
         output.push('ONLY');
       }
+    } else if (getObjectType(node.relkind) === 'OBJECT_TYPE') {
+      output.push('TYPE');
+    } else {
+      throw new Error('for now throw');
     }
     if (node.missing_ok) {
       output.push('IF EXISTS');
     }
-    output.push(this.deparse(node.relation));
-    output.push(this.list(node.cmds));
+    ctx.alterType = getObjectType(node.relkind);
+    output.push(this.deparse(node.relation, ctx));
+    output.push(this.list(node.cmds, ', ', '', ctx));
 
     return output.join(' ');
   }
 
-  ['AlterTableCmd'](node) {
+  ['AlterTableCmd'](node, context) {
     const output = [];
 
+    let subType = 'COLUMN';
+
+    if (context && context.alterType === 'OBJECT_TYPE') {
+      subType = 'ATTRIBUTE';
+    }
+
     if (node.subtype === 0) {
-      output.push('ADD COLUMN');
+      output.push('ADD');
+      output.push(subType);
+      if (node.missing_ok) {
+        output.push('IF NOT EXISTS');
+      }
       output.push(this.quote(node.name));
       output.push(this.deparse(node.def));
     }
 
     if (node.subtype === 3) {
-      output.push('ALTER COLUMN');
+      output.push('ALTER');
+      output.push(subType);
       output.push(this.quote(node.name));
       if (node.def) {
         output.push('SET DEFAULT');
@@ -1773,13 +1847,15 @@ export default class Deparser {
     }
 
     if (node.subtype === 4) {
-      output.push('ALTER COLUMN');
+      output.push('ALTER');
+      output.push(subType);
       output.push(this.quote(node.name));
       output.push('DROP NOT NULL');
     }
 
     if (node.subtype === 5) {
-      output.push('ALTER COLUMN');
+      output.push('ALTER');
+      output.push(subType);
       output.push(this.quote(node.name));
       output.push('SET NOT NULL');
     }
@@ -1792,7 +1868,8 @@ export default class Deparser {
     }
 
     if (node.subtype === 7) {
-      output.push('ALTER COLUMN');
+      output.push('ALTER');
+      output.push(subType);
       output.push(this.quote(node.name));
       output.push('SET');
       output.push('(');
@@ -1812,7 +1889,8 @@ export default class Deparser {
     }
 
     if (node.subtype === 10) {
-      output.push('DROP COLUMN');
+      output.push('DROP');
+      output.push(subType);
       if (node.missing_ok) {
         output.push('IF EXISTS');
       }
@@ -1839,7 +1917,8 @@ export default class Deparser {
     }
 
     if (node.subtype === 25) {
-      output.push('ALTER COLUMN');
+      output.push('ALTER');
+      output.push(subType);
       output.push(this.quote(node.name));
       output.push('TYPE');
       output.push(this.deparse(node.def));
@@ -1892,6 +1971,16 @@ export default class Deparser {
       output.push(this.deparse(node.def));
     }
 
+    if (node.subtype === 53) {
+      output.push('OF');
+      output.push(this.deparse(node.def));
+    }
+
+    if (node.subtype === 54) {
+      output.push('NOT OF');
+      //output.push(this.deparse(node.def));
+    }
+
     if (node.subtype === 56) {
       output.push('ENABLE ROW LEVEL SECURITY');
     }
@@ -1903,6 +1992,10 @@ export default class Deparser {
     }
     if (node.subtype === 59) {
       output.push('NO FORCE ROW SECURITY');
+    }
+
+    if (node.behavior === 1) {
+      output.push('CASCADE');
     }
 
     return output.join(' ');
@@ -1919,6 +2012,59 @@ export default class Deparser {
     });
     output.push(this.list(vals, ',\n', '\t'));
     output.push('\n)');
+    return output.join(' ');
+  }
+
+  ['AlterEnumStmt'](node) {
+    const output = [];
+    output.push('ALTER TYPE');
+    const typObj = {
+      TypeName: {
+        names: node.typeName
+      }
+    };
+    output.push(this.deparse(typObj));
+
+    if (node.newVal) {
+      output.push('ADD VALUE');
+      const result = node.newVal.replace(/'/g, "''");
+      output.push(`'${result}'`);
+    }
+
+    if (node.behavior === 1) {
+      output.push('CASCADE');
+    }
+
+    return output.join(' ');
+  }
+
+  ['AlterDomainStmt'](node) {
+    const output = [];
+    output.push('ALTER DOMAIN');
+
+    const typObj = {
+      TypeName: {
+        names: node.typeName
+      }
+    };
+    output.push(this.deparse(typObj));
+
+    if (node.subtype === 'C') {
+      output.push('ADD');
+      output.push(this.deparse(node.def));
+    } else if (node.subtype === 'V') {
+      output.push('VALIDATE');
+      output.push('CONSTRAINT');
+      output.push(this.quote(node.name));
+    } else if (node.subtype === 'X') {
+      output.push('DROP');
+      output.push('CONSTRAINT');
+      output.push(this.quote(node.name));
+    }
+
+    if (node.behavior === 1) {
+      output.push('CASCADE');
+    }
     return output.join(' ');
   }
 
@@ -2058,7 +2204,7 @@ export default class Deparser {
     }
     output.push(stmts.join(','));
 
-    if (node.behavior) {
+    if (node.behavior === 1) {
       output.push('CASCADE');
     }
     return output.join(' ');
