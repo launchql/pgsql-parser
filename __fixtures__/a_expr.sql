@@ -40,7 +40,6 @@ LEFT OUTER JOIN t2 ON (
 WHERE ( t2.foo IS NULL );
 
 
-
 -- AEXPR_NULLIF
 
 select nullif(null, '');
