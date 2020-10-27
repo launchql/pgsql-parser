@@ -1,6 +1,6 @@
 {
   "name": "pgsql-parser",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "The real PostgreSQL query parser",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/pyramation/pgsql-parser/tree/master/packages/pgsql-parser#readme",
@@ -74,7 +74,7 @@
     "@babel/runtime": "^7.11.2",
     "@pgql/parse": "1.2.6",
     "minimist": "^1.2.5",
-    "pgsql-deparser": "^1.0.6",
+    "pgsql-deparser": "^1.0.7",
     "pgsql-enums": "^1.0.2"
   },
   "gitHead": "e18997e7150485188d0959a16ebcf87d7aab4835"
