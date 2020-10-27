@@ -26,6 +26,10 @@ it('drops', () => {
   check('drops.sql');
 });
 
+it('a_expr', () => {
+  check('a_expr.sql');
+});
+
 describe('kitchen sink', () => {
   it('alter', () => {
     check('alter/alter.sql');

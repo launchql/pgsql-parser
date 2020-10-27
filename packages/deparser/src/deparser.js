@@ -144,6 +144,9 @@ export default class Deparser {
   }
 
   deparseNodes(nodes, context) {
+    if (!nodes.map) {
+      console.log({ nodes });
+    }
     return nodes.map((node) => {
       return _.isArray(node)
         ? this.list(node, ', ', '', context)
@@ -362,56 +365,65 @@ export default class Deparser {
 
         return parens(output.join(' '));
 
-      case 1: // AEXPR_OP_ANY
+      case 1:
+        // AEXPR_OP_ANY
+        /* scalar op ANY (array) */
         output.push(this.deparse(node.lexpr));
         output.push(format('ANY (%s)', this.deparse(node.rexpr, context)));
         return output.join(` ${this.deparse(node.name[0], context)} `);
 
-      case 2: // AEXPR_OP_ALL
+      case 2:
+        // AEXPR_OP_ALL
+        /* scalar op ALL (array) */
         output.push(this.deparse(node.lexpr, context));
         output.push(format('ALL (%s)', this.deparse(node.rexpr, context)));
         return output.join(` ${this.deparse(node.name[0], context)} `);
 
-      case 3: // AEXPR_DISTINCT
+      case 3:
+        // AEXPR_DISTINCT
+        /* IS DISTINCT FROM - name must be "=" */
         return format(
           '%s IS DISTINCT FROM %s',
           this.deparse(node.lexpr, context),
           this.deparse(node.rexpr, context)
         );
 
-      case 4: // AEXPR_NULLIF
+      case 4:
+        // AEXPR_NOT_DISTINCT
+        /* IS NOT DISTINCT FROM - name must be "=" */
+        return format(
+          '%s IS NOT DISTINCT FROM %s',
+          this.deparse(node.lexpr, context),
+          this.deparse(node.rexpr, context)
+        );
+
+      case 5:
+        // AEXPR_NULLIF
+        /* NULLIF - name must be "=" */
         return format(
           'NULLIF(%s, %s)',
           this.deparse(node.lexpr, context),
           this.deparse(node.rexpr, context)
         );
 
-      case 5: {
+      case 6: {
         // AEXPR_OF
+        /* IS [NOT] OF - name must be "=" or "<>" */
         const op = node.name[0].String.str === '=' ? 'IS OF' : 'IS NOT OF';
         return format(
           '%s %s (%s)',
           this.deparse(node.lexpr, context),
           op,
-          this.list(node.rexpr, context)
-        );
-      }
-
-      case 6: {
-        // AEXPR_IN
-        const operator = node.name[0].String.str === '=' ? 'IN' : 'NOT IN';
-
-        return format(
-          '%s %s (%s)',
-          this.deparse(node.lexpr, context),
-          operator,
-          this.list(node.rexpr, context)
+          Array.isArray(node.rexpr)
+            ? this.list(node.rexpr, context)
+            : this.deparse(node.rexpr, context)
         );
       }
 
       case 7: {
         // AEXPR_IN
-        const operator = node.name[0].String.str === '<>' ? 'NOT IN' : 'IN';
+        /* [NOT] IN - name must be "=" or "<>" */
+        const operator = node.name[0].String.str === '=' ? 'IN' : 'NOT IN';
 
         return format(
           '%s %s (%s)',
@@ -423,6 +435,7 @@ export default class Deparser {
 
       case 8:
         // AEXPR_LIKE
+        /* [NOT] LIKE - name must be "~~" or "!~~" */
         output.push(this.deparse(node.lexpr, context));
 
         if (node.name[0].String.str === '!~~') {
@@ -437,6 +450,7 @@ export default class Deparser {
 
       case 9:
         // AEXPR_ILIKE
+        /* [NOT] ILIKE - name must be "~~*" or "!~~*" */
         output.push(this.deparse(node.lexpr, context));
 
         if (node.name[0].String.str === '!~~*') {
@@ -513,6 +527,33 @@ export default class Deparser {
           )
         );
         return output.join(' ');
+
+      case 13:
+        // AEXPR_BETWEEN_SYM
+        output.push(this.deparse(node.lexpr, context));
+        output.push(
+          format(
+            'BETWEEN SYMMETRIC %s AND %s',
+            this.deparse(node.rexpr[0], context),
+            this.deparse(node.rexpr[1], context)
+          )
+        );
+        return output.join(' ');
+
+      case 14:
+        // AEXPR_NOT_BETWEEN_SYM
+        output.push(this.deparse(node.lexpr, context));
+        output.push(
+          format(
+            'NOT BETWEEN SYMMETRIC %s AND %s',
+            this.deparse(node.rexpr[0], context),
+            this.deparse(node.rexpr[1], context)
+          )
+        );
+        return output.join(' ');
+
+      // case 15:
+      // AEXPR_PAREN
 
       default:
         return fail('A_Expr', node);
