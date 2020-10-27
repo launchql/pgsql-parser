@@ -2,16 +2,14 @@ os:
   - linux
   - osx
 language: node_js
+node_js:
+  - 12
 notifications:
   email: false
-node_js:
-  - node
-services:
-  - docker
 env:
   matrix:
-    - PACKAGE=packages/pgsql-parser
-    - PACKAGE=packages/pgsql-deparser
+    - PACKAGE=packages/parser
+    - PACKAGE=packages/deparser
 script:
   - yarn
   - yarn bootstrap
