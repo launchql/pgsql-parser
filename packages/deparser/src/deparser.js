@@ -414,9 +414,7 @@ export default class Deparser {
           '%s %s (%s)',
           this.deparse(node.lexpr, context),
           op,
-          Array.isArray(node.rexpr)
-            ? this.list(node.rexpr, context)
-            : this.deparse(node.rexpr, context)
+          this.list(node.rexpr, context)
         );
       }
 
