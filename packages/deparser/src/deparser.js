@@ -3351,10 +3351,10 @@ export default class Deparser {
     if (type === 'boolean') {
       const value = dotty.get(node, 'arg.A_Const.val.String.str');
       if (value === 'f') {
-        return '(FALSE)';
+        return 'FALSE';
       }
       if (value === 't') {
-        return '(TRUE)';
+        return 'TRUE';
       }
     }
     return format('%s::%s', arg, type);

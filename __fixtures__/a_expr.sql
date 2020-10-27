@@ -40,6 +40,7 @@ LEFT OUTER JOIN t2 ON (
 WHERE ( t2.foo IS NULL );
 
 
+
 -- AEXPR_NULLIF
 
 select nullif(null, '');
@@ -48,6 +49,7 @@ select nullif(null, '');
 
 SELECT x, x IS OF (text) AS is_text FROM q;
 SELECT x, x IS NOT OF (text) AS is_text FROM q;
+SELECT COALESCE(4::domainint4, 7::domainint4) IS OF ( domainint4 ) AS t;
 
 -- AEXPR_IN
 
