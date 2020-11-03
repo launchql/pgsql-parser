@@ -30,6 +30,10 @@ it('a_expr', () => {
   check('a_expr.sql');
 });
 
+it('pg_catalog', () => {
+  check('pg_catalog.sql');
+});
+
 describe('kitchen sink', () => {
   it('alter', () => {
     check('alter/alter.sql');

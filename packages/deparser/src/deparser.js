@@ -211,7 +211,7 @@ export default class Deparser {
         return 'bigint';
       case 'real':
       case 'float4':
-        return 'real';
+        return 'pg_catalog.float4';
       case 'float8':
         return 'pg_catalog.float8';
       case 'text':
@@ -232,7 +232,8 @@ export default class Deparser {
       case 'bit':
         return 'bit';
       default:
-        throw new Error(format('Unhandled data type: %s', typeName));
+        return 'pg_catalog.' + typeName;
+      // throw new Error(format('Unhandled data type: %s', typeName));
     }
   }
 
