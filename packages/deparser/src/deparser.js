@@ -215,7 +215,6 @@ export default class Deparser {
       case 'float8':
         return 'pg_catalog.float8';
       case 'text':
-        // SELECT EXTRACT(CENTURY FROM CURRENT_DATE)>=21 AS True
         return 'pg_catalog.text';
       case 'date':
         return 'pg_catalog.date';
@@ -249,8 +248,11 @@ export default class Deparser {
     };
 
     // handle the special "char" (in quotes) type
-    if (names[0].String.str === 'char') {
-      names[0].String.str = '"char"';
+    if (catalog === 'char' && !type) {
+      return mods('"char"', args);
+    }
+    if (catalog === 'pg_catalog' && type === 'char') {
+      return mods('pg_catalog."char"', args);
     }
 
     if (catalog !== 'pg_catalog') {

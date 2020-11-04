@@ -173,3 +173,18 @@
         a char(1),
         b bpchar 
     );
+
+
+
+CREATE FUNCTION charfunc(
+  a pg_catalog."char",
+  b "char",
+  c char
+) returns void as $$
+BEGIN
+
+ 
+END;
+$$
+LANGUAGE 'plpgsql' VOLATILE;
+
