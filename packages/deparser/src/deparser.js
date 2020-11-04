@@ -188,7 +188,7 @@ export default class Deparser {
     return "'" + literal.replace(/'/g, "''") + "'";
   }
 
-  convertTypeName(typeName, size) {
+  getPgCatalogTypeName(typeName, size) {
     switch (typeName) {
       case 'bpchar':
         if (size != null) {
@@ -210,29 +210,17 @@ export default class Deparser {
       case 'int8':
         return 'bigint';
       case 'real':
-      case 'float4':
         return 'pg_catalog.float4';
-      case 'float8':
-        return 'pg_catalog.float8';
-      case 'text':
-        return 'pg_catalog.text';
-      case 'date':
-        return 'pg_catalog.date';
       case 'time':
         return 'time';
-      case 'timetz':
-        return 'pg_catalog.timetz';
       case 'timestamp':
         return 'timestamp';
-      case 'timestamptz':
-        return 'pg_catalog.timestamptz';
       case 'interval':
         return 'interval';
       case 'bit':
         return 'bit';
       default:
         return 'pg_catalog.' + typeName;
-      // throw new Error(format('Unhandled data type: %s', typeName));
     }
   }
 
@@ -259,8 +247,7 @@ export default class Deparser {
       return mods(this.listQuotes(names, '.'), args);
     }
 
-    const res = this.convertTypeName(type, args);
-
+    const res = this.getPgCatalogTypeName(type, args);
     return mods(res, args);
   }
 
