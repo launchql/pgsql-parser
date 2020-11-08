@@ -21,6 +21,10 @@ it('parens', () => {
   check('parens.sql');
 });
 
+it('comment', () => {
+  check('comment.sql');
+});
+
 it('drops', () => {
   check('drops.sql');
 });

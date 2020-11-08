@@ -959,9 +959,11 @@ export default class Deparser {
       if (node.object.length === 3) {
         output.push(this.deparse(node.object[2], context));
         output.push('ON');
-        output.push(this.deparse(node.object[0], context));
-        output.push('.');
-        output.push(this.deparse(node.object[1], context));
+        output.push(
+          this.deparse(node.object[0], context) +
+            '.' +
+            this.deparse(node.object[1], context)
+        );
       } else {
         output.push(this.deparse(node.object[1], context));
         output.push('ON');
@@ -994,8 +996,18 @@ export default class Deparser {
 
     output.push('IS');
 
+    const escapeComment = (str) => {
+      return str.replace(/\\/g, '\\');
+    };
+
     if (node.comment) {
-      output.push(`E'${node.comment}'`);
+      if (/[^a-zA-Z0-9]/.test(node.comment)) {
+        // no special chars we care about...
+        output.push(`E'${escapeComment(node.comment)}'`);
+      } else {
+        // find a double \\n or \\ something...
+        output.push(`'${node.comment}'`);
+      }
     } else {
       output.push('NULL');
     }
