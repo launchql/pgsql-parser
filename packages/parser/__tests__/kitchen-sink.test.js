@@ -80,6 +80,9 @@ describe('kitchen sink', () => {
   it('update', () => {
     check('statements/update.sql');
   });
+  it('select', () => {
+    check('statements/select.sql');
+  });
   it('conflicts', () => {
     check('statements/conflicts.sql');
   });
