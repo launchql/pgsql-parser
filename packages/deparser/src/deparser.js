@@ -2326,6 +2326,35 @@ export default class Deparser {
     return output.join(' ');
   }
 
+  ['AlterPolicyStmt'](node, context = {}) {
+    const output = [];
+    output.push('ALTER POLICY');
+
+    output.push(this.quote(node.policy_name));
+
+    if (node.table) {
+      output.push('ON');
+      output.push(this.deparse(node.table, context));
+    }
+
+    output.push('TO');
+    output.push(this.list(node.roles));
+
+    if (node.with_check) {
+      output.push('WITH CHECK');
+      output.push('(');
+      output.push(this.deparse(node.with_check, context));
+      output.push(')');
+    } else if (node.qual) {
+      output.push('USING');
+      output.push('(');
+      output.push(this.deparse(node.qual, context));
+      output.push(')');
+    }
+
+    return output.join(' ');
+  }
+
   ['ViewStmt'](node, context = {}) {
     const output = [];
     output.push('CREATE VIEW');

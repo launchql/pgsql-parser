@@ -40,4 +40,22 @@ WITH CHECK (
     id = current_setting('user.id')::uuid
 );
 
+ALTER POLICY authenticated_can_select_on_user_permissions_select
+    ON perm_schema.user_permissions
+    TO authenticated
+
+    USING ((EXISTS ( SELECT 1
+   FROM acl_schema.mbr_acl acl
+  WHERE (acl.actor_id = jwt_public.current_user_id()))))
+  ;
+
+
+ALTER POLICY authenticated_can_select_on_user_permissions_select
+    ON perm_schema.user_permissions
+    TO authenticated
+
+    WITH CHECK ((EXISTS ( SELECT 1
+   FROM acl_schema.mbr_acl acl
+  WHERE (acl.actor_id = jwt_public.current_user_id()))))
+  ;
 
