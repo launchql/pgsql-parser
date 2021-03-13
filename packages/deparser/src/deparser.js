@@ -2311,15 +2311,17 @@ export default class Deparser {
     output.push('TO');
     output.push(this.list(node.roles));
 
+    if (node.qual) {
+      output.push('USING');
+      output.push('(');
+      output.push(this.deparse(node.qual, context));
+      output.push(')');
+    }
+
     if (node.with_check) {
       output.push('WITH CHECK');
       output.push('(');
       output.push(this.deparse(node.with_check, context));
-      output.push(')');
-    } else if (node.qual) {
-      output.push('USING');
-      output.push('(');
-      output.push(this.deparse(node.qual, context));
       output.push(')');
     }
 
@@ -2340,15 +2342,17 @@ export default class Deparser {
     output.push('TO');
     output.push(this.list(node.roles));
 
+    if (node.qual) {
+      output.push('USING');
+      output.push('(');
+      output.push(this.deparse(node.qual, context));
+      output.push(')');
+    }
+
     if (node.with_check) {
       output.push('WITH CHECK');
       output.push('(');
       output.push(this.deparse(node.with_check, context));
-      output.push(')');
-    } else if (node.qual) {
-      output.push('USING');
-      output.push('(');
-      output.push(this.deparse(node.qual, context));
       output.push(')');
     }
 
