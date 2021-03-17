@@ -1,5 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`generated 1`] = `""`;
+exports[`generated 1`] = `
+"CREATE TABLE people (
+ 	color_id int IDENTITY,
+	height_cm numeric,
+	height_in numeric GENERATED ( height_cm / 2.54 ),
+	gen_def_identity numeric IDENTITY,
+	gen_alw_identity numeric IDENTITY 
+);"
+`;
 
 exports[`include-index 1`] = `"CREATE UNIQUE INDEX new_unique_idx ON new_example ( a, b ) INCLUDE ( c );"`;

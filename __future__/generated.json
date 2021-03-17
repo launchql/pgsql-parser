@@ -39,7 +39,7 @@
                     "constraints": [
                       {
                         "Constraint": {
-                          "contype": 4,
+                          "contype": 3,
                           "location": 41,
                           "generated_when": "a",
                           "options": [
@@ -51,7 +51,7 @@
                                     "ival": 17
                                   }
                                 },
-                                "defaction": "DEFELEM_UNSPEC",
+                                "defaction": 0,
                                 "location": 71
                               }
                             },
@@ -63,7 +63,7 @@
                                     "ival": 21
                                   }
                                 },
-                                "defaction": "DEFELEM_UNSPEC",
+                                "defaction": 0,
                                 "location": 85
                               }
                             }
@@ -128,7 +128,7 @@
                           "location": 148,
                           "raw_expr": {
                             "A_Expr": {
-                              "kind": "AEXPR_OP",
+                              "kind": 0,
                               "name": [
                                 {
                                   "String": {
@@ -193,7 +193,7 @@
                     "constraints": [
                       {
                         "Constraint": {
-                          "contype": 4,
+                          "contype": 3,
                           "location": 224,
                           "generated_when": "d"
                         }
@@ -227,7 +227,7 @@
                     "constraints": [
                       {
                         "Constraint": {
-                          "contype": 4,
+                          "contype": 3,
                           "location": 287,
                           "generated_when": "a"
                         }
@@ -237,7 +237,7 @@
                   }
                 }
               ],
-              "oncommit": "ONCOMMIT_NOOP"
+              "oncommit": 0
             }
           },
           "stmt_len": 317

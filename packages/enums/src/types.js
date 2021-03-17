@@ -122,13 +122,17 @@ export const getConstraintFromConstrType = (type) => {
       return 'EXCLUDE';
     case CONSTRAINT_TYPES.CONSTR_FOREIGN:
       return 'REFERENCES';
+      
+    case CONSTRAINT_TYPES.CONSTR_GENERATED:
+      return 'GENERATED';
+      
+      case CONSTRAINT_TYPES.CONSTR_IDENTITY:
+      return 'IDENTITY';
 
-    case CONSTRAINT_TYPES.CONSTR_IDENTITY:
     case CONSTRAINT_TYPES.CONSTR_ATTR_DEFERRABLE:
     case CONSTRAINT_TYPES.CONSTR_ATTR_NOT_DEFERRABLE:
     case CONSTRAINT_TYPES.CONSTR_ATTR_DEFERRED:
     case CONSTRAINT_TYPES.CONSTR_ATTR_IMMEDIATE:
-    case CONSTRAINT_TYPES.CONSTR_GENERATED:
     default:
       return fail(type, 'ConstrType');
   }
