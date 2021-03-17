@@ -2571,11 +2571,29 @@ export default class Deparser {
   ['ConstraintStmt'](node) {
     const output = [];
     const constraint = getConstraintFromConstrType(node.contype);
+    
+
     if (node.conname) {
       output.push('CONSTRAINT');
       output.push(node.conname);
       if (!node.pktable) {
         output.push(constraint);
+      }
+    } else if (node.contype === 3) {
+      // IDENTITY
+      output.push('GENERATED');
+      if (node.generated_when == 'a') {
+        output.push('ALWAYS AS');
+      } else {
+        output.push('BY DEFAULT AS');
+      }
+      output.push('IDENTITY');
+
+    } else if (node.contype === 13) {
+      // GENERATED
+      output.push('GENERATED');
+      if (node.generated_when == 'a') {
+        output.push('ALWAYS AS');
       }
     } else {
       output.push(constraint);
