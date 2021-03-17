@@ -1237,6 +1237,11 @@ export default class Deparser {
       output.push(this.list(node.indexParams, ', ', '', context));
       output.push(')');
     }
+    if (node.indexIncludingParams) {
+      output.push('INCLUDE (');
+      output.push(this.list(node.indexIncludingParams, ', ', '', context));
+      output.push(')');
+    }
 
     if (node.whereClause) {
       output.push('WHERE');
