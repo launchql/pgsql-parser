@@ -128,6 +128,7 @@ export const getConstraintFromConstrType = (type) => {
     case CONSTRAINT_TYPES.CONSTR_ATTR_NOT_DEFERRABLE:
     case CONSTRAINT_TYPES.CONSTR_ATTR_DEFERRED:
     case CONSTRAINT_TYPES.CONSTR_ATTR_IMMEDIATE:
+    case CONSTRAINT_TYPES.CONSTR_GENERATED:
     default:
       return fail(type, 'ConstrType');
   }

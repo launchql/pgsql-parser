@@ -1,47 +1,51 @@
-[
-  {
-    "RawStmt": {
-      "stmt": {
-        "IndexStmt": {
-          "idxname": "new_unique_idx",
-          "relation": {
-            "RangeVar": {
-              "relname": "new_example",
-              "inh": true,
-              "relpersistence": "p",
-              "location": 41
-            }
-          },
-          "accessMethod": "btree",
-          "indexParams": [
-            {
-              "IndexElem": {
-                "name": "a",
-                "ordering": "SORTBY_DEFAULT",
-                "nulls_ordering": "SORTBY_NULLS_DEFAULT"
+{
+  "query": {
+    "version": 130002,
+    "stmts": [
+      {
+        "stmt": {
+          "IndexStmt": {
+            "idxname": "new_unique_idx",
+            "relation": {
+              "RangeVar": {
+                "relname": "new_example",
+                "inh": true,
+                "relpersistence": "p",
+                "location": 41
               }
             },
-            {
-              "IndexElem": {
-                "name": "b",
-                "ordering": "SORTBY_DEFAULT",
-                "nulls_ordering": "SORTBY_NULLS_DEFAULT"
+            "accessMethod": "btree",
+            "indexParams": [
+              {
+                "IndexElem": {
+                  "name": "a",
+                  "ordering": "SORTBY_DEFAULT",
+                  "nulls_ordering": "SORTBY_NULLS_DEFAULT"
+                }
+              },
+              {
+                "IndexElem": {
+                  "name": "b",
+                  "ordering": "SORTBY_DEFAULT",
+                  "nulls_ordering": "SORTBY_NULLS_DEFAULT"
+                }
               }
-            }
-          ],
-          "indexIncludingParams": [
-            {
-              "IndexElem": {
-                "name": "c",
-                "ordering": "SORTBY_DEFAULT",
-                "nulls_ordering": "SORTBY_NULLS_DEFAULT"
+            ],
+            "indexIncludingParams": [
+              {
+                "IndexElem": {
+                  "name": "c",
+                  "ordering": "SORTBY_DEFAULT",
+                  "nulls_ordering": "SORTBY_NULLS_DEFAULT"
+                }
               }
-            }
-          ],
-          "unique": true
-        }
-      },
-      "stmt_len": 70
-    }
-  }
-]
+            ],
+            "unique": true
+          }
+        },
+        "stmt_len": 70
+      }
+    ]
+  },
+  "stderr": ""
+}

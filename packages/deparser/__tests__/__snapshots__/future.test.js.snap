@@ -1,3 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`generated 1`] = `""`;
+
 exports[`include-index 1`] = `"CREATE UNIQUE INDEX new_unique_idx ON new_example ( a, b ) INCLUDE ( c );"`;
