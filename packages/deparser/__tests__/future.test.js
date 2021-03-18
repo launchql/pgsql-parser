@@ -7,7 +7,7 @@ const FIXTURE_DIR = `${__dirname}/../../../__future__`;
 
 export const check = (file) => {
   const testsql = glob(`${FIXTURE_DIR}/${file}*.sql`).map((f) =>
-    readFileSync(f).toString()
+    readFileSync(f, 'utf-8')
   )[0];
   const testjson = glob(`${FIXTURE_DIR}/${file}*.json`).map((f) =>
     JSON.parse(readFileSync(f, 'utf-8'))
@@ -18,8 +18,10 @@ export const check = (file) => {
   }));
 
   const sql = deparse(tree);
+
   console.log(sql);
   console.log(testsql);
+
   expect(sql).toMatchSnapshot();
 };
 
