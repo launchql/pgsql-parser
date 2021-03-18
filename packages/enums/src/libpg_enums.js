@@ -1053,6 +1053,10 @@ module.exports = {
         {
           name: 'CONSTR_ATTR_IMMEDIATE',
           comment: null
+        },
+        {
+          name: 'CONSTR_GENERATED',
+          comment: null
         }
       ],
       comment:

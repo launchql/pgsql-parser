@@ -1063,6 +1063,21 @@ export default class Deparser {
       name = `${node.defnamespace}.${node.defname}`;
     }
 
+    if (context === 'generated') {
+      switch (name) {
+        case 'start': {
+          const start = this.deparse(node.arg, context);
+          return `START WITH ${start}`;
+        }
+        case 'increment': {
+          const inc = this.deparse(node.arg, context);
+          return `INCREMENT BY ${inc}`;
+        }
+        default:
+          throw new Error('NOT_IMPLEMENTED');
+      }
+    }
+
     if (context === 'sequence') {
       switch (name) {
         case 'cycle': {
@@ -1235,6 +1250,11 @@ export default class Deparser {
     if (node.indexParams) {
       output.push('(');
       output.push(this.list(node.indexParams, ', ', '', context));
+      output.push(')');
+    }
+    if (node.indexIncludingParams) {
+      output.push('INCLUDE (');
+      output.push(this.list(node.indexIncludingParams, ', ', '', context));
       output.push(')');
     }
 
@@ -2566,11 +2586,33 @@ export default class Deparser {
   ['ConstraintStmt'](node) {
     const output = [];
     const constraint = getConstraintFromConstrType(node.contype);
+
     if (node.conname) {
       output.push('CONSTRAINT');
       output.push(node.conname);
       if (!node.pktable) {
         output.push(constraint);
+      }
+    } else if (node.contype === 3) {
+      // IDENTITY
+      output.push('GENERATED');
+      if (node.generated_when == 'a') {
+        output.push('ALWAYS AS');
+      } else {
+        output.push('BY DEFAULT AS');
+      }
+      output.push('IDENTITY');
+      if (node.options && node.options.length) {
+        output.push('(');
+        output.push(this.list(node.options, ' ', '', 'generated'));
+        output.push(')');
+      }
+    } else if (node.contype === 13) {
+      // 13 IS NOT the real contype, this is to include the future in the past...
+      // GENERATED
+      output.push('GENERATED');
+      if (node.generated_when == 'a') {
+        output.push('ALWAYS AS');
       }
     } else {
       output.push(constraint);
@@ -2666,6 +2708,9 @@ export default class Deparser {
       output.push('(');
       output.push(this.deparse(node.raw_expr, context));
       output.push(')');
+      if (node.contype == 13) {
+        output.push('STORED');
+      }
     }
 
     if (node.fk_del_action) {
