@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`add-generated 1`] = `"ALTER TABLE mytable ADD COLUMN  height_in numeric GENERATED ALWAYS AS ( height_cm / 2.54 ) STORED;"`;
+
 exports[`generated 1`] = `
 "CREATE TABLE people (
  	color_id int GENERATED ALWAYS AS IDENTITY ( START WITH 17 INCREMENT BY 21 ),

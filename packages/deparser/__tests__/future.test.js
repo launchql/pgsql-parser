@@ -27,6 +27,10 @@ it('include-index', () => {
   check('include-index');
 });
 
-it.only('generated', () => {
+it('add-generated', () => {
+  check('add-generated');
+});
+
+it('generated', () => {
   check('generated');
 });
