@@ -6,10 +6,10 @@ import { sync as glob } from 'glob';
 const FIXTURE_DIR = `${__dirname}/../../../__future__`;
 
 export const check = (file) => {
-  const testsql = glob(`${FIXTURE_DIR}/${file}*.sql`).map((f) =>
+  const testsql = glob(`${FIXTURE_DIR}/${file}.sql`).map((f) =>
     readFileSync(f, 'utf-8')
   )[0];
-  const testjson = glob(`${FIXTURE_DIR}/${file}*.json`).map((f) =>
+  const testjson = glob(`${FIXTURE_DIR}/${file}.json`).map((f) =>
     JSON.parse(readFileSync(f, 'utf-8'))
   )[0];
 
