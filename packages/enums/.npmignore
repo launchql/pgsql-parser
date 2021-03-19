@@ -16,6 +16,7 @@ yarn.lock
 __future__
 __fixtures__
 __tests__
+scripts
 .babelrc
 .babelrc.js
 .editorconfig

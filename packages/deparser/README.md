@@ -1,8 +1,6 @@
 # pgsql-parser [![Build Status](https://travis-ci.org/pyramation/pgsql-parser.svg?branch=master)](https://travis-ci.org/pyramation/pgsql-parser)
 
-The real PostgreSQL parser for nodejs. The primary objective of this module is to provide symmetric parsing
-and deparsing of SQL statements. With this module you can modify parts of a SQL query statement and
-serialize the query tree back into a formatted SQL statement. It uses the *real* [PostgreSQL parser](https://github.com/lfittl/libpg_query).
+The real PostgreSQL parser for nodejs. The primary objective of this module is to provide symmetric parsing and deparsing of SQL statements. With this module you can modify parts of a SQL query statement and serialize the query tree back into a formatted SQL statement. It uses the *real* [PostgreSQL parser](https://github.com/pganalyze/libpg_query).
 
 The main functionality provided by this module is deparsing, which PostgreSQL does not have internally.
 
@@ -12,20 +10,49 @@ The main functionality provided by this module is deparsing, which PostgreSQL do
 npm install pgsql-parser
 ```
 
-## Example
+## Parser Example
 
 Rewrite part of a SQL query:
 
 ```js
-const parser = require('pgsql-parser');
+const { parse, deparse } = require('pgsql-parser');
 
-const query = parser.parse('SELECT * FROM test_table');
+const { stmts } = parse('SELECT * FROM test_table');
 
-query[0].SelectStmt.fromClause[0].RangeVar.relname = 'another_table';
+stmts[0].stmt.SelectStmt.fromClause[0].RangeVar.relname = 'another_table';
 
-console.log(parser.deparse(query));
+console.log(deparse({stmts}));
 
 // SELECT * FROM "another_table"
+```
+
+## Deparser Example
+
+The deparser can be used separately, which removes many deps required for the parser:
+
+```js
+const { parse } = require('pgsql-parser');
+const { deparse } = require('pgsql-deparser');
+
+const { stmts } = parse('SELECT * FROM test_table');
+
+stmts[0].stmt.SelectStmt.fromClause[0].RangeVar.relname = 'another_table';
+
+console.log(deparse({stmts}));
+
+// SELECT * FROM "another_table"
+```
+
+## CLI
+
+```
+npm install -g pgsql-parser
+```
+
+### usage
+
+```sh
+pgsql-parser <sqlfile>
 ```
 
 ### Documentation
@@ -66,8 +93,8 @@ Returns a normalized formatted SQL string.
 
 ## Related
 
-* [pg-query-native-latest](https://github.com/pyramation/node-pg-query-native)
-* [libpg_query](https://github.com/lfittl/libpg_query)
+* [libpg-query-node](https://github.com/pyramation/libpg-query-node)
+* [libpg_query](https://github.com/pganalyze/libpg_query)
 * [pg_query](https://github.com/lfittl/pg_query)
 * [pg_query.go](https://github.com/lfittl/pg_query.go)
 

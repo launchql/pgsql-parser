@@ -9,3 +9,5 @@ CREATE UNIQUE INDEX boom_worktree_idx ON boom.worktree (tag, reference, created,
 CREATE UNIQUE INDEX uniq_service_when_not_null
   ON schema2.table3 (uid, svc)
   WHERE svc IS NOT NULL;
+
+CREATE UNIQUE INDEX new_unique_idx ON new_example(a, b) INCLUDE (c);

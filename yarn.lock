@@ -2289,14 +2289,6 @@
   dependencies:
     "@types/node" ">= 8"
 
-"@pgql/parse@1.2.6":
-  version "1.2.6"
-  resolved "https://registry.npmjs.org/@pgql/parse/-/parse-1.2.6.tgz#abda96d49cfbb54b06e63293d9b2e0fea5b26f91"
-  integrity sha512-YQu8io3va70Qpv3Wn36xSe7Mr5P7i9IYVdCS4XK2O08Q1Rc1F1JFm9zKPSQk8TQ8Uth7g4gQCoV0zf+MwW+IBg==
-  dependencies:
-    node-addon-api "^1.6.3"
-    node-gyp "^3.3.1"
-
 "@pyramation/babel-preset-env@0.1.0":
   version "0.1.0"
   resolved "https://registry.npmjs.org/@pyramation/babel-preset-env/-/babel-preset-env-0.1.0.tgz#cb9bf3a507d79b9ceb8b7e83815ed1a672209952"
@@ -2803,6 +2795,13 @@ babel-plugin-dynamic-import-node@^2.3.3:
   dependencies:
     object.assign "^4.1.0"
 
+babel-plugin-inline-json-import@0.3.2:
+  version "0.3.2"
+  resolved "https://registry.npmjs.org/babel-plugin-inline-json-import/-/babel-plugin-inline-json-import-0.3.2.tgz#fdec1a59364d632895d421aec4c9435ccbbcadd3"
+  integrity sha512-QNNJx08KjmMT25Cw7rAPQ6dlREDPiZGDyApHL8KQ9vrQHbrr4PTi7W8g1tMMZPz0jEMd39nx/eH7xjnDNxq5sA==
+  dependencies:
+    decache "^4.5.1"
+
 babel-plugin-istanbul@^5.1.0:
   version "5.2.0"
   resolved "https://registry.npmjs.org/babel-plugin-istanbul/-/babel-plugin-istanbul-5.2.0.tgz#df4ade83d897a92df069c4d9a25cf2671293c854"
@@ -3097,6 +3096,11 @@ caller-path@^2.0.0:
   integrity sha1-Ro+DBE42mrIBD6xfBs7uFbsssfQ=
   dependencies:
     caller-callsite "^2.0.0"
+
+callsite@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/callsite/-/callsite-1.0.0.tgz#280398e5d664bd74038b6f0905153e6e8af1bc20"
+  integrity sha1-KAOY5dZkvXQDi28JBRU+borxvCA=
 
 callsites@^2.0.0:
   version "2.0.0"
@@ -3697,6 +3701,13 @@ debuglog@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/debuglog/-/debuglog-1.0.1.tgz#aa24ffb9ac3df9a2351837cfb2d279360cd78492"
   integrity sha1-qiT/uaw9+aI1GDfPstJ5NgzXhJI=
+
+decache@^4.5.1:
+  version "4.6.0"
+  resolved "https://registry.npmjs.org/decache/-/decache-4.6.0.tgz#87026bc6e696759e82d57a3841c4e251a30356e8"
+  integrity sha512-PppOuLiz+DFeaUvFXEYZjLxAkKiMYH/do/b/MxpDe/8AgKBi5GhZxridoVIbBq72GDbL36e4p0Ce2jTGUwwU+w==
+  dependencies:
+    callsite "^1.0.0"
 
 decamelize-keys@^1.0.0, decamelize-keys@^1.1.0:
   version "1.1.0"
@@ -6114,6 +6125,14 @@ levn@^0.3.0, levn@~0.3.0:
   dependencies:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
+
+libpg-query@13.0.1:
+  version "13.0.1"
+  resolved "https://registry.npmjs.org/libpg-query/-/libpg-query-13.0.1.tgz#1bcf0c29513d5d4a7f57e044648eae0e829e3f84"
+  integrity sha512-LGERs4fZbEDrYem+iMuKcDgtKLqRF0HzIfpf7TjjcLgUVAFL8tkKpVyB5ODi2XsqV4NLOaXDiLz7uItXP2Ot5w==
+  dependencies:
+    node-addon-api "^1.6.3"
+    node-gyp "^3.3.1"
 
 lines-and-columns@^1.1.6:
   version "1.1.6"
