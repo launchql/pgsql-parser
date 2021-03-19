@@ -485,40 +485,6 @@ export default class Deparser {
             );
           }
         }
-        // if (node.name[0].String.str === '!~') {
-        //   if (this.deparse(node.rexpr.FuncCall.args[1].Null, context)) {
-        //     output.push(
-        //       format(
-        //         'NOT SIMILAR TO %s',
-        //         this.deparse(node.rexpr.FuncCall.args[0], context)
-        //       )
-        //     );
-        //   } else {
-        //     output.push(
-        //       format(
-        //         'NOT SIMILAR TO %s ESCAPE %s',
-        //         this.deparse(node.rexpr.FuncCall.args[0], context),
-        //         this.deparse(node.rexpr.FuncCall.args[1], context)
-        //       )
-        //     );
-        //   }
-        // } else if (this.deparse(node.rexpr.FuncCall.args[1].Null, context)) {
-        //   output.push(
-        //     format(
-        //       'SIMILAR TO %s',
-        //       this.deparse(node.rexpr.FuncCall.args[0], context)
-        //     )
-        //   );
-        // } else {
-        //   output.push(
-        //     format(
-        //       'SIMILAR TO %s ESCAPE %s',
-        //       this.deparse(node.rexpr.FuncCall.args[0], context),
-        //       this.deparse(node.rexpr.FuncCall.args[1], context)
-        //     )
-        //   );
-        // }
-
         return output.join(' ');
 
       case 'AEXPR_BETWEEN':
@@ -896,10 +862,7 @@ export default class Deparser {
 
     if (node.collClause) {
       output.push('COLLATE');
-      const str = dotty.get(
-        node,
-        'collClause.CollateClause.collname.0.String.str'
-      );
+      const str = dotty.get(node, 'collClause.collname.0.String.str');
       output.push(this.quote(str));
     }
 
@@ -1220,19 +1183,19 @@ export default class Deparser {
 
   ['GroupingSet'](node, context = {}) {
     switch (node.kind) {
-      case 0: // GROUPING_SET_EMPTY
+      case 'GROUPING_SET_EMPTY':
         return '()';
 
-      case 1: // GROUPING_SET_SIMPLE
+      case 'GROUPING_SET_SIMPLE':
         return fail('GroupingSet', node);
 
-      case 2: // GROUPING_SET_ROLLUP
+      case 'GROUPING_SET_ROLLUP':
         return 'ROLLUP (' + this.list(node.content, ', ', '', context) + ')';
 
-      case 3: // GROUPING_SET_CUBE
+      case 'GROUPING_SET_CUBE':
         return 'CUBE (' + this.list(node.content, ', ', '', context) + ')';
 
-      case 4: // GROUPING_SET_SETS
+      case 'GROUPING_SET_SETS':
         return (
           'GROUPING SETS (' + this.list(node.content, ', ', '', context) + ')'
         );
@@ -1532,17 +1495,27 @@ export default class Deparser {
   }
 
   ['LockingClause'](node, context = {}) {
-    const strengths = [
-      'NONE', // LCS_NONE
-      'FOR KEY SHARE',
-      'FOR SHARE',
-      'FOR NO KEY UPDATE',
-      'FOR UPDATE'
-    ];
-
     const output = [];
 
-    output.push(strengths[node.strength]);
+    switch (node.strength) {
+      case 'LCS_NONE':
+        output.push('NONE');
+        break;
+      case 'LCS_FORKEYSHARE':
+        output.push('FOR KEY SHARE');
+        break;
+      case 'LCS_FORSHARE':
+        output.push('FOR SHARE');
+        break;
+      case 'LCS_FORNOKEYUPDATE':
+        output.push('FOR NO KEY UPDATE');
+        break;
+      case 'LCS_FORUPDATE':
+        output.push('FOR UPDATE');
+        break;
+      default:
+        return fail('LockingClause', node);
+    }
 
     if (node.lockedRels) {
       output.push('OF');
@@ -1555,7 +1528,7 @@ export default class Deparser {
   ['MinMaxExpr'](node, context = {}) {
     const output = [];
 
-    if (node.op === 0) {
+    if (node.op === 'IS_GREATEST') {
       output.push('GREATEST');
     } else {
       output.push('LEAST');
@@ -1933,7 +1906,7 @@ export default class Deparser {
     } else if (node.relkind === 'OBJECT_TYPE') {
       output.push('TYPE');
     } else {
-      throw new Error('for now throw');
+      fail('AlterTableStmt', node);
     }
     if (node.missing_ok) {
       output.push('IF EXISTS');
@@ -2556,6 +2529,7 @@ export default class Deparser {
     }
 
     if (node.options) {
+      // TODO was this deprecated?
       node.options.forEach((opt) => {
         if (dotty.get(opt, 'DefElem.defname') === 'oids') {
           if (Number(dotty.get(opt, 'DefElem.arg.Integer.ival')) === 1) {
@@ -2880,14 +2854,6 @@ export default class Deparser {
     const returns = parameters.filter(
       ({ FunctionParameter }) => FunctionParameter.mode === 'FUNC_PARAM_TABLE'
     );
-
-    // const outs = parameters.filter(
-    //   ({ FunctionParameter }) => FunctionParameter.mode === 111
-    // );
-
-    // var setof = node.parameters.filter(
-    //   ({ FunctionParameter }) => FunctionParameter.mode === 109
-    // );
 
     if (returns.length > 0) {
       output.push('RETURNS');
