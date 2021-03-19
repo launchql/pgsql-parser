@@ -2,53 +2,58 @@ import { format } from 'util';
 const fail = (type, node) => {
   throw new Error(format('Unhandled %s node: %s', type, JSON.stringify(node)));
 };
-const LIBPG_ENUMS = require('./libpg_enums');
+// const LIBPG_ENUMS = require('./libpg_enums').enums;
 
-export const createTypeFromEnums = (type) =>
-  LIBPG_ENUMS['nodes/parsenodes'][type].values.reduce((m, v, i) => {
-    if (i === 0) {
-      return m;
-    } // skip first noop
-    m[v.name] = i - 1;
-    // m[i - 1] = v.name; // for reverse lookup
-    return m;
-  }, {});
+// export const createTypeFromEnums = (type) =>
+//   LIBPG_ENUMS['nodes/parsenodes'][type].values.reduce((m, v, i) => {
+//     if (i === 0) {
+//       return m;
+//     } // skip first noop
+//     m[v.name] = i - 1;
+//     // m[i - 1] = v.name; // for reverse lookup
+//     return m;
+//   }, {});
 
-export const createTypeFnFromEnums = (type) => {
-  const struct = LIBPG_ENUMS['nodes/parsenodes'][type].values.reduce(
-    (m, v, i) => {
-      if (i === 0) {
-        return m;
-      } // skip first noop
-      m.strToInt[v.name] = i - 1;
-      m.intToStr[i - 1] = v.name;
-      return m;
-    },
-    {
-      intToStr: {},
-      strToInt: {}
-    }
-  );
-  return (input) => {
-    if (typeof input === 'string') {
-      return struct.strToInt[input];
-    }
-    return struct.intToStr[input];
-  };
-};
+// export const createTypeFnFromEnums = (type) => {
+//   try {
+//     const struct = LIBPG_ENUMS['nodes/parsenodes'][type].values.reduce(
+//       (m, v, i) => {
+//         if (i === 0) {
+//           return m;
+//         } // skip first noop
+//         m.strToInt[v.name] = i - 1;
+//         m.intToStr[i - 1] = v.name;
+//         return m;
+//       },
+//       {
+//         intToStr: {},
+//         strToInt: {}
+//       }
+//     );
+//   } catch (e) {
+//     console.log(type);
+//   }
 
-export const getObjectType = createTypeFnFromEnums('ObjectType');
+//   return (input) => {
+//     if (typeof input === 'string') {
+//       return struct.strToInt[input];
+//     }
+//     return struct.intToStr[input];
+//   };
+// };
 
-export const OBJECT_TYPES = createTypeFromEnums('ObjectType');
-export const VARIABLESET_TYPES = createTypeFromEnums('VariableSetKind');
-export const GRANTTARGET_TYPES = createTypeFromEnums('GrantTargetType');
-export const GRANTOBJECT_TYPES = createTypeFromEnums('GrantObjectType');
-export const CONSTRAINT_TYPES = createTypeFromEnums('ConstrType');
-export const ROLESTMT_TYPES = createTypeFromEnums('RoleStmtType');
-export const ROLESPEC_TYPES = createTypeFromEnums('RoleSpecType');
-export const TRANSACTIONSTMT_TYPES = createTypeFromEnums('TransactionStmtKind');
-export const SORTBYDIR_TYPES = createTypeFromEnums('SortByDir');
-export const SORTBYNULLS_TYPES = createTypeFromEnums('SortByNulls');
+// export const getObjectType = createTypeFnFromEnums('ObjectType');
+
+// export const OBJECT_TYPES = createTypeFromEnums('ObjectType');
+// export const VARIABLESET_TYPES = createTypeFromEnums('VariableSetKind');
+// export const GRANTTARGET_TYPES = createTypeFromEnums('GrantTargetType');
+// export const GRANTOBJECT_TYPES = createTypeFromEnums('GrantObjectType');
+// export const CONSTRAINT_TYPES = createTypeFromEnums('ConstrType');
+// export const ROLESTMT_TYPES = createTypeFromEnums('RoleStmtType');
+// export const ROLESPEC_TYPES = createTypeFromEnums('RoleSpecType');
+// export const TRANSACTIONSTMT_TYPES = createTypeFromEnums('TransactionStmtKind');
+// export const SORTBYDIR_TYPES = createTypeFromEnums('SortByDir');
+// export const SORTBYNULLS_TYPES = createTypeFromEnums('SortByNulls');
 
 export const TYPE_NAMES = {
   OBJECT_ACCESS_METHOD: 'ACCESS METHOD',
@@ -92,47 +97,45 @@ export const TYPE_NAMES = {
   OBJECT_VIEW: 'VIEW'
 };
 
-const _TYPE_VALUES = Object.values(OBJECT_TYPES);
-const _TYPE_KEYS = Object.keys(OBJECT_TYPES);
+// const _TYPE_VALUES = Object.values(OBJECT_TYPES);
+// const _TYPE_KEYS = Object.keys(OBJECT_TYPES);
 
-export const objtypeIs = (objtype, name) => OBJECT_TYPES[name] === objtype;
+// TODO remove this
+export const objtypeIs = (objtype, name) => name === objtype;
 
 export const objtypeName = (arg) => {
-  if (typeof arg === 'string') {
-    return TYPE_NAMES[arg];
-  }
-  return TYPE_NAMES[_TYPE_KEYS[_TYPE_VALUES.indexOf(arg)]];
+  return TYPE_NAMES[arg];
 };
 
 export const getConstraintFromConstrType = (type) => {
   switch (type) {
-    case CONSTRAINT_TYPES.CONSTR_NULL:
+    case 'CONSTR_NULL':
       return 'NULL';
-    case CONSTRAINT_TYPES.CONSTR_NOTNULL:
+    case 'CONSTR_NOTNULL':
       return 'NOT NULL';
-    case CONSTRAINT_TYPES.CONSTR_DEFAULT:
+    case 'CONSTR_DEFAULT':
       return 'DEFAULT';
-    case CONSTRAINT_TYPES.CONSTR_CHECK:
+    case 'CONSTR_CHECK':
       return 'CHECK';
-    case CONSTRAINT_TYPES.CONSTR_PRIMARY:
+    case 'CONSTR_PRIMARY':
       return 'PRIMARY KEY';
-    case CONSTRAINT_TYPES.CONSTR_UNIQUE:
+    case 'CONSTR_UNIQUE':
       return 'UNIQUE';
-    case CONSTRAINT_TYPES.CONSTR_EXCLUSION:
+    case 'CONSTR_EXCLUSION':
       return 'EXCLUDE';
-    case CONSTRAINT_TYPES.CONSTR_FOREIGN:
+    case 'CONSTR_FOREIGN':
       return 'REFERENCES';
 
-    case CONSTRAINT_TYPES.CONSTR_GENERATED:
+    case 'CONSTR_GENERATED':
       return 'GENERATED';
 
-    case CONSTRAINT_TYPES.CONSTR_IDENTITY:
+    case 'CONSTR_IDENTITY':
       return 'IDENTITY';
 
-    case CONSTRAINT_TYPES.CONSTR_ATTR_DEFERRABLE:
-    case CONSTRAINT_TYPES.CONSTR_ATTR_NOT_DEFERRABLE:
-    case CONSTRAINT_TYPES.CONSTR_ATTR_DEFERRED:
-    case CONSTRAINT_TYPES.CONSTR_ATTR_IMMEDIATE:
+    case 'CONSTR_ATTR_DEFERRABLE':
+    case 'CONSTR_ATTR_NOT_DEFERRABLE':
+    case 'CONSTR_ATTR_DEFERRED':
+    case 'CONSTR_ATTR_IMMEDIATE':
     default:
       return fail(type, 'ConstrType');
   }

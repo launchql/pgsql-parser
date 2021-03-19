@@ -25,14 +25,14 @@ export const check = (file) => {
   expect(sql).toMatchSnapshot();
 };
 
-it('include-index', () => {
+xit('include-index', () => {
   check('include-index');
 });
 
-it('add-generated', () => {
+xit('add-generated', () => {
   check('add-generated');
 });
 
-it('generated', () => {
+xit('generated', () => {
   check('generated');
 });

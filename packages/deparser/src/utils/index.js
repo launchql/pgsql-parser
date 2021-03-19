@@ -64,9 +64,9 @@ export const cleanTree = (tree) => {
     location: noop,
     DefElem: (obj) => {
       if (obj.defname === 'as') {
-        if (Array.isArray(obj.arg) && obj.arg.length) {
+        if (obj.arg.List && obj.arg.List.items) {
           // function
-          obj.arg[0].String.str = obj.arg[0].String.str.trim();
+          obj.arg.List.items[0].String.str = obj.arg.List.items[0].String.str.trim();
         } else {
           // do stmt
           obj.arg.String.str = obj.arg.String.str.trim();

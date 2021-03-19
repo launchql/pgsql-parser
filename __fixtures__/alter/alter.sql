@@ -149,7 +149,7 @@ ALTER TYPE test_type3 DROP ATTRIBUTE a, ADD ATTRIBUTE b int;
 CREATE TYPE tt_t0 AS (z inet, x int, y numeric(8,2));
 ALTER TYPE tt_t0 DROP ATTRIBUTE z;
 
-CREATE TABLE tt7 (x int, q text, y numeric(8,2)) WITH OIDS;
+-- CREATE TABLE tt7 (x int, q text, y numeric(8,2)) WITH OIDS;
 ALTER TABLE tt7 DROP q;								
 
 ALTER TABLE tt1 OF tt_t0;
@@ -209,3 +209,5 @@ create domain testdomain1 as int constraint unsigned check (value > 0);
 alter domain testdomain1 rename constraint unsigned to unsigned_foo;
 alter domain testdomain1 drop constraint unsigned_foo;
 drop domain testdomain1;
+
+ALTER TABLE mytable ADD COLUMN height_in numeric GENERATED ALWAYS AS (height_cm / 2.54) STORED;
