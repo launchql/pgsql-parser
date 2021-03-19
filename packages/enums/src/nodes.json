@@ -4726,5 +4726,26 @@
     "nworkers": {
       "type": "int"
     }
-  }
+  },
+  "Integer": {
+    "ival": {
+      "type": "long"
+    }
+  },
+  "Float": {
+    "str": {
+      "type": "char"
+    }
+  },
+  "String": {
+    "str": {
+      "type": "char"
+    }
+  },
+  "BitString": {
+    "str": {
+      "type": "char"
+    }
+  },
+  "Null": {}
 }

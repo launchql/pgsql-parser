@@ -2967,7 +2967,6 @@ export default class Deparser {
 
     const getTypeFromNode = (nodeObj) => {
       switch (nodeObj.objtype) {
-        case 'OBJECT_RELATION':
         case 'OBJECT_TABLE':
           if (nodeObj.targtype === 'ACL_TARGET_ALL_IN_SCHEMA') {
             return 'ALL TABLES IN SCHEMA';
@@ -2999,7 +2998,6 @@ export default class Deparser {
           return 'LANGUAGE';
         case 'OBJECT_LARGEOBJECT':
           return 'LARGE OBJECT';
-        case 'OBJECT_NAMESPACE':
         case 'OBJECT_SCHEMA':
           return 'SCHEMA';
         case 'OBJECT_TABLESPACE':

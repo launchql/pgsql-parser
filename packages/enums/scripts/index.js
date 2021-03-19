@@ -1,7 +1,6 @@
 const enums = require('./libpg_enums');
 const structs = require('./libpg_structs');
 const fs = require('fs');
-const { getEnum } = require('../main');
 
 let astNodes = {};
 const getAstNodes = (which) => {
@@ -17,7 +16,7 @@ const getAstNodes = (which) => {
       if (structs[which].hasOwnProperty(type)) {
         nested = true;
       }
-      if (enums[which].hasOwnProperty(type)) {
+      if (enums[which] && enums[which].hasOwnProperty(type)) {
         isEnum = true;
       }
       m2[field.name] = {
@@ -67,6 +66,7 @@ getAstNodes('nodes/primnodes');
 getAstNodes('nodes/parsenodes');
 getAstNodes('nodes/lockoptions');
 getAstNodes('commands/vacuum');
+getAstNodes('nodes/value');
 
 fs.writeFileSync(
   __dirname + '/../src/nodes.json',
