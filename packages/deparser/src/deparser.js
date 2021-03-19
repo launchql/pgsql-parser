@@ -1684,11 +1684,6 @@ export default class Deparser {
 
   ['RangeVar'](node, context = {}) {
     const output = [];
-    if (!node) {
-      var err = new Error('yolo');
-      console.log(err.stack);
-      throw err;
-    }
     if (node.inhOpt === 0) {
       output.push('ONLY');
     }
