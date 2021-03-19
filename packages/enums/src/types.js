@@ -1,59 +1,8 @@
 import { format } from 'util';
+
 const fail = (type, node) => {
   throw new Error(format('Unhandled %s node: %s', type, JSON.stringify(node)));
 };
-// const LIBPG_ENUMS = require('./libpg_enums').enums;
-
-// export const createTypeFromEnums = (type) =>
-//   LIBPG_ENUMS['nodes/parsenodes'][type].values.reduce((m, v, i) => {
-//     if (i === 0) {
-//       return m;
-//     } // skip first noop
-//     m[v.name] = i - 1;
-//     // m[i - 1] = v.name; // for reverse lookup
-//     return m;
-//   }, {});
-
-// export const createTypeFnFromEnums = (type) => {
-//   try {
-//     const struct = LIBPG_ENUMS['nodes/parsenodes'][type].values.reduce(
-//       (m, v, i) => {
-//         if (i === 0) {
-//           return m;
-//         } // skip first noop
-//         m.strToInt[v.name] = i - 1;
-//         m.intToStr[i - 1] = v.name;
-//         return m;
-//       },
-//       {
-//         intToStr: {},
-//         strToInt: {}
-//       }
-//     );
-//   } catch (e) {
-//     console.log(type);
-//   }
-
-//   return (input) => {
-//     if (typeof input === 'string') {
-//       return struct.strToInt[input];
-//     }
-//     return struct.intToStr[input];
-//   };
-// };
-
-// export const getObjectType = createTypeFnFromEnums('ObjectType');
-
-// export const OBJECT_TYPES = createTypeFromEnums('ObjectType');
-// export const VARIABLESET_TYPES = createTypeFromEnums('VariableSetKind');
-// export const GRANTTARGET_TYPES = createTypeFromEnums('GrantTargetType');
-// export const GRANTOBJECT_TYPES = createTypeFromEnums('GrantObjectType');
-// export const CONSTRAINT_TYPES = createTypeFromEnums('ConstrType');
-// export const ROLESTMT_TYPES = createTypeFromEnums('RoleStmtType');
-// export const ROLESPEC_TYPES = createTypeFromEnums('RoleSpecType');
-// export const TRANSACTIONSTMT_TYPES = createTypeFromEnums('TransactionStmtKind');
-// export const SORTBYDIR_TYPES = createTypeFromEnums('SortByDir');
-// export const SORTBYNULLS_TYPES = createTypeFromEnums('SortByNulls');
 
 export const TYPE_NAMES = {
   OBJECT_ACCESS_METHOD: 'ACCESS METHOD',
@@ -96,12 +45,6 @@ export const TYPE_NAMES = {
   OBJECT_TYPE: 'TYPE',
   OBJECT_VIEW: 'VIEW'
 };
-
-// const _TYPE_VALUES = Object.values(OBJECT_TYPES);
-// const _TYPE_KEYS = Object.keys(OBJECT_TYPES);
-
-// TODO remove this
-export const objtypeIs = (objtype, name) => name === objtype;
 
 export const objtypeName = (arg) => {
   return TYPE_NAMES[arg];

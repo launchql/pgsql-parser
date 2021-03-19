@@ -1,8 +1,8 @@
-export const cleanLines = sql => {
+export const cleanLines = (sql) => {
   return sql
     .split('\n')
-    .map(l => l.trim())
-    .filter(a => a)
+    .map((l) => l.trim())
+    .filter((a) => a)
     .join('\n');
 };
 
@@ -57,16 +57,16 @@ export const transform = (obj, props) => {
 
 const noop = () => undefined;
 
-export const cleanTree = tree => {
+export const cleanTree = (tree) => {
   return transform(tree, {
     stmt_len: noop,
     stmt_location: noop,
     location: noop,
-    DefElem: obj => {
+    DefElem: (obj) => {
       if (obj.defname === 'as') {
-        if (Array.isArray(obj.arg) && obj.arg.length) {
+        if (obj.arg.List && obj.arg.List.items) {
           // function
-          obj.arg[0].String.str = obj.arg[0].String.str.trim();
+          obj.arg.List.items[0].String.str = obj.arg.List.items[0].String.str.trim();
         } else {
           // do stmt
           obj.arg.String.str = obj.arg.String.str.trim();
@@ -79,7 +79,7 @@ export const cleanTree = tree => {
   });
 };
 
-export const cleanTreeWithStmt = tree => {
+export const cleanTreeWithStmt = (tree) => {
   return transform(tree, {
     stmt_location: noop,
     location: noop

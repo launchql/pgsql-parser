@@ -1,5 +1,4 @@
 import { parse } from 'pgsql-parser';
-import { preparse } from '../src';
 import { deparse } from '../src';
 import { cleanTree, cleanLines } from '../src/utils';
 import { readFileSync } from 'fs';
@@ -12,11 +11,8 @@ export const check = (file) => {
     readFileSync(f).toString()
   )[0];
   const tree = parse(testsql);
-  const preparsed = preparse(tree);
-  // console.log(JSON.stringify(preparsed));
-  expect(preparsed).toMatchSnapshot();
-  const sql = deparse(preparsed);
-  // console.log(sql);
+  expect(tree).toMatchSnapshot();
+  const sql = deparse(tree);
   expect(cleanLines(sql)).toMatchSnapshot();
   expect(cleanTree(parse(sql))).toEqual(cleanTree(tree));
 };

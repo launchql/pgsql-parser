@@ -1,3 +1,5 @@
+/* eslint-disable no-restricted-syntax */
+
 export const cleanLines = (sql) => {
   return sql
     .split('\n')

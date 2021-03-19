@@ -3,17 +3,11 @@ import { format } from 'util';
 import {
   objtypeName,
   objtypeIs,
-  getConstraintFromConstrType,
-  CONSTRAINT_TYPES,
-  VARIABLESET_TYPES,
-  ROLESTMT_TYPES,
-  TRANSACTIONSTMT_TYPES,
-  SORTBYDIR_TYPES,
-  SORTBYNULLS_TYPES
+  getConstraintFromConstrType
 } from 'pgsql-enums';
 
-// TODO REMOVE
-const getObjectType = (i) => i;
+import { preparse } from './preparse';
+
 const isEmptyObject = (obj) => {
   return !obj || (typeof obj === 'object' && !Object.keys(obj).length);
 };
@@ -137,7 +131,7 @@ export default class Deparser {
   }
 
   constructor(tree) {
-    this.tree = tree;
+    this.tree = preparse(tree);
   }
 
   deparseQuery() {
@@ -867,7 +861,7 @@ export default class Deparser {
   ['AlterObjectSchemaStmt'](node, context = {}) {
     const output = [];
 
-    if (getObjectType(node.objectType) === 'OBJECT_TABLE') {
+    if (node.objectType === 'OBJECT_TABLE') {
       output.push('ALTER');
       output.push(objtypeName(node.objectType));
       if (node.missing_ok) {
@@ -955,37 +949,37 @@ export default class Deparser {
     output.push('ON');
     output.push(objtypeName(node.objtype));
 
-    if (objtypeIs(node.objtype, 'OBJECT_CAST')) {
+    if (node.objtype === 'OBJECT_CAST') {
       output.push('(');
       output.push(this.deparse(node.object[0], context));
       output.push('AS');
       output.push(this.deparse(node.object[1], context));
       output.push(')');
-    } else if (objtypeIs(node.objtype, 'OBJECT_DOMCONSTRAINT')) {
+    } else if (node.objtype === 'OBJECT_DOMCONSTRAINT') {
       output.push(this.deparse(node.object[1], context));
       output.push('ON');
       output.push('DOMAIN');
       output.push(this.deparse(node.object[0], context));
     } else if (
-      objtypeIs(node.objtype, 'OBJECT_OPCLASS') ||
-      objtypeIs(node.objtype, 'OBJECT_OPFAMILY')
+      node.objtype === 'OBJECT_OPCLASS' ||
+      node.objtype === 'OBJECT_OPFAMILY'
     ) {
       output.push(this.deparse(node.object[1], context));
       output.push('USING');
       output.push(this.deparse(node.object[0], context));
-    } else if (objtypeIs(node.objtype, 'OBJECT_OPERATOR')) {
+    } else if (node.objtype === 'OBJECT_OPERATOR') {
       output.push(this.deparse(node.object, 'noquotes'));
-    } else if (objtypeIs(node.objtype, 'OBJECT_POLICY')) {
+    } else if (node.objtype === 'OBJECT_POLICY') {
       output.push(this.deparse(node.object[1], context));
       output.push('ON');
       output.push(this.deparse(node.object[0], context));
-    } else if (objtypeIs(node.objtype, 'OBJECT_ROLE')) {
+    } else if (node.objtype === 'OBJECT_ROLE') {
       output.push(this.deparse(node.object, context));
-    } else if (objtypeIs(node.objtype, 'OBJECT_RULE')) {
+    } else if (node.objtype === 'OBJECT_RULE') {
       output.push(this.deparse(node.object[1], context));
       output.push('ON');
       output.push(this.deparse(node.object[0], context));
-    } else if (objtypeIs(node.objtype, 'OBJECT_TABCONSTRAINT')) {
+    } else if (node.objtype === 'OBJECT_TABCONSTRAINT') {
       if (node.object.length === 3) {
         output.push(this.deparse(node.object[2], context));
         output.push('ON');
@@ -999,17 +993,17 @@ export default class Deparser {
         output.push('ON');
         output.push(this.deparse(node.object[0], context));
       }
-    } else if (objtypeIs(node.objtype, 'OBJECT_TRANSFORM')) {
+    } else if (node.objtype === 'OBJECT_TRANSFORM') {
       output.push('FOR');
       output.push(this.deparse(node.object[0], context));
       output.push('LANGUAGE');
       output.push(this.deparse(node.object[1], context));
-    } else if (objtypeIs(node.objtype, 'OBJECT_TRIGGER')) {
+    } else if (node.objtype === 'OBJECT_TRIGGER') {
       output.push(this.deparse(node.object[1], context));
       output.push('ON');
       output.push(this.deparse(node.object[0], context));
     } else {
-      if (objtypeIs(node.objtype, 'OBJECT_LARGEOBJECT')) {
+      if (node.objtype === 'OBJECT_LARGEOBJECT') {
         output.push(dotty.get(node, 'object.Integer.ival'));
       } else if (node.object instanceof Array) {
         output.push(this.listQuotes(node.object, '.'));
@@ -1939,13 +1933,13 @@ export default class Deparser {
     const output = [];
     const ctx = { ...context };
     output.push('ALTER');
-    if (getObjectType(node.relkind) === 'OBJECT_TABLE') {
+    if (node.relkind === 'OBJECT_TABLE') {
       output.push('TABLE');
       const inh = dotty.get(node, 'relation.inh');
       if (!inh) {
         output.push('ONLY');
       }
-    } else if (getObjectType(node.relkind) === 'OBJECT_TYPE') {
+    } else if (node.relkind === 'OBJECT_TYPE') {
       output.push('TYPE');
     } else {
       throw new Error('for now throw');
@@ -1954,7 +1948,7 @@ export default class Deparser {
       output.push('IF EXISTS');
     }
 
-    ctx.alterType = getObjectType(node.relkind);
+    ctx.alterType = node.relkind;
     output.push(this.RangeVar(node.relation, ctx));
     output.push(this.list(node.cmds, ', ', '', ctx));
 
@@ -3093,7 +3087,7 @@ export default class Deparser {
           output.push('WITH GRANT OPTION');
         }
       }
-      if (Number(node.behavior) === 1) {
+      if (node.behavior === 'DROP_CASCADE') {
         output.push('CASCADE');
       }
     }
