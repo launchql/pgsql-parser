@@ -74,7 +74,7 @@
     "@babel/runtime": "^7.11.2",
     "libpg-query": "13.0.1",
     "minimist": "^1.2.5",
-    "pgsql-deparser": "^1.3.1",
-    "pgsql-enums": "^1.1.1"
+    "pgsql-deparser": "^13.0.1",
+    "pgsql-enums": "^13.0.1"
   }
 }

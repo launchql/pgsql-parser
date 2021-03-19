@@ -1,10 +1,6 @@
 import _ from 'lodash';
 import { format } from 'util';
-import {
-  objtypeName,
-  objtypeIs,
-  getConstraintFromConstrType
-} from 'pgsql-enums';
+import { objtypeName, getConstraintFromConstrType } from 'pgsql-enums';
 
 import { preparse } from './preparse';
 

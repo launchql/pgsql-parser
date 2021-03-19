@@ -62,7 +62,7 @@ describe('kitchen sink', () => {
   it('types', () => {
     check('types/composite.sql');
   });
-  it('domains', () => {
+  it.only('domains', () => {
     check('domains/create.sql');
   });
   it('indexes', () => {
