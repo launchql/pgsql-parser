@@ -3,7 +3,7 @@
   "version": "1.1.0",
   "description": "PostgreSQL AST enums for deparsing",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "homepage": "https://github.com/pyramation/pgsql-parser/tree/master/packages/pgsql-enums#readme",
+  "homepage": "https://github.com/pyramation/pgsql-parser",
   "license": "SEE LICENSE IN LICENSE",
   "main": "main/index.js",
   "module": "module/index.js",

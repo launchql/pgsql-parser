@@ -3,7 +3,7 @@
   "version": "1.3.0",
   "description": "PostgreSQL AST Deparser",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "homepage": "https://github.com/pyramation/pgsql-parser/tree/master/packages/pgsql-deparser#readme",
+  "homepage": "https://github.com/pyramation/pgsql-parser",
   "license": "SEE LICENSE IN LICENSE",
   "main": "main/index.js",
   "module": "module/index.js",
