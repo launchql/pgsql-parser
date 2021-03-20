@@ -17,11 +17,11 @@ Rewrite part of a SQL query:
 ```js
 const { parse, deparse } = require('pgsql-parser');
 
-const { stmts } = parse('SELECT * FROM test_table');
+const stmts = parse('SELECT * FROM test_table');
 
-stmts[0].stmt.SelectStmt.fromClause[0].RangeVar.relname = 'another_table';
+stmts[0].RawStmt.stmt.SelectStmt.fromClause[0].RangeVar.relname = 'another_table';
 
-console.log(deparse({stmts}));
+console.log(deparse(stmts));
 
 // SELECT * FROM "another_table"
 ```
@@ -34,11 +34,11 @@ The deparser can be used separately, which removes many deps required for the pa
 const { parse } = require('pgsql-parser');
 const { deparse } = require('pgsql-deparser');
 
-const { stmts } = parse('SELECT * FROM test_table');
+const stmts = parse('SELECT * FROM test_table');
 
-stmts[0].stmt.SelectStmt.fromClause[0].RangeVar.relname = 'another_table';
+stmts[0].RawStmt.stmt.SelectStmt.fromClause[0].RangeVar.relname = 'another_table';
 
-console.log(deparse({stmts}));
+console.log(deparse(stmts));
 
 // SELECT * FROM "another_table"
 ```

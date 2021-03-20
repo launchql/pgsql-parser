@@ -128,6 +128,7 @@ export default class Deparser {
 
   constructor(tree) {
     this.tree = preparse(tree);
+    if (!_.isArray(this.tree)) this.tree = [this.tree];
   }
 
   deparseQuery() {

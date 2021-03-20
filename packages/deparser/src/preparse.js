@@ -1,21 +1,9 @@
 /* eslint-disable no-restricted-syntax */
 // import { getEnum, nodes, toStr, toInt } from 'pgsql-enums';
 
-const wrapRaw = (tree) => {
-  return tree.stmts.map(({ stmt, stmt_len }) => {
-    return {
-      RawStmt: {
-        stmt,
-        stmt_len
-      }
-    };
-  });
-};
+// NOTE: this is used to get rid of List.items... and use Arrays
 
-export const preparse = (tree) => {
-  const stmts = wrapRaw(tree);
-  return stmts.map((stmt) => transformArrays(stmt));
-};
+export const preparse = (tree) => transformArrays(tree);
 
 // export const transform = (obj, context) => {
 //   let copy = null;
