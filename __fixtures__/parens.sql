@@ -16,3 +16,30 @@ select node->'relation'->'RangeVar' IS NOT NULL AND
         (node->'relation'->'RangeVar'->'inh' IS NOT NULL AND
         (node->'relation'->'RangeVar'->'inh')::bool IS FALSE)
 FROM my_json_store;
+
+SELECT 
+A AND B 
+AND C OR D
+FROM t;
+
+SELECT 
+A AND B 
+AND C OR D OR (E AND F OR G)
+FROM t;
+
+SELECT 
+A AND B 
+AND (C)::bool IS TRUE OR D OR (E AND F OR G)
+FROM t;
+
+SELECT 
+NOT (A AND B)
+AND C OR NOT D
+FROM t;
+
+SELECT 
+NOT (A AND B)
+AND C
+FROM t;
+
+SELECT (NOT ((a AND b)) AND c) FROM t;
