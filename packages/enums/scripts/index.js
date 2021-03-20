@@ -16,7 +16,7 @@ const getAstNodes = (which) => {
       if (structs[which].hasOwnProperty(type)) {
         nested = true;
       }
-      if (enums[which] && enums[which].hasOwnProperty(type)) {
+      if (toStr.hasOwnProperty(type)) {
         isEnum = true;
       }
       m2[field.name] = {

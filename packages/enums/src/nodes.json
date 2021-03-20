@@ -1,7 +1,8 @@
 {
   "Alias": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "aliasname": {
       "type": "char"
@@ -12,7 +13,8 @@
   },
   "RangeVar": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "catalogname": {
       "type": "char"
@@ -39,7 +41,8 @@
   },
   "TableFunc": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "ns_uris": {
       "type": "List"
@@ -83,7 +86,8 @@
   },
   "IntoClause": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "rel": {
       "type": "RangeVar",
@@ -114,7 +118,8 @@
   },
   "Expr": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     }
   },
   "Var": {
@@ -257,7 +262,8 @@
       "type": "Index"
     },
     "aggsplit": {
-      "type": "AggSplit"
+      "type": "AggSplit",
+      "enum": true
     },
     "location": {
       "type": "int"
@@ -1118,7 +1124,8 @@
   },
   "RangeTblRef": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "rtindex": {
       "type": "int"
@@ -1126,10 +1133,12 @@
   },
   "JoinExpr": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "jointype": {
-      "type": "JoinType"
+      "type": "JoinType",
+      "enum": true
     },
     "isNatural": {
       "type": "bool"
@@ -1156,7 +1165,8 @@
   },
   "FromExpr": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "fromlist": {
       "type": "List"
@@ -1167,10 +1177,12 @@
   },
   "OnConflictExpr": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "action": {
-      "type": "OnConflictAction"
+      "type": "OnConflictAction",
+      "enum": true
     },
     "arbiterElems": {
       "type": "List"
@@ -1196,10 +1208,12 @@
   },
   "Query": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "commandType": {
-      "type": "CmdType"
+      "type": "CmdType",
+      "enum": true
     },
     "querySource": {
       "type": "QuerySource",
@@ -1291,7 +1305,8 @@
       "type": "Node"
     },
     "limitOption": {
-      "type": "LimitOption"
+      "type": "LimitOption",
+      "enum": true
     },
     "rowMarks": {
       "type": "List"
@@ -1314,7 +1329,8 @@
   },
   "TypeName": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "names": {
       "type": "List"
@@ -1343,7 +1359,8 @@
   },
   "ColumnRef": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "fields": {
       "type": "List"
@@ -1354,7 +1371,8 @@
   },
   "ParamRef": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "number": {
       "type": "int"
@@ -1365,7 +1383,8 @@
   },
   "A_Expr": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "kind": {
       "type": "A_Expr_Kind",
@@ -1386,7 +1405,8 @@
   },
   "A_Const": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "val": {
       "type": "Value"
@@ -1397,7 +1417,8 @@
   },
   "TypeCast": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "arg": {
       "type": "Node"
@@ -1412,7 +1433,8 @@
   },
   "CollateClause": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "arg": {
       "type": "Node"
@@ -1426,7 +1448,8 @@
   },
   "RoleSpec": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "roletype": {
       "type": "RoleSpecType",
@@ -1441,7 +1464,8 @@
   },
   "FuncCall": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "funcname": {
       "type": "List"
@@ -1477,12 +1501,14 @@
   },
   "A_Star": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     }
   },
   "A_Indices": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "is_slice": {
       "type": "bool"
@@ -1496,7 +1522,8 @@
   },
   "A_Indirection": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "arg": {
       "type": "Node"
@@ -1507,7 +1534,8 @@
   },
   "A_ArrayExpr": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "elements": {
       "type": "List"
@@ -1518,7 +1546,8 @@
   },
   "ResTarget": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "name": {
       "type": "char"
@@ -1535,7 +1564,8 @@
   },
   "MultiAssignRef": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "source": {
       "type": "Node"
@@ -1549,7 +1579,8 @@
   },
   "SortBy": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "node": {
       "type": "Node"
@@ -1571,7 +1602,8 @@
   },
   "WindowDef": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "name": {
       "type": "char"
@@ -1600,7 +1632,8 @@
   },
   "RangeSubselect": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "lateral": {
       "type": "bool"
@@ -1614,7 +1647,8 @@
   },
   "RangeFunction": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "lateral": {
       "type": "bool"
@@ -1637,7 +1671,8 @@
   },
   "RangeTableFunc": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "lateral": {
       "type": "bool"
@@ -1663,7 +1698,8 @@
   },
   "RangeTableFuncCol": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "colname": {
       "type": "char"
@@ -1690,7 +1726,8 @@
   },
   "RangeTableSample": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "relation": {
       "type": "Node"
@@ -1710,7 +1747,8 @@
   },
   "ColumnDef": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "colname": {
       "type": "char"
@@ -1768,7 +1806,8 @@
   },
   "TableLikeClause": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "relation": {
       "type": "RangeVar"
@@ -1779,7 +1818,8 @@
   },
   "IndexElem": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "name": {
       "type": "char"
@@ -1810,7 +1850,8 @@
   },
   "DefElem": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "defnamespace": {
       "type": "char"
@@ -1831,24 +1872,29 @@
   },
   "LockingClause": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "lockedRels": {
       "type": "List"
     },
     "strength": {
-      "type": "LockClauseStrength"
+      "type": "LockClauseStrength",
+      "enum": true
     },
     "waitPolicy": {
-      "type": "LockWaitPolicy"
+      "type": "LockWaitPolicy",
+      "enum": true
     }
   },
   "XmlSerialize": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "xmloption": {
-      "type": "XmlOptionType"
+      "type": "XmlOptionType",
+      "enum": true
     },
     "expr": {
       "type": "Node"
@@ -1863,7 +1909,8 @@
   },
   "PartitionElem": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "name": {
       "type": "char"
@@ -1883,7 +1930,8 @@
   },
   "PartitionSpec": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "strategy": {
       "type": "char"
@@ -1897,7 +1945,8 @@
   },
   "PartitionBoundSpec": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "strategy": {
       "type": "char"
@@ -1926,7 +1975,8 @@
   },
   "PartitionRangeDatum": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "kind": {
       "type": "PartitionRangeDatumKind",
@@ -1941,7 +1991,8 @@
   },
   "PartitionCmd": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "name": {
       "type": "RangeVar"
@@ -1953,7 +2004,8 @@
   },
   "RangeTblEntry": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "rtekind": {
       "type": "RTEKind",
@@ -1980,7 +2032,8 @@
       "type": "bool"
     },
     "jointype": {
-      "type": "JoinType"
+      "type": "JoinType",
+      "enum": true
     },
     "joinmergedcols": {
       "type": "int"
@@ -2069,7 +2122,8 @@
   },
   "RangeTblFunction": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "funcexpr": {
       "type": "Node"
@@ -2095,7 +2149,8 @@
   },
   "TableSampleClause": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "tsmhandler": {
       "type": "Oid"
@@ -2109,7 +2164,8 @@
   },
   "WithCheckOption": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "kind": {
       "type": "WCOKind",
@@ -2130,7 +2186,8 @@
   },
   "SortGroupClause": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "tleSortGroupRef": {
       "type": "Index"
@@ -2150,7 +2207,8 @@
   },
   "GroupingSet": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "kind": {
       "type": "GroupingSetKind",
@@ -2165,7 +2223,8 @@
   },
   "WindowClause": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "name": {
       "type": "char"
@@ -2212,16 +2271,19 @@
   },
   "RowMarkClause": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "rti": {
       "type": "Index"
     },
     "strength": {
-      "type": "LockClauseStrength"
+      "type": "LockClauseStrength",
+      "enum": true
     },
     "waitPolicy": {
-      "type": "LockWaitPolicy"
+      "type": "LockWaitPolicy",
+      "enum": true
     },
     "pushedDown": {
       "type": "bool"
@@ -2229,7 +2291,8 @@
   },
   "WithClause": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "ctes": {
       "type": "List"
@@ -2243,7 +2306,8 @@
   },
   "InferClause": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "indexElems": {
       "type": "List"
@@ -2260,10 +2324,12 @@
   },
   "OnConflictClause": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "action": {
-      "type": "OnConflictAction"
+      "type": "OnConflictAction",
+      "enum": true
     },
     "infer": {
       "type": "InferClause",
@@ -2281,7 +2347,8 @@
   },
   "CommonTableExpr": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "ctename": {
       "type": "char"
@@ -2320,7 +2387,8 @@
   },
   "TriggerTransition": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "name": {
       "type": "char"
@@ -2334,7 +2402,8 @@
   },
   "RawStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "stmt": {
       "type": "Node"
@@ -2348,7 +2417,8 @@
   },
   "InsertStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "relation": {
       "type": "RangeVar"
@@ -2377,7 +2447,8 @@
   },
   "DeleteStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "relation": {
       "type": "RangeVar"
@@ -2398,7 +2469,8 @@
   },
   "UpdateStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "relation": {
       "type": "RangeVar"
@@ -2422,7 +2494,8 @@
   },
   "SelectStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "distinctClause": {
       "type": "List"
@@ -2461,7 +2534,8 @@
       "type": "Node"
     },
     "limitOption": {
-      "type": "LimitOption"
+      "type": "LimitOption",
+      "enum": true
     },
     "lockingClause": {
       "type": "List"
@@ -2488,7 +2562,8 @@
   },
   "SetOperationStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "op": {
       "type": "SetOperation",
@@ -2518,7 +2593,8 @@
   },
   "CreateSchemaStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "schemaname": {
       "type": "char"
@@ -2536,7 +2612,8 @@
   },
   "AlterTableStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "relation": {
       "type": "RangeVar"
@@ -2554,7 +2631,8 @@
   },
   "ReplicaIdentityStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "identity_type": {
       "type": "char"
@@ -2565,7 +2643,8 @@
   },
   "AlterTableCmd": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "subtype": {
       "type": "AlterTableType",
@@ -2594,7 +2673,8 @@
   },
   "AlterCollationStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "collname": {
       "type": "List"
@@ -2602,7 +2682,8 @@
   },
   "AlterDomainStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "subtype": {
       "type": "char"
@@ -2626,7 +2707,8 @@
   },
   "GrantStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "is_grant": {
       "type": "bool"
@@ -2658,7 +2740,8 @@
   },
   "ObjectWithArgs": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "objname": {
       "type": "List"
@@ -2672,7 +2755,8 @@
   },
   "AccessPriv": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "priv_name": {
       "type": "char"
@@ -2683,7 +2767,8 @@
   },
   "GrantRoleStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "granted_roles": {
       "type": "List"
@@ -2708,7 +2793,8 @@
   },
   "AlterDefaultPrivilegesStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "options": {
       "type": "List"
@@ -2720,7 +2806,8 @@
   },
   "CopyStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "relation": {
       "type": "RangeVar"
@@ -2749,7 +2836,8 @@
   },
   "VariableSetStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "kind": {
       "type": "VariableSetKind",
@@ -2767,7 +2855,8 @@
   },
   "VariableShowStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "name": {
       "type": "char"
@@ -2775,7 +2864,8 @@
   },
   "CreateStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "relation": {
       "type": "RangeVar"
@@ -2805,7 +2895,8 @@
       "type": "List"
     },
     "oncommit": {
-      "type": "OnCommitAction"
+      "type": "OnCommitAction",
+      "enum": true
     },
     "tablespacename": {
       "type": "char"
@@ -2819,7 +2910,8 @@
   },
   "Constraint": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "contype": {
       "type": "ConstrType",
@@ -2909,7 +3001,8 @@
   },
   "CreateTableSpaceStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "tablespacename": {
       "type": "char"
@@ -2927,7 +3020,8 @@
   },
   "DropTableSpaceStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "tablespacename": {
       "type": "char"
@@ -2938,7 +3032,8 @@
   },
   "AlterTableSpaceOptionsStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "tablespacename": {
       "type": "char"
@@ -2952,7 +3047,8 @@
   },
   "AlterTableMoveAllStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "orig_tablespacename": {
       "type": "char"
@@ -2973,7 +3069,8 @@
   },
   "CreateExtensionStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "extname": {
       "type": "char"
@@ -2987,7 +3084,8 @@
   },
   "AlterExtensionStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "extname": {
       "type": "char"
@@ -2998,7 +3096,8 @@
   },
   "AlterExtensionContentsStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "extname": {
       "type": "char"
@@ -3016,7 +3115,8 @@
   },
   "CreateFdwStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "fdwname": {
       "type": "char"
@@ -3030,7 +3130,8 @@
   },
   "AlterFdwStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "fdwname": {
       "type": "char"
@@ -3044,7 +3145,8 @@
   },
   "CreateForeignServerStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "servername": {
       "type": "char"
@@ -3067,7 +3169,8 @@
   },
   "AlterForeignServerStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "servername": {
       "type": "char"
@@ -3096,7 +3199,8 @@
   },
   "CreateUserMappingStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "user": {
       "type": "RoleSpec",
@@ -3114,7 +3218,8 @@
   },
   "AlterUserMappingStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "user": {
       "type": "RoleSpec",
@@ -3129,7 +3234,8 @@
   },
   "DropUserMappingStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "user": {
       "type": "RoleSpec",
@@ -3144,7 +3250,8 @@
   },
   "ImportForeignSchemaStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "server_name": {
       "type": "char"
@@ -3168,7 +3275,8 @@
   },
   "CreatePolicyStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "policy_name": {
       "type": "char"
@@ -3194,7 +3302,8 @@
   },
   "AlterPolicyStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "policy_name": {
       "type": "char"
@@ -3214,7 +3323,8 @@
   },
   "CreateAmStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "amname": {
       "type": "char"
@@ -3228,7 +3338,8 @@
   },
   "CreateTrigStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "trigname": {
       "type": "char"
@@ -3275,7 +3386,8 @@
   },
   "CreateEventTrigStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "trigname": {
       "type": "char"
@@ -3292,7 +3404,8 @@
   },
   "AlterEventTrigStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "trigname": {
       "type": "char"
@@ -3303,7 +3416,8 @@
   },
   "CreatePLangStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "replace": {
       "type": "bool"
@@ -3326,7 +3440,8 @@
   },
   "CreateRoleStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "stmt_type": {
       "type": "RoleStmtType",
@@ -3341,7 +3456,8 @@
   },
   "AlterRoleStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "role": {
       "type": "RoleSpec",
@@ -3356,7 +3472,8 @@
   },
   "AlterRoleSetStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "role": {
       "type": "RoleSpec",
@@ -3372,7 +3489,8 @@
   },
   "DropRoleStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "roles": {
       "type": "List"
@@ -3383,7 +3501,8 @@
   },
   "CreateSeqStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "sequence": {
       "type": "RangeVar"
@@ -3403,7 +3522,8 @@
   },
   "AlterSeqStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "sequence": {
       "type": "RangeVar"
@@ -3420,7 +3540,8 @@
   },
   "DefineStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "kind": {
       "type": "ObjectType",
@@ -3447,7 +3568,8 @@
   },
   "CreateDomainStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "domainname": {
       "type": "List"
@@ -3466,7 +3588,8 @@
   },
   "CreateOpClassStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "opclassname": {
       "type": "List"
@@ -3490,7 +3613,8 @@
   },
   "CreateOpClassItem": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "itemtype": {
       "type": "int"
@@ -3515,7 +3639,8 @@
   },
   "CreateOpFamilyStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "opfamilyname": {
       "type": "List"
@@ -3526,7 +3651,8 @@
   },
   "AlterOpFamilyStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "opfamilyname": {
       "type": "List"
@@ -3543,7 +3669,8 @@
   },
   "DropStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "objects": {
       "type": "List"
@@ -3565,7 +3692,8 @@
   },
   "TruncateStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "relations": {
       "type": "List"
@@ -3580,7 +3708,8 @@
   },
   "CommentStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "objtype": {
       "type": "ObjectType",
@@ -3595,7 +3724,8 @@
   },
   "SecLabelStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "objtype": {
       "type": "ObjectType",
@@ -3613,7 +3743,8 @@
   },
   "DeclareCursorStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "portalname": {
       "type": "char"
@@ -3627,7 +3758,8 @@
   },
   "ClosePortalStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "portalname": {
       "type": "char"
@@ -3635,7 +3767,8 @@
   },
   "FetchStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "direction": {
       "type": "FetchDirection",
@@ -3653,7 +3786,8 @@
   },
   "IndexStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "idxname": {
       "type": "char"
@@ -3727,7 +3861,8 @@
   },
   "CreateStatsStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "defnames": {
       "type": "List"
@@ -3750,7 +3885,8 @@
   },
   "AlterStatsStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "defnames": {
       "type": "List"
@@ -3764,7 +3900,8 @@
   },
   "CreateFunctionStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "is_procedure": {
       "type": "bool"
@@ -3788,7 +3925,8 @@
   },
   "FunctionParameter": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "name": {
       "type": "char"
@@ -3807,7 +3945,8 @@
   },
   "AlterFunctionStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "objtype": {
       "type": "ObjectType",
@@ -3823,7 +3962,8 @@
   },
   "DoStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "args": {
       "type": "List"
@@ -3831,7 +3971,8 @@
   },
   "InlineCodeBlock": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "source_text": {
       "type": "char"
@@ -3848,7 +3989,8 @@
   },
   "CallStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "funccall": {
       "type": "FuncCall",
@@ -3860,7 +4002,8 @@
   },
   "CallContext": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "atomic": {
       "type": "bool"
@@ -3868,7 +4011,8 @@
   },
   "RenameStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "renameType": {
       "type": "ObjectType",
@@ -3900,7 +4044,8 @@
   },
   "AlterObjectDependsStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "objectType": {
       "type": "ObjectType",
@@ -3921,7 +4066,8 @@
   },
   "AlterObjectSchemaStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "objectType": {
       "type": "ObjectType",
@@ -3942,7 +4088,8 @@
   },
   "AlterOwnerStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "objectType": {
       "type": "ObjectType",
@@ -3961,7 +4108,8 @@
   },
   "AlterOperatorStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "opername": {
       "type": "ObjectWithArgs",
@@ -3973,7 +4121,8 @@
   },
   "AlterTypeStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "typeName": {
       "type": "List"
@@ -3984,7 +4133,8 @@
   },
   "RuleStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "relation": {
       "type": "RangeVar"
@@ -3996,7 +4146,8 @@
       "type": "Node"
     },
     "event": {
-      "type": "CmdType"
+      "type": "CmdType",
+      "enum": true
     },
     "instead": {
       "type": "bool"
@@ -4010,7 +4161,8 @@
   },
   "NotifyStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "conditionname": {
       "type": "char"
@@ -4021,7 +4173,8 @@
   },
   "ListenStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "conditionname": {
       "type": "char"
@@ -4029,7 +4182,8 @@
   },
   "UnlistenStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "conditionname": {
       "type": "char"
@@ -4037,7 +4191,8 @@
   },
   "TransactionStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "kind": {
       "type": "TransactionStmtKind",
@@ -4058,7 +4213,8 @@
   },
   "CompositeTypeStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "typevar": {
       "type": "RangeVar"
@@ -4069,7 +4225,8 @@
   },
   "CreateEnumStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "typeName": {
       "type": "List"
@@ -4080,7 +4237,8 @@
   },
   "CreateRangeStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "typeName": {
       "type": "List"
@@ -4091,7 +4249,8 @@
   },
   "AlterEnumStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "typeName": {
       "type": "List"
@@ -4114,7 +4273,8 @@
   },
   "ViewStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "view": {
       "type": "RangeVar"
@@ -4138,7 +4298,8 @@
   },
   "LoadStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "filename": {
       "type": "char"
@@ -4146,7 +4307,8 @@
   },
   "CreatedbStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "dbname": {
       "type": "char"
@@ -4157,7 +4319,8 @@
   },
   "AlterDatabaseStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "dbname": {
       "type": "char"
@@ -4168,7 +4331,8 @@
   },
   "AlterDatabaseSetStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "dbname": {
       "type": "char"
@@ -4180,7 +4344,8 @@
   },
   "DropdbStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "dbname": {
       "type": "char"
@@ -4194,7 +4359,8 @@
   },
   "AlterSystemStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "setstmt": {
       "type": "VariableSetStmt",
@@ -4203,7 +4369,8 @@
   },
   "ClusterStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "relation": {
       "type": "RangeVar"
@@ -4217,7 +4384,8 @@
   },
   "VacuumStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "options": {
       "type": "List"
@@ -4231,7 +4399,8 @@
   },
   "VacuumRelation": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "relation": {
       "type": "RangeVar"
@@ -4245,7 +4414,8 @@
   },
   "ExplainStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "query": {
       "type": "Node"
@@ -4256,7 +4426,8 @@
   },
   "CreateTableAsStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "query": {
       "type": "Node"
@@ -4277,7 +4448,8 @@
   },
   "RefreshMatViewStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "concurrent": {
       "type": "bool"
@@ -4291,12 +4463,14 @@
   },
   "CheckPointStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     }
   },
   "DiscardStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "target": {
       "type": "DiscardMode",
@@ -4305,7 +4479,8 @@
   },
   "LockStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "relations": {
       "type": "List"
@@ -4319,7 +4494,8 @@
   },
   "ConstraintsSetStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "constraints": {
       "type": "List"
@@ -4330,7 +4506,8 @@
   },
   "ReindexStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "kind": {
       "type": "ReindexObjectType",
@@ -4351,7 +4528,8 @@
   },
   "CreateConversionStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "conversion_name": {
       "type": "List"
@@ -4371,7 +4549,8 @@
   },
   "CreateCastStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "sourcetype": {
       "type": "TypeName",
@@ -4386,7 +4565,8 @@
       "nested": true
     },
     "context": {
-      "type": "CoercionContext"
+      "type": "CoercionContext",
+      "enum": true
     },
     "inout": {
       "type": "bool"
@@ -4394,7 +4574,8 @@
   },
   "CreateTransformStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "replace": {
       "type": "bool"
@@ -4417,7 +4598,8 @@
   },
   "PrepareStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "name": {
       "type": "char"
@@ -4431,7 +4613,8 @@
   },
   "ExecuteStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "name": {
       "type": "char"
@@ -4442,7 +4625,8 @@
   },
   "DeallocateStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "name": {
       "type": "char"
@@ -4450,7 +4634,8 @@
   },
   "DropOwnedStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "roles": {
       "type": "List"
@@ -4462,7 +4647,8 @@
   },
   "ReassignOwnedStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "roles": {
       "type": "List"
@@ -4474,7 +4660,8 @@
   },
   "AlterTSDictionaryStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "dictname": {
       "type": "List"
@@ -4485,7 +4672,8 @@
   },
   "AlterTSConfigurationStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "kind": {
       "type": "AlterTSConfigType",
@@ -4512,7 +4700,8 @@
   },
   "CreatePublicationStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "pubname": {
       "type": "char"
@@ -4529,7 +4718,8 @@
   },
   "AlterPublicationStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "pubname": {
       "type": "char"
@@ -4550,7 +4740,8 @@
   },
   "CreateSubscriptionStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "subname": {
       "type": "char"
@@ -4567,7 +4758,8 @@
   },
   "AlterSubscriptionStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "kind": {
       "type": "AlterSubscriptionType",
@@ -4588,7 +4780,8 @@
   },
   "DropSubscriptionStmt": {
     "type": {
-      "type": "NodeTag"
+      "type": "NodeTag",
+      "enum": true
     },
     "subname": {
       "type": "char"
