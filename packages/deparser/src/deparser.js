@@ -2978,6 +2978,12 @@ export default class Deparser {
           // todo could be view
           return 'TABLE';
         case 'OBJECT_SEQUENCE':
+          if (nodeObj.targtype === 'ACL_TARGET_ALL_IN_SCHEMA') {
+            return 'ALL SEQUENCES IN SCHEMA';
+          }
+          if (nodeObj.targtype === 'ACL_TARGET_DEFAULTS') {
+            return 'SEQUENCES';
+          }
           return 'SEQUENCE';
         case 'OBJECT_DATABASE':
           return 'DATABASE';

@@ -1,3 +1,5 @@
+/* eslint-disable no-restricted-syntax */
+
 export const cleanLines = (sql) => {
   return sql
     .split('\n')
@@ -64,7 +66,10 @@ export const cleanTree = (tree) => {
     location: noop,
     DefElem: (obj) => {
       if (obj.defname === 'as') {
-        if (obj.arg.List && obj.arg.List.items) {
+        if (Array.isArray(obj.arg) && obj.arg.length) {
+          // function
+          obj.arg[0].String.str = obj.arg[0].String.str.trim();
+        } else if (obj.arg.List && obj.arg.List.items) {
           // function
           obj.arg.List.items[0].String.str = obj.arg.List.items[0].String.str.trim();
         } else {
