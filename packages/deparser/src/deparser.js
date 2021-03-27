@@ -1170,7 +1170,7 @@ export default class Deparser {
     }
 
     if (node.over != null) {
-      output.push(format('OVER %s', this.deparse(node.over, context)));
+      output.push(format('OVER %s', this.WindowDef(node.over, context)));
     }
 
     return output.join(' ');
@@ -3526,20 +3526,39 @@ export default class Deparser {
   }
 
   deparseFrameOptions(options, refName, startOffset, endOffset) {
-    const FRAMEOPTION_NONDEFAULT = 0x00001; // any specified?
-    const FRAMEOPTION_RANGE = 0x00002; // RANGE behavior
-    const FRAMEOPTION_ROWS = 0x00004; // ROWS behavior
-    const FRAMEOPTION_BETWEEN = 0x00008; // BETWEEN given?
-    const FRAMEOPTION_START_UNBOUNDED_PRECEDING = 0x00010; // start is U. P.
-    const FRAMEOPTION_END_UNBOUNDED_PRECEDING = 0x00020; // (disallowed)
-    const FRAMEOPTION_START_UNBOUNDED_FOLLOWING = 0x00040; // (disallowed)
-    const FRAMEOPTION_END_UNBOUNDED_FOLLOWING = 0x00080; // end is U. F.
-    const FRAMEOPTION_START_CURRENT_ROW = 0x00100; // start is C. R.
-    const FRAMEOPTION_END_CURRENT_ROW = 0x00200; // end is C. R.
-    const FRAMEOPTION_START_VALUE_PRECEDING = 0x00400; // start is V. P.
-    const FRAMEOPTION_END_VALUE_PRECEDING = 0x00800; // end is V. P.
-    const FRAMEOPTION_START_VALUE_FOLLOWING = 0x01000; // start is V. F.
-    const FRAMEOPTION_END_VALUE_FOLLOWING = 0x02000; // end is V. F.
+    // https://github.com/pganalyze/libpg_query/blob/442b1748d06364ecd3779bc558899176c02efaf0/src/postgres/include/nodes/parsenodes.h#L505-L522
+    const FRAMEOPTION_NONDEFAULT = 0x00001; /* any specified? */
+    const FRAMEOPTION_RANGE = 0x00002; /* RANGE behavior */
+    const FRAMEOPTION_ROWS = 0x00004; /* ROWS behavior */
+    const FRAMEOPTION_GROUPS = 0x00008; /* GROUPS behavior */
+    const FRAMEOPTION_BETWEEN = 0x00010; /* BETWEEN given? */
+    const FRAMEOPTION_START_UNBOUNDED_PRECEDING = 0x00020; /* start is U. P. */
+    const FRAMEOPTION_END_UNBOUNDED_PRECEDING = 0x00040; /* (disallowed) */
+    const FRAMEOPTION_START_UNBOUNDED_FOLLOWING = 0x00080; /* (disallowed) */
+    const FRAMEOPTION_END_UNBOUNDED_FOLLOWING = 0x00100; /* end is U. F. */
+    const FRAMEOPTION_START_CURRENT_ROW = 0x00200; /* start is C. R. */
+    const FRAMEOPTION_END_CURRENT_ROW = 0x00400; /* end is C. R. */
+    const FRAMEOPTION_START_OFFSET_PRECEDING = 0x00800; /* start is O. P. */
+    const FRAMEOPTION_END_OFFSET_PRECEDING = 0x01000; /* end is O. P. */
+    const FRAMEOPTION_START_OFFSET_FOLLOWING = 0x02000; /* start is O. F. */
+    const FRAMEOPTION_END_OFFSET_FOLLOWING = 0x04000; /* end is O. F. */
+    const FRAMEOPTION_EXCLUDE_CURRENT_ROW = 0x08000; /* omit C.R. */
+    const FRAMEOPTION_EXCLUDE_GROUP = 0x10000; /* omit C.R. & peers */
+    const FRAMEOPTION_EXCLUDE_TIES = 0x20000; /* omit C.R.'s peers */
+
+    // const FRAMEOPTION_START_OFFSET =
+    //   FRAMEOPTION_START_OFFSET_PRECEDING | FRAMEOPTION_START_OFFSET_FOLLOWING;
+    // const FRAMEOPTION_END_OFFSET =
+    //   FRAMEOPTION_END_OFFSET_PRECEDING | FRAMEOPTION_END_OFFSET_FOLLOWING;
+    // const FRAMEOPTION_EXCLUSION =
+    //   FRAMEOPTION_EXCLUDE_CURRENT_ROW |
+    //   FRAMEOPTION_EXCLUDE_GROUP |
+    //   FRAMEOPTION_EXCLUDE_TIES;
+
+    // const FRAMEOPTION_DEFAULTS =
+    //   FRAMEOPTION_RANGE |
+    //   FRAMEOPTION_START_UNBOUNDED_PRECEDING |
+    //   FRAMEOPTION_END_CURRENT_ROW;
 
     if (!(options & FRAMEOPTION_NONDEFAULT)) {
       return '';
@@ -3577,11 +3596,11 @@ export default class Deparser {
       output.push('CURRENT ROW');
     }
 
-    if (options & FRAMEOPTION_START_VALUE_PRECEDING) {
+    if (options & FRAMEOPTION_START_OFFSET_PRECEDING) {
       output.push(this.deparse(startOffset) + ' PRECEDING');
     }
 
-    if (options & FRAMEOPTION_START_VALUE_FOLLOWING) {
+    if (options & FRAMEOPTION_START_OFFSET_FOLLOWING) {
       output.push(this.deparse(startOffset) + ' FOLLOWING');
     }
 
@@ -3600,11 +3619,11 @@ export default class Deparser {
         output.push('CURRENT ROW');
       }
 
-      if (options & FRAMEOPTION_END_VALUE_PRECEDING) {
+      if (options & FRAMEOPTION_END_OFFSET_PRECEDING) {
         output.push(this.deparse(endOffset) + ' PRECEDING');
       }
 
-      if (options & FRAMEOPTION_END_VALUE_FOLLOWING) {
+      if (options & FRAMEOPTION_END_OFFSET_FOLLOWING) {
         output.push(this.deparse(endOffset) + ' FOLLOWING');
       }
     }

@@ -21,6 +21,10 @@ it('privs-and-defaults', () => {
   check('privs-and-defaults.sql');
 });
 
+it('preceeding', () => {
+  check('preceeding.sql');
+});
+
 it('parens', () => {
   check('parens.sql');
 });
