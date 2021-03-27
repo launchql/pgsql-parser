@@ -72,8 +72,11 @@ describe('kitchen sink', () => {
   it('indexes', () => {
     check('indexes/custom.sql');
   });
-  it.only('enums', () => {
+  it('enums', () => {
     check('enums/create.sql');
+  });
+  it('alter enums', () => {
+    check('enums/alter.sql');
   });
   it('do stmt', () => {
     check('do/custom.sql');
