@@ -802,21 +802,15 @@ export default class Deparser {
   ['AlterOwnerStmt'](node, context = {}) {
     const output = [];
 
-    if (
-      node.objectType === 'OBJECT_FUNCTION' ||
-      node.objectType === 'OBJECT_FOREIGN_TABLE' ||
-      node.objectType === 'OBJECT_FDW' ||
-      node.objectType === 'OBJECT_FOREIGN_SERVER'
-    ) {
-      output.push('ALTER');
-      output.push(objtypeName(node.objectType));
-      output.push(this.deparse(node.object, context));
-      output.push('OWNER');
-      output.push('TO');
-      output.push(this.RoleSpec(node.newowner, context));
+    output.push('ALTER');
+    output.push(objtypeName(node.objectType));
+    if (Array.isArray(node.object)) {
+      output.push(this.listQuotes(node.object, '.'));
     } else {
-      throw new Error('AlterOwnerStmt needs implementation');
+      output.push(this.deparse(node.object, context));
     }
+    output.push('OWNER TO');
+    output.push(this.RoleSpec(node.newowner, context));
 
     return output.join(' ');
   }
@@ -839,7 +833,11 @@ export default class Deparser {
       if (node.missing_ok) {
         output.push('IF EXISTS');
       }
-      output.push(this.deparse(node.object, context));
+      if (Array.isArray(node.object)) {
+        output.push(this.listQuotes(node.object, '.'));
+      } else {
+        output.push(this.deparse(node.object, context));
+      }
       output.push('SET SCHEMA');
       output.push(this.quote(node.newschema));
     }
@@ -2084,6 +2082,16 @@ export default class Deparser {
     if (node.newVal) {
       output.push('ADD VALUE');
       const result = node.newVal.replace(/'/g, "''");
+      output.push(`'${result}'`);
+    }
+
+    if (node.newValNeighbor) {
+      if (node.newValIsAfter) {
+        output.push('AFTER');
+      } else {
+        output.push('BEFORE');
+      }
+      const result = node.newValNeighbor.replace(/'/g, "''");
       output.push(`'${result}'`);
     }
 
