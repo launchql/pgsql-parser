@@ -91,6 +91,10 @@ functionality of this module.
 
 Returns a normalized formatted SQL string.
 
+## Version
+
+built with `13-latest` libpg_query. From now we'll be using major versions to reflect the PG version.
+
 ## Related
 
 * [libpg-query-node](https://github.com/pyramation/libpg-query-node)
