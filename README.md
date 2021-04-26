@@ -91,9 +91,23 @@ functionality of this module.
 
 Returns a normalized formatted SQL string.
 
-## Version
+## Versions
 
-built with `13-latest` libpg_query. From now we'll be using major versions to reflect the PG version.
+As of PG 13, PG majors versions maintained will have a matching dedicated major npm version. Only the latest Postgres stable release receives active updates.
+
+Our latest is built with `13-latest` branch from libpg_query
+
+| PostgreSQL Major Version | libpg_query | Status              | npm 
+|--------------------------|-------------|---------------------|---------|
+| 13                       | 13-latest   | Active development  | `latest`
+| 12                       | (n/a)       | Not supported       |
+| 11                       | (n/a)       | Not supported       |
+| 10                       | 10-latest   | Not supported       | `@1.3.1` ([tree](https://github.com/pyramation/pgsql-parser/tree/39b7b1adc8914253226e286a48105785219a81ca))      | 
+
+
+## Resources
+
+
 
 ## Related
 
