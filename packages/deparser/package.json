@@ -71,7 +71,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.11.2",
-    "dotty": "0.1.0",
+    "dotty": "0.1.1",
     "lodash": "4.17.20",
     "pgsql-enums": "^13.1.2"
   }

@@ -3880,10 +3880,10 @@ dot-prop@^5.1.0:
   dependencies:
     is-obj "^2.0.0"
 
-dotty@0.1.0:
-  version "0.1.0"
-  resolved "https://registry.npmjs.org/dotty/-/dotty-0.1.0.tgz#da371ccd931a37282f8f7f77adada7d54539708a"
-  integrity sha512-VJzcXJZEckXowvj6yGJC2JH66DLEEm1d1QOB0hik1EvlbUpULvcYt411JeFuy8rNC96FG8V2N7pMkyjvK8LYwQ==
+dotty@0.1.1:
+  version "0.1.1"
+  resolved "https://registry.npmjs.org/dotty/-/dotty-0.1.1.tgz#2871f6712749c014079b5837c7c8e8bf3aca1fea"
+  integrity sha512-t6qr6vUPhYwE6t5+5vtk/1UQiAMzmgSUWxXK+oxPIhGy1w3cO15zbdSe9VMH/MMd0tqQuYiewoOG/BfwwU3QLA==
 
 duplexer@^0.1.1:
   version "0.1.2"
