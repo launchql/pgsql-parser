@@ -6134,10 +6134,10 @@ levn@^0.3.0, levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-libpg-query@13.1.0:
-  version "13.1.0"
-  resolved "https://registry.npmjs.org/libpg-query/-/libpg-query-13.1.0.tgz#958379602f9f08392cde6f7910ee9e3416becc8b"
-  integrity sha512-bVvw8yD7GtQDAT8guJ4EnNcjw16OyAebLCL/IrY3NrN2+8GDIC6B6bFCjz087fDE+VZ2OLo1GlGiBGWbFHud1A==
+libpg-query@13.1.1:
+  version "13.1.1"
+  resolved "https://registry.npmjs.org/libpg-query/-/libpg-query-13.1.1.tgz#daba0e2090f66a74198e696dc989471393f889c8"
+  integrity sha512-sjpn0V/PlPR5RitmdQiBqXo6kFz4oGQf3LZk7ViRn/iQZqvuHAk7bVCPnPSdIYyqL9ZVRAEDE5GhGMyJwbU3Fg==
   dependencies:
     node-addon-api "^1.6.3"
     node-gyp "^8.0.0"
