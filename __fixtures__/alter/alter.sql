@@ -211,3 +211,6 @@ alter domain testdomain1 drop constraint unsigned_foo;
 drop domain testdomain1;
 
 ALTER TABLE mytable ADD COLUMN height_in numeric GENERATED ALWAYS AS (height_cm / 2.54) STORED;
+
+ALTER SCHEMA schemaname RENAME TO newname;
+ALTER SCHEMA schemaname OWNER TO newowner;

@@ -763,6 +763,16 @@ export default class Deparser {
       output.push('RENAME');
       output.push('TO');
       output.push(this.quote(node.newname));
+    } else if (node.renameType === 'OBJECT_SCHEMA') {
+      output.push('ALTER');
+      output.push(objtypeName(node.renameType));
+      if (node.missing_ok) {
+        output.push('IF EXISTS');
+      }
+      output.push(this.quote(node.subname));
+      output.push('RENAME');
+      output.push('TO');
+      output.push(this.quote(node.newname));
     } else if (node.renameType === 'OBJECT_DOMCONSTRAINT') {
       output.push('ALTER');
       output.push('DOMAIN');
