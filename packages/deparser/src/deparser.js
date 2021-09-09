@@ -635,7 +635,10 @@ export default class Deparser {
   ['BooleanTest'](node, context = {}) {
     const output = [];
 
-    output.push(this.deparse(node.arg, context));
+    const ctx = { ...context };
+    ctx.bool = true;
+
+    output.push(this.deparse(node.arg, ctx));
 
     switch (node.booltesttype) {
       case 'IS_TRUE':

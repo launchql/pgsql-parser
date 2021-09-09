@@ -43,3 +43,7 @@ AND C
 FROM t;
 
 SELECT (NOT ((a AND b)) AND c) FROM t;
+
+SELECT (field=1 OR field=2) IS TRUE;
+
+SELECT field=1 OR field=2 IS TRUE;
