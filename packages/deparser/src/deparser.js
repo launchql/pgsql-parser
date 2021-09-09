@@ -4,6 +4,9 @@ import { objtypeName, getConstraintFromConstrType } from 'pgsql-enums';
 
 import { preparse } from './preparse';
 
+let TAB_CHAR = '\t';
+let NEWLINE_CHAR = '\n';
+
 const isEmptyObject = (obj) => {
   return !obj || (typeof obj === 'object' && !Object.keys(obj).length);
 };
@@ -122,17 +125,25 @@ const parens = (string) => {
 const indent = (text, count = 1) => text;
 
 export default class Deparser {
-  static deparse(query) {
-    return new Deparser(query).deparseQuery();
+  static deparse(query, opts) {
+    return new Deparser(query, opts).deparseQuery();
   }
 
-  constructor(tree) {
+  constructor(tree, opts = {}) {
     this.tree = preparse(tree);
+    if (opts.hasOwnProperty('newline')) {
+      NEWLINE_CHAR = opts.newline;
+    }
+    if (opts.hasOwnProperty('tab')) {
+      TAB_CHAR = opts.tab;
+    }
     if (!_.isArray(this.tree)) this.tree = [this.tree];
   }
 
   deparseQuery() {
-    return this.tree.map((node) => this.deparse(node)).join('\n\n');
+    return this.tree
+      .map((node) => this.deparse(node))
+      .join(NEWLINE_CHAR + NEWLINE_CHAR);
   }
 
   deparseNodes(nodes, context) {
@@ -712,7 +723,9 @@ export default class Deparser {
     output.push(this.RangeVar(node.typevar, context));
     output.push('AS');
     output.push('(');
-    output.push(this.list(node.coldeflist, ',\n', '\t', context));
+    output.push(
+      this.list(node.coldeflist, `,${NEWLINE_CHAR}`, TAB_CHAR, context)
+    );
     output.push(')');
 
     return output.join(' ');
@@ -1105,7 +1118,7 @@ export default class Deparser {
   }
 
   ['DoStmt'](node) {
-    return `DO $$\n  ${dotty
+    return `DO $$${NEWLINE_CHAR}  ${dotty
       .get(node, 'args.0.DefElem.arg.String.str')
       .trim()} $$`;
   }
@@ -1776,7 +1789,7 @@ export default class Deparser {
 
         const clause = node.distinctClause
           .map((e) => this.deparse(e, 'select'))
-          .join(',\n');
+          .join(`,${NEWLINE_CHAR}`);
 
         output.push(`(${clause})`);
       } else {
@@ -1787,7 +1800,9 @@ export default class Deparser {
     if (node.targetList) {
       output.push(
         indent(
-          node.targetList.map((e) => this.deparse(e, 'select')).join(',\n')
+          node.targetList
+            .map((e) => this.deparse(e, 'select'))
+            .join(`,${NEWLINE_CHAR}`)
         )
       );
     }
@@ -1800,7 +1815,11 @@ export default class Deparser {
     if (node.fromClause) {
       output.push('FROM');
       output.push(
-        indent(node.fromClause.map((e) => this.deparse(e, 'from')).join(',\n'))
+        indent(
+          node.fromClause
+            .map((e) => this.deparse(e, 'from'))
+            .join(`,${NEWLINE_CHAR}`)
+        )
       );
     }
 
@@ -1823,7 +1842,9 @@ export default class Deparser {
       output.push('GROUP BY');
       output.push(
         indent(
-          node.groupClause.map((e) => this.deparse(e, 'group')).join(',\n')
+          node.groupClause
+            .map((e) => this.deparse(e, 'group'))
+            .join(`,${NEWLINE_CHAR}`)
         )
       );
     }
@@ -1857,7 +1878,11 @@ export default class Deparser {
     if (node.sortClause) {
       output.push('ORDER BY');
       output.push(
-        indent(node.sortClause.map((e) => this.deparse(e, 'sort')).join(',\n'))
+        indent(
+          node.sortClause
+            .map((e) => this.deparse(e, 'sort'))
+            .join(`,${NEWLINE_CHAR}`)
+        )
       );
     }
 
@@ -1898,7 +1923,7 @@ export default class Deparser {
         const roleSpec = dotty.get(elem, 'DefElem.arg.0');
         output.push(this.deparse(roleSpec, context));
       }
-      output.push('\n');
+      output.push(NEWLINE_CHAR);
     }
     output.push(this.GrantStmt(node.action, context));
 
@@ -2073,12 +2098,12 @@ export default class Deparser {
     output.push('CREATE TYPE');
     output.push(this.list(node.typeName, '.', '', context));
     output.push('AS ENUM');
-    output.push('(\n');
+    output.push(`(${NEWLINE_CHAR}`);
     const vals = node.vals.map((val) => {
       return { String: { str: `'${val.String.str}'` } };
     });
-    output.push(this.list(vals, ',\n', '\t'));
-    output.push('\n)');
+    output.push(this.list(vals, `,${NEWLINE_CHAR}`, TAB_CHAR));
+    output.push(`${NEWLINE_CHAR})`);
     return output.join(' ');
   }
 
@@ -2399,7 +2424,7 @@ export default class Deparser {
     }
     output.push('TRIGGER');
     output.push(this.quote(node.trigname));
-    output.push('\n');
+    output.push(NEWLINE_CHAR);
 
     // int16 timing;  BEFORE, AFTER, or INSTEAD
 
@@ -2451,7 +2476,7 @@ export default class Deparser {
     // ON
     output.push('ON');
     output.push(this.RangeVar(node.relation, context));
-    output.push('\n');
+    output.push(NEWLINE_CHAR);
 
     if (node.transitionRels) {
       output.push('REFERENCING');
@@ -2478,13 +2503,13 @@ export default class Deparser {
       if (node.deferrable) {
         output.push('INITIALLY DEFERRED');
       }
-      output.push('\n');
+      output.push(NEWLINE_CHAR);
     }
 
     if (node.row) {
-      output.push('FOR EACH ROW\n');
+      output.push(`FOR EACH ROW${NEWLINE_CHAR}`);
     } else {
-      output.push('FOR EACH STATEMENT\n');
+      output.push(`FOR EACH STATEMENT${NEWLINE_CHAR}`);
     }
 
     if (node.whenClause) {
@@ -2492,7 +2517,7 @@ export default class Deparser {
       output.push('(');
       output.push(this.deparse(node.whenClause, 'trigger'));
       output.push(')');
-      output.push('\n');
+      output.push(NEWLINE_CHAR);
     }
 
     output.push('EXECUTE PROCEDURE');
@@ -2539,9 +2564,11 @@ export default class Deparser {
     }
 
     output.push(this.RangeVar(node.relation, context));
-    output.push('(\n');
-    output.push(this.list(node.tableElts, ',\n', '\t', context));
-    output.push('\n)');
+    output.push(`(${NEWLINE_CHAR}`);
+    output.push(
+      this.list(node.tableElts, `,${NEWLINE_CHAR}`, TAB_CHAR, context)
+    );
+    output.push(`${NEWLINE_CHAR})`);
 
     if (relpersistence === 'p' && node.hasOwnProperty('inhRelations')) {
       output.push('INHERITS');
