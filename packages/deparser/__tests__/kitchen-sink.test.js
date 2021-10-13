@@ -60,6 +60,7 @@ describe('kitchen sink', () => {
   });
   it('sequences', () => {
     check('sequences/sequences.sql');
+    check('sequences/alter.sql');
   });
   it('policies', () => {
     check('policies/custom.sql');

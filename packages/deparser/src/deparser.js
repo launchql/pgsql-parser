@@ -1104,6 +1104,24 @@ export default class Deparser {
             ? 'NO MAXVALUE'
             : `${name} ${this.deparse(node.arg, 'simple')}`;
         }
+        // alter
+        case 'owned_by': {
+          const output = [];
+          node.arg.forEach((opt) => {
+            output.push(this.quote(this.deparse(opt, 'sequence')));
+          });
+          return `OWNED BY ${output.join('.')}`;
+        }
+        // alter
+        case 'start': {
+          return `START WITH ${this.deparse(node.arg, context)}`;
+        }
+        case 'restart': {
+          if (node.arg) {
+            return `RESTART WITH ${this.deparse(node.arg, context)}`;
+          }
+          return `RESTART`;
+        }
         default:
           if (node.arg) {
             // we need 'simple' so it doesn't wrap negative numbers in parens
@@ -2397,6 +2415,18 @@ export default class Deparser {
   ['CreateSeqStmt'](node, context = {}) {
     const output = [];
     output.push('CREATE SEQUENCE');
+    output.push(this.RangeVar(node.sequence, context));
+    if (node.options && node.options.length) {
+      node.options.forEach((opt) => {
+        output.push(this.deparse(opt, 'sequence'));
+      });
+    }
+    return output.join(' ');
+  }
+
+  ['AlterSeqStmt'](node, context = {}) {
+    const output = [];
+    output.push('ALTER SEQUENCE');
     output.push(this.RangeVar(node.sequence, context));
     if (node.options && node.options.length) {
       node.options.forEach((opt) => {
