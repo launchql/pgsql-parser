@@ -1071,7 +1071,7 @@ export default class Deparser {
       name = `${node.defnamespace}.${node.defname}`;
     }
 
-    if (context === 'generated') {
+    if (context === 'generated' || context === 'sequence') {
       switch (name) {
         case 'start': {
           const start = this.deparse(node.arg, context);
@@ -1081,13 +1081,9 @@ export default class Deparser {
           const inc = this.deparse(node.arg, context);
           return `INCREMENT BY ${inc}`;
         }
-        default:
-          throw new Error('NOT_IMPLEMENTED');
-      }
-    }
-
-    if (context === 'sequence') {
-      switch (name) {
+        case 'sequence_name': {
+          return `SEQUENCE NAME ${this.listQuotes(node.arg, '.')}`;
+        }
         case 'cycle': {
           const on = this.deparse(node.arg, context) + '' === '1';
           return on ? 'CYCLE' : 'NO CYCLE';
@@ -1108,14 +1104,11 @@ export default class Deparser {
         case 'owned_by': {
           const output = [];
           node.arg.forEach((opt) => {
-            output.push(this.quote(this.deparse(opt, 'sequence')));
+            output.push(this.quote(this.deparse(opt, context)));
           });
           return `OWNED BY ${output.join('.')}`;
         }
         // alter
-        case 'start': {
-          return `START WITH ${this.deparse(node.arg, context)}`;
-        }
         case 'restart': {
           if (node.arg) {
             return `RESTART WITH ${this.deparse(node.arg, context)}`;
@@ -2082,6 +2075,11 @@ export default class Deparser {
       output.push('(');
       output.push(this.list(node.def, ', ', '', context));
       output.push(')');
+    } else if (node.subtype === 'AT_AddIdentity') {
+      output.push('ALTER COLUMN');
+      output.push(this.quote(node.name));
+      output.push('ADD');
+      output.push(this.deparse(node.def, context));
     } else if (node.subtype === 'AT_AddInherit') {
       output.push('INHERIT');
       output.push(this.deparse(node.def, context));
