@@ -55,6 +55,9 @@ describe('kitchen sink', () => {
   it('alter-table-column', () => {
     check('alter/alter-table-column.sql');
   });
+  it('define', () => {
+    check('define.sql');
+  });
   it('set', () => {
     check('set/custom.sql');
   });

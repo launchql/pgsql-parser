@@ -1042,6 +1042,94 @@ export default class Deparser {
     return output.join(' ');
   }
 
+  ['DefineStmt'](node, context = {}) {
+    const output = [];
+    output.push('CREATE');
+
+    if (node.replace) {
+      output.push('OR REPLACE');
+    }
+
+    switch (node.kind) {
+      case 'OBJECT_AGGREGATE':
+        output.push('AGGREGATE');
+        break;
+      case 'OBJECT_OPERATOR':
+        output.push('OPERATOR');
+        break;
+      case 'OBJECT_TYPE':
+        output.push('TYPE');
+        break;
+      case 'OBJECT_TSPARSER':
+        output.push('TEXT SEARCH PARSER');
+        break;
+      case 'OBJECT_TSDICTIONARY':
+        output.push('TEXT SEARCH DICTIONARY');
+        break;
+      case 'OBJECT_TSTEMPLATE':
+        output.push('TEXT SEARCH TEMPLATE');
+        break;
+      case 'OBJECT_TSCONFIGURATION':
+        output.push('TEXT SEARCH CONFIGURATION');
+        break;
+      case 'OBJECT_COLLATION':
+        output.push('COLLATION');
+        break;
+      default:
+        throw new Error('DefineStmt not recognized');
+    }
+
+    if (node.if_not_exists) {
+      output.push('IF NOT EXISTS');
+    }
+
+    switch (node.kind) {
+      case 'OBJECT_AGGREGATE':
+        // output.push(this.deparse(node.defnames));
+        output.push(this.list(node.defnames, '.', '', context));
+
+        break;
+      case 'OBJECT_OPERATOR':
+        output.push(this.list(node.defnames, '.', '', context));
+        // output.push(this.deparse(node.defnames));
+        break;
+      case 'OBJECT_TYPE':
+      case 'OBJECT_TSPARSER':
+      case 'OBJECT_TSDICTIONARY':
+      case 'OBJECT_TSTEMPLATE':
+      case 'OBJECT_TSCONFIGURATION':
+      case 'OBJECT_COLLATION':
+        output.push(this.deparse(node.defnames));
+        break;
+      default:
+        throw new Error('DefineStmt not recognized');
+    }
+
+    if (!node.oldstyle && node.kind == 'OBJECT_AGGREGATE') {
+      output.push('(');
+      output.push(`${this.listQuotes(node.args[0], ',')}`);
+      output.push(')');
+    }
+
+    if (node.definition.length > 0) {
+      output.push('(');
+      for (let n = 0; n < node.definition.length; n++) {
+        const defElement = node.definition[n].DefElem;
+        output.push(defElement.defname);
+        if (defElement.arg) {
+          output.push('=');
+          output.push(this.deparse(defElement.arg));
+        }
+        if (n !== node.definition.length - 1) {
+          output.push(',');
+        }
+      }
+      output.push(')');
+    }
+
+    return output.join(' ');
+  }
+
   ['DefElem'](node, context = {}) {
     if (node.defname === 'transaction_isolation') {
       return format(
