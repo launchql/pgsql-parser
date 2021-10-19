@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.1.11](https://github.com/pyramation/pgsql-parser/compare/pgsql-deparser@13.1.10...pgsql-deparser@13.1.11) (2021-10-19)
+
+**Note:** Version bump only for package pgsql-deparser
+
+
+
+
+
 ## [13.1.10](https://github.com/pyramation/pgsql-parser/compare/pgsql-deparser@13.1.9...pgsql-deparser@13.1.10) (2021-10-19)
 
 **Note:** Version bump only for package pgsql-deparser
