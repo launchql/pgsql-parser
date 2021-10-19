@@ -52,7 +52,7 @@ describe('kitchen sink', () => {
   it('default privs', () => {
     check('alter/default-privs.sql');
   });
-  it.only('alter-table-column', () => {
+  it('alter-table-column', () => {
     check('alter/alter-table-column.sql');
   });
   it('set', () => {

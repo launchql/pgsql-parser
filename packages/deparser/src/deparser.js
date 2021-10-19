@@ -1079,6 +1079,11 @@ export default class Deparser {
         }
         case 'increment': {
           const inc = this.deparse(node.arg, context);
+          if (context === 'sequence') {
+            // we need 'simple' so it doesn't wrap negative numbers in parens
+            return `${name} ${this.deparse(node.arg, 'simple')}`;
+          }
+
           return `INCREMENT BY ${inc}`;
         }
         case 'sequence_name': {
