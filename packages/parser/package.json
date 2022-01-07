@@ -72,7 +72,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.11.2",
-    "libpg-query": "13.1.1",
+    "libpg-query": "13.1.2",
     "minimist": "^1.2.5",
     "pgsql-deparser": "^13.1.12",
     "pgsql-enums": "^13.1.2"
