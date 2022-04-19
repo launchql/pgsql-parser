@@ -17,6 +17,10 @@ export const check = (file) => {
   expect(cleanTree(parse(sql))).toEqual(cleanTree(tree));
 };
 
+it('copy', () => {
+  check('copy.sql');
+});
+
 it('privs-and-defaults', () => {
   check('privs-and-defaults.sql');
 });
@@ -178,6 +182,9 @@ describe('kitchen sink', () => {
   describe('views', () => {
     it('create', () => {
       check('views/create.sql');
+    });
+    it('replace', () => {
+      check('views/replace.sql');
     });
   });
   describe('transactions', () => {

@@ -2496,7 +2496,9 @@ export default class Deparser {
 
   ['ViewStmt'](node, context = {}) {
     const output = [];
-    output.push('CREATE VIEW');
+    output.push('CREATE');
+    if (node.replace) output.push('OR REPLACE');
+    output.push('VIEW');
     output.push(this.RangeVar(node.view, context));
     output.push('AS');
     output.push(this.deparse(node.query, context));

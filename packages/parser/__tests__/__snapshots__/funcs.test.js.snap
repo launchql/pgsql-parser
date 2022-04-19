@@ -15,7 +15,7 @@ Array [
                   },
                 },
                 "lineno": 5,
-                "varno": 1,
+                "varno": 7,
               },
             },
             Object {
@@ -26,7 +26,7 @@ Array [
                   },
                 },
                 "lineno": 6,
-                "varno": 1,
+                "varno": 7,
               },
             },
             Object {
@@ -37,7 +37,7 @@ Array [
                   },
                 },
                 "lineno": 7,
-                "varno": 1,
+                "varno": 7,
               },
             },
             Object {
@@ -48,7 +48,7 @@ Array [
                   },
                 },
                 "lineno": 8,
-                "varno": 1,
+                "varno": 7,
               },
             },
             Object {
@@ -59,7 +59,7 @@ Array [
                   },
                 },
                 "lineno": 9,
-                "varno": 1,
+                "varno": 7,
               },
             },
             Object {
@@ -70,7 +70,7 @@ Array [
                   },
                 },
                 "lineno": 10,
-                "varno": 1,
+                "varno": 7,
               },
             },
             Object {
@@ -88,6 +88,66 @@ Array [
         },
       },
       "datums": Array [
+        Object {
+          "PLpgSQL_var": Object {
+            "datatype": Object {
+              "PLpgSQL_type": Object {
+                "typname": "UNKNOWN",
+              },
+            },
+            "refname": "v_name",
+          },
+        },
+        Object {
+          "PLpgSQL_var": Object {
+            "datatype": Object {
+              "PLpgSQL_type": Object {
+                "typname": "UNKNOWN",
+              },
+            },
+            "refname": "v_ordering",
+          },
+        },
+        Object {
+          "PLpgSQL_var": Object {
+            "datatype": Object {
+              "PLpgSQL_type": Object {
+                "typname": "UNKNOWN",
+              },
+            },
+            "refname": "v_nulls_ordering",
+          },
+        },
+        Object {
+          "PLpgSQL_var": Object {
+            "datatype": Object {
+              "PLpgSQL_type": Object {
+                "typname": "UNKNOWN",
+              },
+            },
+            "refname": "v_expr",
+          },
+        },
+        Object {
+          "PLpgSQL_var": Object {
+            "datatype": Object {
+              "PLpgSQL_type": Object {
+                "typname": "UNKNOWN",
+              },
+            },
+            "refname": "v_opclass",
+          },
+        },
+        Object {
+          "PLpgSQL_var": Object {
+            "datatype": Object {
+              "PLpgSQL_type": Object {
+                "typname": "UNKNOWN",
+              },
+            },
+            "refname": "v_collation",
+          },
+        },
         Object {
           "PLpgSQL_var": Object {
             "datatype": Object {
