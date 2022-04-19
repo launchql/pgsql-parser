@@ -3502,6 +3502,8 @@ export default class Deparser {
           .join(',')
       );
       output.push(')');
+    } else if (!node.args_unspecified) {
+      output.push('()');
     }
 
     return output.join(' ');

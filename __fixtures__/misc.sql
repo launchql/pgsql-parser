@@ -7,3 +7,7 @@ CREATE INDEX index_email_logs_on_created_at ON public.email_logs USING btree (cr
 
 ALTER TABLE "Customer" ADD CONSTRAINT myconstraint
   FOREIGN KEY ("SupportRepId") REFERENCES "Employee" ("EmployeeId") ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+
+ALTER FUNCTION public.delayed_jobs_after_delete_row_tr_fn() OWNER TO prisma;
+ALTER FUNCTION public.delayed_jobs_after_delete_row_tr_fn OWNER TO prisma;
