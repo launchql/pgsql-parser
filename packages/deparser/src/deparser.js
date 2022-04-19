@@ -2294,6 +2294,10 @@ export default class Deparser {
         ) {
           output.push('CASCADE');
         }
+        if (opt.DefElem.defname === 'schema') {
+          output.push('WITH SCHEMA');
+          output.push(this.quote(this.deparse(opt.DefElem.arg)));
+        }
       });
     }
     return output.join(' ');

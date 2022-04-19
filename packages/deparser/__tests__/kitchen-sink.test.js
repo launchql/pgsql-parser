@@ -17,6 +17,10 @@ export const check = (file) => {
   expect(cleanTree(parse(sql))).toEqual(cleanTree(tree));
 };
 
+it('misc', () => {
+  check('misc.sql');
+});
+
 it('callstmt', () => {
   check('call.sql');
 });
