@@ -3686,6 +3686,24 @@ export default class Deparser {
     return output.join(' ');
   }
 
+  ['CopyStmt'](node, context = {}) {
+    const output = ['COPY'];
+
+    output.push('(' + this.deparse(node.query, context) + ')');
+
+    output.push('TO');
+    output.push(`'${node.filename}'`);
+
+    if (
+      node.options?.length > 0 &&
+      node.options[0].DefElem.defname === 'format'
+    ) {
+      output.push(`(FORMAT '${this.deparse(node.options[0].DefElem.arg)}')`);
+    }
+
+    return output.join(' ');
+  }
+
   deparseFrameOptions(options, refName, startOffset, endOffset) {
     // https://github.com/pganalyze/libpg_query/blob/442b1748d06364ecd3779bc558899176c02efaf0/src/postgres/include/nodes/parsenodes.h#L505-L522
     const FRAMEOPTION_NONDEFAULT = 0x00001; /* any specified? */
