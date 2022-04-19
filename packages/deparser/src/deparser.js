@@ -3706,6 +3706,22 @@ export default class Deparser {
     return output.join(' ');
   }
 
+  ['CallStmt'](node, context = {}) {
+    const output = ['CALL'];
+
+    output.push(this.deparse(node.funccall.funcname[0]));
+
+    if (node.funccall.args && node.funccall.args.length) {
+      // we have arguments
+      output.push('(' + this.list(node.funccall.args, ', ', '', context) + ')');
+    } else {
+      // just close parens
+      output.push('()');
+    }
+
+    return output.join(' ');
+  }
+
   deparseFrameOptions(options, refName, startOffset, endOffset) {
     // https://github.com/pganalyze/libpg_query/blob/442b1748d06364ecd3779bc558899176c02efaf0/src/postgres/include/nodes/parsenodes.h#L505-L522
     const FRAMEOPTION_NONDEFAULT = 0x00001; /* any specified? */
