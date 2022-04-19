@@ -2695,6 +2695,9 @@ export default class Deparser {
       output.push('CREATE');
     } else {
       output.push('CREATE TABLE');
+      if (node.if_not_exists) {
+        output.push('IF NOT EXISTS');
+      }
     }
 
     output.push(this.RangeVar(node.relation, context));
