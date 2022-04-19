@@ -1379,8 +1379,15 @@ export default class Deparser {
   }
 
   ['IndexElem'](node, context = {}) {
+    const output = [];
     if (node.name) {
-      return node.name;
+      output.push(node.name);
+      if (node.ordering === 'SORTBY_DESC') {
+        output.push('DESC');
+      } else if (node.ordering === 'SORTBY_ASC') {
+        output.push('ASC');
+      }
+      return output.join(' ');
     }
     if (node.expr) {
       return this.deparse(node.expr, context);
