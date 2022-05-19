@@ -3413,18 +3413,7 @@ browser-resolve@^1.11.3:
   dependencies:
     resolve "1.1.7"
 
-browserslist@^4.11.1, browserslist@^4.12.0, browserslist@^4.14.5, browserslist@^4.16.3:
-  version "4.16.3"
-  resolved "https://registry.npmjs.org/browserslist/-/browserslist-4.16.3.tgz#340aa46940d7db878748567c5dea24a48ddf3717"
-  integrity sha512-vIyhWmIkULaq04Gt93txdh+j02yX/JzlyhLYbV3YQCn/zvES3JnY7TifHHvvr1w5hTDluNKMkV05cs4vy8Q7sw==
-  dependencies:
-    caniuse-lite "^1.0.30001181"
-    colorette "^1.2.1"
-    electron-to-chromium "^1.3.649"
-    escalade "^3.1.1"
-    node-releases "^1.1.70"
-
-browserslist@^4.17.5:
+browserslist@^4.11.1, browserslist@^4.12.0, browserslist@^4.14.5, browserslist@^4.16.3, browserslist@^4.17.5:
   version "4.20.2"
   resolved "https://registry.npmjs.org/browserslist/-/browserslist-4.20.2.tgz#567b41508757ecd904dab4d1c646c612cd3d4f88"
   integrity sha512-CQOBCqp/9pDvDbx3xfMi+86pr4KXIf2FDkTTdeuYw8OxS9t898LA1Khq57gtufFILXpfgsSx5woNgsBgvGjpsA==
@@ -3613,11 +3602,6 @@ camelcase@^6.2.0:
   version "6.3.0"
   resolved "https://registry.npmjs.org/camelcase/-/camelcase-6.3.0.tgz#5685b95eb209ac9c0c177467778c9c84df58ba9a"
   integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
-
-caniuse-lite@^1.0.30001181:
-  version "1.0.30001203"
-  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001203.tgz#a7a34df21a387d9deffcd56c000b8cf5ab540580"
-  integrity sha512-/I9tvnzU/PHMH7wBPrfDMSuecDeUKerjCPX7D0xBbaJZPxoT9m+yYxt0zCTkcijCkjTdim3H56Zm0i5Adxch4w==
 
 caniuse-lite@^1.0.30001317:
   version "1.0.30001332"
@@ -3869,11 +3853,6 @@ color-support@^1.1.2:
   version "1.1.3"
   resolved "https://registry.npmjs.org/color-support/-/color-support-1.1.3.tgz#93834379a1cc9a0c61f82f52f0d04322251bd5a2"
   integrity sha512-qiBjkpbMLO/HL68y+lh4q0/O1MZFj2RX6X/KmMa3+gJD3z+WwI1ZzDHysvqHGS3mP6mznPckpXmw1nI9cJjyRg==
-
-colorette@^1.2.1:
-  version "1.2.2"
-  resolved "https://registry.npmjs.org/colorette/-/colorette-1.2.2.tgz#cbcc79d5e99caea2dbf10eb3a26fd8b3e6acfa94"
-  integrity sha512-MKGMzyfeuutC/ZJ1cba9NqcNpfeqMUcYmyF1ZFY6/Cn7CNSAKx6a+s48sqLqyAiZuaP2TcqMhoo+dlwFnVxT9w==
 
 columnify@^1.5.4:
   version "1.5.4"
@@ -4431,11 +4410,6 @@ ecc-jsbn@~0.1.1:
   dependencies:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
-
-electron-to-chromium@^1.3.649:
-  version "1.3.692"
-  resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.3.692.tgz#4d00479055a7282cdd1b19caec09ed7779529640"
-  integrity sha512-Ix+zDUAXWZuUzqKdhkgN5dP7ZM+IwMG4yAGFGDLpGJP/3vNEEwuHG1LIhtXUfW0FFV0j38t5PUv2n/3MFSRviQ==
 
 electron-to-chromium@^1.4.84:
   version "1.4.112"
@@ -7833,11 +7807,6 @@ node-notifier@^6.0.0:
     semver "^6.3.0"
     shellwords "^0.1.1"
     which "^1.3.1"
-
-node-releases@^1.1.70:
-  version "1.1.71"
-  resolved "https://registry.npmjs.org/node-releases/-/node-releases-1.1.71.tgz#cb1334b179896b1c89ecfdd4b725fb7bbdfc7dbb"
-  integrity sha512-zR6HoT6LrLCRBwukmrVbHv0EpEQjksO6GmFcZQQuCAy139BEsoVKPYnf3jongYW83fAa1torLGYwxxky/p28sg==
 
 node-releases@^2.0.2:
   version "2.0.3"
