@@ -199,6 +199,9 @@ describe('kitchen sink', () => {
     it('begin_commit', () => {
       check('transactions/begin_commit.sql');
     });
+    it('lock', () => {
+      check('transactions/lock.sql');
+    });
   });
   describe('triggers', () => {
     it('create', () => {
