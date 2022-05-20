@@ -99,14 +99,14 @@ const RESERVED_WORDS = [
 
 // https://github.com/pganalyze/libpg_query/blob/b2790f8140721ff7f047167ecd7d44267b0a3880/src/postgres/include/storage/lockdefs.h
 const LOCK_MODES = {
-  1: "ACCESS SHARE",
-  2: "ROW SHARE",
-  3: "ROW EXCLUSIVE",
-  4: "SHARE UPDATE EXCLUSIVE",
-  5: "SHARE",
-  6: "SHARE ROW",
-  7: "EXCLUSIVE",
-  8: "ACCESS EXCLUSIVE"
+  1: 'ACCESS SHARE',
+  2: 'ROW SHARE',
+  3: 'ROW EXCLUSIVE',
+  4: 'SHARE UPDATE EXCLUSIVE',
+  5: 'SHARE',
+  6: 'SHARE ROW',
+  7: 'EXCLUSIVE',
+  8: 'ACCESS EXCLUSIVE'
 };
 
 const isReserved = (value) => RESERVED_WORDS.includes(value.toLowerCase());
@@ -1677,9 +1677,7 @@ export default class Deparser {
     const output = ['LOCK'];
 
     output.push(
-      node.relations
-        .map((e) => this.deparse(e, 'lock'))
-        .join(', ')
+      node.relations.map((e) => this.deparse(e, { lock: true })).join(', ')
     );
     output.push('IN');
     output.push(LOCK_MODES[node.mode]);
@@ -1826,10 +1824,9 @@ export default class Deparser {
       output.push('ONLY');
     }
 
-    // TODO why does this seem to be what we really need vs the above?
-    // if (!node.inh) {
-    //   output.push('ONLY');
-    // }
+    if (!node.inh && context.lock) {
+      output.push('ONLY');
+    }
 
     if (node.relpersistence === 'u') {
       output.push('UNLOGGED');

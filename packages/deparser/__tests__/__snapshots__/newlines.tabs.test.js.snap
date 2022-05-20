@@ -92,6 +92,7 @@ Array [
         },
       },
       "stmt_len": 66,
+      "stmt_location": 0,
     },
   },
   Object {
@@ -279,6 +280,7 @@ Array [
         },
       },
       "stmt_len": 125,
+      "stmt_location": 67,
     },
   },
   Object {
@@ -442,6 +444,7 @@ Array [
         },
       },
       "stmt_len": 128,
+      "stmt_location": 193,
     },
   },
   Object {
@@ -835,6 +838,7 @@ Array [
         },
       },
       "stmt_len": 250,
+      "stmt_location": 322,
     },
   },
   Object {
@@ -927,6 +931,7 @@ Array [
         },
       },
       "stmt_len": 36,
+      "stmt_location": 573,
     },
   },
   Object {
@@ -1071,6 +1076,7 @@ Array [
         },
       },
       "stmt_len": 54,
+      "stmt_location": 610,
     },
   },
   Object {
@@ -1237,6 +1243,7 @@ Array [
         },
       },
       "stmt_len": 70,
+      "stmt_location": 665,
     },
   },
   Object {
@@ -1353,6 +1360,7 @@ Array [
         },
       },
       "stmt_len": 45,
+      "stmt_location": 736,
     },
   },
   Object {
@@ -1441,6 +1449,7 @@ Array [
         },
       },
       "stmt_len": 36,
+      "stmt_location": 782,
     },
   },
   Object {
@@ -1529,6 +1538,7 @@ Array [
         },
       },
       "stmt_len": 39,
+      "stmt_location": 819,
     },
   },
   Object {
@@ -1631,6 +1641,7 @@ Array [
         },
       },
       "stmt_len": 37,
+      "stmt_location": 859,
     },
   },
   Object {
@@ -1733,6 +1744,7 @@ Array [
         },
       },
       "stmt_len": 35,
+      "stmt_location": 897,
     },
   },
 ]
