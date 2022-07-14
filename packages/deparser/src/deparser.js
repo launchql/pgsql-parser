@@ -2783,7 +2783,7 @@ export default class Deparser {
     );
     output.push(`${NEWLINE_CHAR})`);
 
-    if (relpersistence === 'p' && node.hasOwnProperty('inhRelations')) {
+    if (node.hasOwnProperty('inhRelations')) {
       output.push('INHERITS');
       output.push('(');
       output.push(this.list(node.inhRelations, ', ', '', context));
