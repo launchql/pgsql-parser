@@ -1408,6 +1408,10 @@ export default class Deparser {
   ['InsertStmt'](node, context = {}) {
     const output = [];
 
+    if (node.withClause) {
+      output.push(this.WithClause(node.withClause, context));
+    }
+
     output.push('INSERT INTO');
     output.push(this.RangeVar(node.relation, context));
 
@@ -1479,6 +1483,11 @@ export default class Deparser {
 
   ['DeleteStmt'](node, context = {}) {
     const output = [''];
+
+    if (node.withClause) {
+      output.push(this.WithClause(node.withClause, context));
+    }
+
     output.push('DELETE');
     output.push('FROM');
     output.push(this.RangeVar(node.relation, context));
@@ -1491,6 +1500,11 @@ export default class Deparser {
 
   ['UpdateStmt'](node, context = {}) {
     const output = [];
+
+    if (node.withClause) {
+      output.push(this.WithClause(node.withClause, context));
+    }
+
     output.push('UPDATE');
     if (node.relation) {
       // onConflictClause no relation..
