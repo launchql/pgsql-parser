@@ -334,14 +334,13 @@ export default class Deparser {
     }
     output.push('TO');
     output.push(this.RangeVar(node.relation, context));
-    if (node.instead) {
-      output.push('DO');
-      output.push('INSTEAD');
-    }
     if (node.whereClause) {
       output.push('WHERE');
       output.push(this.deparse(node.whereClause, context));
-      output.push('DO');
+    }
+    output.push('DO');
+    if (node.instead) {
+      output.push('INSTEAD');
     }
     if (!node.actions || !node.actions.length) {
       output.push('NOTHING');
