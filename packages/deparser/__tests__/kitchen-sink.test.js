@@ -46,10 +46,30 @@ export const check = (file) => {
     readFileSync(f).toString()
   )[0];
   const tree = tryParse(testsql);
-  expect(tree).toMatchSnapshot();
-  const sql = deparse(tree);
-  expect(cleanLines(sql)).toMatchSnapshot();
-  expect(cleanTree(parse(sql))).toEqual(cleanTree(tree));
+  for (const stmt of tree) {
+    expect(stmt).toMatchSnapshot();
+    let sql;
+    try {
+      sql = deparse(stmt);
+      expect(cleanLines(sql)).toMatchSnapshot();
+      expect(cleanTree(parse(sql))).toEqual(cleanTree([stmt]));
+    } catch (err) {
+      const { stmt_location, stmt_len } = stmt.RawStmt;
+      const errMessage = [];
+      if (typeof stmt_location === 'number' && typeof stmt_len === 'number') {
+        errMessage.push('Original statement:');
+        errMessage.push(testsql.slice(stmt_location, stmt_location + stmt_len));
+      }
+      if (sql) {
+        errMessage.push('\nDeparsed statement:');
+        errMessage.push(sql);
+      }
+      if (errMessage.length) {
+        console.error(errMessage.join('\n'));
+      }
+      throw err;
+    }
+  }
 };
 
 it('misc', () => {
