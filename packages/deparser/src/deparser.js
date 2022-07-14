@@ -1041,12 +1041,10 @@ export default class Deparser {
     output.push(node.ctename);
 
     if (node.aliascolnames) {
-      output.push(
-        format(
-          '(%s)',
-          this.quote(this.deparseNodes(node.aliascolnames, context))
-        )
+      const colnames = this.quote(
+        this.deparseNodes(node.aliascolnames, context)
       );
+      output.push(`(${colnames.join(', ')})`);
     }
 
     output.push(format('AS (%s)', this.deparse(node.ctequery)));
