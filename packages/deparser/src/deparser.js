@@ -1824,7 +1824,7 @@ export default class Deparser {
       output.push('ONLY');
     }
 
-    if (!node.inh && context.lock) {
+    if (!node.inh && (context.lock || context === 'truncate')) {
       output.push('ONLY');
     }
 
@@ -2037,6 +2037,22 @@ export default class Deparser {
       node.lockingClause.forEach((item) => {
         return output.push(this.deparse(item, context));
       });
+    }
+
+    return output.join(' ');
+  }
+
+  ['TruncateStmt'](node, context = {}) {
+    const output = ['TRUNCATE TABLE'];
+
+    output.push(node.relations.map((e) => this.deparse(e, 'truncate')).join(', '));
+
+    if (node.restart_seqs) {
+      output.push('RESTART IDENTITY');
+    }
+
+    if (node.behavior === 'DROP_CASCADE') {
+      output.push('CASCADE');
     }
 
     return output.join(' ');

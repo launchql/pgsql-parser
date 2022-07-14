@@ -734,7 +734,7 @@ describe('kitchen sink', () => {
     xit('upstream/triggers.sql', () => {
       check('upstream/triggers.sql');
     });
-    xit('upstream/truncate.sql', () => {
+    it('upstream/truncate.sql', () => {
       check('upstream/truncate.sql');
     });
     xit('upstream/tsdicts.sql', () => {
