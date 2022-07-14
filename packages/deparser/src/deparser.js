@@ -1236,6 +1236,10 @@ export default class Deparser {
             return `${name} ${this.deparse(node.arg, 'simple')}`;
           }
       }
+    } else if (context === 'explain') {
+      if (node.arg) {
+        return `${name} ${this.deparse(node.arg)}`;
+      }
     } else if (node.arg) {
       return `${name} = ${this.deparse(node.arg, context)}`;
     }
@@ -1892,6 +1896,11 @@ export default class Deparser {
   ['ExplainStmt'](node, context = {}) {
     const output = [];
     output.push('EXPLAIN');
+    if (node.options) {
+      output.push('(');
+      output.push(this.list(node.options, ', ', '', 'explain'));
+      output.push(')');
+    }
     output.push(this.deparse(node.query, context));
     return output.join(' ');
   }
