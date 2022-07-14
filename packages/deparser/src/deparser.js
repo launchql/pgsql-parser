@@ -166,6 +166,18 @@ export default class Deparser {
     });
   }
 
+  deparseReturningList(list, context) {
+    return list
+      .map(
+        (returning) =>
+          this.deparse(returning.ResTarget.val, context) +
+          (returning.ResTarget.name
+            ? ' AS ' + this.quote(returning.ResTarget.name)
+            : '')
+      )
+      .join(',');
+  }
+
   list(nodes, separator = ', ', prefix = '', context) {
     if (!nodes) {
       return '';
@@ -1455,17 +1467,7 @@ export default class Deparser {
 
     if (node.returningList) {
       output.push('RETURNING');
-      output.push(
-        node.returningList
-          .map(
-            (returning) =>
-              this.deparse(returning.ResTarget.val, context) +
-              (returning.ResTarget.name
-                ? ' AS ' + this.quote(returning.ResTarget.name)
-                : '')
-          )
-          .join(',')
-      );
+      output.push(this.deparseReturningList(node.returningList, context));
     }
 
     return output.join(' ');
@@ -1491,9 +1493,22 @@ export default class Deparser {
     output.push('DELETE');
     output.push('FROM');
     output.push(this.RangeVar(node.relation, context));
+
+    if (node.usingClause) {
+      output.push('USING');
+      output.push(
+        node.usingClause.map((e) => this.deparse(e, context)).join(', ')
+      );
+    }
+
     if (node.whereClause) {
       output.push('WHERE');
       output.push(this.deparse(node.whereClause, context));
+    }
+
+    if (node.returningList) {
+      output.push('RETURNING');
+      output.push(this.deparseReturningList(node.returningList, context));
     }
     return output.join(' ');
   }
@@ -1546,17 +1561,7 @@ export default class Deparser {
 
     if (node.returningList) {
       output.push('RETURNING');
-      output.push(
-        node.returningList
-          .map(
-            (returning) =>
-              this.deparse(returning.ResTarget.val, context) +
-              (returning.ResTarget.name
-                ? ' AS ' + this.quote(returning.ResTarget.name)
-                : '')
-          )
-          .join(',')
-      );
+      output.push(this.deparseReturningList(node.returningList, context));
     }
 
     return output.join(' ');
