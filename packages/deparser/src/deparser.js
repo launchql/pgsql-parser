@@ -322,14 +322,13 @@ export default class Deparser {
     }
     output.push('TO');
     output.push(this.RangeVar(node.relation, context));
-    if (node.instead) {
-      output.push('DO');
-      output.push('INSTEAD');
-    }
     if (node.whereClause) {
       output.push('WHERE');
       output.push(this.deparse(node.whereClause, context));
-      output.push('DO');
+    }
+    output.push('DO');
+    if (node.instead) {
+      output.push('INSTEAD');
     }
     if (!node.actions || !node.actions.length) {
       output.push('NOTHING');
@@ -1041,12 +1040,10 @@ export default class Deparser {
     output.push(node.ctename);
 
     if (node.aliascolnames) {
-      output.push(
-        format(
-          '(%s)',
-          this.quote(this.deparseNodes(node.aliascolnames, context))
-        )
+      const colnames = this.quote(
+        this.deparseNodes(node.aliascolnames, context)
       );
+      output.push(`(${colnames.join(', ')})`);
     }
 
     output.push(format('AS (%s)', this.deparse(node.ctequery)));
@@ -1832,7 +1829,7 @@ export default class Deparser {
       output.push('UNLOGGED');
     }
 
-    if (node.relpersistence === 't') {
+    if (node.relpersistence === 't' && context !== 'view') {
       output.push('TEMPORARY TABLE');
     }
 
@@ -2551,10 +2548,18 @@ export default class Deparser {
     const output = [];
     output.push('CREATE');
     if (node.replace) output.push('OR REPLACE');
+    if (node.view.relpersistence === 't') {
+      output.push('TEMPORARY');
+    }
     output.push('VIEW');
-    output.push(this.RangeVar(node.view, context));
+    output.push(this.RangeVar(node.view, 'view'));
     output.push('AS');
     output.push(this.deparse(node.query, context));
+    if (node.withCheckOption === 'LOCAL_CHECK_OPTION') {
+      output.push('WITH LOCAL CHECK OPTION');
+    } else if (node.withCheckOption === 'CASCADED_CHECK_OPTION') {
+      output.push('WITH CASCADED CHECK OPTION');
+    }
     return output.join(' ');
   }
 
@@ -2583,8 +2588,17 @@ export default class Deparser {
   }
 
   ['CreateTableAsStmt'](node, context = {}) {
-    const output = [];
-    output.push('CREATE MATERIALIZED VIEW');
+    const output = ['CREATE'];
+    const relpersistence = dotty.get(node, 'into.rel.relpersistence');
+    if (node.relkind === 'OBJECT_MATVIEW') {
+      output.push('MATERIALIZED VIEW');
+    } else if (relpersistence !== 't') {
+      output.push('TABLE');
+      if (node.if_not_exists) {
+        output.push('IF NOT EXISTS');
+      }
+    }
+
     output.push(this.IntoClause(node.into, context));
     output.push('AS');
     output.push(this.deparse(node.query, context));
