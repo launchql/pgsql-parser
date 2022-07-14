@@ -776,7 +776,7 @@ describe('kitchen sink', () => {
     xit('upstream/window.sql', () => {
       check('upstream/window.sql');
     });
-    xit('upstream/with.sql', () => {
+    it('upstream/with.sql', () => {
       check('upstream/with.sql');
     });
     xit('upstream/without_oid.sql', () => {

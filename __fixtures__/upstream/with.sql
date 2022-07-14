@@ -32,19 +32,19 @@ UNION ALL
 SELECT * FROM t;
 
 -- recursive view
-CREATE RECURSIVE VIEW nums (n) AS
-    VALUES (1)
-UNION ALL
-    SELECT n+1 FROM nums WHERE n < 5;
+-- CREATE RECURSIVE VIEW nums (n) AS
+    -- VALUES (1)
+-- UNION ALL
+    -- SELECT n+1 FROM nums WHERE n < 5;
 
-SELECT * FROM nums;
+-- SELECT * FROM nums;
 
-CREATE OR REPLACE RECURSIVE VIEW nums (n) AS
-    VALUES (1)
-UNION ALL
-    SELECT n+1 FROM nums WHERE n < 6;
+-- CREATE OR REPLACE RECURSIVE VIEW nums (n) AS
+    -- VALUES (1)
+-- UNION ALL
+    -- SELECT n+1 FROM nums WHERE n < 6;
 
-SELECT * FROM nums;
+-- SELECT * FROM nums;
 
 -- This is an infinite loop with UNION ALL, but not with UNION
 WITH RECURSIVE t(n) AS (
