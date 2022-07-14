@@ -6,15 +6,70 @@ import { sync as glob } from 'glob';
 
 const FIXTURE_DIR = `${__dirname}/../../../__fixtures__`;
 
+function printErrorMessage(sql, position) {
+  const lineNumber = sql.slice(0, position).match(/\n/g)?.length || 0;
+  const lines = sql.split('\n');
+  let colNumber = position - 1;
+  for (let l = 0; l < lineNumber; l++) {
+    colNumber -= lines[l].length + 1;
+  }
+  const errMessage = [`Error line ${lineNumber + 1}, column ${colNumber + 1}`];
+  // print the previous line if there is one
+  if (lineNumber > 0) {
+    errMessage.push(lines[lineNumber - 1]);
+  }
+  // print the errant line itself
+  errMessage.push(lines[lineNumber]);
+  // print a marker at the exact column
+  errMessage.push(' '.repeat(colNumber) + '^');
+  // print the line after if there is one
+  if (lineNumber < lines.length - 1) {
+    errMessage.push(lines[lineNumber + 1]);
+  }
+  console.error(errMessage.join('\n'));
+}
+
+function tryParse(sql) {
+  try {
+    return parse(sql);
+  } catch (err) {
+    // if there is position information, print a readable error message
+    if (err.cursorPosition) {
+      printErrorMessage(sql, err.cursorPosition);
+    }
+    throw err;
+  }
+}
+
 export const check = (file) => {
   const testsql = glob(`${FIXTURE_DIR}/${file}`).map((f) =>
     readFileSync(f).toString()
   )[0];
-  const tree = parse(testsql);
-  expect(tree).toMatchSnapshot();
-  const sql = deparse(tree);
-  expect(cleanLines(sql)).toMatchSnapshot();
-  expect(cleanTree(parse(sql))).toEqual(cleanTree(tree));
+  const tree = tryParse(testsql);
+  for (const stmt of tree) {
+    expect(stmt).toMatchSnapshot();
+    let sql;
+    try {
+      sql = deparse(stmt);
+      expect(cleanLines(sql)).toMatchSnapshot();
+      expect(cleanTree(parse(sql))).toEqual(cleanTree([stmt]));
+    } catch (err) {
+      const { stmt_location, stmt_len } = stmt.RawStmt;
+      const errMessage = [];
+      if (typeof stmt_location === 'number' && typeof stmt_len === 'number') {
+        errMessage.push('Original statement:');
+        errMessage.push(testsql.slice(stmt_location, stmt_location + stmt_len));
+      }
+      if (sql) {
+        errMessage.push('\nDeparsed statement:');
+        errMessage.push(sql);
+      }
+      if (errMessage.length) {
+        console.error(errMessage.join('\n'));
+      }
+      throw err;
+    }
+  }
 };
 
 it('misc', () => {
