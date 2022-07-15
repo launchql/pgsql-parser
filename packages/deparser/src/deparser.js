@@ -2581,6 +2581,11 @@ export default class Deparser {
     }
     output.push('VIEW');
     output.push(this.RangeVar(node.view, 'view'));
+    if (node.aliases) {
+      output.push('(');
+      output.push(this.list(node.aliases, ', ', '', context))
+      output.push(')');
+    }
     output.push('AS');
     output.push(this.deparse(node.query, context));
     if (node.withCheckOption === 'LOCAL_CHECK_OPTION') {
