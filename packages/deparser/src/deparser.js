@@ -1499,9 +1499,7 @@ export default class Deparser {
 
     if (node.usingClause) {
       output.push('USING');
-      output.push(
-        node.usingClause.map((e) => this.deparse(e, context)).join(', ')
-      );
+      output.push(this.list(node.usingClause, ', ', '', context));
     }
 
     if (node.whereClause) {
@@ -1696,9 +1694,7 @@ export default class Deparser {
   ['LockStmt'](node, context = {}) {
     const output = ['LOCK'];
 
-    output.push(
-      node.relations.map((e) => this.deparse(e, { lock: true })).join(', ')
-    );
+    output.push(this.list(node.relations, ', ', '', { lock: true }));
     output.push('IN');
     output.push(LOCK_MODES[node.mode]);
     output.push('MODE');
@@ -2070,7 +2066,7 @@ export default class Deparser {
   ['TruncateStmt'](node, context = {}) {
     const output = ['TRUNCATE TABLE'];
 
-    output.push(node.relations.map((e) => this.deparse(e, 'truncate')).join(', '));
+    output.push(this.list(node.relations, ', ', '', 'truncate'));
 
     if (node.restart_seqs) {
       output.push('RESTART IDENTITY');
@@ -2583,7 +2579,7 @@ export default class Deparser {
     output.push(this.RangeVar(node.view, 'view'));
     if (node.aliases) {
       output.push('(');
-      output.push(this.list(node.aliases, ', ', '', context))
+      output.push(this.list(node.aliases, ', ', '', context));
       output.push(')');
     }
     output.push('AS');
