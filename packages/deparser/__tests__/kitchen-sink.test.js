@@ -734,7 +734,7 @@ describe('kitchen sink', () => {
     xit('upstream/triggers.sql', () => {
       check('upstream/triggers.sql');
     });
-    xit('upstream/truncate.sql', () => {
+    it('upstream/truncate.sql', () => {
       check('upstream/truncate.sql');
     });
     xit('upstream/tsdicts.sql', () => {
@@ -776,7 +776,7 @@ describe('kitchen sink', () => {
     xit('upstream/window.sql', () => {
       check('upstream/window.sql');
     });
-    xit('upstream/with.sql', () => {
+    it('upstream/with.sql', () => {
       check('upstream/with.sql');
     });
     xit('upstream/without_oid.sql', () => {

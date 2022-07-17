@@ -166,6 +166,18 @@ export default class Deparser {
     });
   }
 
+  deparseReturningList(list, context) {
+    return list
+      .map(
+        (returning) =>
+          this.deparse(returning.ResTarget.val, context) +
+          (returning.ResTarget.name
+            ? ' AS ' + this.quote(returning.ResTarget.name)
+            : '')
+      )
+      .join(',');
+  }
+
   list(nodes, separator = ', ', prefix = '', context) {
     if (!nodes) {
       return '';
@@ -322,14 +334,13 @@ export default class Deparser {
     }
     output.push('TO');
     output.push(this.RangeVar(node.relation, context));
-    if (node.instead) {
-      output.push('DO');
-      output.push('INSTEAD');
-    }
     if (node.whereClause) {
       output.push('WHERE');
       output.push(this.deparse(node.whereClause, context));
-      output.push('DO');
+    }
+    output.push('DO');
+    if (node.instead) {
+      output.push('INSTEAD');
     }
     if (!node.actions || !node.actions.length) {
       output.push('NOTHING');
@@ -1041,12 +1052,10 @@ export default class Deparser {
     output.push(node.ctename);
 
     if (node.aliascolnames) {
-      output.push(
-        format(
-          '(%s)',
-          this.quote(this.deparseNodes(node.aliascolnames, context))
-        )
+      const colnames = this.quote(
+        this.deparseNodes(node.aliascolnames, context)
       );
+      output.push(`(${colnames.join(', ')})`);
     }
 
     output.push(format('AS (%s)', this.deparse(node.ctequery)));
@@ -1225,6 +1234,10 @@ export default class Deparser {
             // we need 'simple' so it doesn't wrap negative numbers in parens
             return `${name} ${this.deparse(node.arg, 'simple')}`;
           }
+      }
+    } else if (context === 'explain') {
+      if (node.arg) {
+        return `${name} ${this.deparse(node.arg)}`;
       }
     } else if (node.arg) {
       return `${name} = ${this.deparse(node.arg, context)}`;
@@ -1410,6 +1423,10 @@ export default class Deparser {
   ['InsertStmt'](node, context = {}) {
     const output = [];
 
+    if (node.withClause) {
+      output.push(this.WithClause(node.withClause, context));
+    }
+
     output.push('INSERT INTO');
     output.push(this.RangeVar(node.relation, context));
 
@@ -1453,17 +1470,7 @@ export default class Deparser {
 
     if (node.returningList) {
       output.push('RETURNING');
-      output.push(
-        node.returningList
-          .map(
-            (returning) =>
-              this.deparse(returning.ResTarget.val, context) +
-              (returning.ResTarget.name
-                ? ' AS ' + this.quote(returning.ResTarget.name)
-                : '')
-          )
-          .join(',')
-      );
+      output.push(this.deparseReturningList(node.returningList, context));
     }
 
     return output.join(' ');
@@ -1481,18 +1488,39 @@ export default class Deparser {
 
   ['DeleteStmt'](node, context = {}) {
     const output = [''];
+
+    if (node.withClause) {
+      output.push(this.WithClause(node.withClause, context));
+    }
+
     output.push('DELETE');
     output.push('FROM');
     output.push(this.RangeVar(node.relation, context));
+
+    if (node.usingClause) {
+      output.push('USING');
+      output.push(this.list(node.usingClause, ', ', '', context));
+    }
+
     if (node.whereClause) {
       output.push('WHERE');
       output.push(this.deparse(node.whereClause, context));
+    }
+
+    if (node.returningList) {
+      output.push('RETURNING');
+      output.push(this.deparseReturningList(node.returningList, context));
     }
     return output.join(' ');
   }
 
   ['UpdateStmt'](node, context = {}) {
     const output = [];
+
+    if (node.withClause) {
+      output.push(this.WithClause(node.withClause, context));
+    }
+
     output.push('UPDATE');
     if (node.relation) {
       // onConflictClause no relation..
@@ -1534,17 +1562,7 @@ export default class Deparser {
 
     if (node.returningList) {
       output.push('RETURNING');
-      output.push(
-        node.returningList
-          .map(
-            (returning) =>
-              this.deparse(returning.ResTarget.val, context) +
-              (returning.ResTarget.name
-                ? ' AS ' + this.quote(returning.ResTarget.name)
-                : '')
-          )
-          .join(',')
-      );
+      output.push(this.deparseReturningList(node.returningList, context));
     }
 
     return output.join(' ');
@@ -1676,9 +1694,7 @@ export default class Deparser {
   ['LockStmt'](node, context = {}) {
     const output = ['LOCK'];
 
-    output.push(
-      node.relations.map((e) => this.deparse(e, { lock: true })).join(', ')
-    );
+    output.push(this.list(node.relations, ', ', '', { lock: true }));
     output.push('IN');
     output.push(LOCK_MODES[node.mode]);
     output.push('MODE');
@@ -1824,7 +1840,7 @@ export default class Deparser {
       output.push('ONLY');
     }
 
-    if (!node.inh && context.lock) {
+    if (!node.inh && (context.lock || context === 'truncate')) {
       output.push('ONLY');
     }
 
@@ -1832,7 +1848,7 @@ export default class Deparser {
       output.push('UNLOGGED');
     }
 
-    if (node.relpersistence === 't') {
+    if (node.relpersistence === 't' && context !== 'view') {
       output.push('TEMPORARY TABLE');
     }
 
@@ -1875,6 +1891,11 @@ export default class Deparser {
   ['ExplainStmt'](node, context = {}) {
     const output = [];
     output.push('EXPLAIN');
+    if (node.options) {
+      output.push('(');
+      output.push(this.list(node.options, ', ', '', 'explain'));
+      output.push(')');
+    }
     output.push(this.deparse(node.query, context));
     return output.join(' ');
   }
@@ -2037,6 +2058,22 @@ export default class Deparser {
       node.lockingClause.forEach((item) => {
         return output.push(this.deparse(item, context));
       });
+    }
+
+    return output.join(' ');
+  }
+
+  ['TruncateStmt'](node, context = {}) {
+    const output = ['TRUNCATE TABLE'];
+
+    output.push(this.list(node.relations, ', ', '', 'truncate'));
+
+    if (node.restart_seqs) {
+      output.push('RESTART IDENTITY');
+    }
+
+    if (node.behavior === 'DROP_CASCADE') {
+      output.push('CASCADE');
     }
 
     return output.join(' ');
@@ -2535,10 +2572,23 @@ export default class Deparser {
     const output = [];
     output.push('CREATE');
     if (node.replace) output.push('OR REPLACE');
+    if (node.view.relpersistence === 't') {
+      output.push('TEMPORARY');
+    }
     output.push('VIEW');
-    output.push(this.RangeVar(node.view, context));
+    output.push(this.RangeVar(node.view, 'view'));
+    if (node.aliases) {
+      output.push('(');
+      output.push(this.list(node.aliases, ', ', '', context));
+      output.push(')');
+    }
     output.push('AS');
     output.push(this.deparse(node.query, context));
+    if (node.withCheckOption === 'LOCAL_CHECK_OPTION') {
+      output.push('WITH LOCAL CHECK OPTION');
+    } else if (node.withCheckOption === 'CASCADED_CHECK_OPTION') {
+      output.push('WITH CASCADED CHECK OPTION');
+    }
     return output.join(' ');
   }
 
@@ -2567,8 +2617,17 @@ export default class Deparser {
   }
 
   ['CreateTableAsStmt'](node, context = {}) {
-    const output = [];
-    output.push('CREATE MATERIALIZED VIEW');
+    const output = ['CREATE'];
+    const relpersistence = dotty.get(node, 'into.rel.relpersistence');
+    if (node.relkind === 'OBJECT_MATVIEW') {
+      output.push('MATERIALIZED VIEW');
+    } else if (relpersistence !== 't') {
+      output.push('TABLE');
+      if (node.if_not_exists) {
+        output.push('IF NOT EXISTS');
+      }
+    }
+
     output.push(this.IntoClause(node.into, context));
     output.push('AS');
     output.push(this.deparse(node.query, context));
@@ -2733,7 +2792,7 @@ export default class Deparser {
     );
     output.push(`${NEWLINE_CHAR})`);
 
-    if (relpersistence === 'p' && node.hasOwnProperty('inhRelations')) {
+    if (node.hasOwnProperty('inhRelations')) {
       output.push('INHERITS');
       output.push('(');
       output.push(this.list(node.inhRelations, ', ', '', context));
