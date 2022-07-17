@@ -1,0 +1,66 @@
+name: PostgreSQL tests
+on:
+  #push:
+  workflow_dispatch:
+
+jobs:
+  # Label of the container job
+  container-job:
+    # Containers must run in Linux based operating systems
+    runs-on: ubuntu-latest
+    # Docker Hub image that `container-job` executes in
+    # container: node:latest
+    # container: pyramation/node-gyp
+    container: mhart/alpine-node:12
+
+    # Service containers to run with `container-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: pyramation/postgis
+        # Provide the password for postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: deps
+        run: apk update && apk add bash git python3-dev make g++
+
+      - name: deps
+        run: yarn
+
+      - name: bootstrap
+        run: yarn bootstrap
+
+      - name: build
+        run: yarn build
+
+      - name: parser
+        run: cd ./packages/parser && yarn test
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+
+      - name: deparser
+        run: cd ./packages/deparser && yarn test
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
