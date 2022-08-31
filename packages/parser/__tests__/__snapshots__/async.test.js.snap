@@ -1,0 +1,123 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`works 1`] = `
+Array [
+  Object {
+    "RawStmt": Object {
+      "stmt": Object {
+        "SelectStmt": Object {
+          "fromClause": Array [
+            Object {
+              "RangeVar": Object {
+                "inh": true,
+                "location": undefined,
+                "relname": "restaurants",
+                "relpersistence": "p",
+              },
+            },
+          ],
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE",
+          "targetList": Array [
+            Object {
+              "ResTarget": Object {
+                "location": undefined,
+                "val": Object {
+                  "ColumnRef": Object {
+                    "fields": Array [
+                      Object {
+                        "A_Star": Object {},
+                      },
+                    ],
+                    "location": undefined,
+                  },
+                },
+              },
+            },
+          ],
+          "whereClause": Object {
+            "BoolExpr": Object {
+              "args": Array [
+                Object {
+                  "A_Expr": Object {
+                    "kind": "AEXPR_OP",
+                    "lexpr": Object {
+                      "ColumnRef": Object {
+                        "fields": Array [
+                          Object {
+                            "String": Object {
+                              "str": "health_grade",
+                            },
+                          },
+                        ],
+                        "location": undefined,
+                      },
+                    },
+                    "location": undefined,
+                    "name": Array [
+                      Object {
+                        "String": Object {
+                          "str": "=",
+                        },
+                      },
+                    ],
+                    "rexpr": Object {
+                      "A_Const": Object {
+                        "location": undefined,
+                        "val": Object {
+                          "String": Object {
+                            "str": "A",
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+                Object {
+                  "A_Expr": Object {
+                    "kind": "AEXPR_OP",
+                    "lexpr": Object {
+                      "ColumnRef": Object {
+                        "fields": Array [
+                          Object {
+                            "String": Object {
+                              "str": "average_rating",
+                            },
+                          },
+                        ],
+                        "location": undefined,
+                      },
+                    },
+                    "location": undefined,
+                    "name": Array [
+                      Object {
+                        "String": Object {
+                          "str": ">=",
+                        },
+                      },
+                    ],
+                    "rexpr": Object {
+                      "A_Const": Object {
+                        "location": undefined,
+                        "val": Object {
+                          "Float": Object {
+                            "str": "4.5",
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              ],
+              "boolop": "AND_EXPR",
+              "location": undefined,
+            },
+          },
+        },
+      },
+      "stmt_len": undefined,
+      "stmt_location": undefined,
+    },
+  },
+]
+`;
