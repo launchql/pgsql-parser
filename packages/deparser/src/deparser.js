@@ -1058,7 +1058,14 @@ export default class Deparser {
       output.push(`(${colnames.join(', ')})`);
     }
 
-    output.push(format('AS (%s)', this.deparse(node.ctequery)));
+    output.push('AS');
+    if (node.ctematerialized === 'CTEMaterializeAlways') {
+      output.push('MATERIALIZED');
+    } else if (node.ctematerialized === 'CTEMaterializeNever') {
+      output.push('NOT MATERIALIZED');
+    }
+
+    output.push(format('(%s)', this.deparse(node.ctequery)));
 
     return output.join(' ');
   }
