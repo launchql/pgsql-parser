@@ -168,6 +168,9 @@ describe('kitchen sink', () => {
   it('select', () => {
     check('statements/select.sql');
   });
+  it('cte', () => {
+    check('statements/cte.sql');
+  });
   it('conflicts', () => {
     check('statements/conflicts.sql');
   });
