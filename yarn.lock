@@ -7082,10 +7082,10 @@ levn@^0.3.0, levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-libpg-query@13.2.5:
-  version "13.2.5"
-  resolved "https://registry.npmjs.org/libpg-query/-/libpg-query-13.2.5.tgz#f3d93f21b64caa904e67bbad767b7f039b951c87"
-  integrity sha512-Y0IHcZyxbX4WHwWNa5KFDufYSiVIb+uPyZQDdom1ODxCfqko/ubLj+rzHeSDeaRRsEzgKc22x/jBRka7BMT2vQ==
+libpg-query@13.3.0:
+  version "13.3.0"
+  resolved "https://registry.npmjs.org/libpg-query/-/libpg-query-13.3.0.tgz#c362285373c17619cc775870c0a36aed963fd149"
+  integrity sha512-9PKW8iRWnSCw+IW5LlZYq+bLMmAhKsAIR2en8iRYnoRLBg4x+HKHBb+PQyqFy8+jC7AmzV65A+DsUO7tiZddEQ==
   dependencies:
     "@mapbox/node-pre-gyp" "^1.0.8"
     node-addon-api "^1.6.3"
@@ -10440,12 +10440,7 @@ write@1.0.3:
   dependencies:
     mkdirp "^0.5.1"
 
-ws@^7.0.0:
-  version "7.5.7"
-  resolved "https://registry.npmjs.org/ws/-/ws-7.5.7.tgz#9e0ac77ee50af70d58326ecff7e85eb3fa375e67"
-  integrity sha512-KMvVuFzpKBuiIXW3E4u3mySRO2/mCHSyZDJQM5NQ9Q9KHWHWh0NHgfbRMLLrceUK5qAL4ytALJbpRMjixFZh8A==
-
-ws@^7.4.6:
+ws@^7.0.0, ws@^7.4.6:
   version "7.5.7"
   resolved "https://registry.npmjs.org/ws/-/ws-7.5.7.tgz#9e0ac77ee50af70d58326ecff7e85eb3fa375e67"
   integrity sha512-KMvVuFzpKBuiIXW3E4u3mySRO2/mCHSyZDJQM5NQ9Q9KHWHWh0NHgfbRMLLrceUK5qAL4ytALJbpRMjixFZh8A==
