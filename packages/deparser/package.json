@@ -1,6 +1,6 @@
 {
   "name": "pgsql-deparser",
-  "version": "13.3.15",
+  "version": "13.4.0",
   "description": "PostgreSQL AST Deparser",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/pyramation/pgsql-parser",
@@ -65,7 +65,7 @@
     "eslint-plugin-prettier": "^3.1.2",
     "glob": "7.1.6",
     "jest": "^25.1.0",
-    "pgsql-parser": "^13.4.1",
+    "pgsql-parser": "^13.5.0",
     "prettier": "^2.1.2",
     "regenerator-runtime": "^0.13.2"
   },

@@ -1,6 +1,6 @@
 {
   "name": "pgsql-parser",
-  "version": "13.4.1",
+  "version": "13.5.0",
   "description": "The real PostgreSQL query parser",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/pyramation/pgsql-parser",
@@ -74,7 +74,7 @@
     "@babel/runtime": "^7.11.2",
     "libpg-query": "13.3.1",
     "minimist": "^1.2.6",
-    "pgsql-deparser": "^13.3.15",
+    "pgsql-deparser": "^13.4.0",
     "pgsql-enums": "^13.1.3"
   }
 }
