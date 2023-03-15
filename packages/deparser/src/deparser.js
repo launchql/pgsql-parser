@@ -1,8 +1,5 @@
-import _ from 'lodash';
 import { format } from 'util';
 import { objtypeName, getConstraintFromConstrType } from 'pgsql-enums';
-
-import { preparse } from './preparse';
 
 let TAB_CHAR = '\t';
 let NEWLINE_CHAR = '\n';
@@ -17,7 +14,7 @@ const fail = (type, node) => {
 };
 
 // select word from pg_get_keywords() where catcode = 'R';
-const RESERVED_WORDS = [
+const RESERVED_WORDS = new Set([
   'all',
   'analyse',
   'analyze',
@@ -95,7 +92,7 @@ const RESERVED_WORDS = [
   'where',
   'window',
   'with'
-];
+]);
 
 // https://github.com/pganalyze/libpg_query/blob/b2790f8140721ff7f047167ecd7d44267b0a3880/src/postgres/include/storage/lockdefs.h
 const LOCK_MODES = {
@@ -109,25 +106,44 @@ const LOCK_MODES = {
   8: 'ACCESS EXCLUSIVE'
 };
 
-const isReserved = (value) => RESERVED_WORDS.includes(value.toLowerCase());
+const isReserved = (value) => RESERVED_WORDS.has(value.toLowerCase());
+
+// has uppercase and lowercase, or non word characters
+const needsQuotesRegex = /[a-z]+[\W\w]*[A-Z]+|[A-Z]+[\W\w]*[a-z]+|\W/;
 
 // usually the AST lowercases all the things, so if we
 // have both, the author most likely used double quotes
 const needsQuotes = (value) =>
-  value.match(/[a-z]+[\W\w]*[A-Z]+|[A-Z]+[\W\w]*[a-z]+/) ||
-  value.match(/\W/) ||
-  isReserved(value);
+  needsQuotesRegex.test(value) || isReserved(value);
 
-const { keys } = _;
-
-const compact = (o) => {
-  return _.filter(_.compact(o), (p) => {
-    if (p == null) {
-      return false;
-    }
-
-    return p.toString().length;
+const compact = (o) =>
+  o.filter((e) => {
+    const isFalsy = !e;
+    return !isFalsy && e.toString().length;
   });
+
+const flatten = (o) => {
+  const flattened = [];
+  for (let i = 0; i < o.length; i++) {
+    if (Array.isArray(o[i])) {
+      for (let j = 0; j < o[i].length; j++) {
+        flattened.push(o[i][j]);
+      }
+    } else {
+      flattened.push(o[i]);
+    }
+  }
+  return flattened;
+};
+
+const inverted = (o) => {
+  const objInverted = {};
+  const keys = Object.keys(o);
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i];
+    objInverted[o[key]] = key;
+  }
+  return objInverted;
 };
 
 const parens = (string) => {
@@ -136,20 +152,23 @@ const parens = (string) => {
 
 const indent = (text, count = 1) => text;
 
+const unwrapList = (obj) =>
+  obj !== undefined && obj.List !== undefined ? obj.List.items : obj;
+
 export default class Deparser {
   static deparse(query, opts) {
     return new Deparser(query, opts).deparseQuery();
   }
 
   constructor(tree, opts = {}) {
-    this.tree = preparse(tree);
+    this.tree = tree;
     if (opts.hasOwnProperty('newline')) {
       NEWLINE_CHAR = opts.newline;
     }
     if (opts.hasOwnProperty('tab')) {
       TAB_CHAR = opts.tab;
     }
-    if (!_.isArray(this.tree)) this.tree = [this.tree];
+    if (!Array.isArray(this.tree)) this.tree = [this.tree];
   }
 
   deparseQuery() {
@@ -159,15 +178,16 @@ export default class Deparser {
   }
 
   deparseNodes(nodes, context) {
-    return nodes.map((node) => {
-      return _.isArray(node)
-        ? this.list(node, ', ', '', context)
+    return unwrapList(nodes).map((node) => {
+      const unwrapped = unwrapList(node);
+      return Array.isArray(unwrapped)
+        ? this.list(unwrapped, ', ', '', context)
         : this.deparse(node, context);
     });
   }
 
   deparseReturningList(list, context) {
-    return list
+    return unwrapList(list)
       .map(
         (returning) =>
           this.deparse(returning.ResTarget.val, context) +
@@ -189,7 +209,7 @@ export default class Deparser {
   }
 
   listQuotes(nodes, separator = ', ') {
-    return this.list(nodes, separator)
+    return this.list(unwrapList(nodes), separator)
       .split(separator)
       .map((a) => this.quote(a.trim()))
       .join(separator);
@@ -200,8 +220,9 @@ export default class Deparser {
       return null;
     }
 
-    if (_.isArray(value)) {
-      return value.map((o) => this.quote(o));
+    const unwrapped = unwrapList(value);
+    if (Array.isArray(unwrapped)) {
+      return unwrapped.map((o) => this.quote(o));
     }
 
     if (needsQuotes(value)) {
@@ -252,7 +273,9 @@ export default class Deparser {
   }
 
   type(names, args) {
-    const [catalog, type] = names.map((name) => this.deparse(name));
+    const catalogAndType = unwrapList(names).map((name) => this.deparse(name));
+    const catalog = catalogAndType[0];
+    const type = catalogAndType[1];
 
     const mods = (name, size) => {
       if (size != null) {
@@ -283,12 +306,12 @@ export default class Deparser {
       return null;
     }
 
-    if (_.isNumber(item)) {
+    if (typeof item === 'number' || item instanceof Number) {
       return item;
     }
 
-    const type = keys(item)[0];
-    const node = _.values(item)[0];
+    const type = Object.keys(item)[0];
+    const node = item[type];
 
     if (this[type] == null) {
       throw new Error(type + ' is not implemented: ' + JSON.stringify(node));
@@ -342,42 +365,44 @@ export default class Deparser {
     if (node.instead) {
       output.push('INSTEAD');
     }
-    if (!node.actions || !node.actions.length) {
+    const actions = unwrapList(node.actions);
+    if (!actions || !actions.length) {
       output.push('NOTHING');
     } else {
       // TODO how do multiple actions happen?
-      output.push(this.deparse(node.actions[0], context));
+      output.push(this.deparse(actions[0], context));
     }
     return output.join(' ');
   }
 
   ['A_Expr'](node, context = {}) {
     const output = [];
+    const nodeName = unwrapList(node.name);
     switch (node.kind) {
       case 'AEXPR_OP': {
         let operator;
 
         if (node.lexpr) {
           // PARENS
-          if (dotty.exists(node, 'lexpr.A_Expr')) {
+          if (node.lexpr !== undefined && node.lexpr.A_Expr !== undefined) {
             output.push(parens(this.deparse(node.lexpr, context)));
           } else {
             output.push(this.deparse(node.lexpr, context));
           }
         }
 
-        if (node.name.length > 1) {
-          const schema = this.deparse(node.name[0], context);
-          operator = this.deparse(node.name[1], context);
+        if (nodeName.length > 1) {
+          const schema = this.deparse(nodeName[0], context);
+          operator = this.deparse(nodeName[1], context);
           output.push(`OPERATOR(${schema}.${operator})`);
         } else {
-          operator = this.deparse(node.name[0], context);
+          operator = this.deparse(nodeName[0], context);
           output.push(operator);
         }
 
         if (node.rexpr) {
           // PARENS
-          if (dotty.exists(node, 'rexpr.A_Expr')) {
+          if (node.rexpr !== undefined && node.rexpr.A_Expr !== undefined) {
             output.push(parens(this.deparse(node.rexpr, context)));
           } else {
             output.push(this.deparse(node.rexpr, context));
@@ -398,13 +423,13 @@ export default class Deparser {
         /* scalar op ANY (array) */
         output.push(this.deparse(node.lexpr, context));
         output.push(format('ANY (%s)', this.deparse(node.rexpr, context)));
-        return output.join(` ${this.deparse(node.name[0], context)} `);
+        return output.join(` ${this.deparse(nodeName[0], context)} `);
 
       case 'AEXPR_OP_ALL':
         /* scalar op ALL (array) */
         output.push(this.deparse(node.lexpr, context));
         output.push(format('ALL (%s)', this.deparse(node.rexpr, context)));
-        return output.join(` ${this.deparse(node.name[0], context)} `);
+        return output.join(` ${this.deparse(nodeName[0], context)} `);
 
       case 'AEXPR_DISTINCT':
         /* IS DISTINCT FROM - name must be "=" */
@@ -432,7 +457,7 @@ export default class Deparser {
 
       case 'AEXPR_OF': {
         /* IS [NOT] OF - name must be "=" or "<>" */
-        const op = node.name[0].String.str === '=' ? 'IS OF' : 'IS NOT OF';
+        const op = nodeName[0].String.str === '=' ? 'IS OF' : 'IS NOT OF';
         return format(
           '%s %s (%s)',
           this.deparse(node.lexpr, context),
@@ -443,7 +468,7 @@ export default class Deparser {
 
       case 'AEXPR_IN': {
         /* [NOT] IN - name must be "=" or "<>" */
-        const operator = node.name[0].String.str === '=' ? 'IN' : 'NOT IN';
+        const operator = nodeName[0].String.str === '=' ? 'IN' : 'NOT IN';
 
         return format(
           '%s %s (%s)',
@@ -457,7 +482,7 @@ export default class Deparser {
         /* [NOT] LIKE - name must be "~~" or "!~~" */
         output.push(this.deparse(node.lexpr, context));
 
-        if (node.name[0].String.str === '!~~') {
+        if (nodeName[0].String.str === '!~~') {
           output.push(
             format('NOT LIKE (%s)', this.deparse(node.rexpr, context))
           );
@@ -471,7 +496,7 @@ export default class Deparser {
         /* [NOT] ILIKE - name must be "~~*" or "!~~*" */
         output.push(this.deparse(node.lexpr, context));
 
-        if (node.name[0].String.str === '!~~*') {
+        if (nodeName[0].String.str === '!~~*') {
           output.push(
             format('NOT ILIKE (%s)', this.deparse(node.rexpr, context))
           );
@@ -485,37 +510,37 @@ export default class Deparser {
         // SIMILAR TO emits a similar_escape FuncCall node with the first argument
         output.push(this.deparse(node.lexpr, context));
 
-        if (node.name[0].String.str === '~') {
-          if (node.rexpr.FuncCall.args.length > 1) {
+        if (nodeName[0].String.str === '~') {
+          if (unwrapList(node.rexpr.FuncCall.args).length > 1) {
             output.push(
               format(
                 'SIMILAR TO %s ESCAPE %s',
-                this.deparse(node.rexpr.FuncCall.args[0], context),
-                this.deparse(node.rexpr.FuncCall.args[1], context)
+                this.deparse(unwrapList(node.rexpr.FuncCall.args)[0], context),
+                this.deparse(unwrapList(node.rexpr.FuncCall.args)[1], context)
               )
             );
           } else {
             output.push(
               format(
                 'SIMILAR TO %s',
-                this.deparse(node.rexpr.FuncCall.args[0], context)
+                this.deparse(unwrapList(node.rexpr.FuncCall.args)[0], context)
               )
             );
           }
         } else {
-          if (node.rexpr.FuncCall.args.length > 1) {
+          if (unwrapList(node.rexpr.FuncCall.args).length > 1) {
             output.push(
               format(
                 'NOT SIMILAR TO %s ESCAPE %s',
-                this.deparse(node.rexpr.FuncCall.args[0], context),
-                this.deparse(node.rexpr.FuncCall.args[1], context)
+                this.deparse(unwrapList(node.rexpr.FuncCall.args)[0], context),
+                this.deparse(unwrapList(node.rexpr.FuncCall.args)[1], context)
               )
             );
           } else {
             output.push(
               format(
                 'NOT SIMILAR TO %s',
-                this.deparse(node.rexpr.FuncCall.args[0], context)
+                this.deparse(unwrapList(node.rexpr.FuncCall.args)[0], context)
               )
             );
           }
@@ -527,8 +552,8 @@ export default class Deparser {
         output.push(
           format(
             'BETWEEN %s AND %s',
-            this.deparse(node.rexpr[0], context),
-            this.deparse(node.rexpr[1], context)
+            this.deparse(unwrapList(node.rexpr)[0], context),
+            this.deparse(unwrapList(node.rexpr)[1], context)
           )
         );
         return output.join(' ');
@@ -538,8 +563,8 @@ export default class Deparser {
         output.push(
           format(
             'NOT BETWEEN %s AND %s',
-            this.deparse(node.rexpr[0], context),
-            this.deparse(node.rexpr[1], context)
+            this.deparse(unwrapList(node.rexpr)[0], context),
+            this.deparse(unwrapList(node.rexpr)[1], context)
           )
         );
         return output.join(' ');
@@ -549,8 +574,8 @@ export default class Deparser {
         output.push(
           format(
             'BETWEEN SYMMETRIC %s AND %s',
-            this.deparse(node.rexpr[0], context),
-            this.deparse(node.rexpr[1], context)
+            this.deparse(unwrapList(node.rexpr)[0], context),
+            this.deparse(unwrapList(node.rexpr)[1], context)
           )
         );
         return output.join(' ');
@@ -560,8 +585,8 @@ export default class Deparser {
         output.push(
           format(
             'NOT BETWEEN SYMMETRIC %s AND %s',
-            this.deparse(node.rexpr[0], context),
-            this.deparse(node.rexpr[1], context)
+            this.deparse(unwrapList(node.rexpr)[0], context),
+            this.deparse(unwrapList(node.rexpr)[1], context)
           )
         );
         return output.join(' ');
@@ -622,8 +647,9 @@ export default class Deparser {
     // select c2[2].f2 from comptable
     // select c2.a[2].f2[1].f3[0].a1 from comptable
 
-    for (let i = 0; i < node.indirection.length; i++) {
-      const subnode = node.indirection[i];
+    const indirection = unwrapList(node.indirection);
+    for (let i = 0; i < indirection.length; i++) {
+      const subnode = indirection[i];
 
       if (subnode.String || subnode.A_Star) {
         const value = subnode.A_Star ? '*' : this.quote(subnode.String.str);
@@ -651,7 +677,7 @@ export default class Deparser {
     if (context.bool) {
       fmt_str = '(%s)';
     }
-    const ctx = { ...context };
+    const ctx = Object.assign({}, context);
     ctx.bool = true;
 
     switch (node.boolop) {
@@ -660,7 +686,10 @@ export default class Deparser {
       case 'OR_EXPR':
         return format(fmt_str, this.list(node.args, ' OR ', '', ctx));
       case 'NOT_EXPR':
-        return format('NOT (%s)', this.deparse(node.args[0], context));
+        return format(
+          'NOT (%s)',
+          this.deparse(unwrapList(node.args)[0], context)
+        );
       default:
         return fail('BoolExpr', node);
     }
@@ -669,7 +698,7 @@ export default class Deparser {
   ['BooleanTest'](node, context = {}) {
     const output = [];
 
-    const ctx = { ...context };
+    const ctx = Object.assign({}, context);
     ctx.bool = true;
 
     output.push(this.deparse(node.arg, ctx));
@@ -705,8 +734,9 @@ export default class Deparser {
       output.push(this.deparse(node.arg, context));
     }
 
-    for (let i = 0; i < node.args.length; i++) {
-      output.push(this.deparse(node.args[i], context));
+    const args = unwrapList(node.args);
+    for (let i = 0; i < args.length; i++) {
+      output.push(this.deparse(args[i], context));
     }
 
     if (node.defresult) {
@@ -853,8 +883,9 @@ export default class Deparser {
 
     output.push('ALTER');
     output.push(objtypeName(node.objectType));
-    if (Array.isArray(node.object)) {
-      output.push(this.listQuotes(node.object, '.'));
+    const unwrapped = unwrapList(node.object);
+    if (Array.isArray(unwrapped)) {
+      output.push(this.listQuotes(unwrapped, '.'));
     } else {
       output.push(this.deparse(node.object, context));
     }
@@ -882,8 +913,9 @@ export default class Deparser {
       if (node.missing_ok) {
         output.push('IF EXISTS');
       }
-      if (Array.isArray(node.object)) {
-        output.push(this.listQuotes(node.object, '.'));
+      const unwrapped = unwrapList(node.object);
+      if (Array.isArray(unwrapped)) {
+        output.push(this.listQuotes(unwrapped, '.'));
       } else {
         output.push(this.deparse(node.object, context));
       }
@@ -910,11 +942,11 @@ export default class Deparser {
 
     if (node.collClause) {
       output.push('COLLATE');
-      const str = dotty.get(node, 'collClause.collname.0.String.str');
+      const str = unwrapList(node.collClause.collname)[0].String.str;
       output.push(this.quote(str));
     }
 
-    return _.compact(output).join(' ');
+    return compact(output).join(' ');
   }
 
   ['SQLValueFunction'](node) {
@@ -935,7 +967,7 @@ export default class Deparser {
 
   ['ColumnRef'](node, context = {}) {
     const KEYWORDS = ['old', 'new'];
-    const fields = node.fields.map((field) => {
+    const fields = unwrapList(node.fields).map((field) => {
       if (field.String) {
         const value = this.deparse(field, context);
         if (context === 'trigger' && KEYWORDS.includes(value.toLowerCase())) {
@@ -956,66 +988,68 @@ export default class Deparser {
     output.push('ON');
     output.push(objtypeName(node.objtype));
 
+    const object = unwrapList(node.object);
+
     if (node.objtype === 'OBJECT_CAST') {
       output.push('(');
-      output.push(this.deparse(node.object[0], context));
+      output.push(this.deparse(object[0], context));
       output.push('AS');
-      output.push(this.deparse(node.object[1], context));
+      output.push(this.deparse(object[1], context));
       output.push(')');
     } else if (node.objtype === 'OBJECT_DOMCONSTRAINT') {
-      output.push(this.deparse(node.object[1], context));
+      output.push(this.deparse(object[1], context));
       output.push('ON');
       output.push('DOMAIN');
-      output.push(this.deparse(node.object[0], context));
+      output.push(this.deparse(object[0], context));
     } else if (
       node.objtype === 'OBJECT_OPCLASS' ||
       node.objtype === 'OBJECT_OPFAMILY'
     ) {
-      output.push(this.deparse(node.object[1], context));
+      output.push(this.deparse(object[1], context));
       output.push('USING');
-      output.push(this.deparse(node.object[0], context));
+      output.push(this.deparse(object[0], context));
     } else if (node.objtype === 'OBJECT_OPERATOR') {
-      output.push(this.deparse(node.object, 'noquotes'));
+      output.push(this.deparse(object, 'noquotes'));
     } else if (node.objtype === 'OBJECT_POLICY') {
-      output.push(this.deparse(node.object[1], context));
+      output.push(this.deparse(object[1], context));
       output.push('ON');
-      output.push(this.deparse(node.object[0], context));
+      output.push(this.deparse(object[0], context));
     } else if (node.objtype === 'OBJECT_ROLE') {
-      output.push(this.deparse(node.object, context));
+      output.push(this.deparse(object, context));
     } else if (node.objtype === 'OBJECT_RULE') {
-      output.push(this.deparse(node.object[1], context));
+      output.push(this.deparse(object[1], context));
       output.push('ON');
-      output.push(this.deparse(node.object[0], context));
+      output.push(this.deparse(object[0], context));
     } else if (node.objtype === 'OBJECT_TABCONSTRAINT') {
-      if (node.object.length === 3) {
-        output.push(this.deparse(node.object[2], context));
+      if (object.length === 3) {
+        output.push(this.deparse(object[2], context));
         output.push('ON');
         output.push(
-          this.deparse(node.object[0], context) +
+          this.deparse(object[0], context) +
             '.' +
-            this.deparse(node.object[1], context)
+            this.deparse(object[1], context)
         );
       } else {
-        output.push(this.deparse(node.object[1], context));
+        output.push(this.deparse(object[1], context));
         output.push('ON');
-        output.push(this.deparse(node.object[0], context));
+        output.push(this.deparse(object[0], context));
       }
     } else if (node.objtype === 'OBJECT_TRANSFORM') {
       output.push('FOR');
-      output.push(this.deparse(node.object[0], context));
+      output.push(this.deparse(object[0], context));
       output.push('LANGUAGE');
-      output.push(this.deparse(node.object[1], context));
+      output.push(this.deparse(object[1], context));
     } else if (node.objtype === 'OBJECT_TRIGGER') {
-      output.push(this.deparse(node.object[1], context));
+      output.push(this.deparse(object[1], context));
       output.push('ON');
-      output.push(this.deparse(node.object[0], context));
+      output.push(this.deparse(object[0], context));
     } else {
       if (node.objtype === 'OBJECT_LARGEOBJECT') {
         output.push(dotty.get(node, 'object.Integer.ival'));
-      } else if (node.object instanceof Array) {
-        output.push(this.listQuotes(node.object, '.'));
+      } else if (object instanceof Array) {
+        output.push(this.listQuotes(object, '.'));
       } else {
-        output.push(this.deparse(node.object, context));
+        output.push(this.deparse(object, context));
       }
 
       if (node.objargs) {
@@ -1139,16 +1173,17 @@ export default class Deparser {
       output.push(')');
     }
 
-    if (node.definition.length > 0) {
+    const definition = unwrapList(node.definition);
+    if (definition.length > 0) {
       output.push('(');
-      for (let n = 0; n < node.definition.length; n++) {
-        const defElement = node.definition[n].DefElem;
+      for (let n = 0; n < definition.length; n++) {
+        const defElement = definition[n].DefElem;
         output.push(defElement.defname);
         if (defElement.arg) {
           output.push('=');
           output.push(this.deparse(defElement.arg));
         }
-        if (n !== node.definition.length - 1) {
+        if (n !== definition.length - 1) {
           output.push(',');
         }
       }
@@ -1224,7 +1259,7 @@ export default class Deparser {
         // alter
         case 'owned_by': {
           const output = [];
-          node.arg.forEach((opt) => {
+          unwrapList(node.arg).forEach((opt) => {
             output.push(this.quote(this.deparse(opt, context)));
           });
           return `OWNED BY ${output.join('.')}`;
@@ -1274,7 +1309,7 @@ export default class Deparser {
     let params = [];
 
     if (node.args) {
-      params = node.args.map((item) => {
+      params = unwrapList(node.args).map((item) => {
         return this.deparse(item, context);
       });
     }
@@ -1437,9 +1472,10 @@ export default class Deparser {
     output.push('INSERT INTO');
     output.push(this.RangeVar(node.relation, context));
 
-    if (node.cols && node.cols.length) {
+    const cols = unwrapList(node.cols);
+    if (cols && cols.length) {
       output.push('(');
-      output.push(this.list(node.cols, ', ', '', context));
+      output.push(this.list(cols, ', ', '', context));
       output.push(')');
     }
 
@@ -1535,24 +1571,23 @@ export default class Deparser {
     }
     output.push('SET');
 
-    if (node.targetList && node.targetList.length) {
+    const targetList = unwrapList(node.targetList);
+    if (targetList && targetList.length) {
       if (
-        node.targetList[0].ResTarget &&
-        node.targetList[0].ResTarget.val &&
-        node.targetList[0].ResTarget.val.MultiAssignRef
+        targetList[0].ResTarget &&
+        targetList[0].ResTarget.val &&
+        targetList[0].ResTarget.val.MultiAssignRef
       ) {
         output.push('(');
         output.push(
-          node.targetList.map((target) => target.ResTarget.name).join(',')
+          targetList.map((target) => target.ResTarget.name).join(',')
         );
         output.push(')');
         output.push('=');
-        output.push(this.deparse(node.targetList[0].ResTarget.val, context));
+        output.push(this.deparse(targetList[0].ResTarget.val, context));
       } else {
         output.push(
-          node.targetList
-            .map((target) => this.deparse(target, 'update'))
-            .join(',')
+          targetList.map((target) => this.deparse(target, 'update')).join(',')
         );
       }
     }
@@ -1767,12 +1802,16 @@ export default class Deparser {
 
     const funcs = [];
 
-    for (let i = 0; i < node.functions.length; i++) {
-      const funcCall = node.functions[i];
+    const functions = unwrapList(node.functions);
+    for (let i = 0; i < functions.length; i++) {
+      const funcCall = unwrapList(functions[i]);
       const call = [this.deparse(funcCall[0], context)];
 
-      if (funcCall[1] && funcCall[1].length) {
-        call.push(format('AS (%s)', this.list(funcCall[1], ', ', '', context)));
+      const secondFuncCall = unwrapList(funcCall[1]);
+      if (secondFuncCall && secondFuncCall.length) {
+        call.push(
+          format('AS (%s)', this.list(secondFuncCall, ', ', '', context))
+        );
       }
 
       funcs.push(call.join(' '));
@@ -1828,7 +1867,7 @@ export default class Deparser {
 
     output.push(this.deparse(node.relation, context));
     output.push('TABLESAMPLE');
-    output.push(this.deparse(node.method[0], context));
+    output.push(this.deparse(unwrapList(node.method)[0], context));
 
     if (node.args) {
       output.push(parens(this.list(node.args, ', ', '', context)));
@@ -1946,13 +1985,14 @@ export default class Deparser {
     }
 
     if (node.distinctClause) {
+      const distinctClause = unwrapList(node.distinctClause);
       if (
-        !isEmptyObject(node.distinctClause[0])
+        !isEmptyObject(distinctClause[0])
         // new change distinctClause can be {}
       ) {
         output.push('DISTINCT ON');
 
-        const clause = node.distinctClause
+        const clause = distinctClause
           .map((e) => this.deparse(e, 'select'))
           .join(`,${NEWLINE_CHAR}`);
 
@@ -1965,7 +2005,7 @@ export default class Deparser {
     if (node.targetList) {
       output.push(
         indent(
-          node.targetList
+          unwrapList(node.targetList)
             .map((e) => this.deparse(e, 'select'))
             .join(`,${NEWLINE_CHAR}`)
         )
@@ -1981,7 +2021,7 @@ export default class Deparser {
       output.push('FROM');
       output.push(
         indent(
-          node.fromClause
+          unwrapList(node.fromClause)
             .map((e) => this.deparse(e, 'from'))
             .join(`,${NEWLINE_CHAR}`)
         )
@@ -1996,7 +2036,7 @@ export default class Deparser {
     if (node.valuesLists) {
       output.push('VALUES');
 
-      const lists = node.valuesLists.map((list) => {
+      const lists = unwrapList(node.valuesLists).map((list) => {
         return `(${this.list(list, ', ', '', context)})`;
       });
 
@@ -2007,7 +2047,7 @@ export default class Deparser {
       output.push('GROUP BY');
       output.push(
         indent(
-          node.groupClause
+          unwrapList(node.groupClause)
             .map((e) => this.deparse(e, 'group'))
             .join(`,${NEWLINE_CHAR}`)
         )
@@ -2024,8 +2064,9 @@ export default class Deparser {
 
       const windows = [];
 
-      for (let i = 0; i < node.windowClause.length; i++) {
-        const w = node.windowClause[i];
+      const windowClause = unwrapList(node.windowClause);
+      for (let i = 0; i < windowClause.length; i++) {
+        const w = windowClause[i];
         const window = [];
 
         if (w.WindowDef.name) {
@@ -2044,7 +2085,7 @@ export default class Deparser {
       output.push('ORDER BY');
       output.push(
         indent(
-          node.sortClause
+          unwrapList(node.sortClause)
             .map((e) => this.deparse(e, 'sort'))
             .join(`,${NEWLINE_CHAR}`)
         )
@@ -2090,18 +2131,19 @@ export default class Deparser {
     const output = [];
     output.push('ALTER DEFAULT PRIVILEGES');
 
-    const options = dotty.get(node, 'options');
+    const options = unwrapList(dotty.get(node, 'options'));
 
     if (options) {
-      const elem = node.options.find((el) => el.hasOwnProperty('DefElem'));
+      const elem = options.find((el) => el.hasOwnProperty('DefElem'));
 
+      const elemDefElemArg = unwrapList(elem.DefElem.arg);
       if (elem.DefElem.defname === 'schemas') {
         output.push('IN SCHEMA');
-        output.push(dotty.get(elem, 'DefElem.arg.0.String.str'));
+        output.push(elemDefElemArg[0].String.str);
       }
       if (elem.DefElem.defname === 'roles') {
         output.push('FOR ROLE');
-        const roleSpec = dotty.get(elem, 'DefElem.arg.0');
+        const roleSpec = elemDefElemArg[0];
         output.push(this.deparse(roleSpec, context));
       }
       output.push(NEWLINE_CHAR);
@@ -2113,7 +2155,7 @@ export default class Deparser {
 
   ['AlterTableStmt'](node, context = {}) {
     const output = [];
-    const ctx = { ...context };
+    const ctx = Object.assign({}, context);
     output.push('ALTER');
     if (node.relkind === 'OBJECT_TABLE') {
       output.push('TABLE');
@@ -2285,7 +2327,7 @@ export default class Deparser {
     output.push(this.list(node.typeName, '.', '', context));
     output.push('AS ENUM');
     output.push(`(${NEWLINE_CHAR}`);
-    const vals = node.vals.map((val) => {
+    const vals = unwrapList(node.vals).map((val) => {
       return { String: { str: `'${val.String.str}'` } };
     });
     output.push(this.list(vals, `,${NEWLINE_CHAR}`, TAB_CHAR));
@@ -2389,8 +2431,9 @@ export default class Deparser {
     }
 
     const stmts = [];
-    for (let s = 0; s < node.objects.length; s++) {
-      const children = node.objects[s];
+    const objects = unwrapList(node.objects);
+    for (let s = 0; s < objects.length; s++) {
+      const children = unwrapList(objects[s]);
 
       const stmt = [];
       if (
@@ -2603,8 +2646,9 @@ export default class Deparser {
     const output = [];
     output.push('CREATE SEQUENCE');
     output.push(this.RangeVar(node.sequence, context));
-    if (node.options && node.options.length) {
-      node.options.forEach((opt) => {
+    const options = unwrapList(node.options);
+    if (options && options.length) {
+      options.forEach((opt) => {
         output.push(this.deparse(opt, 'sequence'));
       });
     }
@@ -2615,8 +2659,9 @@ export default class Deparser {
     const output = [];
     output.push('ALTER SEQUENCE');
     output.push(this.RangeVar(node.sequence, context));
-    if (node.options && node.options.length) {
-      node.options.forEach((opt) => {
+    const options = unwrapList(node.options);
+    if (options && options.length) {
+      options.forEach((opt) => {
         output.push(this.deparse(opt, 'sequence'));
       });
     }
@@ -2751,13 +2796,13 @@ export default class Deparser {
     output.push('(');
     let args = [];
     if (node.args) {
-      args = node.args;
+      args = unwrapList(node.args);
     }
     // seems that it's only parsing strings?
     args = args
       .map((arg) => {
-        if (dotty.exists(arg, 'String.str')) {
-          return `'${dotty.get(arg, 'String.str')}'`;
+        if (arg.String !== undefined && arg.String.str !== undefined) {
+          return `'${arg.String.str}'`;
         }
         return this.deparse(arg, context);
       })
@@ -2840,9 +2885,10 @@ export default class Deparser {
         output.push('BY DEFAULT AS');
       }
       output.push('IDENTITY');
-      if (node.options && node.options.length) {
+      const options = unwrapList(node.options);
+      if (options && options.length) {
         output.push('(');
-        output.push(this.list(node.options, ' ', '', 'generated'));
+        output.push(this.list(options, ' ', '', 'generated'));
         output.push(')');
       }
     } else if (node.contype === 'CONSTR_GENERATED') {
@@ -2899,16 +2945,20 @@ export default class Deparser {
   ['ExclusionConstraint'](node, context = {}) {
     const output = [];
     function getExclusionGroup(nde) {
-      const a = nde.exclusions.map((excl) => {
-        if (excl[0].IndexElem.name) {
-          return excl[0].IndexElem.name;
+      const exclusions = unwrapList(nde.exclusions);
+      const a = exclusions.map((excl) => {
+        const firstExcl = unwrapList(excl)[0];
+        if (firstExcl.IndexElem.name) {
+          return firstExcl.IndexElem.name;
         }
-        return excl[0].IndexElem.expr
-          ? this.deparse(excl[0].IndexElem.expr, context)
+        return firstExcl.IndexElem.expr
+          ? this.deparse(firstExcl.IndexElem.expr, context)
           : null;
       });
 
-      const b = nde.exclusions.map((excl) => this.deparse(excl[1][0], context));
+      const b = exclusions.map((excl) =>
+        this.deparse(unwrapList(unwrapList(excl)[1])[0], context)
+      );
 
       const stmts = a.map((_v, i) => `${a[i]} WITH ${b[i]}`);
       return stmts.join(', ');
@@ -3069,7 +3119,7 @@ export default class Deparser {
 
   ['FuncWithArgs'](node, context = {}) {
     const output = [];
-    output.push(this.deparse(node.funcname[0], context));
+    output.push(this.deparse(unwrapList(node.funcname)[0], context));
     output.push('(');
     output.push(this.list(node.funcargs, ', ', '', context));
     output.push(')');
@@ -3112,12 +3162,14 @@ export default class Deparser {
     output.push('FUNCTION');
 
     output.push(
-      node.funcname.map((name) => this.deparse(name, context)).join('.')
+      unwrapList(node.funcname)
+        .map((name) => this.deparse(name, context))
+        .join('.')
     );
     output.push('(');
     let parameters = [];
     if (node.parameters) {
-      parameters = [...node.parameters];
+      parameters = unwrapList(node.parameters);
     }
     const parametersList = parameters.filter(
       ({ FunctionParameter }) =>
@@ -3149,7 +3201,7 @@ export default class Deparser {
         let value = '';
         switch (option.DefElem.defname) {
           case 'as':
-            value = this.deparse(option.DefElem.arg[0], context);
+            value = this.deparse(unwrapList(option.DefElem.arg)[0], context);
             output.push(`AS $EOFCODE$${value}$EOFCODE$`);
             break;
 
@@ -3360,7 +3412,7 @@ export default class Deparser {
 
     const roleOption = (nodeObj, i, val1, val2) => {
       const val = Number(
-        dotty.get(nodeObj, `options.${i}.DefElem.arg.Integer.ival`)
+        dotty.get(unwrapList(nodeObj.options), `${i}.DefElem.arg.Integer.ival`)
       );
       if (val > 0) {
         output.push(val1);
@@ -3384,7 +3436,8 @@ export default class Deparser {
     output.push(`"${node.role}"`);
 
     if (node.options) {
-      const opts = dotty.search(node, 'options.*.DefElem.defname');
+      const options = unwrapList(node.options);
+      const opts = dotty.search(options, '*.DefElem.defname');
 
       if (opts.length === 1 && opts[0] === 'addroleto') {
         // only one case
@@ -3402,26 +3455,27 @@ export default class Deparser {
             output.push('IN ROLE');
             output.push(
               dotty
-                .search(node, `options.${i}.DefElem.arg.*.RoleSpec.rolename`)
+                .search(
+                  flatten(
+                    dotty.search(options, `${i}.DefElem.arg`).map(unwrapList)
+                  ),
+                  '*.RoleSpec.rolename'
+                )
                 .join(',')
             );
             break;
           case 'password':
             output.push('PASSWORD');
-            value = dotty.get(node, `options.${i}.DefElem.arg.String.str`);
+            value = dotty.get(options, `${i}.DefElem.arg.String.str`);
             output.push(`'${value}'`);
             break;
           case 'adminmembers':
             output.push('ADMIN');
-            output.push(
-              this.list(node.options[i].DefElem.arg, ', ', '', context)
-            );
+            output.push(this.list(options[i].DefElem.arg, ', ', '', context));
             break;
           case 'rolemembers':
             output.push('USER');
-            output.push(
-              this.list(node.options[i].DefElem.arg, ', ', '', context)
-            );
+            output.push(this.list(options[i].DefElem.arg, ', ', '', context));
             break;
           case 'createdb':
             roleOption(node, i, 'CREATEDB', 'NOCREATEDB');
@@ -3443,7 +3497,7 @@ export default class Deparser {
             break;
           case 'validUntil':
             output.push('VALID UNTIL');
-            value = dotty.get(node, `options.${i}.DefElem.arg.String.str`);
+            value = dotty.get(options[i], `DefElem.arg.String.str`);
             output.push(`'${value}'`);
             break;
           default:
@@ -3457,10 +3511,11 @@ export default class Deparser {
     const output = [];
 
     const begin = (nodeOpts) => {
-      const opts = dotty.search(nodeOpts, 'options.*.DefElem.defname');
+      const options = unwrapList(nodeOpts.options);
+      const opts = options ? dotty.search(options, '*.DefElem.defname') : [];
       if (opts.includes('transaction_read_only')) {
         const index = opts.indexOf('transaction_read_only');
-        const obj = nodeOpts.options[index];
+        const obj = options[index];
         let set = false;
         const flag = Number(
           this.deparse(dotty.get(obj, 'DefElem.arg'), context)
@@ -3475,7 +3530,7 @@ export default class Deparser {
       }
       if (opts.includes('transaction_isolation')) {
         const index = opts.indexOf('transaction_isolation');
-        const obj = nodeOpts.options[index];
+        const obj = options[index];
         const lopts = this.deparse(
           dotty.get(obj, 'DefElem.arg'),
           context
@@ -3486,10 +3541,11 @@ export default class Deparser {
     };
 
     const start = (nodeOpts) => {
-      const opts = dotty.search(nodeOpts, 'options.*.DefElem.defname');
+      const options = unwrapList(nodeOpts.options);
+      const opts = options ? dotty.search(options, '*.DefElem.defname') : [];
       if (opts.includes('transaction_read_only')) {
         const index = opts.indexOf('transaction_read_only');
-        const obj = nodeOpts.options[index];
+        const obj = options[index];
         let set = false;
         const flag = Number(
           this.deparse(dotty.get(obj, 'DefElem.arg'), context)
@@ -3506,6 +3562,7 @@ export default class Deparser {
       return 'START TRANSACTION';
     };
 
+    const nodeOptions = unwrapList(node.options);
     switch (node.kind) {
       case 'TRANS_STMT_BEGIN':
         return begin(node);
@@ -3517,15 +3574,15 @@ export default class Deparser {
         return 'ROLLBACK';
       case 'TRANS_STMT_SAVEPOINT':
         output.push('SAVEPOINT');
-        output.push(this.deparse(node.options[0].DefElem.arg, context));
+        output.push(this.deparse(nodeOptions[0].DefElem.arg, context));
         break;
       case 'TRANS_STMT_RELEASE':
         output.push('RELEASE SAVEPOINT');
-        output.push(this.deparse(node.options[0].DefElem.arg, context));
+        output.push(this.deparse(nodeOptions[0].DefElem.arg, context));
         break;
       case 'TRANS_STMT_ROLLBACK_TO':
         output.push('ROLLBACK TO');
-        output.push(this.deparse(node.options[0].DefElem.arg, context));
+        output.push(this.deparse(nodeOptions[0].DefElem.arg, context));
         break;
       case 'TRANS_STMT_PREPARE':
         output.push('PREPARE TRANSACTION');
@@ -3584,10 +3641,11 @@ export default class Deparser {
     } else {
       output.push(this.listQuotes(node.objname, '.'));
     }
-    if (node.objargs && node.objargs.length) {
+    const objargs = unwrapList(node.objargs);
+    if (objargs && objargs.length) {
       output.push('(');
       output.push(
-        node.objargs
+        objargs
           .map((arg) => {
             if (isEmptyObject(arg)) {
               return 'NONE';
@@ -3657,7 +3715,7 @@ export default class Deparser {
     const type = this.TypeName(node.typeName, context);
     let arg = this.deparse(node.arg, context);
 
-    if (dotty.exists(node, 'arg.A_Expr')) {
+    if (node.arg !== undefined && node.arg.A_Expr !== undefined) {
       arg = format('(%s)', arg);
     }
 
@@ -3674,7 +3732,8 @@ export default class Deparser {
   }
 
   ['TypeName'](node, context = {}) {
-    if (_.last(node.names).String.str === 'interval') {
+    const names = unwrapList(node.names);
+    if (names[names.length - 1].String.str === 'interval') {
       return this.deparseInterval(node);
     }
 
@@ -3687,14 +3746,14 @@ export default class Deparser {
     let args = null;
 
     if (node.typmods != null) {
-      args = node.typmods.map((item) => {
+      args = unwrapList(node.typmods).map((item) => {
         return this.deparse(item, context);
       });
     }
 
     const type = [];
 
-    type.push(this.type(node.names, args && args.join(', ')));
+    type.push(this.type(names, args && args.join(', ')));
 
     if (node.arrayBounds != null) {
       type.push('[]');
@@ -3750,7 +3809,7 @@ export default class Deparser {
     if (node.partitionClause) {
       const partition = ['PARTITION BY'];
 
-      const clause = node.partitionClause.map((item) =>
+      const clause = unwrapList(node.partitionClause).map((item) =>
         this.deparse(item, context)
       );
 
@@ -3763,7 +3822,7 @@ export default class Deparser {
     if (node.orderClause) {
       windowParts.push('ORDER BY');
 
-      const orders = node.orderClause.map((item) => {
+      const orders = unwrapList(node.orderClause).map((item) => {
         return this.deparse(item);
       });
 
@@ -3804,11 +3863,9 @@ export default class Deparser {
     output.push('TO');
     output.push(`'${node.filename}'`);
 
-    if (
-      node.options?.length > 0 &&
-      node.options[0].DefElem.defname === 'format'
-    ) {
-      output.push(`(FORMAT '${this.deparse(node.options[0].DefElem.arg)}')`);
+    const options = unwrapList(node.options);
+    if (options?.length > 0 && options[0].DefElem.defname === 'format') {
+      output.push(`(FORMAT '${this.deparse(options[0].DefElem.arg)}')`);
     }
 
     return output.join(' ');
@@ -3817,11 +3874,12 @@ export default class Deparser {
   ['CallStmt'](node, context = {}) {
     const output = ['CALL'];
 
-    output.push(this.deparse(node.funccall.funcname[0]));
+    output.push(this.deparse(unwrapList(node.funccall.funcname)[0]));
 
-    if (node.funccall.args && node.funccall.args.length) {
+    const funccallArgs = unwrapList(node.funccall.args);
+    if (funccallArgs && funccallArgs.length) {
       // we have arguments
-      output.push('(' + this.list(node.funccall.args, ', ', '', context) + ')');
+      output.push('(' + this.list(funccallArgs, ', ', '', context) + ')');
     } else {
       // just close parens
       output.push('()');
@@ -3944,23 +4002,24 @@ export default class Deparser {
     }
 
     if (node.typmods) {
-      const typmods = node.typmods.map((item) => this.deparse(item));
+      const nodeTypmods = unwrapList(node.typmods);
+      const typmods = nodeTypmods.map((item) => this.deparse(item));
 
       let intervals = this.interval(typmods[0]);
 
       // SELECT interval(0) '1 day 01:23:45.6789'
       if (
-        node.typmods[0] &&
-        node.typmods[0].A_Const &&
-        node.typmods[0].A_Const.val.Integer.ival === 32767 &&
-        node.typmods[1] &&
-        node.typmods[1].A_Const != null
+        nodeTypmods[0] &&
+        nodeTypmods[0].A_Const &&
+        nodeTypmods[0].A_Const.val.Integer.ival === 32767 &&
+        nodeTypmods[1] &&
+        nodeTypmods[1].A_Const != null
       ) {
-        intervals = [`(${node.typmods[1].A_Const.val.Integer.ival})`];
+        intervals = [`(${nodeTypmods[1].A_Const.val.Integer.ival})`];
       } else {
-        intervals = intervals.map((part) => {
+        intervals = unwrapList(intervals).map((part) => {
           if (part === 'second' && typmods.length === 2) {
-            return 'second(' + _.last(typmods) + ')';
+            return 'second(' + typmods[typmods.length - 1] + ')';
           }
 
           return part;
@@ -4010,7 +4069,7 @@ export default class Deparser {
     }
 
     if (this.BITS == null) {
-      this.BITS = _.invert(this.MASKS);
+      this.BITS = inverted(this.MASKS);
     }
 
     if (this.INTERVALS == null) {
