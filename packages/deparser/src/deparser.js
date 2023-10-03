@@ -109,7 +109,7 @@ const LOCK_MODES = {
 const isReserved = (value) => RESERVED_WORDS.has(value.toLowerCase());
 
 // has uppercase and lowercase, or non word characters
-const needsQuotesRegex = /[a-z]+[\W\w]*[A-Z]+|[A-Z]+[\W\w]*[a-z]+|\W/;
+const needsQuotesRegex = /[a-z]+[\W\w]*[A-Z]+|[A-Z]+[\W\w]*[a-z]+|\W|[A-Z]/;
 
 // usually the AST lowercases all the things, so if we
 // have both, the author most likely used double quotes
