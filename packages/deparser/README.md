@@ -1,4 +1,4 @@
-# pgsql-parser [![tests](https://github.com/pyramation/pgsql-parser/actions/workflows/run-tests.yaml/badge.svg)](https://github.com/pyramation/pgsql-parser/actions/workflows/run-tests.yaml)
+# pgsql-parser [![tests](https://github.com/launchql/pgsql-parser/actions/workflows/run-tests.yaml/badge.svg)](https://github.com/launchql/pgsql-parser/actions/workflows/run-tests.yaml)
 
 The real PostgreSQL parser for nodejs. The primary objective of this module is to provide symmetric parsing and deparsing of SQL statements. With this module you can modify parts of a SQL query statement and serialize the query tree back into a formatted SQL statement. It uses the *real* [PostgreSQL parser](https://github.com/pganalyze/libpg_query).
 
@@ -102,7 +102,7 @@ Our latest is built with `13-latest` branch from libpg_query
 | 13                       | 13-latest   | Active development  | `latest`
 | 12                       | (n/a)       | Not supported       |
 | 11                       | (n/a)       | Not supported       |
-| 10                       | 10-latest   | Not supported       | `@1.3.1` ([tree](https://github.com/pyramation/pgsql-parser/tree/39b7b1adc8914253226e286a48105785219a81ca))      | 
+| 10                       | 10-latest   | Not supported       | `@1.3.1` ([tree](https://github.com/launchql/pgsql-parser/tree/39b7b1adc8914253226e286a48105785219a81ca))      | 
 
 
 ## Resources
