@@ -1,5 +1,14 @@
-# pgsql-parser [![tests](https://github.com/launchql/pgsql-parser/actions/workflows/run-tests.yaml/badge.svg)](https://github.com/launchql/pgsql-parser/actions/workflows/run-tests.yaml) ![npm](https://img.shields.io/npm/dw/pgsql-parser)
+# pgsql-parser 
 
+<p align="center" width="100%">
+  <a href="https://github.com/launchql/pgsql-parser/actions/workflows/run-tests.yaml">
+    <img height="20" src="https://github.com/launchql/pgsql-parser/actions/workflows/run-tests.yaml/badge.svg" />
+  </a>
+   <a href="https://www.npmjs.com/package/pgsql-parser"><img height="20" src="https://img.shields.io/npm/dt/pgsql-parser"></a>
+   <a href="https://www.npmjs.com/package/pgsql-parser"><img height="20" src="https://img.shields.io/npm/dw/pgsql-parser"/></a>
+   <a href="https://github.com/launchql/pgsql-parser/blob/main/LICENSE-MIT"><img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
+   <a href="https://www.npmjs.com/package/pgsql-parser"><img height="20" src="https://img.shields.io/github/package-json/v/launchql/pgsql-parser?filename=packages%2Fparser%2Fpackage.json"/></a>
+</p>
 
 The real PostgreSQL parser for nodejs. The primary objective of this module is to provide symmetric parsing and deparsing of SQL statements. With this module you can modify parts of a SQL query statement and serialize the query tree back into a formatted SQL statement. It uses the *real* [PostgreSQL parser](https://github.com/pganalyze/libpg_query).
 
