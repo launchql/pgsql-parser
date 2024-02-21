@@ -7082,10 +7082,10 @@ levn@^0.3.0, levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-libpg-query@13.3.1:
-  version "13.3.1"
-  resolved "https://registry.npmjs.org/libpg-query/-/libpg-query-13.3.1.tgz#1403a58c67ea5fc3ca7087b3e12dec9dc4ea8b89"
-  integrity sha512-RLvnKPLWngNR7bNep/Q9euPcfFJVFfDg/iP13lYGxcSI01emS/1vbTw6EBd8UordweWFdvUuK+31sHp104dukA==
+libpg-query@13.3.2:
+  version "13.3.2"
+  resolved "https://registry.npmjs.org/libpg-query/-/libpg-query-13.3.2.tgz#bfef5490242f67d786801a52aacdf95bc4949c0c"
+  integrity sha512-6ft2qyk+LO1hdmPU389RvN7inRGLU0T8Ge4RG+q4usE+dAA4nl+WVp4HVpBC+1Ku4lgxM38PkoW7OzAw8VDebA==
   dependencies:
     "@mapbox/node-pre-gyp" "^1.0.8"
     node-addon-api "^1.6.3"
