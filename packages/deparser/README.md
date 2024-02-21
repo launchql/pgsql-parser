@@ -1,6 +1,20 @@
-# pgsql-parser [![tests](https://github.com/launchql/pgsql-parser/actions/workflows/run-tests.yaml/badge.svg)](https://github.com/launchql/pgsql-parser/actions/workflows/run-tests.yaml)
+# pgsql-deparser 
 
-The real PostgreSQL parser for nodejs. The primary objective of this module is to provide symmetric parsing and deparsing of SQL statements. With this module you can modify parts of a SQL query statement and serialize the query tree back into a formatted SQL statement. It uses the *real* [PostgreSQL parser](https://github.com/pganalyze/libpg_query).
+<p align="center" width="100%">
+  <img height="120" src="https://github.com/launchql/pgsql-parser/assets/545047/6440fa7d-918b-4a3b-8d1b-755d85de8bea" />
+</p>
+
+<p align="center" width="100%">
+  <a href="https://github.com/launchql/pgsql-parser/actions/workflows/run-tests.yaml">
+    <img height="20" src="https://github.com/launchql/pgsql-parser/actions/workflows/run-tests.yaml/badge.svg" />
+  </a>
+   <a href="https://www.npmjs.com/package/pgsql-deparser"><img height="20" src="https://img.shields.io/npm/dw/pgsql-deparser"/></a>
+   <a href="https://www.npmjs.com/package/pgsql-deparser"><img height="20" src="https://img.shields.io/npm/dt/pgsql-deparser"></a>
+   <a href="https://github.com/launchql/pgsql-parser/blob/main/LICENSE-MIT"><img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
+   <a href="https://www.npmjs.com/package/pgsql-deparser"><img height="20" src="https://img.shields.io/github/package-json/v/launchql/pgsql-parser?filename=packages%2Fenums%2Fpackage.json"/></a>
+</p>
+
+The real PostgreSQL (de)parser for nodejs. The primary objective of this module is to provide symmetric parsing and deparsing of SQL statements. With this module you can modify parts of a SQL query statement and serialize the query tree back into a formatted SQL statement. It uses the *real* [PostgreSQL parser](https://github.com/pganalyze/libpg_query).
 
 The main functionality provided by this module is deparsing, which PostgreSQL does not have internally.
 
@@ -10,12 +24,13 @@ The main functionality provided by this module is deparsing, which PostgreSQL do
 npm install pgsql-parser
 ```
 
-## Parser Example
+## Deparser Example
 
-Rewrite part of a SQL query:
+The deparser can be used separately, which removes many deps required for the parser:
 
 ```js
-const { parse, deparse } = require('pgsql-parser');
+const { parse } = require('pgsql-parser');
+const { deparse } = require('pgsql-deparser');
 
 const stmts = parse('SELECT * FROM test_table');
 
@@ -26,13 +41,12 @@ console.log(deparse(stmts));
 // SELECT * FROM "another_table"
 ```
 
-## Deparser Example
+## Parser Example
 
-The deparser can be used separately, which removes many deps required for the parser:
+Rewrite part of a SQL query:
 
 ```js
-const { parse } = require('pgsql-parser');
-const { deparse } = require('pgsql-deparser');
+const { parse, deparse } = require('pgsql-parser');
 
 const stmts = parse('SELECT * FROM test_table');
 
@@ -103,11 +117,6 @@ Our latest is built with `13-latest` branch from libpg_query
 | 12                       | (n/a)       | Not supported       |
 | 11                       | (n/a)       | Not supported       |
 | 10                       | 10-latest   | Not supported       | `@1.3.1` ([tree](https://github.com/launchql/pgsql-parser/tree/39b7b1adc8914253226e286a48105785219a81ca))      | 
-
-
-## Resources
-
-
 
 ## Related
 

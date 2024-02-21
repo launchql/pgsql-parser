@@ -1,6 +1,10 @@
 # pgsql-parser 
 
 <p align="center" width="100%">
+  <img height="120" src="https://github.com/launchql/pgsql-parser/assets/545047/6440fa7d-918b-4a3b-8d1b-755d85de8bea" />
+</p>
+
+<p align="center" width="100%">
   <a href="https://github.com/launchql/pgsql-parser/actions/workflows/run-tests.yaml">
     <img height="20" src="https://github.com/launchql/pgsql-parser/actions/workflows/run-tests.yaml/badge.svg" />
   </a>
@@ -113,10 +117,6 @@ Our latest is built with `13-latest` branch from libpg_query
 | 12                       | (n/a)       | Not supported       |
 | 11                       | (n/a)       | Not supported       |
 | 10                       | 10-latest   | Not supported       | `@1.3.1` ([tree](https://github.com/launchql/pgsql-parser/tree/39b7b1adc8914253226e286a48105785219a81ca))      | 
-
-
-## Resources
-
 
 
 ## Related
