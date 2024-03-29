@@ -76,14 +76,7 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@babel/generator": "^7.23.6",
-    "@babel/parser": "^7.23.6",
-    "@babel/preset-react": "7.24.1",
-    "@babel/preset-typescript": "7.24.1",
-    "@babel/traverse": "7.24.1",
-    "@babel/types": "7.24.0",
-    "@vue/compiler-core": "3.4.21",
-    "@vue/compiler-sfc": "3.4.21",
+    "@launchql/protobufjs": "6.11.6",
     "case": "1.6.3",
     "node-html-parser": "6.1.12",
     "recast": "0.23.6"
