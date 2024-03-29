@@ -76,7 +76,7 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@launchql/protobufjs": "6.11.6",
+    "@launchql/protobufjs": "6.11.7",
     "case": "1.6.3",
     "node-html-parser": "6.1.12",
     "recast": "0.23.6"

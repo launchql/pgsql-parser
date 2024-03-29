@@ -659,10 +659,10 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@launchql/protobufjs@6.11.6":
-  version "6.11.6"
-  resolved "https://registry.npmjs.org/@launchql/protobufjs/-/protobufjs-6.11.6.tgz#16350041d5f2f3eb7bc3fbc5d8d1be78d3537540"
-  integrity sha512-SHYzbN4xzAzD4f/ZRAOBGu5hsPqcIk5vSIuSi5SN2KTNI2JT5hZmDtJXdeh6ncwyXLQ1nxs+eUyvDW8v379Cxw==
+"@launchql/protobufjs@6.11.7":
+  version "6.11.7"
+  resolved "https://registry.npmjs.org/@launchql/protobufjs/-/protobufjs-6.11.7.tgz#74a54eaeb29f599f78bca3a0bfcffc18242b56a7"
+  integrity sha512-srD7PvRzJyuWhi+LA/U1YrmMFX5qoplrH7DGauXDS5qWXCg6ZvQ8kLStauhGrvzwGqfZ5zTM/QKAzjwz9X4TAw==
   dependencies:
     "@protobufjs/aspromise" "^1.1.2"
     "@protobufjs/base64" "^1.1.2"
