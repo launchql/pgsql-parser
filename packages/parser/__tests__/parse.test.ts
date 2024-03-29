@@ -1,5 +1,5 @@
 import { parse } from '@launchql/protobufjs';
-import { readFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 import { join, resolve } from 'path'
 
 interface ParseProtoOptions {
@@ -16,6 +16,7 @@ const protoParseOptionsDefaults = {
 
 // https://raw.githubusercontent.com/pganalyze/libpg_query/15-latest/protobuf/pg_query.proto
 const testProtoFile = resolve(join(__dirname, '../../../__fixtures__/proto/16-latest.proto'));
+const outProtoFile = resolve(join(__dirname, '../../../__fixtures__/proto/16-latest.json'));
 
 export const parseProtoFile = (filepath, options?: ParseProtoOptions) => {
   return parseProto(readFileSync(filepath, 'utf-8'), options);
@@ -31,4 +32,5 @@ export const parseProto = (content, options?: ParseProtoOptions) => {
 it('works', () => {
    const ast = parseProtoFile(testProtoFile);
    console.log(JSON.stringify(ast, null, 2));
+//    writeFileSync(outProtoFile, JSON.stringify(ast, null, 2));
 });
