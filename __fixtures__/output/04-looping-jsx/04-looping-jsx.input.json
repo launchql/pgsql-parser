@@ -1,0 +1,690 @@
+{
+  "type": "File",
+  "errors": [],
+  "program": {
+    "type": "Program",
+    "sourceType": "module",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ImportDeclaration",
+        "importKind": "value",
+        "specifiers": [
+          {
+            "type": "ImportSpecifier",
+            "imported": {
+              "type": "Identifier",
+              "name": "For"
+            },
+            "importKind": "value",
+            "local": {
+              "type": "Identifier",
+              "name": "For"
+            }
+          },
+          {
+            "type": "ImportSpecifier",
+            "imported": {
+              "type": "Identifier",
+              "name": "useMetadata"
+            },
+            "importKind": "value",
+            "local": {
+              "type": "Identifier",
+              "name": "useMetadata"
+            }
+          }
+        ],
+        "source": {
+          "type": "StringLiteral",
+          "extra": {
+            "rawValue": "@genomoic/stubs",
+            "raw": "\"@genomoic/stubs\""
+          },
+          "value": "@genomoic/stubs"
+        }
+      },
+      {
+        "type": "ImportDeclaration",
+        "importKind": "value",
+        "specifiers": [
+          {
+            "type": "ImportDefaultSpecifier",
+            "local": {
+              "type": "Identifier",
+              "name": "Stack"
+            }
+          }
+        ],
+        "source": {
+          "type": "StringLiteral",
+          "extra": {
+            "rawValue": "../stack",
+            "raw": "\"../stack\""
+          },
+          "value": "../stack"
+        }
+      },
+      {
+        "type": "ImportDeclaration",
+        "importKind": "value",
+        "specifiers": [
+          {
+            "type": "ImportDefaultSpecifier",
+            "local": {
+              "type": "Identifier",
+              "name": "Box"
+            }
+          }
+        ],
+        "source": {
+          "type": "StringLiteral",
+          "extra": {
+            "rawValue": "../box",
+            "raw": "\"../box\""
+          },
+          "value": "../box"
+        }
+      },
+      {
+        "type": "ImportDeclaration",
+        "importKind": "value",
+        "specifiers": [
+          {
+            "type": "ImportDefaultSpecifier",
+            "local": {
+              "type": "Identifier",
+              "name": "BondingCard"
+            }
+          }
+        ],
+        "source": {
+          "type": "StringLiteral",
+          "extra": {
+            "rawValue": "../bonding-card",
+            "raw": "\"../bonding-card\""
+          },
+          "value": "../bonding-card"
+        }
+      },
+      {
+        "type": "ImportDeclaration",
+        "importKind": "value",
+        "specifiers": [
+          {
+            "type": "ImportSpecifier",
+            "imported": {
+              "type": "Identifier",
+              "name": "BondingCardListProps"
+            },
+            "importKind": "value",
+            "local": {
+              "type": "Identifier",
+              "name": "BondingCardListProps"
+            }
+          }
+        ],
+        "source": {
+          "type": "StringLiteral",
+          "extra": {
+            "rawValue": "./bonding-card-list.types",
+            "raw": "\"./bonding-card-list.types\""
+          },
+          "value": "./bonding-card-list.types"
+        }
+      },
+      {
+        "type": "ImportDeclaration",
+        "importKind": "value",
+        "specifiers": [
+          {
+            "type": "ImportSpecifier",
+            "imported": {
+              "type": "Identifier",
+              "name": "BondingCardProps"
+            },
+            "importKind": "value",
+            "local": {
+              "type": "Identifier",
+              "name": "BondingCardProps"
+            }
+          }
+        ],
+        "source": {
+          "type": "StringLiteral",
+          "extra": {
+            "rawValue": "../bonding-card/bonding-card.types",
+            "raw": "\"../bonding-card/bonding-card.types\""
+          },
+          "value": "../bonding-card/bonding-card.types"
+        }
+      },
+      {
+        "type": "ExpressionStatement",
+        "expression": {
+          "type": "CallExpression",
+          "callee": {
+            "type": "Identifier",
+            "name": "useMetadata"
+          },
+          "arguments": [
+            {
+              "type": "ObjectExpression",
+              "properties": [
+                {
+                  "type": "ObjectProperty",
+                  "method": false,
+                  "key": {
+                    "type": "Identifier",
+                    "name": "rsc"
+                  },
+                  "computed": false,
+                  "shorthand": false,
+                  "value": {
+                    "type": "ObjectExpression",
+                    "properties": [
+                      {
+                        "type": "ObjectProperty",
+                        "method": false,
+                        "key": {
+                          "type": "Identifier",
+                          "name": "componentType"
+                        },
+                        "computed": false,
+                        "shorthand": false,
+                        "value": {
+                          "type": "StringLiteral",
+                          "extra": {
+                            "rawValue": "client",
+                            "raw": "\"client\""
+                          },
+                          "value": "client"
+                        }
+                      }
+                    ],
+                    "extra": {
+                      "trailingComma": 339
+                    }
+                  }
+                }
+              ],
+              "extra": {
+                "trailingComma": 344
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "ExportDefaultDeclaration",
+        "exportKind": "value",
+        "declaration": {
+          "type": "FunctionDeclaration",
+          "id": {
+            "type": "Identifier",
+            "name": "PoolCardList"
+          },
+          "generator": false,
+          "async": false,
+          "params": [
+            {
+              "type": "Identifier",
+              "name": "props",
+              "typeAnnotation": {
+                "type": "TSTypeAnnotation",
+                "typeAnnotation": {
+                  "type": "TSTypeReference",
+                  "typeName": {
+                    "type": "Identifier",
+                    "name": "BondingCardListProps"
+                  }
+                }
+              }
+            }
+          ],
+          "body": {
+            "type": "BlockStatement",
+            "body": [
+              {
+                "type": "ReturnStatement",
+                "argument": {
+                  "type": "JSXElement",
+                  "openingElement": {
+                    "type": "JSXOpeningElement",
+                    "name": {
+                      "type": "JSXIdentifier",
+                      "name": "Box"
+                    },
+                    "attributes": [],
+                    "selfClosing": false
+                  },
+                  "closingElement": {
+                    "type": "JSXClosingElement",
+                    "name": {
+                      "type": "JSXIdentifier",
+                      "name": "Box"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "JSXText",
+                      "extra": {
+                        "rawValue": "\n      ",
+                        "raw": "\n      "
+                      },
+                      "value": "\n      "
+                    },
+                    {
+                      "type": "JSXElement",
+                      "openingElement": {
+                        "type": "JSXOpeningElement",
+                        "name": {
+                          "type": "JSXIdentifier",
+                          "name": "Stack"
+                        },
+                        "attributes": [
+                          {
+                            "type": "JSXAttribute",
+                            "name": {
+                              "type": "JSXIdentifier",
+                              "name": "space"
+                            },
+                            "value": {
+                              "type": "StringLiteral",
+                              "extra": {
+                                "rawValue": "$10",
+                                "raw": "\"$10\""
+                              },
+                              "value": "$10"
+                            }
+                          },
+                          {
+                            "type": "JSXAttribute",
+                            "name": {
+                              "type": "JSXIdentifier",
+                              "name": "attributes"
+                            },
+                            "value": {
+                              "type": "JSXExpressionContainer",
+                              "expression": {
+                                "type": "ObjectExpression",
+                                "properties": [
+                                  {
+                                    "type": "ObjectProperty",
+                                    "method": false,
+                                    "key": {
+                                      "type": "Identifier",
+                                      "name": "flexWrap"
+                                    },
+                                    "computed": false,
+                                    "shorthand": false,
+                                    "value": {
+                                      "type": "StringLiteral",
+                                      "extra": {
+                                        "rawValue": "nowrap",
+                                        "raw": "\"nowrap\""
+                                      },
+                                      "value": "nowrap"
+                                    }
+                                  }
+                                ],
+                                "extra": {
+                                  "trailingComma": 523
+                                }
+                              }
+                            }
+                          }
+                        ],
+                        "selfClosing": false
+                      },
+                      "closingElement": {
+                        "type": "JSXClosingElement",
+                        "name": {
+                          "type": "JSXIdentifier",
+                          "name": "Stack"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "JSXText",
+                          "extra": {
+                            "rawValue": "\n        ",
+                            "raw": "\n        "
+                          },
+                          "value": "\n        "
+                        },
+                        {
+                          "type": "JSXElement",
+                          "openingElement": {
+                            "type": "JSXOpeningElement",
+                            "name": {
+                              "type": "JSXIdentifier",
+                              "name": "For"
+                            },
+                            "attributes": [
+                              {
+                                "type": "JSXAttribute",
+                                "name": {
+                                  "type": "JSXIdentifier",
+                                  "name": "each"
+                                },
+                                "value": {
+                                  "type": "JSXExpressionContainer",
+                                  "expression": {
+                                    "type": "MemberExpression",
+                                    "object": {
+                                      "type": "Identifier",
+                                      "name": "props"
+                                    },
+                                    "computed": false,
+                                    "property": {
+                                      "type": "Identifier",
+                                      "name": "list"
+                                    }
+                                  }
+                                }
+                              }
+                            ],
+                            "selfClosing": false
+                          },
+                          "closingElement": {
+                            "type": "JSXClosingElement",
+                            "name": {
+                              "type": "JSXIdentifier",
+                              "name": "For"
+                            }
+                          },
+                          "children": [
+                            {
+                              "type": "JSXText",
+                              "extra": {
+                                "rawValue": "\n          ",
+                                "raw": "\n          "
+                              },
+                              "value": "\n          "
+                            },
+                            {
+                              "type": "JSXExpressionContainer",
+                              "expression": {
+                                "type": "ArrowFunctionExpression",
+                                "id": null,
+                                "generator": false,
+                                "async": false,
+                                "params": [
+                                  {
+                                    "type": "Identifier",
+                                    "name": "item",
+                                    "typeAnnotation": {
+                                      "type": "TSTypeAnnotation",
+                                      "typeAnnotation": {
+                                        "type": "TSTypeReference",
+                                        "typeName": {
+                                          "type": "Identifier",
+                                          "name": "BondingCardProps"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "type": "Identifier",
+                                    "name": "index",
+                                    "typeAnnotation": {
+                                      "type": "TSTypeAnnotation",
+                                      "typeAnnotation": {
+                                        "type": "TSNumberKeyword"
+                                      }
+                                    }
+                                  }
+                                ],
+                                "body": {
+                                  "type": "JSXElement",
+                                  "openingElement": {
+                                    "type": "JSXOpeningElement",
+                                    "name": {
+                                      "type": "JSXIdentifier",
+                                      "name": "Box"
+                                    },
+                                    "attributes": [
+                                      {
+                                        "type": "JSXAttribute",
+                                        "name": {
+                                          "type": "JSXIdentifier",
+                                          "name": "width"
+                                        },
+                                        "value": {
+                                          "type": "StringLiteral",
+                                          "extra": {
+                                            "rawValue": "33.33%",
+                                            "raw": "\"33.33%\""
+                                          },
+                                          "value": "33.33%"
+                                        }
+                                      },
+                                      {
+                                        "type": "JSXAttribute",
+                                        "name": {
+                                          "type": "JSXIdentifier",
+                                          "name": "key"
+                                        },
+                                        "value": {
+                                          "type": "JSXExpressionContainer",
+                                          "expression": {
+                                            "type": "MemberExpression",
+                                            "object": {
+                                              "type": "Identifier",
+                                              "name": "item"
+                                            },
+                                            "computed": false,
+                                            "property": {
+                                              "type": "Identifier",
+                                              "name": "title"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    ],
+                                    "selfClosing": false
+                                  },
+                                  "closingElement": {
+                                    "type": "JSXClosingElement",
+                                    "name": {
+                                      "type": "JSXIdentifier",
+                                      "name": "Box"
+                                    }
+                                  },
+                                  "children": [
+                                    {
+                                      "type": "JSXText",
+                                      "extra": {
+                                        "rawValue": "\n              ",
+                                        "raw": "\n              "
+                                      },
+                                      "value": "\n              "
+                                    },
+                                    {
+                                      "type": "JSXElement",
+                                      "openingElement": {
+                                        "type": "JSXOpeningElement",
+                                        "name": {
+                                          "type": "JSXIdentifier",
+                                          "name": "BondingCard"
+                                        },
+                                        "attributes": [
+                                          {
+                                            "type": "JSXAttribute",
+                                            "name": {
+                                              "type": "JSXIdentifier",
+                                              "name": "title"
+                                            },
+                                            "value": {
+                                              "type": "JSXExpressionContainer",
+                                              "expression": {
+                                                "type": "MemberExpression",
+                                                "object": {
+                                                  "type": "Identifier",
+                                                  "name": "item"
+                                                },
+                                                "computed": false,
+                                                "property": {
+                                                  "type": "Identifier",
+                                                  "name": "title"
+                                                }
+                                              }
+                                            }
+                                          },
+                                          {
+                                            "type": "JSXAttribute",
+                                            "name": {
+                                              "type": "JSXIdentifier",
+                                              "name": "value"
+                                            },
+                                            "value": {
+                                              "type": "JSXExpressionContainer",
+                                              "expression": {
+                                                "type": "ConditionalExpression",
+                                                "test": {
+                                                  "type": "MemberExpression",
+                                                  "object": {
+                                                    "type": "Identifier",
+                                                    "name": "item"
+                                                  },
+                                                  "computed": false,
+                                                  "property": {
+                                                    "type": "Identifier",
+                                                    "name": "value"
+                                                  }
+                                                },
+                                                "consequent": {
+                                                  "type": "TemplateLiteral",
+                                                  "expressions": [
+                                                    {
+                                                      "type": "CallExpression",
+                                                      "callee": {
+                                                        "type": "MemberExpression",
+                                                        "object": {
+                                                          "type": "MemberExpression",
+                                                          "object": {
+                                                            "type": "Identifier",
+                                                            "name": "item"
+                                                          },
+                                                          "computed": false,
+                                                          "property": {
+                                                            "type": "Identifier",
+                                                            "name": "value"
+                                                          }
+                                                        },
+                                                        "computed": false,
+                                                        "property": {
+                                                          "type": "Identifier",
+                                                          "name": "toFixed"
+                                                        }
+                                                      },
+                                                      "arguments": [
+                                                        {
+                                                          "type": "NumericLiteral",
+                                                          "extra": {
+                                                            "rawValue": 2,
+                                                            "raw": "2"
+                                                          },
+                                                          "value": 2
+                                                        }
+                                                      ]
+                                                    }
+                                                  ],
+                                                  "quasis": [
+                                                    {
+                                                      "type": "TemplateElement",
+                                                      "value": {
+                                                        "raw": "",
+                                                        "cooked": ""
+                                                      },
+                                                      "tail": false
+                                                    },
+                                                    {
+                                                      "type": "TemplateElement",
+                                                      "value": {
+                                                        "raw": "%",
+                                                        "cooked": "%"
+                                                      },
+                                                      "tail": true
+                                                    }
+                                                  ]
+                                                },
+                                                "alternate": {
+                                                  "type": "StringLiteral",
+                                                  "extra": {
+                                                    "rawValue": "0%",
+                                                    "raw": "\"0%\""
+                                                  },
+                                                  "value": "0%"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        ],
+                                        "selfClosing": true
+                                      },
+                                      "closingElement": null,
+                                      "children": []
+                                    },
+                                    {
+                                      "type": "JSXText",
+                                      "extra": {
+                                        "rawValue": "\n            ",
+                                        "raw": "\n            "
+                                      },
+                                      "value": "\n            "
+                                    }
+                                  ],
+                                  "extra": {
+                                    "parenthesized": true,
+                                    "parenStart": 630
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "type": "JSXText",
+                              "extra": {
+                                "rawValue": "\n        ",
+                                "raw": "\n        "
+                              },
+                              "value": "\n        "
+                            }
+                          ]
+                        },
+                        {
+                          "type": "JSXText",
+                          "extra": {
+                            "rawValue": "\n      ",
+                            "raw": "\n      "
+                          },
+                          "value": "\n      "
+                        }
+                      ]
+                    },
+                    {
+                      "type": "JSXText",
+                      "extra": {
+                        "rawValue": "\n    ",
+                        "raw": "\n    "
+                      },
+                      "value": "\n    "
+                    }
+                  ],
+                  "extra": {
+                    "parenthesized": true,
+                    "parenStart": 428
+                  }
+                }
+              }
+            ],
+            "directives": []
+          }
+        }
+      }
+    ],
+    "directives": []
+  },
+  "comments": []
+}

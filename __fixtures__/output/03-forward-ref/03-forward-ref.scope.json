@@ -1,0 +1,25 @@
+{
+  "components": [
+    {
+      "name": "Box",
+      "refs": [
+        {
+          "name": "boxRef",
+          "used": false,
+          "forward": true
+        }
+      ],
+      "state": {
+        "properties": []
+      }
+    }
+  ],
+  "cursor": "Box",
+  "defaultForwardRefExport": "Box",
+  "configOptions": {
+    "isAttachedToShadowDom": true,
+    "rsc": {
+      "componentType": "client"
+    }
+  }
+}

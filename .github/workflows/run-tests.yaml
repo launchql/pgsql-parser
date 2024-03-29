@@ -1,0 +1,31 @@
+name: Run Tests
+
+on:
+  push:
+
+  pull_request:
+    types: [opened, reopened]
+
+  workflow_dispatch:
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout 🛎️
+        uses: actions/checkout@v4
+
+      - name: node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.9.0
+
+      - name: deps
+        run: |
+          yarn
+          yarn build
+
+      - name: parser
+        run: |
+          cd ./packages/parser
+          yarn test

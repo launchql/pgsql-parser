@@ -1,0 +1,17 @@
+{
+  "components": [
+    {
+      "name": "PoolCardList",
+      "refs": [],
+      "state": {
+        "properties": []
+      }
+    }
+  ],
+  "cursor": "PoolCardList",
+  "configOptions": {
+    "rsc": {
+      "componentType": "client"
+    }
+  }
+}

@@ -1,0 +1,711 @@
+{
+  "type": "File",
+  "errors": [],
+  "program": {
+    "type": "Program",
+    "sourceType": "module",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ImportDeclaration",
+        "importKind": "value",
+        "specifiers": [
+          {
+            "type": "ImportSpecifier",
+            "imported": {
+              "type": "Identifier",
+              "name": "useState"
+            },
+            "importKind": "value",
+            "local": {
+              "type": "Identifier",
+              "name": "useState"
+            }
+          },
+          {
+            "type": "ImportSpecifier",
+            "imported": {
+              "type": "Identifier",
+              "name": "useRef"
+            },
+            "importKind": "value",
+            "local": {
+              "type": "Identifier",
+              "name": "useRef"
+            }
+          }
+        ],
+        "source": {
+          "type": "StringLiteral",
+          "extra": {
+            "rawValue": "@genomoic/stubs",
+            "raw": "\"@genomoic/stubs\""
+          },
+          "value": "@genomoic/stubs"
+        }
+      },
+      {
+        "type": "ExpressionStatement",
+        "expression": {
+          "type": "CallExpression",
+          "callee": {
+            "type": "Identifier",
+            "name": "useMetadata"
+          },
+          "arguments": [
+            {
+              "type": "ObjectExpression",
+              "properties": [
+                {
+                  "type": "ObjectProperty",
+                  "method": false,
+                  "key": {
+                    "type": "Identifier",
+                    "name": "rsc"
+                  },
+                  "computed": false,
+                  "shorthand": false,
+                  "value": {
+                    "type": "ObjectExpression",
+                    "properties": [
+                      {
+                        "type": "ObjectProperty",
+                        "method": false,
+                        "key": {
+                          "type": "Identifier",
+                          "name": "componentType"
+                        },
+                        "computed": false,
+                        "shorthand": false,
+                        "value": {
+                          "type": "StringLiteral",
+                          "extra": {
+                            "rawValue": "client",
+                            "raw": "\"client\""
+                          },
+                          "value": "client"
+                        }
+                      }
+                    ],
+                    "extra": {
+                      "trailingComma": 107
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "type": "ExportDefaultDeclaration",
+        "exportKind": "value",
+        "declaration": {
+          "type": "FunctionDeclaration",
+          "id": {
+            "type": "Identifier",
+            "name": "MyComponent"
+          },
+          "generator": false,
+          "async": false,
+          "params": [
+            {
+              "type": "Identifier",
+              "name": "props"
+            }
+          ],
+          "body": {
+            "type": "BlockStatement",
+            "body": [
+              {
+                "type": "VariableDeclaration",
+                "declarations": [
+                  {
+                    "type": "VariableDeclarator",
+                    "id": {
+                      "type": "Identifier",
+                      "name": "buttonRef"
+                    },
+                    "init": {
+                      "type": "CallExpression",
+                      "callee": {
+                        "type": "Identifier",
+                        "name": "useRef"
+                      },
+                      "arguments": [
+                        {
+                          "type": "NullLiteral"
+                        }
+                      ],
+                      "typeParameters": {
+                        "type": "TSTypeParameterInstantiation",
+                        "params": [
+                          {
+                            "type": "TSTypeReference",
+                            "typeName": {
+                              "type": "Identifier",
+                              "name": "HTMLInputElement"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "kind": "const"
+              },
+              {
+                "type": "VariableDeclaration",
+                "declarations": [
+                  {
+                    "type": "VariableDeclarator",
+                    "id": {
+                      "type": "ArrayPattern",
+                      "elements": [
+                        {
+                          "type": "Identifier",
+                          "name": "count"
+                        },
+                        {
+                          "type": "Identifier",
+                          "name": "setCount"
+                        }
+                      ]
+                    },
+                    "init": {
+                      "type": "CallExpression",
+                      "callee": {
+                        "type": "Identifier",
+                        "name": "useState"
+                      },
+                      "arguments": [
+                        {
+                          "type": "NumericLiteral",
+                          "extra": {
+                            "rawValue": 0,
+                            "raw": "0"
+                          },
+                          "value": 0
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "kind": "const"
+              },
+              {
+                "type": "ReturnStatement",
+                "argument": {
+                  "type": "JSXFragment",
+                  "openingFragment": {
+                    "type": "JSXOpeningFragment"
+                  },
+                  "closingFragment": {
+                    "type": "JSXClosingFragment"
+                  },
+                  "children": [
+                    {
+                      "type": "JSXText",
+                      "extra": {
+                        "rawValue": "\n      ",
+                        "raw": "\n      "
+                      },
+                      "value": "\n      "
+                    },
+                    {
+                      "type": "JSXElement",
+                      "openingElement": {
+                        "type": "JSXOpeningElement",
+                        "name": {
+                          "type": "JSXIdentifier",
+                          "name": "button"
+                        },
+                        "attributes": [
+                          {
+                            "type": "JSXAttribute",
+                            "name": {
+                              "type": "JSXIdentifier",
+                              "name": "type"
+                            },
+                            "value": {
+                              "type": "StringLiteral",
+                              "extra": {
+                                "rawValue": "button",
+                                "raw": "\"button\""
+                              },
+                              "value": "button"
+                            }
+                          },
+                          {
+                            "type": "JSXAttribute",
+                            "name": {
+                              "type": "JSXIdentifier",
+                              "name": "ref"
+                            },
+                            "value": {
+                              "type": "JSXExpressionContainer",
+                              "expression": {
+                                "type": "Identifier",
+                                "name": "buttonRef"
+                              }
+                            }
+                          },
+                          {
+                            "type": "JSXAttribute",
+                            "name": {
+                              "type": "JSXIdentifier",
+                              "name": "className"
+                            },
+                            "value": {
+                              "type": "JSXExpressionContainer",
+                              "expression": {
+                                "type": "MemberExpression",
+                                "object": {
+                                  "type": "Identifier",
+                                  "name": "props"
+                                },
+                                "computed": false,
+                                "property": {
+                                  "type": "Identifier",
+                                  "name": "className"
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "type": "JSXAttribute",
+                            "name": {
+                              "type": "JSXIdentifier",
+                              "name": "onClick"
+                            },
+                            "value": {
+                              "type": "JSXExpressionContainer",
+                              "expression": {
+                                "type": "ArrowFunctionExpression",
+                                "id": null,
+                                "generator": false,
+                                "async": false,
+                                "params": [],
+                                "body": {
+                                  "type": "CallExpression",
+                                  "callee": {
+                                    "type": "Identifier",
+                                    "name": "setCount"
+                                  },
+                                  "arguments": [
+                                    {
+                                      "type": "BinaryExpression",
+                                      "left": {
+                                        "type": "Identifier",
+                                        "name": "count"
+                                      },
+                                      "operator": "+",
+                                      "right": {
+                                        "type": "NumericLiteral",
+                                        "extra": {
+                                          "rawValue": 1,
+                                          "raw": "1"
+                                        },
+                                        "value": 1
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ],
+                        "selfClosing": false
+                      },
+                      "closingElement": {
+                        "type": "JSXClosingElement",
+                        "name": {
+                          "type": "JSXIdentifier",
+                          "name": "button"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "JSXText",
+                          "extra": {
+                            "rawValue": "\n        Click me\n        ",
+                            "raw": "\n        Click me\n        "
+                          },
+                          "value": "\n        Click me\n        "
+                        },
+                        {
+                          "type": "JSXElement",
+                          "openingElement": {
+                            "type": "JSXOpeningElement",
+                            "name": {
+                              "type": "JSXIdentifier",
+                              "name": "svg"
+                            },
+                            "attributes": [
+                              {
+                                "type": "JSXAttribute",
+                                "name": {
+                                  "type": "JSXIdentifier",
+                                  "name": "xmlns"
+                                },
+                                "value": {
+                                  "type": "StringLiteral",
+                                  "extra": {
+                                    "rawValue": "http://www.w3.org/2000/svg",
+                                    "raw": "\"http://www.w3.org/2000/svg\""
+                                  },
+                                  "value": "http://www.w3.org/2000/svg"
+                                }
+                              },
+                              {
+                                "type": "JSXAttribute",
+                                "name": {
+                                  "type": "JSXIdentifier",
+                                  "name": "className"
+                                },
+                                "value": {
+                                  "type": "StringLiteral",
+                                  "extra": {
+                                    "rawValue": "h-6 w-6",
+                                    "raw": "\"h-6 w-6\""
+                                  },
+                                  "value": "h-6 w-6"
+                                }
+                              },
+                              {
+                                "type": "JSXAttribute",
+                                "name": {
+                                  "type": "JSXIdentifier",
+                                  "name": "fill"
+                                },
+                                "value": {
+                                  "type": "StringLiteral",
+                                  "extra": {
+                                    "rawValue": "none",
+                                    "raw": "\"none\""
+                                  },
+                                  "value": "none"
+                                }
+                              },
+                              {
+                                "type": "JSXAttribute",
+                                "name": {
+                                  "type": "JSXIdentifier",
+                                  "name": "viewBox"
+                                },
+                                "value": {
+                                  "type": "StringLiteral",
+                                  "extra": {
+                                    "rawValue": "0 0 24 24",
+                                    "raw": "\"0 0 24 24\""
+                                  },
+                                  "value": "0 0 24 24"
+                                }
+                              },
+                              {
+                                "type": "JSXAttribute",
+                                "name": {
+                                  "type": "JSXIdentifier",
+                                  "name": "stroke"
+                                },
+                                "value": {
+                                  "type": "StringLiteral",
+                                  "extra": {
+                                    "rawValue": "currentColor",
+                                    "raw": "\"currentColor\""
+                                  },
+                                  "value": "currentColor"
+                                }
+                              }
+                            ],
+                            "selfClosing": false
+                          },
+                          "closingElement": {
+                            "type": "JSXClosingElement",
+                            "name": {
+                              "type": "JSXIdentifier",
+                              "name": "svg"
+                            }
+                          },
+                          "children": [
+                            {
+                              "type": "JSXText",
+                              "extra": {
+                                "rawValue": "\n          ",
+                                "raw": "\n          "
+                              },
+                              "value": "\n          "
+                            },
+                            {
+                              "type": "JSXElement",
+                              "openingElement": {
+                                "type": "JSXOpeningElement",
+                                "name": {
+                                  "type": "JSXIdentifier",
+                                  "name": "path"
+                                },
+                                "attributes": [
+                                  {
+                                    "type": "JSXAttribute",
+                                    "name": {
+                                      "type": "JSXIdentifier",
+                                      "name": "strokeLinecap"
+                                    },
+                                    "value": {
+                                      "type": "StringLiteral",
+                                      "extra": {
+                                        "rawValue": "round",
+                                        "raw": "\"round\""
+                                      },
+                                      "value": "round"
+                                    }
+                                  },
+                                  {
+                                    "type": "JSXAttribute",
+                                    "name": {
+                                      "type": "JSXIdentifier",
+                                      "name": "strokeLinejoin"
+                                    },
+                                    "value": {
+                                      "type": "StringLiteral",
+                                      "extra": {
+                                        "rawValue": "round",
+                                        "raw": "\"round\""
+                                      },
+                                      "value": "round"
+                                    }
+                                  },
+                                  {
+                                    "type": "JSXAttribute",
+                                    "name": {
+                                      "type": "JSXIdentifier",
+                                      "name": "strokeWidth"
+                                    },
+                                    "value": {
+                                      "type": "JSXExpressionContainer",
+                                      "expression": {
+                                        "type": "NumericLiteral",
+                                        "extra": {
+                                          "rawValue": 2,
+                                          "raw": "2"
+                                        },
+                                        "value": 2
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "type": "JSXAttribute",
+                                    "name": {
+                                      "type": "JSXIdentifier",
+                                      "name": "fillRule"
+                                    },
+                                    "value": {
+                                      "type": "StringLiteral",
+                                      "extra": {
+                                        "rawValue": "evenodd",
+                                        "raw": "\"evenodd\""
+                                      },
+                                      "value": "evenodd"
+                                    }
+                                  },
+                                  {
+                                    "type": "JSXAttribute",
+                                    "name": {
+                                      "type": "JSXIdentifier",
+                                      "name": "shapeRendering"
+                                    },
+                                    "value": {
+                                      "type": "StringLiteral",
+                                      "extra": {
+                                        "rawValue": "auto",
+                                        "raw": "\"auto\""
+                                      },
+                                      "value": "auto"
+                                    }
+                                  },
+                                  {
+                                    "type": "JSXAttribute",
+                                    "name": {
+                                      "type": "JSXIdentifier",
+                                      "name": "clipPath"
+                                    },
+                                    "value": {
+                                      "type": "StringLiteral",
+                                      "extra": {
+                                        "rawValue": "auto",
+                                        "raw": "\"auto\""
+                                      },
+                                      "value": "auto"
+                                    }
+                                  },
+                                  {
+                                    "type": "JSXAttribute",
+                                    "name": {
+                                      "type": "JSXIdentifier",
+                                      "name": "clipRule"
+                                    },
+                                    "value": {
+                                      "type": "StringLiteral",
+                                      "extra": {
+                                        "rawValue": "evenodd",
+                                        "raw": "\"evenodd\""
+                                      },
+                                      "value": "evenodd"
+                                    }
+                                  },
+                                  {
+                                    "type": "JSXAttribute",
+                                    "name": {
+                                      "type": "JSXIdentifier",
+                                      "name": "d"
+                                    },
+                                    "value": {
+                                      "type": "StringLiteral",
+                                      "extra": {
+                                        "rawValue": "M9 5l7 7-7 7",
+                                        "raw": "\"M9 5l7 7-7 7\""
+                                      },
+                                      "value": "M9 5l7 7-7 7"
+                                    }
+                                  }
+                                ],
+                                "selfClosing": true
+                              },
+                              "closingElement": null,
+                              "children": []
+                            },
+                            {
+                              "type": "JSXText",
+                              "extra": {
+                                "rawValue": "\n        ",
+                                "raw": "\n        "
+                              },
+                              "value": "\n        "
+                            }
+                          ]
+                        },
+                        {
+                          "type": "JSXText",
+                          "extra": {
+                            "rawValue": "\n      ",
+                            "raw": "\n      "
+                          },
+                          "value": "\n      "
+                        }
+                      ]
+                    },
+                    {
+                      "type": "JSXText",
+                      "extra": {
+                        "rawValue": "\n\n      ",
+                        "raw": "\n\n      "
+                      },
+                      "value": "\n\n      "
+                    },
+                    {
+                      "type": "JSXElement",
+                      "openingElement": {
+                        "type": "JSXOpeningElement",
+                        "name": {
+                          "type": "JSXIdentifier",
+                          "name": "blockquote"
+                        },
+                        "attributes": [
+                          {
+                            "type": "JSXAttribute",
+                            "name": {
+                              "type": "JSXIdentifier",
+                              "name": "contentEditable"
+                            },
+                            "value": {
+                              "type": "StringLiteral",
+                              "extra": {
+                                "rawValue": "true",
+                                "raw": "\"true\""
+                              },
+                              "value": "true"
+                            }
+                          }
+                        ],
+                        "selfClosing": false
+                      },
+                      "closingElement": {
+                        "type": "JSXClosingElement",
+                        "name": {
+                          "type": "JSXIdentifier",
+                          "name": "blockquote"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "JSXText",
+                          "extra": {
+                            "rawValue": "\n        ",
+                            "raw": "\n        "
+                          },
+                          "value": "\n        "
+                        },
+                        {
+                          "type": "JSXElement",
+                          "openingElement": {
+                            "type": "JSXOpeningElement",
+                            "name": {
+                              "type": "JSXIdentifier",
+                              "name": "p"
+                            },
+                            "attributes": [],
+                            "selfClosing": false
+                          },
+                          "closingElement": {
+                            "type": "JSXClosingElement",
+                            "name": {
+                              "type": "JSXIdentifier",
+                              "name": "p"
+                            }
+                          },
+                          "children": [
+                            {
+                              "type": "JSXText",
+                              "extra": {
+                                "rawValue": "Edit this content to add your own quote",
+                                "raw": "Edit this content to add your own quote"
+                              },
+                              "value": "Edit this content to add your own quote"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "JSXText",
+                          "extra": {
+                            "rawValue": "\n      ",
+                            "raw": "\n      "
+                          },
+                          "value": "\n      "
+                        }
+                      ]
+                    },
+                    {
+                      "type": "JSXText",
+                      "extra": {
+                        "rawValue": "\n    ",
+                        "raw": "\n    "
+                      },
+                      "value": "\n    "
+                    }
+                  ],
+                  "extra": {
+                    "parenthesized": true,
+                    "parenStart": 267
+                  }
+                }
+              }
+            ],
+            "directives": []
+          }
+        }
+      }
+    ],
+    "directives": []
+  },
+  "comments": []
+}

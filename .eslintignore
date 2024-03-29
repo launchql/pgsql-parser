@@ -1,0 +1,10 @@
+*.json
+*.md
+*.css
+*.d.ts
+
+node_modules/
+dist/
+main/
+module/
+coverage/

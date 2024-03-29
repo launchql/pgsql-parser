@@ -1,0 +1,12 @@
+{
+  "type": "File",
+  "errors": [],
+  "program": {
+    "type": "Program",
+    "sourceType": "module",
+    "interpreter": null,
+    "body": [],
+    "directives": []
+  },
+  "comments": []
+}

@@ -1,0 +1,17 @@
+{
+  "components": [
+    {
+      "name": "MyComponent",
+      "refs": [],
+      "state": {
+        "properties": []
+      }
+    }
+  ],
+  "cursor": "MyComponent",
+  "configOptions": {
+    "rsc": {
+      "componentType": "client"
+    }
+  }
+}

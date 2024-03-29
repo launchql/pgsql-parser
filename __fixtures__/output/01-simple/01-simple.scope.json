@@ -1,0 +1,170 @@
+{
+  "components": [
+    {
+      "name": "CounterComponent",
+      "refs": [
+        {
+          "name": "inputRef",
+          "used": false,
+          "forward": false
+        }
+      ],
+      "state": {
+        "properties": [
+          {
+            "name": "prop1",
+            "derived": "useStore",
+            "from": "ObjectProperty",
+            "used": false
+          },
+          {
+            "name": "prop2",
+            "derived": "useStore",
+            "from": "ObjectProperty",
+            "used": false
+          },
+          {
+            "name": "prop3",
+            "derived": "useStore",
+            "from": "ObjectProperty",
+            "used": false
+          },
+          {
+            "name": "prop4",
+            "derived": "useStore",
+            "from": "ObjectProperty",
+            "used": false
+          },
+          {
+            "name": "isShown",
+            "derived": "useStore",
+            "from": "ObjectProperty",
+            "used": false
+          },
+          {
+            "name": "hide",
+            "derived": "useStore",
+            "from": "ObjectMethod",
+            "used": false
+          },
+          {
+            "name": "prop1",
+            "derived": "useState",
+            "from": "ObjectProperty",
+            "used": false
+          },
+          {
+            "name": "prop2",
+            "derived": "useState",
+            "from": "ObjectProperty",
+            "used": false
+          },
+          {
+            "name": "prop3",
+            "derived": "useState",
+            "from": "ObjectProperty",
+            "used": false
+          },
+          {
+            "name": "prop4",
+            "derived": "useState",
+            "from": "ObjectProperty",
+            "used": false
+          },
+          {
+            "name": "isShown",
+            "derived": "useState",
+            "from": "ObjectProperty",
+            "used": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "CounterComponent2",
+      "refs": [
+        {
+          "name": "inputRef",
+          "used": false,
+          "forward": false
+        }
+      ],
+      "state": {
+        "properties": [
+          {
+            "name": "var1",
+            "derived": "useStore",
+            "from": "ObjectProperty",
+            "used": true
+          },
+          {
+            "name": "var2",
+            "derived": "useStore",
+            "from": "ObjectProperty",
+            "used": false
+          },
+          {
+            "name": "var3",
+            "derived": "useStore",
+            "from": "ObjectProperty",
+            "used": false
+          },
+          {
+            "name": "var4",
+            "derived": "useStore",
+            "from": "ObjectProperty",
+            "used": false
+          },
+          {
+            "name": "isShown",
+            "derived": "useStore",
+            "from": "ObjectProperty",
+            "used": true
+          },
+          {
+            "name": "hide",
+            "derived": "useStore",
+            "from": "ObjectMethod",
+            "used": true
+          },
+          {
+            "name": "var1",
+            "derived": "useState",
+            "from": "ObjectProperty",
+            "used": false
+          },
+          {
+            "name": "var2",
+            "derived": "useState",
+            "from": "ObjectProperty",
+            "used": false
+          },
+          {
+            "name": "var3",
+            "derived": "useState",
+            "from": "ObjectProperty",
+            "used": false
+          },
+          {
+            "name": "var4",
+            "derived": "useState",
+            "from": "ObjectProperty",
+            "used": false
+          },
+          {
+            "name": "isShown",
+            "derived": "useState",
+            "from": "ObjectProperty",
+            "used": false
+          }
+        ]
+      }
+    }
+  ],
+  "cursor": "CounterComponent2",
+  "configOptions": {
+    "rsc": {
+      "componentType": "client"
+    }
+  }
+}

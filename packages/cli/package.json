@@ -1,0 +1,84 @@
+{
+  "name": "@launchql/proto-cli",
+  "version": "0.0.1",
+  "description": "The LaunchQL PG Proto parser",
+  "author": "Dan Lynch <pyramation@gmail.com>",
+  "homepage": "https://github.com/launchql/pg-proto-parser/tree/master/packages/parser#readme",
+  "license": "SEE LICENSE IN LICENSE",
+  "main": "main/index.js",
+  "module": "module/index.js",
+  "typings": "types/index.d.ts",
+  "directories": {
+    "lib": "src"
+  },
+  "files": [
+    "types",
+    "module",
+    "src",
+    "main"
+  ],
+  "bin": {
+    "pg-proto-parser": "main/parser.js"
+  },
+  "scripts": {
+    "build:main": "yarn tsc -p tsconfig.json --outDir main --module commonjs",
+    "build:module": "yarn tsc -p tsconfig.json --outDir module --module es2022",
+    "build": "npm run build:module && npm run build:main",
+    "buidl": "npm run build",
+    "buidl:clean": "npm run clean && npm run buidl",
+    "clean": "rimraf ./types",
+    "prepare": "npm run build",
+    "lint": "eslint .",
+    "format": "eslint . --fix",
+    "dev": "NODE_ENV=development ts-node src/parser",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:debug": "node --inspect node_modules/.bin/jest --runInBand"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "transform": {
+      "^.+\\.ts?$": "ts-jest"
+    },
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules/"
+    ],
+    "testPathIgnorePatterns": [
+      "main/",
+      "module/",
+      "types/"
+    ]
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/launchql/pg-proto-parser"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/launchql/pg-proto-parser/issues"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.0",
+    "ast-stringify": "0.1.0",
+    "eslint": "8.38.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "esprima": "4.0.1",
+    "jest": "^29.5.0",
+    "jest-in-case": "1.0.2",
+    "prettier": "^2.8.7",
+    "rimraf": "5.0.0",
+    "ts-jest": "^29.1.0",
+    "ts-node": "10.9.2",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "glob": "8.0.3",
+    "minimist": "1.2.8",
+    "mkdirp": "3.0.1"
+  }
+}

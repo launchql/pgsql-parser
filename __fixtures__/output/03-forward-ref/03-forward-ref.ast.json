@@ -1,0 +1,341 @@
+{
+  "type": "File",
+  "errors": [],
+  "program": {
+    "type": "Program",
+    "sourceType": "module",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ImportDeclaration",
+        "specifiers": [
+          {
+            "type": "ImportNamespaceSpecifier",
+            "local": {
+              "type": "Identifier",
+              "name": "React"
+            }
+          }
+        ],
+        "source": {
+          "type": "StringLiteral",
+          "value": "react"
+        }
+      },
+      {
+        "type": "ImportDeclaration",
+        "specifiers": [
+          {
+            "type": "ImportSpecifier",
+            "local": {
+              "type": "Identifier",
+              "name": "forwardRef"
+            },
+            "imported": {
+              "type": "Identifier",
+              "name": "forwardRef"
+            }
+          }
+        ],
+        "source": {
+          "type": "StringLiteral",
+          "value": "react"
+        }
+      },
+      {
+        "type": "TSInterfaceDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "BoxProps"
+        },
+        "body": {
+          "type": "TSInterfaceBody",
+          "body": [
+            {
+              "type": "TSPropertySignature",
+              "key": {
+                "type": "Identifier",
+                "name": "prop1"
+              },
+              "computed": false,
+              "typeAnnotation": {
+                "type": "TSTypeAnnotation",
+                "typeAnnotation": {
+                  "type": "TSStringKeyword"
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "VariableDeclaration",
+        "kind": "const",
+        "declarations": [
+          {
+            "type": "VariableDeclarator",
+            "id": {
+              "type": "Identifier",
+              "name": "Box"
+            },
+            "init": {
+              "type": "CallExpression",
+              "callee": {
+                "type": "Identifier",
+                "name": "forwardRef"
+              },
+              "arguments": [
+                {
+                  "type": "FunctionExpression",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "Box"
+                  },
+                  "params": [
+                    {
+                      "type": "Identifier",
+                      "name": "props",
+                      "typeAnnotation": {
+                        "type": "TSTypeAnnotation",
+                        "typeAnnotation": {
+                          "type": "TSTypeReference",
+                          "typeName": {
+                            "type": "Identifier",
+                            "name": "BoxProps"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "type": "Identifier",
+                      "name": "boxRef",
+                      "typeAnnotation": {
+                        "type": "TSTypeAnnotation",
+                        "typeAnnotation": {
+                          "type": "TSIndexedAccessType",
+                          "objectType": {
+                            "type": "TSTypeReference",
+                            "typeName": {
+                              "type": "Identifier",
+                              "name": "BoxProps"
+                            }
+                          },
+                          "indexType": {
+                            "type": "TSLiteralType",
+                            "literal": {
+                              "type": "StringLiteral",
+                              "value": "boxRef"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "body": {
+                    "type": "BlockStatement",
+                    "body": [
+                      {
+                        "type": "ReturnStatement",
+                        "argument": {
+                          "type": "JSXElement",
+                          "openingElement": {
+                            "type": "JSXOpeningElement",
+                            "name": {
+                              "type": "JSXMemberExpression",
+                              "object": {
+                                "type": "JSXIdentifier",
+                                "name": "props"
+                              },
+                              "property": {
+                                "type": "JSXIdentifier",
+                                "name": "as"
+                              }
+                            },
+                            "attributes": [
+                              {
+                                "type": "JSXAttribute",
+                                "name": {
+                                  "type": "JSXIdentifier",
+                                  "name": "ref"
+                                },
+                                "value": {
+                                  "type": "JSXExpressionContainer",
+                                  "expression": {
+                                    "type": "LogicalExpression",
+                                    "operator": "??",
+                                    "left": {
+                                      "type": "MemberExpression",
+                                      "object": {
+                                        "type": "Identifier",
+                                        "name": "props"
+                                      },
+                                      "computed": false,
+                                      "property": {
+                                        "type": "Identifier",
+                                        "name": "boxRef"
+                                      }
+                                    },
+                                    "right": {
+                                      "type": "Identifier",
+                                      "name": "boxRef"
+                                    }
+                                  }
+                                },
+                                "trailingComments": [],
+                                "leadingComments": [],
+                                "innerComments": []
+                              }
+                            ],
+                            "selfClosing": false
+                          },
+                          "closingElement": {
+                            "type": "JSXClosingElement",
+                            "name": {
+                              "type": "JSXMemberExpression",
+                              "object": {
+                                "type": "JSXIdentifier",
+                                "name": "props"
+                              },
+                              "property": {
+                                "type": "JSXIdentifier",
+                                "name": "as"
+                              }
+                            }
+                          },
+                          "children": [
+                            {
+                              "type": "JSXText",
+                              "extra": {
+                                "rawValue": "\n      ",
+                                "raw": "\n      "
+                              },
+                              "value": "\n      "
+                            },
+                            {
+                              "type": "JSXExpressionContainer",
+                              "expression": {
+                                "type": "MemberExpression",
+                                "object": {
+                                  "type": "Identifier",
+                                  "name": "props"
+                                },
+                                "computed": false,
+                                "property": {
+                                  "type": "Identifier",
+                                  "name": "children"
+                                }
+                              }
+                            },
+                            {
+                              "type": "JSXText",
+                              "extra": {
+                                "rawValue": "\n    ",
+                                "raw": "\n    "
+                              },
+                              "value": "\n    "
+                            }
+                          ],
+                          "extra": {
+                            "parenthesized": true,
+                            "parenStart": 254
+                          }
+                        }
+                      }
+                    ],
+                    "directives": []
+                  },
+                  "generator": false,
+                  "async": false
+                }
+              ],
+              "typeParameters": {
+                "type": "TSTypeParameterInstantiation",
+                "params": [
+                  {
+                    "type": "TSAnyKeyword"
+                  },
+                  {
+                    "type": "TSTypeReference",
+                    "typeName": {
+                      "type": "Identifier",
+                      "name": "BoxProps"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "trailingComments": [],
+        "leadingComments": [],
+        "innerComments": []
+      },
+      {
+        "type": "ExpressionStatement",
+        "expression": {
+          "type": "AssignmentExpression",
+          "operator": "=",
+          "left": {
+            "type": "MemberExpression",
+            "object": {
+              "type": "Identifier",
+              "name": "Box"
+            },
+            "property": {
+              "type": "Identifier",
+              "name": "defaultProps"
+            },
+            "computed": false,
+            "optional": null
+          },
+          "right": {
+            "type": "ObjectExpression",
+            "properties": [
+              {
+                "type": "ObjectProperty",
+                "method": false,
+                "key": {
+                  "type": "Identifier",
+                  "name": "as"
+                },
+                "computed": false,
+                "shorthand": false,
+                "value": {
+                  "type": "StringLiteral",
+                  "extra": {
+                    "rawValue": "div",
+                    "raw": "'div'"
+                  },
+                  "value": "div"
+                }
+              }
+            ],
+            "extra": {
+              "trailingComma": 382
+            }
+          },
+          "trailingComments": [],
+          "leadingComments": [],
+          "innerComments": []
+        }
+      },
+      {
+        "type": "ExportDefaultDeclaration",
+        "declaration": {
+          "type": "Identifier",
+          "name": "Box"
+        }
+      }
+    ],
+    "directives": [
+      {
+        "type": "Directive",
+        "value": {
+          "type": "DirectiveLiteral",
+          "value": "use client"
+        }
+      }
+    ]
+  },
+  "comments": []
+}

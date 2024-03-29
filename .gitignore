@@ -1,0 +1,11 @@
+.DS_Store
+.eslintcache
+*.log
+**/node_modules
+coverage
+packages/**/build
+packages/**/main
+packages/**/module
+launch.json
+.vscode/settings.json
+.idea/

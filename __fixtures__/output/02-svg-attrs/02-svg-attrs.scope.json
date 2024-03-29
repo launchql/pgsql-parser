@@ -1,0 +1,23 @@
+{
+  "components": [
+    {
+      "name": "MyComponent",
+      "refs": [
+        {
+          "name": "buttonRef",
+          "used": false,
+          "forward": false
+        }
+      ],
+      "state": {
+        "properties": []
+      }
+    }
+  ],
+  "cursor": "MyComponent",
+  "configOptions": {
+    "rsc": {
+      "componentType": "client"
+    }
+  }
+}

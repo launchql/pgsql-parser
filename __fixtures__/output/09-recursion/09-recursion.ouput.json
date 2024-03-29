@@ -1,0 +1,778 @@
+{
+  "type": "File",
+  "errors": [],
+  "program": {
+    "type": "Program",
+    "sourceType": "module",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ImportDeclaration",
+        "importKind": "value",
+        "specifiers": [
+          {
+            "type": "ImportNamespaceSpecifier",
+            "local": {
+              "type": "Identifier",
+              "name": "React"
+            }
+          }
+        ],
+        "source": {
+          "type": "StringLiteral",
+          "extra": {
+            "rawValue": "react",
+            "raw": "\"react\""
+          },
+          "value": "react"
+        }
+      },
+      {
+        "type": "ImportDeclaration",
+        "importKind": "value",
+        "specifiers": [
+          {
+            "type": "ImportDefaultSpecifier",
+            "local": {
+              "type": "Identifier",
+              "name": "Stack"
+            }
+          }
+        ],
+        "source": {
+          "type": "StringLiteral",
+          "extra": {
+            "rawValue": "../stack",
+            "raw": "\"../stack\""
+          },
+          "value": "../stack"
+        }
+      },
+      {
+        "type": "ImportDeclaration",
+        "importKind": "value",
+        "specifiers": [
+          {
+            "type": "ImportDefaultSpecifier",
+            "local": {
+              "type": "Identifier",
+              "name": "Box"
+            }
+          }
+        ],
+        "source": {
+          "type": "StringLiteral",
+          "extra": {
+            "rawValue": "../box",
+            "raw": "\"../box\""
+          },
+          "value": "../box"
+        }
+      },
+      {
+        "type": "ImportDeclaration",
+        "importKind": "value",
+        "specifiers": [
+          {
+            "type": "ImportDefaultSpecifier",
+            "local": {
+              "type": "Identifier",
+              "name": "Card"
+            }
+          }
+        ],
+        "source": {
+          "type": "StringLiteral",
+          "extra": {
+            "rawValue": "./card",
+            "raw": "\"./card\""
+          },
+          "value": "./card"
+        }
+      },
+      {
+        "type": "ImportDeclaration",
+        "importKind": "value",
+        "specifiers": [
+          {
+            "type": "ImportDefaultSpecifier",
+            "local": {
+              "type": "Identifier",
+              "name": "Skeleton"
+            }
+          }
+        ],
+        "source": {
+          "type": "StringLiteral",
+          "extra": {
+            "rawValue": "./skeleton",
+            "raw": "\"./skeleton\""
+          },
+          "value": "./skeleton"
+        }
+      },
+      {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "MyComponent"
+        },
+        "generator": false,
+        "async": false,
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "props"
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "JSXElement",
+                "openingElement": {
+                  "type": "JSXOpeningElement",
+                  "name": {
+                    "type": "JSXIdentifier",
+                    "name": "Box"
+                  },
+                  "attributes": [],
+                  "selfClosing": false
+                },
+                "closingElement": {
+                  "type": "JSXClosingElement",
+                  "name": {
+                    "type": "JSXIdentifier",
+                    "name": "Box"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "JSXText",
+                    "extra": {
+                      "rawValue": "\n      ",
+                      "raw": "\n      "
+                    },
+                    "value": "\n      "
+                  },
+                  {
+                    "type": "JSXElement",
+                    "openingElement": {
+                      "type": "JSXOpeningElement",
+                      "name": {
+                        "type": "JSXIdentifier",
+                        "name": "Stack"
+                      },
+                      "attributes": [
+                        {
+                          "type": "JSXAttribute",
+                          "name": {
+                            "type": "JSXIdentifier",
+                            "name": "space"
+                          },
+                          "value": {
+                            "type": "StringLiteral",
+                            "extra": {
+                              "rawValue": "$10",
+                              "raw": "\"$10\""
+                            },
+                            "value": "$10"
+                          }
+                        },
+                        {
+                          "type": "JSXAttribute",
+                          "name": {
+                            "type": "JSXIdentifier",
+                            "name": "attributes"
+                          },
+                          "value": {
+                            "type": "JSXExpressionContainer",
+                            "expression": {
+                              "type": "ObjectExpression",
+                              "properties": [
+                                {
+                                  "type": "ObjectProperty",
+                                  "method": false,
+                                  "key": {
+                                    "type": "Identifier",
+                                    "name": "flexWrap"
+                                  },
+                                  "computed": false,
+                                  "shorthand": false,
+                                  "value": {
+                                    "type": "StringLiteral",
+                                    "extra": {
+                                      "rawValue": "nowrap",
+                                      "raw": "\"nowrap\""
+                                    },
+                                    "value": "nowrap"
+                                  }
+                                }
+                              ],
+                              "extra": {
+                                "trailingComma": 298
+                              }
+                            }
+                          }
+                        }
+                      ],
+                      "selfClosing": false
+                    },
+                    "closingElement": {
+                      "type": "JSXClosingElement",
+                      "name": {
+                        "type": "JSXIdentifier",
+                        "name": "Stack"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "JSXText",
+                        "extra": {
+                          "rawValue": "\n        ",
+                          "raw": "\n        "
+                        },
+                        "value": "\n        "
+                      },
+                      {
+                        "type": "JSXExpressionContainer",
+                        "expression": {
+                          "type": "OptionalCallExpression",
+                          "callee": {
+                            "type": "OptionalMemberExpression",
+                            "object": {
+                              "type": "MemberExpression",
+                              "object": {
+                                "type": "Identifier",
+                                "name": "props"
+                              },
+                              "computed": false,
+                              "property": {
+                                "type": "Identifier",
+                                "name": "list"
+                              }
+                            },
+                            "computed": false,
+                            "property": {
+                              "type": "Identifier",
+                              "name": "map"
+                            },
+                            "optional": true
+                          },
+                          "optional": false,
+                          "arguments": [
+                            {
+                              "type": "ArrowFunctionExpression",
+                              "id": null,
+                              "generator": false,
+                              "async": false,
+                              "params": [
+                                {
+                                  "type": "Identifier",
+                                  "name": "item"
+                                },
+                                {
+                                  "type": "Identifier",
+                                  "name": "index"
+                                }
+                              ],
+                              "body": {
+                                "type": "JSXElement",
+                                "openingElement": {
+                                  "type": "JSXOpeningElement",
+                                  "name": {
+                                    "type": "JSXIdentifier",
+                                    "name": "Box"
+                                  },
+                                  "attributes": [
+                                    {
+                                      "type": "JSXAttribute",
+                                      "name": {
+                                        "type": "JSXIdentifier",
+                                        "name": "width"
+                                      },
+                                      "value": {
+                                        "type": "StringLiteral",
+                                        "extra": {
+                                          "rawValue": "33.33%",
+                                          "raw": "\"33.33%\""
+                                        },
+                                        "value": "33.33%"
+                                      }
+                                    },
+                                    {
+                                      "type": "JSXAttribute",
+                                      "name": {
+                                        "type": "JSXIdentifier",
+                                        "name": "key"
+                                      },
+                                      "value": {
+                                        "type": "JSXExpressionContainer",
+                                        "expression": {
+                                          "type": "MemberExpression",
+                                          "object": {
+                                            "type": "Identifier",
+                                            "name": "item"
+                                          },
+                                          "computed": false,
+                                          "property": {
+                                            "type": "Identifier",
+                                            "name": "title"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  ],
+                                  "selfClosing": false
+                                },
+                                "closingElement": {
+                                  "type": "JSXClosingElement",
+                                  "name": {
+                                    "type": "JSXIdentifier",
+                                    "name": "Box"
+                                  }
+                                },
+                                "children": [
+                                  {
+                                    "type": "JSXText",
+                                    "extra": {
+                                      "rawValue": "\n            ",
+                                      "raw": "\n            "
+                                    },
+                                    "value": "\n            "
+                                  },
+                                  {
+                                    "type": "JSXExpressionContainer",
+                                    "expression": {
+                                      "type": "ConditionalExpression",
+                                      "test": {
+                                        "type": "UnaryExpression",
+                                        "operator": "!",
+                                        "prefix": true,
+                                        "argument": {
+                                          "type": "MemberExpression",
+                                          "object": {
+                                            "type": "Identifier",
+                                            "name": "props"
+                                          },
+                                          "computed": false,
+                                          "property": {
+                                            "type": "Identifier",
+                                            "name": "isLoading"
+                                          }
+                                        }
+                                      },
+                                      "consequent": {
+                                        "type": "JSXFragment",
+                                        "openingFragment": {
+                                          "type": "JSXOpeningFragment"
+                                        },
+                                        "closingFragment": {
+                                          "type": "JSXClosingFragment"
+                                        },
+                                        "children": [
+                                          {
+                                            "type": "JSXText",
+                                            "extra": {
+                                              "rawValue": "\n                ",
+                                              "raw": "\n                "
+                                            },
+                                            "value": "\n                "
+                                          },
+                                          {
+                                            "type": "JSXElement",
+                                            "openingElement": {
+                                              "type": "JSXOpeningElement",
+                                              "name": {
+                                                "type": "JSXIdentifier",
+                                                "name": "Card"
+                                              },
+                                              "attributes": [
+                                                {
+                                                  "type": "JSXAttribute",
+                                                  "name": {
+                                                    "type": "JSXIdentifier",
+                                                    "name": "title"
+                                                  },
+                                                  "value": {
+                                                    "type": "JSXExpressionContainer",
+                                                    "expression": {
+                                                      "type": "MemberExpression",
+                                                      "object": {
+                                                        "type": "Identifier",
+                                                        "name": "item"
+                                                      },
+                                                      "computed": false,
+                                                      "property": {
+                                                        "type": "Identifier",
+                                                        "name": "title"
+                                                      }
+                                                    }
+                                                  }
+                                                },
+                                                {
+                                                  "type": "JSXAttribute",
+                                                  "name": {
+                                                    "type": "JSXIdentifier",
+                                                    "name": "content"
+                                                  },
+                                                  "value": {
+                                                    "type": "JSXExpressionContainer",
+                                                    "expression": {
+                                                      "type": "MemberExpression",
+                                                      "object": {
+                                                        "type": "Identifier",
+                                                        "name": "item"
+                                                      },
+                                                      "computed": false,
+                                                      "property": {
+                                                        "type": "Identifier",
+                                                        "name": "content"
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              ],
+                                              "selfClosing": true
+                                            },
+                                            "closingElement": null,
+                                            "children": []
+                                          },
+                                          {
+                                            "type": "JSXText",
+                                            "extra": {
+                                              "rawValue": "\n                ",
+                                              "raw": "\n                "
+                                            },
+                                            "value": "\n                "
+                                          },
+                                          {
+                                            "type": "JSXExpressionContainer",
+                                            "expression": {
+                                              "type": "OptionalCallExpression",
+                                              "callee": {
+                                                "type": "OptionalMemberExpression",
+                                                "object": {
+                                                  "type": "MemberExpression",
+                                                  "object": {
+                                                    "type": "Identifier",
+                                                    "name": "props"
+                                                  },
+                                                  "computed": false,
+                                                  "property": {
+                                                    "type": "Identifier",
+                                                    "name": "list"
+                                                  }
+                                                },
+                                                "computed": false,
+                                                "property": {
+                                                  "type": "Identifier",
+                                                  "name": "map"
+                                                },
+                                                "optional": true
+                                              },
+                                              "optional": false,
+                                              "arguments": [
+                                                {
+                                                  "type": "ArrowFunctionExpression",
+                                                  "id": null,
+                                                  "generator": false,
+                                                  "async": false,
+                                                  "params": [
+                                                    {
+                                                      "type": "Identifier",
+                                                      "name": "item"
+                                                    },
+                                                    {
+                                                      "type": "Identifier",
+                                                      "name": "index"
+                                                    }
+                                                  ],
+                                                  "body": {
+                                                    "type": "JSXElement",
+                                                    "openingElement": {
+                                                      "type": "JSXOpeningElement",
+                                                      "name": {
+                                                        "type": "JSXIdentifier",
+                                                        "name": "Box"
+                                                      },
+                                                      "attributes": [
+                                                        {
+                                                          "type": "JSXAttribute",
+                                                          "name": {
+                                                            "type": "JSXIdentifier",
+                                                            "name": "width"
+                                                          },
+                                                          "value": {
+                                                            "type": "StringLiteral",
+                                                            "extra": {
+                                                              "rawValue": "33.33%",
+                                                              "raw": "\"33.33%\""
+                                                            },
+                                                            "value": "33.33%"
+                                                          }
+                                                        },
+                                                        {
+                                                          "type": "JSXAttribute",
+                                                          "name": {
+                                                            "type": "JSXIdentifier",
+                                                            "name": "key"
+                                                          },
+                                                          "value": {
+                                                            "type": "JSXExpressionContainer",
+                                                            "expression": {
+                                                              "type": "MemberExpression",
+                                                              "object": {
+                                                                "type": "Identifier",
+                                                                "name": "item"
+                                                              },
+                                                              "computed": false,
+                                                              "property": {
+                                                                "type": "Identifier",
+                                                                "name": "title"
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      ],
+                                                      "selfClosing": false
+                                                    },
+                                                    "closingElement": {
+                                                      "type": "JSXClosingElement",
+                                                      "name": {
+                                                        "type": "JSXIdentifier",
+                                                        "name": "Box"
+                                                      }
+                                                    },
+                                                    "children": [
+                                                      {
+                                                        "type": "JSXText",
+                                                        "extra": {
+                                                          "rawValue": "\n                    ",
+                                                          "raw": "\n                    "
+                                                        },
+                                                        "value": "\n                    "
+                                                      },
+                                                      {
+                                                        "type": "JSXExpressionContainer",
+                                                        "expression": {
+                                                          "type": "ConditionalExpression",
+                                                          "test": {
+                                                            "type": "UnaryExpression",
+                                                            "operator": "!",
+                                                            "prefix": true,
+                                                            "argument": {
+                                                              "type": "MemberExpression",
+                                                              "object": {
+                                                                "type": "Identifier",
+                                                                "name": "props"
+                                                              },
+                                                              "computed": false,
+                                                              "property": {
+                                                                "type": "Identifier",
+                                                                "name": "isLoading"
+                                                              }
+                                                            }
+                                                          },
+                                                          "consequent": {
+                                                            "type": "JSXElement",
+                                                            "openingElement": {
+                                                              "type": "JSXOpeningElement",
+                                                              "name": {
+                                                                "type": "JSXIdentifier",
+                                                                "name": "Card"
+                                                              },
+                                                              "attributes": [
+                                                                {
+                                                                  "type": "JSXAttribute",
+                                                                  "name": {
+                                                                    "type": "JSXIdentifier",
+                                                                    "name": "title"
+                                                                  },
+                                                                  "value": {
+                                                                    "type": "JSXExpressionContainer",
+                                                                    "expression": {
+                                                                      "type": "MemberExpression",
+                                                                      "object": {
+                                                                        "type": "Identifier",
+                                                                        "name": "item"
+                                                                      },
+                                                                      "computed": false,
+                                                                      "property": {
+                                                                        "type": "Identifier",
+                                                                        "name": "title"
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                },
+                                                                {
+                                                                  "type": "JSXAttribute",
+                                                                  "name": {
+                                                                    "type": "JSXIdentifier",
+                                                                    "name": "content"
+                                                                  },
+                                                                  "value": {
+                                                                    "type": "JSXExpressionContainer",
+                                                                    "expression": {
+                                                                      "type": "MemberExpression",
+                                                                      "object": {
+                                                                        "type": "Identifier",
+                                                                        "name": "item"
+                                                                      },
+                                                                      "computed": false,
+                                                                      "property": {
+                                                                        "type": "Identifier",
+                                                                        "name": "content"
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              ],
+                                                              "selfClosing": true
+                                                            },
+                                                            "closingElement": null,
+                                                            "children": [],
+                                                            "extra": {
+                                                              "parenthesized": true,
+                                                              "parenStart": 677
+                                                            }
+                                                          },
+                                                          "alternate": {
+                                                            "type": "JSXElement",
+                                                            "openingElement": {
+                                                              "type": "JSXOpeningElement",
+                                                              "name": {
+                                                                "type": "JSXIdentifier",
+                                                                "name": "Skeleton"
+                                                              },
+                                                              "attributes": [],
+                                                              "selfClosing": true
+                                                            },
+                                                            "closingElement": null,
+                                                            "children": []
+                                                          }
+                                                        }
+                                                      },
+                                                      {
+                                                        "type": "JSXText",
+                                                        "extra": {
+                                                          "rawValue": "\n                  ",
+                                                          "raw": "\n                  "
+                                                        },
+                                                        "value": "\n                  "
+                                                      }
+                                                    ],
+                                                    "extra": {
+                                                      "parenthesized": true,
+                                                      "parenStart": 579
+                                                    }
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "type": "JSXText",
+                                            "extra": {
+                                              "rawValue": "\n              ",
+                                              "raw": "\n              "
+                                            },
+                                            "value": "\n              "
+                                          }
+                                        ],
+                                        "extra": {
+                                          "parenthesized": true,
+                                          "parenStart": 443
+                                        }
+                                      },
+                                      "alternate": {
+                                        "type": "JSXElement",
+                                        "openingElement": {
+                                          "type": "JSXOpeningElement",
+                                          "name": {
+                                            "type": "JSXIdentifier",
+                                            "name": "Skeleton"
+                                          },
+                                          "attributes": [],
+                                          "selfClosing": true
+                                        },
+                                        "closingElement": null,
+                                        "children": []
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "type": "JSXText",
+                                    "extra": {
+                                      "rawValue": "\n          ",
+                                      "raw": "\n          "
+                                    },
+                                    "value": "\n          "
+                                  }
+                                ],
+                                "extra": {
+                                  "parenthesized": true,
+                                  "parenStart": 361
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "type": "JSXText",
+                        "extra": {
+                          "rawValue": "\n      ",
+                          "raw": "\n      "
+                        },
+                        "value": "\n      "
+                      }
+                    ]
+                  },
+                  {
+                    "type": "JSXText",
+                    "extra": {
+                      "rawValue": "\n    ",
+                      "raw": "\n    "
+                    },
+                    "value": "\n    "
+                  }
+                ],
+                "extra": {
+                  "parenthesized": true,
+                  "parenStart": 203
+                }
+              }
+            }
+          ],
+          "directives": []
+        }
+      },
+      {
+        "type": "ExportDefaultDeclaration",
+        "exportKind": "value",
+        "declaration": {
+          "type": "Identifier",
+          "name": "MyComponent"
+        }
+      }
+    ],
+    "directives": [
+      {
+        "type": "Directive",
+        "value": {
+          "type": "DirectiveLiteral",
+          "extra": {
+            "rawValue": "use client",
+            "raw": "\"use client\"",
+            "expressionValue": "use client"
+          },
+          "value": "use client"
+        }
+      }
+    ]
+  },
+  "comments": []
+}
