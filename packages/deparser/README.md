@@ -11,7 +11,7 @@
    <a href="https://www.npmjs.com/package/pgsql-deparser"><img height="20" src="https://img.shields.io/npm/dt/pgsql-deparser"></a>
    <a href="https://www.npmjs.com/package/pgsql-deparser"><img height="20" src="https://img.shields.io/npm/dw/pgsql-deparser"/></a>
    <a href="https://github.com/launchql/pgsql-parser/blob/main/LICENSE-MIT"><img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
-   <a href="https://www.npmjs.com/package/pgsql-deparser"><img height="20" src="https://img.shields.io/github/package-json/v/launchql/pgsql-deparser?filename=packages%2Fparser%2Fpackage.json"/></a>
+   <a href="https://www.npmjs.com/package/pgsql-deparser"><img height="20" src="https://img.shields.io/github/package-json/v/launchql/pgsql-parser?filename=packages%2Fdeparser%2Fpackage.json"/></a>
 </p>
 
 `pgsql-deparser` is a streamlined tool designed to convert PostgreSQL Abstract Syntax Trees (AST) back into SQL queries. It is a companion module to [`pgsql-parser`](https://github.com/launchql/pgsql-parser), which is capable of both parsing SQL queries into ASTs and deparsing these ASTs back into SQL. However, unlike `pgsql-parser`, which incorporates the full PostgreSQL parser, `pgsql-deparser` focuses solely on the deparser functionality. This makes it an excellent choice for scenarios where only AST-to-SQL conversion is needed, avoiding the extra overhead associated with the full parsing capabilities.
