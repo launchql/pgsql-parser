@@ -5,9 +5,7 @@
 */
 import { ParseResult, ScanResult, Node, Integer, Float, Boolean, String, BitString, List, OidList, IntList, A_Const, Alias, RangeVar, TableFunc, IntoClause, Var, Param, Aggref, GroupingFunc, WindowFunc, SubscriptingRef, FuncExpr, NamedArgExpr, OpExpr, DistinctExpr, NullIfExpr, ScalarArrayOpExpr, BoolExpr, SubLink, SubPlan, AlternativeSubPlan, FieldSelect, FieldStore, RelabelType, CoerceViaIO, ArrayCoerceExpr, ConvertRowtypeExpr, CollateExpr, CaseExpr, CaseWhen, CaseTestExpr, ArrayExpr, RowExpr, RowCompareExpr, CoalesceExpr, MinMaxExpr, SQLValueFunction, XmlExpr, JsonFormat, JsonReturning, JsonValueExpr, JsonConstructorExpr, JsonIsPredicate, NullTest, BooleanTest, CoerceToDomain, CoerceToDomainValue, SetToDefault, CurrentOfExpr, NextValueExpr, InferenceElem, TargetEntry, RangeTblRef, JoinExpr, FromExpr, OnConflictExpr, Query, TypeName, ColumnRef, ParamRef, A_Expr, TypeCast, CollateClause, RoleSpec, FuncCall, A_Star, A_Indices, A_Indirection, A_ArrayExpr, ResTarget, MultiAssignRef, SortBy, WindowDef, RangeSubselect, RangeFunction, RangeTableFunc, RangeTableFuncCol, RangeTableSample, ColumnDef, TableLikeClause, IndexElem, DefElem, LockingClause, XmlSerialize, PartitionElem, PartitionSpec, PartitionBoundSpec, PartitionRangeDatum, PartitionCmd, RangeTblEntry, RTEPermissionInfo, RangeTblFunction, TableSampleClause, WithCheckOption, SortGroupClause, GroupingSet, WindowClause, RowMarkClause, WithClause, InferClause, OnConflictClause, CTESearchClause, CTECycleClause, CommonTableExpr, MergeWhenClause, MergeAction, TriggerTransition, JsonOutput, JsonKeyValue, JsonObjectConstructor, JsonArrayConstructor, JsonArrayQueryConstructor, JsonAggConstructor, JsonObjectAgg, JsonArrayAgg, RawStmt, InsertStmt, DeleteStmt, UpdateStmt, MergeStmt, SelectStmt, SetOperationStmt, ReturnStmt, PLAssignStmt, CreateSchemaStmt, AlterTableStmt, ReplicaIdentityStmt, AlterTableCmd, AlterCollationStmt, AlterDomainStmt, GrantStmt, ObjectWithArgs, AccessPriv, GrantRoleStmt, AlterDefaultPrivilegesStmt, CopyStmt, VariableSetStmt, VariableShowStmt, CreateStmt, Constraint, CreateTableSpaceStmt, DropTableSpaceStmt, AlterTableSpaceOptionsStmt, AlterTableMoveAllStmt, CreateExtensionStmt, AlterExtensionStmt, AlterExtensionContentsStmt, CreateFdwStmt, AlterFdwStmt, CreateForeignServerStmt, AlterForeignServerStmt, CreateForeignTableStmt, CreateUserMappingStmt, AlterUserMappingStmt, DropUserMappingStmt, ImportForeignSchemaStmt, CreatePolicyStmt, AlterPolicyStmt, CreateAmStmt, CreateTrigStmt, CreateEventTrigStmt, AlterEventTrigStmt, CreatePLangStmt, CreateRoleStmt, AlterRoleStmt, AlterRoleSetStmt, DropRoleStmt, CreateSeqStmt, AlterSeqStmt, DefineStmt, CreateDomainStmt, CreateOpClassStmt, CreateOpClassItem, CreateOpFamilyStmt, AlterOpFamilyStmt, DropStmt, TruncateStmt, CommentStmt, SecLabelStmt, DeclareCursorStmt, ClosePortalStmt, FetchStmt, IndexStmt, CreateStatsStmt, StatsElem, AlterStatsStmt, CreateFunctionStmt, FunctionParameter, AlterFunctionStmt, DoStmt, InlineCodeBlock, CallStmt, CallContext, RenameStmt, AlterObjectDependsStmt, AlterObjectSchemaStmt, AlterOwnerStmt, AlterOperatorStmt, AlterTypeStmt, RuleStmt, NotifyStmt, ListenStmt, UnlistenStmt, TransactionStmt, CompositeTypeStmt, CreateEnumStmt, CreateRangeStmt, AlterEnumStmt, ViewStmt, LoadStmt, CreatedbStmt, AlterDatabaseStmt, AlterDatabaseRefreshCollStmt, AlterDatabaseSetStmt, DropdbStmt, AlterSystemStmt, ClusterStmt, VacuumStmt, VacuumRelation, ExplainStmt, CreateTableAsStmt, RefreshMatViewStmt, CheckPointStmt, DiscardStmt, LockStmt, ConstraintsSetStmt, ReindexStmt, CreateConversionStmt, CreateCastStmt, CreateTransformStmt, PrepareStmt, ExecuteStmt, DeallocateStmt, DropOwnedStmt, ReassignOwnedStmt, AlterTSDictionaryStmt, AlterTSConfigurationStmt, PublicationTable, PublicationObjSpec, CreatePublicationStmt, AlterPublicationStmt, CreateSubscriptionStmt, AlterSubscriptionStmt, DropSubscriptionStmt, ScanToken } from "./types";
 export default {
-  parseResult(_p?: ParseResult): {
-    ParseResult: ParseResult;
-  } {
+  parseResult(_p?: ParseResult["ParseResult"]): ParseResult {
     return {
       ParseResult: {
         version: _p?.version,
@@ -15,9 +13,7 @@ export default {
       }
     };
   },
-  scanResult(_p?: ScanResult): {
-    ScanResult: ScanResult;
-  } {
+  scanResult(_p?: ScanResult["ScanResult"]): ScanResult {
     return {
       ScanResult: {
         version: _p?.version,
@@ -25,81 +21,63 @@ export default {
       }
     };
   },
-  integer(_p?: Integer): {
-    Integer: Integer;
-  } {
+  integer(_p?: Integer["Integer"]): Integer {
     return {
       Integer: {
         ival: _p?.ival
       }
     };
   },
-  float(_p?: Float): {
-    Float: Float;
-  } {
+  float(_p?: Float["Float"]): Float {
     return {
       Float: {
         fval: _p?.fval
       }
     };
   },
-  boolean(_p?: Boolean): {
-    Boolean: Boolean;
-  } {
+  boolean(_p?: Boolean["Boolean"]): Boolean {
     return {
       Boolean: {
         boolval: _p?.boolval
       }
     };
   },
-  string(_p?: String): {
-    String: String;
-  } {
+  string(_p?: String["String"]): String {
     return {
       String: {
         sval: _p?.sval
       }
     };
   },
-  bitString(_p?: BitString): {
-    BitString: BitString;
-  } {
+  bitString(_p?: BitString["BitString"]): BitString {
     return {
       BitString: {
         bsval: _p?.bsval
       }
     };
   },
-  list(_p?: List): {
-    List: List;
-  } {
+  list(_p?: List["List"]): List {
     return {
       List: {
         items: _p?.items
       }
     };
   },
-  oidList(_p?: OidList): {
-    OidList: OidList;
-  } {
+  oidList(_p?: OidList["OidList"]): OidList {
     return {
       OidList: {
         items: _p?.items
       }
     };
   },
-  intList(_p?: IntList): {
-    IntList: IntList;
-  } {
+  intList(_p?: IntList["IntList"]): IntList {
     return {
       IntList: {
         items: _p?.items
       }
     };
   },
-  aConst(_p?: A_Const): {
-    A_Const: A_Const;
-  } {
+  aConst(_p?: A_Const["A_Const"]): A_Const {
     return {
       A_Const: {
         ival: _p?.ival,
@@ -112,9 +90,7 @@ export default {
       }
     };
   },
-  alias(_p?: Alias): {
-    Alias: Alias;
-  } {
+  alias(_p?: Alias["Alias"]): Alias {
     return {
       Alias: {
         aliasname: _p?.aliasname,
@@ -122,9 +98,7 @@ export default {
       }
     };
   },
-  rangeVar(_p?: RangeVar): {
-    RangeVar: RangeVar;
-  } {
+  rangeVar(_p?: RangeVar["RangeVar"]): RangeVar {
     return {
       RangeVar: {
         catalogname: _p?.catalogname,
@@ -137,9 +111,7 @@ export default {
       }
     };
   },
-  tableFunc(_p?: TableFunc): {
-    TableFunc: TableFunc;
-  } {
+  tableFunc(_p?: TableFunc["TableFunc"]): TableFunc {
     return {
       TableFunc: {
         ns_uris: _p?.ns_uris,
@@ -158,9 +130,7 @@ export default {
       }
     };
   },
-  intoClause(_p?: IntoClause): {
-    IntoClause: IntoClause;
-  } {
+  intoClause(_p?: IntoClause["IntoClause"]): IntoClause {
     return {
       IntoClause: {
         rel: _p?.rel,
@@ -174,9 +144,7 @@ export default {
       }
     };
   },
-  var(_p?: Var): {
-    Var: Var;
-  } {
+  var(_p?: Var["Var"]): Var {
     return {
       Var: {
         xpr: _p?.xpr,
@@ -191,9 +159,7 @@ export default {
       }
     };
   },
-  param(_p?: Param): {
-    Param: Param;
-  } {
+  param(_p?: Param["Param"]): Param {
     return {
       Param: {
         xpr: _p?.xpr,
@@ -206,9 +172,7 @@ export default {
       }
     };
   },
-  aggref(_p?: Aggref): {
-    Aggref: Aggref;
-  } {
+  aggref(_p?: Aggref["Aggref"]): Aggref {
     return {
       Aggref: {
         xpr: _p?.xpr,
@@ -233,9 +197,7 @@ export default {
       }
     };
   },
-  groupingFunc(_p?: GroupingFunc): {
-    GroupingFunc: GroupingFunc;
-  } {
+  groupingFunc(_p?: GroupingFunc["GroupingFunc"]): GroupingFunc {
     return {
       GroupingFunc: {
         xpr: _p?.xpr,
@@ -246,9 +208,7 @@ export default {
       }
     };
   },
-  windowFunc(_p?: WindowFunc): {
-    WindowFunc: WindowFunc;
-  } {
+  windowFunc(_p?: WindowFunc["WindowFunc"]): WindowFunc {
     return {
       WindowFunc: {
         xpr: _p?.xpr,
@@ -265,9 +225,7 @@ export default {
       }
     };
   },
-  subscriptingRef(_p?: SubscriptingRef): {
-    SubscriptingRef: SubscriptingRef;
-  } {
+  subscriptingRef(_p?: SubscriptingRef["SubscriptingRef"]): SubscriptingRef {
     return {
       SubscriptingRef: {
         xpr: _p?.xpr,
@@ -283,9 +241,7 @@ export default {
       }
     };
   },
-  funcExpr(_p?: FuncExpr): {
-    FuncExpr: FuncExpr;
-  } {
+  funcExpr(_p?: FuncExpr["FuncExpr"]): FuncExpr {
     return {
       FuncExpr: {
         xpr: _p?.xpr,
@@ -301,9 +257,7 @@ export default {
       }
     };
   },
-  namedArgExpr(_p?: NamedArgExpr): {
-    NamedArgExpr: NamedArgExpr;
-  } {
+  namedArgExpr(_p?: NamedArgExpr["NamedArgExpr"]): NamedArgExpr {
     return {
       NamedArgExpr: {
         xpr: _p?.xpr,
@@ -314,9 +268,7 @@ export default {
       }
     };
   },
-  opExpr(_p?: OpExpr): {
-    OpExpr: OpExpr;
-  } {
+  opExpr(_p?: OpExpr["OpExpr"]): OpExpr {
     return {
       OpExpr: {
         xpr: _p?.xpr,
@@ -330,9 +282,7 @@ export default {
       }
     };
   },
-  distinctExpr(_p?: DistinctExpr): {
-    DistinctExpr: DistinctExpr;
-  } {
+  distinctExpr(_p?: DistinctExpr["DistinctExpr"]): DistinctExpr {
     return {
       DistinctExpr: {
         xpr: _p?.xpr,
@@ -346,9 +296,7 @@ export default {
       }
     };
   },
-  nullIfExpr(_p?: NullIfExpr): {
-    NullIfExpr: NullIfExpr;
-  } {
+  nullIfExpr(_p?: NullIfExpr["NullIfExpr"]): NullIfExpr {
     return {
       NullIfExpr: {
         xpr: _p?.xpr,
@@ -362,9 +310,7 @@ export default {
       }
     };
   },
-  scalarArrayOpExpr(_p?: ScalarArrayOpExpr): {
-    ScalarArrayOpExpr: ScalarArrayOpExpr;
-  } {
+  scalarArrayOpExpr(_p?: ScalarArrayOpExpr["ScalarArrayOpExpr"]): ScalarArrayOpExpr {
     return {
       ScalarArrayOpExpr: {
         xpr: _p?.xpr,
@@ -376,9 +322,7 @@ export default {
       }
     };
   },
-  boolExpr(_p?: BoolExpr): {
-    BoolExpr: BoolExpr;
-  } {
+  boolExpr(_p?: BoolExpr["BoolExpr"]): BoolExpr {
     return {
       BoolExpr: {
         xpr: _p?.xpr,
@@ -388,9 +332,7 @@ export default {
       }
     };
   },
-  subLink(_p?: SubLink): {
-    SubLink: SubLink;
-  } {
+  subLink(_p?: SubLink["SubLink"]): SubLink {
     return {
       SubLink: {
         xpr: _p?.xpr,
@@ -403,9 +345,7 @@ export default {
       }
     };
   },
-  subPlan(_p?: SubPlan): {
-    SubPlan: SubPlan;
-  } {
+  subPlan(_p?: SubPlan["SubPlan"]): SubPlan {
     return {
       SubPlan: {
         xpr: _p?.xpr,
@@ -428,9 +368,7 @@ export default {
       }
     };
   },
-  alternativeSubPlan(_p?: AlternativeSubPlan): {
-    AlternativeSubPlan: AlternativeSubPlan;
-  } {
+  alternativeSubPlan(_p?: AlternativeSubPlan["AlternativeSubPlan"]): AlternativeSubPlan {
     return {
       AlternativeSubPlan: {
         xpr: _p?.xpr,
@@ -438,9 +376,7 @@ export default {
       }
     };
   },
-  fieldSelect(_p?: FieldSelect): {
-    FieldSelect: FieldSelect;
-  } {
+  fieldSelect(_p?: FieldSelect["FieldSelect"]): FieldSelect {
     return {
       FieldSelect: {
         xpr: _p?.xpr,
@@ -452,9 +388,7 @@ export default {
       }
     };
   },
-  fieldStore(_p?: FieldStore): {
-    FieldStore: FieldStore;
-  } {
+  fieldStore(_p?: FieldStore["FieldStore"]): FieldStore {
     return {
       FieldStore: {
         xpr: _p?.xpr,
@@ -465,9 +399,7 @@ export default {
       }
     };
   },
-  relabelType(_p?: RelabelType): {
-    RelabelType: RelabelType;
-  } {
+  relabelType(_p?: RelabelType["RelabelType"]): RelabelType {
     return {
       RelabelType: {
         xpr: _p?.xpr,
@@ -480,9 +412,7 @@ export default {
       }
     };
   },
-  coerceViaio(_p?: CoerceViaIO): {
-    CoerceViaIO: CoerceViaIO;
-  } {
+  coerceViaio(_p?: CoerceViaIO["CoerceViaIO"]): CoerceViaIO {
     return {
       CoerceViaIO: {
         xpr: _p?.xpr,
@@ -494,9 +424,7 @@ export default {
       }
     };
   },
-  arrayCoerceExpr(_p?: ArrayCoerceExpr): {
-    ArrayCoerceExpr: ArrayCoerceExpr;
-  } {
+  arrayCoerceExpr(_p?: ArrayCoerceExpr["ArrayCoerceExpr"]): ArrayCoerceExpr {
     return {
       ArrayCoerceExpr: {
         xpr: _p?.xpr,
@@ -510,9 +438,7 @@ export default {
       }
     };
   },
-  convertRowtypeExpr(_p?: ConvertRowtypeExpr): {
-    ConvertRowtypeExpr: ConvertRowtypeExpr;
-  } {
+  convertRowtypeExpr(_p?: ConvertRowtypeExpr["ConvertRowtypeExpr"]): ConvertRowtypeExpr {
     return {
       ConvertRowtypeExpr: {
         xpr: _p?.xpr,
@@ -523,9 +449,7 @@ export default {
       }
     };
   },
-  collateExpr(_p?: CollateExpr): {
-    CollateExpr: CollateExpr;
-  } {
+  collateExpr(_p?: CollateExpr["CollateExpr"]): CollateExpr {
     return {
       CollateExpr: {
         xpr: _p?.xpr,
@@ -535,9 +459,7 @@ export default {
       }
     };
   },
-  caseExpr(_p?: CaseExpr): {
-    CaseExpr: CaseExpr;
-  } {
+  caseExpr(_p?: CaseExpr["CaseExpr"]): CaseExpr {
     return {
       CaseExpr: {
         xpr: _p?.xpr,
@@ -550,9 +472,7 @@ export default {
       }
     };
   },
-  caseWhen(_p?: CaseWhen): {
-    CaseWhen: CaseWhen;
-  } {
+  caseWhen(_p?: CaseWhen["CaseWhen"]): CaseWhen {
     return {
       CaseWhen: {
         xpr: _p?.xpr,
@@ -562,9 +482,7 @@ export default {
       }
     };
   },
-  caseTestExpr(_p?: CaseTestExpr): {
-    CaseTestExpr: CaseTestExpr;
-  } {
+  caseTestExpr(_p?: CaseTestExpr["CaseTestExpr"]): CaseTestExpr {
     return {
       CaseTestExpr: {
         xpr: _p?.xpr,
@@ -574,9 +492,7 @@ export default {
       }
     };
   },
-  arrayExpr(_p?: ArrayExpr): {
-    ArrayExpr: ArrayExpr;
-  } {
+  arrayExpr(_p?: ArrayExpr["ArrayExpr"]): ArrayExpr {
     return {
       ArrayExpr: {
         xpr: _p?.xpr,
@@ -589,9 +505,7 @@ export default {
       }
     };
   },
-  rowExpr(_p?: RowExpr): {
-    RowExpr: RowExpr;
-  } {
+  rowExpr(_p?: RowExpr["RowExpr"]): RowExpr {
     return {
       RowExpr: {
         xpr: _p?.xpr,
@@ -603,9 +517,7 @@ export default {
       }
     };
   },
-  rowCompareExpr(_p?: RowCompareExpr): {
-    RowCompareExpr: RowCompareExpr;
-  } {
+  rowCompareExpr(_p?: RowCompareExpr["RowCompareExpr"]): RowCompareExpr {
     return {
       RowCompareExpr: {
         xpr: _p?.xpr,
@@ -618,9 +530,7 @@ export default {
       }
     };
   },
-  coalesceExpr(_p?: CoalesceExpr): {
-    CoalesceExpr: CoalesceExpr;
-  } {
+  coalesceExpr(_p?: CoalesceExpr["CoalesceExpr"]): CoalesceExpr {
     return {
       CoalesceExpr: {
         xpr: _p?.xpr,
@@ -631,9 +541,7 @@ export default {
       }
     };
   },
-  minMaxExpr(_p?: MinMaxExpr): {
-    MinMaxExpr: MinMaxExpr;
-  } {
+  minMaxExpr(_p?: MinMaxExpr["MinMaxExpr"]): MinMaxExpr {
     return {
       MinMaxExpr: {
         xpr: _p?.xpr,
@@ -646,9 +554,7 @@ export default {
       }
     };
   },
-  sqlValueFunction(_p?: SQLValueFunction): {
-    SQLValueFunction: SQLValueFunction;
-  } {
+  sqlValueFunction(_p?: SQLValueFunction["SQLValueFunction"]): SQLValueFunction {
     return {
       SQLValueFunction: {
         xpr: _p?.xpr,
@@ -659,9 +565,7 @@ export default {
       }
     };
   },
-  xmlExpr(_p?: XmlExpr): {
-    XmlExpr: XmlExpr;
-  } {
+  xmlExpr(_p?: XmlExpr["XmlExpr"]): XmlExpr {
     return {
       XmlExpr: {
         xpr: _p?.xpr,
@@ -678,9 +582,7 @@ export default {
       }
     };
   },
-  jsonFormat(_p?: JsonFormat): {
-    JsonFormat: JsonFormat;
-  } {
+  jsonFormat(_p?: JsonFormat["JsonFormat"]): JsonFormat {
     return {
       JsonFormat: {
         format_type: _p?.format_type,
@@ -689,9 +591,7 @@ export default {
       }
     };
   },
-  jsonReturning(_p?: JsonReturning): {
-    JsonReturning: JsonReturning;
-  } {
+  jsonReturning(_p?: JsonReturning["JsonReturning"]): JsonReturning {
     return {
       JsonReturning: {
         format: _p?.format,
@@ -700,9 +600,7 @@ export default {
       }
     };
   },
-  jsonValueExpr(_p?: JsonValueExpr): {
-    JsonValueExpr: JsonValueExpr;
-  } {
+  jsonValueExpr(_p?: JsonValueExpr["JsonValueExpr"]): JsonValueExpr {
     return {
       JsonValueExpr: {
         raw_expr: _p?.raw_expr,
@@ -711,9 +609,7 @@ export default {
       }
     };
   },
-  jsonConstructorExpr(_p?: JsonConstructorExpr): {
-    JsonConstructorExpr: JsonConstructorExpr;
-  } {
+  jsonConstructorExpr(_p?: JsonConstructorExpr["JsonConstructorExpr"]): JsonConstructorExpr {
     return {
       JsonConstructorExpr: {
         xpr: _p?.xpr,
@@ -728,9 +624,7 @@ export default {
       }
     };
   },
-  jsonIsPredicate(_p?: JsonIsPredicate): {
-    JsonIsPredicate: JsonIsPredicate;
-  } {
+  jsonIsPredicate(_p?: JsonIsPredicate["JsonIsPredicate"]): JsonIsPredicate {
     return {
       JsonIsPredicate: {
         expr: _p?.expr,
@@ -741,9 +635,7 @@ export default {
       }
     };
   },
-  nullTest(_p?: NullTest): {
-    NullTest: NullTest;
-  } {
+  nullTest(_p?: NullTest["NullTest"]): NullTest {
     return {
       NullTest: {
         xpr: _p?.xpr,
@@ -754,9 +646,7 @@ export default {
       }
     };
   },
-  booleanTest(_p?: BooleanTest): {
-    BooleanTest: BooleanTest;
-  } {
+  booleanTest(_p?: BooleanTest["BooleanTest"]): BooleanTest {
     return {
       BooleanTest: {
         xpr: _p?.xpr,
@@ -766,9 +656,7 @@ export default {
       }
     };
   },
-  coerceToDomain(_p?: CoerceToDomain): {
-    CoerceToDomain: CoerceToDomain;
-  } {
+  coerceToDomain(_p?: CoerceToDomain["CoerceToDomain"]): CoerceToDomain {
     return {
       CoerceToDomain: {
         xpr: _p?.xpr,
@@ -781,9 +669,7 @@ export default {
       }
     };
   },
-  coerceToDomainValue(_p?: CoerceToDomainValue): {
-    CoerceToDomainValue: CoerceToDomainValue;
-  } {
+  coerceToDomainValue(_p?: CoerceToDomainValue["CoerceToDomainValue"]): CoerceToDomainValue {
     return {
       CoerceToDomainValue: {
         xpr: _p?.xpr,
@@ -794,9 +680,7 @@ export default {
       }
     };
   },
-  setToDefault(_p?: SetToDefault): {
-    SetToDefault: SetToDefault;
-  } {
+  setToDefault(_p?: SetToDefault["SetToDefault"]): SetToDefault {
     return {
       SetToDefault: {
         xpr: _p?.xpr,
@@ -807,9 +691,7 @@ export default {
       }
     };
   },
-  currentOfExpr(_p?: CurrentOfExpr): {
-    CurrentOfExpr: CurrentOfExpr;
-  } {
+  currentOfExpr(_p?: CurrentOfExpr["CurrentOfExpr"]): CurrentOfExpr {
     return {
       CurrentOfExpr: {
         xpr: _p?.xpr,
@@ -819,9 +701,7 @@ export default {
       }
     };
   },
-  nextValueExpr(_p?: NextValueExpr): {
-    NextValueExpr: NextValueExpr;
-  } {
+  nextValueExpr(_p?: NextValueExpr["NextValueExpr"]): NextValueExpr {
     return {
       NextValueExpr: {
         xpr: _p?.xpr,
@@ -830,9 +710,7 @@ export default {
       }
     };
   },
-  inferenceElem(_p?: InferenceElem): {
-    InferenceElem: InferenceElem;
-  } {
+  inferenceElem(_p?: InferenceElem["InferenceElem"]): InferenceElem {
     return {
       InferenceElem: {
         xpr: _p?.xpr,
@@ -842,9 +720,7 @@ export default {
       }
     };
   },
-  targetEntry(_p?: TargetEntry): {
-    TargetEntry: TargetEntry;
-  } {
+  targetEntry(_p?: TargetEntry["TargetEntry"]): TargetEntry {
     return {
       TargetEntry: {
         xpr: _p?.xpr,
@@ -858,18 +734,14 @@ export default {
       }
     };
   },
-  rangeTblRef(_p?: RangeTblRef): {
-    RangeTblRef: RangeTblRef;
-  } {
+  rangeTblRef(_p?: RangeTblRef["RangeTblRef"]): RangeTblRef {
     return {
       RangeTblRef: {
         rtindex: _p?.rtindex
       }
     };
   },
-  joinExpr(_p?: JoinExpr): {
-    JoinExpr: JoinExpr;
-  } {
+  joinExpr(_p?: JoinExpr["JoinExpr"]): JoinExpr {
     return {
       JoinExpr: {
         jointype: _p?.jointype,
@@ -884,9 +756,7 @@ export default {
       }
     };
   },
-  fromExpr(_p?: FromExpr): {
-    FromExpr: FromExpr;
-  } {
+  fromExpr(_p?: FromExpr["FromExpr"]): FromExpr {
     return {
       FromExpr: {
         fromlist: _p?.fromlist,
@@ -894,9 +764,7 @@ export default {
       }
     };
   },
-  onConflictExpr(_p?: OnConflictExpr): {
-    OnConflictExpr: OnConflictExpr;
-  } {
+  onConflictExpr(_p?: OnConflictExpr["OnConflictExpr"]): OnConflictExpr {
     return {
       OnConflictExpr: {
         action: _p?.action,
@@ -910,9 +778,7 @@ export default {
       }
     };
   },
-  query(_p?: Query): {
-    Query: Query;
-  } {
+  query(_p?: Query["Query"]): Query {
     return {
       Query: {
         commandType: _p?.commandType,
@@ -971,9 +837,7 @@ export default {
       location: _p?.location
     };
   },
-  columnRef(_p?: ColumnRef): {
-    ColumnRef: ColumnRef;
-  } {
+  columnRef(_p?: ColumnRef["ColumnRef"]): ColumnRef {
     return {
       ColumnRef: {
         fields: _p?.fields,
@@ -981,9 +845,7 @@ export default {
       }
     };
   },
-  paramRef(_p?: ParamRef): {
-    ParamRef: ParamRef;
-  } {
+  paramRef(_p?: ParamRef["ParamRef"]): ParamRef {
     return {
       ParamRef: {
         number: _p?.number,
@@ -991,9 +853,7 @@ export default {
       }
     };
   },
-  aExpr(_p?: A_Expr): {
-    A_Expr: A_Expr;
-  } {
+  aExpr(_p?: A_Expr["A_Expr"]): A_Expr {
     return {
       A_Expr: {
         kind: _p?.kind,
@@ -1004,9 +864,7 @@ export default {
       }
     };
   },
-  typeCast(_p?: TypeCast): {
-    TypeCast: TypeCast;
-  } {
+  typeCast(_p?: TypeCast["TypeCast"]): TypeCast {
     return {
       TypeCast: {
         arg: _p?.arg,
@@ -1015,9 +873,7 @@ export default {
       }
     };
   },
-  collateClause(_p?: CollateClause): {
-    CollateClause: CollateClause;
-  } {
+  collateClause(_p?: CollateClause["CollateClause"]): CollateClause {
     return {
       CollateClause: {
         arg: _p?.arg,
@@ -1026,9 +882,7 @@ export default {
       }
     };
   },
-  roleSpec(_p?: RoleSpec): {
-    RoleSpec: RoleSpec;
-  } {
+  roleSpec(_p?: RoleSpec["RoleSpec"]): RoleSpec {
     return {
       RoleSpec: {
         roletype: _p?.roletype,
@@ -1037,9 +891,7 @@ export default {
       }
     };
   },
-  funcCall(_p?: FuncCall): {
-    FuncCall: FuncCall;
-  } {
+  funcCall(_p?: FuncCall["FuncCall"]): FuncCall {
     return {
       FuncCall: {
         funcname: _p?.funcname,
@@ -1056,16 +908,12 @@ export default {
       }
     };
   },
-  aStar(_p?: A_Star): {
-    A_Star: A_Star;
-  } {
+  aStar(_p?: A_Star["A_Star"]): A_Star {
     return {
       A_Star: {}
     };
   },
-  aIndices(_p?: A_Indices): {
-    A_Indices: A_Indices;
-  } {
+  aIndices(_p?: A_Indices["A_Indices"]): A_Indices {
     return {
       A_Indices: {
         is_slice: _p?.is_slice,
@@ -1074,9 +922,7 @@ export default {
       }
     };
   },
-  aIndirection(_p?: A_Indirection): {
-    A_Indirection: A_Indirection;
-  } {
+  aIndirection(_p?: A_Indirection["A_Indirection"]): A_Indirection {
     return {
       A_Indirection: {
         arg: _p?.arg,
@@ -1084,9 +930,7 @@ export default {
       }
     };
   },
-  aArrayExpr(_p?: A_ArrayExpr): {
-    A_ArrayExpr: A_ArrayExpr;
-  } {
+  aArrayExpr(_p?: A_ArrayExpr["A_ArrayExpr"]): A_ArrayExpr {
     return {
       A_ArrayExpr: {
         elements: _p?.elements,
@@ -1094,9 +938,7 @@ export default {
       }
     };
   },
-  resTarget(_p?: ResTarget): {
-    ResTarget: ResTarget;
-  } {
+  resTarget(_p?: ResTarget["ResTarget"]): ResTarget {
     return {
       ResTarget: {
         name: _p?.name,
@@ -1106,9 +948,7 @@ export default {
       }
     };
   },
-  multiAssignRef(_p?: MultiAssignRef): {
-    MultiAssignRef: MultiAssignRef;
-  } {
+  multiAssignRef(_p?: MultiAssignRef["MultiAssignRef"]): MultiAssignRef {
     return {
       MultiAssignRef: {
         source: _p?.source,
@@ -1117,9 +957,7 @@ export default {
       }
     };
   },
-  sortBy(_p?: SortBy): {
-    SortBy: SortBy;
-  } {
+  sortBy(_p?: SortBy["SortBy"]): SortBy {
     return {
       SortBy: {
         node: _p?.node,
@@ -1130,9 +968,7 @@ export default {
       }
     };
   },
-  windowDef(_p?: WindowDef): {
-    WindowDef: WindowDef;
-  } {
+  windowDef(_p?: WindowDef["WindowDef"]): WindowDef {
     return {
       WindowDef: {
         name: _p?.name,
@@ -1146,9 +982,7 @@ export default {
       }
     };
   },
-  rangeSubselect(_p?: RangeSubselect): {
-    RangeSubselect: RangeSubselect;
-  } {
+  rangeSubselect(_p?: RangeSubselect["RangeSubselect"]): RangeSubselect {
     return {
       RangeSubselect: {
         lateral: _p?.lateral,
@@ -1157,9 +991,7 @@ export default {
       }
     };
   },
-  rangeFunction(_p?: RangeFunction): {
-    RangeFunction: RangeFunction;
-  } {
+  rangeFunction(_p?: RangeFunction["RangeFunction"]): RangeFunction {
     return {
       RangeFunction: {
         lateral: _p?.lateral,
@@ -1171,9 +1003,7 @@ export default {
       }
     };
   },
-  rangeTableFunc(_p?: RangeTableFunc): {
-    RangeTableFunc: RangeTableFunc;
-  } {
+  rangeTableFunc(_p?: RangeTableFunc["RangeTableFunc"]): RangeTableFunc {
     return {
       RangeTableFunc: {
         lateral: _p?.lateral,
@@ -1186,9 +1016,7 @@ export default {
       }
     };
   },
-  rangeTableFuncCol(_p?: RangeTableFuncCol): {
-    RangeTableFuncCol: RangeTableFuncCol;
-  } {
+  rangeTableFuncCol(_p?: RangeTableFuncCol["RangeTableFuncCol"]): RangeTableFuncCol {
     return {
       RangeTableFuncCol: {
         colname: _p?.colname,
@@ -1201,9 +1029,7 @@ export default {
       }
     };
   },
-  rangeTableSample(_p?: RangeTableSample): {
-    RangeTableSample: RangeTableSample;
-  } {
+  rangeTableSample(_p?: RangeTableSample["RangeTableSample"]): RangeTableSample {
     return {
       RangeTableSample: {
         relation: _p?.relation,
@@ -1214,9 +1040,7 @@ export default {
       }
     };
   },
-  columnDef(_p?: ColumnDef): {
-    ColumnDef: ColumnDef;
-  } {
+  columnDef(_p?: ColumnDef["ColumnDef"]): ColumnDef {
     return {
       ColumnDef: {
         colname: _p?.colname,
@@ -1241,9 +1065,7 @@ export default {
       }
     };
   },
-  tableLikeClause(_p?: TableLikeClause): {
-    TableLikeClause: TableLikeClause;
-  } {
+  tableLikeClause(_p?: TableLikeClause["TableLikeClause"]): TableLikeClause {
     return {
       TableLikeClause: {
         relation: _p?.relation,
@@ -1252,9 +1074,7 @@ export default {
       }
     };
   },
-  indexElem(_p?: IndexElem): {
-    IndexElem: IndexElem;
-  } {
+  indexElem(_p?: IndexElem["IndexElem"]): IndexElem {
     return {
       IndexElem: {
         name: _p?.name,
@@ -1268,9 +1088,7 @@ export default {
       }
     };
   },
-  defElem(_p?: DefElem): {
-    DefElem: DefElem;
-  } {
+  defElem(_p?: DefElem["DefElem"]): DefElem {
     return {
       DefElem: {
         defnamespace: _p?.defnamespace,
@@ -1281,9 +1099,7 @@ export default {
       }
     };
   },
-  lockingClause(_p?: LockingClause): {
-    LockingClause: LockingClause;
-  } {
+  lockingClause(_p?: LockingClause["LockingClause"]): LockingClause {
     return {
       LockingClause: {
         lockedRels: _p?.lockedRels,
@@ -1292,9 +1108,7 @@ export default {
       }
     };
   },
-  xmlSerialize(_p?: XmlSerialize): {
-    XmlSerialize: XmlSerialize;
-  } {
+  xmlSerialize(_p?: XmlSerialize["XmlSerialize"]): XmlSerialize {
     return {
       XmlSerialize: {
         xmloption: _p?.xmloption,
@@ -1305,9 +1119,7 @@ export default {
       }
     };
   },
-  partitionElem(_p?: PartitionElem): {
-    PartitionElem: PartitionElem;
-  } {
+  partitionElem(_p?: PartitionElem["PartitionElem"]): PartitionElem {
     return {
       PartitionElem: {
         name: _p?.name,
@@ -1318,9 +1130,7 @@ export default {
       }
     };
   },
-  partitionSpec(_p?: PartitionSpec): {
-    PartitionSpec: PartitionSpec;
-  } {
+  partitionSpec(_p?: PartitionSpec["PartitionSpec"]): PartitionSpec {
     return {
       PartitionSpec: {
         strategy: _p?.strategy,
@@ -1329,9 +1139,7 @@ export default {
       }
     };
   },
-  partitionBoundSpec(_p?: PartitionBoundSpec): {
-    PartitionBoundSpec: PartitionBoundSpec;
-  } {
+  partitionBoundSpec(_p?: PartitionBoundSpec["PartitionBoundSpec"]): PartitionBoundSpec {
     return {
       PartitionBoundSpec: {
         strategy: _p?.strategy,
@@ -1345,9 +1153,7 @@ export default {
       }
     };
   },
-  partitionRangeDatum(_p?: PartitionRangeDatum): {
-    PartitionRangeDatum: PartitionRangeDatum;
-  } {
+  partitionRangeDatum(_p?: PartitionRangeDatum["PartitionRangeDatum"]): PartitionRangeDatum {
     return {
       PartitionRangeDatum: {
         kind: _p?.kind,
@@ -1356,9 +1162,7 @@ export default {
       }
     };
   },
-  partitionCmd(_p?: PartitionCmd): {
-    PartitionCmd: PartitionCmd;
-  } {
+  partitionCmd(_p?: PartitionCmd["PartitionCmd"]): PartitionCmd {
     return {
       PartitionCmd: {
         name: _p?.name,
@@ -1367,9 +1171,7 @@ export default {
       }
     };
   },
-  rangeTblEntry(_p?: RangeTblEntry): {
-    RangeTblEntry: RangeTblEntry;
-  } {
+  rangeTblEntry(_p?: RangeTblEntry["RangeTblEntry"]): RangeTblEntry {
     return {
       RangeTblEntry: {
         rtekind: _p?.rtekind,
@@ -1407,9 +1209,7 @@ export default {
       }
     };
   },
-  rtePermissionInfo(_p?: RTEPermissionInfo): {
-    RTEPermissionInfo: RTEPermissionInfo;
-  } {
+  rtePermissionInfo(_p?: RTEPermissionInfo["RTEPermissionInfo"]): RTEPermissionInfo {
     return {
       RTEPermissionInfo: {
         relid: _p?.relid,
@@ -1422,9 +1222,7 @@ export default {
       }
     };
   },
-  rangeTblFunction(_p?: RangeTblFunction): {
-    RangeTblFunction: RangeTblFunction;
-  } {
+  rangeTblFunction(_p?: RangeTblFunction["RangeTblFunction"]): RangeTblFunction {
     return {
       RangeTblFunction: {
         funcexpr: _p?.funcexpr,
@@ -1437,9 +1235,7 @@ export default {
       }
     };
   },
-  tableSampleClause(_p?: TableSampleClause): {
-    TableSampleClause: TableSampleClause;
-  } {
+  tableSampleClause(_p?: TableSampleClause["TableSampleClause"]): TableSampleClause {
     return {
       TableSampleClause: {
         tsmhandler: _p?.tsmhandler,
@@ -1448,9 +1244,7 @@ export default {
       }
     };
   },
-  withCheckOption(_p?: WithCheckOption): {
-    WithCheckOption: WithCheckOption;
-  } {
+  withCheckOption(_p?: WithCheckOption["WithCheckOption"]): WithCheckOption {
     return {
       WithCheckOption: {
         kind: _p?.kind,
@@ -1461,9 +1255,7 @@ export default {
       }
     };
   },
-  sortGroupClause(_p?: SortGroupClause): {
-    SortGroupClause: SortGroupClause;
-  } {
+  sortGroupClause(_p?: SortGroupClause["SortGroupClause"]): SortGroupClause {
     return {
       SortGroupClause: {
         tleSortGroupRef: _p?.tleSortGroupRef,
@@ -1474,9 +1266,7 @@ export default {
       }
     };
   },
-  groupingSet(_p?: GroupingSet): {
-    GroupingSet: GroupingSet;
-  } {
+  groupingSet(_p?: GroupingSet["GroupingSet"]): GroupingSet {
     return {
       GroupingSet: {
         kind: _p?.kind,
@@ -1485,9 +1275,7 @@ export default {
       }
     };
   },
-  windowClause(_p?: WindowClause): {
-    WindowClause: WindowClause;
-  } {
+  windowClause(_p?: WindowClause["WindowClause"]): WindowClause {
     return {
       WindowClause: {
         name: _p?.name,
@@ -1508,9 +1296,7 @@ export default {
       }
     };
   },
-  rowMarkClause(_p?: RowMarkClause): {
-    RowMarkClause: RowMarkClause;
-  } {
+  rowMarkClause(_p?: RowMarkClause["RowMarkClause"]): RowMarkClause {
     return {
       RowMarkClause: {
         rti: _p?.rti,
@@ -1520,9 +1306,7 @@ export default {
       }
     };
   },
-  withClause(_p?: WithClause): {
-    WithClause: WithClause;
-  } {
+  withClause(_p?: WithClause["WithClause"]): WithClause {
     return {
       WithClause: {
         ctes: _p?.ctes,
@@ -1531,9 +1315,7 @@ export default {
       }
     };
   },
-  inferClause(_p?: InferClause): {
-    InferClause: InferClause;
-  } {
+  inferClause(_p?: InferClause["InferClause"]): InferClause {
     return {
       InferClause: {
         indexElems: _p?.indexElems,
@@ -1543,9 +1325,7 @@ export default {
       }
     };
   },
-  onConflictClause(_p?: OnConflictClause): {
-    OnConflictClause: OnConflictClause;
-  } {
+  onConflictClause(_p?: OnConflictClause["OnConflictClause"]): OnConflictClause {
     return {
       OnConflictClause: {
         action: _p?.action,
@@ -1556,9 +1336,7 @@ export default {
       }
     };
   },
-  cteSearchClause(_p?: CTESearchClause): {
-    CTESearchClause: CTESearchClause;
-  } {
+  cteSearchClause(_p?: CTESearchClause["CTESearchClause"]): CTESearchClause {
     return {
       CTESearchClause: {
         search_col_list: _p?.search_col_list,
@@ -1568,9 +1346,7 @@ export default {
       }
     };
   },
-  cteCycleClause(_p?: CTECycleClause): {
-    CTECycleClause: CTECycleClause;
-  } {
+  cteCycleClause(_p?: CTECycleClause["CTECycleClause"]): CTECycleClause {
     return {
       CTECycleClause: {
         cycle_col_list: _p?.cycle_col_list,
@@ -1586,9 +1362,7 @@ export default {
       }
     };
   },
-  commonTableExpr(_p?: CommonTableExpr): {
-    CommonTableExpr: CommonTableExpr;
-  } {
+  commonTableExpr(_p?: CommonTableExpr["CommonTableExpr"]): CommonTableExpr {
     return {
       CommonTableExpr: {
         ctename: _p?.ctename,
@@ -1607,9 +1381,7 @@ export default {
       }
     };
   },
-  mergeWhenClause(_p?: MergeWhenClause): {
-    MergeWhenClause: MergeWhenClause;
-  } {
+  mergeWhenClause(_p?: MergeWhenClause["MergeWhenClause"]): MergeWhenClause {
     return {
       MergeWhenClause: {
         matched: _p?.matched,
@@ -1621,9 +1393,7 @@ export default {
       }
     };
   },
-  mergeAction(_p?: MergeAction): {
-    MergeAction: MergeAction;
-  } {
+  mergeAction(_p?: MergeAction["MergeAction"]): MergeAction {
     return {
       MergeAction: {
         matched: _p?.matched,
@@ -1635,9 +1405,7 @@ export default {
       }
     };
   },
-  triggerTransition(_p?: TriggerTransition): {
-    TriggerTransition: TriggerTransition;
-  } {
+  triggerTransition(_p?: TriggerTransition["TriggerTransition"]): TriggerTransition {
     return {
       TriggerTransition: {
         name: _p?.name,
@@ -1646,9 +1414,7 @@ export default {
       }
     };
   },
-  jsonOutput(_p?: JsonOutput): {
-    JsonOutput: JsonOutput;
-  } {
+  jsonOutput(_p?: JsonOutput["JsonOutput"]): JsonOutput {
     return {
       JsonOutput: {
         typeName: _p?.typeName,
@@ -1656,9 +1422,7 @@ export default {
       }
     };
   },
-  jsonKeyValue(_p?: JsonKeyValue): {
-    JsonKeyValue: JsonKeyValue;
-  } {
+  jsonKeyValue(_p?: JsonKeyValue["JsonKeyValue"]): JsonKeyValue {
     return {
       JsonKeyValue: {
         key: _p?.key,
@@ -1666,9 +1430,7 @@ export default {
       }
     };
   },
-  jsonObjectConstructor(_p?: JsonObjectConstructor): {
-    JsonObjectConstructor: JsonObjectConstructor;
-  } {
+  jsonObjectConstructor(_p?: JsonObjectConstructor["JsonObjectConstructor"]): JsonObjectConstructor {
     return {
       JsonObjectConstructor: {
         exprs: _p?.exprs,
@@ -1679,9 +1441,7 @@ export default {
       }
     };
   },
-  jsonArrayConstructor(_p?: JsonArrayConstructor): {
-    JsonArrayConstructor: JsonArrayConstructor;
-  } {
+  jsonArrayConstructor(_p?: JsonArrayConstructor["JsonArrayConstructor"]): JsonArrayConstructor {
     return {
       JsonArrayConstructor: {
         exprs: _p?.exprs,
@@ -1691,9 +1451,7 @@ export default {
       }
     };
   },
-  jsonArrayQueryConstructor(_p?: JsonArrayQueryConstructor): {
-    JsonArrayQueryConstructor: JsonArrayQueryConstructor;
-  } {
+  jsonArrayQueryConstructor(_p?: JsonArrayQueryConstructor["JsonArrayQueryConstructor"]): JsonArrayQueryConstructor {
     return {
       JsonArrayQueryConstructor: {
         query: _p?.query,
@@ -1704,9 +1462,7 @@ export default {
       }
     };
   },
-  jsonAggConstructor(_p?: JsonAggConstructor): {
-    JsonAggConstructor: JsonAggConstructor;
-  } {
+  jsonAggConstructor(_p?: JsonAggConstructor["JsonAggConstructor"]): JsonAggConstructor {
     return {
       JsonAggConstructor: {
         output: _p?.output,
@@ -1717,9 +1473,7 @@ export default {
       }
     };
   },
-  jsonObjectAgg(_p?: JsonObjectAgg): {
-    JsonObjectAgg: JsonObjectAgg;
-  } {
+  jsonObjectAgg(_p?: JsonObjectAgg["JsonObjectAgg"]): JsonObjectAgg {
     return {
       JsonObjectAgg: {
         constructor: _p?.constructor,
@@ -1729,9 +1483,7 @@ export default {
       }
     };
   },
-  jsonArrayAgg(_p?: JsonArrayAgg): {
-    JsonArrayAgg: JsonArrayAgg;
-  } {
+  jsonArrayAgg(_p?: JsonArrayAgg["JsonArrayAgg"]): JsonArrayAgg {
     return {
       JsonArrayAgg: {
         constructor: _p?.constructor,
@@ -1740,9 +1492,7 @@ export default {
       }
     };
   },
-  rawStmt(_p?: RawStmt): {
-    RawStmt: RawStmt;
-  } {
+  rawStmt(_p?: RawStmt["RawStmt"]): RawStmt {
     return {
       RawStmt: {
         stmt: _p?.stmt,
@@ -1751,9 +1501,7 @@ export default {
       }
     };
   },
-  insertStmt(_p?: InsertStmt): {
-    InsertStmt: InsertStmt;
-  } {
+  insertStmt(_p?: InsertStmt["InsertStmt"]): InsertStmt {
     return {
       InsertStmt: {
         relation: _p?.relation,
@@ -1766,9 +1514,7 @@ export default {
       }
     };
   },
-  deleteStmt(_p?: DeleteStmt): {
-    DeleteStmt: DeleteStmt;
-  } {
+  deleteStmt(_p?: DeleteStmt["DeleteStmt"]): DeleteStmt {
     return {
       DeleteStmt: {
         relation: _p?.relation,
@@ -1779,9 +1525,7 @@ export default {
       }
     };
   },
-  updateStmt(_p?: UpdateStmt): {
-    UpdateStmt: UpdateStmt;
-  } {
+  updateStmt(_p?: UpdateStmt["UpdateStmt"]): UpdateStmt {
     return {
       UpdateStmt: {
         relation: _p?.relation,
@@ -1793,9 +1537,7 @@ export default {
       }
     };
   },
-  mergeStmt(_p?: MergeStmt): {
-    MergeStmt: MergeStmt;
-  } {
+  mergeStmt(_p?: MergeStmt["MergeStmt"]): MergeStmt {
     return {
       MergeStmt: {
         relation: _p?.relation,
@@ -1806,9 +1548,7 @@ export default {
       }
     };
   },
-  selectStmt(_p?: SelectStmt): {
-    SelectStmt: SelectStmt;
-  } {
+  selectStmt(_p?: SelectStmt["SelectStmt"]): SelectStmt {
     return {
       SelectStmt: {
         distinctClause: _p?.distinctClause,
@@ -1834,9 +1574,7 @@ export default {
       }
     };
   },
-  setOperationStmt(_p?: SetOperationStmt): {
-    SetOperationStmt: SetOperationStmt;
-  } {
+  setOperationStmt(_p?: SetOperationStmt["SetOperationStmt"]): SetOperationStmt {
     return {
       SetOperationStmt: {
         op: _p?.op,
@@ -1850,18 +1588,14 @@ export default {
       }
     };
   },
-  returnStmt(_p?: ReturnStmt): {
-    ReturnStmt: ReturnStmt;
-  } {
+  returnStmt(_p?: ReturnStmt["ReturnStmt"]): ReturnStmt {
     return {
       ReturnStmt: {
         returnval: _p?.returnval
       }
     };
   },
-  plAssignStmt(_p?: PLAssignStmt): {
-    PLAssignStmt: PLAssignStmt;
-  } {
+  plAssignStmt(_p?: PLAssignStmt["PLAssignStmt"]): PLAssignStmt {
     return {
       PLAssignStmt: {
         name: _p?.name,
@@ -1872,9 +1606,7 @@ export default {
       }
     };
   },
-  createSchemaStmt(_p?: CreateSchemaStmt): {
-    CreateSchemaStmt: CreateSchemaStmt;
-  } {
+  createSchemaStmt(_p?: CreateSchemaStmt["CreateSchemaStmt"]): CreateSchemaStmt {
     return {
       CreateSchemaStmt: {
         schemaname: _p?.schemaname,
@@ -1884,9 +1616,7 @@ export default {
       }
     };
   },
-  alterTableStmt(_p?: AlterTableStmt): {
-    AlterTableStmt: AlterTableStmt;
-  } {
+  alterTableStmt(_p?: AlterTableStmt["AlterTableStmt"]): AlterTableStmt {
     return {
       AlterTableStmt: {
         relation: _p?.relation,
@@ -1896,9 +1626,7 @@ export default {
       }
     };
   },
-  replicaIdentityStmt(_p?: ReplicaIdentityStmt): {
-    ReplicaIdentityStmt: ReplicaIdentityStmt;
-  } {
+  replicaIdentityStmt(_p?: ReplicaIdentityStmt["ReplicaIdentityStmt"]): ReplicaIdentityStmt {
     return {
       ReplicaIdentityStmt: {
         identity_type: _p?.identity_type,
@@ -1906,9 +1634,7 @@ export default {
       }
     };
   },
-  alterTableCmd(_p?: AlterTableCmd): {
-    AlterTableCmd: AlterTableCmd;
-  } {
+  alterTableCmd(_p?: AlterTableCmd["AlterTableCmd"]): AlterTableCmd {
     return {
       AlterTableCmd: {
         subtype: _p?.subtype,
@@ -1922,18 +1648,14 @@ export default {
       }
     };
   },
-  alterCollationStmt(_p?: AlterCollationStmt): {
-    AlterCollationStmt: AlterCollationStmt;
-  } {
+  alterCollationStmt(_p?: AlterCollationStmt["AlterCollationStmt"]): AlterCollationStmt {
     return {
       AlterCollationStmt: {
         collname: _p?.collname
       }
     };
   },
-  alterDomainStmt(_p?: AlterDomainStmt): {
-    AlterDomainStmt: AlterDomainStmt;
-  } {
+  alterDomainStmt(_p?: AlterDomainStmt["AlterDomainStmt"]): AlterDomainStmt {
     return {
       AlterDomainStmt: {
         subtype: _p?.subtype,
@@ -1945,9 +1667,7 @@ export default {
       }
     };
   },
-  grantStmt(_p?: GrantStmt): {
-    GrantStmt: GrantStmt;
-  } {
+  grantStmt(_p?: GrantStmt["GrantStmt"]): GrantStmt {
     return {
       GrantStmt: {
         is_grant: _p?.is_grant,
@@ -1962,9 +1682,7 @@ export default {
       }
     };
   },
-  objectWithArgs(_p?: ObjectWithArgs): {
-    ObjectWithArgs: ObjectWithArgs;
-  } {
+  objectWithArgs(_p?: ObjectWithArgs["ObjectWithArgs"]): ObjectWithArgs {
     return {
       ObjectWithArgs: {
         objname: _p?.objname,
@@ -1974,9 +1692,7 @@ export default {
       }
     };
   },
-  accessPriv(_p?: AccessPriv): {
-    AccessPriv: AccessPriv;
-  } {
+  accessPriv(_p?: AccessPriv["AccessPriv"]): AccessPriv {
     return {
       AccessPriv: {
         priv_name: _p?.priv_name,
@@ -1984,9 +1700,7 @@ export default {
       }
     };
   },
-  grantRoleStmt(_p?: GrantRoleStmt): {
-    GrantRoleStmt: GrantRoleStmt;
-  } {
+  grantRoleStmt(_p?: GrantRoleStmt["GrantRoleStmt"]): GrantRoleStmt {
     return {
       GrantRoleStmt: {
         granted_roles: _p?.granted_roles,
@@ -1998,9 +1712,7 @@ export default {
       }
     };
   },
-  alterDefaultPrivilegesStmt(_p?: AlterDefaultPrivilegesStmt): {
-    AlterDefaultPrivilegesStmt: AlterDefaultPrivilegesStmt;
-  } {
+  alterDefaultPrivilegesStmt(_p?: AlterDefaultPrivilegesStmt["AlterDefaultPrivilegesStmt"]): AlterDefaultPrivilegesStmt {
     return {
       AlterDefaultPrivilegesStmt: {
         options: _p?.options,
@@ -2008,9 +1720,7 @@ export default {
       }
     };
   },
-  copyStmt(_p?: CopyStmt): {
-    CopyStmt: CopyStmt;
-  } {
+  copyStmt(_p?: CopyStmt["CopyStmt"]): CopyStmt {
     return {
       CopyStmt: {
         relation: _p?.relation,
@@ -2024,9 +1734,7 @@ export default {
       }
     };
   },
-  variableSetStmt(_p?: VariableSetStmt): {
-    VariableSetStmt: VariableSetStmt;
-  } {
+  variableSetStmt(_p?: VariableSetStmt["VariableSetStmt"]): VariableSetStmt {
     return {
       VariableSetStmt: {
         kind: _p?.kind,
@@ -2036,18 +1744,14 @@ export default {
       }
     };
   },
-  variableShowStmt(_p?: VariableShowStmt): {
-    VariableShowStmt: VariableShowStmt;
-  } {
+  variableShowStmt(_p?: VariableShowStmt["VariableShowStmt"]): VariableShowStmt {
     return {
       VariableShowStmt: {
         name: _p?.name
       }
     };
   },
-  createStmt(_p?: CreateStmt): {
-    CreateStmt: CreateStmt;
-  } {
+  createStmt(_p?: CreateStmt["CreateStmt"]): CreateStmt {
     return {
       CreateStmt: {
         relation: _p?.relation,
@@ -2065,9 +1769,7 @@ export default {
       }
     };
   },
-  constraint(_p?: Constraint): {
-    Constraint: Constraint;
-  } {
+  constraint(_p?: Constraint["Constraint"]): Constraint {
     return {
       Constraint: {
         contype: _p?.contype,
@@ -2103,9 +1805,7 @@ export default {
       }
     };
   },
-  createTableSpaceStmt(_p?: CreateTableSpaceStmt): {
-    CreateTableSpaceStmt: CreateTableSpaceStmt;
-  } {
+  createTableSpaceStmt(_p?: CreateTableSpaceStmt["CreateTableSpaceStmt"]): CreateTableSpaceStmt {
     return {
       CreateTableSpaceStmt: {
         tablespacename: _p?.tablespacename,
@@ -2115,9 +1815,7 @@ export default {
       }
     };
   },
-  dropTableSpaceStmt(_p?: DropTableSpaceStmt): {
-    DropTableSpaceStmt: DropTableSpaceStmt;
-  } {
+  dropTableSpaceStmt(_p?: DropTableSpaceStmt["DropTableSpaceStmt"]): DropTableSpaceStmt {
     return {
       DropTableSpaceStmt: {
         tablespacename: _p?.tablespacename,
@@ -2125,9 +1823,7 @@ export default {
       }
     };
   },
-  alterTableSpaceOptionsStmt(_p?: AlterTableSpaceOptionsStmt): {
-    AlterTableSpaceOptionsStmt: AlterTableSpaceOptionsStmt;
-  } {
+  alterTableSpaceOptionsStmt(_p?: AlterTableSpaceOptionsStmt["AlterTableSpaceOptionsStmt"]): AlterTableSpaceOptionsStmt {
     return {
       AlterTableSpaceOptionsStmt: {
         tablespacename: _p?.tablespacename,
@@ -2136,9 +1832,7 @@ export default {
       }
     };
   },
-  alterTableMoveAllStmt(_p?: AlterTableMoveAllStmt): {
-    AlterTableMoveAllStmt: AlterTableMoveAllStmt;
-  } {
+  alterTableMoveAllStmt(_p?: AlterTableMoveAllStmt["AlterTableMoveAllStmt"]): AlterTableMoveAllStmt {
     return {
       AlterTableMoveAllStmt: {
         orig_tablespacename: _p?.orig_tablespacename,
@@ -2149,9 +1843,7 @@ export default {
       }
     };
   },
-  createExtensionStmt(_p?: CreateExtensionStmt): {
-    CreateExtensionStmt: CreateExtensionStmt;
-  } {
+  createExtensionStmt(_p?: CreateExtensionStmt["CreateExtensionStmt"]): CreateExtensionStmt {
     return {
       CreateExtensionStmt: {
         extname: _p?.extname,
@@ -2160,9 +1852,7 @@ export default {
       }
     };
   },
-  alterExtensionStmt(_p?: AlterExtensionStmt): {
-    AlterExtensionStmt: AlterExtensionStmt;
-  } {
+  alterExtensionStmt(_p?: AlterExtensionStmt["AlterExtensionStmt"]): AlterExtensionStmt {
     return {
       AlterExtensionStmt: {
         extname: _p?.extname,
@@ -2170,9 +1860,7 @@ export default {
       }
     };
   },
-  alterExtensionContentsStmt(_p?: AlterExtensionContentsStmt): {
-    AlterExtensionContentsStmt: AlterExtensionContentsStmt;
-  } {
+  alterExtensionContentsStmt(_p?: AlterExtensionContentsStmt["AlterExtensionContentsStmt"]): AlterExtensionContentsStmt {
     return {
       AlterExtensionContentsStmt: {
         extname: _p?.extname,
@@ -2182,9 +1870,7 @@ export default {
       }
     };
   },
-  createFdwStmt(_p?: CreateFdwStmt): {
-    CreateFdwStmt: CreateFdwStmt;
-  } {
+  createFdwStmt(_p?: CreateFdwStmt["CreateFdwStmt"]): CreateFdwStmt {
     return {
       CreateFdwStmt: {
         fdwname: _p?.fdwname,
@@ -2193,9 +1879,7 @@ export default {
       }
     };
   },
-  alterFdwStmt(_p?: AlterFdwStmt): {
-    AlterFdwStmt: AlterFdwStmt;
-  } {
+  alterFdwStmt(_p?: AlterFdwStmt["AlterFdwStmt"]): AlterFdwStmt {
     return {
       AlterFdwStmt: {
         fdwname: _p?.fdwname,
@@ -2204,9 +1888,7 @@ export default {
       }
     };
   },
-  createForeignServerStmt(_p?: CreateForeignServerStmt): {
-    CreateForeignServerStmt: CreateForeignServerStmt;
-  } {
+  createForeignServerStmt(_p?: CreateForeignServerStmt["CreateForeignServerStmt"]): CreateForeignServerStmt {
     return {
       CreateForeignServerStmt: {
         servername: _p?.servername,
@@ -2218,9 +1900,7 @@ export default {
       }
     };
   },
-  alterForeignServerStmt(_p?: AlterForeignServerStmt): {
-    AlterForeignServerStmt: AlterForeignServerStmt;
-  } {
+  alterForeignServerStmt(_p?: AlterForeignServerStmt["AlterForeignServerStmt"]): AlterForeignServerStmt {
     return {
       AlterForeignServerStmt: {
         servername: _p?.servername,
@@ -2230,9 +1910,7 @@ export default {
       }
     };
   },
-  createForeignTableStmt(_p?: CreateForeignTableStmt): {
-    CreateForeignTableStmt: CreateForeignTableStmt;
-  } {
+  createForeignTableStmt(_p?: CreateForeignTableStmt["CreateForeignTableStmt"]): CreateForeignTableStmt {
     return {
       CreateForeignTableStmt: {
         base: _p?.base,
@@ -2241,9 +1919,7 @@ export default {
       }
     };
   },
-  createUserMappingStmt(_p?: CreateUserMappingStmt): {
-    CreateUserMappingStmt: CreateUserMappingStmt;
-  } {
+  createUserMappingStmt(_p?: CreateUserMappingStmt["CreateUserMappingStmt"]): CreateUserMappingStmt {
     return {
       CreateUserMappingStmt: {
         user: _p?.user,
@@ -2253,9 +1929,7 @@ export default {
       }
     };
   },
-  alterUserMappingStmt(_p?: AlterUserMappingStmt): {
-    AlterUserMappingStmt: AlterUserMappingStmt;
-  } {
+  alterUserMappingStmt(_p?: AlterUserMappingStmt["AlterUserMappingStmt"]): AlterUserMappingStmt {
     return {
       AlterUserMappingStmt: {
         user: _p?.user,
@@ -2264,9 +1938,7 @@ export default {
       }
     };
   },
-  dropUserMappingStmt(_p?: DropUserMappingStmt): {
-    DropUserMappingStmt: DropUserMappingStmt;
-  } {
+  dropUserMappingStmt(_p?: DropUserMappingStmt["DropUserMappingStmt"]): DropUserMappingStmt {
     return {
       DropUserMappingStmt: {
         user: _p?.user,
@@ -2275,9 +1947,7 @@ export default {
       }
     };
   },
-  importForeignSchemaStmt(_p?: ImportForeignSchemaStmt): {
-    ImportForeignSchemaStmt: ImportForeignSchemaStmt;
-  } {
+  importForeignSchemaStmt(_p?: ImportForeignSchemaStmt["ImportForeignSchemaStmt"]): ImportForeignSchemaStmt {
     return {
       ImportForeignSchemaStmt: {
         server_name: _p?.server_name,
@@ -2289,9 +1959,7 @@ export default {
       }
     };
   },
-  createPolicyStmt(_p?: CreatePolicyStmt): {
-    CreatePolicyStmt: CreatePolicyStmt;
-  } {
+  createPolicyStmt(_p?: CreatePolicyStmt["CreatePolicyStmt"]): CreatePolicyStmt {
     return {
       CreatePolicyStmt: {
         policy_name: _p?.policy_name,
@@ -2304,9 +1972,7 @@ export default {
       }
     };
   },
-  alterPolicyStmt(_p?: AlterPolicyStmt): {
-    AlterPolicyStmt: AlterPolicyStmt;
-  } {
+  alterPolicyStmt(_p?: AlterPolicyStmt["AlterPolicyStmt"]): AlterPolicyStmt {
     return {
       AlterPolicyStmt: {
         policy_name: _p?.policy_name,
@@ -2317,9 +1983,7 @@ export default {
       }
     };
   },
-  createAmStmt(_p?: CreateAmStmt): {
-    CreateAmStmt: CreateAmStmt;
-  } {
+  createAmStmt(_p?: CreateAmStmt["CreateAmStmt"]): CreateAmStmt {
     return {
       CreateAmStmt: {
         amname: _p?.amname,
@@ -2328,9 +1992,7 @@ export default {
       }
     };
   },
-  createTrigStmt(_p?: CreateTrigStmt): {
-    CreateTrigStmt: CreateTrigStmt;
-  } {
+  createTrigStmt(_p?: CreateTrigStmt["CreateTrigStmt"]): CreateTrigStmt {
     return {
       CreateTrigStmt: {
         replace: _p?.replace,
@@ -2351,9 +2013,7 @@ export default {
       }
     };
   },
-  createEventTrigStmt(_p?: CreateEventTrigStmt): {
-    CreateEventTrigStmt: CreateEventTrigStmt;
-  } {
+  createEventTrigStmt(_p?: CreateEventTrigStmt["CreateEventTrigStmt"]): CreateEventTrigStmt {
     return {
       CreateEventTrigStmt: {
         trigname: _p?.trigname,
@@ -2363,9 +2023,7 @@ export default {
       }
     };
   },
-  alterEventTrigStmt(_p?: AlterEventTrigStmt): {
-    AlterEventTrigStmt: AlterEventTrigStmt;
-  } {
+  alterEventTrigStmt(_p?: AlterEventTrigStmt["AlterEventTrigStmt"]): AlterEventTrigStmt {
     return {
       AlterEventTrigStmt: {
         trigname: _p?.trigname,
@@ -2373,9 +2031,7 @@ export default {
       }
     };
   },
-  createpLangStmt(_p?: CreatePLangStmt): {
-    CreatePLangStmt: CreatePLangStmt;
-  } {
+  createpLangStmt(_p?: CreatePLangStmt["CreatePLangStmt"]): CreatePLangStmt {
     return {
       CreatePLangStmt: {
         replace: _p?.replace,
@@ -2387,9 +2043,7 @@ export default {
       }
     };
   },
-  createRoleStmt(_p?: CreateRoleStmt): {
-    CreateRoleStmt: CreateRoleStmt;
-  } {
+  createRoleStmt(_p?: CreateRoleStmt["CreateRoleStmt"]): CreateRoleStmt {
     return {
       CreateRoleStmt: {
         stmt_type: _p?.stmt_type,
@@ -2398,9 +2052,7 @@ export default {
       }
     };
   },
-  alterRoleStmt(_p?: AlterRoleStmt): {
-    AlterRoleStmt: AlterRoleStmt;
-  } {
+  alterRoleStmt(_p?: AlterRoleStmt["AlterRoleStmt"]): AlterRoleStmt {
     return {
       AlterRoleStmt: {
         role: _p?.role,
@@ -2409,9 +2061,7 @@ export default {
       }
     };
   },
-  alterRoleSetStmt(_p?: AlterRoleSetStmt): {
-    AlterRoleSetStmt: AlterRoleSetStmt;
-  } {
+  alterRoleSetStmt(_p?: AlterRoleSetStmt["AlterRoleSetStmt"]): AlterRoleSetStmt {
     return {
       AlterRoleSetStmt: {
         role: _p?.role,
@@ -2420,9 +2070,7 @@ export default {
       }
     };
   },
-  dropRoleStmt(_p?: DropRoleStmt): {
-    DropRoleStmt: DropRoleStmt;
-  } {
+  dropRoleStmt(_p?: DropRoleStmt["DropRoleStmt"]): DropRoleStmt {
     return {
       DropRoleStmt: {
         roles: _p?.roles,
@@ -2430,9 +2078,7 @@ export default {
       }
     };
   },
-  createSeqStmt(_p?: CreateSeqStmt): {
-    CreateSeqStmt: CreateSeqStmt;
-  } {
+  createSeqStmt(_p?: CreateSeqStmt["CreateSeqStmt"]): CreateSeqStmt {
     return {
       CreateSeqStmt: {
         sequence: _p?.sequence,
@@ -2443,9 +2089,7 @@ export default {
       }
     };
   },
-  alterSeqStmt(_p?: AlterSeqStmt): {
-    AlterSeqStmt: AlterSeqStmt;
-  } {
+  alterSeqStmt(_p?: AlterSeqStmt["AlterSeqStmt"]): AlterSeqStmt {
     return {
       AlterSeqStmt: {
         sequence: _p?.sequence,
@@ -2455,9 +2099,7 @@ export default {
       }
     };
   },
-  defineStmt(_p?: DefineStmt): {
-    DefineStmt: DefineStmt;
-  } {
+  defineStmt(_p?: DefineStmt["DefineStmt"]): DefineStmt {
     return {
       DefineStmt: {
         kind: _p?.kind,
@@ -2470,9 +2112,7 @@ export default {
       }
     };
   },
-  createDomainStmt(_p?: CreateDomainStmt): {
-    CreateDomainStmt: CreateDomainStmt;
-  } {
+  createDomainStmt(_p?: CreateDomainStmt["CreateDomainStmt"]): CreateDomainStmt {
     return {
       CreateDomainStmt: {
         domainname: _p?.domainname,
@@ -2482,9 +2122,7 @@ export default {
       }
     };
   },
-  createOpClassStmt(_p?: CreateOpClassStmt): {
-    CreateOpClassStmt: CreateOpClassStmt;
-  } {
+  createOpClassStmt(_p?: CreateOpClassStmt["CreateOpClassStmt"]): CreateOpClassStmt {
     return {
       CreateOpClassStmt: {
         opclassname: _p?.opclassname,
@@ -2496,9 +2134,7 @@ export default {
       }
     };
   },
-  createOpClassItem(_p?: CreateOpClassItem): {
-    CreateOpClassItem: CreateOpClassItem;
-  } {
+  createOpClassItem(_p?: CreateOpClassItem["CreateOpClassItem"]): CreateOpClassItem {
     return {
       CreateOpClassItem: {
         itemtype: _p?.itemtype,
@@ -2510,9 +2146,7 @@ export default {
       }
     };
   },
-  createOpFamilyStmt(_p?: CreateOpFamilyStmt): {
-    CreateOpFamilyStmt: CreateOpFamilyStmt;
-  } {
+  createOpFamilyStmt(_p?: CreateOpFamilyStmt["CreateOpFamilyStmt"]): CreateOpFamilyStmt {
     return {
       CreateOpFamilyStmt: {
         opfamilyname: _p?.opfamilyname,
@@ -2520,9 +2154,7 @@ export default {
       }
     };
   },
-  alterOpFamilyStmt(_p?: AlterOpFamilyStmt): {
-    AlterOpFamilyStmt: AlterOpFamilyStmt;
-  } {
+  alterOpFamilyStmt(_p?: AlterOpFamilyStmt["AlterOpFamilyStmt"]): AlterOpFamilyStmt {
     return {
       AlterOpFamilyStmt: {
         opfamilyname: _p?.opfamilyname,
@@ -2532,9 +2164,7 @@ export default {
       }
     };
   },
-  dropStmt(_p?: DropStmt): {
-    DropStmt: DropStmt;
-  } {
+  dropStmt(_p?: DropStmt["DropStmt"]): DropStmt {
     return {
       DropStmt: {
         objects: _p?.objects,
@@ -2545,9 +2175,7 @@ export default {
       }
     };
   },
-  truncateStmt(_p?: TruncateStmt): {
-    TruncateStmt: TruncateStmt;
-  } {
+  truncateStmt(_p?: TruncateStmt["TruncateStmt"]): TruncateStmt {
     return {
       TruncateStmt: {
         relations: _p?.relations,
@@ -2556,9 +2184,7 @@ export default {
       }
     };
   },
-  commentStmt(_p?: CommentStmt): {
-    CommentStmt: CommentStmt;
-  } {
+  commentStmt(_p?: CommentStmt["CommentStmt"]): CommentStmt {
     return {
       CommentStmt: {
         objtype: _p?.objtype,
@@ -2567,9 +2193,7 @@ export default {
       }
     };
   },
-  secLabelStmt(_p?: SecLabelStmt): {
-    SecLabelStmt: SecLabelStmt;
-  } {
+  secLabelStmt(_p?: SecLabelStmt["SecLabelStmt"]): SecLabelStmt {
     return {
       SecLabelStmt: {
         objtype: _p?.objtype,
@@ -2579,9 +2203,7 @@ export default {
       }
     };
   },
-  declareCursorStmt(_p?: DeclareCursorStmt): {
-    DeclareCursorStmt: DeclareCursorStmt;
-  } {
+  declareCursorStmt(_p?: DeclareCursorStmt["DeclareCursorStmt"]): DeclareCursorStmt {
     return {
       DeclareCursorStmt: {
         portalname: _p?.portalname,
@@ -2590,18 +2212,14 @@ export default {
       }
     };
   },
-  closePortalStmt(_p?: ClosePortalStmt): {
-    ClosePortalStmt: ClosePortalStmt;
-  } {
+  closePortalStmt(_p?: ClosePortalStmt["ClosePortalStmt"]): ClosePortalStmt {
     return {
       ClosePortalStmt: {
         portalname: _p?.portalname
       }
     };
   },
-  fetchStmt(_p?: FetchStmt): {
-    FetchStmt: FetchStmt;
-  } {
+  fetchStmt(_p?: FetchStmt["FetchStmt"]): FetchStmt {
     return {
       FetchStmt: {
         direction: _p?.direction,
@@ -2611,9 +2229,7 @@ export default {
       }
     };
   },
-  indexStmt(_p?: IndexStmt): {
-    IndexStmt: IndexStmt;
-  } {
+  indexStmt(_p?: IndexStmt["IndexStmt"]): IndexStmt {
     return {
       IndexStmt: {
         idxname: _p?.idxname,
@@ -2643,9 +2259,7 @@ export default {
       }
     };
   },
-  createStatsStmt(_p?: CreateStatsStmt): {
-    CreateStatsStmt: CreateStatsStmt;
-  } {
+  createStatsStmt(_p?: CreateStatsStmt["CreateStatsStmt"]): CreateStatsStmt {
     return {
       CreateStatsStmt: {
         defnames: _p?.defnames,
@@ -2658,9 +2272,7 @@ export default {
       }
     };
   },
-  statsElem(_p?: StatsElem): {
-    StatsElem: StatsElem;
-  } {
+  statsElem(_p?: StatsElem["StatsElem"]): StatsElem {
     return {
       StatsElem: {
         name: _p?.name,
@@ -2668,9 +2280,7 @@ export default {
       }
     };
   },
-  alterStatsStmt(_p?: AlterStatsStmt): {
-    AlterStatsStmt: AlterStatsStmt;
-  } {
+  alterStatsStmt(_p?: AlterStatsStmt["AlterStatsStmt"]): AlterStatsStmt {
     return {
       AlterStatsStmt: {
         defnames: _p?.defnames,
@@ -2679,9 +2289,7 @@ export default {
       }
     };
   },
-  createFunctionStmt(_p?: CreateFunctionStmt): {
-    CreateFunctionStmt: CreateFunctionStmt;
-  } {
+  createFunctionStmt(_p?: CreateFunctionStmt["CreateFunctionStmt"]): CreateFunctionStmt {
     return {
       CreateFunctionStmt: {
         is_procedure: _p?.is_procedure,
@@ -2694,9 +2302,7 @@ export default {
       }
     };
   },
-  functionParameter(_p?: FunctionParameter): {
-    FunctionParameter: FunctionParameter;
-  } {
+  functionParameter(_p?: FunctionParameter["FunctionParameter"]): FunctionParameter {
     return {
       FunctionParameter: {
         name: _p?.name,
@@ -2706,9 +2312,7 @@ export default {
       }
     };
   },
-  alterFunctionStmt(_p?: AlterFunctionStmt): {
-    AlterFunctionStmt: AlterFunctionStmt;
-  } {
+  alterFunctionStmt(_p?: AlterFunctionStmt["AlterFunctionStmt"]): AlterFunctionStmt {
     return {
       AlterFunctionStmt: {
         objtype: _p?.objtype,
@@ -2717,18 +2321,14 @@ export default {
       }
     };
   },
-  doStmt(_p?: DoStmt): {
-    DoStmt: DoStmt;
-  } {
+  doStmt(_p?: DoStmt["DoStmt"]): DoStmt {
     return {
       DoStmt: {
         args: _p?.args
       }
     };
   },
-  inlineCodeBlock(_p?: InlineCodeBlock): {
-    InlineCodeBlock: InlineCodeBlock;
-  } {
+  inlineCodeBlock(_p?: InlineCodeBlock["InlineCodeBlock"]): InlineCodeBlock {
     return {
       InlineCodeBlock: {
         source_text: _p?.source_text,
@@ -2738,9 +2338,7 @@ export default {
       }
     };
   },
-  callStmt(_p?: CallStmt): {
-    CallStmt: CallStmt;
-  } {
+  callStmt(_p?: CallStmt["CallStmt"]): CallStmt {
     return {
       CallStmt: {
         funccall: _p?.funccall,
@@ -2749,18 +2347,14 @@ export default {
       }
     };
   },
-  callContext(_p?: CallContext): {
-    CallContext: CallContext;
-  } {
+  callContext(_p?: CallContext["CallContext"]): CallContext {
     return {
       CallContext: {
         atomic: _p?.atomic
       }
     };
   },
-  renameStmt(_p?: RenameStmt): {
-    RenameStmt: RenameStmt;
-  } {
+  renameStmt(_p?: RenameStmt["RenameStmt"]): RenameStmt {
     return {
       RenameStmt: {
         renameType: _p?.renameType,
@@ -2774,9 +2368,7 @@ export default {
       }
     };
   },
-  alterObjectDependsStmt(_p?: AlterObjectDependsStmt): {
-    AlterObjectDependsStmt: AlterObjectDependsStmt;
-  } {
+  alterObjectDependsStmt(_p?: AlterObjectDependsStmt["AlterObjectDependsStmt"]): AlterObjectDependsStmt {
     return {
       AlterObjectDependsStmt: {
         objectType: _p?.objectType,
@@ -2787,9 +2379,7 @@ export default {
       }
     };
   },
-  alterObjectSchemaStmt(_p?: AlterObjectSchemaStmt): {
-    AlterObjectSchemaStmt: AlterObjectSchemaStmt;
-  } {
+  alterObjectSchemaStmt(_p?: AlterObjectSchemaStmt["AlterObjectSchemaStmt"]): AlterObjectSchemaStmt {
     return {
       AlterObjectSchemaStmt: {
         objectType: _p?.objectType,
@@ -2800,9 +2390,7 @@ export default {
       }
     };
   },
-  alterOwnerStmt(_p?: AlterOwnerStmt): {
-    AlterOwnerStmt: AlterOwnerStmt;
-  } {
+  alterOwnerStmt(_p?: AlterOwnerStmt["AlterOwnerStmt"]): AlterOwnerStmt {
     return {
       AlterOwnerStmt: {
         objectType: _p?.objectType,
@@ -2812,9 +2400,7 @@ export default {
       }
     };
   },
-  alterOperatorStmt(_p?: AlterOperatorStmt): {
-    AlterOperatorStmt: AlterOperatorStmt;
-  } {
+  alterOperatorStmt(_p?: AlterOperatorStmt["AlterOperatorStmt"]): AlterOperatorStmt {
     return {
       AlterOperatorStmt: {
         opername: _p?.opername,
@@ -2822,9 +2408,7 @@ export default {
       }
     };
   },
-  alterTypeStmt(_p?: AlterTypeStmt): {
-    AlterTypeStmt: AlterTypeStmt;
-  } {
+  alterTypeStmt(_p?: AlterTypeStmt["AlterTypeStmt"]): AlterTypeStmt {
     return {
       AlterTypeStmt: {
         typeName: _p?.typeName,
@@ -2832,9 +2416,7 @@ export default {
       }
     };
   },
-  ruleStmt(_p?: RuleStmt): {
-    RuleStmt: RuleStmt;
-  } {
+  ruleStmt(_p?: RuleStmt["RuleStmt"]): RuleStmt {
     return {
       RuleStmt: {
         relation: _p?.relation,
@@ -2847,9 +2429,7 @@ export default {
       }
     };
   },
-  notifyStmt(_p?: NotifyStmt): {
-    NotifyStmt: NotifyStmt;
-  } {
+  notifyStmt(_p?: NotifyStmt["NotifyStmt"]): NotifyStmt {
     return {
       NotifyStmt: {
         conditionname: _p?.conditionname,
@@ -2857,27 +2437,21 @@ export default {
       }
     };
   },
-  listenStmt(_p?: ListenStmt): {
-    ListenStmt: ListenStmt;
-  } {
+  listenStmt(_p?: ListenStmt["ListenStmt"]): ListenStmt {
     return {
       ListenStmt: {
         conditionname: _p?.conditionname
       }
     };
   },
-  unlistenStmt(_p?: UnlistenStmt): {
-    UnlistenStmt: UnlistenStmt;
-  } {
+  unlistenStmt(_p?: UnlistenStmt["UnlistenStmt"]): UnlistenStmt {
     return {
       UnlistenStmt: {
         conditionname: _p?.conditionname
       }
     };
   },
-  transactionStmt(_p?: TransactionStmt): {
-    TransactionStmt: TransactionStmt;
-  } {
+  transactionStmt(_p?: TransactionStmt["TransactionStmt"]): TransactionStmt {
     return {
       TransactionStmt: {
         kind: _p?.kind,
@@ -2888,9 +2462,7 @@ export default {
       }
     };
   },
-  compositeTypeStmt(_p?: CompositeTypeStmt): {
-    CompositeTypeStmt: CompositeTypeStmt;
-  } {
+  compositeTypeStmt(_p?: CompositeTypeStmt["CompositeTypeStmt"]): CompositeTypeStmt {
     return {
       CompositeTypeStmt: {
         typevar: _p?.typevar,
@@ -2898,9 +2470,7 @@ export default {
       }
     };
   },
-  createEnumStmt(_p?: CreateEnumStmt): {
-    CreateEnumStmt: CreateEnumStmt;
-  } {
+  createEnumStmt(_p?: CreateEnumStmt["CreateEnumStmt"]): CreateEnumStmt {
     return {
       CreateEnumStmt: {
         typeName: _p?.typeName,
@@ -2908,9 +2478,7 @@ export default {
       }
     };
   },
-  createRangeStmt(_p?: CreateRangeStmt): {
-    CreateRangeStmt: CreateRangeStmt;
-  } {
+  createRangeStmt(_p?: CreateRangeStmt["CreateRangeStmt"]): CreateRangeStmt {
     return {
       CreateRangeStmt: {
         typeName: _p?.typeName,
@@ -2918,9 +2486,7 @@ export default {
       }
     };
   },
-  alterEnumStmt(_p?: AlterEnumStmt): {
-    AlterEnumStmt: AlterEnumStmt;
-  } {
+  alterEnumStmt(_p?: AlterEnumStmt["AlterEnumStmt"]): AlterEnumStmt {
     return {
       AlterEnumStmt: {
         typeName: _p?.typeName,
@@ -2932,9 +2498,7 @@ export default {
       }
     };
   },
-  viewStmt(_p?: ViewStmt): {
-    ViewStmt: ViewStmt;
-  } {
+  viewStmt(_p?: ViewStmt["ViewStmt"]): ViewStmt {
     return {
       ViewStmt: {
         view: _p?.view,
@@ -2946,18 +2510,14 @@ export default {
       }
     };
   },
-  loadStmt(_p?: LoadStmt): {
-    LoadStmt: LoadStmt;
-  } {
+  loadStmt(_p?: LoadStmt["LoadStmt"]): LoadStmt {
     return {
       LoadStmt: {
         filename: _p?.filename
       }
     };
   },
-  createdbStmt(_p?: CreatedbStmt): {
-    CreatedbStmt: CreatedbStmt;
-  } {
+  createdbStmt(_p?: CreatedbStmt["CreatedbStmt"]): CreatedbStmt {
     return {
       CreatedbStmt: {
         dbname: _p?.dbname,
@@ -2965,9 +2525,7 @@ export default {
       }
     };
   },
-  alterDatabaseStmt(_p?: AlterDatabaseStmt): {
-    AlterDatabaseStmt: AlterDatabaseStmt;
-  } {
+  alterDatabaseStmt(_p?: AlterDatabaseStmt["AlterDatabaseStmt"]): AlterDatabaseStmt {
     return {
       AlterDatabaseStmt: {
         dbname: _p?.dbname,
@@ -2975,18 +2533,14 @@ export default {
       }
     };
   },
-  alterDatabaseRefreshCollStmt(_p?: AlterDatabaseRefreshCollStmt): {
-    AlterDatabaseRefreshCollStmt: AlterDatabaseRefreshCollStmt;
-  } {
+  alterDatabaseRefreshCollStmt(_p?: AlterDatabaseRefreshCollStmt["AlterDatabaseRefreshCollStmt"]): AlterDatabaseRefreshCollStmt {
     return {
       AlterDatabaseRefreshCollStmt: {
         dbname: _p?.dbname
       }
     };
   },
-  alterDatabaseSetStmt(_p?: AlterDatabaseSetStmt): {
-    AlterDatabaseSetStmt: AlterDatabaseSetStmt;
-  } {
+  alterDatabaseSetStmt(_p?: AlterDatabaseSetStmt["AlterDatabaseSetStmt"]): AlterDatabaseSetStmt {
     return {
       AlterDatabaseSetStmt: {
         dbname: _p?.dbname,
@@ -2994,9 +2548,7 @@ export default {
       }
     };
   },
-  dropdbStmt(_p?: DropdbStmt): {
-    DropdbStmt: DropdbStmt;
-  } {
+  dropdbStmt(_p?: DropdbStmt["DropdbStmt"]): DropdbStmt {
     return {
       DropdbStmt: {
         dbname: _p?.dbname,
@@ -3005,18 +2557,14 @@ export default {
       }
     };
   },
-  alterSystemStmt(_p?: AlterSystemStmt): {
-    AlterSystemStmt: AlterSystemStmt;
-  } {
+  alterSystemStmt(_p?: AlterSystemStmt["AlterSystemStmt"]): AlterSystemStmt {
     return {
       AlterSystemStmt: {
         setstmt: _p?.setstmt
       }
     };
   },
-  clusterStmt(_p?: ClusterStmt): {
-    ClusterStmt: ClusterStmt;
-  } {
+  clusterStmt(_p?: ClusterStmt["ClusterStmt"]): ClusterStmt {
     return {
       ClusterStmt: {
         relation: _p?.relation,
@@ -3025,9 +2573,7 @@ export default {
       }
     };
   },
-  vacuumStmt(_p?: VacuumStmt): {
-    VacuumStmt: VacuumStmt;
-  } {
+  vacuumStmt(_p?: VacuumStmt["VacuumStmt"]): VacuumStmt {
     return {
       VacuumStmt: {
         options: _p?.options,
@@ -3036,9 +2582,7 @@ export default {
       }
     };
   },
-  vacuumRelation(_p?: VacuumRelation): {
-    VacuumRelation: VacuumRelation;
-  } {
+  vacuumRelation(_p?: VacuumRelation["VacuumRelation"]): VacuumRelation {
     return {
       VacuumRelation: {
         relation: _p?.relation,
@@ -3047,9 +2591,7 @@ export default {
       }
     };
   },
-  explainStmt(_p?: ExplainStmt): {
-    ExplainStmt: ExplainStmt;
-  } {
+  explainStmt(_p?: ExplainStmt["ExplainStmt"]): ExplainStmt {
     return {
       ExplainStmt: {
         query: _p?.query,
@@ -3057,9 +2599,7 @@ export default {
       }
     };
   },
-  createTableAsStmt(_p?: CreateTableAsStmt): {
-    CreateTableAsStmt: CreateTableAsStmt;
-  } {
+  createTableAsStmt(_p?: CreateTableAsStmt["CreateTableAsStmt"]): CreateTableAsStmt {
     return {
       CreateTableAsStmt: {
         query: _p?.query,
@@ -3070,9 +2610,7 @@ export default {
       }
     };
   },
-  refreshMatViewStmt(_p?: RefreshMatViewStmt): {
-    RefreshMatViewStmt: RefreshMatViewStmt;
-  } {
+  refreshMatViewStmt(_p?: RefreshMatViewStmt["RefreshMatViewStmt"]): RefreshMatViewStmt {
     return {
       RefreshMatViewStmt: {
         concurrent: _p?.concurrent,
@@ -3081,25 +2619,19 @@ export default {
       }
     };
   },
-  checkPointStmt(_p?: CheckPointStmt): {
-    CheckPointStmt: CheckPointStmt;
-  } {
+  checkPointStmt(_p?: CheckPointStmt["CheckPointStmt"]): CheckPointStmt {
     return {
       CheckPointStmt: {}
     };
   },
-  discardStmt(_p?: DiscardStmt): {
-    DiscardStmt: DiscardStmt;
-  } {
+  discardStmt(_p?: DiscardStmt["DiscardStmt"]): DiscardStmt {
     return {
       DiscardStmt: {
         target: _p?.target
       }
     };
   },
-  lockStmt(_p?: LockStmt): {
-    LockStmt: LockStmt;
-  } {
+  lockStmt(_p?: LockStmt["LockStmt"]): LockStmt {
     return {
       LockStmt: {
         relations: _p?.relations,
@@ -3108,9 +2640,7 @@ export default {
       }
     };
   },
-  constraintsSetStmt(_p?: ConstraintsSetStmt): {
-    ConstraintsSetStmt: ConstraintsSetStmt;
-  } {
+  constraintsSetStmt(_p?: ConstraintsSetStmt["ConstraintsSetStmt"]): ConstraintsSetStmt {
     return {
       ConstraintsSetStmt: {
         constraints: _p?.constraints,
@@ -3118,9 +2648,7 @@ export default {
       }
     };
   },
-  reindexStmt(_p?: ReindexStmt): {
-    ReindexStmt: ReindexStmt;
-  } {
+  reindexStmt(_p?: ReindexStmt["ReindexStmt"]): ReindexStmt {
     return {
       ReindexStmt: {
         kind: _p?.kind,
@@ -3130,9 +2658,7 @@ export default {
       }
     };
   },
-  createConversionStmt(_p?: CreateConversionStmt): {
-    CreateConversionStmt: CreateConversionStmt;
-  } {
+  createConversionStmt(_p?: CreateConversionStmt["CreateConversionStmt"]): CreateConversionStmt {
     return {
       CreateConversionStmt: {
         conversion_name: _p?.conversion_name,
@@ -3143,9 +2669,7 @@ export default {
       }
     };
   },
-  createCastStmt(_p?: CreateCastStmt): {
-    CreateCastStmt: CreateCastStmt;
-  } {
+  createCastStmt(_p?: CreateCastStmt["CreateCastStmt"]): CreateCastStmt {
     return {
       CreateCastStmt: {
         sourcetype: _p?.sourcetype,
@@ -3156,9 +2680,7 @@ export default {
       }
     };
   },
-  createTransformStmt(_p?: CreateTransformStmt): {
-    CreateTransformStmt: CreateTransformStmt;
-  } {
+  createTransformStmt(_p?: CreateTransformStmt["CreateTransformStmt"]): CreateTransformStmt {
     return {
       CreateTransformStmt: {
         replace: _p?.replace,
@@ -3169,9 +2691,7 @@ export default {
       }
     };
   },
-  prepareStmt(_p?: PrepareStmt): {
-    PrepareStmt: PrepareStmt;
-  } {
+  prepareStmt(_p?: PrepareStmt["PrepareStmt"]): PrepareStmt {
     return {
       PrepareStmt: {
         name: _p?.name,
@@ -3180,9 +2700,7 @@ export default {
       }
     };
   },
-  executeStmt(_p?: ExecuteStmt): {
-    ExecuteStmt: ExecuteStmt;
-  } {
+  executeStmt(_p?: ExecuteStmt["ExecuteStmt"]): ExecuteStmt {
     return {
       ExecuteStmt: {
         name: _p?.name,
@@ -3190,18 +2708,14 @@ export default {
       }
     };
   },
-  deallocateStmt(_p?: DeallocateStmt): {
-    DeallocateStmt: DeallocateStmt;
-  } {
+  deallocateStmt(_p?: DeallocateStmt["DeallocateStmt"]): DeallocateStmt {
     return {
       DeallocateStmt: {
         name: _p?.name
       }
     };
   },
-  dropOwnedStmt(_p?: DropOwnedStmt): {
-    DropOwnedStmt: DropOwnedStmt;
-  } {
+  dropOwnedStmt(_p?: DropOwnedStmt["DropOwnedStmt"]): DropOwnedStmt {
     return {
       DropOwnedStmt: {
         roles: _p?.roles,
@@ -3209,9 +2723,7 @@ export default {
       }
     };
   },
-  reassignOwnedStmt(_p?: ReassignOwnedStmt): {
-    ReassignOwnedStmt: ReassignOwnedStmt;
-  } {
+  reassignOwnedStmt(_p?: ReassignOwnedStmt["ReassignOwnedStmt"]): ReassignOwnedStmt {
     return {
       ReassignOwnedStmt: {
         roles: _p?.roles,
@@ -3219,9 +2731,7 @@ export default {
       }
     };
   },
-  altertsDictionaryStmt(_p?: AlterTSDictionaryStmt): {
-    AlterTSDictionaryStmt: AlterTSDictionaryStmt;
-  } {
+  altertsDictionaryStmt(_p?: AlterTSDictionaryStmt["AlterTSDictionaryStmt"]): AlterTSDictionaryStmt {
     return {
       AlterTSDictionaryStmt: {
         dictname: _p?.dictname,
@@ -3229,9 +2739,7 @@ export default {
       }
     };
   },
-  altertsConfigurationStmt(_p?: AlterTSConfigurationStmt): {
-    AlterTSConfigurationStmt: AlterTSConfigurationStmt;
-  } {
+  altertsConfigurationStmt(_p?: AlterTSConfigurationStmt["AlterTSConfigurationStmt"]): AlterTSConfigurationStmt {
     return {
       AlterTSConfigurationStmt: {
         kind: _p?.kind,
@@ -3244,9 +2752,7 @@ export default {
       }
     };
   },
-  publicationTable(_p?: PublicationTable): {
-    PublicationTable: PublicationTable;
-  } {
+  publicationTable(_p?: PublicationTable["PublicationTable"]): PublicationTable {
     return {
       PublicationTable: {
         relation: _p?.relation,
@@ -3255,9 +2761,7 @@ export default {
       }
     };
   },
-  publicationObjSpec(_p?: PublicationObjSpec): {
-    PublicationObjSpec: PublicationObjSpec;
-  } {
+  publicationObjSpec(_p?: PublicationObjSpec["PublicationObjSpec"]): PublicationObjSpec {
     return {
       PublicationObjSpec: {
         pubobjtype: _p?.pubobjtype,
@@ -3267,9 +2771,7 @@ export default {
       }
     };
   },
-  createPublicationStmt(_p?: CreatePublicationStmt): {
-    CreatePublicationStmt: CreatePublicationStmt;
-  } {
+  createPublicationStmt(_p?: CreatePublicationStmt["CreatePublicationStmt"]): CreatePublicationStmt {
     return {
       CreatePublicationStmt: {
         pubname: _p?.pubname,
@@ -3279,9 +2781,7 @@ export default {
       }
     };
   },
-  alterPublicationStmt(_p?: AlterPublicationStmt): {
-    AlterPublicationStmt: AlterPublicationStmt;
-  } {
+  alterPublicationStmt(_p?: AlterPublicationStmt["AlterPublicationStmt"]): AlterPublicationStmt {
     return {
       AlterPublicationStmt: {
         pubname: _p?.pubname,
@@ -3292,9 +2792,7 @@ export default {
       }
     };
   },
-  createSubscriptionStmt(_p?: CreateSubscriptionStmt): {
-    CreateSubscriptionStmt: CreateSubscriptionStmt;
-  } {
+  createSubscriptionStmt(_p?: CreateSubscriptionStmt["CreateSubscriptionStmt"]): CreateSubscriptionStmt {
     return {
       CreateSubscriptionStmt: {
         subname: _p?.subname,
@@ -3304,9 +2802,7 @@ export default {
       }
     };
   },
-  alterSubscriptionStmt(_p?: AlterSubscriptionStmt): {
-    AlterSubscriptionStmt: AlterSubscriptionStmt;
-  } {
+  alterSubscriptionStmt(_p?: AlterSubscriptionStmt["AlterSubscriptionStmt"]): AlterSubscriptionStmt {
     return {
       AlterSubscriptionStmt: {
         kind: _p?.kind,
@@ -3317,9 +2813,7 @@ export default {
       }
     };
   },
-  dropSubscriptionStmt(_p?: DropSubscriptionStmt): {
-    DropSubscriptionStmt: DropSubscriptionStmt;
-  } {
+  dropSubscriptionStmt(_p?: DropSubscriptionStmt["DropSubscriptionStmt"]): DropSubscriptionStmt {
     return {
       DropSubscriptionStmt: {
         subname: _p?.subname,
@@ -3328,9 +2822,7 @@ export default {
       }
     };
   },
-  scanToken(_p?: ScanToken): {
-    ScanToken: ScanToken;
-  } {
+  scanToken(_p?: ScanToken["ScanToken"]): ScanToken {
     return {
       ScanToken: {
         start: _p?.start,

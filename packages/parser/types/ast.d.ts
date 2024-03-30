@@ -4,7 +4,7 @@ import { PgProtoParserOptions } from './types';
 export declare const getTSType: (type?: string) => t.TSBigIntKeyword | t.TSBooleanKeyword | t.TSNumberKeyword | t.TSStringKeyword | t.TSTypeReference;
 export declare const isPrimitiveType: (type: string) => boolean;
 export declare const resolveTypeName: (type: string) => t.TSBigIntKeyword | t.TSBooleanKeyword | t.TSNumberKeyword | t.TSStringKeyword | t.TSTypeReference;
-export declare const generateTSInterfaces: (types: Type[], options: PgProtoParserOptions) => string;
+export declare const generateTSInterfaces: (types: Type[], options: PgProtoParserOptions, useNestedTypes: boolean) => string;
 export declare const generateTSEnums: (enums: Enum[]) => string;
 export declare const generateTSEnumsTypeUnionAST: (enums: Enum[]) => string;
 export declare const generateTSEnumFunction: (enums: Enum[]) => string;
@@ -15,6 +15,6 @@ export declare const generateImportSpecifiersAST: (types: Type[], options: PgPro
 export declare const generateMacroForTypes: () => t.ExportNamedDeclaration;
 export declare const generateAstHelperMethodsAST: (types: Type[]) => t.ExportDefaultDeclaration;
 export declare const createUnionTypeAST: (types: Type[]) => t.ExportNamedDeclaration;
-export declare const transformTypeToAST: (type: Type, options: PgProtoParserOptions) => t.ExportNamedDeclaration;
+export declare const transformTypeToAST: (type: Type, options: PgProtoParserOptions, useNestedTypes: boolean) => t.ExportNamedDeclaration;
 export declare const transformEnumToTypeUnionAST: (enumData: Enum) => t.ExportNamedDeclaration;
 export declare const buildEnumValueFunctionAST: (enumData: Enum[]) => t.ExportNamedDeclaration[];

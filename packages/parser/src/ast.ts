@@ -185,7 +185,19 @@ export const generateAstHelperMethodsAST = (types: Type[]): t.ExportDefaultDecla
     const typeName = type.name;
     const param = t.identifier('_p');
     param.optional = true;
-    param.typeAnnotation = t.tsTypeAnnotation(t.tsTypeReference(t.identifier(typeName)));
+
+
+    if (!specialTypes.includes(type.name)) {
+      param.typeAnnotation = t.tsTypeAnnotation(
+        t.tsIndexedAccessType(
+          t.tsTypeReference(t.identifier(typeName)),
+          t.tsLiteralType(t.stringLiteral(typeName))
+        )
+      );
+    } else {
+      param.typeAnnotation = t.tsTypeAnnotation(t.tsTypeReference(t.identifier(typeName)));
+    }
+
 
     // @ts-ignore
     const fields: Field[] = type.fields;
@@ -230,19 +242,20 @@ export const generateAstHelperMethodsAST = (types: Type[]): t.ExportDefaultDecla
       ])
     );
 
-    if (specialTypes.includes(typeName)) {
-      method.returnType = t.tsTypeAnnotation(t.tsTypeReference(t.identifier(typeName)));
-    } else {
-      method.returnType =
-        t.tsTypeAnnotation(
-          t.tsTypeLiteral([
-            t.tsPropertySignature(
-              t.identifier(typeName),
-              t.tsTypeAnnotation(t.tsTypeReference(t.identifier(typeName)))
-            )
-          ])
-        );
-    }
+    method.returnType = t.tsTypeAnnotation(t.tsTypeReference(t.identifier(typeName)));
+    // if (specialTypes.includes(typeName)) {
+    //   method.returnType = t.tsTypeAnnotation(t.tsTypeReference(t.identifier(typeName)));
+    // } else {
+    //   method.returnType =
+    //     t.tsTypeAnnotation(
+    //       t.tsTypeLiteral([
+    //         t.tsPropertySignature(
+    //           t.identifier(typeName),
+    //           t.tsTypeAnnotation(t.tsTypeReference(t.identifier(typeName)))
+    //         )
+    //       ])
+    //     );
+    // }
 
 
     return method;
