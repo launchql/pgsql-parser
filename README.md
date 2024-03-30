@@ -35,12 +35,12 @@ const protoStore = new ProtoStore(root, 'outputDir');
 protoStore.write();
 ```
 
-This will generate the following files in the specified `outputDir`:
+This will generate the following files in the specified [`outputDir`](https://github.com/launchql/pg-proto-parser/tree/main/__fixtures__/output/parser):
 
-- `enums2int.json`: JSON mapping of enum names to integer values.
-- `enums2str.json`: JSON mapping of integer values to enum names.
-- `types.ts`: TypeScript file containing interfaces for protobuf messages.
-- `utils.ts`: TypeScript file containing utility functions for enums.
+- [`types.ts`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/parser/types.ts): TypeScript file containing interfaces for protobuf messages.
+- [`utils.ts`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/parser/utils.ts): TypeScript file containing utility functions for enums.
+- [`enums2int.json`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/parser/enums2int.json): JSON mapping of enum names to integer values.
+- [`enums2str.json`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/parser/enums2str.json): JSON mapping of integer values to enum names.
 
 ## Configuration
 

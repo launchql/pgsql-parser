@@ -35,12 +35,12 @@ const protoStore = new ProtoStore(root, 'outputDir');
 protoStore.write();
 ```
 
-This will generate the following files in the specified `outputDir`:
+This will generate the following files in the specified [`outputDir`](https://github.com/launchql/pg-proto-parser/tree/main/__fixtures__/output/parser):
 
-- `enums2int.json`: JSON mapping of enum names to integer values.
-- `enums2str.json`: JSON mapping of integer values to enum names.
-- `types.ts`: TypeScript file containing interfaces for protobuf messages.
-- `utils.ts`: TypeScript file containing utility functions for enums.
+- [`types.ts`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/parser/types.ts): TypeScript file containing interfaces for protobuf messages.
+- [`utils.ts`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/parser/utils.ts): TypeScript file containing utility functions for enums.
+- [`enums2int.json`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/parser/enums2int.json): JSON mapping of enum names to integer values.
+- [`enums2str.json`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/parser/enums2str.json): JSON mapping of integer values to enum names.
 
 ## Configuration
 
@@ -63,4 +63,3 @@ Contributions to `pg-proto-parser` are welcome. Please ensure that your code adh
 AS DESCRIBED IN THE LICENSES, THE SOFTWARE IS PROVIDED “AS IS”, AT YOUR OWN RISK, AND WITHOUT WARRANTIES OF ANY KIND.
 
 No developer or entity involved in creating Software will be liable for any claims or damages whatsoever associated with your use, inability to use, or your interaction with other users of the Software code or Software CLI, including any direct, indirect, incidental, special, exemplary, punitive or consequential damages, or loss of profits, cryptocurrencies, tokens, or anything else of value.
-
