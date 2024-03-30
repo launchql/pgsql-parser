@@ -26,5 +26,6 @@ it('asts', () => {
     }),
     tableElts: [newColumn]
   })
+  expect(createStmt).toMatchSnapshot();
   expect(deparse(createStmt, {})).toMatchSnapshot();
 });
