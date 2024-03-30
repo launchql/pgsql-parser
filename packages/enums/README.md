@@ -49,8 +49,8 @@ In this example, `A_Expr_Kind` is an enum imported from `@pgsql/enums`, and expr
 ## Related
 
 * [pgsql-parser](https://github.com/launchql/pgsql-parser): The real PostgreSQL parser for Node.js, providing symmetric parsing and deparsing of SQL statements with actual PostgreSQL parser integration.
-* [pgsql-deparser](https://github.com/launchql/pgsql-deparser): A streamlined tool designed for converting PostgreSQL ASTs back into SQL queries, focusing solely on deparser functionality to complement `pgsql-parser`.
-* [pgsql-enums](https://github.com/launchql/pgsql-enums): A utility package offering easy access to PostgreSQL enumeration types in JSON format, aiding in string and integer conversions of enums used within ASTs to compliment `pgsql-parser`
+* [pgsql-deparser](https://github.com/launchql/pgsql-parser/tree/master/packages/deparser): A streamlined tool designed for converting PostgreSQL ASTs back into SQL queries, focusing solely on deparser functionality to complement `pgsql-parser`.
+* [pgsql-enums](https://github.com/launchql/pgsql-parser/tree/master/packages/enums-json): A utility package offering easy access to PostgreSQL enumeration types in JSON format, aiding in string and integer conversions of enums used within ASTs to compliment `pgsql-parser`
 * [@pgsql/enums](https://github.com/launchql/pgsql-parser/tree/master/packages/enums): Provides PostgreSQL AST enums in TypeScript, enhancing type safety and usability in projects interacting with PostgreSQL AST nodes.
 * [@pgsql/types](https://github.com/launchql/pgsql-parser/tree/master/packages/types): Offers TypeScript type definitions for PostgreSQL AST nodes, facilitating type-safe construction, analysis, and manipulation of ASTs.
 * [@pgsql/utils](https://github.com/launchql/pgsql-parser/tree/master/packages/utils): A utility library for working with PostgreSQL AST node enumerations in a type-safe way, easing enum name and value conversions.
