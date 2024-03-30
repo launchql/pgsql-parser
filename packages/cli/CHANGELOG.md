@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0](https://github.com/launchql/pg-proto-parser/compare/@launchql/proto-cli@0.0.5...@launchql/proto-cli@0.1.0) (2024-03-30)
+
+**Note:** Version bump only for package @launchql/proto-cli
+
+
+
+
+
 ## [0.0.5](https://github.com/launchql/pg-proto-parser/compare/@launchql/proto-cli@0.0.4...@launchql/proto-cli@0.0.5) (2024-03-30)
 
 **Note:** Version bump only for package @launchql/proto-cli
