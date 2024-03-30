@@ -15,6 +15,13 @@
 
 `pg-proto-parser` is a TypeScript project that parses [pganalyze/libpg_query](https://github.com/pganalyze/libpg_query) PostgreSQL Protocol Buffers (protobuf) definitions and generates TypeScript interfaces, utility functions, and JSON mappings for the enums defined in the protobuf schema. Designed to work with [launchql/pgsql-parser](https://github.com/launchql/pgsql-parser) for maintainable upgrades.
 
+
+
+## Packages
+
+- [`pg-proto-parser`](https://github.com/launchql/pg-proto-parser/tree/main/packages/parser)
+- [`@launchql/proto-cli`](https://github.com/launchql/pg-proto-parser/tree/main/packages/cli)
+
 ## Features
 
 - Parses protobuf definitions and creates a structured representation in TypeScript.
@@ -22,40 +29,46 @@
 - Creates utility functions for enum value conversions.
 - Produces JSON files mapping enum names to integer values and vice versa
 
-## Parsing and Generating Files
+## Output
 
-Here's how to parse protobuf files and generate the output:
-
-```js
-import { ProtoStore } from 'pg-proto-parser';
-
-// Load your protobuf definitions into a Root object
-const root = Root.fromJSON(/* your protobuf JSON */);
-
-// Create an instance of ProtoStore with the loaded root
-const protoStore = new ProtoStore(root, 'outputDir');
-
-// Generate TypeScript and JSON files
-protoStore.write();
-```
-
-This will generate the following files in the specified [`outputDir`](https://github.com/launchql/pg-proto-parser/tree/main/__fixtures__/output/parser):
+`pg-proto-parser` will generate the following files in the specified [`outputDir`](https://github.com/launchql/pg-proto-parser/tree/main/__fixtures__/output/parser):
 
 - [`types.ts`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/parser/types.ts): TypeScript file containing interfaces for protobuf messages.
 - [`utils.ts`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/parser/utils.ts): TypeScript file containing utility functions for enums.
 - [`enums2int.json`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/parser/enums2int.json): JSON mapping of enum names to integer values.
 - [`enums2str.json`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/parser/enums2str.json): JSON mapping of integer values to enum names.
 
-## Configuration
+## Using `PgProtoParser`
 
-You can configure `pg-proto-parser` by passing different parameters to the `ProtoStore` constructor:
+Here's how to parse protobuf files and generate the output:
 
-- `root`: The protobuf `Root` object containing your schema.
-- `outputDir`: Directory where the generated files will be saved.
+```js
+import { PgProtoParser } from 'pg-proto-parser';
 
-## Contributing
+// Create PgProtoParser
+const parser = new PgProtoParser(inputFile, outputDir);
 
-Contributions to `pg-proto-parser` are welcome. Please ensure that your code adheres to the project's coding standards and includes tests covering your changes.
+// Generate TypeScript and JSON files
+await parser.write();
+```
+
+## Using the CLI
+
+```bash
+npm install -g @lauchql/proto-cli
+```
+
+First, download the latest protobuf definition from `libpg_query`:
+
+```bash
+wget https://raw.githubusercontent.com/pganalyze/libpg_query/16-latest/protobuf/pg_query.proto
+```
+
+Run the CLI to parse the protobuf file and generate TypeScript outputs:
+
+```bash
+pg-proto-parser --inputFile pg_query.proto --outputDir out
+```
 
 ## Related
 

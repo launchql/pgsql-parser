@@ -27,16 +27,13 @@
 Here's how to parse protobuf files and generate the output:
 
 ```js
-import { ProtoStore } from 'pg-proto-parser';
+import { PgProtoParser } from 'pg-proto-parser';
 
-// Load your protobuf definitions into a Root object
-const root = Root.fromJSON(/* your protobuf JSON */);
-
-// Create an instance of ProtoStore with the loaded root
-const protoStore = new ProtoStore(root, 'outputDir');
+// Create PgProtoParser
+const parser = new PgProtoParser(inputFile, outputDir);
 
 // Generate TypeScript and JSON files
-protoStore.write();
+await parser.write();
 ```
 
 This will generate the following files in the specified [`outputDir`](https://github.com/launchql/pg-proto-parser/tree/main/__fixtures__/output/parser):
@@ -52,10 +49,6 @@ You can configure `pg-proto-parser` by passing different parameters to the `Prot
 
 - `root`: The protobuf `Root` object containing your schema.
 - `outputDir`: Directory where the generated files will be saved.
-
-## Contributing
-
-Contributions to `pg-proto-parser` are welcome. Please ensure that your code adheres to the project's coding standards and includes tests covering your changes.
 
 ## Related
 

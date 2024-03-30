@@ -22,7 +22,6 @@ npm install -g @lauchql/proto-cli
 
 ## Getting Started
 
-
 First, download the latest protobuf definition from `libpg_query`:
 
 ```bash
