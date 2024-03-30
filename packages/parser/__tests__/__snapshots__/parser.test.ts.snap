@@ -318,7 +318,7 @@ export default {
       items: _p?.items
     };
   },
-  a_Const(_p?: A_Const): A_Const {
+  aConst(_p?: A_Const): A_Const {
     return {
       ival: _p?.ival,
       fval: _p?.fval,
@@ -605,7 +605,7 @@ export default {
       location: _p?.location
     };
   },
-  coerceViaIO(_p?: CoerceViaIO): CoerceViaIO {
+  coerceViaio(_p?: CoerceViaIO): CoerceViaIO {
     return {
       xpr: _p?.xpr,
       arg: _p?.arg,
@@ -723,7 +723,7 @@ export default {
       location: _p?.location
     };
   },
-  sQLValueFunction(_p?: SQLValueFunction): SQLValueFunction {
+  sqlValueFunction(_p?: SQLValueFunction): SQLValueFunction {
     return {
       xpr: _p?.xpr,
       op: _p?.op,
@@ -976,7 +976,7 @@ export default {
       location: _p?.location
     };
   },
-  a_Expr(_p?: A_Expr): A_Expr {
+  aExpr(_p?: A_Expr): A_Expr {
     return {
       kind: _p?.kind,
       name: _p?.name,
@@ -1021,23 +1021,23 @@ export default {
       location: _p?.location
     };
   },
-  a_Star(_p?: A_Star): A_Star {
+  aStar(_p?: A_Star): A_Star {
     return {};
   },
-  a_Indices(_p?: A_Indices): A_Indices {
+  aIndices(_p?: A_Indices): A_Indices {
     return {
       is_slice: _p?.is_slice,
       lidx: _p?.lidx,
       uidx: _p?.uidx
     };
   },
-  a_Indirection(_p?: A_Indirection): A_Indirection {
+  aIndirection(_p?: A_Indirection): A_Indirection {
     return {
       arg: _p?.arg,
       indirection: _p?.indirection
     };
   },
-  a_ArrayExpr(_p?: A_ArrayExpr): A_ArrayExpr {
+  aArrayExpr(_p?: A_ArrayExpr): A_ArrayExpr {
     return {
       elements: _p?.elements,
       location: _p?.location
@@ -1272,7 +1272,7 @@ export default {
       securityQuals: _p?.securityQuals
     };
   },
-  rTEPermissionInfo(_p?: RTEPermissionInfo): RTEPermissionInfo {
+  rtePermissionInfo(_p?: RTEPermissionInfo): RTEPermissionInfo {
     return {
       relid: _p?.relid,
       inh: _p?.inh,
@@ -1377,7 +1377,7 @@ export default {
       location: _p?.location
     };
   },
-  cTESearchClause(_p?: CTESearchClause): CTESearchClause {
+  cteSearchClause(_p?: CTESearchClause): CTESearchClause {
     return {
       search_col_list: _p?.search_col_list,
       search_breadth_first: _p?.search_breadth_first,
@@ -1385,7 +1385,7 @@ export default {
       location: _p?.location
     };
   },
-  cTECycleClause(_p?: CTECycleClause): CTECycleClause {
+  cteCycleClause(_p?: CTECycleClause): CTECycleClause {
     return {
       cycle_col_list: _p?.cycle_col_list,
       cycle_mark_column: _p?.cycle_mark_column,
@@ -1592,7 +1592,7 @@ export default {
       returnval: _p?.returnval
     };
   },
-  pLAssignStmt(_p?: PLAssignStmt): PLAssignStmt {
+  plAssignStmt(_p?: PLAssignStmt): PLAssignStmt {
     return {
       name: _p?.name,
       indirection: _p?.indirection,
@@ -1950,7 +1950,7 @@ export default {
       tgenabled: _p?.tgenabled
     };
   },
-  createPLangStmt(_p?: CreatePLangStmt): CreatePLangStmt {
+  createpLangStmt(_p?: CreatePLangStmt): CreatePLangStmt {
     return {
       replace: _p?.replace,
       plname: _p?.plname,
@@ -2504,13 +2504,13 @@ export default {
       newrole: _p?.newrole
     };
   },
-  alterTSDictionaryStmt(_p?: AlterTSDictionaryStmt): AlterTSDictionaryStmt {
+  altertsDictionaryStmt(_p?: AlterTSDictionaryStmt): AlterTSDictionaryStmt {
     return {
       dictname: _p?.dictname,
       options: _p?.options
     };
   },
-  alterTSConfigurationStmt(_p?: AlterTSConfigurationStmt): AlterTSConfigurationStmt {
+  altertsConfigurationStmt(_p?: AlterTSConfigurationStmt): AlterTSConfigurationStmt {
     return {
       kind: _p?.kind,
       cfgname: _p?.cfgname,
@@ -12944,7 +12944,7 @@ export default {
       items: _p?.items
     };
   },
-  a_Const(_p?: A_Const): A_Const {
+  aConst(_p?: A_Const): A_Const {
     return {
       ival: _p?.ival,
       fval: _p?.fval,
@@ -13231,7 +13231,7 @@ export default {
       location: _p?.location
     };
   },
-  coerceViaIO(_p?: CoerceViaIO): CoerceViaIO {
+  coerceViaio(_p?: CoerceViaIO): CoerceViaIO {
     return {
       xpr: _p?.xpr,
       arg: _p?.arg,
@@ -13349,7 +13349,7 @@ export default {
       location: _p?.location
     };
   },
-  sQLValueFunction(_p?: SQLValueFunction): SQLValueFunction {
+  sqlValueFunction(_p?: SQLValueFunction): SQLValueFunction {
     return {
       xpr: _p?.xpr,
       op: _p?.op,
@@ -13602,7 +13602,7 @@ export default {
       location: _p?.location
     };
   },
-  a_Expr(_p?: A_Expr): A_Expr {
+  aExpr(_p?: A_Expr): A_Expr {
     return {
       kind: _p?.kind,
       name: _p?.name,
@@ -13647,23 +13647,23 @@ export default {
       location: _p?.location
     };
   },
-  a_Star(_p?: A_Star): A_Star {
+  aStar(_p?: A_Star): A_Star {
     return {};
   },
-  a_Indices(_p?: A_Indices): A_Indices {
+  aIndices(_p?: A_Indices): A_Indices {
     return {
       is_slice: _p?.is_slice,
       lidx: _p?.lidx,
       uidx: _p?.uidx
     };
   },
-  a_Indirection(_p?: A_Indirection): A_Indirection {
+  aIndirection(_p?: A_Indirection): A_Indirection {
     return {
       arg: _p?.arg,
       indirection: _p?.indirection
     };
   },
-  a_ArrayExpr(_p?: A_ArrayExpr): A_ArrayExpr {
+  aArrayExpr(_p?: A_ArrayExpr): A_ArrayExpr {
     return {
       elements: _p?.elements,
       location: _p?.location
@@ -13898,7 +13898,7 @@ export default {
       securityQuals: _p?.securityQuals
     };
   },
-  rTEPermissionInfo(_p?: RTEPermissionInfo): RTEPermissionInfo {
+  rtePermissionInfo(_p?: RTEPermissionInfo): RTEPermissionInfo {
     return {
       relid: _p?.relid,
       inh: _p?.inh,
@@ -14003,7 +14003,7 @@ export default {
       location: _p?.location
     };
   },
-  cTESearchClause(_p?: CTESearchClause): CTESearchClause {
+  cteSearchClause(_p?: CTESearchClause): CTESearchClause {
     return {
       search_col_list: _p?.search_col_list,
       search_breadth_first: _p?.search_breadth_first,
@@ -14011,7 +14011,7 @@ export default {
       location: _p?.location
     };
   },
-  cTECycleClause(_p?: CTECycleClause): CTECycleClause {
+  cteCycleClause(_p?: CTECycleClause): CTECycleClause {
     return {
       cycle_col_list: _p?.cycle_col_list,
       cycle_mark_column: _p?.cycle_mark_column,
@@ -14218,7 +14218,7 @@ export default {
       returnval: _p?.returnval
     };
   },
-  pLAssignStmt(_p?: PLAssignStmt): PLAssignStmt {
+  plAssignStmt(_p?: PLAssignStmt): PLAssignStmt {
     return {
       name: _p?.name,
       indirection: _p?.indirection,
@@ -14576,7 +14576,7 @@ export default {
       tgenabled: _p?.tgenabled
     };
   },
-  createPLangStmt(_p?: CreatePLangStmt): CreatePLangStmt {
+  createpLangStmt(_p?: CreatePLangStmt): CreatePLangStmt {
     return {
       replace: _p?.replace,
       plname: _p?.plname,
@@ -15130,13 +15130,13 @@ export default {
       newrole: _p?.newrole
     };
   },
-  alterTSDictionaryStmt(_p?: AlterTSDictionaryStmt): AlterTSDictionaryStmt {
+  altertsDictionaryStmt(_p?: AlterTSDictionaryStmt): AlterTSDictionaryStmt {
     return {
       dictname: _p?.dictname,
       options: _p?.options
     };
   },
-  alterTSConfigurationStmt(_p?: AlterTSConfigurationStmt): AlterTSConfigurationStmt {
+  altertsConfigurationStmt(_p?: AlterTSConfigurationStmt): AlterTSConfigurationStmt {
     return {
       kind: _p?.kind,
       cfgname: _p?.cfgname,
