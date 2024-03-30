@@ -6,6 +6,7 @@ export interface PgProtoStoreOptions {
     includeTypes?: boolean;
     includeUtils?: boolean;
     includeEnumTypeUnion?: boolean;
+    includeEnums?: boolean;
     removeUndefinedAt0?: boolean;
     outDir?: string;
 }
