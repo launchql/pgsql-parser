@@ -30,6 +30,7 @@
     "lint": "eslint src --fix",
     "dev": "cross-env NODE_ENV=development babel-node src/index",
     "watch": "cross-env NODE_ENV=development babel-watch src/index",
+    "build:proto": "cross-env NODE_ENV=development babel-node scripts/pg-proto-parser",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:debug": "node --inspect node_modules/.bin/jest --runInBand"
@@ -56,6 +57,7 @@
     "eslint-plugin-prettier": "^3.1.2",
     "jest": "^25.1.0",
     "prettier": "^2.1.2",
+    "pg-proto-parser": "^1.2.0",
     "regenerator-runtime": "^0.13.2"
   },
   "dependencies": {

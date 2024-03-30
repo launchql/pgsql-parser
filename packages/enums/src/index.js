@@ -1,5 +1,5 @@
-import toInt from './enum.2int.json';
-import toStr from './enum.2str.json';
+import toInt from './enums/enums2int.json';
+import toStr from './enums/enums2str.json';
 import nodes from './nodes.json';
 
 export { toInt, toStr, nodes };
