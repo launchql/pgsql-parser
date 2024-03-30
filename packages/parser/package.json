@@ -1,6 +1,6 @@
 {
   "name": "pgsql-parser",
-  "version": "13.8.1",
+  "version": "13.8.2",
   "description": "The real PostgreSQL query parser",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/pgsql-parser",
@@ -86,7 +86,7 @@
   "dependencies": {
     "libpg-query": "13.3.2",
     "minimist": "^1.2.6",
-    "pgsql-deparser": "^13.7.1",
-    "pgsql-enums": "^13.3.1"
+    "pgsql-deparser": "^13.7.2",
+    "pgsql-enums": "^13.3.2"
   }
 }
