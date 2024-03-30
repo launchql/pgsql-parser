@@ -65,7 +65,18 @@ export const resolveTypeName = (type: string) => {
 }
 
 export const generateTSInterfaces = (types: Type[], options: PgProtoParserOptions) => {
-  const ast = t.file(t.program(types.map(type => transformTypeToAST(type, options))));
+  const node = createUnionTypeAST(types);
+  const typeDefns = types.reduce((m, type) => {
+    if (type.name === 'Node') return m;
+    return [...m, transformTypeToAST(type, options)]
+  }, []);
+
+  const ast = t.file(t.program(
+    [
+      node,
+      ...typeDefns
+    ]
+  ));
   const { code } = generate(ast);
   return code;
 }
@@ -163,6 +174,19 @@ export const generateAstHelperMethodsAST = (types: Type[]): t.ExportDefaultDecla
 
   return t.exportDefaultDeclaration(t.objectExpression(creators));
 }
+
+// special for Node
+export const createUnionTypeAST = (types: Type[]) => {
+  const unionTypeNames = types.map(type => t.tsTypeReference(t.identifier(type.name)));
+
+  const unionTypeAlias = t.tsTypeAliasDeclaration(
+    t.identifier('Node'),
+    null,
+    t.tsUnionType(unionTypeNames)
+  );
+
+  return t.exportNamedDeclaration(unionTypeAlias, []);
+};
 
 export const transformTypeToAST = (type: Type, options: PgProtoParserOptions) => {
   const typeName = type.name;
