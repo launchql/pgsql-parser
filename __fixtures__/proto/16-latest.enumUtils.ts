@@ -1,5 +1,5 @@
-type EnumType = "OverridingKind" | "QuerySource" | "SortByDir" | "SortByNulls" | "SetQuantifier" | "A_Expr_Kind" | "RoleSpecType" | "TableLikeOption" | "DefElemAction" | "PartitionStrategy" | "PartitionRangeDatumKind" | "RTEKind" | "WCOKind" | "GroupingSetKind" | "CTEMaterialize" | "SetOperation" | "ObjectType" | "DropBehavior" | "AlterTableType" | "GrantTargetType" | "VariableSetKind" | "ConstrType" | "ImportForeignSchemaType" | "RoleStmtType" | "FetchDirection" | "FunctionParameterMode" | "TransactionStmtKind" | "ViewCheckOption" | "DiscardMode" | "ReindexObjectType" | "AlterTSConfigType" | "PublicationObjSpecType" | "AlterPublicationAction" | "AlterSubscriptionType" | "OnCommitAction" | "ParamKind" | "CoercionContext" | "CoercionForm" | "BoolExprType" | "SubLinkType" | "RowCompareType" | "MinMaxOp" | "SQLValueFunctionOp" | "XmlExprOp" | "XmlOptionType" | "JsonEncoding" | "JsonFormatType" | "JsonConstructorType" | "JsonValueType" | "NullTestType" | "BoolTestType" | "CmdType" | "JoinType" | "AggStrategy" | "AggSplit" | "SetOpCmd" | "SetOpStrategy" | "OnConflictAction" | "LimitOption" | "LockClauseStrength" | "LockWaitPolicy" | "LockTupleMode" | "KeywordKind" | "Token";
-function getEnumValue(enumType: EnumType, key: string | number): string | number {
+export type EnumType = "OverridingKind" | "QuerySource" | "SortByDir" | "SortByNulls" | "SetQuantifier" | "A_Expr_Kind" | "RoleSpecType" | "TableLikeOption" | "DefElemAction" | "PartitionStrategy" | "PartitionRangeDatumKind" | "RTEKind" | "WCOKind" | "GroupingSetKind" | "CTEMaterialize" | "SetOperation" | "ObjectType" | "DropBehavior" | "AlterTableType" | "GrantTargetType" | "VariableSetKind" | "ConstrType" | "ImportForeignSchemaType" | "RoleStmtType" | "FetchDirection" | "FunctionParameterMode" | "TransactionStmtKind" | "ViewCheckOption" | "DiscardMode" | "ReindexObjectType" | "AlterTSConfigType" | "PublicationObjSpecType" | "AlterPublicationAction" | "AlterSubscriptionType" | "OnCommitAction" | "ParamKind" | "CoercionContext" | "CoercionForm" | "BoolExprType" | "SubLinkType" | "RowCompareType" | "MinMaxOp" | "SQLValueFunctionOp" | "XmlExprOp" | "XmlOptionType" | "JsonEncoding" | "JsonFormatType" | "JsonConstructorType" | "JsonValueType" | "NullTestType" | "BoolTestType" | "CmdType" | "JoinType" | "AggStrategy" | "AggSplit" | "SetOpCmd" | "SetOpStrategy" | "OnConflictAction" | "LimitOption" | "LockClauseStrength" | "LockWaitPolicy" | "LockTupleMode" | "KeywordKind" | "Token";
+export const getEnumValue = (enumType: EnumType, key: string | number) => {
   switch (enumType) {
     case "OverridingKind":
       {
@@ -20,6 +20,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "OVERRIDING_USER_VALUE";
           case 3:
             return "OVERRIDING_SYSTEM_VALUE";
+          default:
+            throw new Error("Key not recognized in enum OverridingKind");
         }
       }
     case "QuerySource":
@@ -49,6 +51,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "QSRC_QUAL_INSTEAD_RULE";
           case 5:
             return "QSRC_NON_INSTEAD_RULE";
+          default:
+            throw new Error("Key not recognized in enum QuerySource");
         }
       }
     case "SortByDir":
@@ -74,6 +78,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "SORTBY_DESC";
           case 4:
             return "SORTBY_USING";
+          default:
+            throw new Error("Key not recognized in enum SortByDir");
         }
       }
     case "SortByNulls":
@@ -95,6 +101,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "SORTBY_NULLS_FIRST";
           case 3:
             return "SORTBY_NULLS_LAST";
+          default:
+            throw new Error("Key not recognized in enum SortByNulls");
         }
       }
     case "SetQuantifier":
@@ -116,6 +124,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "SET_QUANTIFIER_ALL";
           case 3:
             return "SET_QUANTIFIER_DISTINCT";
+          default:
+            throw new Error("Key not recognized in enum SetQuantifier");
         }
       }
     case "A_Expr_Kind":
@@ -181,6 +191,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "AEXPR_BETWEEN_SYM";
           case 14:
             return "AEXPR_NOT_BETWEEN_SYM";
+          default:
+            throw new Error("Key not recognized in enum A_Expr_Kind");
         }
       }
     case "RoleSpecType":
@@ -210,6 +222,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "ROLESPEC_SESSION_USER";
           case 5:
             return "ROLESPEC_PUBLIC";
+          default:
+            throw new Error("Key not recognized in enum RoleSpecType");
         }
       }
     case "TableLikeOption":
@@ -259,6 +273,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "CREATE_TABLE_LIKE_STORAGE";
           case 10:
             return "CREATE_TABLE_LIKE_ALL";
+          default:
+            throw new Error("Key not recognized in enum TableLikeOption");
         }
       }
     case "DefElemAction":
@@ -284,6 +300,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "DEFELEM_ADD";
           case 4:
             return "DEFELEM_DROP";
+          default:
+            throw new Error("Key not recognized in enum DefElemAction");
         }
       }
     case "PartitionStrategy":
@@ -305,6 +323,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "PARTITION_STRATEGY_RANGE";
           case 3:
             return "PARTITION_STRATEGY_HASH";
+          default:
+            throw new Error("Key not recognized in enum PartitionStrategy");
         }
       }
     case "PartitionRangeDatumKind":
@@ -326,6 +346,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "PARTITION_RANGE_DATUM_VALUE";
           case 3:
             return "PARTITION_RANGE_DATUM_MAXVALUE";
+          default:
+            throw new Error("Key not recognized in enum PartitionRangeDatumKind");
         }
       }
     case "RTEKind":
@@ -371,6 +393,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "RTE_NAMEDTUPLESTORE";
           case 9:
             return "RTE_RESULT";
+          default:
+            throw new Error("Key not recognized in enum RTEKind");
         }
       }
     case "WCOKind":
@@ -404,6 +428,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "WCO_RLS_MERGE_UPDATE_CHECK";
           case 6:
             return "WCO_RLS_MERGE_DELETE_CHECK";
+          default:
+            throw new Error("Key not recognized in enum WCOKind");
         }
       }
     case "GroupingSetKind":
@@ -433,6 +459,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "GROUPING_SET_CUBE";
           case 5:
             return "GROUPING_SET_SETS";
+          default:
+            throw new Error("Key not recognized in enum GroupingSetKind");
         }
       }
     case "CTEMaterialize":
@@ -454,6 +482,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "CTEMaterializeAlways";
           case 3:
             return "CTEMaterializeNever";
+          default:
+            throw new Error("Key not recognized in enum CTEMaterialize");
         }
       }
     case "SetOperation":
@@ -479,6 +509,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "SETOP_INTERSECT";
           case 4:
             return "SETOP_EXCEPT";
+          default:
+            throw new Error("Key not recognized in enum SetOperation");
         }
       }
     case "ObjectType":
@@ -696,6 +728,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "OBJECT_USER_MAPPING";
           case 52:
             return "OBJECT_VIEW";
+          default:
+            throw new Error("Key not recognized in enum ObjectType");
         }
       }
     case "DropBehavior":
@@ -713,6 +747,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "DROP_RESTRICT";
           case 2:
             return "DROP_CASCADE";
+          default:
+            throw new Error("Key not recognized in enum DropBehavior");
         }
       }
     case "AlterTableType":
@@ -986,6 +1022,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "AT_DropIdentity";
           case 66:
             return "AT_ReAddStatistics";
+          default:
+            throw new Error("Key not recognized in enum AlterTableType");
         }
       }
     case "GrantTargetType":
@@ -1007,6 +1045,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "ACL_TARGET_ALL_IN_SCHEMA";
           case 3:
             return "ACL_TARGET_DEFAULTS";
+          default:
+            throw new Error("Key not recognized in enum GrantTargetType");
         }
       }
     case "VariableSetKind":
@@ -1040,6 +1080,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "VAR_RESET";
           case 6:
             return "VAR_RESET_ALL";
+          default:
+            throw new Error("Key not recognized in enum VariableSetKind");
         }
       }
     case "ConstrType":
@@ -1105,6 +1147,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "CONSTR_ATTR_DEFERRED";
           case 14:
             return "CONSTR_ATTR_IMMEDIATE";
+          default:
+            throw new Error("Key not recognized in enum ConstrType");
         }
       }
     case "ImportForeignSchemaType":
@@ -1126,6 +1170,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "FDW_IMPORT_SCHEMA_LIMIT_TO";
           case 3:
             return "FDW_IMPORT_SCHEMA_EXCEPT";
+          default:
+            throw new Error("Key not recognized in enum ImportForeignSchemaType");
         }
       }
     case "RoleStmtType":
@@ -1147,6 +1193,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "ROLESTMT_USER";
           case 3:
             return "ROLESTMT_GROUP";
+          default:
+            throw new Error("Key not recognized in enum RoleStmtType");
         }
       }
     case "FetchDirection":
@@ -1172,6 +1220,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "FETCH_ABSOLUTE";
           case 4:
             return "FETCH_RELATIVE";
+          default:
+            throw new Error("Key not recognized in enum FetchDirection");
         }
       }
     case "FunctionParameterMode":
@@ -1205,6 +1255,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "FUNC_PARAM_TABLE";
           case 6:
             return "FUNC_PARAM_DEFAULT";
+          default:
+            throw new Error("Key not recognized in enum FunctionParameterMode");
         }
       }
     case "TransactionStmtKind":
@@ -1254,6 +1306,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "TRANS_STMT_COMMIT_PREPARED";
           case 10:
             return "TRANS_STMT_ROLLBACK_PREPARED";
+          default:
+            throw new Error("Key not recognized in enum TransactionStmtKind");
         }
       }
     case "ViewCheckOption":
@@ -1275,6 +1329,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "LOCAL_CHECK_OPTION";
           case 3:
             return "CASCADED_CHECK_OPTION";
+          default:
+            throw new Error("Key not recognized in enum ViewCheckOption");
         }
       }
     case "DiscardMode":
@@ -1300,6 +1356,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "DISCARD_SEQUENCES";
           case 4:
             return "DISCARD_TEMP";
+          default:
+            throw new Error("Key not recognized in enum DiscardMode");
         }
       }
     case "ReindexObjectType":
@@ -1329,6 +1387,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "REINDEX_OBJECT_SYSTEM";
           case 5:
             return "REINDEX_OBJECT_DATABASE";
+          default:
+            throw new Error("Key not recognized in enum ReindexObjectType");
         }
       }
     case "AlterTSConfigType":
@@ -1358,6 +1418,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "ALTER_TSCONFIG_REPLACE_DICT_FOR_TOKEN";
           case 5:
             return "ALTER_TSCONFIG_DROP_MAPPING";
+          default:
+            throw new Error("Key not recognized in enum AlterTSConfigType");
         }
       }
     case "PublicationObjSpecType":
@@ -1383,6 +1445,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "PUBLICATIONOBJ_TABLES_IN_CUR_SCHEMA";
           case 4:
             return "PUBLICATIONOBJ_CONTINUATION";
+          default:
+            throw new Error("Key not recognized in enum PublicationObjSpecType");
         }
       }
     case "AlterPublicationAction":
@@ -1404,6 +1468,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "AP_DropObjects";
           case 3:
             return "AP_SetObjects";
+          default:
+            throw new Error("Key not recognized in enum AlterPublicationAction");
         }
       }
     case "AlterSubscriptionType":
@@ -1445,6 +1511,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "ALTER_SUBSCRIPTION_ENABLED";
           case 8:
             return "ALTER_SUBSCRIPTION_SKIP";
+          default:
+            throw new Error("Key not recognized in enum AlterSubscriptionType");
         }
       }
     case "OnCommitAction":
@@ -1470,6 +1538,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "ONCOMMIT_DELETE_ROWS";
           case 4:
             return "ONCOMMIT_DROP";
+          default:
+            throw new Error("Key not recognized in enum OnCommitAction");
         }
       }
     case "ParamKind":
@@ -1495,6 +1565,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "PARAM_SUBLINK";
           case 4:
             return "PARAM_MULTIEXPR";
+          default:
+            throw new Error("Key not recognized in enum ParamKind");
         }
       }
     case "CoercionContext":
@@ -1520,6 +1592,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "COERCION_PLPGSQL";
           case 4:
             return "COERCION_EXPLICIT";
+          default:
+            throw new Error("Key not recognized in enum CoercionContext");
         }
       }
     case "CoercionForm":
@@ -1545,6 +1619,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "COERCE_IMPLICIT_CAST";
           case 4:
             return "COERCE_SQL_SYNTAX";
+          default:
+            throw new Error("Key not recognized in enum CoercionForm");
         }
       }
     case "BoolExprType":
@@ -1566,6 +1642,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "OR_EXPR";
           case 3:
             return "NOT_EXPR";
+          default:
+            throw new Error("Key not recognized in enum BoolExprType");
         }
       }
     case "SubLinkType":
@@ -1607,6 +1685,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "ARRAY_SUBLINK";
           case 8:
             return "CTE_SUBLINK";
+          default:
+            throw new Error("Key not recognized in enum SubLinkType");
         }
       }
     case "RowCompareType":
@@ -1640,6 +1720,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "ROWCOMPARE_GT";
           case 6:
             return "ROWCOMPARE_NE";
+          default:
+            throw new Error("Key not recognized in enum RowCompareType");
         }
       }
     case "MinMaxOp":
@@ -1657,6 +1739,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "IS_GREATEST";
           case 2:
             return "IS_LEAST";
+          default:
+            throw new Error("Key not recognized in enum MinMaxOp");
         }
       }
     case "SQLValueFunctionOp":
@@ -1726,6 +1810,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "SVFOP_CURRENT_CATALOG";
           case 15:
             return "SVFOP_CURRENT_SCHEMA";
+          default:
+            throw new Error("Key not recognized in enum SQLValueFunctionOp");
         }
       }
     case "XmlExprOp":
@@ -1767,6 +1853,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "IS_XMLSERIALIZE";
           case 8:
             return "IS_DOCUMENT";
+          default:
+            throw new Error("Key not recognized in enum XmlExprOp");
         }
       }
     case "XmlOptionType":
@@ -1784,6 +1872,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "XMLOPTION_DOCUMENT";
           case 2:
             return "XMLOPTION_CONTENT";
+          default:
+            throw new Error("Key not recognized in enum XmlOptionType");
         }
       }
     case "JsonEncoding":
@@ -1809,6 +1899,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "JS_ENC_UTF16";
           case 4:
             return "JS_ENC_UTF32";
+          default:
+            throw new Error("Key not recognized in enum JsonEncoding");
         }
       }
     case "JsonFormatType":
@@ -1830,6 +1922,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "JS_FORMAT_JSON";
           case 3:
             return "JS_FORMAT_JSONB";
+          default:
+            throw new Error("Key not recognized in enum JsonFormatType");
         }
       }
     case "JsonConstructorType":
@@ -1855,6 +1949,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "JSCTOR_JSON_OBJECTAGG";
           case 4:
             return "JSCTOR_JSON_ARRAYAGG";
+          default:
+            throw new Error("Key not recognized in enum JsonConstructorType");
         }
       }
     case "JsonValueType":
@@ -1880,6 +1976,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "JS_TYPE_ARRAY";
           case 4:
             return "JS_TYPE_SCALAR";
+          default:
+            throw new Error("Key not recognized in enum JsonValueType");
         }
       }
     case "NullTestType":
@@ -1897,6 +1995,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "IS_NULL";
           case 2:
             return "IS_NOT_NULL";
+          default:
+            throw new Error("Key not recognized in enum NullTestType");
         }
       }
     case "BoolTestType":
@@ -1930,6 +2030,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "IS_UNKNOWN";
           case 6:
             return "IS_NOT_UNKNOWN";
+          default:
+            throw new Error("Key not recognized in enum BoolTestType");
         }
       }
     case "CmdType":
@@ -1971,6 +2073,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "CMD_UTILITY";
           case 8:
             return "CMD_NOTHING";
+          default:
+            throw new Error("Key not recognized in enum CmdType");
         }
       }
     case "JoinType":
@@ -2016,6 +2120,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "JOIN_UNIQUE_OUTER";
           case 9:
             return "JOIN_UNIQUE_INNER";
+          default:
+            throw new Error("Key not recognized in enum JoinType");
         }
       }
     case "AggStrategy":
@@ -2041,6 +2147,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "AGG_HASHED";
           case 4:
             return "AGG_MIXED";
+          default:
+            throw new Error("Key not recognized in enum AggStrategy");
         }
       }
     case "AggSplit":
@@ -2062,6 +2170,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "AGGSPLIT_INITIAL_SERIAL";
           case 3:
             return "AGGSPLIT_FINAL_DESERIAL";
+          default:
+            throw new Error("Key not recognized in enum AggSplit");
         }
       }
     case "SetOpCmd":
@@ -2087,6 +2197,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "SETOPCMD_EXCEPT";
           case 4:
             return "SETOPCMD_EXCEPT_ALL";
+          default:
+            throw new Error("Key not recognized in enum SetOpCmd");
         }
       }
     case "SetOpStrategy":
@@ -2104,6 +2216,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "SETOP_SORTED";
           case 2:
             return "SETOP_HASHED";
+          default:
+            throw new Error("Key not recognized in enum SetOpStrategy");
         }
       }
     case "OnConflictAction":
@@ -2125,6 +2239,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "ONCONFLICT_NOTHING";
           case 3:
             return "ONCONFLICT_UPDATE";
+          default:
+            throw new Error("Key not recognized in enum OnConflictAction");
         }
       }
     case "LimitOption":
@@ -2146,6 +2262,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "LIMIT_OPTION_COUNT";
           case 3:
             return "LIMIT_OPTION_WITH_TIES";
+          default:
+            throw new Error("Key not recognized in enum LimitOption");
         }
       }
     case "LockClauseStrength":
@@ -2175,6 +2293,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "LCS_FORNOKEYUPDATE";
           case 5:
             return "LCS_FORUPDATE";
+          default:
+            throw new Error("Key not recognized in enum LockClauseStrength");
         }
       }
     case "LockWaitPolicy":
@@ -2196,6 +2316,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "LockWaitSkip";
           case 3:
             return "LockWaitError";
+          default:
+            throw new Error("Key not recognized in enum LockWaitPolicy");
         }
       }
     case "LockTupleMode":
@@ -2221,6 +2343,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "LockTupleNoKeyExclusive";
           case 4:
             return "LockTupleExclusive";
+          default:
+            throw new Error("Key not recognized in enum LockTupleMode");
         }
       }
     case "KeywordKind":
@@ -2246,6 +2370,8 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "TYPE_FUNC_NAME_KEYWORD";
           case 4:
             return "RESERVED_KEYWORD";
+          default:
+            throw new Error("Key not recognized in enum KeywordKind");
         }
       }
     case "Token":
@@ -4339,9 +4465,11 @@ function getEnumValue(enumType: EnumType, key: string | number): string | number
             return "MODE_PLPGSQL_ASSIGN3";
           case 758:
             return "UMINUS";
+          default:
+            throw new Error("Key not recognized in enum Token");
         }
       }
     default:
       throw new Error("Enum type not recognized");
   }
-}
+};
