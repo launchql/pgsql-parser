@@ -11,7 +11,7 @@ jobs:
     # Docker Hub image that `container-job` executes in
     # container: node:latest
     # container: pyramation/node-gyp
-    container: node/20.12.0-alpine
+    container: node:20.12.0-alpine
 
     # Service containers to run with `container-job`
     services:
