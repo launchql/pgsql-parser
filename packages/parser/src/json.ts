@@ -1,4 +1,4 @@
-import { Service, Type, Field, Enum, Root, Namespace, ReflectionObject } from '@launchql/protobufjs';
+import { Enum } from '@launchql/protobufjs';
 
 export const generateEnum2StrJSON = (enums: Enum[]) => {
     const valueToName = {};

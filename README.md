@@ -22,6 +22,7 @@
 - [Output](#output)
 - [Using `PgProtoParser`](#using-pgprotoparser)
 - [Using the CLI](#using-the-cli)
+- [Options](#options)
 - [Related](#related)
 - [Disclaimer](#disclaimer)
 
@@ -39,7 +40,7 @@
 
 ## Output
 
-`pg-proto-parser` will generate the following files in the specified [`outputDir`](https://github.com/launchql/pg-proto-parser/tree/main/__fixtures__/output/parser):
+`pg-proto-parser` will generate the following files in the specified [`outDir`](https://github.com/launchql/pg-proto-parser/tree/main/__fixtures__/output/parser):
 
 - [`types.ts`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/parser/types.ts): TypeScript file containing interfaces for protobuf messages.
 - [`utils.ts`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/parser/utils.ts): TypeScript file containing utility functions for enums.
@@ -54,7 +55,7 @@ Here's how to parse protobuf files and generate the output:
 import { PgProtoParser } from 'pg-proto-parser';
 
 // Create PgProtoParser
-const parser = new PgProtoParser(inputFile, outputDir);
+const parser = new PgProtoParser(inFile, { outDir });
 
 // Generate TypeScript and JSON files
 await parser.write();
@@ -75,8 +76,24 @@ wget https://raw.githubusercontent.com/pganalyze/libpg_query/16-latest/protobuf/
 Run the CLI to parse the protobuf file and generate TypeScript outputs:
 
 ```bash
-pg-proto-parser --inputFile pg_query.proto --outputDir out
+pg-proto-parser --inFile pg_query.proto --outDir out
 ```
+
+## Options
+
+This table describes the options available for `PgProtoParserOptions`, their functionality, and default values.
+
+| Option                  | Description                                                                                       | Default Value        |
+|-------------------------|---------------------------------------------------------------------------------------------------|----------------------|
+| `includeEnumsJSON`      | Whether to generate JSON files mapping enum names to integer values and vice versa.               | `true`               |
+| `includeTypes`          | Whether to generate TypeScript interfaces for protobuf messages.                                  | `true`               |
+| `includeUtils`          | Whether to generate TypeScript utility functions for enums.                                       | `true`               |
+| `outDir`                | The directory where the generated files will be saved.                                            | `process.cwd() + "/out"` |
+| `parser.keepCase`       | Keeps field casing as defined in the protobuf file. If false, fields will be converted to camelCase. | `true`               |
+| `parser.alternateCommentMode` | Use alternate comment mode. Useful if the default parsing of comments is problematic.        | `true`               |
+| `parser.preferTrailingComment` | Give preference to trailing comments during parsing.                                          | `false`              |
+
+Each of these options can be set when initializing the `PgProtoParser` to customize its behavior and output.
 
 ## Related
 

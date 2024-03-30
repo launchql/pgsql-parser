@@ -1,6 +1,7 @@
 import { Service, Type, Field, Enum, Namespace, ReflectionObject } from '@launchql/protobufjs';
+import { PgProtoStoreOptions } from './types';
 interface IProtoStore {
-    outputDir: string;
+    options: PgProtoStoreOptions;
     root: ReflectionObject;
     services: Service[];
     types: Type[];
@@ -10,14 +11,14 @@ interface IProtoStore {
     _parse(node: ReflectionObject): void;
 }
 export declare class ProtoStore implements IProtoStore {
-    outputDir: string;
+    options: PgProtoStoreOptions;
     root: ReflectionObject;
     services: Service[];
     types: Type[];
     fields: Field[];
     enums: Enum[];
     namespaces: Namespace[];
-    constructor(root: ReflectionObject, outDir?: string);
+    constructor(root: ReflectionObject, options?: PgProtoStoreOptions);
     _parse(node: ReflectionObject, name?: string): void;
     write(): void;
 }

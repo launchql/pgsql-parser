@@ -1,42 +1,39 @@
 import { parse } from '@launchql/protobufjs';
 import { readFileSync } from 'fs';
 import { ProtoStore } from './store';
-
-export interface ParseProtoOptions {
-  keepCase?: boolean;
-  alternateCommentMode?: boolean;
-  preferTrailingComment?: boolean;
-}
-
-const protoParseOptionsDefaults: ParseProtoOptions = {
-  keepCase: true,
-  alternateCommentMode: true,
-  preferTrailingComment: false
-};
+import {
+  defaultPgProtoParserOptions,
+  PgProtoParserOptions
+} from './types';
 
 export class PgProtoParser {
-  private inputFile: string;
-  private outputDir: string;
-  private parseOptions: ParseProtoOptions;
+  inFile: string;
+  options: PgProtoParserOptions;
 
-  constructor(inputFile: string, outputDir: string, parseOptions?: ParseProtoOptions) {
-    this.inputFile = inputFile;
-    this.outputDir = outputDir;
-    this.parseOptions = { ...protoParseOptionsDefaults, ...parseOptions };
+  constructor(inFile: string, options?: PgProtoParserOptions) {
+    this.inFile = inFile;
+
+    // Merge the provided options with the default options
+    this.options = { ...defaultPgProtoParserOptions, ...options };
+
+    // If the 'parser' sub-object is explicitly provided, merge it separately to ensure deep merging
+    if (options?.parser) {
+      this.options.parser = { ...defaultPgProtoParserOptions.parser, ...options.parser };
+    }
   }
 
   private readProtoFile(): string {
-    return readFileSync(this.inputFile, 'utf-8');
+    return readFileSync(this.inFile, 'utf-8');
   }
 
   private parseProto(content: string): any {
-    return parse(content, this.parseOptions);
+    return parse(content, this.options.parser);
   }
 
   public write(): void {
     const protoContent = this.readProtoFile();
     const ast = this.parseProto(protoContent);
-    const store = new ProtoStore(ast.root, this.outputDir);
+    const store = new ProtoStore(ast.root, this.options);
     store.write();
   }
 }

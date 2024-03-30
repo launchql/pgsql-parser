@@ -3,6 +3,7 @@ import { generateTSEnums, generateTSInterfaces, generateTSEnumFunction } from '.
 import { generateEnum2IntJSON, generateEnum2StrJSON } from './json';
 import { sync as mkdirp } from 'mkdirp';
 import { writeFileSync } from 'fs';
+import { defaultPgProtoParserOptions, PgProtoStoreOptions } from './types';
 
 const cloneAndNameNode = (node: ReflectionObject, name: string) => {
   const clone = JSON.parse(JSON.stringify(node));
@@ -11,8 +12,9 @@ const cloneAndNameNode = (node: ReflectionObject, name: string) => {
     ...clone
   }
 }
+
 interface IProtoStore {
-  outputDir: string;
+  options: PgProtoStoreOptions;
   root: ReflectionObject;
   services: Service[];
   types: Type[];
@@ -23,7 +25,7 @@ interface IProtoStore {
   _parse(node: ReflectionObject): void;
 }
 export class ProtoStore implements IProtoStore {
-  outputDir: string;
+  options: PgProtoStoreOptions;
   root: ReflectionObject;
   services: Service[];
   types: Type[];
@@ -33,9 +35,16 @@ export class ProtoStore implements IProtoStore {
 
   constructor(
     root: ReflectionObject,
-    outDir: string = `${process.cwd()}/out`
+    options: PgProtoStoreOptions = {} as PgProtoStoreOptions
   ) {
-    this.outputDir = outDir;
+    this.options = {
+      includeEnumsJSON: defaultPgProtoParserOptions.includeEnumsJSON,
+      includeTypes: defaultPgProtoParserOptions.includeTypes,
+      includeUtils: defaultPgProtoParserOptions.includeUtils,
+      outDir: defaultPgProtoParserOptions.outDir,
+      ...options
+    };
+
     this.root = root;
     this.services = [];
     this.types = [];
@@ -66,19 +75,31 @@ export class ProtoStore implements IProtoStore {
 
   write() {
     // Ensure the output directory exists
-    mkdirp(this.outputDir);
+    mkdirp(this.options.outDir);
 
-    const enums2int = generateEnum2IntJSON(this.enums);
-    const enums2str = generateEnum2StrJSON(this.enums);
-    const typesTS = generateTSInterfaces(this.types);
-    const enumsTS = generateTSEnums(this.enums);
-    const utilsTS = generateTSEnumFunction(this.enums);
+    if (this.options.includeEnumsJSON) {
+      const enums2int = generateEnum2IntJSON(this.enums);
+      const enums2str = generateEnum2StrJSON(this.enums);
 
-    // Write the files
-    writeFileSync(`${this.outputDir}/enums2int.json`, JSON.stringify(enums2int, null, 2));
-    writeFileSync(`${this.outputDir}/enums2str.json`, JSON.stringify(enums2str, null, 2));
-    writeFileSync(`${this.outputDir}/types.ts`, `${enumsTS}\n${typesTS}`);
-    writeFileSync(`${this.outputDir}/utils.ts`, utilsTS);
+      // Write the files
+      writeFileSync(`${this.options.outDir}/enums2int.json`, JSON.stringify(enums2int, null, 2));
+      writeFileSync(`${this.options.outDir}/enums2str.json`, JSON.stringify(enums2str, null, 2));
+    }
+
+    if (this.options.includeTypes) {
+      const typesTS = generateTSInterfaces(this.types);
+      const enumsTS = generateTSEnums(this.enums);
+
+      // Write the files
+      writeFileSync(`${this.options.outDir}/types.ts`, `${enumsTS}\n${typesTS}`);
+    }
+
+    if (this.options.includeUtils) {
+      const utilsTS = generateTSEnumFunction(this.enums);
+
+      // Write the files
+      writeFileSync(`${this.options.outDir}/utils.ts`, utilsTS);
+    }
   }
 
 }

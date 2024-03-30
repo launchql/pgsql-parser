@@ -32,7 +32,7 @@ wget https://raw.githubusercontent.com/pganalyze/libpg_query/16-latest/protobuf/
 Run the CLI to parse the protobuf file and generate TypeScript outputs:
 
 ```bash
-pg-proto-parser --inputFile pg_query.proto --outputDir out
+pg-proto-parser --inFile pg_query.proto --outDir out
 ```
 
 
@@ -48,12 +48,32 @@ pg-proto-parser --inputFile pg_query.proto --outputDir out
 After installation, you can run the `pg-proto-parser` command as follows:
 
 ```bash
-pg-proto-parser --inputFile <path-to-proto> --outputDir <output-directory>
+pg-proto-parser --inFile <path-to-proto> --outDir <output-directory>
 ```
 
-- `--inputFile`: Path to the `.proto` file to be parsed.
-- `--outputDir`: Directory to save the generated TypeScript files.
+- `--inFile`: Path to the `.proto` file to be parsed.
+- `--outDir`: Directory to save the generated TypeScript files.
 
+## Options
+
+```bash
+pg-proto-parser --inFile <path-to-proto> --outDir <output-directory> [--includeEnumsJSON] [--includeTypes] [--includeUtils] [--keepCase] [--alternateCommentMode] [--preferTrailingComment]
+```
+
+| Option                  | Description                                                                                       | Default Value        |
+|-------------------------|---------------------------------------------------------------------------------------------------|----------------------|
+| `--inFile`              | Path to the `.proto` file to be parsed.                                                           | *Required*           |
+| `--outDir`              | Directory to save the generated TypeScript files.                                                 | *Required*           |
+| `--includeEnumsJSON`    | Generate JSON files mapping enum names to integer values and vice versa.                         | `true`               |
+| `--includeTypes`        | Generate TypeScript interfaces for protobuf messages.                                            | `true`               |
+| `--includeUtils`        | Generate TypeScript utility functions for enums.                                                 | `true`               |
+| `--keepCase`            | Keeps field casing as defined in the protobuf file. If false, fields will be converted to camelCase. | `true`               |
+| `--alternateCommentMode`| Use alternate comment mode. Useful if the default parsing of comments is problematic.            | `true`               |
+| `--preferTrailingComment`| Give preference to trailing comments during parsing.                                             | `false`              |
+
+To explicitly set a boolean option to false, prepend the option with `--no-`. For example, to disable JSON enum mapping, use `--no-includeEnumsJSON`.
+
+Note: Boolean flags default to true when specified without a value. To set them to false, use the no- prefix (e.g., `--no-includeEnumsJSON` will set `includeEnumsJSON` to false).
 
 ## Related
 

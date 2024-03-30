@@ -1,13 +1,8 @@
-export interface ParseProtoOptions {
-    keepCase?: boolean;
-    alternateCommentMode?: boolean;
-    preferTrailingComment?: boolean;
-}
+import { PgProtoParserOptions } from './types';
 export declare class PgProtoParser {
-    private inputFile;
-    private outputDir;
-    private parseOptions;
-    constructor(inputFile: string, outputDir: string, parseOptions?: ParseProtoOptions);
+    inFile: string;
+    options: PgProtoParserOptions;
+    constructor(inFile: string, options?: PgProtoParserOptions);
     private readProtoFile;
     private parseProto;
     write(): void;
