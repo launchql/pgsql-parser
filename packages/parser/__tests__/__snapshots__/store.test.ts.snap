@@ -1138,7 +1138,7 @@ exports[`convert protos to typescript 1`] = `
     "UMINUS": 758
   }
 }",
-    "file": "/Users/pyramation/code/launchql/pg-proto-parser/__fixtures__/output/store/enums2int.json",
+    "file": "enums2int.json",
   },
   {
     "code": "{
@@ -2276,7 +2276,7 @@ exports[`convert protos to typescript 1`] = `
     "758": "UMINUS"
   }
 }",
-    "file": "/Users/pyramation/code/launchql/pg-proto-parser/__fixtures__/output/store/enums2str.json",
+    "file": "enums2str.json",
   },
   {
     "code": "export enum OverridingKind {
@@ -5475,7 +5475,7 @@ export interface ScanToken {
   token: Token;
   keyword_kind: KeywordKind;
 }",
-    "file": "/Users/pyramation/code/launchql/pg-proto-parser/__fixtures__/output/store/types.ts",
+    "file": "types.ts",
   },
   {
     "code": "export type EnumType = "OverridingKind" | "QuerySource" | "SortByDir" | "SortByNulls" | "SetQuantifier" | "A_Expr_Kind" | "RoleSpecType" | "TableLikeOption" | "DefElemAction" | "PartitionStrategy" | "PartitionRangeDatumKind" | "RTEKind" | "WCOKind" | "GroupingSetKind" | "CTEMaterialize" | "SetOperation" | "ObjectType" | "DropBehavior" | "AlterTableType" | "GrantTargetType" | "VariableSetKind" | "ConstrType" | "ImportForeignSchemaType" | "RoleStmtType" | "FetchDirection" | "FunctionParameterMode" | "TransactionStmtKind" | "ViewCheckOption" | "DiscardMode" | "ReindexObjectType" | "AlterTSConfigType" | "PublicationObjSpecType" | "AlterPublicationAction" | "AlterSubscriptionType" | "OnCommitAction" | "ParamKind" | "CoercionContext" | "CoercionForm" | "BoolExprType" | "SubLinkType" | "RowCompareType" | "MinMaxOp" | "SQLValueFunctionOp" | "XmlExprOp" | "XmlOptionType" | "JsonEncoding" | "JsonFormatType" | "JsonConstructorType" | "JsonValueType" | "NullTestType" | "BoolTestType" | "CmdType" | "JoinType" | "AggStrategy" | "AggSplit" | "SetOpCmd" | "SetOpStrategy" | "OnConflictAction" | "LimitOption" | "LockClauseStrength" | "LockWaitPolicy" | "LockTupleMode" | "KeywordKind" | "Token";
@@ -9953,7 +9953,7 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
       throw new Error("Enum type not recognized");
   }
 };",
-    "file": "/Users/pyramation/code/launchql/pg-proto-parser/__fixtures__/output/store/utils.ts",
+    "file": "utils.ts",
   },
 ]
 `;

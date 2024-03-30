@@ -1,6 +1,6 @@
 import { parse } from '@launchql/protobufjs';
 import { readFileSync } from 'fs';
-import { join, resolve } from 'path'
+import { join, resolve, basename } from 'path'
 import { sync as glob } from 'glob'
 import { ProtoStore } from '../src/store'
 
@@ -35,6 +35,6 @@ it('convert protos to typescript', () => {
    const ast = parseProtoFile(testProtoFile);
    const store = new ProtoStore(ast.root, outputDir);
    store.write();
-   const out = glob(outputDir + '**/*').map(file=>({file, code: readFileSync(file, 'utf-8')}));
+   const out = glob(outputDir + '**/*').map(file=>({file: basename(file), code: readFileSync(file, 'utf-8')}));
    expect(out).toMatchSnapshot();
 });
