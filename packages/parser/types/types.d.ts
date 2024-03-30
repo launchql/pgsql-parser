@@ -2,6 +2,7 @@ export type PgProtoParserOptions = PgProtoStoreOptions & {
     parser?: ParseProtoOptions;
 };
 export interface PgProtoStoreOptions {
+    includeAstHelpers?: boolean;
     includeEnumsJSON?: boolean;
     includeTypes?: boolean;
     includeUtils?: boolean;

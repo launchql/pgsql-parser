@@ -1,5 +1,5 @@
 import { Service, Type, Field, Enum, Namespace, ReflectionObject } from '@launchql/protobufjs';
-import { generateTSEnums, generateTSInterfaces, generateTSEnumFunction, generateTSEnumsTypeUnionAST } from './ast';
+import { generateTSEnums, generateTSInterfaces, generateTSEnumFunction, generateTSEnumsTypeUnionAST, generateTSASTHelpersImports, generateTSASTHelperMethods } from './ast';
 import { generateEnum2IntJSON, generateEnum2StrJSON } from './json';
 import { sync as mkdirp } from 'mkdirp';
 import { defaultPgProtoParserOptions, PgProtoStoreOptions } from './types';
@@ -114,7 +114,7 @@ export class ProtoStore implements IProtoStore {
       }
 
       // Write the files
-      this.writeFile(`${this.options.outDir}/types.ts`, `${enumsTS}\n${typesTS}`);
+      this.writeFile(`${this.options.outDir}/types.ts`, [enumsTS, typesTS].join('\n'));
     }
 
     if (this.options.includeEnums) {
@@ -128,6 +128,14 @@ export class ProtoStore implements IProtoStore {
 
       // Write the files
       this.writeFile(`${this.options.outDir}/utils.ts`, utilsTS);
+    }
+
+    if (this.options.includeAstHelpers) {
+      const imports = generateTSASTHelpersImports(this.types, this.options);
+      const astsTS = generateTSASTHelperMethods(this.types);
+
+      // Write the files
+      this.writeFile(`${this.options.outDir}/asts.ts`, [imports, astsTS].join('\n'));
     }
   }
   writeFile (filename: string, content: string) {

@@ -21,6 +21,14 @@ export const getUndefinedKey = (enumName) => {
   return `${upperSnakeCase}_UNDEFINED`;
 }
 
+export const toSpecialCamelCase = (s) => {
+  return s
+      .replace(/_+/g, '') // Remove all underscores
+      .replace(/([A-Z]+)([A-Z][a-z]|$)/g, (match, p1, p2) => 
+          p1.toLowerCase() + p2 // Lowercase all but the last letter of consecutive caps
+      )
+      .replace(/^./, match => match.toLowerCase()); // Ensure the first character is lowercase
+}
 
 export const hasUndefinedInitialValue = (enumData: Enum) => {
   const entries = Object.entries(enumData.values);

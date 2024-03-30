@@ -1,11 +1,11 @@
-import { Service, Type, Field, Enum, Root, Namespace, ReflectionObject } from '@launchql/protobufjs';
+import { Type, Field, Enum } from '@launchql/protobufjs';
 import * as t from '@babel/types';
 import generate from '@babel/generator';
-import { getFieldName } from './utils';
-import { PgProtoParser } from './parser';
+import { getFieldName, toSpecialCamelCase } from './utils';
 import { PgProtoParserOptions } from './types';
+import { PgProtoParser } from './parser';
 
-export const getTSType = (type: string) => {
+export const getTSType = (type: string = 'any') => {
   switch (type) {
     case 'string':
       return t.tsStringKeyword();
@@ -28,7 +28,9 @@ export const getTSType = (type: string) => {
     case 'bool':
       return t.tsBooleanKeyword();
     default:
-      throw new Error('getTSType() type not found');
+      // For custom types, reference them directly
+      return t.tsTypeReference(t.identifier(type));
+
   };
 };
 
@@ -85,6 +87,17 @@ export const generateTSEnumFunction = (enums: Enum[]) => {
   const { code } = generate(ast);
   return code;
 }
+export const generateTSASTHelperMethods = (types: Type[]) => {
+  const ast = t.file(t.program([generateAstHelperMethodsAST(types)]));
+  const { code } = generate(ast);
+  return code;
+}
+
+export const generateTSASTHelpersImports = (types: Type[], options: PgProtoParserOptions) => {
+  const ast = t.file(t.program([generateImportSpecifiersAST(types, options)]));
+  const { code } = generate(ast);
+  return code;
+}
 
 export const transformEnumToAST = (enumData) => {
   const members = Object.entries(enumData.values).map(([key, value]) =>
@@ -95,19 +108,76 @@ export const transformEnumToAST = (enumData) => {
   return t.exportNamedDeclaration(enumDeclaration);
 };
 
+export const generateImportSpecifiersAST = (types: Type[], options: PgProtoParserOptions) => {
+  const importSpecifiers = types.map(type =>
+    t.importSpecifier(t.identifier(type.name), t.identifier(type.name))
+  );
+
+  const importDeclaration = t.importDeclaration(importSpecifiers, t.stringLiteral(options.astHelperTypeSource));
+  return importDeclaration;
+}
+
+export const generateAstHelperMethodsAST = (types: Type[]): t.ExportDefaultDeclaration => {
+  const creators = types.map((type: Type) => {
+    const typeName = type.name;
+    const param = t.identifier('_p');
+    param.optional = true;
+    param.typeAnnotation = t.tsTypeAnnotation(t.tsTypeReference(t.identifier(typeName)));
+
+    // @ts-ignore
+    const fields: Field[] = type.fields;
+    const properties = Object.entries(fields)
+      .map(([fieldName, field]) => {
+        return t.objectProperty(
+          t.identifier(getFieldName(field, fieldName)),
+          t.optionalMemberExpression(
+            t.identifier('_p'),
+            t.identifier(getFieldName(field, fieldName)),
+            false,
+            true // OPTIONAL
+          ),
+          false,
+          true
+        );
+      });
+
+
+    // Ensures camel case
+    const methodName = toSpecialCamelCase(typeName);
+
+    // Create the method
+    const method = t.objectMethod(
+      'method',
+      t.identifier(methodName),
+      [param],
+      t.blockStatement([
+        t.returnStatement(
+          t.objectExpression([
+            ...properties
+          ])
+        )
+      ])
+    );
+    method.returnType = t.tsTypeAnnotation(t.tsTypeReference(t.identifier(typeName)));
+    return method;
+  });
+
+  return t.exportDefaultDeclaration(t.objectExpression(creators));
+}
+
 export const transformTypeToAST = (type: Type, options: PgProtoParserOptions) => {
   const typeName = type.name;
   // @ts-ignore
   const fields: Field[] = type.fields;
   const properties =
     Object.entries(fields)
-      .map(([fieldName, fieldData]) => {
-        const type = resolveTypeName(fieldData.type);
-        const fieldType = fieldData.rule === 'repeated' ?
+      .map(([fieldName, field]) => {
+        const type = resolveTypeName(field.type);
+        const fieldType = field.rule === 'repeated' ?
           t.tsArrayType(type) :
           type;
         const prop = t.tsPropertySignature(
-          t.identifier(getFieldName(fieldData, fieldName)),
+          t.identifier(getFieldName(field, fieldName)),
           t.tsTypeAnnotation(fieldType)
         );
         prop.optional = options.optionalFields;

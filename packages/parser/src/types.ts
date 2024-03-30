@@ -3,15 +3,17 @@ export type PgProtoParserOptions = PgProtoStoreOptions & {
 };
 
 export interface PgProtoStoreOptions {
+    astHelperTypeSource?: string;
+    includeAstHelpers?: boolean;
+    includeEnums?: boolean;
     includeEnumsJSON?: boolean;
+    includeEnumTypeUnion?: boolean;
+    includeHeader?: boolean;
     includeTypes?: boolean;
     includeUtils?: boolean;
-    includeEnumTypeUnion?: boolean;
-    includeEnums?: boolean;
     optionalFields?: boolean;
-    removeUndefinedAt0?: boolean;
-    includeHeader?: boolean;
     outDir?: string;
+    removeUndefinedAt0?: boolean;
 }
 
 export interface ParseProtoOptions {
@@ -22,15 +24,17 @@ export interface ParseProtoOptions {
 
 // Define default options outside of the class
 export const defaultPgProtoParserOptions: PgProtoParserOptions = {
+    astHelperTypeSource: './types',
+    includeAstHelpers: true,
+    includeEnums: true,
     includeEnumsJSON: true,
+    includeEnumTypeUnion: true,
+    includeHeader: true,
     includeTypes: true,
     includeUtils: true,
-    includeEnumTypeUnion: true,
-    includeEnums: true,
-    includeHeader: true,
     optionalFields: true,
-    removeUndefinedAt0: true,
     outDir: `${process.cwd()}/out`,
+    removeUndefinedAt0: true,
     parser: {
         keepCase: true,
         alternateCommentMode: true,

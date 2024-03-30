@@ -17,6 +17,7 @@ export const help = (): void => {
   --inFile                    Path to the .proto file to be parsed.
   --outDir                    Directory to save the generated TypeScript files.
   --alternateCommentMode      Use alternate comment mode for parsing comments.
+  --includeAstHelpers        Generate TypeScript helpers to generate PostgreSQL ASTs.
   --includeEnums              Generate TypeScript enum types for PostgreSQL enums.
   --includeEnumsJSON          Generate JSON files mapping enum names to values.
   --includeEnumTypeUnion      Generate TypeScript unions from enum types.
@@ -50,6 +51,7 @@ export default async (argv) => {
 
   const options: PgProtoParserOptions = {
     outDir: argv.outDir,
+    includeAstHelpers: argv.includeAstHelpers ?? true,
     includeEnumsJSON: argv.includeEnumsJSON ?? true,
     includeTypes: argv.includeTypes ?? true,
     includeUtils: argv.includeUtils ?? true,
