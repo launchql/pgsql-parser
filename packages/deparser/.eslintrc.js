@@ -1,9 +1,10 @@
 module.exports = {
   plugins: ['prettier'],
   extends: ['eslint:recommended', 'prettier'],
-  parser: 'babel-eslint',
+  parser: 'esprima',
   parserOptions: {
     ecmaVersion: 11,
+    requireConfigFile: false,
     sourceType: 'module',
     ecmaFeatures: {
       jsx: true
@@ -31,7 +32,7 @@ module.exports = {
       0,
       {
         ignoreSiblings: true,
-        argsIgnorePattern: 'res|next|^_'
+        argsIgnorePattern: 'React|res|next|^_'
       }
     ],
     'prefer-const': [

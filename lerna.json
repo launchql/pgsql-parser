@@ -1,6 +1,5 @@
 {
   "lerna": "3.4.2",
-  "useWorkspaces": true,
   "conventionalCommits": true,
   "npmClient": "yarn",
   "npmClientArgs": [
