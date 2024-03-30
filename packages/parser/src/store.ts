@@ -104,7 +104,13 @@ export class ProtoStore implements IProtoStore {
     }
 
     if (this.options.includeTypes) {
-      const typesTS = generateTSInterfaces(this.types, this.options);
+      // TODO
+      // TODO
+      // TODO
+      // TODO
+      // - [ ] split into files — move union and/or enums into another files
+      const wrapped = generateTSInterfaces(this.types, this.options, true);
+      const typesTS = generateTSInterfaces(this.types, this.options, false);
       let enumsTS = '';
 
       if (this.options.includeEnumTypeUnion) {
@@ -115,6 +121,7 @@ export class ProtoStore implements IProtoStore {
 
       // Write the files
       this.writeFile(`${this.options.outDir}/types.ts`, [enumsTS, typesTS].join('\n'));
+      this.writeFile(`${this.options.outDir}/wrapped.ts`, [enumsTS, wrapped].join('\n'));
     }
 
     if (this.options.includeEnums) {

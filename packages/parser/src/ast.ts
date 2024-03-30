@@ -66,11 +66,15 @@ export const resolveTypeName = (type: string) => {
   return t.tsTypeReference(t.identifier(type));
 }
 
-export const generateTSInterfaces = (types: Type[], options: PgProtoParserOptions) => {
+export const generateTSInterfaces = (
+  types: Type[],
+  options: PgProtoParserOptions,
+  useNestedTypes: boolean
+) => {
   const node = createUnionTypeAST(types.filter(type => type.name !== 'Node'));
   const typeDefns = types.reduce((m, type) => {
     if (type.name === 'Node') return m;
-    return [...m, transformTypeToAST(type, options)]
+    return [...m, transformTypeToAST(type, options, useNestedTypes)]
   }, []);
 
   const ast = t.file(t.program(
@@ -260,7 +264,11 @@ export const createUnionTypeAST = (types: Type[]) => {
   return t.exportNamedDeclaration(unionTypeAlias, []);
 };
 
-export const transformTypeToAST = (type: Type, options: PgProtoParserOptions) => {
+export const transformTypeToAST = (
+  type: Type,
+  options: PgProtoParserOptions,
+  useNestedTypes: boolean
+) => {
   const typeName = type.name;
   // @ts-ignore
   const fields: Field[] = type.fields;
@@ -279,11 +287,26 @@ export const transformTypeToAST = (type: Type, options: PgProtoParserOptions) =>
         return prop;
       });
 
+
+  const nestedType = t.tsTypeLiteral(properties);
+  const nestedProperty = t.tsPropertySignature(
+    t.identifier(typeName),
+    t.tsTypeAnnotation(nestedType)
+  );
+
+
+  let body = [];
+  if (useNestedTypes && !specialTypes.includes(typeName)) {
+    body = [nestedProperty];
+  } else {
+    body = properties;
+  }
+
   const interfaceDecl = t.tsInterfaceDeclaration(
     t.identifier(typeName),
     null,
     [],
-    t.tsInterfaceBody(properties)
+    t.tsInterfaceBody(body)
   );
 
   // Wrap the interface declaration in an export statement
