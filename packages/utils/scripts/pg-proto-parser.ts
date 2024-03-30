@@ -7,7 +7,7 @@ const outDir: string = resolve(join(__dirname, '../src'));
 const parser = new PgProtoParser(inFile, {
   outDir,
   includeAstHelpers: true,
-  astHelperTypeSource: '@pgsql/types',
+  astHelperTypeSource: '@pgsql/types/types/wrapped',
   includeHeader: true,
   includeEnums: false,
   includeEnumsJSON: false,
@@ -16,6 +16,7 @@ const parser = new PgProtoParser(inFile, {
   includeUtils: true,
   optionalFields: true,
   removeUndefinedAt0: true,
+
   parser: {
     keepCase: false
   }
