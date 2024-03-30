@@ -15,13 +15,10 @@ const protoParseOptionsDefaults = {
   preferTrailingComment: false
 };
 
-// https://raw.githubusercontent.com/pganalyze/libpg_query/15-latest/protobuf/pg_query.proto
+// https://raw.githubusercontent.com/pganalyze/libpg_query/16-latest/protobuf/pg_query.proto
 const testProtoFile = resolve(join(__dirname, '../../../__fixtures__/proto/16-latest.proto'));
-const outProtoFile = resolve(join(__dirname, '../../../__fixtures__/proto/16-latest.json'));
-const outTSFile = resolve(join(__dirname, '../../../__fixtures__/proto/16-latest.ts'));
-const out2StrJSONFile = resolve(join(__dirname, '../../../__fixtures__/proto/16-latest.2str.json'));
-const out2IntJSONFile = resolve(join(__dirname, '../../../__fixtures__/proto/16-latest.2int.json'));
-const outEnumFuncFile = resolve(join(__dirname, '../../../__fixtures__/proto/16-latest.enumUtils.ts'));
+
+const outputDir = resolve(join(__dirname, '../../../__fixtures__/proto', 'output'));
 
 export const parseProtoFile = (filepath, options?: ParseProtoOptions) => {
   return parseProto(readFileSync(filepath, 'utf-8'), options);
@@ -34,16 +31,8 @@ export const parseProto = (content, options?: ParseProtoOptions) => {
   return parse(content, options);
 };
 
-it('works', () => {
+it('convert protos to typescript', () => {
    const ast = parseProtoFile(testProtoFile);
-//    console.log(JSON.stringify(ast, null, 2));
-
-   const store = new ProtoStore(ast.root);
-//    console.log(store.print());
-
-//    writeFileSync(outProtoFile, JSON.stringify(ast, null, 2));
-   writeFileSync(outTSFile, store.print());
-   writeFileSync(out2IntJSONFile, JSON.stringify(store.printEnum2IntJSON(), null, 2));
-   writeFileSync(out2StrJSONFile, JSON.stringify(store.printEnum2StrJSON(), null, 2));
-   writeFileSync(outEnumFuncFile, store.printEnumsFn());
+   const store = new ProtoStore(ast.root, outputDir);
+   store.write();
 });
