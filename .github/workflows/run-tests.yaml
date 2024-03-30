@@ -70,3 +70,6 @@ jobs:
 
       - name: types
         run: cd ./packages/types && yarn test
+
+      - name: utils
+        run: cd ./packages/utils && yarn test

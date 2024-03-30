@@ -1,11 +1,10 @@
-import { describe, expect, test } from '@jest/globals';
 import { CreateStmt } from '../src'
 
 const myTypedFunction = (createStmt: CreateStmt) => {
   expect(createStmt).toBeTruthy();
 };
 
-test('types', () => {
+it('types', () => {
   // here we just want to ensure there are no type errors
   // purposefully a simple test
   const ast: CreateStmt = {

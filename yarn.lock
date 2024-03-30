@@ -5438,10 +5438,10 @@ path-type@^4.0.0:
   resolved "https://registry.npmjs.org/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
-pg-proto-parser@^1.5.0:
-  version "1.5.0"
-  resolved "https://registry.npmjs.org/pg-proto-parser/-/pg-proto-parser-1.5.0.tgz#1df04f73740a69344e894ba97332d17333956d18"
-  integrity sha512-DlupcOGtR1HTSjFwzEpmZrfs0vK1yhgiHyy2kPzYVHxf12FAJsiYA0uwnGHEpozM/w1GcPGJY6+ha/iivmMNrQ==
+pg-proto-parser@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.npmjs.org/pg-proto-parser/-/pg-proto-parser-1.6.0.tgz#6d6ef3dfd79709fcf16be3c2ccb9008f77bed9d5"
+  integrity sha512-DLCHVM+88eRFUvnsF4cIBYeaQjan66wqnTCysj5PR9dfHrBViX9TB8VAQm6HYNMOc2EQI1NIi6u3v/UeZUa1fQ==
   dependencies:
     "@babel/generator" "^7.23.6"
     "@babel/parser" "^7.23.6"

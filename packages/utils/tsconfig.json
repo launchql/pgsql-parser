@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": "src",
+    "skipLibCheck": true,
+    "declaration": true,
+    "declarationDir": "./types",
+    "emitDeclarationOnly": false,
+    "isolatedModules": true,
+    "allowJs": true,
+
+    "esModuleInterop": true,
+    "target": "es2022",
+    "lib": ["es2022", "DOM"],
+    "downlevelIteration": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}

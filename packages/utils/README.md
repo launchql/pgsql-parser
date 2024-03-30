@@ -1,4 +1,4 @@
-# @pgsql/enums
+# @pgsql/utils
 
 <p align="center" width="100%">
   <img height="120" src="https://github.com/launchql/pgsql-parser/assets/545047/6440fa7d-918b-4a3b-8d1b-755d85de8bea" />
@@ -8,43 +8,57 @@
   <a href="https://github.com/launchql/pgsql-parser/actions/workflows/run-tests.yaml">
     <img height="20" src="https://github.com/launchql/pgsql-parser/actions/workflows/run-tests.yaml/badge.svg" />
   </a>
-   <a href="https://www.npmjs.com/package/@pgsql/enums"><img height="20" src="https://img.shields.io/npm/dt/@pgsql/enums"></a>
-   <a href="https://www.npmjs.com/package/@pgsql/enums"><img height="20" src="https://img.shields.io/npm/dw/@pgsql/enums"/></a>
+   <a href="https://www.npmjs.com/package/@pgsql/utils"><img height="20" src="https://img.shields.io/npm/dt/@pgsql/utils"></a>
+   <a href="https://www.npmjs.com/package/@pgsql/utils"><img height="20" src="https://img.shields.io/npm/dw/@pgsql/utils"/></a>
    <a href="https://github.com/launchql/pgsql-parser/blob/main/LICENSE-MIT"><img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
-   <a href="https://www.npmjs.com/package/@pgsql/enums"><img height="20" src="https://img.shields.io/github/package-json/v/launchql/pgsql-parser?filename=packages%2Fenums%2Fpackage.json"/></a>
+   <a href="https://www.npmjs.com/package/@pgsql/utils"><img height="20" src="https://img.shields.io/github/package-json/v/launchql/pgsql-parser?filename=packages%2Fenums%2Fpackage.json"/></a>
 </p>
 
-`@pgsql/enums` is a package that provides PostgreSQL AST enums in TypeScript for easier usage and type safety within your projects that interact with PostgreSQL's AST nodes.
+`@pgsql/utils` is a companion utility library for `@pgsql/types`, providing convenient functions to work with PostgreSQL Abstract Syntax Tree (AST) node enumerations in a type-safe manner. This library simplifies the process of converting between enum names and their respective integer values, as defined in the PostgreSQL parser output.
+
+## Features
+
+- Type-safe enum value conversion: Convert between string and integer representations of PostgreSQL AST enum values.
+- Comprehensive coverage: Supports all enum types defined in the PostgreSQL AST.
+- Designed to be used alongside the `@pgsql/types` package for a complete AST handling solution.
 
 ## Installation
 
+To add `@pgsql/utils` to your project, use the following npm command:
+
 ```bash
-npm install @pgsql/enums
+npm install @pgsql/utils
 ```
 
 ## Usage
 
-After installation, you can import the enums directly from the package and use them in your code. This helps in maintaining type safety and ensuring that only valid enum values are used.
+`@pgsql/utils` provides the `getEnumValue` function to convert between the string and integer representations of enum values.
+
+Here are a couple of examples demonstrating how to use `@pgsql/utils` in real applications:
+
+### Example 1: Converting Enum Name to Integer
+
+Suppose you are working with the A_Expr_Kind enum and you have the name of an enum value. You can get its integer representation like this:
 
 ```ts
-import { A_Expr_Kind } from '@pgsql/enums';
+import { getEnumValue } from '@pgsql/utils';
 
-// Example usage
-const exprKind: A_Expr_Kind = A_Expr_Kind.AEXPR_LIKE;
+const enumName = 'AEXPR_OP';
+const enumValue = getEnumValue('A_Expr_Kind', enumName);
 
-switch(exprKind) {
-    case A_Expr_Kind.AEXPR_IN:
-    case A_Expr_Kind.AEXPR_BETWEEN:
-    case A_Expr_Kind.AEXPR_BETWEEN_SYM:
-    // Add other enum cases as needed
-        console.log('Enum value is valid');
-        break;
-    default:
-        throw new Error('Unexpected enum value');
-}
+console.log(enumValue); // Outputs the integer value corresponding to 'AEXPR_OP'
 ```
 
-In this example, `A_Expr_Kind` is an enum imported from `@pgsql/enums`, and exprKind is a variable of type `A_Expr_Kind`. This setup ensures that exprKind can only hold values that are valid members of the `A_Expr_Kind` enum, providing compile-time type checking and reducing runtime errors.
+### Example 2: Converting Integer to Enum Name
+
+```ts
+import { getEnumValue } from '@pgsql/utils';
+
+const intValue = 1;
+const enumName = getEnumValue('SortByDir', intValue);
+
+console.log(enumName); // Outputs 'SORTBY_ASC' if 1 corresponds to 'SORTBY_ASC'
+```
 
 ## Related
 
@@ -56,6 +70,7 @@ In this example, `A_Expr_Kind` is an enum imported from `@pgsql/enums`, and expr
 * [@pgsql/utils](https://github.com/launchql/pgsql-parser/tree/master/packages/utils): A utility library for working with PostgreSQL AST node enumerations in a type-safe way, easing enum name and value conversions.
 * [pg-proto-parser](https://github.com/launchql/pg-proto-parser): A TypeScript tool that parses PostgreSQL Protocol Buffers definitions to generate TypeScript interfaces, utility functions, and JSON mappings for enums.
 * [libpg-query-node](https://github.com/launchql/libpg-query-node): The real PostgreSQL parser exposed for Node.js, used primarily in `pgsql-parser` for parsing and deparsing SQL queries.
+
 ## Disclaimer
 
 AS DESCRIBED IN THE LICENSES, THE SOFTWARE IS PROVIDED “AS IS”, AT YOUR OWN RISK, AND WITHOUT WARRANTIES OF ANY KIND.

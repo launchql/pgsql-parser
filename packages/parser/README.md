@@ -14,9 +14,7 @@
    <a href="https://www.npmjs.com/package/pgsql-parser"><img height="20" src="https://img.shields.io/github/package-json/v/launchql/pgsql-parser?filename=packages%2Fparser%2Fpackage.json"/></a>
 </p>
 
-The real PostgreSQL parser for nodejs. The primary objective of this module is to provide symmetric parsing and deparsing of SQL statements. With this module you can modify parts of a SQL query statement and serialize the query tree back into a formatted SQL statement. It uses the *real* [PostgreSQL parser](https://github.com/pganalyze/libpg_query).
-
-The main functionality provided by this module is deparsing, which PostgreSQL does not have internally.
+The real PostgreSQL parser for Node.js, `pgsql-parser` provides symmetric parsing and deparsing of SQL statements using the actual [PostgreSQL parser](https://github.com/pganalyze/libpg_query). It allows you to parse SQL queries into AST and modify or reconstruct SQL queries from the AST.
 
 ## Installation
 
@@ -24,15 +22,22 @@ The main functionality provided by this module is deparsing, which PostgreSQL do
 npm install pgsql-parser
 ```
 
+## Key Features
+
+- **True PostgreSQL Parsing:** Utilizes the real PostgreSQL source code for accurate parsing.
+- **Symmetric Parsing and Deparsing:** Convert SQL to AST and back, enabling query manipulation.
+- **AST Manipulation:** Easily modify parts of a SQL statement through the AST.
+
 ## Parser Example
 
 Rewrite part of a SQL query:
 
 ```js
-const { parse, deparse } = require('pgsql-parser');
+import { parse, deparse } from 'pgsql-parser';
 
 const stmts = parse('SELECT * FROM test_table');
 
+// Assuming the structure of stmts is known and matches the expected type
 stmts[0].RawStmt.stmt.SelectStmt.fromClause[0].RangeVar.relname = 'another_table';
 
 console.log(deparse(stmts));
@@ -42,19 +47,25 @@ console.log(deparse(stmts));
 
 ## Deparser Example
 
-The deparser can be used separately, which removes many deps required for the parser:
+The deparser functionality is provided as a standalone module, enabling you to serialize AST (Abstract Syntax Tree) objects back to SQL statements without the need for the full parsing engine. This separation is particularly beneficial for environments where the native dependencies of the full parser are problematic or unnecessary. For instance, if you already have an AST representation of your SQL query and merely need to convert it back to a SQL string, you can use the pgsql-deparser module directly. This module is implemented in pure TypeScript, avoiding the need for native bindings and thereby simplifying deployment and compatibility across different environments.
 
-```js
-const { parse } = require('pgsql-parser');
-const { deparse } = require('pgsql-deparser');
+Here's how you can use the deparser in your TypeScript code:
 
-const stmts = parse('SELECT * FROM test_table');
+```ts
+import { deparse } from 'pgsql-deparser';
 
+// Assuming `stmts` is an AST object for the query 'SELECT * FROM test_table'
+// This could have been obtained from any source, not necessarily the pgsql-parser
+const stmts = getAstFromSomewhere();
+
+// Modify the AST as needed
 stmts[0].RawStmt.stmt.SelectStmt.fromClause[0].RangeVar.relname = 'another_table';
 
+// Deparse the modified AST back to a SQL string
 console.log(deparse(stmts));
 
-// SELECT * FROM "another_table"
+// Output: SELECT * FROM "another_table"
+
 ```
 
 ## CLI
@@ -121,16 +132,31 @@ Our latest is built with `13-latest` branch from libpg_query
 
 ## Related
 
-* [libpg-query-node](https://github.com/launchql/libpg-query-node)
+* [pgsql-parser](https://github.com/launchql/pgsql-parser): The real PostgreSQL parser for Node.js, providing symmetric parsing and deparsing of SQL statements with actual PostgreSQL parser integration.
+* [pgsql-deparser](https://github.com/launchql/pgsql-deparser): A streamlined tool designed for converting PostgreSQL ASTs back into SQL queries, focusing solely on deparser functionality to complement `pgsql-parser`.
+* [pgsql-enums](https://github.com/launchql/pgsql-enums): A utility package offering easy access to PostgreSQL enumeration types in JSON format, aiding in string and integer conversions of enums used within ASTs to compliment `pgsql-parser`
+* [@pgsql/enums](https://github.com/launchql/pgsql-parser/tree/master/packages/enums): Provides PostgreSQL AST enums in TypeScript, enhancing type safety and usability in projects interacting with PostgreSQL AST nodes.
+* [@pgsql/types](https://github.com/launchql/pgsql-parser/tree/master/packages/types): Offers TypeScript type definitions for PostgreSQL AST nodes, facilitating type-safe construction, analysis, and manipulation of ASTs.
+* [@pgsql/utils](https://github.com/launchql/pgsql-parser/tree/master/packages/utils): A utility library for working with PostgreSQL AST node enumerations in a type-safe way, easing enum name and value conversions.
+* [pg-proto-parser](https://github.com/launchql/pg-proto-parser): A TypeScript tool that parses PostgreSQL Protocol Buffers definitions to generate TypeScript interfaces, utility functions, and JSON mappings for enums.
+* [libpg-query-node](https://github.com/launchql/libpg-query-node): The real PostgreSQL parser exposed for Node.js, used primarily in `pgsql-parser` for parsing and deparsing SQL queries.
+
+Thanks @lfittl for building the core `libpg_query` suite:
+
 * [libpg_query](https://github.com/pganalyze/libpg_query)
 * [pg_query](https://github.com/lfittl/pg_query)
 * [pg_query.go](https://github.com/lfittl/pg_query.go)
 
 ## Credits
 
+Thanks to @zhm for the OG parser that started it all:
+
 * [pg-query-parser](https://github.com/zhm/pg-query-parser)
 * [pg-query-native](https://github.com/zhm/node-pg-query-native)
+* [Original LICENSE](https://github.com/zhm/pg-query-parser/blob/master/LICENSE.md)
 
-License: https://github.com/zhm/pg-query-parser/blob/master/LICENSE.md
+## Disclaimer
 
-Thanks to https://github.com/zhm/pg-query-parser we've been able to start this repo and add a lot of functionality
+AS DESCRIBED IN THE LICENSES, THE SOFTWARE IS PROVIDED “AS IS”, AT YOUR OWN RISK, AND WITHOUT WARRANTIES OF ANY KIND.
+
+No developer or entity involved in creating Software will be liable for any claims or damages whatsoever associated with your use, inability to use, or your interaction with other users of the Software code or Software CLI, including any direct, indirect, incidental, special, exemplary, punitive or consequential damages, or loss of profits, cryptocurrencies, tokens, or anything else of value.

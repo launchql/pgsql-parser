@@ -8,9 +8,9 @@ const parser = new PgProtoParser(inFile, {
   outDir,
   includeEnums: false,
   includeEnumsJSON: false,
-  includeEnumTypeUnion: true,
-  includeTypes: true,
-  includeUtils: false,
+  includeEnumTypeUnion: false,
+  includeTypes: false,
+  includeUtils: true,
   optionalFields: true,
   removeUndefinedAt0: true,
   parser: {
