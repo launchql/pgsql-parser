@@ -1,5 +1,5 @@
 import { Service, Type, Field, Enum, Namespace, ReflectionObject } from '@launchql/protobufjs';
-import { generateTSEnums, generateTSInterfaces, generateTSEnumFunction } from './ast';
+import { generateTSEnums, generateTSInterfaces, generateTSEnumFunction, generateTSEnumsTypeUnionAST } from './ast';
 import { generateEnum2IntJSON, generateEnum2StrJSON } from './json';
 import { sync as mkdirp } from 'mkdirp';
 import { writeFileSync } from 'fs';
@@ -42,6 +42,7 @@ export class ProtoStore implements IProtoStore {
       includeEnumsJSON: defaultPgProtoParserOptions.includeEnumsJSON,
       includeTypes: defaultPgProtoParserOptions.includeTypes,
       includeUtils: defaultPgProtoParserOptions.includeUtils,
+      includeEnumTypeUnion: defaultPgProtoParserOptions.includeEnumTypeUnion,
       outDir: defaultPgProtoParserOptions.outDir,
       ...options
     };
@@ -117,6 +118,13 @@ export class ProtoStore implements IProtoStore {
 
       // Write the files
       writeFileSync(`${this.options.outDir}/types.ts`, `${enumsTS}\n${typesTS}`);
+    }
+
+    if (this.options.includeEnumTypeUnion) {
+      const enumTypeUnionTS = generateTSEnumsTypeUnionAST(this.enums);
+
+      // Write the files
+      writeFileSync(`${this.options.outDir}/enums.ts`, enumTypeUnionTS);
     }
 
     if (this.options.includeUtils) {

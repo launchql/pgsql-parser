@@ -1,3 +1,4 @@
-import { Enum } from '@launchql/protobufjs';
-export declare function getUndefinedKey(enumName: any): string;
-export declare function hasUndefinedInitialValue(enumData: Enum): boolean;
+import { Enum, Field } from '@launchql/protobufjs';
+export declare const getUndefinedKey: (enumName: any) => string;
+export declare const hasUndefinedInitialValue: (enumData: Enum) => boolean;
+export declare const getFieldName: (field: Field, fallbackName: string) => any;

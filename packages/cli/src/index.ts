@@ -14,6 +14,7 @@ export default async (argv) => {
     includeEnumsJSON: argv.hasOwnProperty('includeEnumsJSON') ? argv.includeEnumsJSON : true,
     includeTypes: argv.hasOwnProperty('includeTypes') ? argv.includeTypes : true,
     includeUtils: argv.hasOwnProperty('includeUtils') ? argv.includeUtils : true,
+    includeEnumTypeUnion: argv.hasOwnProperty('includeEnumTypeUnion') ? argv.includeEnumTypeUnion : true,
     removeUndefinedAt0: argv.hasOwnProperty('removeUndefinedAt0') ? argv.removeUndefinedAt0 : true,
     parser: {
       keepCase: argv.hasOwnProperty('keepCase') ? argv.keepCase : true,

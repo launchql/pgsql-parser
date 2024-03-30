@@ -7,5 +7,7 @@ export declare const transformEnumToAST: (enumData: any) => t.ExportNamedDeclara
 export declare const transformTypeToAST: (type: Type) => t.ExportNamedDeclaration;
 export declare const generateTSInterfaces: (types: Type[]) => string;
 export declare const generateTSEnums: (enums: Enum[]) => string;
+export declare const generateTSEnumsTypeUnionAST: (enums: Enum[]) => string;
 export declare const generateTSEnumFunction: (enums: Enum[]) => string;
+export declare const transformEnumToTypeUnionAST: (enumData: Enum) => t.ExportNamedDeclaration;
 export declare const buildEnumValueFunctionAST: (enumData: Enum[]) => t.ExportNamedDeclaration[];

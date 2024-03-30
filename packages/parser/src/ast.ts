@@ -106,12 +106,33 @@ export const generateTSEnums = (enums: Enum[]) => {
   return code;
 }
 
+export const generateTSEnumsTypeUnionAST = (enums: Enum[]) => {
+  const ast = t.file(t.program(enums.map(enm => transformEnumToTypeUnionAST(enm))));
+  const { code } = generate(ast);
+  return code;
+}
+
 export const generateTSEnumFunction = (enums: Enum[]) => {
   const ast = t.file(t.program(buildEnumValueFunctionAST(enums)));
   const { code } = generate(ast);
   return code;
 }
 
+export const transformEnumToTypeUnionAST = (enumData: Enum) => {
+  const literals = Object.keys(enumData.values).map(key =>
+    t.tsLiteralType(t.stringLiteral(key))
+  );
+
+  const unionType = t.tsUnionType(literals);
+
+  const typeAlias = t.tsTypeAliasDeclaration(
+    t.identifier(enumData.name),
+    null,
+    unionType
+  );
+
+  return t.exportNamedDeclaration(typeAlias);
+};
 
 
 export const buildEnumValueFunctionAST = (enumData: Enum[]) => {
