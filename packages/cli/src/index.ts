@@ -5,19 +5,19 @@ export default async (argv) => {
   if (!argv.inFile || !argv.outDir) {
     console.log('inFile and outDir are required!');
     console.log('Usage:');
-    console.log('pg-proto-parser --inFile=input.proto --outDir=out [--includeEnumsJSON] [--includeTypes] [--includeUtils]');
+    console.log('pg-proto-parser --inFile input.proto --outDir out [--includeEnumsJSON] [--includeTypes] [--includeUtils]');
     process.exit(1);
   }
 
   const options: PgProtoParserOptions = {
     outDir: argv.outDir,
-    includeEnumsJSON: argv.includeEnumsJSON,
-    includeTypes: argv.includeTypes,
-    includeUtils: argv.includeUtils,
+    includeEnumsJSON: argv.hasOwnProperty('includeEnumsJSON') ? argv.includeEnumsJSON : true,
+    includeTypes: argv.hasOwnProperty('includeTypes') ? argv.includeTypes : true,
+    includeUtils: argv.hasOwnProperty('includeUtils') ? argv.includeUtils : true,
     parser: {
-      keepCase: argv.keepCase,
-      alternateCommentMode: argv.alternateCommentMode,
-      preferTrailingComment: argv.preferTrailingComment
+      keepCase: argv.hasOwnProperty('keepCase') ? argv.keepCase : true,
+      alternateCommentMode: argv.hasOwnProperty('alternateCommentMode') ? argv.alternateCommentMode : true,
+      preferTrailingComment: argv.hasOwnProperty('preferTrailingComment') ? argv.preferTrailingComment : false
     }
   };
 
