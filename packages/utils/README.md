@@ -8,8 +8,8 @@
   <a href="https://github.com/launchql/pgsql-parser/actions/workflows/run-tests.yaml">
     <img height="20" src="https://github.com/launchql/pgsql-parser/actions/workflows/run-tests.yaml/badge.svg" />
   </a>
-   <a href="https://www.npmjs.com/package/@pgsql/utils"><img height="20" src="https://img.shields.io/npm/dt/@pgsql/utils"></a>
-   <a href="https://www.npmjs.com/package/@pgsql/utils"><img height="20" src="https://img.shields.io/npm/dw/@pgsql/utils"/></a>
+   <!-- <a href="https://www.npmjs.com/package/@pgsql/utils"><img height="20" src="https://img.shields.io/npm/dt/@pgsql/utils"></a> -->
+   <!-- <a href="https://www.npmjs.com/package/@pgsql/utils"><img height="20" src="https://img.shields.io/npm/dw/@pgsql/utils"/></a> -->
    <a href="https://github.com/launchql/pgsql-parser/blob/main/LICENSE-MIT"><img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
    <a href="https://www.npmjs.com/package/@pgsql/utils"><img height="20" src="https://img.shields.io/github/package-json/v/launchql/pgsql-parser?filename=packages%2Fenums%2Fpackage.json"/></a>
 </p>
