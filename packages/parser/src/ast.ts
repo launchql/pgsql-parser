@@ -79,8 +79,8 @@ export const transformTypeToAST = (type: Type) => {
         const fieldType = fieldData.rule === 'repeated' ?
           t.tsArrayType(type) :
           type;
-
-        return t.tsPropertySignature(t.identifier(fieldName), t.tsTypeAnnotation(fieldType));
+          const name = fieldData.options?.json_name ? fieldData.options.json_name : fieldName;
+        return t.tsPropertySignature(t.identifier(name), t.tsTypeAnnotation(fieldType));
       });
 
   const interfaceDecl = t.tsInterfaceDeclaration(

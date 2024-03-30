@@ -3421,258 +3421,258 @@ export interface ScanResult {
   tokens: ScanToken[];
 }
 export interface Node {
-  alias: Alias;
-  range_var: RangeVar;
-  table_func: TableFunc;
-  into_clause: IntoClause;
-  var: Var;
-  param: Param;
-  aggref: Aggref;
-  grouping_func: GroupingFunc;
-  window_func: WindowFunc;
-  subscripting_ref: SubscriptingRef;
-  func_expr: FuncExpr;
-  named_arg_expr: NamedArgExpr;
-  op_expr: OpExpr;
-  distinct_expr: DistinctExpr;
-  null_if_expr: NullIfExpr;
-  scalar_array_op_expr: ScalarArrayOpExpr;
-  bool_expr: BoolExpr;
-  sub_link: SubLink;
-  sub_plan: SubPlan;
-  alternative_sub_plan: AlternativeSubPlan;
-  field_select: FieldSelect;
-  field_store: FieldStore;
-  relabel_type: RelabelType;
-  coerce_via_io: CoerceViaIO;
-  array_coerce_expr: ArrayCoerceExpr;
-  convert_rowtype_expr: ConvertRowtypeExpr;
-  collate_expr: CollateExpr;
-  case_expr: CaseExpr;
-  case_when: CaseWhen;
-  case_test_expr: CaseTestExpr;
-  array_expr: ArrayExpr;
-  row_expr: RowExpr;
-  row_compare_expr: RowCompareExpr;
-  coalesce_expr: CoalesceExpr;
-  min_max_expr: MinMaxExpr;
-  sqlvalue_function: SQLValueFunction;
-  xml_expr: XmlExpr;
-  json_format: JsonFormat;
-  json_returning: JsonReturning;
-  json_value_expr: JsonValueExpr;
-  json_constructor_expr: JsonConstructorExpr;
-  json_is_predicate: JsonIsPredicate;
-  null_test: NullTest;
-  boolean_test: BooleanTest;
-  coerce_to_domain: CoerceToDomain;
-  coerce_to_domain_value: CoerceToDomainValue;
-  set_to_default: SetToDefault;
-  current_of_expr: CurrentOfExpr;
-  next_value_expr: NextValueExpr;
-  inference_elem: InferenceElem;
-  target_entry: TargetEntry;
-  range_tbl_ref: RangeTblRef;
-  join_expr: JoinExpr;
-  from_expr: FromExpr;
-  on_conflict_expr: OnConflictExpr;
-  query: Query;
-  type_name: TypeName;
-  column_ref: ColumnRef;
-  param_ref: ParamRef;
-  a_expr: A_Expr;
-  type_cast: TypeCast;
-  collate_clause: CollateClause;
-  role_spec: RoleSpec;
-  func_call: FuncCall;
-  a_star: A_Star;
-  a_indices: A_Indices;
-  a_indirection: A_Indirection;
-  a_array_expr: A_ArrayExpr;
-  res_target: ResTarget;
-  multi_assign_ref: MultiAssignRef;
-  sort_by: SortBy;
-  window_def: WindowDef;
-  range_subselect: RangeSubselect;
-  range_function: RangeFunction;
-  range_table_func: RangeTableFunc;
-  range_table_func_col: RangeTableFuncCol;
-  range_table_sample: RangeTableSample;
-  column_def: ColumnDef;
-  table_like_clause: TableLikeClause;
-  index_elem: IndexElem;
-  def_elem: DefElem;
-  locking_clause: LockingClause;
-  xml_serialize: XmlSerialize;
-  partition_elem: PartitionElem;
-  partition_spec: PartitionSpec;
-  partition_bound_spec: PartitionBoundSpec;
-  partition_range_datum: PartitionRangeDatum;
-  partition_cmd: PartitionCmd;
-  range_tbl_entry: RangeTblEntry;
-  rtepermission_info: RTEPermissionInfo;
-  range_tbl_function: RangeTblFunction;
-  table_sample_clause: TableSampleClause;
-  with_check_option: WithCheckOption;
-  sort_group_clause: SortGroupClause;
-  grouping_set: GroupingSet;
-  window_clause: WindowClause;
-  row_mark_clause: RowMarkClause;
-  with_clause: WithClause;
-  infer_clause: InferClause;
-  on_conflict_clause: OnConflictClause;
-  ctesearch_clause: CTESearchClause;
-  ctecycle_clause: CTECycleClause;
-  common_table_expr: CommonTableExpr;
-  merge_when_clause: MergeWhenClause;
-  merge_action: MergeAction;
-  trigger_transition: TriggerTransition;
-  json_output: JsonOutput;
-  json_key_value: JsonKeyValue;
-  json_object_constructor: JsonObjectConstructor;
-  json_array_constructor: JsonArrayConstructor;
-  json_array_query_constructor: JsonArrayQueryConstructor;
-  json_agg_constructor: JsonAggConstructor;
-  json_object_agg: JsonObjectAgg;
-  json_array_agg: JsonArrayAgg;
-  raw_stmt: RawStmt;
-  insert_stmt: InsertStmt;
-  delete_stmt: DeleteStmt;
-  update_stmt: UpdateStmt;
-  merge_stmt: MergeStmt;
-  select_stmt: SelectStmt;
-  set_operation_stmt: SetOperationStmt;
-  return_stmt: ReturnStmt;
-  plassign_stmt: PLAssignStmt;
-  create_schema_stmt: CreateSchemaStmt;
-  alter_table_stmt: AlterTableStmt;
-  replica_identity_stmt: ReplicaIdentityStmt;
-  alter_table_cmd: AlterTableCmd;
-  alter_collation_stmt: AlterCollationStmt;
-  alter_domain_stmt: AlterDomainStmt;
-  grant_stmt: GrantStmt;
-  object_with_args: ObjectWithArgs;
-  access_priv: AccessPriv;
-  grant_role_stmt: GrantRoleStmt;
-  alter_default_privileges_stmt: AlterDefaultPrivilegesStmt;
-  copy_stmt: CopyStmt;
-  variable_set_stmt: VariableSetStmt;
-  variable_show_stmt: VariableShowStmt;
-  create_stmt: CreateStmt;
-  constraint: Constraint;
-  create_table_space_stmt: CreateTableSpaceStmt;
-  drop_table_space_stmt: DropTableSpaceStmt;
-  alter_table_space_options_stmt: AlterTableSpaceOptionsStmt;
-  alter_table_move_all_stmt: AlterTableMoveAllStmt;
-  create_extension_stmt: CreateExtensionStmt;
-  alter_extension_stmt: AlterExtensionStmt;
-  alter_extension_contents_stmt: AlterExtensionContentsStmt;
-  create_fdw_stmt: CreateFdwStmt;
-  alter_fdw_stmt: AlterFdwStmt;
-  create_foreign_server_stmt: CreateForeignServerStmt;
-  alter_foreign_server_stmt: AlterForeignServerStmt;
-  create_foreign_table_stmt: CreateForeignTableStmt;
-  create_user_mapping_stmt: CreateUserMappingStmt;
-  alter_user_mapping_stmt: AlterUserMappingStmt;
-  drop_user_mapping_stmt: DropUserMappingStmt;
-  import_foreign_schema_stmt: ImportForeignSchemaStmt;
-  create_policy_stmt: CreatePolicyStmt;
-  alter_policy_stmt: AlterPolicyStmt;
-  create_am_stmt: CreateAmStmt;
-  create_trig_stmt: CreateTrigStmt;
-  create_event_trig_stmt: CreateEventTrigStmt;
-  alter_event_trig_stmt: AlterEventTrigStmt;
-  create_plang_stmt: CreatePLangStmt;
-  create_role_stmt: CreateRoleStmt;
-  alter_role_stmt: AlterRoleStmt;
-  alter_role_set_stmt: AlterRoleSetStmt;
-  drop_role_stmt: DropRoleStmt;
-  create_seq_stmt: CreateSeqStmt;
-  alter_seq_stmt: AlterSeqStmt;
-  define_stmt: DefineStmt;
-  create_domain_stmt: CreateDomainStmt;
-  create_op_class_stmt: CreateOpClassStmt;
-  create_op_class_item: CreateOpClassItem;
-  create_op_family_stmt: CreateOpFamilyStmt;
-  alter_op_family_stmt: AlterOpFamilyStmt;
-  drop_stmt: DropStmt;
-  truncate_stmt: TruncateStmt;
-  comment_stmt: CommentStmt;
-  sec_label_stmt: SecLabelStmt;
-  declare_cursor_stmt: DeclareCursorStmt;
-  close_portal_stmt: ClosePortalStmt;
-  fetch_stmt: FetchStmt;
-  index_stmt: IndexStmt;
-  create_stats_stmt: CreateStatsStmt;
-  stats_elem: StatsElem;
-  alter_stats_stmt: AlterStatsStmt;
-  create_function_stmt: CreateFunctionStmt;
-  function_parameter: FunctionParameter;
-  alter_function_stmt: AlterFunctionStmt;
-  do_stmt: DoStmt;
-  inline_code_block: InlineCodeBlock;
-  call_stmt: CallStmt;
-  call_context: CallContext;
-  rename_stmt: RenameStmt;
-  alter_object_depends_stmt: AlterObjectDependsStmt;
-  alter_object_schema_stmt: AlterObjectSchemaStmt;
-  alter_owner_stmt: AlterOwnerStmt;
-  alter_operator_stmt: AlterOperatorStmt;
-  alter_type_stmt: AlterTypeStmt;
-  rule_stmt: RuleStmt;
-  notify_stmt: NotifyStmt;
-  listen_stmt: ListenStmt;
-  unlisten_stmt: UnlistenStmt;
-  transaction_stmt: TransactionStmt;
-  composite_type_stmt: CompositeTypeStmt;
-  create_enum_stmt: CreateEnumStmt;
-  create_range_stmt: CreateRangeStmt;
-  alter_enum_stmt: AlterEnumStmt;
-  view_stmt: ViewStmt;
-  load_stmt: LoadStmt;
-  createdb_stmt: CreatedbStmt;
-  alter_database_stmt: AlterDatabaseStmt;
-  alter_database_refresh_coll_stmt: AlterDatabaseRefreshCollStmt;
-  alter_database_set_stmt: AlterDatabaseSetStmt;
-  dropdb_stmt: DropdbStmt;
-  alter_system_stmt: AlterSystemStmt;
-  cluster_stmt: ClusterStmt;
-  vacuum_stmt: VacuumStmt;
-  vacuum_relation: VacuumRelation;
-  explain_stmt: ExplainStmt;
-  create_table_as_stmt: CreateTableAsStmt;
-  refresh_mat_view_stmt: RefreshMatViewStmt;
-  check_point_stmt: CheckPointStmt;
-  discard_stmt: DiscardStmt;
-  lock_stmt: LockStmt;
-  constraints_set_stmt: ConstraintsSetStmt;
-  reindex_stmt: ReindexStmt;
-  create_conversion_stmt: CreateConversionStmt;
-  create_cast_stmt: CreateCastStmt;
-  create_transform_stmt: CreateTransformStmt;
-  prepare_stmt: PrepareStmt;
-  execute_stmt: ExecuteStmt;
-  deallocate_stmt: DeallocateStmt;
-  drop_owned_stmt: DropOwnedStmt;
-  reassign_owned_stmt: ReassignOwnedStmt;
-  alter_tsdictionary_stmt: AlterTSDictionaryStmt;
-  alter_tsconfiguration_stmt: AlterTSConfigurationStmt;
-  publication_table: PublicationTable;
-  publication_obj_spec: PublicationObjSpec;
-  create_publication_stmt: CreatePublicationStmt;
-  alter_publication_stmt: AlterPublicationStmt;
-  create_subscription_stmt: CreateSubscriptionStmt;
-  alter_subscription_stmt: AlterSubscriptionStmt;
-  drop_subscription_stmt: DropSubscriptionStmt;
-  integer: Integer;
-  float: Float;
-  boolean: Boolean;
-  string: String;
-  bit_string: BitString;
-  list: List;
-  int_list: IntList;
-  oid_list: OidList;
-  a_const: A_Const;
+  Alias: Alias;
+  RangeVar: RangeVar;
+  TableFunc: TableFunc;
+  IntoClause: IntoClause;
+  Var: Var;
+  Param: Param;
+  Aggref: Aggref;
+  GroupingFunc: GroupingFunc;
+  WindowFunc: WindowFunc;
+  SubscriptingRef: SubscriptingRef;
+  FuncExpr: FuncExpr;
+  NamedArgExpr: NamedArgExpr;
+  OpExpr: OpExpr;
+  DistinctExpr: DistinctExpr;
+  NullIfExpr: NullIfExpr;
+  ScalarArrayOpExpr: ScalarArrayOpExpr;
+  BoolExpr: BoolExpr;
+  SubLink: SubLink;
+  SubPlan: SubPlan;
+  AlternativeSubPlan: AlternativeSubPlan;
+  FieldSelect: FieldSelect;
+  FieldStore: FieldStore;
+  RelabelType: RelabelType;
+  CoerceViaIO: CoerceViaIO;
+  ArrayCoerceExpr: ArrayCoerceExpr;
+  ConvertRowtypeExpr: ConvertRowtypeExpr;
+  CollateExpr: CollateExpr;
+  CaseExpr: CaseExpr;
+  CaseWhen: CaseWhen;
+  CaseTestExpr: CaseTestExpr;
+  ArrayExpr: ArrayExpr;
+  RowExpr: RowExpr;
+  RowCompareExpr: RowCompareExpr;
+  CoalesceExpr: CoalesceExpr;
+  MinMaxExpr: MinMaxExpr;
+  SQLValueFunction: SQLValueFunction;
+  XmlExpr: XmlExpr;
+  JsonFormat: JsonFormat;
+  JsonReturning: JsonReturning;
+  JsonValueExpr: JsonValueExpr;
+  JsonConstructorExpr: JsonConstructorExpr;
+  JsonIsPredicate: JsonIsPredicate;
+  NullTest: NullTest;
+  BooleanTest: BooleanTest;
+  CoerceToDomain: CoerceToDomain;
+  CoerceToDomainValue: CoerceToDomainValue;
+  SetToDefault: SetToDefault;
+  CurrentOfExpr: CurrentOfExpr;
+  NextValueExpr: NextValueExpr;
+  InferenceElem: InferenceElem;
+  TargetEntry: TargetEntry;
+  RangeTblRef: RangeTblRef;
+  JoinExpr: JoinExpr;
+  FromExpr: FromExpr;
+  OnConflictExpr: OnConflictExpr;
+  Query: Query;
+  TypeName: TypeName;
+  ColumnRef: ColumnRef;
+  ParamRef: ParamRef;
+  A_Expr: A_Expr;
+  TypeCast: TypeCast;
+  CollateClause: CollateClause;
+  RoleSpec: RoleSpec;
+  FuncCall: FuncCall;
+  A_Star: A_Star;
+  A_Indices: A_Indices;
+  A_Indirection: A_Indirection;
+  A_ArrayExpr: A_ArrayExpr;
+  ResTarget: ResTarget;
+  MultiAssignRef: MultiAssignRef;
+  SortBy: SortBy;
+  WindowDef: WindowDef;
+  RangeSubselect: RangeSubselect;
+  RangeFunction: RangeFunction;
+  RangeTableFunc: RangeTableFunc;
+  RangeTableFuncCol: RangeTableFuncCol;
+  RangeTableSample: RangeTableSample;
+  ColumnDef: ColumnDef;
+  TableLikeClause: TableLikeClause;
+  IndexElem: IndexElem;
+  DefElem: DefElem;
+  LockingClause: LockingClause;
+  XmlSerialize: XmlSerialize;
+  PartitionElem: PartitionElem;
+  PartitionSpec: PartitionSpec;
+  PartitionBoundSpec: PartitionBoundSpec;
+  PartitionRangeDatum: PartitionRangeDatum;
+  PartitionCmd: PartitionCmd;
+  RangeTblEntry: RangeTblEntry;
+  RTEPermissionInfo: RTEPermissionInfo;
+  RangeTblFunction: RangeTblFunction;
+  TableSampleClause: TableSampleClause;
+  WithCheckOption: WithCheckOption;
+  SortGroupClause: SortGroupClause;
+  GroupingSet: GroupingSet;
+  WindowClause: WindowClause;
+  RowMarkClause: RowMarkClause;
+  WithClause: WithClause;
+  InferClause: InferClause;
+  OnConflictClause: OnConflictClause;
+  CTESearchClause: CTESearchClause;
+  CTECycleClause: CTECycleClause;
+  CommonTableExpr: CommonTableExpr;
+  MergeWhenClause: MergeWhenClause;
+  MergeAction: MergeAction;
+  TriggerTransition: TriggerTransition;
+  JsonOutput: JsonOutput;
+  JsonKeyValue: JsonKeyValue;
+  JsonObjectConstructor: JsonObjectConstructor;
+  JsonArrayConstructor: JsonArrayConstructor;
+  JsonArrayQueryConstructor: JsonArrayQueryConstructor;
+  JsonAggConstructor: JsonAggConstructor;
+  JsonObjectAgg: JsonObjectAgg;
+  JsonArrayAgg: JsonArrayAgg;
+  RawStmt: RawStmt;
+  InsertStmt: InsertStmt;
+  DeleteStmt: DeleteStmt;
+  UpdateStmt: UpdateStmt;
+  MergeStmt: MergeStmt;
+  SelectStmt: SelectStmt;
+  SetOperationStmt: SetOperationStmt;
+  ReturnStmt: ReturnStmt;
+  PLAssignStmt: PLAssignStmt;
+  CreateSchemaStmt: CreateSchemaStmt;
+  AlterTableStmt: AlterTableStmt;
+  ReplicaIdentityStmt: ReplicaIdentityStmt;
+  AlterTableCmd: AlterTableCmd;
+  AlterCollationStmt: AlterCollationStmt;
+  AlterDomainStmt: AlterDomainStmt;
+  GrantStmt: GrantStmt;
+  ObjectWithArgs: ObjectWithArgs;
+  AccessPriv: AccessPriv;
+  GrantRoleStmt: GrantRoleStmt;
+  AlterDefaultPrivilegesStmt: AlterDefaultPrivilegesStmt;
+  CopyStmt: CopyStmt;
+  VariableSetStmt: VariableSetStmt;
+  VariableShowStmt: VariableShowStmt;
+  CreateStmt: CreateStmt;
+  Constraint: Constraint;
+  CreateTableSpaceStmt: CreateTableSpaceStmt;
+  DropTableSpaceStmt: DropTableSpaceStmt;
+  AlterTableSpaceOptionsStmt: AlterTableSpaceOptionsStmt;
+  AlterTableMoveAllStmt: AlterTableMoveAllStmt;
+  CreateExtensionStmt: CreateExtensionStmt;
+  AlterExtensionStmt: AlterExtensionStmt;
+  AlterExtensionContentsStmt: AlterExtensionContentsStmt;
+  CreateFdwStmt: CreateFdwStmt;
+  AlterFdwStmt: AlterFdwStmt;
+  CreateForeignServerStmt: CreateForeignServerStmt;
+  AlterForeignServerStmt: AlterForeignServerStmt;
+  CreateForeignTableStmt: CreateForeignTableStmt;
+  CreateUserMappingStmt: CreateUserMappingStmt;
+  AlterUserMappingStmt: AlterUserMappingStmt;
+  DropUserMappingStmt: DropUserMappingStmt;
+  ImportForeignSchemaStmt: ImportForeignSchemaStmt;
+  CreatePolicyStmt: CreatePolicyStmt;
+  AlterPolicyStmt: AlterPolicyStmt;
+  CreateAmStmt: CreateAmStmt;
+  CreateTrigStmt: CreateTrigStmt;
+  CreateEventTrigStmt: CreateEventTrigStmt;
+  AlterEventTrigStmt: AlterEventTrigStmt;
+  CreatePLangStmt: CreatePLangStmt;
+  CreateRoleStmt: CreateRoleStmt;
+  AlterRoleStmt: AlterRoleStmt;
+  AlterRoleSetStmt: AlterRoleSetStmt;
+  DropRoleStmt: DropRoleStmt;
+  CreateSeqStmt: CreateSeqStmt;
+  AlterSeqStmt: AlterSeqStmt;
+  DefineStmt: DefineStmt;
+  CreateDomainStmt: CreateDomainStmt;
+  CreateOpClassStmt: CreateOpClassStmt;
+  CreateOpClassItem: CreateOpClassItem;
+  CreateOpFamilyStmt: CreateOpFamilyStmt;
+  AlterOpFamilyStmt: AlterOpFamilyStmt;
+  DropStmt: DropStmt;
+  TruncateStmt: TruncateStmt;
+  CommentStmt: CommentStmt;
+  SecLabelStmt: SecLabelStmt;
+  DeclareCursorStmt: DeclareCursorStmt;
+  ClosePortalStmt: ClosePortalStmt;
+  FetchStmt: FetchStmt;
+  IndexStmt: IndexStmt;
+  CreateStatsStmt: CreateStatsStmt;
+  StatsElem: StatsElem;
+  AlterStatsStmt: AlterStatsStmt;
+  CreateFunctionStmt: CreateFunctionStmt;
+  FunctionParameter: FunctionParameter;
+  AlterFunctionStmt: AlterFunctionStmt;
+  DoStmt: DoStmt;
+  InlineCodeBlock: InlineCodeBlock;
+  CallStmt: CallStmt;
+  CallContext: CallContext;
+  RenameStmt: RenameStmt;
+  AlterObjectDependsStmt: AlterObjectDependsStmt;
+  AlterObjectSchemaStmt: AlterObjectSchemaStmt;
+  AlterOwnerStmt: AlterOwnerStmt;
+  AlterOperatorStmt: AlterOperatorStmt;
+  AlterTypeStmt: AlterTypeStmt;
+  RuleStmt: RuleStmt;
+  NotifyStmt: NotifyStmt;
+  ListenStmt: ListenStmt;
+  UnlistenStmt: UnlistenStmt;
+  TransactionStmt: TransactionStmt;
+  CompositeTypeStmt: CompositeTypeStmt;
+  CreateEnumStmt: CreateEnumStmt;
+  CreateRangeStmt: CreateRangeStmt;
+  AlterEnumStmt: AlterEnumStmt;
+  ViewStmt: ViewStmt;
+  LoadStmt: LoadStmt;
+  CreatedbStmt: CreatedbStmt;
+  AlterDatabaseStmt: AlterDatabaseStmt;
+  AlterDatabaseRefreshCollStmt: AlterDatabaseRefreshCollStmt;
+  AlterDatabaseSetStmt: AlterDatabaseSetStmt;
+  DropdbStmt: DropdbStmt;
+  AlterSystemStmt: AlterSystemStmt;
+  ClusterStmt: ClusterStmt;
+  VacuumStmt: VacuumStmt;
+  VacuumRelation: VacuumRelation;
+  ExplainStmt: ExplainStmt;
+  CreateTableAsStmt: CreateTableAsStmt;
+  RefreshMatViewStmt: RefreshMatViewStmt;
+  CheckPointStmt: CheckPointStmt;
+  DiscardStmt: DiscardStmt;
+  LockStmt: LockStmt;
+  ConstraintsSetStmt: ConstraintsSetStmt;
+  ReindexStmt: ReindexStmt;
+  CreateConversionStmt: CreateConversionStmt;
+  CreateCastStmt: CreateCastStmt;
+  CreateTransformStmt: CreateTransformStmt;
+  PrepareStmt: PrepareStmt;
+  ExecuteStmt: ExecuteStmt;
+  DeallocateStmt: DeallocateStmt;
+  DropOwnedStmt: DropOwnedStmt;
+  ReassignOwnedStmt: ReassignOwnedStmt;
+  AlterTSDictionaryStmt: AlterTSDictionaryStmt;
+  AlterTSConfigurationStmt: AlterTSConfigurationStmt;
+  PublicationTable: PublicationTable;
+  PublicationObjSpec: PublicationObjSpec;
+  CreatePublicationStmt: CreatePublicationStmt;
+  AlterPublicationStmt: AlterPublicationStmt;
+  CreateSubscriptionStmt: CreateSubscriptionStmt;
+  AlterSubscriptionStmt: AlterSubscriptionStmt;
+  DropSubscriptionStmt: DropSubscriptionStmt;
+  Integer: Integer;
+  Float: Float;
+  Boolean: Boolean;
+  String: String;
+  BitString: BitString;
+  List: List;
+  IntList: IntList;
+  OidList: OidList;
+  A_Const: A_Const;
 }
 export interface Integer {
   ival: number;
@@ -3737,13 +3737,13 @@ export interface TableFunc {
 }
 export interface IntoClause {
   rel: RangeVar;
-  col_names: Node[];
-  access_method: string;
+  colNames: Node[];
+  accessMethod: string;
   options: Node[];
-  on_commit: OnCommitAction;
-  table_space_name: string;
-  view_query: Node;
-  skip_data: boolean;
+  onCommit: OnCommitAction;
+  tableSpaceName: string;
+  viewQuery: Node;
+  skipData: boolean;
 }
 export interface Var {
   xpr: Node;
@@ -3870,7 +3870,7 @@ export interface NullIfExpr {
 export interface ScalarArrayOpExpr {
   xpr: Node;
   opno: number;
-  use_or: boolean;
+  useOr: boolean;
   inputcollid: number;
   args: Node[];
   location: number;
@@ -3883,28 +3883,28 @@ export interface BoolExpr {
 }
 export interface SubLink {
   xpr: Node;
-  sub_link_type: SubLinkType;
-  sub_link_id: number;
+  subLinkType: SubLinkType;
+  subLinkId: number;
   testexpr: Node;
-  oper_name: Node[];
+  operName: Node[];
   subselect: Node;
   location: number;
 }
 export interface SubPlan {
   xpr: Node;
-  sub_link_type: SubLinkType;
+  subLinkType: SubLinkType;
   testexpr: Node;
-  param_ids: Node[];
+  paramIds: Node[];
   plan_id: number;
   plan_name: string;
-  first_col_type: number;
-  first_col_typmod: number;
-  first_col_collation: number;
-  use_hash_table: boolean;
-  unknown_eq_false: boolean;
+  firstColType: number;
+  firstColTypmod: number;
+  firstColCollation: number;
+  useHashTable: boolean;
+  unknownEqFalse: boolean;
   parallel_safe: boolean;
-  set_param: Node[];
-  par_param: Node[];
+  setParam: Node[];
+  parParam: Node[];
   args: Node[];
   startup_cost: number;
   per_call_cost: number;
@@ -3965,7 +3965,7 @@ export interface ConvertRowtypeExpr {
 export interface CollateExpr {
   xpr: Node;
   arg: Node;
-  coll_oid: number;
+  collOid: number;
   location: number;
 }
 export interface CaseExpr {
@@ -3985,8 +3985,8 @@ export interface CaseWhen {
 }
 export interface CaseTestExpr {
   xpr: Node;
-  type_id: number;
-  type_mod: number;
+  typeId: number;
+  typeMod: number;
   collation: number;
 }
 export interface ArrayExpr {
@@ -4108,15 +4108,15 @@ export interface CoerceToDomain {
 }
 export interface CoerceToDomainValue {
   xpr: Node;
-  type_id: number;
-  type_mod: number;
+  typeId: number;
+  typeMod: number;
   collation: number;
   location: number;
 }
 export interface SetToDefault {
   xpr: Node;
-  type_id: number;
-  type_mod: number;
+  typeId: number;
+  typeMod: number;
   collation: number;
   location: number;
 }
@@ -4129,7 +4129,7 @@ export interface CurrentOfExpr {
 export interface NextValueExpr {
   xpr: Node;
   seqid: number;
-  type_id: number;
+  typeId: number;
 }
 export interface InferenceElem {
   xpr: Node;
@@ -4152,10 +4152,10 @@ export interface RangeTblRef {
 }
 export interface JoinExpr {
   jointype: JoinType;
-  is_natural: boolean;
+  isNatural: boolean;
   larg: Node;
   rarg: Node;
-  using_clause: Node[];
+  usingClause: Node[];
   join_using_alias: Alias;
   quals: Node;
   alias: Alias;
@@ -4167,65 +4167,65 @@ export interface FromExpr {
 }
 export interface OnConflictExpr {
   action: OnConflictAction;
-  arbiter_elems: Node[];
-  arbiter_where: Node;
+  arbiterElems: Node[];
+  arbiterWhere: Node;
   constraint: number;
-  on_conflict_set: Node[];
-  on_conflict_where: Node;
-  excl_rel_index: number;
-  excl_rel_tlist: Node[];
+  onConflictSet: Node[];
+  onConflictWhere: Node;
+  exclRelIndex: number;
+  exclRelTlist: Node[];
 }
 export interface Query {
-  command_type: CmdType;
-  query_source: QuerySource;
-  can_set_tag: boolean;
-  utility_stmt: Node;
-  result_relation: number;
-  has_aggs: boolean;
-  has_window_funcs: boolean;
-  has_target_srfs: boolean;
-  has_sub_links: boolean;
-  has_distinct_on: boolean;
-  has_recursive: boolean;
-  has_modifying_cte: boolean;
-  has_for_update: boolean;
-  has_row_security: boolean;
-  is_return: boolean;
-  cte_list: Node[];
+  commandType: CmdType;
+  querySource: QuerySource;
+  canSetTag: boolean;
+  utilityStmt: Node;
+  resultRelation: number;
+  hasAggs: boolean;
+  hasWindowFuncs: boolean;
+  hasTargetSRFs: boolean;
+  hasSubLinks: boolean;
+  hasDistinctOn: boolean;
+  hasRecursive: boolean;
+  hasModifyingCTE: boolean;
+  hasForUpdate: boolean;
+  hasRowSecurity: boolean;
+  isReturn: boolean;
+  cteList: Node[];
   rtable: Node[];
   rteperminfos: Node[];
   jointree: FromExpr;
-  merge_action_list: Node[];
-  merge_use_outer_join: boolean;
-  target_list: Node[];
+  mergeActionList: Node[];
+  mergeUseOuterJoin: boolean;
+  targetList: Node[];
   override: OverridingKind;
-  on_conflict: OnConflictExpr;
-  returning_list: Node[];
-  group_clause: Node[];
-  group_distinct: boolean;
-  grouping_sets: Node[];
-  having_qual: Node;
-  window_clause: Node[];
-  distinct_clause: Node[];
-  sort_clause: Node[];
-  limit_offset: Node;
-  limit_count: Node;
-  limit_option: LimitOption;
-  row_marks: Node[];
-  set_operations: Node;
-  constraint_deps: Node[];
-  with_check_options: Node[];
+  onConflict: OnConflictExpr;
+  returningList: Node[];
+  groupClause: Node[];
+  groupDistinct: boolean;
+  groupingSets: Node[];
+  havingQual: Node;
+  windowClause: Node[];
+  distinctClause: Node[];
+  sortClause: Node[];
+  limitOffset: Node;
+  limitCount: Node;
+  limitOption: LimitOption;
+  rowMarks: Node[];
+  setOperations: Node;
+  constraintDeps: Node[];
+  withCheckOptions: Node[];
   stmt_location: number;
   stmt_len: number;
 }
 export interface TypeName {
   names: Node[];
-  type_oid: number;
+  typeOid: number;
   setof: boolean;
   pct_type: boolean;
   typmods: Node[];
   typemod: number;
-  array_bounds: Node[];
+  arrayBounds: Node[];
   location: number;
 }
 export interface ColumnRef {
@@ -4245,7 +4245,7 @@ export interface A_Expr {
 }
 export interface TypeCast {
   arg: Node;
-  type_name: TypeName;
+  typeName: TypeName;
   location: number;
 }
 export interface CollateClause {
@@ -4300,17 +4300,17 @@ export interface SortBy {
   node: Node;
   sortby_dir: SortByDir;
   sortby_nulls: SortByNulls;
-  use_op: Node[];
+  useOp: Node[];
   location: number;
 }
 export interface WindowDef {
   name: string;
   refname: string;
-  partition_clause: Node[];
-  order_clause: Node[];
-  frame_options: number;
-  start_offset: Node;
-  end_offset: Node;
+  partitionClause: Node[];
+  orderClause: Node[];
+  frameOptions: number;
+  startOffset: Node;
+  endOffset: Node;
   location: number;
 }
 export interface RangeSubselect {
@@ -4337,7 +4337,7 @@ export interface RangeTableFunc {
 }
 export interface RangeTableFuncCol {
   colname: string;
-  type_name: TypeName;
+  typeName: TypeName;
   for_ordinality: boolean;
   is_not_null: boolean;
   colexpr: Node;
@@ -4353,7 +4353,7 @@ export interface RangeTableSample {
 }
 export interface ColumnDef {
   colname: string;
-  type_name: TypeName;
+  typeName: TypeName;
   compression: string;
   inhcount: number;
   is_local: boolean;
@@ -4364,10 +4364,10 @@ export interface ColumnDef {
   raw_default: Node;
   cooked_default: Node;
   identity: string;
-  identity_sequence: RangeVar;
+  identitySequence: RangeVar;
   generated: string;
-  coll_clause: CollateClause;
-  coll_oid: number;
+  collClause: CollateClause;
+  collOid: number;
   constraints: Node[];
   fdwoptions: Node[];
   location: number;
@@ -4375,7 +4375,7 @@ export interface ColumnDef {
 export interface TableLikeClause {
   relation: RangeVar;
   options: number;
-  relation_oid: number;
+  relationOid: number;
 }
 export interface IndexElem {
   name: string;
@@ -4395,14 +4395,14 @@ export interface DefElem {
   location: number;
 }
 export interface LockingClause {
-  locked_rels: Node[];
+  lockedRels: Node[];
   strength: LockClauseStrength;
-  wait_policy: LockWaitPolicy;
+  waitPolicy: LockWaitPolicy;
 }
 export interface XmlSerialize {
   xmloption: XmlOptionType;
   expr: Node;
-  type_name: TypeName;
+  typeName: TypeName;
   indent: boolean;
   location: number;
 }
@@ -4415,7 +4415,7 @@ export interface PartitionElem {
 }
 export interface PartitionSpec {
   strategy: PartitionStrategy;
-  part_params: Node[];
+  partParams: Node[];
   location: number;
 }
 export interface PartitionBoundSpec {
@@ -4469,17 +4469,17 @@ export interface RangeTblEntry {
   eref: Alias;
   lateral: boolean;
   inh: boolean;
-  in_from_cl: boolean;
-  security_quals: Node[];
+  inFromCl: boolean;
+  securityQuals: Node[];
 }
 export interface RTEPermissionInfo {
   relid: number;
   inh: boolean;
-  required_perms: bigint;
-  check_as_user: number;
-  selected_cols: bigint[];
-  inserted_cols: bigint[];
-  updated_cols: bigint[];
+  requiredPerms: bigint;
+  checkAsUser: number;
+  selectedCols: bigint[];
+  insertedCols: bigint[];
+  updatedCols: bigint[];
 }
 export interface RangeTblFunction {
   funcexpr: Node;
@@ -4503,7 +4503,7 @@ export interface WithCheckOption {
   cascaded: boolean;
 }
 export interface SortGroupClause {
-  tle_sort_group_ref: number;
+  tleSortGroupRef: number;
   eqop: number;
   sortop: number;
   nulls_first: boolean;
@@ -4517,25 +4517,25 @@ export interface GroupingSet {
 export interface WindowClause {
   name: string;
   refname: string;
-  partition_clause: Node[];
-  order_clause: Node[];
-  frame_options: number;
-  start_offset: Node;
-  end_offset: Node;
-  run_condition: Node[];
-  start_in_range_func: number;
-  end_in_range_func: number;
-  in_range_coll: number;
-  in_range_asc: boolean;
-  in_range_nulls_first: boolean;
+  partitionClause: Node[];
+  orderClause: Node[];
+  frameOptions: number;
+  startOffset: Node;
+  endOffset: Node;
+  runCondition: Node[];
+  startInRangeFunc: number;
+  endInRangeFunc: number;
+  inRangeColl: number;
+  inRangeAsc: boolean;
+  inRangeNullsFirst: boolean;
   winref: number;
-  copied_order: boolean;
+  copiedOrder: boolean;
 }
 export interface RowMarkClause {
   rti: number;
   strength: LockClauseStrength;
-  wait_policy: LockWaitPolicy;
-  pushed_down: boolean;
+  waitPolicy: LockWaitPolicy;
+  pushedDown: boolean;
 }
 export interface WithClause {
   ctes: Node[];
@@ -4543,16 +4543,16 @@ export interface WithClause {
   location: number;
 }
 export interface InferClause {
-  index_elems: Node[];
-  where_clause: Node;
+  indexElems: Node[];
+  whereClause: Node;
   conname: string;
   location: number;
 }
 export interface OnConflictClause {
   action: OnConflictAction;
   infer: InferClause;
-  target_list: Node[];
-  where_clause: Node;
+  targetList: Node[];
+  whereClause: Node;
   location: number;
 }
 export interface CTESearchClause {
@@ -4590,27 +4590,27 @@ export interface CommonTableExpr {
 }
 export interface MergeWhenClause {
   matched: boolean;
-  command_type: CmdType;
+  commandType: CmdType;
   override: OverridingKind;
   condition: Node;
-  target_list: Node[];
+  targetList: Node[];
   values: Node[];
 }
 export interface MergeAction {
   matched: boolean;
-  command_type: CmdType;
+  commandType: CmdType;
   override: OverridingKind;
   qual: Node;
-  target_list: Node[];
-  update_colnos: Node[];
+  targetList: Node[];
+  updateColnos: Node[];
 }
 export interface TriggerTransition {
   name: string;
-  is_new: boolean;
-  is_table: boolean;
+  isNew: boolean;
+  isTable: boolean;
 }
 export interface JsonOutput {
-  type_name: TypeName;
+  typeName: TypeName;
   returning: JsonReturning;
 }
 export interface JsonKeyValue {
@@ -4663,51 +4663,51 @@ export interface RawStmt {
 export interface InsertStmt {
   relation: RangeVar;
   cols: Node[];
-  select_stmt: Node;
-  on_conflict_clause: OnConflictClause;
-  returning_list: Node[];
-  with_clause: WithClause;
+  selectStmt: Node;
+  onConflictClause: OnConflictClause;
+  returningList: Node[];
+  withClause: WithClause;
   override: OverridingKind;
 }
 export interface DeleteStmt {
   relation: RangeVar;
-  using_clause: Node[];
-  where_clause: Node;
-  returning_list: Node[];
-  with_clause: WithClause;
+  usingClause: Node[];
+  whereClause: Node;
+  returningList: Node[];
+  withClause: WithClause;
 }
 export interface UpdateStmt {
   relation: RangeVar;
-  target_list: Node[];
-  where_clause: Node;
-  from_clause: Node[];
-  returning_list: Node[];
-  with_clause: WithClause;
+  targetList: Node[];
+  whereClause: Node;
+  fromClause: Node[];
+  returningList: Node[];
+  withClause: WithClause;
 }
 export interface MergeStmt {
   relation: RangeVar;
-  source_relation: Node;
-  join_condition: Node;
-  merge_when_clauses: Node[];
-  with_clause: WithClause;
+  sourceRelation: Node;
+  joinCondition: Node;
+  mergeWhenClauses: Node[];
+  withClause: WithClause;
 }
 export interface SelectStmt {
-  distinct_clause: Node[];
-  into_clause: IntoClause;
-  target_list: Node[];
-  from_clause: Node[];
-  where_clause: Node;
-  group_clause: Node[];
-  group_distinct: boolean;
-  having_clause: Node;
-  window_clause: Node[];
-  values_lists: Node[];
-  sort_clause: Node[];
-  limit_offset: Node;
-  limit_count: Node;
-  limit_option: LimitOption;
-  locking_clause: Node[];
-  with_clause: WithClause;
+  distinctClause: Node[];
+  intoClause: IntoClause;
+  targetList: Node[];
+  fromClause: Node[];
+  whereClause: Node;
+  groupClause: Node[];
+  groupDistinct: boolean;
+  havingClause: Node;
+  windowClause: Node[];
+  valuesLists: Node[];
+  sortClause: Node[];
+  limitOffset: Node;
+  limitCount: Node;
+  limitOption: LimitOption;
+  lockingClause: Node[];
+  withClause: WithClause;
   op: SetOperation;
   all: boolean;
   larg: SelectStmt;
@@ -4718,10 +4718,10 @@ export interface SetOperationStmt {
   all: boolean;
   larg: Node;
   rarg: Node;
-  col_types: Node[];
-  col_typmods: Node[];
-  col_collations: Node[];
-  group_clauses: Node[];
+  colTypes: Node[];
+  colTypmods: Node[];
+  colCollations: Node[];
+  groupClauses: Node[];
 }
 export interface ReturnStmt {
   returnval: Node;
@@ -4736,7 +4736,7 @@ export interface PLAssignStmt {
 export interface CreateSchemaStmt {
   schemaname: string;
   authrole: RoleSpec;
-  schema_elts: Node[];
+  schemaElts: Node[];
   if_not_exists: boolean;
 }
 export interface AlterTableStmt {
@@ -4764,7 +4764,7 @@ export interface AlterCollationStmt {
 }
 export interface AlterDomainStmt {
   subtype: string;
-  type_name: Node[];
+  typeName: Node[];
   name: string;
   def: Node;
   behavior: DropBehavior;
@@ -4811,7 +4811,7 @@ export interface CopyStmt {
   is_program: boolean;
   filename: string;
   options: Node[];
-  where_clause: Node;
+  whereClause: Node;
 }
 export interface VariableSetStmt {
   kind: VariableSetKind;
@@ -4824,16 +4824,16 @@ export interface VariableShowStmt {
 }
 export interface CreateStmt {
   relation: RangeVar;
-  table_elts: Node[];
-  inh_relations: Node[];
+  tableElts: Node[];
+  inhRelations: Node[];
   partbound: PartitionBoundSpec;
   partspec: PartitionSpec;
-  of_typename: TypeName;
+  ofTypename: TypeName;
   constraints: Node[];
   options: Node[];
   oncommit: OnCommitAction;
   tablespacename: string;
-  access_method: string;
+  accessMethod: string;
   if_not_exists: boolean;
 }
 export interface Constraint {
@@ -4881,7 +4881,7 @@ export interface DropTableSpaceStmt {
 export interface AlterTableSpaceOptionsStmt {
   tablespacename: string;
   options: Node[];
-  is_reset: boolean;
+  isReset: boolean;
 }
 export interface AlterTableMoveAllStmt {
   orig_tablespacename: string;
@@ -4930,7 +4930,7 @@ export interface AlterForeignServerStmt {
   has_version: boolean;
 }
 export interface CreateForeignTableStmt {
-  base_stmt: CreateStmt;
+  base: CreateStmt;
   servername: string;
   options: Node[];
 }
@@ -4990,8 +4990,8 @@ export interface CreateTrigStmt {
   timing: number;
   events: number;
   columns: Node[];
-  when_clause: Node;
-  transition_rels: Node[];
+  whenClause: Node;
+  transitionRels: Node[];
   deferrable: boolean;
   initdeferred: boolean;
   constrrel: RangeVar;
@@ -5036,7 +5036,7 @@ export interface DropRoleStmt {
 export interface CreateSeqStmt {
   sequence: RangeVar;
   options: Node[];
-  owner_id: number;
+  ownerId: number;
   for_identity: boolean;
   if_not_exists: boolean;
 }
@@ -5057,8 +5057,8 @@ export interface DefineStmt {
 }
 export interface CreateDomainStmt {
   domainname: Node[];
-  type_name: TypeName;
-  coll_clause: CollateClause;
+  typeName: TypeName;
+  collClause: CollateClause;
   constraints: Node[];
 }
 export interface CreateOpClassStmt {
@@ -5067,7 +5067,7 @@ export interface CreateOpClassStmt {
   amname: string;
   datatype: TypeName;
   items: Node[];
-  is_default: boolean;
+  isDefault: boolean;
 }
 export interface CreateOpClassItem {
   itemtype: number;
@@ -5084,12 +5084,12 @@ export interface CreateOpFamilyStmt {
 export interface AlterOpFamilyStmt {
   opfamilyname: Node[];
   amname: string;
-  is_drop: boolean;
+  isDrop: boolean;
   items: Node[];
 }
 export interface DropStmt {
   objects: Node[];
-  remove_type: ObjectType;
+  removeType: ObjectType;
   behavior: DropBehavior;
   missing_ok: boolean;
   concurrent: boolean;
@@ -5120,25 +5120,25 @@ export interface ClosePortalStmt {
 }
 export interface FetchStmt {
   direction: FetchDirection;
-  how_many: bigint;
+  howMany: bigint;
   portalname: string;
   ismove: boolean;
 }
 export interface IndexStmt {
   idxname: string;
   relation: RangeVar;
-  access_method: string;
-  table_space: string;
-  index_params: Node[];
-  index_including_params: Node[];
+  accessMethod: string;
+  tableSpace: string;
+  indexParams: Node[];
+  indexIncludingParams: Node[];
   options: Node[];
-  where_clause: Node;
-  exclude_op_names: Node[];
+  whereClause: Node;
+  excludeOpNames: Node[];
   idxcomment: string;
-  index_oid: number;
-  old_number: number;
-  old_create_subid: number;
-  old_first_relfilelocator_subid: number;
+  indexOid: number;
+  oldNumber: number;
+  oldCreateSubid: number;
+  oldFirstRelfilelocatorSubid: number;
   unique: boolean;
   nulls_not_distinct: boolean;
   primary: boolean;
@@ -5173,13 +5173,13 @@ export interface CreateFunctionStmt {
   replace: boolean;
   funcname: Node[];
   parameters: Node[];
-  return_type: TypeName;
+  returnType: TypeName;
   options: Node[];
   sql_body: Node;
 }
 export interface FunctionParameter {
   name: string;
-  arg_type: TypeName;
+  argType: TypeName;
   mode: FunctionParameterMode;
   defexpr: Node;
 }
@@ -5193,8 +5193,8 @@ export interface DoStmt {
 }
 export interface InlineCodeBlock {
   source_text: string;
-  lang_oid: number;
-  lang_is_trusted: boolean;
+  langOid: number;
+  langIsTrusted: boolean;
   atomic: boolean;
 }
 export interface CallStmt {
@@ -5206,8 +5206,8 @@ export interface CallContext {
   atomic: boolean;
 }
 export interface RenameStmt {
-  rename_type: ObjectType;
-  relation_type: ObjectType;
+  renameType: ObjectType;
+  relationType: ObjectType;
   relation: RangeVar;
   object: Node;
   subname: string;
@@ -5216,21 +5216,21 @@ export interface RenameStmt {
   missing_ok: boolean;
 }
 export interface AlterObjectDependsStmt {
-  object_type: ObjectType;
+  objectType: ObjectType;
   relation: RangeVar;
   object: Node;
   extname: String;
   remove: boolean;
 }
 export interface AlterObjectSchemaStmt {
-  object_type: ObjectType;
+  objectType: ObjectType;
   relation: RangeVar;
   object: Node;
   newschema: string;
   missing_ok: boolean;
 }
 export interface AlterOwnerStmt {
-  object_type: ObjectType;
+  objectType: ObjectType;
   relation: RangeVar;
   object: Node;
   newowner: RoleSpec;
@@ -5240,13 +5240,13 @@ export interface AlterOperatorStmt {
   options: Node[];
 }
 export interface AlterTypeStmt {
-  type_name: Node[];
+  typeName: Node[];
   options: Node[];
 }
 export interface RuleStmt {
   relation: RangeVar;
   rulename: string;
-  where_clause: Node;
+  whereClause: Node;
   event: CmdType;
   instead: boolean;
   actions: Node[];
@@ -5274,20 +5274,20 @@ export interface CompositeTypeStmt {
   coldeflist: Node[];
 }
 export interface CreateEnumStmt {
-  type_name: Node[];
+  typeName: Node[];
   vals: Node[];
 }
 export interface CreateRangeStmt {
-  type_name: Node[];
+  typeName: Node[];
   params: Node[];
 }
 export interface AlterEnumStmt {
-  type_name: Node[];
-  old_val: string;
-  new_val: string;
-  new_val_neighbor: string;
-  new_val_is_after: boolean;
-  skip_if_new_val_exists: boolean;
+  typeName: Node[];
+  oldVal: string;
+  newVal: string;
+  newValNeighbor: string;
+  newValIsAfter: boolean;
+  skipIfNewValExists: boolean;
 }
 export interface ViewStmt {
   view: RangeVar;
@@ -5295,7 +5295,7 @@ export interface ViewStmt {
   query: Node;
   replace: boolean;
   options: Node[];
-  with_check_option: ViewCheckOption;
+  withCheckOption: ViewCheckOption;
 }
 export interface LoadStmt {
   filename: string;
@@ -5351,7 +5351,7 @@ export interface CreateTableAsStmt {
 }
 export interface RefreshMatViewStmt {
   concurrent: boolean;
-  skip_data: boolean;
+  skipData: boolean;
   relation: RangeVar;
 }
 export interface CheckPointStmt {}
@@ -5429,7 +5429,7 @@ export interface AlterTSConfigurationStmt {
 }
 export interface PublicationTable {
   relation: RangeVar;
-  where_clause: Node;
+  whereClause: Node;
   columns: Node[];
 }
 export interface PublicationObjSpec {
