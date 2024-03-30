@@ -80,7 +80,7 @@ Our latest is built with `13-latest` branch from libpg_query
 * [pg-proto-parser](https://github.com/launchql/pg-proto-parser): A TypeScript tool that parses PostgreSQL Protocol Buffers definitions to generate TypeScript interfaces, utility functions, and JSON mappings for enums.
 * [libpg-query](https://github.com/launchql/libpg-query-node): The real PostgreSQL parser exposed for Node.js, used primarily in `pgsql-parser` for parsing and deparsing SQL queries.
 
-Thanks @lfittl for building the core `libpg_query` suite:
+Thanks [@lfittl](https://github.com/lfittl) for building the core `libpg_query` suite:
 
 * [libpg_query](https://github.com/pganalyze/libpg_query)
 * [pg_query](https://github.com/lfittl/pg_query)
