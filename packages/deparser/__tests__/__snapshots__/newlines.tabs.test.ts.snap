@@ -1,0 +1,1753 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parens 1`] = `
+[
+  {
+    "RawStmt": {
+      "stmt": {
+        "SelectStmt": {
+          "fromClause": [
+            {
+              "RangeVar": {
+                "inh": true,
+                "location": 53,
+                "relname": "my_json_store",
+                "relpersistence": "p",
+              },
+            },
+          ],
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE",
+          "targetList": [
+            {
+              "ResTarget": {
+                "location": 7,
+                "val": {
+                  "NullTest": {
+                    "arg": {
+                      "A_Expr": {
+                        "kind": "AEXPR_OP",
+                        "lexpr": {
+                          "A_Expr": {
+                            "kind": "AEXPR_OP",
+                            "lexpr": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "node",
+                                    },
+                                  },
+                                ],
+                                "location": 7,
+                              },
+                            },
+                            "location": 11,
+                            "name": [
+                              {
+                                "String": {
+                                  "str": "->",
+                                },
+                              },
+                            ],
+                            "rexpr": {
+                              "A_Const": {
+                                "location": 13,
+                                "val": {
+                                  "String": {
+                                    "str": "relation",
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                        "location": 23,
+                        "name": [
+                          {
+                            "String": {
+                              "str": "->",
+                            },
+                          },
+                        ],
+                        "rexpr": {
+                          "A_Const": {
+                            "location": 25,
+                            "val": {
+                              "String": {
+                                "str": "RangeVar",
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                    "location": 36,
+                    "nulltesttype": "IS_NOT_NULL",
+                  },
+                },
+              },
+            },
+          ],
+        },
+      },
+      "stmt_len": 66,
+      "stmt_location": 0,
+    },
+  },
+  {
+    "RawStmt": {
+      "stmt": {
+        "SelectStmt": {
+          "fromClause": [
+            {
+              "RangeVar": {
+                "inh": true,
+                "location": 179,
+                "relname": "my_json_store",
+                "relpersistence": "p",
+              },
+            },
+          ],
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE",
+          "targetList": [
+            {
+              "ResTarget": {
+                "location": 76,
+                "val": {
+                  "BoolExpr": {
+                    "args": [
+                      {
+                        "NullTest": {
+                          "arg": {
+                            "A_Expr": {
+                              "kind": "AEXPR_OP",
+                              "lexpr": {
+                                "A_Expr": {
+                                  "kind": "AEXPR_OP",
+                                  "lexpr": {
+                                    "ColumnRef": {
+                                      "fields": [
+                                        {
+                                          "String": {
+                                            "str": "node",
+                                          },
+                                        },
+                                      ],
+                                      "location": 76,
+                                    },
+                                  },
+                                  "location": 80,
+                                  "name": [
+                                    {
+                                      "String": {
+                                        "str": "->",
+                                      },
+                                    },
+                                  ],
+                                  "rexpr": {
+                                    "A_Const": {
+                                      "location": 82,
+                                      "val": {
+                                        "String": {
+                                          "str": "relation",
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                              "location": 92,
+                              "name": [
+                                {
+                                  "String": {
+                                    "str": "->",
+                                  },
+                                },
+                              ],
+                              "rexpr": {
+                                "A_Const": {
+                                  "location": 94,
+                                  "val": {
+                                    "String": {
+                                      "str": "RangeVar",
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                          "location": 105,
+                          "nulltesttype": "IS_NOT_NULL",
+                        },
+                      },
+                      {
+                        "NullTest": {
+                          "arg": {
+                            "A_Expr": {
+                              "kind": "AEXPR_OP",
+                              "lexpr": {
+                                "A_Expr": {
+                                  "kind": "AEXPR_OP",
+                                  "lexpr": {
+                                    "A_Expr": {
+                                      "kind": "AEXPR_OP",
+                                      "lexpr": {
+                                        "ColumnRef": {
+                                          "fields": [
+                                            {
+                                              "String": {
+                                                "str": "node",
+                                              },
+                                            },
+                                          ],
+                                          "location": 129,
+                                        },
+                                      },
+                                      "location": 133,
+                                      "name": [
+                                        {
+                                          "String": {
+                                            "str": "->",
+                                          },
+                                        },
+                                      ],
+                                      "rexpr": {
+                                        "A_Const": {
+                                          "location": 135,
+                                          "val": {
+                                            "String": {
+                                              "str": "relation",
+                                            },
+                                          },
+                                        },
+                                      },
+                                    },
+                                  },
+                                  "location": 145,
+                                  "name": [
+                                    {
+                                      "String": {
+                                        "str": "->",
+                                      },
+                                    },
+                                  ],
+                                  "rexpr": {
+                                    "A_Const": {
+                                      "location": 147,
+                                      "val": {
+                                        "String": {
+                                          "str": "RangeVar",
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                              "location": 157,
+                              "name": [
+                                {
+                                  "String": {
+                                    "str": "->>",
+                                  },
+                                },
+                              ],
+                              "rexpr": {
+                                "A_Const": {
+                                  "location": 160,
+                                  "val": {
+                                    "String": {
+                                      "str": "inh",
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                          "location": 166,
+                          "nulltesttype": "IS_NULL",
+                        },
+                      },
+                    ],
+                    "boolop": "AND_EXPR",
+                    "location": 117,
+                  },
+                },
+              },
+            },
+          ],
+        },
+      },
+      "stmt_len": 125,
+      "stmt_location": 67,
+    },
+  },
+  {
+    "RawStmt": {
+      "stmt": {
+        "SelectStmt": {
+          "fromClause": [
+            {
+              "RangeVar": {
+                "inh": true,
+                "location": 308,
+                "relname": "my_json_store",
+                "relpersistence": "p",
+              },
+            },
+          ],
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE",
+          "targetList": [
+            {
+              "ResTarget": {
+                "location": 202,
+                "val": {
+                  "BoolExpr": {
+                    "args": [
+                      {
+                        "BoolExpr": {
+                          "args": [
+                            {
+                              "NullTest": {
+                                "arg": {
+                                  "ColumnRef": {
+                                    "fields": [
+                                      {
+                                        "String": {
+                                          "str": "a",
+                                        },
+                                      },
+                                    ],
+                                    "location": 202,
+                                  },
+                                },
+                                "location": 204,
+                                "nulltesttype": "IS_NOT_NULL",
+                              },
+                            },
+                            {
+                              "NullTest": {
+                                "arg": {
+                                  "ColumnRef": {
+                                    "fields": [
+                                      {
+                                        "String": {
+                                          "str": "b",
+                                        },
+                                      },
+                                    ],
+                                    "location": 228,
+                                  },
+                                },
+                                "location": 230,
+                                "nulltesttype": "IS_NULL",
+                              },
+                            },
+                          ],
+                          "boolop": "AND_EXPR",
+                          "location": 216,
+                        },
+                      },
+                      {
+                        "BoolExpr": {
+                          "args": [
+                            {
+                              "NullTest": {
+                                "arg": {
+                                  "ColumnRef": {
+                                    "fields": [
+                                      {
+                                        "String": {
+                                          "str": "c",
+                                        },
+                                      },
+                                    ],
+                                    "location": 250,
+                                  },
+                                },
+                                "location": 252,
+                                "nulltesttype": "IS_NOT_NULL",
+                              },
+                            },
+                            {
+                              "BooleanTest": {
+                                "arg": {
+                                  "TypeCast": {
+                                    "arg": {
+                                      "A_Expr": {
+                                        "kind": "AEXPR_OP",
+                                        "lexpr": {
+                                          "ColumnRef": {
+                                            "fields": [
+                                              {
+                                                "String": {
+                                                  "str": "a",
+                                                },
+                                              },
+                                            ],
+                                            "location": 277,
+                                          },
+                                        },
+                                        "location": 278,
+                                        "name": [
+                                          {
+                                            "String": {
+                                              "str": "->",
+                                            },
+                                          },
+                                        ],
+                                        "rexpr": {
+                                          "A_Const": {
+                                            "location": 280,
+                                            "val": {
+                                              "String": {
+                                                "str": "inh",
+                                              },
+                                            },
+                                          },
+                                        },
+                                      },
+                                    },
+                                    "location": 286,
+                                    "typeName": {
+                                      "location": 288,
+                                      "names": [
+                                        {
+                                          "String": {
+                                            "str": "bool",
+                                          },
+                                        },
+                                      ],
+                                      "typemod": -1,
+                                    },
+                                  },
+                                },
+                                "booltesttype": "IS_FALSE",
+                                "location": 293,
+                              },
+                            },
+                          ],
+                          "boolop": "AND_EXPR",
+                          "location": 264,
+                        },
+                      },
+                    ],
+                    "boolop": "OR_EXPR",
+                    "location": 238,
+                  },
+                },
+              },
+            },
+          ],
+        },
+      },
+      "stmt_len": 128,
+      "stmt_location": 193,
+    },
+  },
+  {
+    "RawStmt": {
+      "stmt": {
+        "SelectStmt": {
+          "fromClause": [
+            {
+              "RangeVar": {
+                "inh": true,
+                "location": 559,
+                "relname": "my_json_store",
+                "relpersistence": "p",
+              },
+            },
+          ],
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE",
+          "targetList": [
+            {
+              "ResTarget": {
+                "location": 331,
+                "val": {
+                  "BoolExpr": {
+                    "args": [
+                      {
+                        "BoolExpr": {
+                          "args": [
+                            {
+                              "NullTest": {
+                                "arg": {
+                                  "A_Expr": {
+                                    "kind": "AEXPR_OP",
+                                    "lexpr": {
+                                      "A_Expr": {
+                                        "kind": "AEXPR_OP",
+                                        "lexpr": {
+                                          "ColumnRef": {
+                                            "fields": [
+                                              {
+                                                "String": {
+                                                  "str": "node",
+                                                },
+                                              },
+                                            ],
+                                            "location": 331,
+                                          },
+                                        },
+                                        "location": 335,
+                                        "name": [
+                                          {
+                                            "String": {
+                                              "str": "->",
+                                            },
+                                          },
+                                        ],
+                                        "rexpr": {
+                                          "A_Const": {
+                                            "location": 337,
+                                            "val": {
+                                              "String": {
+                                                "str": "relation",
+                                              },
+                                            },
+                                          },
+                                        },
+                                      },
+                                    },
+                                    "location": 347,
+                                    "name": [
+                                      {
+                                        "String": {
+                                          "str": "->",
+                                        },
+                                      },
+                                    ],
+                                    "rexpr": {
+                                      "A_Const": {
+                                        "location": 349,
+                                        "val": {
+                                          "String": {
+                                            "str": "RangeVar",
+                                          },
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                                "location": 360,
+                                "nulltesttype": "IS_NOT_NULL",
+                              },
+                            },
+                            {
+                              "NullTest": {
+                                "arg": {
+                                  "A_Expr": {
+                                    "kind": "AEXPR_OP",
+                                    "lexpr": {
+                                      "A_Expr": {
+                                        "kind": "AEXPR_OP",
+                                        "lexpr": {
+                                          "A_Expr": {
+                                            "kind": "AEXPR_OP",
+                                            "lexpr": {
+                                              "ColumnRef": {
+                                                "fields": [
+                                                  {
+                                                    "String": {
+                                                      "str": "node",
+                                                    },
+                                                  },
+                                                ],
+                                                "location": 384,
+                                              },
+                                            },
+                                            "location": 388,
+                                            "name": [
+                                              {
+                                                "String": {
+                                                  "str": "->",
+                                                },
+                                              },
+                                            ],
+                                            "rexpr": {
+                                              "A_Const": {
+                                                "location": 390,
+                                                "val": {
+                                                  "String": {
+                                                    "str": "relation",
+                                                  },
+                                                },
+                                              },
+                                            },
+                                          },
+                                        },
+                                        "location": 400,
+                                        "name": [
+                                          {
+                                            "String": {
+                                              "str": "->",
+                                            },
+                                          },
+                                        ],
+                                        "rexpr": {
+                                          "A_Const": {
+                                            "location": 402,
+                                            "val": {
+                                              "String": {
+                                                "str": "RangeVar",
+                                              },
+                                            },
+                                          },
+                                        },
+                                      },
+                                    },
+                                    "location": 412,
+                                    "name": [
+                                      {
+                                        "String": {
+                                          "str": "->",
+                                        },
+                                      },
+                                    ],
+                                    "rexpr": {
+                                      "A_Const": {
+                                        "location": 414,
+                                        "val": {
+                                          "String": {
+                                            "str": "inh",
+                                          },
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                                "location": 420,
+                                "nulltesttype": "IS_NULL",
+                              },
+                            },
+                          ],
+                          "boolop": "AND_EXPR",
+                          "location": 372,
+                        },
+                      },
+                      {
+                        "BoolExpr": {
+                          "args": [
+                            {
+                              "NullTest": {
+                                "arg": {
+                                  "A_Expr": {
+                                    "kind": "AEXPR_OP",
+                                    "lexpr": {
+                                      "A_Expr": {
+                                        "kind": "AEXPR_OP",
+                                        "lexpr": {
+                                          "A_Expr": {
+                                            "kind": "AEXPR_OP",
+                                            "lexpr": {
+                                              "ColumnRef": {
+                                                "fields": [
+                                                  {
+                                                    "String": {
+                                                      "str": "node",
+                                                    },
+                                                  },
+                                                ],
+                                                "location": 440,
+                                              },
+                                            },
+                                            "location": 444,
+                                            "name": [
+                                              {
+                                                "String": {
+                                                  "str": "->",
+                                                },
+                                              },
+                                            ],
+                                            "rexpr": {
+                                              "A_Const": {
+                                                "location": 446,
+                                                "val": {
+                                                  "String": {
+                                                    "str": "relation",
+                                                  },
+                                                },
+                                              },
+                                            },
+                                          },
+                                        },
+                                        "location": 456,
+                                        "name": [
+                                          {
+                                            "String": {
+                                              "str": "->",
+                                            },
+                                          },
+                                        ],
+                                        "rexpr": {
+                                          "A_Const": {
+                                            "location": 458,
+                                            "val": {
+                                              "String": {
+                                                "str": "RangeVar",
+                                              },
+                                            },
+                                          },
+                                        },
+                                      },
+                                    },
+                                    "location": 468,
+                                    "name": [
+                                      {
+                                        "String": {
+                                          "str": "->",
+                                        },
+                                      },
+                                    ],
+                                    "rexpr": {
+                                      "A_Const": {
+                                        "location": 470,
+                                        "val": {
+                                          "String": {
+                                            "str": "inh",
+                                          },
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                                "location": 476,
+                                "nulltesttype": "IS_NOT_NULL",
+                              },
+                            },
+                            {
+                              "BooleanTest": {
+                                "arg": {
+                                  "TypeCast": {
+                                    "arg": {
+                                      "A_Expr": {
+                                        "kind": "AEXPR_OP",
+                                        "lexpr": {
+                                          "A_Expr": {
+                                            "kind": "AEXPR_OP",
+                                            "lexpr": {
+                                              "A_Expr": {
+                                                "kind": "AEXPR_OP",
+                                                "lexpr": {
+                                                  "ColumnRef": {
+                                                    "fields": [
+                                                      {
+                                                        "String": {
+                                                          "str": "node",
+                                                        },
+                                                      },
+                                                    ],
+                                                    "location": 501,
+                                                  },
+                                                },
+                                                "location": 505,
+                                                "name": [
+                                                  {
+                                                    "String": {
+                                                      "str": "->",
+                                                    },
+                                                  },
+                                                ],
+                                                "rexpr": {
+                                                  "A_Const": {
+                                                    "location": 507,
+                                                    "val": {
+                                                      "String": {
+                                                        "str": "relation",
+                                                      },
+                                                    },
+                                                  },
+                                                },
+                                              },
+                                            },
+                                            "location": 517,
+                                            "name": [
+                                              {
+                                                "String": {
+                                                  "str": "->",
+                                                },
+                                              },
+                                            ],
+                                            "rexpr": {
+                                              "A_Const": {
+                                                "location": 519,
+                                                "val": {
+                                                  "String": {
+                                                    "str": "RangeVar",
+                                                  },
+                                                },
+                                              },
+                                            },
+                                          },
+                                        },
+                                        "location": 529,
+                                        "name": [
+                                          {
+                                            "String": {
+                                              "str": "->",
+                                            },
+                                          },
+                                        ],
+                                        "rexpr": {
+                                          "A_Const": {
+                                            "location": 531,
+                                            "val": {
+                                              "String": {
+                                                "str": "inh",
+                                              },
+                                            },
+                                          },
+                                        },
+                                      },
+                                    },
+                                    "location": 537,
+                                    "typeName": {
+                                      "location": 539,
+                                      "names": [
+                                        {
+                                          "String": {
+                                            "str": "bool",
+                                          },
+                                        },
+                                      ],
+                                      "typemod": -1,
+                                    },
+                                  },
+                                },
+                                "booltesttype": "IS_FALSE",
+                                "location": 544,
+                              },
+                            },
+                          ],
+                          "boolop": "AND_EXPR",
+                          "location": 488,
+                        },
+                      },
+                    ],
+                    "boolop": "OR_EXPR",
+                    "location": 428,
+                  },
+                },
+              },
+            },
+          ],
+        },
+      },
+      "stmt_len": 250,
+      "stmt_location": 322,
+    },
+  },
+  {
+    "RawStmt": {
+      "stmt": {
+        "SelectStmt": {
+          "fromClause": [
+            {
+              "RangeVar": {
+                "inh": true,
+                "location": 608,
+                "relname": "t",
+                "relpersistence": "p",
+              },
+            },
+          ],
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE",
+          "targetList": [
+            {
+              "ResTarget": {
+                "location": 583,
+                "val": {
+                  "BoolExpr": {
+                    "args": [
+                      {
+                        "BoolExpr": {
+                          "args": [
+                            {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "a",
+                                    },
+                                  },
+                                ],
+                                "location": 583,
+                              },
+                            },
+                            {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "b",
+                                    },
+                                  },
+                                ],
+                                "location": 589,
+                              },
+                            },
+                            {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "c",
+                                    },
+                                  },
+                                ],
+                                "location": 596,
+                              },
+                            },
+                          ],
+                          "boolop": "AND_EXPR",
+                          "location": 585,
+                        },
+                      },
+                      {
+                        "ColumnRef": {
+                          "fields": [
+                            {
+                              "String": {
+                                "str": "d",
+                              },
+                            },
+                          ],
+                          "location": 601,
+                        },
+                      },
+                    ],
+                    "boolop": "OR_EXPR",
+                    "location": 598,
+                  },
+                },
+              },
+            },
+          ],
+        },
+      },
+      "stmt_len": 36,
+      "stmt_location": 573,
+    },
+  },
+  {
+    "RawStmt": {
+      "stmt": {
+        "SelectStmt": {
+          "fromClause": [
+            {
+              "RangeVar": {
+                "inh": true,
+                "location": 663,
+                "relname": "t",
+                "relpersistence": "p",
+              },
+            },
+          ],
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE",
+          "targetList": [
+            {
+              "ResTarget": {
+                "location": 620,
+                "val": {
+                  "BoolExpr": {
+                    "args": [
+                      {
+                        "BoolExpr": {
+                          "args": [
+                            {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "a",
+                                    },
+                                  },
+                                ],
+                                "location": 620,
+                              },
+                            },
+                            {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "b",
+                                    },
+                                  },
+                                ],
+                                "location": 626,
+                              },
+                            },
+                            {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "c",
+                                    },
+                                  },
+                                ],
+                                "location": 633,
+                              },
+                            },
+                          ],
+                          "boolop": "AND_EXPR",
+                          "location": 622,
+                        },
+                      },
+                      {
+                        "ColumnRef": {
+                          "fields": [
+                            {
+                              "String": {
+                                "str": "d",
+                              },
+                            },
+                          ],
+                          "location": 638,
+                        },
+                      },
+                      {
+                        "BoolExpr": {
+                          "args": [
+                            {
+                              "BoolExpr": {
+                                "args": [
+                                  {
+                                    "ColumnRef": {
+                                      "fields": [
+                                        {
+                                          "String": {
+                                            "str": "e",
+                                          },
+                                        },
+                                      ],
+                                      "location": 644,
+                                    },
+                                  },
+                                  {
+                                    "ColumnRef": {
+                                      "fields": [
+                                        {
+                                          "String": {
+                                            "str": "f",
+                                          },
+                                        },
+                                      ],
+                                      "location": 650,
+                                    },
+                                  },
+                                ],
+                                "boolop": "AND_EXPR",
+                                "location": 646,
+                              },
+                            },
+                            {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "g",
+                                    },
+                                  },
+                                ],
+                                "location": 655,
+                              },
+                            },
+                          ],
+                          "boolop": "OR_EXPR",
+                          "location": 652,
+                        },
+                      },
+                    ],
+                    "boolop": "OR_EXPR",
+                    "location": 635,
+                  },
+                },
+              },
+            },
+          ],
+        },
+      },
+      "stmt_len": 54,
+      "stmt_location": 610,
+    },
+  },
+  {
+    "RawStmt": {
+      "stmt": {
+        "SelectStmt": {
+          "fromClause": [
+            {
+              "RangeVar": {
+                "inh": true,
+                "location": 734,
+                "relname": "t",
+                "relpersistence": "p",
+              },
+            },
+          ],
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE",
+          "targetList": [
+            {
+              "ResTarget": {
+                "location": 675,
+                "val": {
+                  "BoolExpr": {
+                    "args": [
+                      {
+                        "BoolExpr": {
+                          "args": [
+                            {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "a",
+                                    },
+                                  },
+                                ],
+                                "location": 675,
+                              },
+                            },
+                            {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "b",
+                                    },
+                                  },
+                                ],
+                                "location": 681,
+                              },
+                            },
+                            {
+                              "BooleanTest": {
+                                "arg": {
+                                  "TypeCast": {
+                                    "arg": {
+                                      "ColumnRef": {
+                                        "fields": [
+                                          {
+                                            "String": {
+                                              "str": "c",
+                                            },
+                                          },
+                                        ],
+                                        "location": 689,
+                                      },
+                                    },
+                                    "location": 691,
+                                    "typeName": {
+                                      "location": 693,
+                                      "names": [
+                                        {
+                                          "String": {
+                                            "str": "bool",
+                                          },
+                                        },
+                                      ],
+                                      "typemod": -1,
+                                    },
+                                  },
+                                },
+                                "booltesttype": "IS_TRUE",
+                                "location": 698,
+                              },
+                            },
+                          ],
+                          "boolop": "AND_EXPR",
+                          "location": 677,
+                        },
+                      },
+                      {
+                        "ColumnRef": {
+                          "fields": [
+                            {
+                              "String": {
+                                "str": "d",
+                              },
+                            },
+                          ],
+                          "location": 709,
+                        },
+                      },
+                      {
+                        "BoolExpr": {
+                          "args": [
+                            {
+                              "BoolExpr": {
+                                "args": [
+                                  {
+                                    "ColumnRef": {
+                                      "fields": [
+                                        {
+                                          "String": {
+                                            "str": "e",
+                                          },
+                                        },
+                                      ],
+                                      "location": 715,
+                                    },
+                                  },
+                                  {
+                                    "ColumnRef": {
+                                      "fields": [
+                                        {
+                                          "String": {
+                                            "str": "f",
+                                          },
+                                        },
+                                      ],
+                                      "location": 721,
+                                    },
+                                  },
+                                ],
+                                "boolop": "AND_EXPR",
+                                "location": 717,
+                              },
+                            },
+                            {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "g",
+                                    },
+                                  },
+                                ],
+                                "location": 726,
+                              },
+                            },
+                          ],
+                          "boolop": "OR_EXPR",
+                          "location": 723,
+                        },
+                      },
+                    ],
+                    "boolop": "OR_EXPR",
+                    "location": 706,
+                  },
+                },
+              },
+            },
+          ],
+        },
+      },
+      "stmt_len": 70,
+      "stmt_location": 665,
+    },
+  },
+  {
+    "RawStmt": {
+      "stmt": {
+        "SelectStmt": {
+          "fromClause": [
+            {
+              "RangeVar": {
+                "inh": true,
+                "location": 780,
+                "relname": "t",
+                "relpersistence": "p",
+              },
+            },
+          ],
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE",
+          "targetList": [
+            {
+              "ResTarget": {
+                "location": 746,
+                "val": {
+                  "BoolExpr": {
+                    "args": [
+                      {
+                        "BoolExpr": {
+                          "args": [
+                            {
+                              "BoolExpr": {
+                                "args": [
+                                  {
+                                    "BoolExpr": {
+                                      "args": [
+                                        {
+                                          "ColumnRef": {
+                                            "fields": [
+                                              {
+                                                "String": {
+                                                  "str": "a",
+                                                },
+                                              },
+                                            ],
+                                            "location": 751,
+                                          },
+                                        },
+                                        {
+                                          "ColumnRef": {
+                                            "fields": [
+                                              {
+                                                "String": {
+                                                  "str": "b",
+                                                },
+                                              },
+                                            ],
+                                            "location": 757,
+                                          },
+                                        },
+                                      ],
+                                      "boolop": "AND_EXPR",
+                                      "location": 753,
+                                    },
+                                  },
+                                ],
+                                "boolop": "NOT_EXPR",
+                                "location": 746,
+                              },
+                            },
+                            {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "c",
+                                    },
+                                  },
+                                ],
+                                "location": 764,
+                              },
+                            },
+                          ],
+                          "boolop": "AND_EXPR",
+                          "location": 760,
+                        },
+                      },
+                      {
+                        "BoolExpr": {
+                          "args": [
+                            {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "d",
+                                    },
+                                  },
+                                ],
+                                "location": 773,
+                              },
+                            },
+                          ],
+                          "boolop": "NOT_EXPR",
+                          "location": 769,
+                        },
+                      },
+                    ],
+                    "boolop": "OR_EXPR",
+                    "location": 766,
+                  },
+                },
+              },
+            },
+          ],
+        },
+      },
+      "stmt_len": 45,
+      "stmt_location": 736,
+    },
+  },
+  {
+    "RawStmt": {
+      "stmt": {
+        "SelectStmt": {
+          "fromClause": [
+            {
+              "RangeVar": {
+                "inh": true,
+                "location": 817,
+                "relname": "t",
+                "relpersistence": "p",
+              },
+            },
+          ],
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE",
+          "targetList": [
+            {
+              "ResTarget": {
+                "location": 792,
+                "val": {
+                  "BoolExpr": {
+                    "args": [
+                      {
+                        "BoolExpr": {
+                          "args": [
+                            {
+                              "BoolExpr": {
+                                "args": [
+                                  {
+                                    "ColumnRef": {
+                                      "fields": [
+                                        {
+                                          "String": {
+                                            "str": "a",
+                                          },
+                                        },
+                                      ],
+                                      "location": 797,
+                                    },
+                                  },
+                                  {
+                                    "ColumnRef": {
+                                      "fields": [
+                                        {
+                                          "String": {
+                                            "str": "b",
+                                          },
+                                        },
+                                      ],
+                                      "location": 803,
+                                    },
+                                  },
+                                ],
+                                "boolop": "AND_EXPR",
+                                "location": 799,
+                              },
+                            },
+                          ],
+                          "boolop": "NOT_EXPR",
+                          "location": 792,
+                        },
+                      },
+                      {
+                        "ColumnRef": {
+                          "fields": [
+                            {
+                              "String": {
+                                "str": "c",
+                              },
+                            },
+                          ],
+                          "location": 810,
+                        },
+                      },
+                    ],
+                    "boolop": "AND_EXPR",
+                    "location": 806,
+                  },
+                },
+              },
+            },
+          ],
+        },
+      },
+      "stmt_len": 36,
+      "stmt_location": 782,
+    },
+  },
+  {
+    "RawStmt": {
+      "stmt": {
+        "SelectStmt": {
+          "fromClause": [
+            {
+              "RangeVar": {
+                "inh": true,
+                "location": 857,
+                "relname": "t",
+                "relpersistence": "p",
+              },
+            },
+          ],
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE",
+          "targetList": [
+            {
+              "ResTarget": {
+                "location": 828,
+                "val": {
+                  "BoolExpr": {
+                    "args": [
+                      {
+                        "BoolExpr": {
+                          "args": [
+                            {
+                              "BoolExpr": {
+                                "args": [
+                                  {
+                                    "ColumnRef": {
+                                      "fields": [
+                                        {
+                                          "String": {
+                                            "str": "a",
+                                          },
+                                        },
+                                      ],
+                                      "location": 835,
+                                    },
+                                  },
+                                  {
+                                    "ColumnRef": {
+                                      "fields": [
+                                        {
+                                          "String": {
+                                            "str": "b",
+                                          },
+                                        },
+                                      ],
+                                      "location": 841,
+                                    },
+                                  },
+                                ],
+                                "boolop": "AND_EXPR",
+                                "location": 837,
+                              },
+                            },
+                          ],
+                          "boolop": "NOT_EXPR",
+                          "location": 829,
+                        },
+                      },
+                      {
+                        "ColumnRef": {
+                          "fields": [
+                            {
+                              "String": {
+                                "str": "c",
+                              },
+                            },
+                          ],
+                          "location": 849,
+                        },
+                      },
+                    ],
+                    "boolop": "AND_EXPR",
+                    "location": 845,
+                  },
+                },
+              },
+            },
+          ],
+        },
+      },
+      "stmt_len": 39,
+      "stmt_location": 819,
+    },
+  },
+  {
+    "RawStmt": {
+      "stmt": {
+        "SelectStmt": {
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE",
+          "targetList": [
+            {
+              "ResTarget": {
+                "location": 868,
+                "val": {
+                  "BooleanTest": {
+                    "arg": {
+                      "BoolExpr": {
+                        "args": [
+                          {
+                            "A_Expr": {
+                              "kind": "AEXPR_OP",
+                              "lexpr": {
+                                "ColumnRef": {
+                                  "fields": [
+                                    {
+                                      "String": {
+                                        "str": "field",
+                                      },
+                                    },
+                                  ],
+                                  "location": 869,
+                                },
+                              },
+                              "location": 874,
+                              "name": [
+                                {
+                                  "String": {
+                                    "str": "=",
+                                  },
+                                },
+                              ],
+                              "rexpr": {
+                                "A_Const": {
+                                  "location": 875,
+                                  "val": {
+                                    "Integer": {
+                                      "ival": 1,
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                          {
+                            "A_Expr": {
+                              "kind": "AEXPR_OP",
+                              "lexpr": {
+                                "ColumnRef": {
+                                  "fields": [
+                                    {
+                                      "String": {
+                                        "str": "field",
+                                      },
+                                    },
+                                  ],
+                                  "location": 880,
+                                },
+                              },
+                              "location": 885,
+                              "name": [
+                                {
+                                  "String": {
+                                    "str": "=",
+                                  },
+                                },
+                              ],
+                              "rexpr": {
+                                "A_Const": {
+                                  "location": 886,
+                                  "val": {
+                                    "Integer": {
+                                      "ival": 2,
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        ],
+                        "boolop": "OR_EXPR",
+                        "location": 877,
+                      },
+                    },
+                    "booltesttype": "IS_TRUE",
+                    "location": 889,
+                  },
+                },
+              },
+            },
+          ],
+        },
+      },
+      "stmt_len": 37,
+      "stmt_location": 859,
+    },
+  },
+  {
+    "RawStmt": {
+      "stmt": {
+        "SelectStmt": {
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE",
+          "targetList": [
+            {
+              "ResTarget": {
+                "location": 906,
+                "val": {
+                  "BoolExpr": {
+                    "args": [
+                      {
+                        "A_Expr": {
+                          "kind": "AEXPR_OP",
+                          "lexpr": {
+                            "ColumnRef": {
+                              "fields": [
+                                {
+                                  "String": {
+                                    "str": "field",
+                                  },
+                                },
+                              ],
+                              "location": 906,
+                            },
+                          },
+                          "location": 911,
+                          "name": [
+                            {
+                              "String": {
+                                "str": "=",
+                              },
+                            },
+                          ],
+                          "rexpr": {
+                            "A_Const": {
+                              "location": 912,
+                              "val": {
+                                "Integer": {
+                                  "ival": 1,
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                      {
+                        "BooleanTest": {
+                          "arg": {
+                            "A_Expr": {
+                              "kind": "AEXPR_OP",
+                              "lexpr": {
+                                "ColumnRef": {
+                                  "fields": [
+                                    {
+                                      "String": {
+                                        "str": "field",
+                                      },
+                                    },
+                                  ],
+                                  "location": 917,
+                                },
+                              },
+                              "location": 922,
+                              "name": [
+                                {
+                                  "String": {
+                                    "str": "=",
+                                  },
+                                },
+                              ],
+                              "rexpr": {
+                                "A_Const": {
+                                  "location": 923,
+                                  "val": {
+                                    "Integer": {
+                                      "ival": 2,
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                          "booltesttype": "IS_TRUE",
+                          "location": 925,
+                        },
+                      },
+                    ],
+                    "boolop": "OR_EXPR",
+                    "location": 914,
+                  },
+                },
+              },
+            },
+          ],
+        },
+      },
+      "stmt_len": 35,
+      "stmt_location": 897,
+    },
+  },
+]
+`;
+
+exports[`parens 2`] = `"SELECT (node->'relation')->'RangeVar' IS NOT NULL FROM my_json_store;  SELECT (node->'relation')->'RangeVar' IS NOT NULL AND ((node->'relation')->'RangeVar')->>'inh' IS NULL FROM my_json_store;  SELECT (a IS NOT NULL AND b IS NULL) OR (c IS NOT NULL AND (a->'inh')::bool IS FALSE) FROM my_json_store;  SELECT ((node->'relation')->'RangeVar' IS NOT NULL AND ((node->'relation')->'RangeVar')->'inh' IS NULL) OR (((node->'relation')->'RangeVar')->'inh' IS NOT NULL AND (((node->'relation')->'RangeVar')->'inh')::bool IS FALSE) FROM my_json_store;  SELECT (a AND b AND c) OR d FROM t;  SELECT (a AND b AND c) OR d OR ((e AND f) OR g) FROM t;  SELECT (a AND b AND c::bool IS TRUE) OR d OR ((e AND f) OR g) FROM t;  SELECT (NOT ((a AND b)) AND c) OR NOT (d) FROM t;  SELECT NOT ((a AND b)) AND c FROM t;  SELECT NOT ((a AND b)) AND c FROM t;  SELECT (field = 1 OR field = 2) IS TRUE;  SELECT field = 1 OR field = 2 IS TRUE;"`;

@@ -1,9 +1,15 @@
 module.exports = {
   plugins: ['prettier'],
   extends: ['eslint:recommended', 'prettier'],
-  parser: 'babel-eslint',
+  parser: 'esprima',
+  settings: {
+    next: {
+      rootDir: 'packages/next/'
+    }
+  },
   parserOptions: {
     ecmaVersion: 11,
+    requireConfigFile: false,
     sourceType: 'module',
     ecmaFeatures: {
       jsx: true
