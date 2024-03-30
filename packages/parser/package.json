@@ -84,5 +84,6 @@
     "case": "1.6.3",
     "node-html-parser": "6.1.12",
     "recast": "0.23.6"
-  }
+  },
+  "gitHead": "82a446d1c1df68222c85c7be87679201b8204eb9"
 }

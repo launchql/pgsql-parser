@@ -141,7 +141,6 @@ export const generateAstHelperMethodsAST = (types: Type[]): t.ExportDefaultDecla
         );
       });
 
-
     // Ensures camel case
     const methodName = toSpecialCamelCase(typeName);
 
