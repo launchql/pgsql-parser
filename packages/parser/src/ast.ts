@@ -1,6 +1,7 @@
 import { Service, Type, Field, Enum, Root, Namespace, ReflectionObject } from '@launchql/protobufjs';
 import * as t from '@babel/types';
 import generate from '@babel/generator';
+import { getFieldName } from './utils';
 
 export const getTSType = (type: string) => {
   switch (type) {
@@ -79,8 +80,7 @@ export const transformTypeToAST = (type: Type) => {
         const fieldType = fieldData.rule === 'repeated' ?
           t.tsArrayType(type) :
           type;
-          const name = fieldData.options?.json_name ? fieldData.options.json_name : fieldName;
-        return t.tsPropertySignature(t.identifier(name), t.tsTypeAnnotation(fieldType));
+        return t.tsPropertySignature(t.identifier(getFieldName(fieldData, fieldName)), t.tsTypeAnnotation(fieldType));
       });
 
   const interfaceDecl = t.tsInterfaceDeclaration(
