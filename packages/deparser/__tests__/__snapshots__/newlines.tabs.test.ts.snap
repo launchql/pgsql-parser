@@ -1,14 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`parens 1`] = `
-Array [
-  Object {
-    "RawStmt": Object {
-      "stmt": Object {
-        "SelectStmt": Object {
-          "fromClause": Array [
-            Object {
-              "RangeVar": Object {
+[
+  {
+    "RawStmt": {
+      "stmt": {
+        "SelectStmt": {
+          "fromClause": [
+            {
+              "RangeVar": {
                 "inh": true,
                 "location": 53,
                 "relname": "my_json_store",
@@ -18,23 +18,23 @@ Array [
           ],
           "limitOption": "LIMIT_OPTION_DEFAULT",
           "op": "SETOP_NONE",
-          "targetList": Array [
-            Object {
-              "ResTarget": Object {
+          "targetList": [
+            {
+              "ResTarget": {
                 "location": 7,
-                "val": Object {
-                  "NullTest": Object {
-                    "arg": Object {
-                      "A_Expr": Object {
+                "val": {
+                  "NullTest": {
+                    "arg": {
+                      "A_Expr": {
                         "kind": "AEXPR_OP",
-                        "lexpr": Object {
-                          "A_Expr": Object {
+                        "lexpr": {
+                          "A_Expr": {
                             "kind": "AEXPR_OP",
-                            "lexpr": Object {
-                              "ColumnRef": Object {
-                                "fields": Array [
-                                  Object {
-                                    "String": Object {
+                            "lexpr": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
                                       "str": "node",
                                     },
                                   },
@@ -43,18 +43,18 @@ Array [
                               },
                             },
                             "location": 11,
-                            "name": Array [
-                              Object {
-                                "String": Object {
+                            "name": [
+                              {
+                                "String": {
                                   "str": "->",
                                 },
                               },
                             ],
-                            "rexpr": Object {
-                              "A_Const": Object {
+                            "rexpr": {
+                              "A_Const": {
                                 "location": 13,
-                                "val": Object {
-                                  "String": Object {
+                                "val": {
+                                  "String": {
                                     "str": "relation",
                                   },
                                 },
@@ -63,18 +63,18 @@ Array [
                           },
                         },
                         "location": 23,
-                        "name": Array [
-                          Object {
-                            "String": Object {
+                        "name": [
+                          {
+                            "String": {
                               "str": "->",
                             },
                           },
                         ],
-                        "rexpr": Object {
-                          "A_Const": Object {
+                        "rexpr": {
+                          "A_Const": {
                             "location": 25,
-                            "val": Object {
-                              "String": Object {
+                            "val": {
+                              "String": {
                                 "str": "RangeVar",
                               },
                             },
@@ -95,13 +95,13 @@ Array [
       "stmt_location": 0,
     },
   },
-  Object {
-    "RawStmt": Object {
-      "stmt": Object {
-        "SelectStmt": Object {
-          "fromClause": Array [
-            Object {
-              "RangeVar": Object {
+  {
+    "RawStmt": {
+      "stmt": {
+        "SelectStmt": {
+          "fromClause": [
+            {
+              "RangeVar": {
                 "inh": true,
                 "location": 179,
                 "relname": "my_json_store",
@@ -111,26 +111,26 @@ Array [
           ],
           "limitOption": "LIMIT_OPTION_DEFAULT",
           "op": "SETOP_NONE",
-          "targetList": Array [
-            Object {
-              "ResTarget": Object {
+          "targetList": [
+            {
+              "ResTarget": {
                 "location": 76,
-                "val": Object {
-                  "BoolExpr": Object {
-                    "args": Array [
-                      Object {
-                        "NullTest": Object {
-                          "arg": Object {
-                            "A_Expr": Object {
+                "val": {
+                  "BoolExpr": {
+                    "args": [
+                      {
+                        "NullTest": {
+                          "arg": {
+                            "A_Expr": {
                               "kind": "AEXPR_OP",
-                              "lexpr": Object {
-                                "A_Expr": Object {
+                              "lexpr": {
+                                "A_Expr": {
                                   "kind": "AEXPR_OP",
-                                  "lexpr": Object {
-                                    "ColumnRef": Object {
-                                      "fields": Array [
-                                        Object {
-                                          "String": Object {
+                                  "lexpr": {
+                                    "ColumnRef": {
+                                      "fields": [
+                                        {
+                                          "String": {
                                             "str": "node",
                                           },
                                         },
@@ -139,18 +139,18 @@ Array [
                                     },
                                   },
                                   "location": 80,
-                                  "name": Array [
-                                    Object {
-                                      "String": Object {
+                                  "name": [
+                                    {
+                                      "String": {
                                         "str": "->",
                                       },
                                     },
                                   ],
-                                  "rexpr": Object {
-                                    "A_Const": Object {
+                                  "rexpr": {
+                                    "A_Const": {
                                       "location": 82,
-                                      "val": Object {
-                                        "String": Object {
+                                      "val": {
+                                        "String": {
                                           "str": "relation",
                                         },
                                       },
@@ -159,18 +159,18 @@ Array [
                                 },
                               },
                               "location": 92,
-                              "name": Array [
-                                Object {
-                                  "String": Object {
+                              "name": [
+                                {
+                                  "String": {
                                     "str": "->",
                                   },
                                 },
                               ],
-                              "rexpr": Object {
-                                "A_Const": Object {
+                              "rexpr": {
+                                "A_Const": {
                                   "location": 94,
-                                  "val": Object {
-                                    "String": Object {
+                                  "val": {
+                                    "String": {
                                       "str": "RangeVar",
                                     },
                                   },
@@ -182,22 +182,22 @@ Array [
                           "nulltesttype": "IS_NOT_NULL",
                         },
                       },
-                      Object {
-                        "NullTest": Object {
-                          "arg": Object {
-                            "A_Expr": Object {
+                      {
+                        "NullTest": {
+                          "arg": {
+                            "A_Expr": {
                               "kind": "AEXPR_OP",
-                              "lexpr": Object {
-                                "A_Expr": Object {
+                              "lexpr": {
+                                "A_Expr": {
                                   "kind": "AEXPR_OP",
-                                  "lexpr": Object {
-                                    "A_Expr": Object {
+                                  "lexpr": {
+                                    "A_Expr": {
                                       "kind": "AEXPR_OP",
-                                      "lexpr": Object {
-                                        "ColumnRef": Object {
-                                          "fields": Array [
-                                            Object {
-                                              "String": Object {
+                                      "lexpr": {
+                                        "ColumnRef": {
+                                          "fields": [
+                                            {
+                                              "String": {
                                                 "str": "node",
                                               },
                                             },
@@ -206,18 +206,18 @@ Array [
                                         },
                                       },
                                       "location": 133,
-                                      "name": Array [
-                                        Object {
-                                          "String": Object {
+                                      "name": [
+                                        {
+                                          "String": {
                                             "str": "->",
                                           },
                                         },
                                       ],
-                                      "rexpr": Object {
-                                        "A_Const": Object {
+                                      "rexpr": {
+                                        "A_Const": {
                                           "location": 135,
-                                          "val": Object {
-                                            "String": Object {
+                                          "val": {
+                                            "String": {
                                               "str": "relation",
                                             },
                                           },
@@ -226,18 +226,18 @@ Array [
                                     },
                                   },
                                   "location": 145,
-                                  "name": Array [
-                                    Object {
-                                      "String": Object {
+                                  "name": [
+                                    {
+                                      "String": {
                                         "str": "->",
                                       },
                                     },
                                   ],
-                                  "rexpr": Object {
-                                    "A_Const": Object {
+                                  "rexpr": {
+                                    "A_Const": {
                                       "location": 147,
-                                      "val": Object {
-                                        "String": Object {
+                                      "val": {
+                                        "String": {
                                           "str": "RangeVar",
                                         },
                                       },
@@ -246,18 +246,18 @@ Array [
                                 },
                               },
                               "location": 157,
-                              "name": Array [
-                                Object {
-                                  "String": Object {
+                              "name": [
+                                {
+                                  "String": {
                                     "str": "->>",
                                   },
                                 },
                               ],
-                              "rexpr": Object {
-                                "A_Const": Object {
+                              "rexpr": {
+                                "A_Const": {
                                   "location": 160,
-                                  "val": Object {
-                                    "String": Object {
+                                  "val": {
+                                    "String": {
                                       "str": "inh",
                                     },
                                   },
@@ -283,13 +283,13 @@ Array [
       "stmt_location": 67,
     },
   },
-  Object {
-    "RawStmt": Object {
-      "stmt": Object {
-        "SelectStmt": Object {
-          "fromClause": Array [
-            Object {
-              "RangeVar": Object {
+  {
+    "RawStmt": {
+      "stmt": {
+        "SelectStmt": {
+          "fromClause": [
+            {
+              "RangeVar": {
                 "inh": true,
                 "location": 308,
                 "relname": "my_json_store",
@@ -299,23 +299,23 @@ Array [
           ],
           "limitOption": "LIMIT_OPTION_DEFAULT",
           "op": "SETOP_NONE",
-          "targetList": Array [
-            Object {
-              "ResTarget": Object {
+          "targetList": [
+            {
+              "ResTarget": {
                 "location": 202,
-                "val": Object {
-                  "BoolExpr": Object {
-                    "args": Array [
-                      Object {
-                        "BoolExpr": Object {
-                          "args": Array [
-                            Object {
-                              "NullTest": Object {
-                                "arg": Object {
-                                  "ColumnRef": Object {
-                                    "fields": Array [
-                                      Object {
-                                        "String": Object {
+                "val": {
+                  "BoolExpr": {
+                    "args": [
+                      {
+                        "BoolExpr": {
+                          "args": [
+                            {
+                              "NullTest": {
+                                "arg": {
+                                  "ColumnRef": {
+                                    "fields": [
+                                      {
+                                        "String": {
                                           "str": "a",
                                         },
                                       },
@@ -327,13 +327,13 @@ Array [
                                 "nulltesttype": "IS_NOT_NULL",
                               },
                             },
-                            Object {
-                              "NullTest": Object {
-                                "arg": Object {
-                                  "ColumnRef": Object {
-                                    "fields": Array [
-                                      Object {
-                                        "String": Object {
+                            {
+                              "NullTest": {
+                                "arg": {
+                                  "ColumnRef": {
+                                    "fields": [
+                                      {
+                                        "String": {
                                           "str": "b",
                                         },
                                       },
@@ -350,16 +350,16 @@ Array [
                           "location": 216,
                         },
                       },
-                      Object {
-                        "BoolExpr": Object {
-                          "args": Array [
-                            Object {
-                              "NullTest": Object {
-                                "arg": Object {
-                                  "ColumnRef": Object {
-                                    "fields": Array [
-                                      Object {
-                                        "String": Object {
+                      {
+                        "BoolExpr": {
+                          "args": [
+                            {
+                              "NullTest": {
+                                "arg": {
+                                  "ColumnRef": {
+                                    "fields": [
+                                      {
+                                        "String": {
                                           "str": "c",
                                         },
                                       },
@@ -371,18 +371,18 @@ Array [
                                 "nulltesttype": "IS_NOT_NULL",
                               },
                             },
-                            Object {
-                              "BooleanTest": Object {
-                                "arg": Object {
-                                  "TypeCast": Object {
-                                    "arg": Object {
-                                      "A_Expr": Object {
+                            {
+                              "BooleanTest": {
+                                "arg": {
+                                  "TypeCast": {
+                                    "arg": {
+                                      "A_Expr": {
                                         "kind": "AEXPR_OP",
-                                        "lexpr": Object {
-                                          "ColumnRef": Object {
-                                            "fields": Array [
-                                              Object {
-                                                "String": Object {
+                                        "lexpr": {
+                                          "ColumnRef": {
+                                            "fields": [
+                                              {
+                                                "String": {
                                                   "str": "a",
                                                 },
                                               },
@@ -391,18 +391,18 @@ Array [
                                           },
                                         },
                                         "location": 278,
-                                        "name": Array [
-                                          Object {
-                                            "String": Object {
+                                        "name": [
+                                          {
+                                            "String": {
                                               "str": "->",
                                             },
                                           },
                                         ],
-                                        "rexpr": Object {
-                                          "A_Const": Object {
+                                        "rexpr": {
+                                          "A_Const": {
                                             "location": 280,
-                                            "val": Object {
-                                              "String": Object {
+                                            "val": {
+                                              "String": {
                                                 "str": "inh",
                                               },
                                             },
@@ -411,11 +411,11 @@ Array [
                                       },
                                     },
                                     "location": 286,
-                                    "typeName": Object {
+                                    "typeName": {
                                       "location": 288,
-                                      "names": Array [
-                                        Object {
-                                          "String": Object {
+                                      "names": [
+                                        {
+                                          "String": {
                                             "str": "bool",
                                           },
                                         },
@@ -447,13 +447,13 @@ Array [
       "stmt_location": 193,
     },
   },
-  Object {
-    "RawStmt": Object {
-      "stmt": Object {
-        "SelectStmt": Object {
-          "fromClause": Array [
-            Object {
-              "RangeVar": Object {
+  {
+    "RawStmt": {
+      "stmt": {
+        "SelectStmt": {
+          "fromClause": [
+            {
+              "RangeVar": {
                 "inh": true,
                 "location": 559,
                 "relname": "my_json_store",
@@ -463,29 +463,29 @@ Array [
           ],
           "limitOption": "LIMIT_OPTION_DEFAULT",
           "op": "SETOP_NONE",
-          "targetList": Array [
-            Object {
-              "ResTarget": Object {
+          "targetList": [
+            {
+              "ResTarget": {
                 "location": 331,
-                "val": Object {
-                  "BoolExpr": Object {
-                    "args": Array [
-                      Object {
-                        "BoolExpr": Object {
-                          "args": Array [
-                            Object {
-                              "NullTest": Object {
-                                "arg": Object {
-                                  "A_Expr": Object {
+                "val": {
+                  "BoolExpr": {
+                    "args": [
+                      {
+                        "BoolExpr": {
+                          "args": [
+                            {
+                              "NullTest": {
+                                "arg": {
+                                  "A_Expr": {
                                     "kind": "AEXPR_OP",
-                                    "lexpr": Object {
-                                      "A_Expr": Object {
+                                    "lexpr": {
+                                      "A_Expr": {
                                         "kind": "AEXPR_OP",
-                                        "lexpr": Object {
-                                          "ColumnRef": Object {
-                                            "fields": Array [
-                                              Object {
-                                                "String": Object {
+                                        "lexpr": {
+                                          "ColumnRef": {
+                                            "fields": [
+                                              {
+                                                "String": {
                                                   "str": "node",
                                                 },
                                               },
@@ -494,18 +494,18 @@ Array [
                                           },
                                         },
                                         "location": 335,
-                                        "name": Array [
-                                          Object {
-                                            "String": Object {
+                                        "name": [
+                                          {
+                                            "String": {
                                               "str": "->",
                                             },
                                           },
                                         ],
-                                        "rexpr": Object {
-                                          "A_Const": Object {
+                                        "rexpr": {
+                                          "A_Const": {
                                             "location": 337,
-                                            "val": Object {
-                                              "String": Object {
+                                            "val": {
+                                              "String": {
                                                 "str": "relation",
                                               },
                                             },
@@ -514,18 +514,18 @@ Array [
                                       },
                                     },
                                     "location": 347,
-                                    "name": Array [
-                                      Object {
-                                        "String": Object {
+                                    "name": [
+                                      {
+                                        "String": {
                                           "str": "->",
                                         },
                                       },
                                     ],
-                                    "rexpr": Object {
-                                      "A_Const": Object {
+                                    "rexpr": {
+                                      "A_Const": {
                                         "location": 349,
-                                        "val": Object {
-                                          "String": Object {
+                                        "val": {
+                                          "String": {
                                             "str": "RangeVar",
                                           },
                                         },
@@ -537,22 +537,22 @@ Array [
                                 "nulltesttype": "IS_NOT_NULL",
                               },
                             },
-                            Object {
-                              "NullTest": Object {
-                                "arg": Object {
-                                  "A_Expr": Object {
+                            {
+                              "NullTest": {
+                                "arg": {
+                                  "A_Expr": {
                                     "kind": "AEXPR_OP",
-                                    "lexpr": Object {
-                                      "A_Expr": Object {
+                                    "lexpr": {
+                                      "A_Expr": {
                                         "kind": "AEXPR_OP",
-                                        "lexpr": Object {
-                                          "A_Expr": Object {
+                                        "lexpr": {
+                                          "A_Expr": {
                                             "kind": "AEXPR_OP",
-                                            "lexpr": Object {
-                                              "ColumnRef": Object {
-                                                "fields": Array [
-                                                  Object {
-                                                    "String": Object {
+                                            "lexpr": {
+                                              "ColumnRef": {
+                                                "fields": [
+                                                  {
+                                                    "String": {
                                                       "str": "node",
                                                     },
                                                   },
@@ -561,18 +561,18 @@ Array [
                                               },
                                             },
                                             "location": 388,
-                                            "name": Array [
-                                              Object {
-                                                "String": Object {
+                                            "name": [
+                                              {
+                                                "String": {
                                                   "str": "->",
                                                 },
                                               },
                                             ],
-                                            "rexpr": Object {
-                                              "A_Const": Object {
+                                            "rexpr": {
+                                              "A_Const": {
                                                 "location": 390,
-                                                "val": Object {
-                                                  "String": Object {
+                                                "val": {
+                                                  "String": {
                                                     "str": "relation",
                                                   },
                                                 },
@@ -581,18 +581,18 @@ Array [
                                           },
                                         },
                                         "location": 400,
-                                        "name": Array [
-                                          Object {
-                                            "String": Object {
+                                        "name": [
+                                          {
+                                            "String": {
                                               "str": "->",
                                             },
                                           },
                                         ],
-                                        "rexpr": Object {
-                                          "A_Const": Object {
+                                        "rexpr": {
+                                          "A_Const": {
                                             "location": 402,
-                                            "val": Object {
-                                              "String": Object {
+                                            "val": {
+                                              "String": {
                                                 "str": "RangeVar",
                                               },
                                             },
@@ -601,18 +601,18 @@ Array [
                                       },
                                     },
                                     "location": 412,
-                                    "name": Array [
-                                      Object {
-                                        "String": Object {
+                                    "name": [
+                                      {
+                                        "String": {
                                           "str": "->",
                                         },
                                       },
                                     ],
-                                    "rexpr": Object {
-                                      "A_Const": Object {
+                                    "rexpr": {
+                                      "A_Const": {
                                         "location": 414,
-                                        "val": Object {
-                                          "String": Object {
+                                        "val": {
+                                          "String": {
                                             "str": "inh",
                                           },
                                         },
@@ -629,25 +629,25 @@ Array [
                           "location": 372,
                         },
                       },
-                      Object {
-                        "BoolExpr": Object {
-                          "args": Array [
-                            Object {
-                              "NullTest": Object {
-                                "arg": Object {
-                                  "A_Expr": Object {
+                      {
+                        "BoolExpr": {
+                          "args": [
+                            {
+                              "NullTest": {
+                                "arg": {
+                                  "A_Expr": {
                                     "kind": "AEXPR_OP",
-                                    "lexpr": Object {
-                                      "A_Expr": Object {
+                                    "lexpr": {
+                                      "A_Expr": {
                                         "kind": "AEXPR_OP",
-                                        "lexpr": Object {
-                                          "A_Expr": Object {
+                                        "lexpr": {
+                                          "A_Expr": {
                                             "kind": "AEXPR_OP",
-                                            "lexpr": Object {
-                                              "ColumnRef": Object {
-                                                "fields": Array [
-                                                  Object {
-                                                    "String": Object {
+                                            "lexpr": {
+                                              "ColumnRef": {
+                                                "fields": [
+                                                  {
+                                                    "String": {
                                                       "str": "node",
                                                     },
                                                   },
@@ -656,18 +656,18 @@ Array [
                                               },
                                             },
                                             "location": 444,
-                                            "name": Array [
-                                              Object {
-                                                "String": Object {
+                                            "name": [
+                                              {
+                                                "String": {
                                                   "str": "->",
                                                 },
                                               },
                                             ],
-                                            "rexpr": Object {
-                                              "A_Const": Object {
+                                            "rexpr": {
+                                              "A_Const": {
                                                 "location": 446,
-                                                "val": Object {
-                                                  "String": Object {
+                                                "val": {
+                                                  "String": {
                                                     "str": "relation",
                                                   },
                                                 },
@@ -676,18 +676,18 @@ Array [
                                           },
                                         },
                                         "location": 456,
-                                        "name": Array [
-                                          Object {
-                                            "String": Object {
+                                        "name": [
+                                          {
+                                            "String": {
                                               "str": "->",
                                             },
                                           },
                                         ],
-                                        "rexpr": Object {
-                                          "A_Const": Object {
+                                        "rexpr": {
+                                          "A_Const": {
                                             "location": 458,
-                                            "val": Object {
-                                              "String": Object {
+                                            "val": {
+                                              "String": {
                                                 "str": "RangeVar",
                                               },
                                             },
@@ -696,18 +696,18 @@ Array [
                                       },
                                     },
                                     "location": 468,
-                                    "name": Array [
-                                      Object {
-                                        "String": Object {
+                                    "name": [
+                                      {
+                                        "String": {
                                           "str": "->",
                                         },
                                       },
                                     ],
-                                    "rexpr": Object {
-                                      "A_Const": Object {
+                                    "rexpr": {
+                                      "A_Const": {
                                         "location": 470,
-                                        "val": Object {
-                                          "String": Object {
+                                        "val": {
+                                          "String": {
                                             "str": "inh",
                                           },
                                         },
@@ -719,24 +719,24 @@ Array [
                                 "nulltesttype": "IS_NOT_NULL",
                               },
                             },
-                            Object {
-                              "BooleanTest": Object {
-                                "arg": Object {
-                                  "TypeCast": Object {
-                                    "arg": Object {
-                                      "A_Expr": Object {
+                            {
+                              "BooleanTest": {
+                                "arg": {
+                                  "TypeCast": {
+                                    "arg": {
+                                      "A_Expr": {
                                         "kind": "AEXPR_OP",
-                                        "lexpr": Object {
-                                          "A_Expr": Object {
+                                        "lexpr": {
+                                          "A_Expr": {
                                             "kind": "AEXPR_OP",
-                                            "lexpr": Object {
-                                              "A_Expr": Object {
+                                            "lexpr": {
+                                              "A_Expr": {
                                                 "kind": "AEXPR_OP",
-                                                "lexpr": Object {
-                                                  "ColumnRef": Object {
-                                                    "fields": Array [
-                                                      Object {
-                                                        "String": Object {
+                                                "lexpr": {
+                                                  "ColumnRef": {
+                                                    "fields": [
+                                                      {
+                                                        "String": {
                                                           "str": "node",
                                                         },
                                                       },
@@ -745,18 +745,18 @@ Array [
                                                   },
                                                 },
                                                 "location": 505,
-                                                "name": Array [
-                                                  Object {
-                                                    "String": Object {
+                                                "name": [
+                                                  {
+                                                    "String": {
                                                       "str": "->",
                                                     },
                                                   },
                                                 ],
-                                                "rexpr": Object {
-                                                  "A_Const": Object {
+                                                "rexpr": {
+                                                  "A_Const": {
                                                     "location": 507,
-                                                    "val": Object {
-                                                      "String": Object {
+                                                    "val": {
+                                                      "String": {
                                                         "str": "relation",
                                                       },
                                                     },
@@ -765,18 +765,18 @@ Array [
                                               },
                                             },
                                             "location": 517,
-                                            "name": Array [
-                                              Object {
-                                                "String": Object {
+                                            "name": [
+                                              {
+                                                "String": {
                                                   "str": "->",
                                                 },
                                               },
                                             ],
-                                            "rexpr": Object {
-                                              "A_Const": Object {
+                                            "rexpr": {
+                                              "A_Const": {
                                                 "location": 519,
-                                                "val": Object {
-                                                  "String": Object {
+                                                "val": {
+                                                  "String": {
                                                     "str": "RangeVar",
                                                   },
                                                 },
@@ -785,18 +785,18 @@ Array [
                                           },
                                         },
                                         "location": 529,
-                                        "name": Array [
-                                          Object {
-                                            "String": Object {
+                                        "name": [
+                                          {
+                                            "String": {
                                               "str": "->",
                                             },
                                           },
                                         ],
-                                        "rexpr": Object {
-                                          "A_Const": Object {
+                                        "rexpr": {
+                                          "A_Const": {
                                             "location": 531,
-                                            "val": Object {
-                                              "String": Object {
+                                            "val": {
+                                              "String": {
                                                 "str": "inh",
                                               },
                                             },
@@ -805,11 +805,11 @@ Array [
                                       },
                                     },
                                     "location": 537,
-                                    "typeName": Object {
+                                    "typeName": {
                                       "location": 539,
-                                      "names": Array [
-                                        Object {
-                                          "String": Object {
+                                      "names": [
+                                        {
+                                          "String": {
                                             "str": "bool",
                                           },
                                         },
@@ -841,13 +841,13 @@ Array [
       "stmt_location": 322,
     },
   },
-  Object {
-    "RawStmt": Object {
-      "stmt": Object {
-        "SelectStmt": Object {
-          "fromClause": Array [
-            Object {
-              "RangeVar": Object {
+  {
+    "RawStmt": {
+      "stmt": {
+        "SelectStmt": {
+          "fromClause": [
+            {
+              "RangeVar": {
                 "inh": true,
                 "location": 608,
                 "relname": "t",
@@ -857,21 +857,21 @@ Array [
           ],
           "limitOption": "LIMIT_OPTION_DEFAULT",
           "op": "SETOP_NONE",
-          "targetList": Array [
-            Object {
-              "ResTarget": Object {
+          "targetList": [
+            {
+              "ResTarget": {
                 "location": 583,
-                "val": Object {
-                  "BoolExpr": Object {
-                    "args": Array [
-                      Object {
-                        "BoolExpr": Object {
-                          "args": Array [
-                            Object {
-                              "ColumnRef": Object {
-                                "fields": Array [
-                                  Object {
-                                    "String": Object {
+                "val": {
+                  "BoolExpr": {
+                    "args": [
+                      {
+                        "BoolExpr": {
+                          "args": [
+                            {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
                                       "str": "a",
                                     },
                                   },
@@ -879,11 +879,11 @@ Array [
                                 "location": 583,
                               },
                             },
-                            Object {
-                              "ColumnRef": Object {
-                                "fields": Array [
-                                  Object {
-                                    "String": Object {
+                            {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
                                       "str": "b",
                                     },
                                   },
@@ -891,11 +891,11 @@ Array [
                                 "location": 589,
                               },
                             },
-                            Object {
-                              "ColumnRef": Object {
-                                "fields": Array [
-                                  Object {
-                                    "String": Object {
+                            {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
                                       "str": "c",
                                     },
                                   },
@@ -908,11 +908,11 @@ Array [
                           "location": 585,
                         },
                       },
-                      Object {
-                        "ColumnRef": Object {
-                          "fields": Array [
-                            Object {
-                              "String": Object {
+                      {
+                        "ColumnRef": {
+                          "fields": [
+                            {
+                              "String": {
                                 "str": "d",
                               },
                             },
@@ -934,13 +934,13 @@ Array [
       "stmt_location": 573,
     },
   },
-  Object {
-    "RawStmt": Object {
-      "stmt": Object {
-        "SelectStmt": Object {
-          "fromClause": Array [
-            Object {
-              "RangeVar": Object {
+  {
+    "RawStmt": {
+      "stmt": {
+        "SelectStmt": {
+          "fromClause": [
+            {
+              "RangeVar": {
                 "inh": true,
                 "location": 663,
                 "relname": "t",
@@ -950,21 +950,21 @@ Array [
           ],
           "limitOption": "LIMIT_OPTION_DEFAULT",
           "op": "SETOP_NONE",
-          "targetList": Array [
-            Object {
-              "ResTarget": Object {
+          "targetList": [
+            {
+              "ResTarget": {
                 "location": 620,
-                "val": Object {
-                  "BoolExpr": Object {
-                    "args": Array [
-                      Object {
-                        "BoolExpr": Object {
-                          "args": Array [
-                            Object {
-                              "ColumnRef": Object {
-                                "fields": Array [
-                                  Object {
-                                    "String": Object {
+                "val": {
+                  "BoolExpr": {
+                    "args": [
+                      {
+                        "BoolExpr": {
+                          "args": [
+                            {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
                                       "str": "a",
                                     },
                                   },
@@ -972,11 +972,11 @@ Array [
                                 "location": 620,
                               },
                             },
-                            Object {
-                              "ColumnRef": Object {
-                                "fields": Array [
-                                  Object {
-                                    "String": Object {
+                            {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
                                       "str": "b",
                                     },
                                   },
@@ -984,11 +984,11 @@ Array [
                                 "location": 626,
                               },
                             },
-                            Object {
-                              "ColumnRef": Object {
-                                "fields": Array [
-                                  Object {
-                                    "String": Object {
+                            {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
                                       "str": "c",
                                     },
                                   },
@@ -1001,11 +1001,11 @@ Array [
                           "location": 622,
                         },
                       },
-                      Object {
-                        "ColumnRef": Object {
-                          "fields": Array [
-                            Object {
-                              "String": Object {
+                      {
+                        "ColumnRef": {
+                          "fields": [
+                            {
+                              "String": {
                                 "str": "d",
                               },
                             },
@@ -1013,17 +1013,17 @@ Array [
                           "location": 638,
                         },
                       },
-                      Object {
-                        "BoolExpr": Object {
-                          "args": Array [
-                            Object {
-                              "BoolExpr": Object {
-                                "args": Array [
-                                  Object {
-                                    "ColumnRef": Object {
-                                      "fields": Array [
-                                        Object {
-                                          "String": Object {
+                      {
+                        "BoolExpr": {
+                          "args": [
+                            {
+                              "BoolExpr": {
+                                "args": [
+                                  {
+                                    "ColumnRef": {
+                                      "fields": [
+                                        {
+                                          "String": {
                                             "str": "e",
                                           },
                                         },
@@ -1031,11 +1031,11 @@ Array [
                                       "location": 644,
                                     },
                                   },
-                                  Object {
-                                    "ColumnRef": Object {
-                                      "fields": Array [
-                                        Object {
-                                          "String": Object {
+                                  {
+                                    "ColumnRef": {
+                                      "fields": [
+                                        {
+                                          "String": {
                                             "str": "f",
                                           },
                                         },
@@ -1048,11 +1048,11 @@ Array [
                                 "location": 646,
                               },
                             },
-                            Object {
-                              "ColumnRef": Object {
-                                "fields": Array [
-                                  Object {
-                                    "String": Object {
+                            {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
                                       "str": "g",
                                     },
                                   },
@@ -1079,13 +1079,13 @@ Array [
       "stmt_location": 610,
     },
   },
-  Object {
-    "RawStmt": Object {
-      "stmt": Object {
-        "SelectStmt": Object {
-          "fromClause": Array [
-            Object {
-              "RangeVar": Object {
+  {
+    "RawStmt": {
+      "stmt": {
+        "SelectStmt": {
+          "fromClause": [
+            {
+              "RangeVar": {
                 "inh": true,
                 "location": 734,
                 "relname": "t",
@@ -1095,21 +1095,21 @@ Array [
           ],
           "limitOption": "LIMIT_OPTION_DEFAULT",
           "op": "SETOP_NONE",
-          "targetList": Array [
-            Object {
-              "ResTarget": Object {
+          "targetList": [
+            {
+              "ResTarget": {
                 "location": 675,
-                "val": Object {
-                  "BoolExpr": Object {
-                    "args": Array [
-                      Object {
-                        "BoolExpr": Object {
-                          "args": Array [
-                            Object {
-                              "ColumnRef": Object {
-                                "fields": Array [
-                                  Object {
-                                    "String": Object {
+                "val": {
+                  "BoolExpr": {
+                    "args": [
+                      {
+                        "BoolExpr": {
+                          "args": [
+                            {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
                                       "str": "a",
                                     },
                                   },
@@ -1117,11 +1117,11 @@ Array [
                                 "location": 675,
                               },
                             },
-                            Object {
-                              "ColumnRef": Object {
-                                "fields": Array [
-                                  Object {
-                                    "String": Object {
+                            {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
                                       "str": "b",
                                     },
                                   },
@@ -1129,15 +1129,15 @@ Array [
                                 "location": 681,
                               },
                             },
-                            Object {
-                              "BooleanTest": Object {
-                                "arg": Object {
-                                  "TypeCast": Object {
-                                    "arg": Object {
-                                      "ColumnRef": Object {
-                                        "fields": Array [
-                                          Object {
-                                            "String": Object {
+                            {
+                              "BooleanTest": {
+                                "arg": {
+                                  "TypeCast": {
+                                    "arg": {
+                                      "ColumnRef": {
+                                        "fields": [
+                                          {
+                                            "String": {
                                               "str": "c",
                                             },
                                           },
@@ -1146,11 +1146,11 @@ Array [
                                       },
                                     },
                                     "location": 691,
-                                    "typeName": Object {
+                                    "typeName": {
                                       "location": 693,
-                                      "names": Array [
-                                        Object {
-                                          "String": Object {
+                                      "names": [
+                                        {
+                                          "String": {
                                             "str": "bool",
                                           },
                                         },
@@ -1168,11 +1168,11 @@ Array [
                           "location": 677,
                         },
                       },
-                      Object {
-                        "ColumnRef": Object {
-                          "fields": Array [
-                            Object {
-                              "String": Object {
+                      {
+                        "ColumnRef": {
+                          "fields": [
+                            {
+                              "String": {
                                 "str": "d",
                               },
                             },
@@ -1180,17 +1180,17 @@ Array [
                           "location": 709,
                         },
                       },
-                      Object {
-                        "BoolExpr": Object {
-                          "args": Array [
-                            Object {
-                              "BoolExpr": Object {
-                                "args": Array [
-                                  Object {
-                                    "ColumnRef": Object {
-                                      "fields": Array [
-                                        Object {
-                                          "String": Object {
+                      {
+                        "BoolExpr": {
+                          "args": [
+                            {
+                              "BoolExpr": {
+                                "args": [
+                                  {
+                                    "ColumnRef": {
+                                      "fields": [
+                                        {
+                                          "String": {
                                             "str": "e",
                                           },
                                         },
@@ -1198,11 +1198,11 @@ Array [
                                       "location": 715,
                                     },
                                   },
-                                  Object {
-                                    "ColumnRef": Object {
-                                      "fields": Array [
-                                        Object {
-                                          "String": Object {
+                                  {
+                                    "ColumnRef": {
+                                      "fields": [
+                                        {
+                                          "String": {
                                             "str": "f",
                                           },
                                         },
@@ -1215,11 +1215,11 @@ Array [
                                 "location": 717,
                               },
                             },
-                            Object {
-                              "ColumnRef": Object {
-                                "fields": Array [
-                                  Object {
-                                    "String": Object {
+                            {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
                                       "str": "g",
                                     },
                                   },
@@ -1246,13 +1246,13 @@ Array [
       "stmt_location": 665,
     },
   },
-  Object {
-    "RawStmt": Object {
-      "stmt": Object {
-        "SelectStmt": Object {
-          "fromClause": Array [
-            Object {
-              "RangeVar": Object {
+  {
+    "RawStmt": {
+      "stmt": {
+        "SelectStmt": {
+          "fromClause": [
+            {
+              "RangeVar": {
                 "inh": true,
                 "location": 780,
                 "relname": "t",
@@ -1262,27 +1262,27 @@ Array [
           ],
           "limitOption": "LIMIT_OPTION_DEFAULT",
           "op": "SETOP_NONE",
-          "targetList": Array [
-            Object {
-              "ResTarget": Object {
+          "targetList": [
+            {
+              "ResTarget": {
                 "location": 746,
-                "val": Object {
-                  "BoolExpr": Object {
-                    "args": Array [
-                      Object {
-                        "BoolExpr": Object {
-                          "args": Array [
-                            Object {
-                              "BoolExpr": Object {
-                                "args": Array [
-                                  Object {
-                                    "BoolExpr": Object {
-                                      "args": Array [
-                                        Object {
-                                          "ColumnRef": Object {
-                                            "fields": Array [
-                                              Object {
-                                                "String": Object {
+                "val": {
+                  "BoolExpr": {
+                    "args": [
+                      {
+                        "BoolExpr": {
+                          "args": [
+                            {
+                              "BoolExpr": {
+                                "args": [
+                                  {
+                                    "BoolExpr": {
+                                      "args": [
+                                        {
+                                          "ColumnRef": {
+                                            "fields": [
+                                              {
+                                                "String": {
                                                   "str": "a",
                                                 },
                                               },
@@ -1290,11 +1290,11 @@ Array [
                                             "location": 751,
                                           },
                                         },
-                                        Object {
-                                          "ColumnRef": Object {
-                                            "fields": Array [
-                                              Object {
-                                                "String": Object {
+                                        {
+                                          "ColumnRef": {
+                                            "fields": [
+                                              {
+                                                "String": {
                                                   "str": "b",
                                                 },
                                               },
@@ -1312,11 +1312,11 @@ Array [
                                 "location": 746,
                               },
                             },
-                            Object {
-                              "ColumnRef": Object {
-                                "fields": Array [
-                                  Object {
-                                    "String": Object {
+                            {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
                                       "str": "c",
                                     },
                                   },
@@ -1329,14 +1329,14 @@ Array [
                           "location": 760,
                         },
                       },
-                      Object {
-                        "BoolExpr": Object {
-                          "args": Array [
-                            Object {
-                              "ColumnRef": Object {
-                                "fields": Array [
-                                  Object {
-                                    "String": Object {
+                      {
+                        "BoolExpr": {
+                          "args": [
+                            {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
                                       "str": "d",
                                     },
                                   },
@@ -1363,13 +1363,13 @@ Array [
       "stmt_location": 736,
     },
   },
-  Object {
-    "RawStmt": Object {
-      "stmt": Object {
-        "SelectStmt": Object {
-          "fromClause": Array [
-            Object {
-              "RangeVar": Object {
+  {
+    "RawStmt": {
+      "stmt": {
+        "SelectStmt": {
+          "fromClause": [
+            {
+              "RangeVar": {
                 "inh": true,
                 "location": 817,
                 "relname": "t",
@@ -1379,24 +1379,24 @@ Array [
           ],
           "limitOption": "LIMIT_OPTION_DEFAULT",
           "op": "SETOP_NONE",
-          "targetList": Array [
-            Object {
-              "ResTarget": Object {
+          "targetList": [
+            {
+              "ResTarget": {
                 "location": 792,
-                "val": Object {
-                  "BoolExpr": Object {
-                    "args": Array [
-                      Object {
-                        "BoolExpr": Object {
-                          "args": Array [
-                            Object {
-                              "BoolExpr": Object {
-                                "args": Array [
-                                  Object {
-                                    "ColumnRef": Object {
-                                      "fields": Array [
-                                        Object {
-                                          "String": Object {
+                "val": {
+                  "BoolExpr": {
+                    "args": [
+                      {
+                        "BoolExpr": {
+                          "args": [
+                            {
+                              "BoolExpr": {
+                                "args": [
+                                  {
+                                    "ColumnRef": {
+                                      "fields": [
+                                        {
+                                          "String": {
                                             "str": "a",
                                           },
                                         },
@@ -1404,11 +1404,11 @@ Array [
                                       "location": 797,
                                     },
                                   },
-                                  Object {
-                                    "ColumnRef": Object {
-                                      "fields": Array [
-                                        Object {
-                                          "String": Object {
+                                  {
+                                    "ColumnRef": {
+                                      "fields": [
+                                        {
+                                          "String": {
                                             "str": "b",
                                           },
                                         },
@@ -1426,11 +1426,11 @@ Array [
                           "location": 792,
                         },
                       },
-                      Object {
-                        "ColumnRef": Object {
-                          "fields": Array [
-                            Object {
-                              "String": Object {
+                      {
+                        "ColumnRef": {
+                          "fields": [
+                            {
+                              "String": {
                                 "str": "c",
                               },
                             },
@@ -1452,13 +1452,13 @@ Array [
       "stmt_location": 782,
     },
   },
-  Object {
-    "RawStmt": Object {
-      "stmt": Object {
-        "SelectStmt": Object {
-          "fromClause": Array [
-            Object {
-              "RangeVar": Object {
+  {
+    "RawStmt": {
+      "stmt": {
+        "SelectStmt": {
+          "fromClause": [
+            {
+              "RangeVar": {
                 "inh": true,
                 "location": 857,
                 "relname": "t",
@@ -1468,24 +1468,24 @@ Array [
           ],
           "limitOption": "LIMIT_OPTION_DEFAULT",
           "op": "SETOP_NONE",
-          "targetList": Array [
-            Object {
-              "ResTarget": Object {
+          "targetList": [
+            {
+              "ResTarget": {
                 "location": 828,
-                "val": Object {
-                  "BoolExpr": Object {
-                    "args": Array [
-                      Object {
-                        "BoolExpr": Object {
-                          "args": Array [
-                            Object {
-                              "BoolExpr": Object {
-                                "args": Array [
-                                  Object {
-                                    "ColumnRef": Object {
-                                      "fields": Array [
-                                        Object {
-                                          "String": Object {
+                "val": {
+                  "BoolExpr": {
+                    "args": [
+                      {
+                        "BoolExpr": {
+                          "args": [
+                            {
+                              "BoolExpr": {
+                                "args": [
+                                  {
+                                    "ColumnRef": {
+                                      "fields": [
+                                        {
+                                          "String": {
                                             "str": "a",
                                           },
                                         },
@@ -1493,11 +1493,11 @@ Array [
                                       "location": 835,
                                     },
                                   },
-                                  Object {
-                                    "ColumnRef": Object {
-                                      "fields": Array [
-                                        Object {
-                                          "String": Object {
+                                  {
+                                    "ColumnRef": {
+                                      "fields": [
+                                        {
+                                          "String": {
                                             "str": "b",
                                           },
                                         },
@@ -1515,11 +1515,11 @@ Array [
                           "location": 829,
                         },
                       },
-                      Object {
-                        "ColumnRef": Object {
-                          "fields": Array [
-                            Object {
-                              "String": Object {
+                      {
+                        "ColumnRef": {
+                          "fields": [
+                            {
+                              "String": {
                                 "str": "c",
                               },
                             },
@@ -1541,29 +1541,29 @@ Array [
       "stmt_location": 819,
     },
   },
-  Object {
-    "RawStmt": Object {
-      "stmt": Object {
-        "SelectStmt": Object {
+  {
+    "RawStmt": {
+      "stmt": {
+        "SelectStmt": {
           "limitOption": "LIMIT_OPTION_DEFAULT",
           "op": "SETOP_NONE",
-          "targetList": Array [
-            Object {
-              "ResTarget": Object {
+          "targetList": [
+            {
+              "ResTarget": {
                 "location": 868,
-                "val": Object {
-                  "BooleanTest": Object {
-                    "arg": Object {
-                      "BoolExpr": Object {
-                        "args": Array [
-                          Object {
-                            "A_Expr": Object {
+                "val": {
+                  "BooleanTest": {
+                    "arg": {
+                      "BoolExpr": {
+                        "args": [
+                          {
+                            "A_Expr": {
                               "kind": "AEXPR_OP",
-                              "lexpr": Object {
-                                "ColumnRef": Object {
-                                  "fields": Array [
-                                    Object {
-                                      "String": Object {
+                              "lexpr": {
+                                "ColumnRef": {
+                                  "fields": [
+                                    {
+                                      "String": {
                                         "str": "field",
                                       },
                                     },
@@ -1572,18 +1572,18 @@ Array [
                                 },
                               },
                               "location": 874,
-                              "name": Array [
-                                Object {
-                                  "String": Object {
+                              "name": [
+                                {
+                                  "String": {
                                     "str": "=",
                                   },
                                 },
                               ],
-                              "rexpr": Object {
-                                "A_Const": Object {
+                              "rexpr": {
+                                "A_Const": {
                                   "location": 875,
-                                  "val": Object {
-                                    "Integer": Object {
+                                  "val": {
+                                    "Integer": {
                                       "ival": 1,
                                     },
                                   },
@@ -1591,14 +1591,14 @@ Array [
                               },
                             },
                           },
-                          Object {
-                            "A_Expr": Object {
+                          {
+                            "A_Expr": {
                               "kind": "AEXPR_OP",
-                              "lexpr": Object {
-                                "ColumnRef": Object {
-                                  "fields": Array [
-                                    Object {
-                                      "String": Object {
+                              "lexpr": {
+                                "ColumnRef": {
+                                  "fields": [
+                                    {
+                                      "String": {
                                         "str": "field",
                                       },
                                     },
@@ -1607,18 +1607,18 @@ Array [
                                 },
                               },
                               "location": 885,
-                              "name": Array [
-                                Object {
-                                  "String": Object {
+                              "name": [
+                                {
+                                  "String": {
                                     "str": "=",
                                   },
                                 },
                               ],
-                              "rexpr": Object {
-                                "A_Const": Object {
+                              "rexpr": {
+                                "A_Const": {
                                   "location": 886,
-                                  "val": Object {
-                                    "Integer": Object {
+                                  "val": {
+                                    "Integer": {
                                       "ival": 2,
                                     },
                                   },
@@ -1644,27 +1644,27 @@ Array [
       "stmt_location": 859,
     },
   },
-  Object {
-    "RawStmt": Object {
-      "stmt": Object {
-        "SelectStmt": Object {
+  {
+    "RawStmt": {
+      "stmt": {
+        "SelectStmt": {
           "limitOption": "LIMIT_OPTION_DEFAULT",
           "op": "SETOP_NONE",
-          "targetList": Array [
-            Object {
-              "ResTarget": Object {
+          "targetList": [
+            {
+              "ResTarget": {
                 "location": 906,
-                "val": Object {
-                  "BoolExpr": Object {
-                    "args": Array [
-                      Object {
-                        "A_Expr": Object {
+                "val": {
+                  "BoolExpr": {
+                    "args": [
+                      {
+                        "A_Expr": {
                           "kind": "AEXPR_OP",
-                          "lexpr": Object {
-                            "ColumnRef": Object {
-                              "fields": Array [
-                                Object {
-                                  "String": Object {
+                          "lexpr": {
+                            "ColumnRef": {
+                              "fields": [
+                                {
+                                  "String": {
                                     "str": "field",
                                   },
                                 },
@@ -1673,18 +1673,18 @@ Array [
                             },
                           },
                           "location": 911,
-                          "name": Array [
-                            Object {
-                              "String": Object {
+                          "name": [
+                            {
+                              "String": {
                                 "str": "=",
                               },
                             },
                           ],
-                          "rexpr": Object {
-                            "A_Const": Object {
+                          "rexpr": {
+                            "A_Const": {
                               "location": 912,
-                              "val": Object {
-                                "Integer": Object {
+                              "val": {
+                                "Integer": {
                                   "ival": 1,
                                 },
                               },
@@ -1692,16 +1692,16 @@ Array [
                           },
                         },
                       },
-                      Object {
-                        "BooleanTest": Object {
-                          "arg": Object {
-                            "A_Expr": Object {
+                      {
+                        "BooleanTest": {
+                          "arg": {
+                            "A_Expr": {
                               "kind": "AEXPR_OP",
-                              "lexpr": Object {
-                                "ColumnRef": Object {
-                                  "fields": Array [
-                                    Object {
-                                      "String": Object {
+                              "lexpr": {
+                                "ColumnRef": {
+                                  "fields": [
+                                    {
+                                      "String": {
                                         "str": "field",
                                       },
                                     },
@@ -1710,18 +1710,18 @@ Array [
                                 },
                               },
                               "location": 922,
-                              "name": Array [
-                                Object {
-                                  "String": Object {
+                              "name": [
+                                {
+                                  "String": {
                                     "str": "=",
                                   },
                                 },
                               ],
-                              "rexpr": Object {
-                                "A_Const": Object {
+                              "rexpr": {
+                                "A_Const": {
                                   "location": 923,
-                                  "val": Object {
-                                    "Integer": Object {
+                                  "val": {
+                                    "Integer": {
                                       "ival": 2,
                                     },
                                   },
