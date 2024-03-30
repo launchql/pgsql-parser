@@ -15,7 +15,15 @@
 
 `pg-proto-parser` is a TypeScript project that parses [pganalyze/libpg_query](https://github.com/pganalyze/libpg_query) PostgreSQL Protocol Buffers (protobuf) definitions and generates TypeScript interfaces, utility functions, and JSON mappings for the enums defined in the protobuf schema. Designed to work with [launchql/pgsql-parser](https://github.com/launchql/pgsql-parser) for maintainable upgrades.
 
+## Table Of Contents
 
+- [Packages](#packages)
+- [Features](#features)
+- [Output](#output)
+- [Using `PgProtoParser`](#using-pgprotoparser)
+- [Using the CLI](#using-the-cli)
+- [Related](#related)
+- [Disclaimer](#disclaimer)
 
 ## Packages
 
