@@ -1,4 +1,27 @@
 {
+  "OverridingKind": {
+    "0": "OVERRIDING_NOT_SET",
+    "1": "OVERRIDING_USER_VALUE",
+    "2": "OVERRIDING_SYSTEM_VALUE"
+  },
+  "QuerySource": {
+    "0": "QSRC_ORIGINAL",
+    "1": "QSRC_PARSER",
+    "2": "QSRC_INSTEAD_RULE",
+    "3": "QSRC_QUAL_INSTEAD_RULE",
+    "4": "QSRC_NON_INSTEAD_RULE"
+  },
+  "SortByDir": {
+    "0": "SORTBY_DEFAULT",
+    "1": "SORTBY_ASC",
+    "2": "SORTBY_DESC",
+    "3": "SORTBY_USING"
+  },
+  "SortByNulls": {
+    "0": "SORTBY_NULLS_DEFAULT",
+    "1": "SORTBY_NULLS_FIRST",
+    "2": "SORTBY_NULLS_LAST"
+  },
   "A_Expr_Kind": {
     "0": "AEXPR_OP",
     "1": "AEXPR_OP_ANY",
@@ -17,30 +40,124 @@
     "14": "AEXPR_NOT_BETWEEN_SYM",
     "15": "AEXPR_PAREN"
   },
-  "AggSplit": {
-    "0": "AGGSPLIT_SIMPLE",
-    "1": "AGGSPLIT_INITIAL_SERIAL",
-    "2": "AGGSPLIT_FINAL_DESERIAL"
+  "RoleSpecType": {
+    "0": "ROLESPEC_CSTRING",
+    "1": "ROLESPEC_CURRENT_USER",
+    "2": "ROLESPEC_SESSION_USER",
+    "3": "ROLESPEC_PUBLIC"
   },
-  "AggStrategy": {
-    "0": "AGG_PLAIN",
-    "1": "AGG_SORTED",
-    "2": "AGG_HASHED",
-    "3": "AGG_MIXED"
+  "TableLikeOption": {
+    "0": "CREATE_TABLE_LIKE_COMMENTS",
+    "1": "CREATE_TABLE_LIKE_CONSTRAINTS",
+    "2": "CREATE_TABLE_LIKE_DEFAULTS",
+    "3": "CREATE_TABLE_LIKE_GENERATED",
+    "4": "CREATE_TABLE_LIKE_IDENTITY",
+    "5": "CREATE_TABLE_LIKE_INDEXES",
+    "6": "CREATE_TABLE_LIKE_STATISTICS",
+    "7": "CREATE_TABLE_LIKE_STORAGE",
+    "8": "CREATE_TABLE_LIKE_ALL"
   },
-  "AlterSubscriptionType": {
-    "0": "ALTER_SUBSCRIPTION_OPTIONS",
-    "1": "ALTER_SUBSCRIPTION_CONNECTION",
-    "2": "ALTER_SUBSCRIPTION_PUBLICATION",
-    "3": "ALTER_SUBSCRIPTION_REFRESH",
-    "4": "ALTER_SUBSCRIPTION_ENABLED"
+  "DefElemAction": {
+    "0": "DEFELEM_UNSPEC",
+    "1": "DEFELEM_SET",
+    "2": "DEFELEM_ADD",
+    "3": "DEFELEM_DROP"
   },
-  "AlterTSConfigType": {
-    "0": "ALTER_TSCONFIG_ADD_MAPPING",
-    "1": "ALTER_TSCONFIG_ALTER_MAPPING_FOR_TOKEN",
-    "2": "ALTER_TSCONFIG_REPLACE_DICT",
-    "3": "ALTER_TSCONFIG_REPLACE_DICT_FOR_TOKEN",
-    "4": "ALTER_TSCONFIG_DROP_MAPPING"
+  "PartitionRangeDatumKind": {
+    "0": "PARTITION_RANGE_DATUM_MINVALUE",
+    "1": "PARTITION_RANGE_DATUM_VALUE",
+    "2": "PARTITION_RANGE_DATUM_MAXVALUE"
+  },
+  "RTEKind": {
+    "0": "RTE_RELATION",
+    "1": "RTE_SUBQUERY",
+    "2": "RTE_JOIN",
+    "3": "RTE_FUNCTION",
+    "4": "RTE_TABLEFUNC",
+    "5": "RTE_VALUES",
+    "6": "RTE_CTE",
+    "7": "RTE_NAMEDTUPLESTORE",
+    "8": "RTE_RESULT"
+  },
+  "WCOKind": {
+    "0": "WCO_VIEW_CHECK",
+    "1": "WCO_RLS_INSERT_CHECK",
+    "2": "WCO_RLS_UPDATE_CHECK",
+    "3": "WCO_RLS_CONFLICT_CHECK"
+  },
+  "GroupingSetKind": {
+    "0": "GROUPING_SET_EMPTY",
+    "1": "GROUPING_SET_SIMPLE",
+    "2": "GROUPING_SET_ROLLUP",
+    "3": "GROUPING_SET_CUBE",
+    "4": "GROUPING_SET_SETS"
+  },
+  "CTEMaterialize": {
+    "0": "CTEMaterializeDefault",
+    "1": "CTEMaterializeAlways",
+    "2": "CTEMaterializeNever"
+  },
+  "SetOperation": {
+    "0": "SETOP_NONE",
+    "1": "SETOP_UNION",
+    "2": "SETOP_INTERSECT",
+    "3": "SETOP_EXCEPT"
+  },
+  "ObjectType": {
+    "0": "OBJECT_ACCESS_METHOD",
+    "1": "OBJECT_AGGREGATE",
+    "2": "OBJECT_AMOP",
+    "3": "OBJECT_AMPROC",
+    "4": "OBJECT_ATTRIBUTE",
+    "5": "OBJECT_CAST",
+    "6": "OBJECT_COLUMN",
+    "7": "OBJECT_COLLATION",
+    "8": "OBJECT_CONVERSION",
+    "9": "OBJECT_DATABASE",
+    "10": "OBJECT_DEFAULT",
+    "11": "OBJECT_DEFACL",
+    "12": "OBJECT_DOMAIN",
+    "13": "OBJECT_DOMCONSTRAINT",
+    "14": "OBJECT_EVENT_TRIGGER",
+    "15": "OBJECT_EXTENSION",
+    "16": "OBJECT_FDW",
+    "17": "OBJECT_FOREIGN_SERVER",
+    "18": "OBJECT_FOREIGN_TABLE",
+    "19": "OBJECT_FUNCTION",
+    "20": "OBJECT_INDEX",
+    "21": "OBJECT_LANGUAGE",
+    "22": "OBJECT_LARGEOBJECT",
+    "23": "OBJECT_MATVIEW",
+    "24": "OBJECT_OPCLASS",
+    "25": "OBJECT_OPERATOR",
+    "26": "OBJECT_OPFAMILY",
+    "27": "OBJECT_POLICY",
+    "28": "OBJECT_PROCEDURE",
+    "29": "OBJECT_PUBLICATION",
+    "30": "OBJECT_PUBLICATION_REL",
+    "31": "OBJECT_ROLE",
+    "32": "OBJECT_ROUTINE",
+    "33": "OBJECT_RULE",
+    "34": "OBJECT_SCHEMA",
+    "35": "OBJECT_SEQUENCE",
+    "36": "OBJECT_SUBSCRIPTION",
+    "37": "OBJECT_STATISTIC_EXT",
+    "38": "OBJECT_TABCONSTRAINT",
+    "39": "OBJECT_TABLE",
+    "40": "OBJECT_TABLESPACE",
+    "41": "OBJECT_TRANSFORM",
+    "42": "OBJECT_TRIGGER",
+    "43": "OBJECT_TSCONFIGURATION",
+    "44": "OBJECT_TSDICTIONARY",
+    "45": "OBJECT_TSPARSER",
+    "46": "OBJECT_TSTEMPLATE",
+    "47": "OBJECT_TYPE",
+    "48": "OBJECT_USER_MAPPING",
+    "49": "OBJECT_VIEW"
+  },
+  "DropBehavior": {
+    "0": "DROP_RESTRICT",
+    "1": "DROP_CASCADE"
   },
   "AlterTableType": {
     "0": "AT_AddColumn",
@@ -111,46 +228,18 @@
     "65": "AT_SetIdentity",
     "66": "AT_DropIdentity"
   },
-  "BoolExprType": {
-    "0": "AND_EXPR",
-    "1": "OR_EXPR",
-    "2": "NOT_EXPR"
+  "GrantTargetType": {
+    "0": "ACL_TARGET_OBJECT",
+    "1": "ACL_TARGET_ALL_IN_SCHEMA",
+    "2": "ACL_TARGET_DEFAULTS"
   },
-  "BoolTestType": {
-    "0": "IS_TRUE",
-    "1": "IS_NOT_TRUE",
-    "2": "IS_FALSE",
-    "3": "IS_NOT_FALSE",
-    "4": "IS_UNKNOWN",
-    "5": "IS_NOT_UNKNOWN"
-  },
-  "CTEMaterialize": {
-    "0": "CTEMaterializeDefault",
-    "1": "CTEMaterializeAlways",
-    "2": "CTEMaterializeNever"
-  },
-  "ClusterOption": {
-    "0": "CLUOPT_RECHECK",
-    "1": "CLUOPT_VERBOSE"
-  },
-  "CmdType": {
-    "0": "CMD_UNKNOWN",
-    "1": "CMD_SELECT",
-    "2": "CMD_UPDATE",
-    "3": "CMD_INSERT",
-    "4": "CMD_DELETE",
-    "5": "CMD_UTILITY",
-    "6": "CMD_NOTHING"
-  },
-  "CoercionContext": {
-    "0": "COERCION_IMPLICIT",
-    "1": "COERCION_ASSIGNMENT",
-    "2": "COERCION_EXPLICIT"
-  },
-  "CoercionForm": {
-    "0": "COERCE_EXPLICIT_CALL",
-    "1": "COERCE_EXPLICIT_CAST",
-    "2": "COERCE_IMPLICIT_CAST"
+  "VariableSetKind": {
+    "0": "VAR_SET_VALUE",
+    "1": "VAR_SET_DEFAULT",
+    "2": "VAR_SET_CURRENT",
+    "3": "VAR_SET_MULTI",
+    "4": "VAR_RESET",
+    "5": "VAR_RESET_ALL"
   },
   "ConstrType": {
     "0": "CONSTR_NULL",
@@ -168,21 +257,15 @@
     "12": "CONSTR_ATTR_DEFERRED",
     "13": "CONSTR_ATTR_IMMEDIATE"
   },
-  "DefElemAction": {
-    "0": "DEFELEM_UNSPEC",
-    "1": "DEFELEM_SET",
-    "2": "DEFELEM_ADD",
-    "3": "DEFELEM_DROP"
+  "ImportForeignSchemaType": {
+    "0": "FDW_IMPORT_SCHEMA_ALL",
+    "1": "FDW_IMPORT_SCHEMA_LIMIT_TO",
+    "2": "FDW_IMPORT_SCHEMA_EXCEPT"
   },
-  "DiscardMode": {
-    "0": "DISCARD_ALL",
-    "1": "DISCARD_PLANS",
-    "2": "DISCARD_SEQUENCES",
-    "3": "DISCARD_TEMP"
-  },
-  "DropBehavior": {
-    "0": "DROP_RESTRICT",
-    "1": "DROP_CASCADE"
+  "RoleStmtType": {
+    "0": "ROLESTMT_ROLE",
+    "1": "ROLESTMT_USER",
+    "2": "ROLESTMT_GROUP"
   },
   "FetchDirection": {
     "0": "FETCH_FORWARD",
@@ -197,167 +280,32 @@
     "3": "FUNC_PARAM_VARIADIC",
     "4": "FUNC_PARAM_TABLE"
   },
-  "GrantTargetType": {
-    "0": "ACL_TARGET_OBJECT",
-    "1": "ACL_TARGET_ALL_IN_SCHEMA",
-    "2": "ACL_TARGET_DEFAULTS"
+  "TransactionStmtKind": {
+    "0": "TRANS_STMT_BEGIN",
+    "1": "TRANS_STMT_START",
+    "2": "TRANS_STMT_COMMIT",
+    "3": "TRANS_STMT_ROLLBACK",
+    "4": "TRANS_STMT_SAVEPOINT",
+    "5": "TRANS_STMT_RELEASE",
+    "6": "TRANS_STMT_ROLLBACK_TO",
+    "7": "TRANS_STMT_PREPARE",
+    "8": "TRANS_STMT_COMMIT_PREPARED",
+    "9": "TRANS_STMT_ROLLBACK_PREPARED"
   },
-  "GroupingSetKind": {
-    "0": "GROUPING_SET_EMPTY",
-    "1": "GROUPING_SET_SIMPLE",
-    "2": "GROUPING_SET_ROLLUP",
-    "3": "GROUPING_SET_CUBE",
-    "4": "GROUPING_SET_SETS"
+  "ViewCheckOption": {
+    "0": "NO_CHECK_OPTION",
+    "1": "LOCAL_CHECK_OPTION",
+    "2": "CASCADED_CHECK_OPTION"
   },
-  "ImportForeignSchemaType": {
-    "0": "FDW_IMPORT_SCHEMA_ALL",
-    "1": "FDW_IMPORT_SCHEMA_LIMIT_TO",
-    "2": "FDW_IMPORT_SCHEMA_EXCEPT"
+  "ClusterOption": {
+    "0": "CLUOPT_RECHECK",
+    "1": "CLUOPT_VERBOSE"
   },
-  "JoinType": {
-    "0": "JOIN_INNER",
-    "1": "JOIN_LEFT",
-    "2": "JOIN_FULL",
-    "3": "JOIN_RIGHT",
-    "4": "JOIN_SEMI",
-    "5": "JOIN_ANTI",
-    "6": "JOIN_UNIQUE_OUTER",
-    "7": "JOIN_UNIQUE_INNER"
-  },
-  "KeywordKind": {
-    "0": "NO_KEYWORD",
-    "1": "UNRESERVED_KEYWORD",
-    "2": "COL_NAME_KEYWORD",
-    "3": "TYPE_FUNC_NAME_KEYWORD",
-    "4": "RESERVED_KEYWORD"
-  },
-  "LimitOption": {
-    "0": "LIMIT_OPTION_DEFAULT",
-    "1": "LIMIT_OPTION_COUNT",
-    "2": "LIMIT_OPTION_WITH_TIES"
-  },
-  "LockClauseStrength": {
-    "0": "LCS_NONE",
-    "1": "LCS_FORKEYSHARE",
-    "2": "LCS_FORSHARE",
-    "3": "LCS_FORNOKEYUPDATE",
-    "4": "LCS_FORUPDATE"
-  },
-  "LockTupleMode": {
-    "0": "LockTupleKeyShare",
-    "1": "LockTupleShare",
-    "2": "LockTupleNoKeyExclusive",
-    "3": "LockTupleExclusive"
-  },
-  "LockWaitPolicy": {
-    "0": "LockWaitBlock",
-    "1": "LockWaitSkip",
-    "2": "LockWaitError"
-  },
-  "MinMaxOp": {
-    "0": "IS_GREATEST",
-    "1": "IS_LEAST"
-  },
-  "NullTestType": {
-    "0": "IS_NULL",
-    "1": "IS_NOT_NULL"
-  },
-  "ObjectType": {
-    "0": "OBJECT_ACCESS_METHOD",
-    "1": "OBJECT_AGGREGATE",
-    "2": "OBJECT_AMOP",
-    "3": "OBJECT_AMPROC",
-    "4": "OBJECT_ATTRIBUTE",
-    "5": "OBJECT_CAST",
-    "6": "OBJECT_COLUMN",
-    "7": "OBJECT_COLLATION",
-    "8": "OBJECT_CONVERSION",
-    "9": "OBJECT_DATABASE",
-    "10": "OBJECT_DEFAULT",
-    "11": "OBJECT_DEFACL",
-    "12": "OBJECT_DOMAIN",
-    "13": "OBJECT_DOMCONSTRAINT",
-    "14": "OBJECT_EVENT_TRIGGER",
-    "15": "OBJECT_EXTENSION",
-    "16": "OBJECT_FDW",
-    "17": "OBJECT_FOREIGN_SERVER",
-    "18": "OBJECT_FOREIGN_TABLE",
-    "19": "OBJECT_FUNCTION",
-    "20": "OBJECT_INDEX",
-    "21": "OBJECT_LANGUAGE",
-    "22": "OBJECT_LARGEOBJECT",
-    "23": "OBJECT_MATVIEW",
-    "24": "OBJECT_OPCLASS",
-    "25": "OBJECT_OPERATOR",
-    "26": "OBJECT_OPFAMILY",
-    "27": "OBJECT_POLICY",
-    "28": "OBJECT_PROCEDURE",
-    "29": "OBJECT_PUBLICATION",
-    "30": "OBJECT_PUBLICATION_REL",
-    "31": "OBJECT_ROLE",
-    "32": "OBJECT_ROUTINE",
-    "33": "OBJECT_RULE",
-    "34": "OBJECT_SCHEMA",
-    "35": "OBJECT_SEQUENCE",
-    "36": "OBJECT_SUBSCRIPTION",
-    "37": "OBJECT_STATISTIC_EXT",
-    "38": "OBJECT_TABCONSTRAINT",
-    "39": "OBJECT_TABLE",
-    "40": "OBJECT_TABLESPACE",
-    "41": "OBJECT_TRANSFORM",
-    "42": "OBJECT_TRIGGER",
-    "43": "OBJECT_TSCONFIGURATION",
-    "44": "OBJECT_TSDICTIONARY",
-    "45": "OBJECT_TSPARSER",
-    "46": "OBJECT_TSTEMPLATE",
-    "47": "OBJECT_TYPE",
-    "48": "OBJECT_USER_MAPPING",
-    "49": "OBJECT_VIEW"
-  },
-  "OnCommitAction": {
-    "0": "ONCOMMIT_NOOP",
-    "1": "ONCOMMIT_PRESERVE_ROWS",
-    "2": "ONCOMMIT_DELETE_ROWS",
-    "3": "ONCOMMIT_DROP"
-  },
-  "OnConflictAction": {
-    "0": "ONCONFLICT_NONE",
-    "1": "ONCONFLICT_NOTHING",
-    "2": "ONCONFLICT_UPDATE"
-  },
-  "OverridingKind": {
-    "0": "OVERRIDING_NOT_SET",
-    "1": "OVERRIDING_USER_VALUE",
-    "2": "OVERRIDING_SYSTEM_VALUE"
-  },
-  "ParamKind": {
-    "0": "PARAM_EXTERN",
-    "1": "PARAM_EXEC",
-    "2": "PARAM_SUBLINK",
-    "3": "PARAM_MULTIEXPR"
-  },
-  "PartitionRangeDatumKind": {
-    "0": "PARTITION_RANGE_DATUM_MINVALUE",
-    "1": "PARTITION_RANGE_DATUM_VALUE",
-    "2": "PARTITION_RANGE_DATUM_MAXVALUE"
-  },
-  "QuerySource": {
-    "0": "QSRC_ORIGINAL",
-    "1": "QSRC_PARSER",
-    "2": "QSRC_INSTEAD_RULE",
-    "3": "QSRC_QUAL_INSTEAD_RULE",
-    "4": "QSRC_NON_INSTEAD_RULE"
-  },
-  "RTEKind": {
-    "0": "RTE_RELATION",
-    "1": "RTE_SUBQUERY",
-    "2": "RTE_JOIN",
-    "3": "RTE_FUNCTION",
-    "4": "RTE_TABLEFUNC",
-    "5": "RTE_VALUES",
-    "6": "RTE_CTE",
-    "7": "RTE_NAMEDTUPLESTORE",
-    "8": "RTE_RESULT"
+  "DiscardMode": {
+    "0": "DISCARD_ALL",
+    "1": "DISCARD_PLANS",
+    "2": "DISCARD_SEQUENCES",
+    "3": "DISCARD_TEMP"
   },
   "ReindexObjectType": {
     "0": "REINDEX_OBJECT_INDEX",
@@ -366,16 +314,56 @@
     "3": "REINDEX_OBJECT_SYSTEM",
     "4": "REINDEX_OBJECT_DATABASE"
   },
-  "RoleSpecType": {
-    "0": "ROLESPEC_CSTRING",
-    "1": "ROLESPEC_CURRENT_USER",
-    "2": "ROLESPEC_SESSION_USER",
-    "3": "ROLESPEC_PUBLIC"
+  "AlterTSConfigType": {
+    "0": "ALTER_TSCONFIG_ADD_MAPPING",
+    "1": "ALTER_TSCONFIG_ALTER_MAPPING_FOR_TOKEN",
+    "2": "ALTER_TSCONFIG_REPLACE_DICT",
+    "3": "ALTER_TSCONFIG_REPLACE_DICT_FOR_TOKEN",
+    "4": "ALTER_TSCONFIG_DROP_MAPPING"
   },
-  "RoleStmtType": {
-    "0": "ROLESTMT_ROLE",
-    "1": "ROLESTMT_USER",
-    "2": "ROLESTMT_GROUP"
+  "AlterSubscriptionType": {
+    "0": "ALTER_SUBSCRIPTION_OPTIONS",
+    "1": "ALTER_SUBSCRIPTION_CONNECTION",
+    "2": "ALTER_SUBSCRIPTION_PUBLICATION",
+    "3": "ALTER_SUBSCRIPTION_REFRESH",
+    "4": "ALTER_SUBSCRIPTION_ENABLED"
+  },
+  "OnCommitAction": {
+    "0": "ONCOMMIT_NOOP",
+    "1": "ONCOMMIT_PRESERVE_ROWS",
+    "2": "ONCOMMIT_DELETE_ROWS",
+    "3": "ONCOMMIT_DROP"
+  },
+  "ParamKind": {
+    "0": "PARAM_EXTERN",
+    "1": "PARAM_EXEC",
+    "2": "PARAM_SUBLINK",
+    "3": "PARAM_MULTIEXPR"
+  },
+  "CoercionContext": {
+    "0": "COERCION_IMPLICIT",
+    "1": "COERCION_ASSIGNMENT",
+    "2": "COERCION_EXPLICIT"
+  },
+  "CoercionForm": {
+    "0": "COERCE_EXPLICIT_CALL",
+    "1": "COERCE_EXPLICIT_CAST",
+    "2": "COERCE_IMPLICIT_CAST"
+  },
+  "BoolExprType": {
+    "0": "AND_EXPR",
+    "1": "OR_EXPR",
+    "2": "NOT_EXPR"
+  },
+  "SubLinkType": {
+    "0": "EXISTS_SUBLINK",
+    "1": "ALL_SUBLINK",
+    "2": "ANY_SUBLINK",
+    "3": "ROWCOMPARE_SUBLINK",
+    "4": "EXPR_SUBLINK",
+    "5": "MULTIEXPR_SUBLINK",
+    "6": "ARRAY_SUBLINK",
+    "7": "CTE_SUBLINK"
   },
   "RowCompareType": {
     "0": "ROWCOMPARE_LT",
@@ -384,6 +372,10 @@
     "3": "ROWCOMPARE_GE",
     "4": "ROWCOMPARE_GT",
     "5": "ROWCOMPARE_NE"
+  },
+  "MinMaxOp": {
+    "0": "IS_GREATEST",
+    "1": "IS_LEAST"
   },
   "SQLValueFunctionOp": {
     "0": "SVFOP_CURRENT_DATE",
@@ -402,6 +394,62 @@
     "13": "SVFOP_CURRENT_CATALOG",
     "14": "SVFOP_CURRENT_SCHEMA"
   },
+  "XmlExprOp": {
+    "0": "IS_XMLCONCAT",
+    "1": "IS_XMLELEMENT",
+    "2": "IS_XMLFOREST",
+    "3": "IS_XMLPARSE",
+    "4": "IS_XMLPI",
+    "5": "IS_XMLROOT",
+    "6": "IS_XMLSERIALIZE",
+    "7": "IS_DOCUMENT"
+  },
+  "XmlOptionType": {
+    "0": "XMLOPTION_DOCUMENT",
+    "1": "XMLOPTION_CONTENT"
+  },
+  "NullTestType": {
+    "0": "IS_NULL",
+    "1": "IS_NOT_NULL"
+  },
+  "BoolTestType": {
+    "0": "IS_TRUE",
+    "1": "IS_NOT_TRUE",
+    "2": "IS_FALSE",
+    "3": "IS_NOT_FALSE",
+    "4": "IS_UNKNOWN",
+    "5": "IS_NOT_UNKNOWN"
+  },
+  "CmdType": {
+    "0": "CMD_UNKNOWN",
+    "1": "CMD_SELECT",
+    "2": "CMD_UPDATE",
+    "3": "CMD_INSERT",
+    "4": "CMD_DELETE",
+    "5": "CMD_UTILITY",
+    "6": "CMD_NOTHING"
+  },
+  "JoinType": {
+    "0": "JOIN_INNER",
+    "1": "JOIN_LEFT",
+    "2": "JOIN_FULL",
+    "3": "JOIN_RIGHT",
+    "4": "JOIN_SEMI",
+    "5": "JOIN_ANTI",
+    "6": "JOIN_UNIQUE_OUTER",
+    "7": "JOIN_UNIQUE_INNER"
+  },
+  "AggStrategy": {
+    "0": "AGG_PLAIN",
+    "1": "AGG_SORTED",
+    "2": "AGG_HASHED",
+    "3": "AGG_MIXED"
+  },
+  "AggSplit": {
+    "0": "AGGSPLIT_SIMPLE",
+    "1": "AGGSPLIT_INITIAL_SERIAL",
+    "2": "AGGSPLIT_FINAL_DESERIAL"
+  },
   "SetOpCmd": {
     "0": "SETOPCMD_INTERSECT",
     "1": "SETOPCMD_INTERSECT_ALL",
@@ -412,43 +460,40 @@
     "0": "SETOP_SORTED",
     "1": "SETOP_HASHED"
   },
-  "SetOperation": {
-    "0": "SETOP_NONE",
-    "1": "SETOP_UNION",
-    "2": "SETOP_INTERSECT",
-    "3": "SETOP_EXCEPT"
+  "OnConflictAction": {
+    "0": "ONCONFLICT_NONE",
+    "1": "ONCONFLICT_NOTHING",
+    "2": "ONCONFLICT_UPDATE"
   },
-  "SortByDir": {
-    "0": "SORTBY_DEFAULT",
-    "1": "SORTBY_ASC",
-    "2": "SORTBY_DESC",
-    "3": "SORTBY_USING"
+  "LimitOption": {
+    "0": "LIMIT_OPTION_DEFAULT",
+    "1": "LIMIT_OPTION_COUNT",
+    "2": "LIMIT_OPTION_WITH_TIES"
   },
-  "SortByNulls": {
-    "0": "SORTBY_NULLS_DEFAULT",
-    "1": "SORTBY_NULLS_FIRST",
-    "2": "SORTBY_NULLS_LAST"
+  "LockClauseStrength": {
+    "0": "LCS_NONE",
+    "1": "LCS_FORKEYSHARE",
+    "2": "LCS_FORSHARE",
+    "3": "LCS_FORNOKEYUPDATE",
+    "4": "LCS_FORUPDATE"
   },
-  "SubLinkType": {
-    "0": "EXISTS_SUBLINK",
-    "1": "ALL_SUBLINK",
-    "2": "ANY_SUBLINK",
-    "3": "ROWCOMPARE_SUBLINK",
-    "4": "EXPR_SUBLINK",
-    "5": "MULTIEXPR_SUBLINK",
-    "6": "ARRAY_SUBLINK",
-    "7": "CTE_SUBLINK"
+  "LockWaitPolicy": {
+    "0": "LockWaitBlock",
+    "1": "LockWaitSkip",
+    "2": "LockWaitError"
   },
-  "TableLikeOption": {
-    "0": "CREATE_TABLE_LIKE_COMMENTS",
-    "1": "CREATE_TABLE_LIKE_CONSTRAINTS",
-    "2": "CREATE_TABLE_LIKE_DEFAULTS",
-    "3": "CREATE_TABLE_LIKE_GENERATED",
-    "4": "CREATE_TABLE_LIKE_IDENTITY",
-    "5": "CREATE_TABLE_LIKE_INDEXES",
-    "6": "CREATE_TABLE_LIKE_STATISTICS",
-    "7": "CREATE_TABLE_LIKE_STORAGE",
-    "8": "CREATE_TABLE_LIKE_ALL"
+  "LockTupleMode": {
+    "0": "LockTupleKeyShare",
+    "1": "LockTupleShare",
+    "2": "LockTupleNoKeyExclusive",
+    "3": "LockTupleExclusive"
+  },
+  "KeywordKind": {
+    "0": "NO_KEYWORD",
+    "1": "UNRESERVED_KEYWORD",
+    "2": "COL_NAME_KEYWORD",
+    "3": "TYPE_FUNC_NAME_KEYWORD",
+    "4": "RESERVED_KEYWORD"
   },
   "Token": {
     "0": "NUL",
@@ -945,50 +990,5 @@
     "729": "WITH_LA",
     "730": "POSTFIXOP",
     "731": "UMINUS"
-  },
-  "TransactionStmtKind": {
-    "0": "TRANS_STMT_BEGIN",
-    "1": "TRANS_STMT_START",
-    "2": "TRANS_STMT_COMMIT",
-    "3": "TRANS_STMT_ROLLBACK",
-    "4": "TRANS_STMT_SAVEPOINT",
-    "5": "TRANS_STMT_RELEASE",
-    "6": "TRANS_STMT_ROLLBACK_TO",
-    "7": "TRANS_STMT_PREPARE",
-    "8": "TRANS_STMT_COMMIT_PREPARED",
-    "9": "TRANS_STMT_ROLLBACK_PREPARED"
-  },
-  "VariableSetKind": {
-    "0": "VAR_SET_VALUE",
-    "1": "VAR_SET_DEFAULT",
-    "2": "VAR_SET_CURRENT",
-    "3": "VAR_SET_MULTI",
-    "4": "VAR_RESET",
-    "5": "VAR_RESET_ALL"
-  },
-  "ViewCheckOption": {
-    "0": "NO_CHECK_OPTION",
-    "1": "LOCAL_CHECK_OPTION",
-    "2": "CASCADED_CHECK_OPTION"
-  },
-  "WCOKind": {
-    "0": "WCO_VIEW_CHECK",
-    "1": "WCO_RLS_INSERT_CHECK",
-    "2": "WCO_RLS_UPDATE_CHECK",
-    "3": "WCO_RLS_CONFLICT_CHECK"
-  },
-  "XmlExprOp": {
-    "0": "IS_XMLCONCAT",
-    "1": "IS_XMLELEMENT",
-    "2": "IS_XMLFOREST",
-    "3": "IS_XMLPARSE",
-    "4": "IS_XMLPI",
-    "5": "IS_XMLROOT",
-    "6": "IS_XMLSERIALIZE",
-    "7": "IS_DOCUMENT"
-  },
-  "XmlOptionType": {
-    "0": "XMLOPTION_DOCUMENT",
-    "1": "XMLOPTION_CONTENT"
   }
 }

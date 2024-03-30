@@ -1,7 +1,7 @@
 {
-  "name": "@pgsql/enums",
+  "name": "pgsql-enums",
   "version": "13.2.2",
-  "description": "PostgreSQL AST enums for pgsql-parser",
+  "description": "PostgreSQL AST enums for deparsing",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/pgsql-parser",
   "license": "SEE LICENSE IN LICENSE",
