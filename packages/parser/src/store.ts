@@ -86,7 +86,7 @@ export class ProtoStore implements IProtoStore {
     let decrement = 0;
 
     for (const [key, value] of Object.entries(enumNode.values)) {
-        if (key.endsWith('_UNDEFINED') && value === 0) {
+        if (key === undefinedKey && value === 0) {
             decrement = 1;
             continue;
         }
@@ -114,17 +114,22 @@ export class ProtoStore implements IProtoStore {
 
     if (this.options.includeTypes) {
       const typesTS = generateTSInterfaces(this.types);
-      const enumsTS = generateTSEnums(this.enums);
+      let enumsTS = '';
+
+      if (this.options.includeEnumTypeUnion) {
+        enumsTS = generateTSEnumsTypeUnionAST(this.enums);
+      } else {
+        enumsTS = generateTSEnums(this.enums);
+      }
 
       // Write the files
       writeFileSync(`${this.options.outDir}/types.ts`, `${enumsTS}\n${typesTS}`);
     }
 
-    if (this.options.includeEnumTypeUnion) {
-      const enumTypeUnionTS = generateTSEnumsTypeUnionAST(this.enums);
-
+    if (this.options.includeEnums) {
+      const enumsTS = generateTSEnums(this.enums);
       // Write the files
-      writeFileSync(`${this.options.outDir}/enums.ts`, enumTypeUnionTS);
+      writeFileSync(`${this.options.outDir}/enums.ts`, enumsTS);
     }
 
     if (this.options.includeUtils) {
