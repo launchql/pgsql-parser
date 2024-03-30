@@ -64,3 +64,9 @@ jobs:
           POSTGRES_PASSWORD: password
           POSTGRES_HOST: localhost
           POSTGRES_PORT: 5432
+
+      - name: enums
+        run: cd ./packages/enums && yarn test
+
+      - name: types
+        run: cd ./packages/types && yarn test

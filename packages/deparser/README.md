@@ -120,7 +120,7 @@ Our latest is built with `13-latest` branch from libpg_query
 
 ## Related
 
-* [libpg-query-node](https://github.com/pyramation/libpg-query-node)
+* [libpg-query-node](https://github.com/launchql/libpg-query-node)
 * [libpg_query](https://github.com/pganalyze/libpg_query)
 * [pg_query](https://github.com/lfittl/pg_query)
 * [pg_query.go](https://github.com/lfittl/pg_query.go)

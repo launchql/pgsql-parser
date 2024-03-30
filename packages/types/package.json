@@ -1,7 +1,7 @@
 {
-  "name": "pgsql-enums",
+  "name": "@pgsql/types",
   "version": "13.2.2",
-  "description": "PostgreSQL AST enums for deparsing",
+  "description": "PostgreSQL AST types for pgsql-parser",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/pgsql-parser",
   "license": "SEE LICENSE IN LICENSE",
@@ -54,8 +54,7 @@
     ],
     "testPathIgnorePatterns": [
       "main/",
-      "module/",
-      "types/"
+      "module/"
     ]
   },
   "devDependencies": {
