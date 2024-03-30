@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.4.0](https://github.com/launchql/pgsql-parser/compare/@pgsql/utils@13.3.4...@pgsql/utils@13.4.0) (2024-03-30)
+
+**Note:** Version bump only for package @pgsql/utils
+
+
+
+
+
 ## [13.3.4](https://github.com/launchql/pgsql-parser/compare/@pgsql/utils@13.3.3...@pgsql/utils@13.3.4) (2024-03-30)
 
 **Note:** Version bump only for package @pgsql/utils
