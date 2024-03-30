@@ -129,7 +129,7 @@ export const generateImportSpecifiersAST = (types: Type[], options: PgProtoParse
 }
 
 export const generateAstHelperMethodsAST = (types: Type[]): t.ExportDefaultDeclaration => {
-  const creators = types.map((type: Type) => {
+  const creators = types.filter(type=>type.name !== 'Node').map((type: Type) => {
     const typeName = type.name;
     const param = t.identifier('_p');
     param.optional = true;
