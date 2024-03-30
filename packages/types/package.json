@@ -1,6 +1,6 @@
 {
   "name": "@pgsql/types",
-  "version": "13.6.0",
+  "version": "13.7.0",
   "description": "PostgreSQL AST types for pgsql-parser",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/pgsql-parser",

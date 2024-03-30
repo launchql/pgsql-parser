@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.7.0](https://github.com/launchql/pgsql-parser/compare/@pgsql/enums@13.6.0...@pgsql/enums@13.7.0) (2024-03-30)
+
+**Note:** Version bump only for package @pgsql/enums
+
+
+
+
+
 # [13.6.0](https://github.com/launchql/pgsql-parser/compare/@pgsql/enums@13.5.0...@pgsql/enums@13.6.0) (2024-03-30)
 
 **Note:** Version bump only for package @pgsql/enums
