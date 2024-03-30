@@ -1,15 +1,11 @@
-# Interweb UI
+# @launchql/proto-cli
 
 <p align="center" width="100%">
-  <!-- <a href="https://github.com/launchql/pg-proto-parser/actions/workflows/run-tests.yml">
-    <img height="20" src="https://github.com/launchql/pg-proto-parser/actions/workflows/run-tests.yml/badge.svg" />
-  </a> -->
-  <!-- <a href="https://www.npmjs.com/package/@interweb-ui/compiler">
-    <img height="20" src="https://img.shields.io/npm/dt/@interweb-ui/compiler" />
-  </a> -->
+  <a href="https://github.com/launchql/pg-proto-parser/actions/workflows/run-tests.yaml">
+    <img height="20" src="https://github.com/launchql/pg-proto-parser/actions/workflows/run-tests.yaml/badge.svg" />
+  </a>
    <a href="https://github.com/launchql/pg-proto-parser/blob/main/LICENSE-MIT"><img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
    <a href="https://github.com/launchql/pg-proto-parser/blob/main/LICENSE-Apache"><img height="20" src="https://img.shields.io/badge/license-Apache-blue.svg"></a>
-   <!-- <a href="https://www.npmjs.com/package/@interweb-ui/compiler"><img height="20" src="https://img.shields.io/github/package-json/v/launchql/pg-proto-parser?filename=packages%2Fcore%2Fpackage.json"></a> -->
 </p>
 
 ```
