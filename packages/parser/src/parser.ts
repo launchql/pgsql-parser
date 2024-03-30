@@ -1,4 +1,4 @@
-import { parse, Root, ReflectionObject } from '@launchql/protobufjs';
+import { parse } from '@launchql/protobufjs';
 import { readFileSync } from 'fs';
 import { ProtoStore } from './store';
 
