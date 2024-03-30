@@ -1,0 +1,11 @@
+import { Type, Enum } from '@launchql/protobufjs';
+import * as t from '@babel/types';
+export declare const getTSType: (type: string) => t.TSStringKeyword | t.TSNumberKeyword | t.TSBigIntKeyword | t.TSTypeReference | t.TSBooleanKeyword;
+export declare const isPrimitiveType: (type: string) => boolean;
+export declare const resolveTypeName: (type: string) => t.TSStringKeyword | t.TSNumberKeyword | t.TSBigIntKeyword | t.TSTypeReference | t.TSBooleanKeyword;
+export declare const transformEnumToAST: (enumData: any) => t.ExportNamedDeclaration;
+export declare const transformTypeToAST: (type: Type) => t.ExportNamedDeclaration;
+export declare const generateTSInterfaces: (types: Type[]) => string;
+export declare const generateTSEnums: (enums: Enum[]) => string;
+export declare const generateTSEnumFunction: (enums: Enum[]) => string;
+export declare const buildEnumValueFunctionAST: (enumData: Enum[]) => t.ExportNamedDeclaration[];
