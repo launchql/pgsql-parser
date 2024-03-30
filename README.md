@@ -138,9 +138,14 @@ Thanks @lfittl for building the core `libpg_query` suite:
 
 ## Credits
 
-Thanks to @zhm for the OG parser that started it all:
+Thanks to [@zhm](https://github.com/zhm) for the OG parser that started it all:
 
 * [pg-query-parser](https://github.com/zhm/pg-query-parser)
 * [pg-query-native](https://github.com/zhm/node-pg-query-native)
+* [Original LICENSE](https://github.com/zhm/pg-query-parser/blob/master/LICENSE.md)
 
-License: https://github.com/zhm/pg-query-parser/blob/master/LICENSE.md
+## Disclaimer
+
+AS DESCRIBED IN THE LICENSES, THE SOFTWARE IS PROVIDED “AS IS”, AT YOUR OWN RISK, AND WITHOUT WARRANTIES OF ANY KIND.
+
+No developer or entity involved in creating Software will be liable for any claims or damages whatsoever associated with your use, inability to use, or your interaction with other users of the Software code or Software CLI, including any direct, indirect, incidental, special, exemplary, punitive or consequential damages, or loss of profits, cryptocurrencies, tokens, or anything else of value.

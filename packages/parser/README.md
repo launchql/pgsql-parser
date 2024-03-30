@@ -149,7 +149,7 @@ Thanks @lfittl for building the core `libpg_query` suite:
 
 ## Credits
 
-Thanks to @zhm for the OG parser that started it all:
+Thanks to [@zhm](https://github.com/zhm) for the OG parser that started it all:
 
 * [pg-query-parser](https://github.com/zhm/pg-query-parser)
 * [pg-query-native](https://github.com/zhm/node-pg-query-native)
