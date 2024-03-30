@@ -1,6 +1,104 @@
 // @ts-nocheck
 import { format } from 'util';
 import { objtypeName, getConstraintFromConstrType } from 'pgsql-enums';
+import { 
+  A_ArrayExpr, 
+  A_Const, 
+  A_Expr, 
+  A_Indices, 
+  A_Indirection, 
+  A_Star, 
+  AccessPriv, 
+  Alias, 
+  AlterDefaultPrivilegesStmt, 
+  AlterDomainStmt, 
+  AlterEnumStmt, 
+  AlterObjectSchemaStmt, 
+  AlterOwnerStmt, 
+  AlterSeqStmt, 
+  AlterTableCmd,
+  AlterTableStmt,
+  BitString,
+  BooleanTest,
+  BoolExpr,
+  CallStmt,
+  CaseExpr,
+  CaseWhen,
+  CoalesceExpr,
+  CollateClause,
+  ColumnDef,
+  ColumnRef,
+  CommentStmt,
+  CommonTableExpr,
+  CompositeTypeStmt,
+  Constraint,
+  ConstraintsSetStmt,
+  CopyStmt,
+  CreateDomainStmt,
+  CreateEnumStmt,
+  CreateExtensionStmt,
+  CreateFunctionStmt,
+  CreatePolicyStmt,
+  CreateRoleStmt,
+  CreateSchemaStmt,
+  CreateSeqStmt,
+  CreateStmt,
+  CreateTableAsStmt,
+  CreateTrigStmt,
+  DefElem,
+  DefineStmt,
+  DeleteStmt,
+  DoStmt,
+  DropStmt,
+  ExplainStmt,
+  Float,
+  FuncCall,
+  FunctionParameter,
+  GrantRoleStmt,
+  GrantStmt,
+  GroupingFunc,
+  GroupingSet,
+  IndexElem,
+  IndexStmt,
+  InsertStmt,
+  Integer,
+  IntoClause,
+  JoinExpr,
+  LockingClause,
+  LockStmt,
+  MinMaxExpr,
+  MultiAssignRef,
+  NamedArgExpr,
+  NullTest,
+  ObjectWithArgs,
+  ParamRef,
+  RangeFunction,
+  RangeSubselect,
+  RangeTableSample,
+  RangeVar,
+  RawStmt,
+  RenameStmt,
+  ResTarget,
+  RoleSpec,
+  RowExpr,
+  RuleStmt,
+  SelectStmt,
+  SetToDefault,
+  SortBy,
+  SQLValueFunction,
+  String as TString,
+  SubLink,
+  TransactionStmt,
+  TruncateStmt,
+  TypeCast,
+  TypeName,
+  UpdateStmt,
+  VariableSetStmt,
+  VariableShowStmt,
+  ViewStmt,
+  WindowDef,
+  WithClause,
+} from '@pgsql/types';
 
 let TAB_CHAR = '\t';
 let NEWLINE_CHAR = '\n';
@@ -321,14 +419,14 @@ export default class Deparser {
     return this[type](node, context);
   }
 
-  ['RawStmt'](node, context = {}) {
+  ['RawStmt'](node: RawStmt, context = {}) {
     if (node.stmt_len) {
       return this.deparse(node.stmt, context) + ';';
     }
     return this.deparse(node.stmt, context);
   }
 
-  ['RuleStmt'](node, context = {}) {
+  ['RuleStmt'](node: RuleStmt, context = {}) {
     const output = [];
     output.push('CREATE');
     output.push('RULE');
@@ -376,7 +474,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['A_Expr'](node, context = {}) {
+  ['A_Expr'](node: A_Expr, context = {}) {
     const output = [];
     const nodeName = unwrapList(node.name);
     switch (node.kind) {
@@ -600,7 +698,7 @@ export default class Deparser {
     }
   }
 
-  ['Alias'](node, context = {}) {
+  ['Alias'](node: Alias, context = {}) {
     const name = node.aliasname;
 
     const output = ['AS'];
@@ -614,11 +712,11 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['A_ArrayExpr'](node) {
+  ['A_ArrayExpr'](node: A_ArrayExpr) {
     return format('ARRAY[%s]', this.list(node.elements));
   }
 
-  ['A_Const'](node, context = {}) {
+  ['A_Const'](node: A_Const, context = {}) {
     if (node.val.String) {
       return this.escape(this.deparse(node.val, context));
     }
@@ -626,7 +724,7 @@ export default class Deparser {
     return this.deparse(node.val, context);
   }
 
-  ['A_Indices'](node, context = {}) {
+  ['A_Indices'](node: A_Indices, context = {}) {
     if (node.lidx) {
       return format(
         '[%s:%s]',
@@ -638,7 +736,7 @@ export default class Deparser {
     return format('[%s]', this.deparse(node.uidx, context));
   }
 
-  ['A_Indirection'](node, context = {}) {
+  ['A_Indirection'](node: A_Indirection, context = {}) {
     const output = [`(${this.deparse(node.arg, context)})`];
 
     // TODO(zhm) figure out the actual rules for when a '.' is needed
@@ -664,16 +762,16 @@ export default class Deparser {
     return output.join('');
   }
 
-  ['A_Star'](node) {
+  ['A_Star'](node: A_Star) {
     return '*';
   }
 
-  ['BitString'](node) {
+  ['BitString'](node: BitString) {
     const prefix = node.str[0];
     return `${prefix}'${node.str.substring(1)}'`;
   }
 
-  ['BoolExpr'](node, context = {}) {
+  ['BoolExpr'](node: BoolExpr, context = {}) {
     let fmt_str = '%s';
     if (context.bool) {
       fmt_str = '(%s)';
@@ -696,7 +794,7 @@ export default class Deparser {
     }
   }
 
-  ['BooleanTest'](node, context = {}) {
+  ['BooleanTest'](node: BooleanTest, context = {}) {
     const output = [];
 
     const ctx = Object.assign({}, context);
@@ -728,7 +826,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['CaseExpr'](node, context = {}) {
+  ['CaseExpr'](node: CaseExpr, context = {}) {
     const output = ['CASE'];
 
     if (node.arg) {
@@ -750,11 +848,11 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['CoalesceExpr'](node, context = {}) {
+  ['CoalesceExpr'](node: CoalesceExpr, context = {}) {
     return format('COALESCE(%s)', this.list(node.args, ', ', '', context));
   }
 
-  ['CollateClause'](node, context = {}) {
+  ['CollateClause'](node: CollateClause, context = {}) {
     const output = [];
 
     if (node.arg) {
@@ -770,7 +868,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['CompositeTypeStmt'](node, context = {}) {
+  ['CompositeTypeStmt'](node: CompositeTypeStmt, context = {}) {
     const output = [];
 
     output.push('CREATE TYPE');
@@ -785,7 +883,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['RenameStmt'](node, context = {}) {
+  ['RenameStmt'](node: RenameStmt, context = {}) {
     const output = [];
 
     if (
@@ -879,7 +977,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['AlterOwnerStmt'](node, context = {}) {
+  ['AlterOwnerStmt'](node: AlterOwnerStmt, context = {}) {
     const output = [];
 
     output.push('ALTER');
@@ -896,7 +994,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['AlterObjectSchemaStmt'](node, context = {}) {
+  ['AlterObjectSchemaStmt'](node: AlterObjectSchemaStmt, context = {}) {
     const output = [];
 
     if (node.objectType === 'OBJECT_TABLE') {
@@ -927,7 +1025,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['ColumnDef'](node, context = {}) {
+  ['ColumnDef'](node: ColumnDef, context = {}) {
     const output = [this.quote(node.colname)];
 
     output.push(this.TypeName(node.typeName, context));
@@ -950,7 +1048,7 @@ export default class Deparser {
     return compact(output).join(' ');
   }
 
-  ['SQLValueFunction'](node) {
+  ['SQLValueFunction'](node: SQLValueFunction) {
     if (node.op === 'SVFOP_CURRENT_DATE') {
       return 'CURRENT_DATE';
     }
@@ -966,7 +1064,7 @@ export default class Deparser {
     throw new Error(`op=${node.op} SQLValueFunction not implemented`);
   }
 
-  ['ColumnRef'](node, context = {}) {
+  ['ColumnRef'](node: ColumnRef, context = {}) {
     const KEYWORDS = ['old', 'new'];
     const fields = unwrapList(node.fields).map((field) => {
       if (field.String) {
@@ -982,7 +1080,7 @@ export default class Deparser {
     return fields.join('.');
   }
 
-  ['CommentStmt'](node, context = {}) {
+  ['CommentStmt'](node: CommentStmt, context = {}) {
     const output = [];
 
     output.push('COMMENT');
@@ -1081,7 +1179,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['CommonTableExpr'](node, context = {}) {
+  ['CommonTableExpr'](node: CommonTableExpr, context = {}) {
     const output = [];
 
     output.push(node.ctename);
@@ -1105,7 +1203,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['DefineStmt'](node, context = {}) {
+  ['DefineStmt'](node: DefineStmt, context = {}) {
     const output = [];
     output.push('CREATE');
 
@@ -1194,7 +1292,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['DefElem'](node, context = {}) {
+  ['DefElem'](node: DefElem, context = {}) {
     if (node.defname === 'transaction_isolation') {
       return format(
         'ISOLATION LEVEL %s',
@@ -1289,13 +1387,13 @@ export default class Deparser {
     return name;
   }
 
-  ['DoStmt'](node) {
+  ['DoStmt'](node: DoStmt) {
     return `DO $$${NEWLINE_CHAR}  ${dotty
       .get(node, 'args.0.DefElem.arg.String.str')
       .trim()} $$`;
   }
 
-  ['Float'](node) {
+  ['Float'](node: Float) {
     // wrap negative numbers in parens, SELECT (-2147483648)::int4 * (-1)::int4
     if (node.str[0] === '-') {
       return `(${node.str})`;
@@ -1304,7 +1402,7 @@ export default class Deparser {
     return node.str;
   }
 
-  ['FuncCall'](node, context = {}) {
+  ['FuncCall'](node: FuncCall, context = {}) {
     const output = [];
 
     let params = [];
@@ -1374,11 +1472,11 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['GroupingFunc'](node, context = {}) {
+  ['GroupingFunc'](node: GroupingFunc, context = {}) {
     return 'GROUPING(' + this.list(node.args, ', ', '', context) + ')';
   }
 
-  ['GroupingSet'](node, context = {}) {
+  ['GroupingSet'](node: GroupingSet, context = {}) {
     switch (node.kind) {
       case 'GROUPING_SET_EMPTY':
         return '()';
@@ -1402,7 +1500,7 @@ export default class Deparser {
     }
   }
 
-  ['IndexStmt'](node, context = {}) {
+  ['IndexStmt'](node: IndexStmt, context = {}) {
     const output = [];
     output.push('CREATE');
     if (node.unique) {
@@ -1446,7 +1544,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['IndexElem'](node, context = {}) {
+  ['IndexElem'](node: IndexElem, context = {}) {
     const output = [];
     if (node.name) {
       output.push(node.name);
@@ -1463,7 +1561,7 @@ export default class Deparser {
     return fail('IndexElem', node);
   }
 
-  ['InsertStmt'](node, context = {}) {
+  ['InsertStmt'](node: InsertStmt, context = {}) {
     const output = [];
 
     if (node.withClause) {
@@ -1520,17 +1618,17 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['SetToDefault'](node) {
+  ['SetToDefault'](node: SetToDefault) {
     return 'DEFAULT';
   }
 
-  ['MultiAssignRef'](node, context = {}) {
+  ['MultiAssignRef'](node: MultiAssignRef, context = {}) {
     const output = [];
     output.push(this.deparse(node.source, context));
     return output.join(' ');
   }
 
-  ['DeleteStmt'](node, context = {}) {
+  ['DeleteStmt'](node: DeleteStmt, context = {}) {
     const output = [''];
 
     if (node.withClause) {
@@ -1558,7 +1656,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['UpdateStmt'](node, context = {}) {
+  ['UpdateStmt'](node: UpdateStmt, context = {}) {
     const output = [];
 
     if (node.withClause) {
@@ -1611,7 +1709,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['Integer'](node, context = {}) {
+  ['Integer'](node: Integer, context = {}) {
     if (node.ival < 0 && context !== 'simple') {
       return `(${node.ival})`;
     }
@@ -1619,11 +1717,11 @@ export default class Deparser {
     return node.ival.toString();
   }
 
-  ['IntoClause'](node, context = {}) {
+  ['IntoClause'](node: IntoClause, context = {}) {
     return this.RangeVar(node.rel, context);
   }
 
-  ['JoinExpr'](node, context = {}) {
+  ['JoinExpr'](node: JoinExpr, context = {}) {
     const output = [];
 
     output.push(this.deparse(node.larg, context));
@@ -1703,7 +1801,7 @@ export default class Deparser {
     return wrapped;
   }
 
-  ['LockingClause'](node, context = {}) {
+  ['LockingClause'](node: LockingClause, context = {}) {
     const output = [];
 
     switch (node.strength) {
@@ -1734,7 +1832,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['LockStmt'](node, context = {}) {
+  ['LockStmt'](node: LockStmt, context = {}) {
     const output = ['LOCK'];
 
     output.push(this.list(node.relations, ', ', '', { lock: true }));
@@ -1747,7 +1845,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['MinMaxExpr'](node, context = {}) {
+  ['MinMaxExpr'](node: MinMaxExpr, context = {}) {
     const output = [];
 
     if (node.op === 'IS_GREATEST') {
@@ -1761,7 +1859,7 @@ export default class Deparser {
     return output.join('');
   }
 
-  ['NamedArgExpr'](node, context = {}) {
+  ['NamedArgExpr'](node: NamedArgExpr, context = {}) {
     const output = [];
 
     output.push(node.name);
@@ -1775,7 +1873,7 @@ export default class Deparser {
     return 'NULL';
   }
 
-  ['NullTest'](node, context = {}) {
+  ['NullTest'](node: NullTest, context = {}) {
     const output = [this.deparse(node.arg, context)];
 
     if (node.nulltesttype === 'IS_NULL') {
@@ -1787,14 +1885,14 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['ParamRef'](node) {
+  ['ParamRef'](node: ParamRef) {
     if (node.number >= 0) {
       return ['$', node.number].join('');
     }
     return '?';
   }
 
-  ['RangeFunction'](node, context = {}) {
+  ['RangeFunction'](node: RangeFunction, context = {}) {
     const output = [];
 
     if (node.lateral) {
@@ -1847,7 +1945,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['RangeSubselect'](node, context = {}) {
+  ['RangeSubselect'](node: RangeSubselect, context = {}) {
     let output = '';
 
     if (node.lateral) {
@@ -1863,7 +1961,7 @@ export default class Deparser {
     return output;
   }
 
-  ['RangeTableSample'](node, context = {}) {
+  ['RangeTableSample'](node: RangeTableSample, context = {}) {
     const output = [];
 
     output.push(this.deparse(node.relation, context));
@@ -1881,7 +1979,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['RangeVar'](node, context = {}) {
+  ['RangeVar'](node: RangeVar, context = {}) {
     const output = [];
     if (node.inhOpt === 0) {
       output.push('ONLY');
@@ -1912,7 +2010,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['ResTarget'](node, context = {}) {
+  ['ResTarget'](node: ResTarget, context = {}) {
     if (context === 'select') {
       return compact([
         this.deparse(node.val, context),
@@ -1927,7 +2025,7 @@ export default class Deparser {
     return fail('ResTarget', node);
   }
 
-  ['RowExpr'](node, context = {}) {
+  ['RowExpr'](node: RowExpr, context = {}) {
     if (node.row_format === 'COERCE_IMPLICIT_CAST') {
       return parens(this.list(node.args, ', ', '', context));
     }
@@ -1935,7 +2033,7 @@ export default class Deparser {
     return format('ROW(%s)', this.list(node.args, ', ', '', context));
   }
 
-  ['ExplainStmt'](node, context = {}) {
+  ['ExplainStmt'](node: ExplainStmt, context = {}) {
     const output = [];
     output.push('EXPLAIN');
     if (node.options) {
@@ -1947,7 +2045,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['SelectStmt'](node, context = {}) {
+  ['SelectStmt'](node: SelectStmt, context = {}) {
     const output = [];
 
     if (node.withClause) {
@@ -2112,7 +2210,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['TruncateStmt'](node, context = {}) {
+  ['TruncateStmt'](node: TruncateStmt, context = {}) {
     const output = ['TRUNCATE TABLE'];
 
     output.push(this.list(node.relations, ', ', '', 'truncate'));
@@ -2128,7 +2226,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['AlterDefaultPrivilegesStmt'](node, context = {}) {
+  ['AlterDefaultPrivilegesStmt'](node: AlterDefaultPrivilegesStmt, context = {}) {
     const output = [];
     output.push('ALTER DEFAULT PRIVILEGES');
 
@@ -2154,7 +2252,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['AlterTableStmt'](node, context = {}) {
+  ['AlterTableStmt'](node: AlterTableStmt, context = {}) {
     const output = [];
     const ctx = Object.assign({}, context);
     output.push('ALTER');
@@ -2180,7 +2278,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['AlterTableCmd'](node, context = {}) {
+  ['AlterTableCmd'](node: AlterTableCmd, context = {}) {
     const output = [];
 
     let subType = 'COLUMN';
@@ -2322,7 +2420,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['CreateEnumStmt'](node, context = {}) {
+  ['CreateEnumStmt'](node: CreateEnumStmt, context = {}) {
     const output = [];
     output.push('CREATE TYPE');
     output.push(this.list(node.typeName, '.', '', context));
@@ -2336,7 +2434,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['AlterEnumStmt'](node, context = {}) {
+  ['AlterEnumStmt'](node: AlterEnumStmt, context = {}) {
     const output = [];
     output.push('ALTER TYPE');
     const typObj = {
@@ -2369,7 +2467,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['AlterDomainStmt'](node, context = {}) {
+  ['AlterDomainStmt'](node: AlterDomainStmt, context = {}) {
     const output = [];
     output.push('ALTER DOMAIN');
 
@@ -2399,7 +2497,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['CreateExtensionStmt'](node) {
+  ['CreateExtensionStmt'](node: CreateExtensionStmt) {
     const output = [];
     output.push('CREATE EXTENSION');
     if (node.if_not_exists) {
@@ -2423,7 +2521,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['DropStmt'](node, context = {}) {
+  ['DropStmt'](node: DropStmt, context = {}) {
     const output = [];
     output.push('DROP');
     output.push(objtypeName(node.removeType));
@@ -2546,7 +2644,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['CreatePolicyStmt'](node, context = {}) {
+  ['CreatePolicyStmt'](node: CreatePolicyStmt, context = {}) {
     const output = [];
     output.push('CREATE POLICY');
 
@@ -2619,7 +2717,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['ViewStmt'](node, context = {}) {
+  ['ViewStmt'](node: ViewStmt, context = {}) {
     const output = [];
     output.push('CREATE');
     if (node.replace) output.push('OR REPLACE');
@@ -2643,7 +2741,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['CreateSeqStmt'](node, context = {}) {
+  ['CreateSeqStmt'](node: CreateSeqStmt, context = {}) {
     const output = [];
     output.push('CREATE SEQUENCE');
     output.push(this.RangeVar(node.sequence, context));
@@ -2656,7 +2754,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['AlterSeqStmt'](node, context = {}) {
+  ['AlterSeqStmt'](node: AlterSeqStmt, context = {}) {
     const output = [];
     output.push('ALTER SEQUENCE');
     output.push(this.RangeVar(node.sequence, context));
@@ -2669,7 +2767,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['CreateTableAsStmt'](node, context = {}) {
+  ['CreateTableAsStmt'](node: CreateTableAsStmt, context = {}) {
     const output = ['CREATE'];
     const relpersistence = dotty.get(node, 'into.rel.relpersistence');
     if (node.relkind === 'OBJECT_MATVIEW') {
@@ -2687,7 +2785,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['CreateTrigStmt'](node, context = {}) {
+  ['CreateTrigStmt'](node: CreateTrigStmt, context = {}) {
     const output = [];
 
     output.push('CREATE');
@@ -2814,7 +2912,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['CreateDomainStmt'](node, context = {}) {
+  ['CreateDomainStmt'](node: CreateDomainStmt, context = {}) {
     const output = [];
     output.push('CREATE DOMAIN');
     output.push(this.list(node.domainname, '.', '', context));
@@ -2826,7 +2924,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['CreateStmt'](node, context = {}) {
+  ['CreateStmt'](node: CreateStmt, context = {}) {
     const output = [];
     const relpersistence = dotty.get(node, 'relation.relpersistence');
     if (relpersistence === 't') {
@@ -2976,7 +3074,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['Constraint'](node, context = {}) {
+  ['Constraint'](node: Constraint, context = {}) {
     const output = [];
 
     if (node.contype === 'CONSTR_FOREIGN') {
@@ -3065,7 +3163,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['AccessPriv'](node) {
+  ['AccessPriv'](node: AccessPriv) {
     const output = [];
     if (node.priv_name) {
       output.push(node.priv_name.toUpperCase());
@@ -3080,7 +3178,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['VariableSetStmt'](node) {
+  ['VariableSetStmt'](node: VariableSetStmt) {
     switch (node.kind) {
       case 'VAR_SET_VALUE':
         return format(
@@ -3114,7 +3212,7 @@ export default class Deparser {
     }
   }
 
-  ['VariableShowStmt'](node) {
+  ['VariableShowStmt'](node: VariableShowStmt) {
     return format('SHOW %s', node.name);
   }
 
@@ -3127,7 +3225,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['FunctionParameter'](node, context = {}) {
+  ['FunctionParameter'](node: FunctionParameter, context = {}) {
     const output = [];
 
     if (node.mode === 'FUNC_PARAM_VARIADIC') {
@@ -3153,7 +3251,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['CreateFunctionStmt'](node, context = {}) {
+  ['CreateFunctionStmt'](node: CreateFunctionStmt, context = {}) {
     const output = [];
 
     output.push('CREATE');
@@ -3260,7 +3358,7 @@ export default class Deparser {
     });
     return output.join(' ');
   }
-  ['CreateSchemaStmt'](node) {
+  ['CreateSchemaStmt'](node: CreateSchemaStmt) {
     const output = [];
 
     output.push('CREATE');
@@ -3278,7 +3376,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['RoleSpec'](node) {
+  ['RoleSpec'](node: RoleSpec) {
     switch (node.roletype) {
       case 'ROLESPEC_CSTRING':
         return this.quote(node.rolename);
@@ -3293,7 +3391,7 @@ export default class Deparser {
     }
   }
 
-  ['GrantStmt'](node) {
+  ['GrantStmt'](node: GrantStmt) {
     const output = [];
 
     const getTypeFromNode = (nodeObj) => {
@@ -3387,7 +3485,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['GrantRoleStmt'](node, context = {}) {
+  ['GrantRoleStmt'](node: GrantRoleStmt, context = {}) {
     const output = [];
 
     if (!node.is_grant) {
@@ -3408,7 +3506,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['CreateRoleStmt'](node, context = {}) {
+  ['CreateRoleStmt'](node: CreateRoleStmt, context = {}) {
     const output = [];
 
     const roleOption = (nodeObj, i, val1, val2) => {
@@ -3508,7 +3606,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['TransactionStmt'](node, context = {}) {
+  ['TransactionStmt'](node: TransactionStmt, context = {}) {
     const output = [];
 
     const begin = (nodeOpts) => {
@@ -3602,7 +3700,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['SortBy'](node, context = {}) {
+  ['SortBy'](node: SortBy, context = {}) {
     const output = [];
 
     output.push(this.deparse(node.node, context));
@@ -3634,7 +3732,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['ObjectWithArgs'](node, context = {}) {
+  ['ObjectWithArgs'](node: ObjectWithArgs, context = {}) {
     const output = [];
 
     if (context === 'noquotes') {
@@ -3663,11 +3761,11 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['String'](node) {
+  ['String'](node: TString) {
     return node.str;
   }
 
-  ['SubLink'](node, context = {}) {
+  ['SubLink'](node: SubLink, context = {}) {
     switch (true) {
       case node.subLinkType === 'EXISTS_SUBLINK':
         return format('EXISTS (%s)', this.deparse(node.subselect, context));
@@ -3712,7 +3810,7 @@ export default class Deparser {
     }
   }
 
-  ['TypeCast'](node, context = {}) {
+  ['TypeCast'](node: TypeCast, context = {}) {
     const type = this.TypeName(node.typeName, context);
     let arg = this.deparse(node.arg, context);
 
@@ -3732,7 +3830,7 @@ export default class Deparser {
     return format('%s::%s', arg, type);
   }
 
-  ['TypeName'](node, context = {}) {
+  ['TypeName'](node: TypeName, context = {}) {
     const names = unwrapList(node.names);
     if (names[names.length - 1].String.str === 'interval') {
       return this.deparseInterval(node);
@@ -3765,7 +3863,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['CaseWhen'](node, context = {}) {
+  ['CaseWhen'](node: CaseWhen, context = {}) {
     const output = ['WHEN'];
 
     output.push(this.deparse(node.expr, context));
@@ -3775,7 +3873,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['WindowDef'](node, context = {}) {
+  ['WindowDef'](node: WindowDef, context = {}) {
     const output = [];
 
     if (context !== 'window') {
@@ -3844,7 +3942,7 @@ export default class Deparser {
     return output.join(' ') + windowParts.join(' ');
   }
 
-  ['WithClause'](node, context = {}) {
+  ['WithClause'](node: WithClause, context = {}) {
     const output = ['WITH'];
 
     if (node.recursive) {
@@ -3856,7 +3954,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['CopyStmt'](node, context = {}) {
+  ['CopyStmt'](node: CopyStmt, context = {}) {
     const output = ['COPY'];
 
     output.push('(' + this.deparse(node.query, context) + ')');
@@ -3872,7 +3970,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  ['CallStmt'](node, context = {}) {
+  ['CallStmt'](node: CallStmt, context = {}) {
     const output = ['CALL'];
 
     output.push(this.deparse(unwrapList(node.funccall.funcname)[0]));
@@ -3995,7 +4093,7 @@ export default class Deparser {
     return output.join(' ');
   }
 
-  deparseInterval(node) {
+  deparseInterval(node: TypeName) {
     const type = ['interval'];
 
     if (node.arrayBounds != null) {
