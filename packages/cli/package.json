@@ -1,6 +1,6 @@
 {
   "name": "@launchql/proto-cli",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "The LaunchQL PG Proto parser",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/pg-proto-parser/tree/master/packages/parser#readme",
