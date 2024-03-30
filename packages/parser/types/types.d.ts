@@ -9,6 +9,7 @@ export interface PgProtoStoreOptions {
     includeEnums?: boolean;
     optionalFields?: boolean;
     removeUndefinedAt0?: boolean;
+    includeHeader?: boolean;
     outDir?: string;
 }
 export interface ParseProtoOptions {

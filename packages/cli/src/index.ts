@@ -16,6 +16,7 @@ export default async (argv) => {
     includeUtils: argv.hasOwnProperty('includeUtils') ? argv.includeUtils : true,
     includeEnumTypeUnion: argv.hasOwnProperty('includeEnumTypeUnion') ? argv.includeEnumTypeUnion : true,
     includeEnums: argv.hasOwnProperty('includeEnums') ? argv.includeEnums : true,
+    includeHeader: argv.hasOwnProperty('includeHeader') ? argv.includeHeader : true,
     optionalFields: argv.hasOwnProperty('optionalFields') ? argv.optionalFields : true,
     removeUndefinedAt0: argv.hasOwnProperty('removeUndefinedAt0') ? argv.removeUndefinedAt0 : true,
     parser: {

@@ -2,17 +2,8 @@ import { Service, Type, Field, Enum, Namespace, ReflectionObject } from '@launch
 import { generateTSEnums, generateTSInterfaces, generateTSEnumFunction, generateTSEnumsTypeUnionAST } from './ast';
 import { generateEnum2IntJSON, generateEnum2StrJSON } from './json';
 import { sync as mkdirp } from 'mkdirp';
-import { writeFileSync } from 'fs';
 import { defaultPgProtoParserOptions, PgProtoStoreOptions } from './types';
-import { getUndefinedKey, hasUndefinedInitialValue } from './utils';
-
-const cloneAndNameNode = (node: ReflectionObject, name: string) => {
-  const clone = JSON.parse(JSON.stringify(node));
-  return {
-    name,
-    ...clone
-  }
-}
+import { cloneAndNameNode, getUndefinedKey, hasUndefinedInitialValue, writeFileToDisk } from './utils';
 
 interface IProtoStore {
   options: PgProtoStoreOptions;
@@ -108,8 +99,8 @@ export class ProtoStore implements IProtoStore {
       const enums2str = generateEnum2StrJSON(this.enums);
 
       // Write the files
-      writeFileSync(`${this.options.outDir}/enums2int.json`, JSON.stringify(enums2int, null, 2));
-      writeFileSync(`${this.options.outDir}/enums2str.json`, JSON.stringify(enums2str, null, 2));
+      this.writeFile(`${this.options.outDir}/enums2int.json`, JSON.stringify(enums2int, null, 2));
+      this.writeFile(`${this.options.outDir}/enums2str.json`, JSON.stringify(enums2str, null, 2));
     }
 
     if (this.options.includeTypes) {
@@ -123,21 +114,24 @@ export class ProtoStore implements IProtoStore {
       }
 
       // Write the files
-      writeFileSync(`${this.options.outDir}/types.ts`, `${enumsTS}\n${typesTS}`);
+      this.writeFile(`${this.options.outDir}/types.ts`, `${enumsTS}\n${typesTS}`);
     }
 
     if (this.options.includeEnums) {
       const enumsTS = generateTSEnums(this.enums);
       // Write the files
-      writeFileSync(`${this.options.outDir}/enums.ts`, enumsTS);
+      this.writeFile(`${this.options.outDir}/enums.ts`, enumsTS);
     }
 
     if (this.options.includeUtils) {
       const utilsTS = generateTSEnumFunction(this.enums);
 
       // Write the files
-      writeFileSync(`${this.options.outDir}/utils.ts`, utilsTS);
+      this.writeFile(`${this.options.outDir}/utils.ts`, utilsTS);
     }
+  }
+  writeFile (filename: string, content: string) {
+    writeFileToDisk(filename, content, this.options);
   }
 
 }

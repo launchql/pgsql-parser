@@ -10,6 +10,7 @@ export interface PgProtoStoreOptions {
     includeEnums?: boolean;
     optionalFields?: boolean;
     removeUndefinedAt0?: boolean;
+    includeHeader?: boolean;
     outDir?: string;
 }
 
@@ -26,6 +27,7 @@ export const defaultPgProtoParserOptions: PgProtoParserOptions = {
     includeUtils: true,
     includeEnumTypeUnion: true,
     includeEnums: true,
+    includeHeader: true,
     optionalFields: true,
     removeUndefinedAt0: true,
     outDir: `${process.cwd()}/out`,
