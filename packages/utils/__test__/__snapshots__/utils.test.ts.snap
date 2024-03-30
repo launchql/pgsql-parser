@@ -1,5 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`asts 1`] = `
+"CREATE TABLE  (
+ 	id int4 
+) INHERITS (  )"
+`;
+
 exports[`getEnumValue 1`] = `"AEXPR_OP"`;
 
 exports[`getEnumValue 2`] = `"AEXPR_OP_ANY"`;

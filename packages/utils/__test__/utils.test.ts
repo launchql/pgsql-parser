@@ -1,6 +1,7 @@
 import * as u from '../src';
 import ast from '../src/asts';
-import { CreateStmt, ColumnDef } from '@pgsql/types';
+import { CreateStmt, ColumnDef } from '@pgsql/types/types/wrapped';
+import { deparse } from 'pgsql-deparser';
 
 it('getEnumValue', () => {
   expect(u.getEnumValue('A_Expr_Kind', 0)).toMatchSnapshot();
@@ -25,5 +26,5 @@ it('asts', () => {
     }),
     tableElts: [newColumn]
   })
-  expect(createStmt).toBeTruthy();
+  expect(deparse(createStmt, {})).toMatchSnapshot();
 });

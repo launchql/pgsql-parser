@@ -39,7 +39,8 @@ npm install @pgsql/utils
 With the AST helper methods, creating complex SQL ASTs becomes straightforward and intuitive.
 
 ```ts
-import { CreateStmt, ColumnDef } from '@pgsql/types';
+import { CreateStmt, ColumnDef } from '@pgsql/types/types/wrapped';
+import { deparse } from 'pgsql-deparser';
 import ast from '@pgsql/utils';
 
 const newColumn: ColumnDef = ast.columnDef({
@@ -55,6 +56,8 @@ const createStmt: CreateStmt = ast.createStmt({
     }),
     tableElts: [newColumn]
 });
+
+deparse(createStmt, {}) // SQL!
 ```
 
 ### Enum Value Conversion
