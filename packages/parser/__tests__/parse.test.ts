@@ -18,7 +18,7 @@ const protoParseOptionsDefaults = {
 // https://raw.githubusercontent.com/pganalyze/libpg_query/16-latest/protobuf/pg_query.proto
 const testProtoFile = resolve(join(__dirname, '../../../__fixtures__/proto/16-latest.proto'));
 
-const outputDir = resolve(join(__dirname, '../../../__fixtures__/proto', 'output'));
+const outputDir = resolve(join(__dirname, '../../../__fixtures__/', 'output'));
 
 export const parseProtoFile = (filepath, options?: ParseProtoOptions) => {
   return parseProto(readFileSync(filepath, 'utf-8'), options);
