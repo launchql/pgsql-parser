@@ -77,6 +77,10 @@
   },
   "dependencies": {
     "@launchql/protobufjs": "6.11.7",
+    "@babel/generator": "^7.23.6",
+    "@babel/parser": "^7.23.6",
+    "@babel/traverse": "7.24.1",
+    "@babel/types": "7.24.0",
     "case": "1.6.3",
     "node-html-parser": "6.1.12",
     "recast": "0.23.6"

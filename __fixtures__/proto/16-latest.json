@@ -36,257 +36,257 @@
               "node": {
                 "oneof": [
                   "alias",
-                  "rangeVar",
-                  "tableFunc",
-                  "intoClause",
+                  "range_var",
+                  "table_func",
+                  "into_clause",
                   "var",
                   "param",
                   "aggref",
-                  "groupingFunc",
-                  "windowFunc",
-                  "subscriptingRef",
-                  "funcExpr",
-                  "namedArgExpr",
-                  "opExpr",
-                  "distinctExpr",
-                  "nullIfExpr",
-                  "scalarArrayOpExpr",
-                  "boolExpr",
-                  "subLink",
-                  "subPlan",
-                  "alternativeSubPlan",
-                  "fieldSelect",
-                  "fieldStore",
-                  "relabelType",
-                  "coerceViaIo",
-                  "arrayCoerceExpr",
-                  "convertRowtypeExpr",
-                  "collateExpr",
-                  "caseExpr",
-                  "caseWhen",
-                  "caseTestExpr",
-                  "arrayExpr",
-                  "rowExpr",
-                  "rowCompareExpr",
-                  "coalesceExpr",
-                  "minMaxExpr",
-                  "sqlvalueFunction",
-                  "xmlExpr",
-                  "jsonFormat",
-                  "jsonReturning",
-                  "jsonValueExpr",
-                  "jsonConstructorExpr",
-                  "jsonIsPredicate",
-                  "nullTest",
-                  "booleanTest",
-                  "coerceToDomain",
-                  "coerceToDomainValue",
-                  "setToDefault",
-                  "currentOfExpr",
-                  "nextValueExpr",
-                  "inferenceElem",
-                  "targetEntry",
-                  "rangeTblRef",
-                  "joinExpr",
-                  "fromExpr",
-                  "onConflictExpr",
+                  "grouping_func",
+                  "window_func",
+                  "subscripting_ref",
+                  "func_expr",
+                  "named_arg_expr",
+                  "op_expr",
+                  "distinct_expr",
+                  "null_if_expr",
+                  "scalar_array_op_expr",
+                  "bool_expr",
+                  "sub_link",
+                  "sub_plan",
+                  "alternative_sub_plan",
+                  "field_select",
+                  "field_store",
+                  "relabel_type",
+                  "coerce_via_io",
+                  "array_coerce_expr",
+                  "convert_rowtype_expr",
+                  "collate_expr",
+                  "case_expr",
+                  "case_when",
+                  "case_test_expr",
+                  "array_expr",
+                  "row_expr",
+                  "row_compare_expr",
+                  "coalesce_expr",
+                  "min_max_expr",
+                  "sqlvalue_function",
+                  "xml_expr",
+                  "json_format",
+                  "json_returning",
+                  "json_value_expr",
+                  "json_constructor_expr",
+                  "json_is_predicate",
+                  "null_test",
+                  "boolean_test",
+                  "coerce_to_domain",
+                  "coerce_to_domain_value",
+                  "set_to_default",
+                  "current_of_expr",
+                  "next_value_expr",
+                  "inference_elem",
+                  "target_entry",
+                  "range_tbl_ref",
+                  "join_expr",
+                  "from_expr",
+                  "on_conflict_expr",
                   "query",
-                  "typeName",
-                  "columnRef",
-                  "paramRef",
-                  "aExpr",
-                  "typeCast",
-                  "collateClause",
-                  "roleSpec",
-                  "funcCall",
-                  "aStar",
-                  "aIndices",
-                  "aIndirection",
-                  "aArrayExpr",
-                  "resTarget",
-                  "multiAssignRef",
-                  "sortBy",
-                  "windowDef",
-                  "rangeSubselect",
-                  "rangeFunction",
-                  "rangeTableFunc",
-                  "rangeTableFuncCol",
-                  "rangeTableSample",
-                  "columnDef",
-                  "tableLikeClause",
-                  "indexElem",
-                  "defElem",
-                  "lockingClause",
-                  "xmlSerialize",
-                  "partitionElem",
-                  "partitionSpec",
-                  "partitionBoundSpec",
-                  "partitionRangeDatum",
-                  "partitionCmd",
-                  "rangeTblEntry",
-                  "rtepermissionInfo",
-                  "rangeTblFunction",
-                  "tableSampleClause",
-                  "withCheckOption",
-                  "sortGroupClause",
-                  "groupingSet",
-                  "windowClause",
-                  "rowMarkClause",
-                  "withClause",
-                  "inferClause",
-                  "onConflictClause",
-                  "ctesearchClause",
-                  "ctecycleClause",
-                  "commonTableExpr",
-                  "mergeWhenClause",
-                  "mergeAction",
-                  "triggerTransition",
-                  "jsonOutput",
-                  "jsonKeyValue",
-                  "jsonObjectConstructor",
-                  "jsonArrayConstructor",
-                  "jsonArrayQueryConstructor",
-                  "jsonAggConstructor",
-                  "jsonObjectAgg",
-                  "jsonArrayAgg",
-                  "rawStmt",
-                  "insertStmt",
-                  "deleteStmt",
-                  "updateStmt",
-                  "mergeStmt",
-                  "selectStmt",
-                  "setOperationStmt",
-                  "returnStmt",
-                  "plassignStmt",
-                  "createSchemaStmt",
-                  "alterTableStmt",
-                  "replicaIdentityStmt",
-                  "alterTableCmd",
-                  "alterCollationStmt",
-                  "alterDomainStmt",
-                  "grantStmt",
-                  "objectWithArgs",
-                  "accessPriv",
-                  "grantRoleStmt",
-                  "alterDefaultPrivilegesStmt",
-                  "copyStmt",
-                  "variableSetStmt",
-                  "variableShowStmt",
-                  "createStmt",
+                  "type_name",
+                  "column_ref",
+                  "param_ref",
+                  "a_expr",
+                  "type_cast",
+                  "collate_clause",
+                  "role_spec",
+                  "func_call",
+                  "a_star",
+                  "a_indices",
+                  "a_indirection",
+                  "a_array_expr",
+                  "res_target",
+                  "multi_assign_ref",
+                  "sort_by",
+                  "window_def",
+                  "range_subselect",
+                  "range_function",
+                  "range_table_func",
+                  "range_table_func_col",
+                  "range_table_sample",
+                  "column_def",
+                  "table_like_clause",
+                  "index_elem",
+                  "def_elem",
+                  "locking_clause",
+                  "xml_serialize",
+                  "partition_elem",
+                  "partition_spec",
+                  "partition_bound_spec",
+                  "partition_range_datum",
+                  "partition_cmd",
+                  "range_tbl_entry",
+                  "rtepermission_info",
+                  "range_tbl_function",
+                  "table_sample_clause",
+                  "with_check_option",
+                  "sort_group_clause",
+                  "grouping_set",
+                  "window_clause",
+                  "row_mark_clause",
+                  "with_clause",
+                  "infer_clause",
+                  "on_conflict_clause",
+                  "ctesearch_clause",
+                  "ctecycle_clause",
+                  "common_table_expr",
+                  "merge_when_clause",
+                  "merge_action",
+                  "trigger_transition",
+                  "json_output",
+                  "json_key_value",
+                  "json_object_constructor",
+                  "json_array_constructor",
+                  "json_array_query_constructor",
+                  "json_agg_constructor",
+                  "json_object_agg",
+                  "json_array_agg",
+                  "raw_stmt",
+                  "insert_stmt",
+                  "delete_stmt",
+                  "update_stmt",
+                  "merge_stmt",
+                  "select_stmt",
+                  "set_operation_stmt",
+                  "return_stmt",
+                  "plassign_stmt",
+                  "create_schema_stmt",
+                  "alter_table_stmt",
+                  "replica_identity_stmt",
+                  "alter_table_cmd",
+                  "alter_collation_stmt",
+                  "alter_domain_stmt",
+                  "grant_stmt",
+                  "object_with_args",
+                  "access_priv",
+                  "grant_role_stmt",
+                  "alter_default_privileges_stmt",
+                  "copy_stmt",
+                  "variable_set_stmt",
+                  "variable_show_stmt",
+                  "create_stmt",
                   "constraint",
-                  "createTableSpaceStmt",
-                  "dropTableSpaceStmt",
-                  "alterTableSpaceOptionsStmt",
-                  "alterTableMoveAllStmt",
-                  "createExtensionStmt",
-                  "alterExtensionStmt",
-                  "alterExtensionContentsStmt",
-                  "createFdwStmt",
-                  "alterFdwStmt",
-                  "createForeignServerStmt",
-                  "alterForeignServerStmt",
-                  "createForeignTableStmt",
-                  "createUserMappingStmt",
-                  "alterUserMappingStmt",
-                  "dropUserMappingStmt",
-                  "importForeignSchemaStmt",
-                  "createPolicyStmt",
-                  "alterPolicyStmt",
-                  "createAmStmt",
-                  "createTrigStmt",
-                  "createEventTrigStmt",
-                  "alterEventTrigStmt",
-                  "createPlangStmt",
-                  "createRoleStmt",
-                  "alterRoleStmt",
-                  "alterRoleSetStmt",
-                  "dropRoleStmt",
-                  "createSeqStmt",
-                  "alterSeqStmt",
-                  "defineStmt",
-                  "createDomainStmt",
-                  "createOpClassStmt",
-                  "createOpClassItem",
-                  "createOpFamilyStmt",
-                  "alterOpFamilyStmt",
-                  "dropStmt",
-                  "truncateStmt",
-                  "commentStmt",
-                  "secLabelStmt",
-                  "declareCursorStmt",
-                  "closePortalStmt",
-                  "fetchStmt",
-                  "indexStmt",
-                  "createStatsStmt",
-                  "statsElem",
-                  "alterStatsStmt",
-                  "createFunctionStmt",
-                  "functionParameter",
-                  "alterFunctionStmt",
-                  "doStmt",
-                  "inlineCodeBlock",
-                  "callStmt",
-                  "callContext",
-                  "renameStmt",
-                  "alterObjectDependsStmt",
-                  "alterObjectSchemaStmt",
-                  "alterOwnerStmt",
-                  "alterOperatorStmt",
-                  "alterTypeStmt",
-                  "ruleStmt",
-                  "notifyStmt",
-                  "listenStmt",
-                  "unlistenStmt",
-                  "transactionStmt",
-                  "compositeTypeStmt",
-                  "createEnumStmt",
-                  "createRangeStmt",
-                  "alterEnumStmt",
-                  "viewStmt",
-                  "loadStmt",
-                  "createdbStmt",
-                  "alterDatabaseStmt",
-                  "alterDatabaseRefreshCollStmt",
-                  "alterDatabaseSetStmt",
-                  "dropdbStmt",
-                  "alterSystemStmt",
-                  "clusterStmt",
-                  "vacuumStmt",
-                  "vacuumRelation",
-                  "explainStmt",
-                  "createTableAsStmt",
-                  "refreshMatViewStmt",
-                  "checkPointStmt",
-                  "discardStmt",
-                  "lockStmt",
-                  "constraintsSetStmt",
-                  "reindexStmt",
-                  "createConversionStmt",
-                  "createCastStmt",
-                  "createTransformStmt",
-                  "prepareStmt",
-                  "executeStmt",
-                  "deallocateStmt",
-                  "dropOwnedStmt",
-                  "reassignOwnedStmt",
-                  "alterTsdictionaryStmt",
-                  "alterTsconfigurationStmt",
-                  "publicationTable",
-                  "publicationObjSpec",
-                  "createPublicationStmt",
-                  "alterPublicationStmt",
-                  "createSubscriptionStmt",
-                  "alterSubscriptionStmt",
-                  "dropSubscriptionStmt",
+                  "create_table_space_stmt",
+                  "drop_table_space_stmt",
+                  "alter_table_space_options_stmt",
+                  "alter_table_move_all_stmt",
+                  "create_extension_stmt",
+                  "alter_extension_stmt",
+                  "alter_extension_contents_stmt",
+                  "create_fdw_stmt",
+                  "alter_fdw_stmt",
+                  "create_foreign_server_stmt",
+                  "alter_foreign_server_stmt",
+                  "create_foreign_table_stmt",
+                  "create_user_mapping_stmt",
+                  "alter_user_mapping_stmt",
+                  "drop_user_mapping_stmt",
+                  "import_foreign_schema_stmt",
+                  "create_policy_stmt",
+                  "alter_policy_stmt",
+                  "create_am_stmt",
+                  "create_trig_stmt",
+                  "create_event_trig_stmt",
+                  "alter_event_trig_stmt",
+                  "create_plang_stmt",
+                  "create_role_stmt",
+                  "alter_role_stmt",
+                  "alter_role_set_stmt",
+                  "drop_role_stmt",
+                  "create_seq_stmt",
+                  "alter_seq_stmt",
+                  "define_stmt",
+                  "create_domain_stmt",
+                  "create_op_class_stmt",
+                  "create_op_class_item",
+                  "create_op_family_stmt",
+                  "alter_op_family_stmt",
+                  "drop_stmt",
+                  "truncate_stmt",
+                  "comment_stmt",
+                  "sec_label_stmt",
+                  "declare_cursor_stmt",
+                  "close_portal_stmt",
+                  "fetch_stmt",
+                  "index_stmt",
+                  "create_stats_stmt",
+                  "stats_elem",
+                  "alter_stats_stmt",
+                  "create_function_stmt",
+                  "function_parameter",
+                  "alter_function_stmt",
+                  "do_stmt",
+                  "inline_code_block",
+                  "call_stmt",
+                  "call_context",
+                  "rename_stmt",
+                  "alter_object_depends_stmt",
+                  "alter_object_schema_stmt",
+                  "alter_owner_stmt",
+                  "alter_operator_stmt",
+                  "alter_type_stmt",
+                  "rule_stmt",
+                  "notify_stmt",
+                  "listen_stmt",
+                  "unlisten_stmt",
+                  "transaction_stmt",
+                  "composite_type_stmt",
+                  "create_enum_stmt",
+                  "create_range_stmt",
+                  "alter_enum_stmt",
+                  "view_stmt",
+                  "load_stmt",
+                  "createdb_stmt",
+                  "alter_database_stmt",
+                  "alter_database_refresh_coll_stmt",
+                  "alter_database_set_stmt",
+                  "dropdb_stmt",
+                  "alter_system_stmt",
+                  "cluster_stmt",
+                  "vacuum_stmt",
+                  "vacuum_relation",
+                  "explain_stmt",
+                  "create_table_as_stmt",
+                  "refresh_mat_view_stmt",
+                  "check_point_stmt",
+                  "discard_stmt",
+                  "lock_stmt",
+                  "constraints_set_stmt",
+                  "reindex_stmt",
+                  "create_conversion_stmt",
+                  "create_cast_stmt",
+                  "create_transform_stmt",
+                  "prepare_stmt",
+                  "execute_stmt",
+                  "deallocate_stmt",
+                  "drop_owned_stmt",
+                  "reassign_owned_stmt",
+                  "alter_tsdictionary_stmt",
+                  "alter_tsconfiguration_stmt",
+                  "publication_table",
+                  "publication_obj_spec",
+                  "create_publication_stmt",
+                  "alter_publication_stmt",
+                  "create_subscription_stmt",
+                  "alter_subscription_stmt",
+                  "drop_subscription_stmt",
                   "integer",
                   "float",
                   "boolean",
                   "string",
-                  "bitString",
+                  "bit_string",
                   "list",
-                  "intList",
-                  "oidList",
-                  "aConst"
+                  "int_list",
+                  "oid_list",
+                  "a_const"
                 ]
               }
             },
@@ -298,21 +298,21 @@
                   "json_name": "Alias"
                 }
               },
-              "rangeVar": {
+              "range_var": {
                 "type": "RangeVar",
                 "id": 2,
                 "options": {
                   "json_name": "RangeVar"
                 }
               },
-              "tableFunc": {
+              "table_func": {
                 "type": "TableFunc",
                 "id": 3,
                 "options": {
                   "json_name": "TableFunc"
                 }
               },
-              "intoClause": {
+              "into_clause": {
                 "type": "IntoClause",
                 "id": 4,
                 "options": {
@@ -340,336 +340,336 @@
                   "json_name": "Aggref"
                 }
               },
-              "groupingFunc": {
+              "grouping_func": {
                 "type": "GroupingFunc",
                 "id": 8,
                 "options": {
                   "json_name": "GroupingFunc"
                 }
               },
-              "windowFunc": {
+              "window_func": {
                 "type": "WindowFunc",
                 "id": 9,
                 "options": {
                   "json_name": "WindowFunc"
                 }
               },
-              "subscriptingRef": {
+              "subscripting_ref": {
                 "type": "SubscriptingRef",
                 "id": 10,
                 "options": {
                   "json_name": "SubscriptingRef"
                 }
               },
-              "funcExpr": {
+              "func_expr": {
                 "type": "FuncExpr",
                 "id": 11,
                 "options": {
                   "json_name": "FuncExpr"
                 }
               },
-              "namedArgExpr": {
+              "named_arg_expr": {
                 "type": "NamedArgExpr",
                 "id": 12,
                 "options": {
                   "json_name": "NamedArgExpr"
                 }
               },
-              "opExpr": {
+              "op_expr": {
                 "type": "OpExpr",
                 "id": 13,
                 "options": {
                   "json_name": "OpExpr"
                 }
               },
-              "distinctExpr": {
+              "distinct_expr": {
                 "type": "DistinctExpr",
                 "id": 14,
                 "options": {
                   "json_name": "DistinctExpr"
                 }
               },
-              "nullIfExpr": {
+              "null_if_expr": {
                 "type": "NullIfExpr",
                 "id": 15,
                 "options": {
                   "json_name": "NullIfExpr"
                 }
               },
-              "scalarArrayOpExpr": {
+              "scalar_array_op_expr": {
                 "type": "ScalarArrayOpExpr",
                 "id": 16,
                 "options": {
                   "json_name": "ScalarArrayOpExpr"
                 }
               },
-              "boolExpr": {
+              "bool_expr": {
                 "type": "BoolExpr",
                 "id": 17,
                 "options": {
                   "json_name": "BoolExpr"
                 }
               },
-              "subLink": {
+              "sub_link": {
                 "type": "SubLink",
                 "id": 18,
                 "options": {
                   "json_name": "SubLink"
                 }
               },
-              "subPlan": {
+              "sub_plan": {
                 "type": "SubPlan",
                 "id": 19,
                 "options": {
                   "json_name": "SubPlan"
                 }
               },
-              "alternativeSubPlan": {
+              "alternative_sub_plan": {
                 "type": "AlternativeSubPlan",
                 "id": 20,
                 "options": {
                   "json_name": "AlternativeSubPlan"
                 }
               },
-              "fieldSelect": {
+              "field_select": {
                 "type": "FieldSelect",
                 "id": 21,
                 "options": {
                   "json_name": "FieldSelect"
                 }
               },
-              "fieldStore": {
+              "field_store": {
                 "type": "FieldStore",
                 "id": 22,
                 "options": {
                   "json_name": "FieldStore"
                 }
               },
-              "relabelType": {
+              "relabel_type": {
                 "type": "RelabelType",
                 "id": 23,
                 "options": {
                   "json_name": "RelabelType"
                 }
               },
-              "coerceViaIo": {
+              "coerce_via_io": {
                 "type": "CoerceViaIO",
                 "id": 24,
                 "options": {
                   "json_name": "CoerceViaIO"
                 }
               },
-              "arrayCoerceExpr": {
+              "array_coerce_expr": {
                 "type": "ArrayCoerceExpr",
                 "id": 25,
                 "options": {
                   "json_name": "ArrayCoerceExpr"
                 }
               },
-              "convertRowtypeExpr": {
+              "convert_rowtype_expr": {
                 "type": "ConvertRowtypeExpr",
                 "id": 26,
                 "options": {
                   "json_name": "ConvertRowtypeExpr"
                 }
               },
-              "collateExpr": {
+              "collate_expr": {
                 "type": "CollateExpr",
                 "id": 27,
                 "options": {
                   "json_name": "CollateExpr"
                 }
               },
-              "caseExpr": {
+              "case_expr": {
                 "type": "CaseExpr",
                 "id": 28,
                 "options": {
                   "json_name": "CaseExpr"
                 }
               },
-              "caseWhen": {
+              "case_when": {
                 "type": "CaseWhen",
                 "id": 29,
                 "options": {
                   "json_name": "CaseWhen"
                 }
               },
-              "caseTestExpr": {
+              "case_test_expr": {
                 "type": "CaseTestExpr",
                 "id": 30,
                 "options": {
                   "json_name": "CaseTestExpr"
                 }
               },
-              "arrayExpr": {
+              "array_expr": {
                 "type": "ArrayExpr",
                 "id": 31,
                 "options": {
                   "json_name": "ArrayExpr"
                 }
               },
-              "rowExpr": {
+              "row_expr": {
                 "type": "RowExpr",
                 "id": 32,
                 "options": {
                   "json_name": "RowExpr"
                 }
               },
-              "rowCompareExpr": {
+              "row_compare_expr": {
                 "type": "RowCompareExpr",
                 "id": 33,
                 "options": {
                   "json_name": "RowCompareExpr"
                 }
               },
-              "coalesceExpr": {
+              "coalesce_expr": {
                 "type": "CoalesceExpr",
                 "id": 34,
                 "options": {
                   "json_name": "CoalesceExpr"
                 }
               },
-              "minMaxExpr": {
+              "min_max_expr": {
                 "type": "MinMaxExpr",
                 "id": 35,
                 "options": {
                   "json_name": "MinMaxExpr"
                 }
               },
-              "sqlvalueFunction": {
+              "sqlvalue_function": {
                 "type": "SQLValueFunction",
                 "id": 36,
                 "options": {
                   "json_name": "SQLValueFunction"
                 }
               },
-              "xmlExpr": {
+              "xml_expr": {
                 "type": "XmlExpr",
                 "id": 37,
                 "options": {
                   "json_name": "XmlExpr"
                 }
               },
-              "jsonFormat": {
+              "json_format": {
                 "type": "JsonFormat",
                 "id": 38,
                 "options": {
                   "json_name": "JsonFormat"
                 }
               },
-              "jsonReturning": {
+              "json_returning": {
                 "type": "JsonReturning",
                 "id": 39,
                 "options": {
                   "json_name": "JsonReturning"
                 }
               },
-              "jsonValueExpr": {
+              "json_value_expr": {
                 "type": "JsonValueExpr",
                 "id": 40,
                 "options": {
                   "json_name": "JsonValueExpr"
                 }
               },
-              "jsonConstructorExpr": {
+              "json_constructor_expr": {
                 "type": "JsonConstructorExpr",
                 "id": 41,
                 "options": {
                   "json_name": "JsonConstructorExpr"
                 }
               },
-              "jsonIsPredicate": {
+              "json_is_predicate": {
                 "type": "JsonIsPredicate",
                 "id": 42,
                 "options": {
                   "json_name": "JsonIsPredicate"
                 }
               },
-              "nullTest": {
+              "null_test": {
                 "type": "NullTest",
                 "id": 43,
                 "options": {
                   "json_name": "NullTest"
                 }
               },
-              "booleanTest": {
+              "boolean_test": {
                 "type": "BooleanTest",
                 "id": 44,
                 "options": {
                   "json_name": "BooleanTest"
                 }
               },
-              "coerceToDomain": {
+              "coerce_to_domain": {
                 "type": "CoerceToDomain",
                 "id": 45,
                 "options": {
                   "json_name": "CoerceToDomain"
                 }
               },
-              "coerceToDomainValue": {
+              "coerce_to_domain_value": {
                 "type": "CoerceToDomainValue",
                 "id": 46,
                 "options": {
                   "json_name": "CoerceToDomainValue"
                 }
               },
-              "setToDefault": {
+              "set_to_default": {
                 "type": "SetToDefault",
                 "id": 47,
                 "options": {
                   "json_name": "SetToDefault"
                 }
               },
-              "currentOfExpr": {
+              "current_of_expr": {
                 "type": "CurrentOfExpr",
                 "id": 48,
                 "options": {
                   "json_name": "CurrentOfExpr"
                 }
               },
-              "nextValueExpr": {
+              "next_value_expr": {
                 "type": "NextValueExpr",
                 "id": 49,
                 "options": {
                   "json_name": "NextValueExpr"
                 }
               },
-              "inferenceElem": {
+              "inference_elem": {
                 "type": "InferenceElem",
                 "id": 50,
                 "options": {
                   "json_name": "InferenceElem"
                 }
               },
-              "targetEntry": {
+              "target_entry": {
                 "type": "TargetEntry",
                 "id": 51,
                 "options": {
                   "json_name": "TargetEntry"
                 }
               },
-              "rangeTblRef": {
+              "range_tbl_ref": {
                 "type": "RangeTblRef",
                 "id": 52,
                 "options": {
                   "json_name": "RangeTblRef"
                 }
               },
-              "joinExpr": {
+              "join_expr": {
                 "type": "JoinExpr",
                 "id": 53,
                 "options": {
                   "json_name": "JoinExpr"
                 }
               },
-              "fromExpr": {
+              "from_expr": {
                 "type": "FromExpr",
                 "id": 54,
                 "options": {
                   "json_name": "FromExpr"
                 }
               },
-              "onConflictExpr": {
+              "on_conflict_expr": {
                 "type": "OnConflictExpr",
                 "id": 55,
                 "options": {
@@ -683,574 +683,574 @@
                   "json_name": "Query"
                 }
               },
-              "typeName": {
+              "type_name": {
                 "type": "TypeName",
                 "id": 57,
                 "options": {
                   "json_name": "TypeName"
                 }
               },
-              "columnRef": {
+              "column_ref": {
                 "type": "ColumnRef",
                 "id": 58,
                 "options": {
                   "json_name": "ColumnRef"
                 }
               },
-              "paramRef": {
+              "param_ref": {
                 "type": "ParamRef",
                 "id": 59,
                 "options": {
                   "json_name": "ParamRef"
                 }
               },
-              "aExpr": {
+              "a_expr": {
                 "type": "A_Expr",
                 "id": 60,
                 "options": {
                   "json_name": "A_Expr"
                 }
               },
-              "typeCast": {
+              "type_cast": {
                 "type": "TypeCast",
                 "id": 61,
                 "options": {
                   "json_name": "TypeCast"
                 }
               },
-              "collateClause": {
+              "collate_clause": {
                 "type": "CollateClause",
                 "id": 62,
                 "options": {
                   "json_name": "CollateClause"
                 }
               },
-              "roleSpec": {
+              "role_spec": {
                 "type": "RoleSpec",
                 "id": 63,
                 "options": {
                   "json_name": "RoleSpec"
                 }
               },
-              "funcCall": {
+              "func_call": {
                 "type": "FuncCall",
                 "id": 64,
                 "options": {
                   "json_name": "FuncCall"
                 }
               },
-              "aStar": {
+              "a_star": {
                 "type": "A_Star",
                 "id": 65,
                 "options": {
                   "json_name": "A_Star"
                 }
               },
-              "aIndices": {
+              "a_indices": {
                 "type": "A_Indices",
                 "id": 66,
                 "options": {
                   "json_name": "A_Indices"
                 }
               },
-              "aIndirection": {
+              "a_indirection": {
                 "type": "A_Indirection",
                 "id": 67,
                 "options": {
                   "json_name": "A_Indirection"
                 }
               },
-              "aArrayExpr": {
+              "a_array_expr": {
                 "type": "A_ArrayExpr",
                 "id": 68,
                 "options": {
                   "json_name": "A_ArrayExpr"
                 }
               },
-              "resTarget": {
+              "res_target": {
                 "type": "ResTarget",
                 "id": 69,
                 "options": {
                   "json_name": "ResTarget"
                 }
               },
-              "multiAssignRef": {
+              "multi_assign_ref": {
                 "type": "MultiAssignRef",
                 "id": 70,
                 "options": {
                   "json_name": "MultiAssignRef"
                 }
               },
-              "sortBy": {
+              "sort_by": {
                 "type": "SortBy",
                 "id": 71,
                 "options": {
                   "json_name": "SortBy"
                 }
               },
-              "windowDef": {
+              "window_def": {
                 "type": "WindowDef",
                 "id": 72,
                 "options": {
                   "json_name": "WindowDef"
                 }
               },
-              "rangeSubselect": {
+              "range_subselect": {
                 "type": "RangeSubselect",
                 "id": 73,
                 "options": {
                   "json_name": "RangeSubselect"
                 }
               },
-              "rangeFunction": {
+              "range_function": {
                 "type": "RangeFunction",
                 "id": 74,
                 "options": {
                   "json_name": "RangeFunction"
                 }
               },
-              "rangeTableFunc": {
+              "range_table_func": {
                 "type": "RangeTableFunc",
                 "id": 75,
                 "options": {
                   "json_name": "RangeTableFunc"
                 }
               },
-              "rangeTableFuncCol": {
+              "range_table_func_col": {
                 "type": "RangeTableFuncCol",
                 "id": 76,
                 "options": {
                   "json_name": "RangeTableFuncCol"
                 }
               },
-              "rangeTableSample": {
+              "range_table_sample": {
                 "type": "RangeTableSample",
                 "id": 77,
                 "options": {
                   "json_name": "RangeTableSample"
                 }
               },
-              "columnDef": {
+              "column_def": {
                 "type": "ColumnDef",
                 "id": 78,
                 "options": {
                   "json_name": "ColumnDef"
                 }
               },
-              "tableLikeClause": {
+              "table_like_clause": {
                 "type": "TableLikeClause",
                 "id": 79,
                 "options": {
                   "json_name": "TableLikeClause"
                 }
               },
-              "indexElem": {
+              "index_elem": {
                 "type": "IndexElem",
                 "id": 80,
                 "options": {
                   "json_name": "IndexElem"
                 }
               },
-              "defElem": {
+              "def_elem": {
                 "type": "DefElem",
                 "id": 81,
                 "options": {
                   "json_name": "DefElem"
                 }
               },
-              "lockingClause": {
+              "locking_clause": {
                 "type": "LockingClause",
                 "id": 82,
                 "options": {
                   "json_name": "LockingClause"
                 }
               },
-              "xmlSerialize": {
+              "xml_serialize": {
                 "type": "XmlSerialize",
                 "id": 83,
                 "options": {
                   "json_name": "XmlSerialize"
                 }
               },
-              "partitionElem": {
+              "partition_elem": {
                 "type": "PartitionElem",
                 "id": 84,
                 "options": {
                   "json_name": "PartitionElem"
                 }
               },
-              "partitionSpec": {
+              "partition_spec": {
                 "type": "PartitionSpec",
                 "id": 85,
                 "options": {
                   "json_name": "PartitionSpec"
                 }
               },
-              "partitionBoundSpec": {
+              "partition_bound_spec": {
                 "type": "PartitionBoundSpec",
                 "id": 86,
                 "options": {
                   "json_name": "PartitionBoundSpec"
                 }
               },
-              "partitionRangeDatum": {
+              "partition_range_datum": {
                 "type": "PartitionRangeDatum",
                 "id": 87,
                 "options": {
                   "json_name": "PartitionRangeDatum"
                 }
               },
-              "partitionCmd": {
+              "partition_cmd": {
                 "type": "PartitionCmd",
                 "id": 88,
                 "options": {
                   "json_name": "PartitionCmd"
                 }
               },
-              "rangeTblEntry": {
+              "range_tbl_entry": {
                 "type": "RangeTblEntry",
                 "id": 89,
                 "options": {
                   "json_name": "RangeTblEntry"
                 }
               },
-              "rtepermissionInfo": {
+              "rtepermission_info": {
                 "type": "RTEPermissionInfo",
                 "id": 90,
                 "options": {
                   "json_name": "RTEPermissionInfo"
                 }
               },
-              "rangeTblFunction": {
+              "range_tbl_function": {
                 "type": "RangeTblFunction",
                 "id": 91,
                 "options": {
                   "json_name": "RangeTblFunction"
                 }
               },
-              "tableSampleClause": {
+              "table_sample_clause": {
                 "type": "TableSampleClause",
                 "id": 92,
                 "options": {
                   "json_name": "TableSampleClause"
                 }
               },
-              "withCheckOption": {
+              "with_check_option": {
                 "type": "WithCheckOption",
                 "id": 93,
                 "options": {
                   "json_name": "WithCheckOption"
                 }
               },
-              "sortGroupClause": {
+              "sort_group_clause": {
                 "type": "SortGroupClause",
                 "id": 94,
                 "options": {
                   "json_name": "SortGroupClause"
                 }
               },
-              "groupingSet": {
+              "grouping_set": {
                 "type": "GroupingSet",
                 "id": 95,
                 "options": {
                   "json_name": "GroupingSet"
                 }
               },
-              "windowClause": {
+              "window_clause": {
                 "type": "WindowClause",
                 "id": 96,
                 "options": {
                   "json_name": "WindowClause"
                 }
               },
-              "rowMarkClause": {
+              "row_mark_clause": {
                 "type": "RowMarkClause",
                 "id": 97,
                 "options": {
                   "json_name": "RowMarkClause"
                 }
               },
-              "withClause": {
+              "with_clause": {
                 "type": "WithClause",
                 "id": 98,
                 "options": {
                   "json_name": "WithClause"
                 }
               },
-              "inferClause": {
+              "infer_clause": {
                 "type": "InferClause",
                 "id": 99,
                 "options": {
                   "json_name": "InferClause"
                 }
               },
-              "onConflictClause": {
+              "on_conflict_clause": {
                 "type": "OnConflictClause",
                 "id": 100,
                 "options": {
                   "json_name": "OnConflictClause"
                 }
               },
-              "ctesearchClause": {
+              "ctesearch_clause": {
                 "type": "CTESearchClause",
                 "id": 101,
                 "options": {
                   "json_name": "CTESearchClause"
                 }
               },
-              "ctecycleClause": {
+              "ctecycle_clause": {
                 "type": "CTECycleClause",
                 "id": 102,
                 "options": {
                   "json_name": "CTECycleClause"
                 }
               },
-              "commonTableExpr": {
+              "common_table_expr": {
                 "type": "CommonTableExpr",
                 "id": 103,
                 "options": {
                   "json_name": "CommonTableExpr"
                 }
               },
-              "mergeWhenClause": {
+              "merge_when_clause": {
                 "type": "MergeWhenClause",
                 "id": 104,
                 "options": {
                   "json_name": "MergeWhenClause"
                 }
               },
-              "mergeAction": {
+              "merge_action": {
                 "type": "MergeAction",
                 "id": 105,
                 "options": {
                   "json_name": "MergeAction"
                 }
               },
-              "triggerTransition": {
+              "trigger_transition": {
                 "type": "TriggerTransition",
                 "id": 106,
                 "options": {
                   "json_name": "TriggerTransition"
                 }
               },
-              "jsonOutput": {
+              "json_output": {
                 "type": "JsonOutput",
                 "id": 107,
                 "options": {
                   "json_name": "JsonOutput"
                 }
               },
-              "jsonKeyValue": {
+              "json_key_value": {
                 "type": "JsonKeyValue",
                 "id": 108,
                 "options": {
                   "json_name": "JsonKeyValue"
                 }
               },
-              "jsonObjectConstructor": {
+              "json_object_constructor": {
                 "type": "JsonObjectConstructor",
                 "id": 109,
                 "options": {
                   "json_name": "JsonObjectConstructor"
                 }
               },
-              "jsonArrayConstructor": {
+              "json_array_constructor": {
                 "type": "JsonArrayConstructor",
                 "id": 110,
                 "options": {
                   "json_name": "JsonArrayConstructor"
                 }
               },
-              "jsonArrayQueryConstructor": {
+              "json_array_query_constructor": {
                 "type": "JsonArrayQueryConstructor",
                 "id": 111,
                 "options": {
                   "json_name": "JsonArrayQueryConstructor"
                 }
               },
-              "jsonAggConstructor": {
+              "json_agg_constructor": {
                 "type": "JsonAggConstructor",
                 "id": 112,
                 "options": {
                   "json_name": "JsonAggConstructor"
                 }
               },
-              "jsonObjectAgg": {
+              "json_object_agg": {
                 "type": "JsonObjectAgg",
                 "id": 113,
                 "options": {
                   "json_name": "JsonObjectAgg"
                 }
               },
-              "jsonArrayAgg": {
+              "json_array_agg": {
                 "type": "JsonArrayAgg",
                 "id": 114,
                 "options": {
                   "json_name": "JsonArrayAgg"
                 }
               },
-              "rawStmt": {
+              "raw_stmt": {
                 "type": "RawStmt",
                 "id": 115,
                 "options": {
                   "json_name": "RawStmt"
                 }
               },
-              "insertStmt": {
+              "insert_stmt": {
                 "type": "InsertStmt",
                 "id": 116,
                 "options": {
                   "json_name": "InsertStmt"
                 }
               },
-              "deleteStmt": {
+              "delete_stmt": {
                 "type": "DeleteStmt",
                 "id": 117,
                 "options": {
                   "json_name": "DeleteStmt"
                 }
               },
-              "updateStmt": {
+              "update_stmt": {
                 "type": "UpdateStmt",
                 "id": 118,
                 "options": {
                   "json_name": "UpdateStmt"
                 }
               },
-              "mergeStmt": {
+              "merge_stmt": {
                 "type": "MergeStmt",
                 "id": 119,
                 "options": {
                   "json_name": "MergeStmt"
                 }
               },
-              "selectStmt": {
+              "select_stmt": {
                 "type": "SelectStmt",
                 "id": 120,
                 "options": {
                   "json_name": "SelectStmt"
                 }
               },
-              "setOperationStmt": {
+              "set_operation_stmt": {
                 "type": "SetOperationStmt",
                 "id": 121,
                 "options": {
                   "json_name": "SetOperationStmt"
                 }
               },
-              "returnStmt": {
+              "return_stmt": {
                 "type": "ReturnStmt",
                 "id": 122,
                 "options": {
                   "json_name": "ReturnStmt"
                 }
               },
-              "plassignStmt": {
+              "plassign_stmt": {
                 "type": "PLAssignStmt",
                 "id": 123,
                 "options": {
                   "json_name": "PLAssignStmt"
                 }
               },
-              "createSchemaStmt": {
+              "create_schema_stmt": {
                 "type": "CreateSchemaStmt",
                 "id": 124,
                 "options": {
                   "json_name": "CreateSchemaStmt"
                 }
               },
-              "alterTableStmt": {
+              "alter_table_stmt": {
                 "type": "AlterTableStmt",
                 "id": 125,
                 "options": {
                   "json_name": "AlterTableStmt"
                 }
               },
-              "replicaIdentityStmt": {
+              "replica_identity_stmt": {
                 "type": "ReplicaIdentityStmt",
                 "id": 126,
                 "options": {
                   "json_name": "ReplicaIdentityStmt"
                 }
               },
-              "alterTableCmd": {
+              "alter_table_cmd": {
                 "type": "AlterTableCmd",
                 "id": 127,
                 "options": {
                   "json_name": "AlterTableCmd"
                 }
               },
-              "alterCollationStmt": {
+              "alter_collation_stmt": {
                 "type": "AlterCollationStmt",
                 "id": 128,
                 "options": {
                   "json_name": "AlterCollationStmt"
                 }
               },
-              "alterDomainStmt": {
+              "alter_domain_stmt": {
                 "type": "AlterDomainStmt",
                 "id": 129,
                 "options": {
                   "json_name": "AlterDomainStmt"
                 }
               },
-              "grantStmt": {
+              "grant_stmt": {
                 "type": "GrantStmt",
                 "id": 130,
                 "options": {
                   "json_name": "GrantStmt"
                 }
               },
-              "objectWithArgs": {
+              "object_with_args": {
                 "type": "ObjectWithArgs",
                 "id": 131,
                 "options": {
                   "json_name": "ObjectWithArgs"
                 }
               },
-              "accessPriv": {
+              "access_priv": {
                 "type": "AccessPriv",
                 "id": 132,
                 "options": {
                   "json_name": "AccessPriv"
                 }
               },
-              "grantRoleStmt": {
+              "grant_role_stmt": {
                 "type": "GrantRoleStmt",
                 "id": 133,
                 "options": {
                   "json_name": "GrantRoleStmt"
                 }
               },
-              "alterDefaultPrivilegesStmt": {
+              "alter_default_privileges_stmt": {
                 "type": "AlterDefaultPrivilegesStmt",
                 "id": 134,
                 "options": {
                   "json_name": "AlterDefaultPrivilegesStmt"
                 }
               },
-              "copyStmt": {
+              "copy_stmt": {
                 "type": "CopyStmt",
                 "id": 135,
                 "options": {
                   "json_name": "CopyStmt"
                 }
               },
-              "variableSetStmt": {
+              "variable_set_stmt": {
                 "type": "VariableSetStmt",
                 "id": 136,
                 "options": {
                   "json_name": "VariableSetStmt"
                 }
               },
-              "variableShowStmt": {
+              "variable_show_stmt": {
                 "type": "VariableShowStmt",
                 "id": 137,
                 "options": {
                   "json_name": "VariableShowStmt"
                 }
               },
-              "createStmt": {
+              "create_stmt": {
                 "type": "CreateStmt",
                 "id": 138,
                 "options": {
@@ -1264,728 +1264,728 @@
                   "json_name": "Constraint"
                 }
               },
-              "createTableSpaceStmt": {
+              "create_table_space_stmt": {
                 "type": "CreateTableSpaceStmt",
                 "id": 140,
                 "options": {
                   "json_name": "CreateTableSpaceStmt"
                 }
               },
-              "dropTableSpaceStmt": {
+              "drop_table_space_stmt": {
                 "type": "DropTableSpaceStmt",
                 "id": 141,
                 "options": {
                   "json_name": "DropTableSpaceStmt"
                 }
               },
-              "alterTableSpaceOptionsStmt": {
+              "alter_table_space_options_stmt": {
                 "type": "AlterTableSpaceOptionsStmt",
                 "id": 142,
                 "options": {
                   "json_name": "AlterTableSpaceOptionsStmt"
                 }
               },
-              "alterTableMoveAllStmt": {
+              "alter_table_move_all_stmt": {
                 "type": "AlterTableMoveAllStmt",
                 "id": 143,
                 "options": {
                   "json_name": "AlterTableMoveAllStmt"
                 }
               },
-              "createExtensionStmt": {
+              "create_extension_stmt": {
                 "type": "CreateExtensionStmt",
                 "id": 144,
                 "options": {
                   "json_name": "CreateExtensionStmt"
                 }
               },
-              "alterExtensionStmt": {
+              "alter_extension_stmt": {
                 "type": "AlterExtensionStmt",
                 "id": 145,
                 "options": {
                   "json_name": "AlterExtensionStmt"
                 }
               },
-              "alterExtensionContentsStmt": {
+              "alter_extension_contents_stmt": {
                 "type": "AlterExtensionContentsStmt",
                 "id": 146,
                 "options": {
                   "json_name": "AlterExtensionContentsStmt"
                 }
               },
-              "createFdwStmt": {
+              "create_fdw_stmt": {
                 "type": "CreateFdwStmt",
                 "id": 147,
                 "options": {
                   "json_name": "CreateFdwStmt"
                 }
               },
-              "alterFdwStmt": {
+              "alter_fdw_stmt": {
                 "type": "AlterFdwStmt",
                 "id": 148,
                 "options": {
                   "json_name": "AlterFdwStmt"
                 }
               },
-              "createForeignServerStmt": {
+              "create_foreign_server_stmt": {
                 "type": "CreateForeignServerStmt",
                 "id": 149,
                 "options": {
                   "json_name": "CreateForeignServerStmt"
                 }
               },
-              "alterForeignServerStmt": {
+              "alter_foreign_server_stmt": {
                 "type": "AlterForeignServerStmt",
                 "id": 150,
                 "options": {
                   "json_name": "AlterForeignServerStmt"
                 }
               },
-              "createForeignTableStmt": {
+              "create_foreign_table_stmt": {
                 "type": "CreateForeignTableStmt",
                 "id": 151,
                 "options": {
                   "json_name": "CreateForeignTableStmt"
                 }
               },
-              "createUserMappingStmt": {
+              "create_user_mapping_stmt": {
                 "type": "CreateUserMappingStmt",
                 "id": 152,
                 "options": {
                   "json_name": "CreateUserMappingStmt"
                 }
               },
-              "alterUserMappingStmt": {
+              "alter_user_mapping_stmt": {
                 "type": "AlterUserMappingStmt",
                 "id": 153,
                 "options": {
                   "json_name": "AlterUserMappingStmt"
                 }
               },
-              "dropUserMappingStmt": {
+              "drop_user_mapping_stmt": {
                 "type": "DropUserMappingStmt",
                 "id": 154,
                 "options": {
                   "json_name": "DropUserMappingStmt"
                 }
               },
-              "importForeignSchemaStmt": {
+              "import_foreign_schema_stmt": {
                 "type": "ImportForeignSchemaStmt",
                 "id": 155,
                 "options": {
                   "json_name": "ImportForeignSchemaStmt"
                 }
               },
-              "createPolicyStmt": {
+              "create_policy_stmt": {
                 "type": "CreatePolicyStmt",
                 "id": 156,
                 "options": {
                   "json_name": "CreatePolicyStmt"
                 }
               },
-              "alterPolicyStmt": {
+              "alter_policy_stmt": {
                 "type": "AlterPolicyStmt",
                 "id": 157,
                 "options": {
                   "json_name": "AlterPolicyStmt"
                 }
               },
-              "createAmStmt": {
+              "create_am_stmt": {
                 "type": "CreateAmStmt",
                 "id": 158,
                 "options": {
                   "json_name": "CreateAmStmt"
                 }
               },
-              "createTrigStmt": {
+              "create_trig_stmt": {
                 "type": "CreateTrigStmt",
                 "id": 159,
                 "options": {
                   "json_name": "CreateTrigStmt"
                 }
               },
-              "createEventTrigStmt": {
+              "create_event_trig_stmt": {
                 "type": "CreateEventTrigStmt",
                 "id": 160,
                 "options": {
                   "json_name": "CreateEventTrigStmt"
                 }
               },
-              "alterEventTrigStmt": {
+              "alter_event_trig_stmt": {
                 "type": "AlterEventTrigStmt",
                 "id": 161,
                 "options": {
                   "json_name": "AlterEventTrigStmt"
                 }
               },
-              "createPlangStmt": {
+              "create_plang_stmt": {
                 "type": "CreatePLangStmt",
                 "id": 162,
                 "options": {
                   "json_name": "CreatePLangStmt"
                 }
               },
-              "createRoleStmt": {
+              "create_role_stmt": {
                 "type": "CreateRoleStmt",
                 "id": 163,
                 "options": {
                   "json_name": "CreateRoleStmt"
                 }
               },
-              "alterRoleStmt": {
+              "alter_role_stmt": {
                 "type": "AlterRoleStmt",
                 "id": 164,
                 "options": {
                   "json_name": "AlterRoleStmt"
                 }
               },
-              "alterRoleSetStmt": {
+              "alter_role_set_stmt": {
                 "type": "AlterRoleSetStmt",
                 "id": 165,
                 "options": {
                   "json_name": "AlterRoleSetStmt"
                 }
               },
-              "dropRoleStmt": {
+              "drop_role_stmt": {
                 "type": "DropRoleStmt",
                 "id": 166,
                 "options": {
                   "json_name": "DropRoleStmt"
                 }
               },
-              "createSeqStmt": {
+              "create_seq_stmt": {
                 "type": "CreateSeqStmt",
                 "id": 167,
                 "options": {
                   "json_name": "CreateSeqStmt"
                 }
               },
-              "alterSeqStmt": {
+              "alter_seq_stmt": {
                 "type": "AlterSeqStmt",
                 "id": 168,
                 "options": {
                   "json_name": "AlterSeqStmt"
                 }
               },
-              "defineStmt": {
+              "define_stmt": {
                 "type": "DefineStmt",
                 "id": 169,
                 "options": {
                   "json_name": "DefineStmt"
                 }
               },
-              "createDomainStmt": {
+              "create_domain_stmt": {
                 "type": "CreateDomainStmt",
                 "id": 170,
                 "options": {
                   "json_name": "CreateDomainStmt"
                 }
               },
-              "createOpClassStmt": {
+              "create_op_class_stmt": {
                 "type": "CreateOpClassStmt",
                 "id": 171,
                 "options": {
                   "json_name": "CreateOpClassStmt"
                 }
               },
-              "createOpClassItem": {
+              "create_op_class_item": {
                 "type": "CreateOpClassItem",
                 "id": 172,
                 "options": {
                   "json_name": "CreateOpClassItem"
                 }
               },
-              "createOpFamilyStmt": {
+              "create_op_family_stmt": {
                 "type": "CreateOpFamilyStmt",
                 "id": 173,
                 "options": {
                   "json_name": "CreateOpFamilyStmt"
                 }
               },
-              "alterOpFamilyStmt": {
+              "alter_op_family_stmt": {
                 "type": "AlterOpFamilyStmt",
                 "id": 174,
                 "options": {
                   "json_name": "AlterOpFamilyStmt"
                 }
               },
-              "dropStmt": {
+              "drop_stmt": {
                 "type": "DropStmt",
                 "id": 175,
                 "options": {
                   "json_name": "DropStmt"
                 }
               },
-              "truncateStmt": {
+              "truncate_stmt": {
                 "type": "TruncateStmt",
                 "id": 176,
                 "options": {
                   "json_name": "TruncateStmt"
                 }
               },
-              "commentStmt": {
+              "comment_stmt": {
                 "type": "CommentStmt",
                 "id": 177,
                 "options": {
                   "json_name": "CommentStmt"
                 }
               },
-              "secLabelStmt": {
+              "sec_label_stmt": {
                 "type": "SecLabelStmt",
                 "id": 178,
                 "options": {
                   "json_name": "SecLabelStmt"
                 }
               },
-              "declareCursorStmt": {
+              "declare_cursor_stmt": {
                 "type": "DeclareCursorStmt",
                 "id": 179,
                 "options": {
                   "json_name": "DeclareCursorStmt"
                 }
               },
-              "closePortalStmt": {
+              "close_portal_stmt": {
                 "type": "ClosePortalStmt",
                 "id": 180,
                 "options": {
                   "json_name": "ClosePortalStmt"
                 }
               },
-              "fetchStmt": {
+              "fetch_stmt": {
                 "type": "FetchStmt",
                 "id": 181,
                 "options": {
                   "json_name": "FetchStmt"
                 }
               },
-              "indexStmt": {
+              "index_stmt": {
                 "type": "IndexStmt",
                 "id": 182,
                 "options": {
                   "json_name": "IndexStmt"
                 }
               },
-              "createStatsStmt": {
+              "create_stats_stmt": {
                 "type": "CreateStatsStmt",
                 "id": 183,
                 "options": {
                   "json_name": "CreateStatsStmt"
                 }
               },
-              "statsElem": {
+              "stats_elem": {
                 "type": "StatsElem",
                 "id": 184,
                 "options": {
                   "json_name": "StatsElem"
                 }
               },
-              "alterStatsStmt": {
+              "alter_stats_stmt": {
                 "type": "AlterStatsStmt",
                 "id": 185,
                 "options": {
                   "json_name": "AlterStatsStmt"
                 }
               },
-              "createFunctionStmt": {
+              "create_function_stmt": {
                 "type": "CreateFunctionStmt",
                 "id": 186,
                 "options": {
                   "json_name": "CreateFunctionStmt"
                 }
               },
-              "functionParameter": {
+              "function_parameter": {
                 "type": "FunctionParameter",
                 "id": 187,
                 "options": {
                   "json_name": "FunctionParameter"
                 }
               },
-              "alterFunctionStmt": {
+              "alter_function_stmt": {
                 "type": "AlterFunctionStmt",
                 "id": 188,
                 "options": {
                   "json_name": "AlterFunctionStmt"
                 }
               },
-              "doStmt": {
+              "do_stmt": {
                 "type": "DoStmt",
                 "id": 189,
                 "options": {
                   "json_name": "DoStmt"
                 }
               },
-              "inlineCodeBlock": {
+              "inline_code_block": {
                 "type": "InlineCodeBlock",
                 "id": 190,
                 "options": {
                   "json_name": "InlineCodeBlock"
                 }
               },
-              "callStmt": {
+              "call_stmt": {
                 "type": "CallStmt",
                 "id": 191,
                 "options": {
                   "json_name": "CallStmt"
                 }
               },
-              "callContext": {
+              "call_context": {
                 "type": "CallContext",
                 "id": 192,
                 "options": {
                   "json_name": "CallContext"
                 }
               },
-              "renameStmt": {
+              "rename_stmt": {
                 "type": "RenameStmt",
                 "id": 193,
                 "options": {
                   "json_name": "RenameStmt"
                 }
               },
-              "alterObjectDependsStmt": {
+              "alter_object_depends_stmt": {
                 "type": "AlterObjectDependsStmt",
                 "id": 194,
                 "options": {
                   "json_name": "AlterObjectDependsStmt"
                 }
               },
-              "alterObjectSchemaStmt": {
+              "alter_object_schema_stmt": {
                 "type": "AlterObjectSchemaStmt",
                 "id": 195,
                 "options": {
                   "json_name": "AlterObjectSchemaStmt"
                 }
               },
-              "alterOwnerStmt": {
+              "alter_owner_stmt": {
                 "type": "AlterOwnerStmt",
                 "id": 196,
                 "options": {
                   "json_name": "AlterOwnerStmt"
                 }
               },
-              "alterOperatorStmt": {
+              "alter_operator_stmt": {
                 "type": "AlterOperatorStmt",
                 "id": 197,
                 "options": {
                   "json_name": "AlterOperatorStmt"
                 }
               },
-              "alterTypeStmt": {
+              "alter_type_stmt": {
                 "type": "AlterTypeStmt",
                 "id": 198,
                 "options": {
                   "json_name": "AlterTypeStmt"
                 }
               },
-              "ruleStmt": {
+              "rule_stmt": {
                 "type": "RuleStmt",
                 "id": 199,
                 "options": {
                   "json_name": "RuleStmt"
                 }
               },
-              "notifyStmt": {
+              "notify_stmt": {
                 "type": "NotifyStmt",
                 "id": 200,
                 "options": {
                   "json_name": "NotifyStmt"
                 }
               },
-              "listenStmt": {
+              "listen_stmt": {
                 "type": "ListenStmt",
                 "id": 201,
                 "options": {
                   "json_name": "ListenStmt"
                 }
               },
-              "unlistenStmt": {
+              "unlisten_stmt": {
                 "type": "UnlistenStmt",
                 "id": 202,
                 "options": {
                   "json_name": "UnlistenStmt"
                 }
               },
-              "transactionStmt": {
+              "transaction_stmt": {
                 "type": "TransactionStmt",
                 "id": 203,
                 "options": {
                   "json_name": "TransactionStmt"
                 }
               },
-              "compositeTypeStmt": {
+              "composite_type_stmt": {
                 "type": "CompositeTypeStmt",
                 "id": 204,
                 "options": {
                   "json_name": "CompositeTypeStmt"
                 }
               },
-              "createEnumStmt": {
+              "create_enum_stmt": {
                 "type": "CreateEnumStmt",
                 "id": 205,
                 "options": {
                   "json_name": "CreateEnumStmt"
                 }
               },
-              "createRangeStmt": {
+              "create_range_stmt": {
                 "type": "CreateRangeStmt",
                 "id": 206,
                 "options": {
                   "json_name": "CreateRangeStmt"
                 }
               },
-              "alterEnumStmt": {
+              "alter_enum_stmt": {
                 "type": "AlterEnumStmt",
                 "id": 207,
                 "options": {
                   "json_name": "AlterEnumStmt"
                 }
               },
-              "viewStmt": {
+              "view_stmt": {
                 "type": "ViewStmt",
                 "id": 208,
                 "options": {
                   "json_name": "ViewStmt"
                 }
               },
-              "loadStmt": {
+              "load_stmt": {
                 "type": "LoadStmt",
                 "id": 209,
                 "options": {
                   "json_name": "LoadStmt"
                 }
               },
-              "createdbStmt": {
+              "createdb_stmt": {
                 "type": "CreatedbStmt",
                 "id": 210,
                 "options": {
                   "json_name": "CreatedbStmt"
                 }
               },
-              "alterDatabaseStmt": {
+              "alter_database_stmt": {
                 "type": "AlterDatabaseStmt",
                 "id": 211,
                 "options": {
                   "json_name": "AlterDatabaseStmt"
                 }
               },
-              "alterDatabaseRefreshCollStmt": {
+              "alter_database_refresh_coll_stmt": {
                 "type": "AlterDatabaseRefreshCollStmt",
                 "id": 212,
                 "options": {
                   "json_name": "AlterDatabaseRefreshCollStmt"
                 }
               },
-              "alterDatabaseSetStmt": {
+              "alter_database_set_stmt": {
                 "type": "AlterDatabaseSetStmt",
                 "id": 213,
                 "options": {
                   "json_name": "AlterDatabaseSetStmt"
                 }
               },
-              "dropdbStmt": {
+              "dropdb_stmt": {
                 "type": "DropdbStmt",
                 "id": 214,
                 "options": {
                   "json_name": "DropdbStmt"
                 }
               },
-              "alterSystemStmt": {
+              "alter_system_stmt": {
                 "type": "AlterSystemStmt",
                 "id": 215,
                 "options": {
                   "json_name": "AlterSystemStmt"
                 }
               },
-              "clusterStmt": {
+              "cluster_stmt": {
                 "type": "ClusterStmt",
                 "id": 216,
                 "options": {
                   "json_name": "ClusterStmt"
                 }
               },
-              "vacuumStmt": {
+              "vacuum_stmt": {
                 "type": "VacuumStmt",
                 "id": 217,
                 "options": {
                   "json_name": "VacuumStmt"
                 }
               },
-              "vacuumRelation": {
+              "vacuum_relation": {
                 "type": "VacuumRelation",
                 "id": 218,
                 "options": {
                   "json_name": "VacuumRelation"
                 }
               },
-              "explainStmt": {
+              "explain_stmt": {
                 "type": "ExplainStmt",
                 "id": 219,
                 "options": {
                   "json_name": "ExplainStmt"
                 }
               },
-              "createTableAsStmt": {
+              "create_table_as_stmt": {
                 "type": "CreateTableAsStmt",
                 "id": 220,
                 "options": {
                   "json_name": "CreateTableAsStmt"
                 }
               },
-              "refreshMatViewStmt": {
+              "refresh_mat_view_stmt": {
                 "type": "RefreshMatViewStmt",
                 "id": 221,
                 "options": {
                   "json_name": "RefreshMatViewStmt"
                 }
               },
-              "checkPointStmt": {
+              "check_point_stmt": {
                 "type": "CheckPointStmt",
                 "id": 222,
                 "options": {
                   "json_name": "CheckPointStmt"
                 }
               },
-              "discardStmt": {
+              "discard_stmt": {
                 "type": "DiscardStmt",
                 "id": 223,
                 "options": {
                   "json_name": "DiscardStmt"
                 }
               },
-              "lockStmt": {
+              "lock_stmt": {
                 "type": "LockStmt",
                 "id": 224,
                 "options": {
                   "json_name": "LockStmt"
                 }
               },
-              "constraintsSetStmt": {
+              "constraints_set_stmt": {
                 "type": "ConstraintsSetStmt",
                 "id": 225,
                 "options": {
                   "json_name": "ConstraintsSetStmt"
                 }
               },
-              "reindexStmt": {
+              "reindex_stmt": {
                 "type": "ReindexStmt",
                 "id": 226,
                 "options": {
                   "json_name": "ReindexStmt"
                 }
               },
-              "createConversionStmt": {
+              "create_conversion_stmt": {
                 "type": "CreateConversionStmt",
                 "id": 227,
                 "options": {
                   "json_name": "CreateConversionStmt"
                 }
               },
-              "createCastStmt": {
+              "create_cast_stmt": {
                 "type": "CreateCastStmt",
                 "id": 228,
                 "options": {
                   "json_name": "CreateCastStmt"
                 }
               },
-              "createTransformStmt": {
+              "create_transform_stmt": {
                 "type": "CreateTransformStmt",
                 "id": 229,
                 "options": {
                   "json_name": "CreateTransformStmt"
                 }
               },
-              "prepareStmt": {
+              "prepare_stmt": {
                 "type": "PrepareStmt",
                 "id": 230,
                 "options": {
                   "json_name": "PrepareStmt"
                 }
               },
-              "executeStmt": {
+              "execute_stmt": {
                 "type": "ExecuteStmt",
                 "id": 231,
                 "options": {
                   "json_name": "ExecuteStmt"
                 }
               },
-              "deallocateStmt": {
+              "deallocate_stmt": {
                 "type": "DeallocateStmt",
                 "id": 232,
                 "options": {
                   "json_name": "DeallocateStmt"
                 }
               },
-              "dropOwnedStmt": {
+              "drop_owned_stmt": {
                 "type": "DropOwnedStmt",
                 "id": 233,
                 "options": {
                   "json_name": "DropOwnedStmt"
                 }
               },
-              "reassignOwnedStmt": {
+              "reassign_owned_stmt": {
                 "type": "ReassignOwnedStmt",
                 "id": 234,
                 "options": {
                   "json_name": "ReassignOwnedStmt"
                 }
               },
-              "alterTsdictionaryStmt": {
+              "alter_tsdictionary_stmt": {
                 "type": "AlterTSDictionaryStmt",
                 "id": 235,
                 "options": {
                   "json_name": "AlterTSDictionaryStmt"
                 }
               },
-              "alterTsconfigurationStmt": {
+              "alter_tsconfiguration_stmt": {
                 "type": "AlterTSConfigurationStmt",
                 "id": 236,
                 "options": {
                   "json_name": "AlterTSConfigurationStmt"
                 }
               },
-              "publicationTable": {
+              "publication_table": {
                 "type": "PublicationTable",
                 "id": 237,
                 "options": {
                   "json_name": "PublicationTable"
                 }
               },
-              "publicationObjSpec": {
+              "publication_obj_spec": {
                 "type": "PublicationObjSpec",
                 "id": 238,
                 "options": {
                   "json_name": "PublicationObjSpec"
                 }
               },
-              "createPublicationStmt": {
+              "create_publication_stmt": {
                 "type": "CreatePublicationStmt",
                 "id": 239,
                 "options": {
                   "json_name": "CreatePublicationStmt"
                 }
               },
-              "alterPublicationStmt": {
+              "alter_publication_stmt": {
                 "type": "AlterPublicationStmt",
                 "id": 240,
                 "options": {
                   "json_name": "AlterPublicationStmt"
                 }
               },
-              "createSubscriptionStmt": {
+              "create_subscription_stmt": {
                 "type": "CreateSubscriptionStmt",
                 "id": 241,
                 "options": {
                   "json_name": "CreateSubscriptionStmt"
                 }
               },
-              "alterSubscriptionStmt": {
+              "alter_subscription_stmt": {
                 "type": "AlterSubscriptionStmt",
                 "id": 242,
                 "options": {
                   "json_name": "AlterSubscriptionStmt"
                 }
               },
-              "dropSubscriptionStmt": {
+              "drop_subscription_stmt": {
                 "type": "DropSubscriptionStmt",
                 "id": 243,
                 "options": {
@@ -2020,7 +2020,7 @@
                   "json_name": "String"
                 }
               },
-              "bitString": {
+              "bit_string": {
                 "type": "BitString",
                 "id": 248,
                 "options": {
@@ -2034,21 +2034,21 @@
                   "json_name": "List"
                 }
               },
-              "intList": {
+              "int_list": {
                 "type": "IntList",
                 "id": 250,
                 "options": {
                   "json_name": "IntList"
                 }
               },
-              "oidList": {
+              "oid_list": {
                 "type": "OidList",
                 "id": 251,
                 "options": {
                   "json_name": "OidList"
                 }
               },
-              "aConst": {
+              "a_const": {
                 "type": "A_Const",
                 "id": 252,
                 "options": {
@@ -2241,7 +2241,7 @@
           },
           "TableFunc": {
             "fields": {
-              "nsUris": {
+              "ns_uris": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 1,
@@ -2249,7 +2249,7 @@
                   "json_name": "ns_uris"
                 }
               },
-              "nsNames": {
+              "ns_names": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 2,
@@ -2352,7 +2352,7 @@
                   "json_name": "rel"
                 }
               },
-              "colNames": {
+              "col_names": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 2,
@@ -2360,7 +2360,7 @@
                   "json_name": "colNames"
                 }
               },
-              "accessMethod": {
+              "access_method": {
                 "type": "string",
                 "id": 3,
                 "options": {
@@ -2375,28 +2375,28 @@
                   "json_name": "options"
                 }
               },
-              "onCommit": {
+              "on_commit": {
                 "type": "OnCommitAction",
                 "id": 5,
                 "options": {
                   "json_name": "onCommit"
                 }
               },
-              "tableSpaceName": {
+              "table_space_name": {
                 "type": "string",
                 "id": 6,
                 "options": {
                   "json_name": "tableSpaceName"
                 }
               },
-              "viewQuery": {
+              "view_query": {
                 "type": "Node",
                 "id": 7,
                 "options": {
                   "json_name": "viewQuery"
                 }
               },
-              "skipData": {
+              "skip_data": {
                 "type": "bool",
                 "id": 8,
                 "options": {
@@ -3180,7 +3180,7 @@
                   "json_name": "opno"
                 }
               },
-              "useOr": {
+              "use_or": {
                 "type": "bool",
                 "id": 3,
                 "options": {
@@ -3253,14 +3253,14 @@
                   "json_name": "xpr"
                 }
               },
-              "subLinkType": {
+              "sub_link_type": {
                 "type": "SubLinkType",
                 "id": 2,
                 "options": {
                   "json_name": "subLinkType"
                 }
               },
-              "subLinkId": {
+              "sub_link_id": {
                 "type": "int32",
                 "id": 3,
                 "options": {
@@ -3274,7 +3274,7 @@
                   "json_name": "testexpr"
                 }
               },
-              "operName": {
+              "oper_name": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 5,
@@ -3307,7 +3307,7 @@
                   "json_name": "xpr"
                 }
               },
-              "subLinkType": {
+              "sub_link_type": {
                 "type": "SubLinkType",
                 "id": 2,
                 "options": {
@@ -3321,7 +3321,7 @@
                   "json_name": "testexpr"
                 }
               },
-              "paramIds": {
+              "param_ids": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 4,
@@ -3329,63 +3329,63 @@
                   "json_name": "paramIds"
                 }
               },
-              "planId": {
+              "plan_id": {
                 "type": "int32",
                 "id": 5,
                 "options": {
                   "json_name": "plan_id"
                 }
               },
-              "planName": {
+              "plan_name": {
                 "type": "string",
                 "id": 6,
                 "options": {
                   "json_name": "plan_name"
                 }
               },
-              "firstColType": {
+              "first_col_type": {
                 "type": "uint32",
                 "id": 7,
                 "options": {
                   "json_name": "firstColType"
                 }
               },
-              "firstColTypmod": {
+              "first_col_typmod": {
                 "type": "int32",
                 "id": 8,
                 "options": {
                   "json_name": "firstColTypmod"
                 }
               },
-              "firstColCollation": {
+              "first_col_collation": {
                 "type": "uint32",
                 "id": 9,
                 "options": {
                   "json_name": "firstColCollation"
                 }
               },
-              "useHashTable": {
+              "use_hash_table": {
                 "type": "bool",
                 "id": 10,
                 "options": {
                   "json_name": "useHashTable"
                 }
               },
-              "unknownEqFalse": {
+              "unknown_eq_false": {
                 "type": "bool",
                 "id": 11,
                 "options": {
                   "json_name": "unknownEqFalse"
                 }
               },
-              "parallelSafe": {
+              "parallel_safe": {
                 "type": "bool",
                 "id": 12,
                 "options": {
                   "json_name": "parallel_safe"
                 }
               },
-              "setParam": {
+              "set_param": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 13,
@@ -3393,7 +3393,7 @@
                   "json_name": "setParam"
                 }
               },
-              "parParam": {
+              "par_param": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 14,
@@ -3409,14 +3409,14 @@
                   "json_name": "args"
                 }
               },
-              "startupCost": {
+              "startup_cost": {
                 "type": "double",
                 "id": 16,
                 "options": {
                   "json_name": "startup_cost"
                 }
               },
-              "perCallCost": {
+              "per_call_cost": {
                 "type": "double",
                 "id": 17,
                 "options": {
@@ -3745,7 +3745,7 @@
                   "json_name": "arg"
                 }
               },
-              "collOid": {
+              "coll_oid": {
                 "type": "uint32",
                 "id": 3,
                 "options": {
@@ -3856,14 +3856,14 @@
                   "json_name": "xpr"
                 }
               },
-              "typeId": {
+              "type_id": {
                 "type": "uint32",
                 "id": 2,
                 "options": {
                   "json_name": "typeId"
                 }
               },
-              "typeMod": {
+              "type_mod": {
                 "type": "int32",
                 "id": 3,
                 "options": {
@@ -3888,21 +3888,21 @@
                   "json_name": "xpr"
                 }
               },
-              "arrayTypeid": {
+              "array_typeid": {
                 "type": "uint32",
                 "id": 2,
                 "options": {
                   "json_name": "array_typeid"
                 }
               },
-              "arrayCollid": {
+              "array_collid": {
                 "type": "uint32",
                 "id": 3,
                 "options": {
                   "json_name": "array_collid"
                 }
               },
-              "elementTypeid": {
+              "element_typeid": {
                 "type": "uint32",
                 "id": 4,
                 "options": {
@@ -3950,14 +3950,14 @@
                   "json_name": "args"
                 }
               },
-              "rowTypeid": {
+              "row_typeid": {
                 "type": "uint32",
                 "id": 3,
                 "options": {
                   "json_name": "row_typeid"
                 }
               },
-              "rowFormat": {
+              "row_format": {
                 "type": "CoercionForm",
                 "id": 4,
                 "options": {
@@ -4195,7 +4195,7 @@
                   "json_name": "name"
                 }
               },
-              "namedArgs": {
+              "named_args": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 4,
@@ -4203,7 +4203,7 @@
                   "json_name": "named_args"
                 }
               },
-              "argNames": {
+              "arg_names": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 5,
@@ -4258,7 +4258,7 @@
           },
           "JsonFormat": {
             "fields": {
-              "formatType": {
+              "format_type": {
                 "type": "JsonFormatType",
                 "id": 1,
                 "options": {
@@ -4308,14 +4308,14 @@
           },
           "JsonValueExpr": {
             "fields": {
-              "rawExpr": {
+              "raw_expr": {
                 "type": "Node",
                 "id": 1,
                 "options": {
                   "json_name": "raw_expr"
                 }
               },
-              "formattedExpr": {
+              "formatted_expr": {
                 "type": "Node",
                 "id": 2,
                 "options": {
@@ -4376,7 +4376,7 @@
                   "json_name": "returning"
                 }
               },
-              "absentOnNull": {
+              "absent_on_null": {
                 "type": "bool",
                 "id": 7,
                 "options": {
@@ -4415,14 +4415,14 @@
                   "json_name": "format"
                 }
               },
-              "itemType": {
+              "item_type": {
                 "type": "JsonValueType",
                 "id": 3,
                 "options": {
                   "json_name": "item_type"
                 }
               },
-              "uniqueKeys": {
+              "unique_keys": {
                 "type": "bool",
                 "id": 4,
                 "options": {
@@ -4571,14 +4571,14 @@
                   "json_name": "xpr"
                 }
               },
-              "typeId": {
+              "type_id": {
                 "type": "uint32",
                 "id": 2,
                 "options": {
                   "json_name": "typeId"
                 }
               },
-              "typeMod": {
+              "type_mod": {
                 "type": "int32",
                 "id": 3,
                 "options": {
@@ -4610,14 +4610,14 @@
                   "json_name": "xpr"
                 }
               },
-              "typeId": {
+              "type_id": {
                 "type": "uint32",
                 "id": 2,
                 "options": {
                   "json_name": "typeId"
                 }
               },
-              "typeMod": {
+              "type_mod": {
                 "type": "int32",
                 "id": 3,
                 "options": {
@@ -4656,14 +4656,14 @@
                   "json_name": "cvarno"
                 }
               },
-              "cursorName": {
+              "cursor_name": {
                 "type": "string",
                 "id": 3,
                 "options": {
                   "json_name": "cursor_name"
                 }
               },
-              "cursorParam": {
+              "cursor_param": {
                 "type": "int32",
                 "id": 4,
                 "options": {
@@ -4688,7 +4688,7 @@
                   "json_name": "seqid"
                 }
               },
-              "typeId": {
+              "type_id": {
                 "type": "uint32",
                 "id": 3,
                 "options": {
@@ -4809,7 +4809,7 @@
                   "json_name": "jointype"
                 }
               },
-              "isNatural": {
+              "is_natural": {
                 "type": "bool",
                 "id": 2,
                 "options": {
@@ -4830,7 +4830,7 @@
                   "json_name": "rarg"
                 }
               },
-              "usingClause": {
+              "using_clause": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 5,
@@ -4838,7 +4838,7 @@
                   "json_name": "usingClause"
                 }
               },
-              "joinUsingAlias": {
+              "join_using_alias": {
                 "type": "Alias",
                 "id": 6,
                 "options": {
@@ -4896,7 +4896,7 @@
                   "json_name": "action"
                 }
               },
-              "arbiterElems": {
+              "arbiter_elems": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 2,
@@ -4904,7 +4904,7 @@
                   "json_name": "arbiterElems"
                 }
               },
-              "arbiterWhere": {
+              "arbiter_where": {
                 "type": "Node",
                 "id": 3,
                 "options": {
@@ -4918,7 +4918,7 @@
                   "json_name": "constraint"
                 }
               },
-              "onConflictSet": {
+              "on_conflict_set": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 5,
@@ -4926,21 +4926,21 @@
                   "json_name": "onConflictSet"
                 }
               },
-              "onConflictWhere": {
+              "on_conflict_where": {
                 "type": "Node",
                 "id": 6,
                 "options": {
                   "json_name": "onConflictWhere"
                 }
               },
-              "exclRelIndex": {
+              "excl_rel_index": {
                 "type": "int32",
                 "id": 7,
                 "options": {
                   "json_name": "exclRelIndex"
                 }
               },
-              "exclRelTlist": {
+              "excl_rel_tlist": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 8,
@@ -4952,112 +4952,112 @@
           },
           "Query": {
             "fields": {
-              "commandType": {
+              "command_type": {
                 "type": "CmdType",
                 "id": 1,
                 "options": {
                   "json_name": "commandType"
                 }
               },
-              "querySource": {
+              "query_source": {
                 "type": "QuerySource",
                 "id": 2,
                 "options": {
                   "json_name": "querySource"
                 }
               },
-              "canSetTag": {
+              "can_set_tag": {
                 "type": "bool",
                 "id": 3,
                 "options": {
                   "json_name": "canSetTag"
                 }
               },
-              "utilityStmt": {
+              "utility_stmt": {
                 "type": "Node",
                 "id": 4,
                 "options": {
                   "json_name": "utilityStmt"
                 }
               },
-              "resultRelation": {
+              "result_relation": {
                 "type": "int32",
                 "id": 5,
                 "options": {
                   "json_name": "resultRelation"
                 }
               },
-              "hasAggs": {
+              "has_aggs": {
                 "type": "bool",
                 "id": 6,
                 "options": {
                   "json_name": "hasAggs"
                 }
               },
-              "hasWindowFuncs": {
+              "has_window_funcs": {
                 "type": "bool",
                 "id": 7,
                 "options": {
                   "json_name": "hasWindowFuncs"
                 }
               },
-              "hasTargetSrfs": {
+              "has_target_srfs": {
                 "type": "bool",
                 "id": 8,
                 "options": {
                   "json_name": "hasTargetSRFs"
                 }
               },
-              "hasSubLinks": {
+              "has_sub_links": {
                 "type": "bool",
                 "id": 9,
                 "options": {
                   "json_name": "hasSubLinks"
                 }
               },
-              "hasDistinctOn": {
+              "has_distinct_on": {
                 "type": "bool",
                 "id": 10,
                 "options": {
                   "json_name": "hasDistinctOn"
                 }
               },
-              "hasRecursive": {
+              "has_recursive": {
                 "type": "bool",
                 "id": 11,
                 "options": {
                   "json_name": "hasRecursive"
                 }
               },
-              "hasModifyingCte": {
+              "has_modifying_cte": {
                 "type": "bool",
                 "id": 12,
                 "options": {
                   "json_name": "hasModifyingCTE"
                 }
               },
-              "hasForUpdate": {
+              "has_for_update": {
                 "type": "bool",
                 "id": 13,
                 "options": {
                   "json_name": "hasForUpdate"
                 }
               },
-              "hasRowSecurity": {
+              "has_row_security": {
                 "type": "bool",
                 "id": 14,
                 "options": {
                   "json_name": "hasRowSecurity"
                 }
               },
-              "isReturn": {
+              "is_return": {
                 "type": "bool",
                 "id": 15,
                 "options": {
                   "json_name": "isReturn"
                 }
               },
-              "cteList": {
+              "cte_list": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 16,
@@ -5088,7 +5088,7 @@
                   "json_name": "jointree"
                 }
               },
-              "mergeActionList": {
+              "merge_action_list": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 20,
@@ -5096,14 +5096,14 @@
                   "json_name": "mergeActionList"
                 }
               },
-              "mergeUseOuterJoin": {
+              "merge_use_outer_join": {
                 "type": "bool",
                 "id": 21,
                 "options": {
                   "json_name": "mergeUseOuterJoin"
                 }
               },
-              "targetList": {
+              "target_list": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 22,
@@ -5118,14 +5118,14 @@
                   "json_name": "override"
                 }
               },
-              "onConflict": {
+              "on_conflict": {
                 "type": "OnConflictExpr",
                 "id": 24,
                 "options": {
                   "json_name": "onConflict"
                 }
               },
-              "returningList": {
+              "returning_list": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 25,
@@ -5133,7 +5133,7 @@
                   "json_name": "returningList"
                 }
               },
-              "groupClause": {
+              "group_clause": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 26,
@@ -5141,14 +5141,14 @@
                   "json_name": "groupClause"
                 }
               },
-              "groupDistinct": {
+              "group_distinct": {
                 "type": "bool",
                 "id": 27,
                 "options": {
                   "json_name": "groupDistinct"
                 }
               },
-              "groupingSets": {
+              "grouping_sets": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 28,
@@ -5156,14 +5156,14 @@
                   "json_name": "groupingSets"
                 }
               },
-              "havingQual": {
+              "having_qual": {
                 "type": "Node",
                 "id": 29,
                 "options": {
                   "json_name": "havingQual"
                 }
               },
-              "windowClause": {
+              "window_clause": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 30,
@@ -5171,7 +5171,7 @@
                   "json_name": "windowClause"
                 }
               },
-              "distinctClause": {
+              "distinct_clause": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 31,
@@ -5179,7 +5179,7 @@
                   "json_name": "distinctClause"
                 }
               },
-              "sortClause": {
+              "sort_clause": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 32,
@@ -5187,28 +5187,28 @@
                   "json_name": "sortClause"
                 }
               },
-              "limitOffset": {
+              "limit_offset": {
                 "type": "Node",
                 "id": 33,
                 "options": {
                   "json_name": "limitOffset"
                 }
               },
-              "limitCount": {
+              "limit_count": {
                 "type": "Node",
                 "id": 34,
                 "options": {
                   "json_name": "limitCount"
                 }
               },
-              "limitOption": {
+              "limit_option": {
                 "type": "LimitOption",
                 "id": 35,
                 "options": {
                   "json_name": "limitOption"
                 }
               },
-              "rowMarks": {
+              "row_marks": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 36,
@@ -5216,14 +5216,14 @@
                   "json_name": "rowMarks"
                 }
               },
-              "setOperations": {
+              "set_operations": {
                 "type": "Node",
                 "id": 37,
                 "options": {
                   "json_name": "setOperations"
                 }
               },
-              "constraintDeps": {
+              "constraint_deps": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 38,
@@ -5231,7 +5231,7 @@
                   "json_name": "constraintDeps"
                 }
               },
-              "withCheckOptions": {
+              "with_check_options": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 39,
@@ -5239,14 +5239,14 @@
                   "json_name": "withCheckOptions"
                 }
               },
-              "stmtLocation": {
+              "stmt_location": {
                 "type": "int32",
                 "id": 40,
                 "options": {
                   "json_name": "stmt_location"
                 }
               },
-              "stmtLen": {
+              "stmt_len": {
                 "type": "int32",
                 "id": 41,
                 "options": {
@@ -5265,7 +5265,7 @@
                   "json_name": "names"
                 }
               },
-              "typeOid": {
+              "type_oid": {
                 "type": "uint32",
                 "id": 2,
                 "options": {
@@ -5279,7 +5279,7 @@
                   "json_name": "setof"
                 }
               },
-              "pctType": {
+              "pct_type": {
                 "type": "bool",
                 "id": 4,
                 "options": {
@@ -5301,7 +5301,7 @@
                   "json_name": "typemod"
                 }
               },
-              "arrayBounds": {
+              "array_bounds": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 7,
@@ -5404,7 +5404,7 @@
                   "json_name": "arg"
                 }
               },
-              "typeName": {
+              "type_name": {
                 "type": "TypeName",
                 "id": 2,
                 "options": {
@@ -5489,7 +5489,7 @@
                   "json_name": "args"
                 }
               },
-              "aggOrder": {
+              "agg_order": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 3,
@@ -5497,7 +5497,7 @@
                   "json_name": "agg_order"
                 }
               },
-              "aggFilter": {
+              "agg_filter": {
                 "type": "Node",
                 "id": 4,
                 "options": {
@@ -5511,28 +5511,28 @@
                   "json_name": "over"
                 }
               },
-              "aggWithinGroup": {
+              "agg_within_group": {
                 "type": "bool",
                 "id": 6,
                 "options": {
                   "json_name": "agg_within_group"
                 }
               },
-              "aggStar": {
+              "agg_star": {
                 "type": "bool",
                 "id": 7,
                 "options": {
                   "json_name": "agg_star"
                 }
               },
-              "aggDistinct": {
+              "agg_distinct": {
                 "type": "bool",
                 "id": 8,
                 "options": {
                   "json_name": "agg_distinct"
                 }
               },
-              "funcVariadic": {
+              "func_variadic": {
                 "type": "bool",
                 "id": 9,
                 "options": {
@@ -5560,7 +5560,7 @@
           },
           "A_Indices": {
             "fields": {
-              "isSlice": {
+              "is_slice": {
                 "type": "bool",
                 "id": 1,
                 "options": {
@@ -5688,21 +5688,21 @@
                   "json_name": "node"
                 }
               },
-              "sortbyDir": {
+              "sortby_dir": {
                 "type": "SortByDir",
                 "id": 2,
                 "options": {
                   "json_name": "sortby_dir"
                 }
               },
-              "sortbyNulls": {
+              "sortby_nulls": {
                 "type": "SortByNulls",
                 "id": 3,
                 "options": {
                   "json_name": "sortby_nulls"
                 }
               },
-              "useOp": {
+              "use_op": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 4,
@@ -5735,7 +5735,7 @@
                   "json_name": "refname"
                 }
               },
-              "partitionClause": {
+              "partition_clause": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 3,
@@ -5743,7 +5743,7 @@
                   "json_name": "partitionClause"
                 }
               },
-              "orderClause": {
+              "order_clause": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 4,
@@ -5751,21 +5751,21 @@
                   "json_name": "orderClause"
                 }
               },
-              "frameOptions": {
+              "frame_options": {
                 "type": "int32",
                 "id": 5,
                 "options": {
                   "json_name": "frameOptions"
                 }
               },
-              "startOffset": {
+              "start_offset": {
                 "type": "Node",
                 "id": 6,
                 "options": {
                   "json_name": "startOffset"
                 }
               },
-              "endOffset": {
+              "end_offset": {
                 "type": "Node",
                 "id": 7,
                 "options": {
@@ -5822,7 +5822,7 @@
                   "json_name": "ordinality"
                 }
               },
-              "isRowsfrom": {
+              "is_rowsfrom": {
                 "type": "bool",
                 "id": 3,
                 "options": {
@@ -5918,21 +5918,21 @@
                   "json_name": "colname"
                 }
               },
-              "typeName": {
+              "type_name": {
                 "type": "TypeName",
                 "id": 2,
                 "options": {
                   "json_name": "typeName"
                 }
               },
-              "forOrdinality": {
+              "for_ordinality": {
                 "type": "bool",
                 "id": 3,
                 "options": {
                   "json_name": "for_ordinality"
                 }
               },
-              "isNotNull": {
+              "is_not_null": {
                 "type": "bool",
                 "id": 4,
                 "options": {
@@ -6012,7 +6012,7 @@
                   "json_name": "colname"
                 }
               },
-              "typeName": {
+              "type_name": {
                 "type": "TypeName",
                 "id": 2,
                 "options": {
@@ -6033,21 +6033,21 @@
                   "json_name": "inhcount"
                 }
               },
-              "isLocal": {
+              "is_local": {
                 "type": "bool",
                 "id": 5,
                 "options": {
                   "json_name": "is_local"
                 }
               },
-              "isNotNull": {
+              "is_not_null": {
                 "type": "bool",
                 "id": 6,
                 "options": {
                   "json_name": "is_not_null"
                 }
               },
-              "isFromType": {
+              "is_from_type": {
                 "type": "bool",
                 "id": 7,
                 "options": {
@@ -6061,21 +6061,21 @@
                   "json_name": "storage"
                 }
               },
-              "storageName": {
+              "storage_name": {
                 "type": "string",
                 "id": 9,
                 "options": {
                   "json_name": "storage_name"
                 }
               },
-              "rawDefault": {
+              "raw_default": {
                 "type": "Node",
                 "id": 10,
                 "options": {
                   "json_name": "raw_default"
                 }
               },
-              "cookedDefault": {
+              "cooked_default": {
                 "type": "Node",
                 "id": 11,
                 "options": {
@@ -6089,7 +6089,7 @@
                   "json_name": "identity"
                 }
               },
-              "identitySequence": {
+              "identity_sequence": {
                 "type": "RangeVar",
                 "id": 13,
                 "options": {
@@ -6103,14 +6103,14 @@
                   "json_name": "generated"
                 }
               },
-              "collClause": {
+              "coll_clause": {
                 "type": "CollateClause",
                 "id": 15,
                 "options": {
                   "json_name": "collClause"
                 }
               },
-              "collOid": {
+              "coll_oid": {
                 "type": "uint32",
                 "id": 16,
                 "options": {
@@ -6158,7 +6158,7 @@
                   "json_name": "options"
                 }
               },
-              "relationOid": {
+              "relation_oid": {
                 "type": "uint32",
                 "id": 3,
                 "options": {
@@ -6221,7 +6221,7 @@
                   "json_name": "ordering"
                 }
               },
-              "nullsOrdering": {
+              "nulls_ordering": {
                 "type": "SortByNulls",
                 "id": 8,
                 "options": {
@@ -6271,7 +6271,7 @@
           },
           "LockingClause": {
             "fields": {
-              "lockedRels": {
+              "locked_rels": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 1,
@@ -6286,7 +6286,7 @@
                   "json_name": "strength"
                 }
               },
-              "waitPolicy": {
+              "wait_policy": {
                 "type": "LockWaitPolicy",
                 "id": 3,
                 "options": {
@@ -6311,7 +6311,7 @@
                   "json_name": "expr"
                 }
               },
-              "typeName": {
+              "type_name": {
                 "type": "TypeName",
                 "id": 3,
                 "options": {
@@ -6384,7 +6384,7 @@
                   "json_name": "strategy"
                 }
               },
-              "partParams": {
+              "part_params": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 2,
@@ -6410,7 +6410,7 @@
                   "json_name": "strategy"
                 }
               },
-              "isDefault": {
+              "is_default": {
                 "type": "bool",
                 "id": 2,
                 "options": {
@@ -6565,7 +6565,7 @@
                   "json_name": "subquery"
                 }
               },
-              "securityBarrier": {
+              "security_barrier": {
                 "type": "bool",
                 "id": 8,
                 "options": {
@@ -6610,7 +6610,7 @@
                   "json_name": "joinrightcols"
                 }
               },
-              "joinUsingAlias": {
+              "join_using_alias": {
                 "type": "Alias",
                 "id": 14,
                 "options": {
@@ -6639,7 +6639,7 @@
                   "json_name": "tablefunc"
                 }
               },
-              "valuesLists": {
+              "values_lists": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 18,
@@ -6661,7 +6661,7 @@
                   "json_name": "ctelevelsup"
                 }
               },
-              "selfReference": {
+              "self_reference": {
                 "type": "bool",
                 "id": 21,
                 "options": {
@@ -6734,14 +6734,14 @@
                   "json_name": "inh"
                 }
               },
-              "inFromCl": {
+              "in_from_cl": {
                 "type": "bool",
                 "id": 31,
                 "options": {
                   "json_name": "inFromCl"
                 }
               },
-              "securityQuals": {
+              "security_quals": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 32,
@@ -6767,21 +6767,21 @@
                   "json_name": "inh"
                 }
               },
-              "requiredPerms": {
+              "required_perms": {
                 "type": "uint64",
                 "id": 3,
                 "options": {
                   "json_name": "requiredPerms"
                 }
               },
-              "checkAsUser": {
+              "check_as_user": {
                 "type": "uint32",
                 "id": 4,
                 "options": {
                   "json_name": "checkAsUser"
                 }
               },
-              "selectedCols": {
+              "selected_cols": {
                 "rule": "repeated",
                 "type": "uint64",
                 "id": 5,
@@ -6789,7 +6789,7 @@
                   "json_name": "selectedCols"
                 }
               },
-              "insertedCols": {
+              "inserted_cols": {
                 "rule": "repeated",
                 "type": "uint64",
                 "id": 6,
@@ -6797,7 +6797,7 @@
                   "json_name": "insertedCols"
                 }
               },
-              "updatedCols": {
+              "updated_cols": {
                 "rule": "repeated",
                 "type": "uint64",
                 "id": 7,
@@ -6932,7 +6932,7 @@
           },
           "SortGroupClause": {
             "fields": {
-              "tleSortGroupRef": {
+              "tle_sort_group_ref": {
                 "type": "uint32",
                 "id": 1,
                 "options": {
@@ -6953,7 +6953,7 @@
                   "json_name": "sortop"
                 }
               },
-              "nullsFirst": {
+              "nulls_first": {
                 "type": "bool",
                 "id": 4,
                 "options": {
@@ -7011,7 +7011,7 @@
                   "json_name": "refname"
                 }
               },
-              "partitionClause": {
+              "partition_clause": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 3,
@@ -7019,7 +7019,7 @@
                   "json_name": "partitionClause"
                 }
               },
-              "orderClause": {
+              "order_clause": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 4,
@@ -7027,28 +7027,28 @@
                   "json_name": "orderClause"
                 }
               },
-              "frameOptions": {
+              "frame_options": {
                 "type": "int32",
                 "id": 5,
                 "options": {
                   "json_name": "frameOptions"
                 }
               },
-              "startOffset": {
+              "start_offset": {
                 "type": "Node",
                 "id": 6,
                 "options": {
                   "json_name": "startOffset"
                 }
               },
-              "endOffset": {
+              "end_offset": {
                 "type": "Node",
                 "id": 7,
                 "options": {
                   "json_name": "endOffset"
                 }
               },
-              "runCondition": {
+              "run_condition": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 8,
@@ -7056,35 +7056,35 @@
                   "json_name": "runCondition"
                 }
               },
-              "startInRangeFunc": {
+              "start_in_range_func": {
                 "type": "uint32",
                 "id": 9,
                 "options": {
                   "json_name": "startInRangeFunc"
                 }
               },
-              "endInRangeFunc": {
+              "end_in_range_func": {
                 "type": "uint32",
                 "id": 10,
                 "options": {
                   "json_name": "endInRangeFunc"
                 }
               },
-              "inRangeColl": {
+              "in_range_coll": {
                 "type": "uint32",
                 "id": 11,
                 "options": {
                   "json_name": "inRangeColl"
                 }
               },
-              "inRangeAsc": {
+              "in_range_asc": {
                 "type": "bool",
                 "id": 12,
                 "options": {
                   "json_name": "inRangeAsc"
                 }
               },
-              "inRangeNullsFirst": {
+              "in_range_nulls_first": {
                 "type": "bool",
                 "id": 13,
                 "options": {
@@ -7098,7 +7098,7 @@
                   "json_name": "winref"
                 }
               },
-              "copiedOrder": {
+              "copied_order": {
                 "type": "bool",
                 "id": 15,
                 "options": {
@@ -7123,14 +7123,14 @@
                   "json_name": "strength"
                 }
               },
-              "waitPolicy": {
+              "wait_policy": {
                 "type": "LockWaitPolicy",
                 "id": 3,
                 "options": {
                   "json_name": "waitPolicy"
                 }
               },
-              "pushedDown": {
+              "pushed_down": {
                 "type": "bool",
                 "id": 4,
                 "options": {
@@ -7167,7 +7167,7 @@
           },
           "InferClause": {
             "fields": {
-              "indexElems": {
+              "index_elems": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 1,
@@ -7175,7 +7175,7 @@
                   "json_name": "indexElems"
                 }
               },
-              "whereClause": {
+              "where_clause": {
                 "type": "Node",
                 "id": 2,
                 "options": {
@@ -7214,7 +7214,7 @@
                   "json_name": "infer"
                 }
               },
-              "targetList": {
+              "target_list": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 3,
@@ -7222,7 +7222,7 @@
                   "json_name": "targetList"
                 }
               },
-              "whereClause": {
+              "where_clause": {
                 "type": "Node",
                 "id": 4,
                 "options": {
@@ -7240,7 +7240,7 @@
           },
           "CTESearchClause": {
             "fields": {
-              "searchColList": {
+              "search_col_list": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 1,
@@ -7248,14 +7248,14 @@
                   "json_name": "search_col_list"
                 }
               },
-              "searchBreadthFirst": {
+              "search_breadth_first": {
                 "type": "bool",
                 "id": 2,
                 "options": {
                   "json_name": "search_breadth_first"
                 }
               },
-              "searchSeqColumn": {
+              "search_seq_column": {
                 "type": "string",
                 "id": 3,
                 "options": {
@@ -7273,7 +7273,7 @@
           },
           "CTECycleClause": {
             "fields": {
-              "cycleColList": {
+              "cycle_col_list": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 1,
@@ -7281,28 +7281,28 @@
                   "json_name": "cycle_col_list"
                 }
               },
-              "cycleMarkColumn": {
+              "cycle_mark_column": {
                 "type": "string",
                 "id": 2,
                 "options": {
                   "json_name": "cycle_mark_column"
                 }
               },
-              "cycleMarkValue": {
+              "cycle_mark_value": {
                 "type": "Node",
                 "id": 3,
                 "options": {
                   "json_name": "cycle_mark_value"
                 }
               },
-              "cycleMarkDefault": {
+              "cycle_mark_default": {
                 "type": "Node",
                 "id": 4,
                 "options": {
                   "json_name": "cycle_mark_default"
                 }
               },
-              "cyclePathColumn": {
+              "cycle_path_column": {
                 "type": "string",
                 "id": 5,
                 "options": {
@@ -7316,28 +7316,28 @@
                   "json_name": "location"
                 }
               },
-              "cycleMarkType": {
+              "cycle_mark_type": {
                 "type": "uint32",
                 "id": 7,
                 "options": {
                   "json_name": "cycle_mark_type"
                 }
               },
-              "cycleMarkTypmod": {
+              "cycle_mark_typmod": {
                 "type": "int32",
                 "id": 8,
                 "options": {
                   "json_name": "cycle_mark_typmod"
                 }
               },
-              "cycleMarkCollation": {
+              "cycle_mark_collation": {
                 "type": "uint32",
                 "id": 9,
                 "options": {
                   "json_name": "cycle_mark_collation"
                 }
               },
-              "cycleMarkNeop": {
+              "cycle_mark_neop": {
                 "type": "uint32",
                 "id": 10,
                 "options": {
@@ -7377,14 +7377,14 @@
                   "json_name": "ctequery"
                 }
               },
-              "searchClause": {
+              "search_clause": {
                 "type": "CTESearchClause",
                 "id": 5,
                 "options": {
                   "json_name": "search_clause"
                 }
               },
-              "cycleClause": {
+              "cycle_clause": {
                 "type": "CTECycleClause",
                 "id": 6,
                 "options": {
@@ -7455,7 +7455,7 @@
                   "json_name": "matched"
                 }
               },
-              "commandType": {
+              "command_type": {
                 "type": "CmdType",
                 "id": 2,
                 "options": {
@@ -7476,7 +7476,7 @@
                   "json_name": "condition"
                 }
               },
-              "targetList": {
+              "target_list": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 5,
@@ -7503,7 +7503,7 @@
                   "json_name": "matched"
                 }
               },
-              "commandType": {
+              "command_type": {
                 "type": "CmdType",
                 "id": 2,
                 "options": {
@@ -7524,7 +7524,7 @@
                   "json_name": "qual"
                 }
               },
-              "targetList": {
+              "target_list": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 5,
@@ -7532,7 +7532,7 @@
                   "json_name": "targetList"
                 }
               },
-              "updateColnos": {
+              "update_colnos": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 6,
@@ -7551,14 +7551,14 @@
                   "json_name": "name"
                 }
               },
-              "isNew": {
+              "is_new": {
                 "type": "bool",
                 "id": 2,
                 "options": {
                   "json_name": "isNew"
                 }
               },
-              "isTable": {
+              "is_table": {
                 "type": "bool",
                 "id": 3,
                 "options": {
@@ -7569,7 +7569,7 @@
           },
           "JsonOutput": {
             "fields": {
-              "typeName": {
+              "type_name": {
                 "type": "TypeName",
                 "id": 1,
                 "options": {
@@ -7620,7 +7620,7 @@
                   "json_name": "output"
                 }
               },
-              "absentOnNull": {
+              "absent_on_null": {
                 "type": "bool",
                 "id": 3,
                 "options": {
@@ -7660,7 +7660,7 @@
                   "json_name": "output"
                 }
               },
-              "absentOnNull": {
+              "absent_on_null": {
                 "type": "bool",
                 "id": 3,
                 "options": {
@@ -7699,7 +7699,7 @@
                   "json_name": "format"
                 }
               },
-              "absentOnNull": {
+              "absent_on_null": {
                 "type": "bool",
                 "id": 4,
                 "options": {
@@ -7724,14 +7724,14 @@
                   "json_name": "output"
                 }
               },
-              "aggFilter": {
+              "agg_filter": {
                 "type": "Node",
                 "id": 2,
                 "options": {
                   "json_name": "agg_filter"
                 }
               },
-              "aggOrder": {
+              "agg_order": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 3,
@@ -7771,7 +7771,7 @@
                   "json_name": "arg"
                 }
               },
-              "absentOnNull": {
+              "absent_on_null": {
                 "type": "bool",
                 "id": 3,
                 "options": {
@@ -7803,7 +7803,7 @@
                   "json_name": "arg"
                 }
               },
-              "absentOnNull": {
+              "absent_on_null": {
                 "type": "bool",
                 "id": 3,
                 "options": {
@@ -7821,14 +7821,14 @@
                   "json_name": "stmt"
                 }
               },
-              "stmtLocation": {
+              "stmt_location": {
                 "type": "int32",
                 "id": 2,
                 "options": {
                   "json_name": "stmt_location"
                 }
               },
-              "stmtLen": {
+              "stmt_len": {
                 "type": "int32",
                 "id": 3,
                 "options": {
@@ -7854,21 +7854,21 @@
                   "json_name": "cols"
                 }
               },
-              "selectStmt": {
+              "select_stmt": {
                 "type": "Node",
                 "id": 3,
                 "options": {
                   "json_name": "selectStmt"
                 }
               },
-              "onConflictClause": {
+              "on_conflict_clause": {
                 "type": "OnConflictClause",
                 "id": 4,
                 "options": {
                   "json_name": "onConflictClause"
                 }
               },
-              "returningList": {
+              "returning_list": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 5,
@@ -7876,7 +7876,7 @@
                   "json_name": "returningList"
                 }
               },
-              "withClause": {
+              "with_clause": {
                 "type": "WithClause",
                 "id": 6,
                 "options": {
@@ -7901,7 +7901,7 @@
                   "json_name": "relation"
                 }
               },
-              "usingClause": {
+              "using_clause": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 2,
@@ -7909,14 +7909,14 @@
                   "json_name": "usingClause"
                 }
               },
-              "whereClause": {
+              "where_clause": {
                 "type": "Node",
                 "id": 3,
                 "options": {
                   "json_name": "whereClause"
                 }
               },
-              "returningList": {
+              "returning_list": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 4,
@@ -7924,7 +7924,7 @@
                   "json_name": "returningList"
                 }
               },
-              "withClause": {
+              "with_clause": {
                 "type": "WithClause",
                 "id": 5,
                 "options": {
@@ -7942,7 +7942,7 @@
                   "json_name": "relation"
                 }
               },
-              "targetList": {
+              "target_list": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 2,
@@ -7950,14 +7950,14 @@
                   "json_name": "targetList"
                 }
               },
-              "whereClause": {
+              "where_clause": {
                 "type": "Node",
                 "id": 3,
                 "options": {
                   "json_name": "whereClause"
                 }
               },
-              "fromClause": {
+              "from_clause": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 4,
@@ -7965,7 +7965,7 @@
                   "json_name": "fromClause"
                 }
               },
-              "returningList": {
+              "returning_list": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 5,
@@ -7973,7 +7973,7 @@
                   "json_name": "returningList"
                 }
               },
-              "withClause": {
+              "with_clause": {
                 "type": "WithClause",
                 "id": 6,
                 "options": {
@@ -7991,21 +7991,21 @@
                   "json_name": "relation"
                 }
               },
-              "sourceRelation": {
+              "source_relation": {
                 "type": "Node",
                 "id": 2,
                 "options": {
                   "json_name": "sourceRelation"
                 }
               },
-              "joinCondition": {
+              "join_condition": {
                 "type": "Node",
                 "id": 3,
                 "options": {
                   "json_name": "joinCondition"
                 }
               },
-              "mergeWhenClauses": {
+              "merge_when_clauses": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 4,
@@ -8013,7 +8013,7 @@
                   "json_name": "mergeWhenClauses"
                 }
               },
-              "withClause": {
+              "with_clause": {
                 "type": "WithClause",
                 "id": 5,
                 "options": {
@@ -8024,7 +8024,7 @@
           },
           "SelectStmt": {
             "fields": {
-              "distinctClause": {
+              "distinct_clause": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 1,
@@ -8032,14 +8032,14 @@
                   "json_name": "distinctClause"
                 }
               },
-              "intoClause": {
+              "into_clause": {
                 "type": "IntoClause",
                 "id": 2,
                 "options": {
                   "json_name": "intoClause"
                 }
               },
-              "targetList": {
+              "target_list": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 3,
@@ -8047,7 +8047,7 @@
                   "json_name": "targetList"
                 }
               },
-              "fromClause": {
+              "from_clause": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 4,
@@ -8055,14 +8055,14 @@
                   "json_name": "fromClause"
                 }
               },
-              "whereClause": {
+              "where_clause": {
                 "type": "Node",
                 "id": 5,
                 "options": {
                   "json_name": "whereClause"
                 }
               },
-              "groupClause": {
+              "group_clause": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 6,
@@ -8070,21 +8070,21 @@
                   "json_name": "groupClause"
                 }
               },
-              "groupDistinct": {
+              "group_distinct": {
                 "type": "bool",
                 "id": 7,
                 "options": {
                   "json_name": "groupDistinct"
                 }
               },
-              "havingClause": {
+              "having_clause": {
                 "type": "Node",
                 "id": 8,
                 "options": {
                   "json_name": "havingClause"
                 }
               },
-              "windowClause": {
+              "window_clause": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 9,
@@ -8092,7 +8092,7 @@
                   "json_name": "windowClause"
                 }
               },
-              "valuesLists": {
+              "values_lists": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 10,
@@ -8100,7 +8100,7 @@
                   "json_name": "valuesLists"
                 }
               },
-              "sortClause": {
+              "sort_clause": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 11,
@@ -8108,28 +8108,28 @@
                   "json_name": "sortClause"
                 }
               },
-              "limitOffset": {
+              "limit_offset": {
                 "type": "Node",
                 "id": 12,
                 "options": {
                   "json_name": "limitOffset"
                 }
               },
-              "limitCount": {
+              "limit_count": {
                 "type": "Node",
                 "id": 13,
                 "options": {
                   "json_name": "limitCount"
                 }
               },
-              "limitOption": {
+              "limit_option": {
                 "type": "LimitOption",
                 "id": 14,
                 "options": {
                   "json_name": "limitOption"
                 }
               },
-              "lockingClause": {
+              "locking_clause": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 15,
@@ -8137,7 +8137,7 @@
                   "json_name": "lockingClause"
                 }
               },
-              "withClause": {
+              "with_clause": {
                 "type": "WithClause",
                 "id": 16,
                 "options": {
@@ -8204,7 +8204,7 @@
                   "json_name": "rarg"
                 }
               },
-              "colTypes": {
+              "col_types": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 5,
@@ -8212,7 +8212,7 @@
                   "json_name": "colTypes"
                 }
               },
-              "colTypmods": {
+              "col_typmods": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 6,
@@ -8220,7 +8220,7 @@
                   "json_name": "colTypmods"
                 }
               },
-              "colCollations": {
+              "col_collations": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 7,
@@ -8228,7 +8228,7 @@
                   "json_name": "colCollations"
                 }
               },
-              "groupClauses": {
+              "group_clauses": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 8,
@@ -8305,7 +8305,7 @@
                   "json_name": "authrole"
                 }
               },
-              "schemaElts": {
+              "schema_elts": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 3,
@@ -8313,7 +8313,7 @@
                   "json_name": "schemaElts"
                 }
               },
-              "ifNotExists": {
+              "if_not_exists": {
                 "type": "bool",
                 "id": 4,
                 "options": {
@@ -8346,7 +8346,7 @@
                   "json_name": "objtype"
                 }
               },
-              "missingOk": {
+              "missing_ok": {
                 "type": "bool",
                 "id": 4,
                 "options": {
@@ -8357,7 +8357,7 @@
           },
           "ReplicaIdentityStmt": {
             "fields": {
-              "identityType": {
+              "identity_type": {
                 "type": "string",
                 "id": 1,
                 "options": {
@@ -8417,7 +8417,7 @@
                   "json_name": "behavior"
                 }
               },
-              "missingOk": {
+              "missing_ok": {
                 "type": "bool",
                 "id": 7,
                 "options": {
@@ -8454,7 +8454,7 @@
                   "json_name": "subtype"
                 }
               },
-              "typeName": {
+              "type_name": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 2,
@@ -8483,7 +8483,7 @@
                   "json_name": "behavior"
                 }
               },
-              "missingOk": {
+              "missing_ok": {
                 "type": "bool",
                 "id": 6,
                 "options": {
@@ -8494,7 +8494,7 @@
           },
           "GrantStmt": {
             "fields": {
-              "isGrant": {
+              "is_grant": {
                 "type": "bool",
                 "id": 1,
                 "options": {
@@ -8539,7 +8539,7 @@
                   "json_name": "grantees"
                 }
               },
-              "grantOption": {
+              "grant_option": {
                 "type": "bool",
                 "id": 7,
                 "options": {
@@ -8588,7 +8588,7 @@
                   "json_name": "objfuncargs"
                 }
               },
-              "argsUnspecified": {
+              "args_unspecified": {
                 "type": "bool",
                 "id": 4,
                 "options": {
@@ -8599,7 +8599,7 @@
           },
           "AccessPriv": {
             "fields": {
-              "privName": {
+              "priv_name": {
                 "type": "string",
                 "id": 1,
                 "options": {
@@ -8618,7 +8618,7 @@
           },
           "GrantRoleStmt": {
             "fields": {
-              "grantedRoles": {
+              "granted_roles": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 1,
@@ -8626,7 +8626,7 @@
                   "json_name": "granted_roles"
                 }
               },
-              "granteeRoles": {
+              "grantee_roles": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 2,
@@ -8634,7 +8634,7 @@
                   "json_name": "grantee_roles"
                 }
               },
-              "isGrant": {
+              "is_grant": {
                 "type": "bool",
                 "id": 3,
                 "options": {
@@ -8708,14 +8708,14 @@
                   "json_name": "attlist"
                 }
               },
-              "isFrom": {
+              "is_from": {
                 "type": "bool",
                 "id": 4,
                 "options": {
                   "json_name": "is_from"
                 }
               },
-              "isProgram": {
+              "is_program": {
                 "type": "bool",
                 "id": 5,
                 "options": {
@@ -8737,7 +8737,7 @@
                   "json_name": "options"
                 }
               },
-              "whereClause": {
+              "where_clause": {
                 "type": "Node",
                 "id": 8,
                 "options": {
@@ -8770,7 +8770,7 @@
                   "json_name": "args"
                 }
               },
-              "isLocal": {
+              "is_local": {
                 "type": "bool",
                 "id": 4,
                 "options": {
@@ -8799,7 +8799,7 @@
                   "json_name": "relation"
                 }
               },
-              "tableElts": {
+              "table_elts": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 2,
@@ -8807,7 +8807,7 @@
                   "json_name": "tableElts"
                 }
               },
-              "inhRelations": {
+              "inh_relations": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 3,
@@ -8829,7 +8829,7 @@
                   "json_name": "partspec"
                 }
               },
-              "ofTypename": {
+              "of_typename": {
                 "type": "TypeName",
                 "id": 6,
                 "options": {
@@ -8866,14 +8866,14 @@
                   "json_name": "tablespacename"
                 }
               },
-              "accessMethod": {
+              "access_method": {
                 "type": "string",
                 "id": 11,
                 "options": {
                   "json_name": "accessMethod"
                 }
               },
-              "ifNotExists": {
+              "if_not_exists": {
                 "type": "bool",
                 "id": 12,
                 "options": {
@@ -8919,35 +8919,35 @@
                   "json_name": "location"
                 }
               },
-              "isNoInherit": {
+              "is_no_inherit": {
                 "type": "bool",
                 "id": 6,
                 "options": {
                   "json_name": "is_no_inherit"
                 }
               },
-              "rawExpr": {
+              "raw_expr": {
                 "type": "Node",
                 "id": 7,
                 "options": {
                   "json_name": "raw_expr"
                 }
               },
-              "cookedExpr": {
+              "cooked_expr": {
                 "type": "string",
                 "id": 8,
                 "options": {
                   "json_name": "cooked_expr"
                 }
               },
-              "generatedWhen": {
+              "generated_when": {
                 "type": "string",
                 "id": 9,
                 "options": {
                   "json_name": "generated_when"
                 }
               },
-              "nullsNotDistinct": {
+              "nulls_not_distinct": {
                 "type": "bool",
                 "id": 10,
                 "options": {
@@ -9000,21 +9000,21 @@
                   "json_name": "indexspace"
                 }
               },
-              "resetDefaultTblspc": {
+              "reset_default_tblspc": {
                 "type": "bool",
                 "id": 17,
                 "options": {
                   "json_name": "reset_default_tblspc"
                 }
               },
-              "accessMethod": {
+              "access_method": {
                 "type": "string",
                 "id": 18,
                 "options": {
                   "json_name": "access_method"
                 }
               },
-              "whereClause": {
+              "where_clause": {
                 "type": "Node",
                 "id": 19,
                 "options": {
@@ -9028,7 +9028,7 @@
                   "json_name": "pktable"
                 }
               },
-              "fkAttrs": {
+              "fk_attrs": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 21,
@@ -9036,7 +9036,7 @@
                   "json_name": "fk_attrs"
                 }
               },
-              "pkAttrs": {
+              "pk_attrs": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 22,
@@ -9044,28 +9044,28 @@
                   "json_name": "pk_attrs"
                 }
               },
-              "fkMatchtype": {
+              "fk_matchtype": {
                 "type": "string",
                 "id": 23,
                 "options": {
                   "json_name": "fk_matchtype"
                 }
               },
-              "fkUpdAction": {
+              "fk_upd_action": {
                 "type": "string",
                 "id": 24,
                 "options": {
                   "json_name": "fk_upd_action"
                 }
               },
-              "fkDelAction": {
+              "fk_del_action": {
                 "type": "string",
                 "id": 25,
                 "options": {
                   "json_name": "fk_del_action"
                 }
               },
-              "fkDelSetCols": {
+              "fk_del_set_cols": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 26,
@@ -9073,7 +9073,7 @@
                   "json_name": "fk_del_set_cols"
                 }
               },
-              "oldConpfeqop": {
+              "old_conpfeqop": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 27,
@@ -9081,21 +9081,21 @@
                   "json_name": "old_conpfeqop"
                 }
               },
-              "oldPktableOid": {
+              "old_pktable_oid": {
                 "type": "uint32",
                 "id": 28,
                 "options": {
                   "json_name": "old_pktable_oid"
                 }
               },
-              "skipValidation": {
+              "skip_validation": {
                 "type": "bool",
                 "id": 29,
                 "options": {
                   "json_name": "skip_validation"
                 }
               },
-              "initiallyValid": {
+              "initially_valid": {
                 "type": "bool",
                 "id": 30,
                 "options": {
@@ -9146,7 +9146,7 @@
                   "json_name": "tablespacename"
                 }
               },
-              "missingOk": {
+              "missing_ok": {
                 "type": "bool",
                 "id": 2,
                 "options": {
@@ -9172,7 +9172,7 @@
                   "json_name": "options"
                 }
               },
-              "isReset": {
+              "is_reset": {
                 "type": "bool",
                 "id": 3,
                 "options": {
@@ -9183,7 +9183,7 @@
           },
           "AlterTableMoveAllStmt": {
             "fields": {
-              "origTablespacename": {
+              "orig_tablespacename": {
                 "type": "string",
                 "id": 1,
                 "options": {
@@ -9205,7 +9205,7 @@
                   "json_name": "roles"
                 }
               },
-              "newTablespacename": {
+              "new_tablespacename": {
                 "type": "string",
                 "id": 4,
                 "options": {
@@ -9230,7 +9230,7 @@
                   "json_name": "extname"
                 }
               },
-              "ifNotExists": {
+              "if_not_exists": {
                 "type": "bool",
                 "id": 2,
                 "options": {
@@ -9307,7 +9307,7 @@
                   "json_name": "fdwname"
                 }
               },
-              "funcOptions": {
+              "func_options": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 2,
@@ -9334,7 +9334,7 @@
                   "json_name": "fdwname"
                 }
               },
-              "funcOptions": {
+              "func_options": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 2,
@@ -9382,7 +9382,7 @@
                   "json_name": "fdwname"
                 }
               },
-              "ifNotExists": {
+              "if_not_exists": {
                 "type": "bool",
                 "id": 5,
                 "options": {
@@ -9423,7 +9423,7 @@
                   "json_name": "options"
                 }
               },
-              "hasVersion": {
+              "has_version": {
                 "type": "bool",
                 "id": 4,
                 "options": {
@@ -9434,7 +9434,7 @@
           },
           "CreateForeignTableStmt": {
             "fields": {
-              "baseStmt": {
+              "base_stmt": {
                 "type": "CreateStmt",
                 "id": 1,
                 "options": {
@@ -9474,7 +9474,7 @@
                   "json_name": "servername"
                 }
               },
-              "ifNotExists": {
+              "if_not_exists": {
                 "type": "bool",
                 "id": 3,
                 "options": {
@@ -9533,7 +9533,7 @@
                   "json_name": "servername"
                 }
               },
-              "missingOk": {
+              "missing_ok": {
                 "type": "bool",
                 "id": 3,
                 "options": {
@@ -9544,35 +9544,35 @@
           },
           "ImportForeignSchemaStmt": {
             "fields": {
-              "serverName": {
+              "server_name": {
                 "type": "string",
                 "id": 1,
                 "options": {
                   "json_name": "server_name"
                 }
               },
-              "remoteSchema": {
+              "remote_schema": {
                 "type": "string",
                 "id": 2,
                 "options": {
                   "json_name": "remote_schema"
                 }
               },
-              "localSchema": {
+              "local_schema": {
                 "type": "string",
                 "id": 3,
                 "options": {
                   "json_name": "local_schema"
                 }
               },
-              "listType": {
+              "list_type": {
                 "type": "ImportForeignSchemaType",
                 "id": 4,
                 "options": {
                   "json_name": "list_type"
                 }
               },
-              "tableList": {
+              "table_list": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 5,
@@ -9592,7 +9592,7 @@
           },
           "CreatePolicyStmt": {
             "fields": {
-              "policyName": {
+              "policy_name": {
                 "type": "string",
                 "id": 1,
                 "options": {
@@ -9606,7 +9606,7 @@
                   "json_name": "table"
                 }
               },
-              "cmdName": {
+              "cmd_name": {
                 "type": "string",
                 "id": 3,
                 "options": {
@@ -9635,7 +9635,7 @@
                   "json_name": "qual"
                 }
               },
-              "withCheck": {
+              "with_check": {
                 "type": "Node",
                 "id": 7,
                 "options": {
@@ -9646,7 +9646,7 @@
           },
           "AlterPolicyStmt": {
             "fields": {
-              "policyName": {
+              "policy_name": {
                 "type": "string",
                 "id": 1,
                 "options": {
@@ -9675,7 +9675,7 @@
                   "json_name": "qual"
                 }
               },
-              "withCheck": {
+              "with_check": {
                 "type": "Node",
                 "id": 5,
                 "options": {
@@ -9693,7 +9693,7 @@
                   "json_name": "amname"
                 }
               },
-              "handlerName": {
+              "handler_name": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 2,
@@ -9785,14 +9785,14 @@
                   "json_name": "columns"
                 }
               },
-              "whenClause": {
+              "when_clause": {
                 "type": "Node",
                 "id": 11,
                 "options": {
                   "json_name": "whenClause"
                 }
               },
-              "transitionRels": {
+              "transition_rels": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 12,
@@ -9926,7 +9926,7 @@
           },
           "CreateRoleStmt": {
             "fields": {
-              "stmtType": {
+              "stmt_type": {
                 "type": "RoleStmtType",
                 "id": 1,
                 "options": {
@@ -10011,7 +10011,7 @@
                   "json_name": "roles"
                 }
               },
-              "missingOk": {
+              "missing_ok": {
                 "type": "bool",
                 "id": 2,
                 "options": {
@@ -10037,21 +10037,21 @@
                   "json_name": "options"
                 }
               },
-              "ownerId": {
+              "owner_id": {
                 "type": "uint32",
                 "id": 3,
                 "options": {
                   "json_name": "ownerId"
                 }
               },
-              "forIdentity": {
+              "for_identity": {
                 "type": "bool",
                 "id": 4,
                 "options": {
                   "json_name": "for_identity"
                 }
               },
-              "ifNotExists": {
+              "if_not_exists": {
                 "type": "bool",
                 "id": 5,
                 "options": {
@@ -10077,14 +10077,14 @@
                   "json_name": "options"
                 }
               },
-              "forIdentity": {
+              "for_identity": {
                 "type": "bool",
                 "id": 3,
                 "options": {
                   "json_name": "for_identity"
                 }
               },
-              "missingOk": {
+              "missing_ok": {
                 "type": "bool",
                 "id": 4,
                 "options": {
@@ -10133,7 +10133,7 @@
                   "json_name": "definition"
                 }
               },
-              "ifNotExists": {
+              "if_not_exists": {
                 "type": "bool",
                 "id": 6,
                 "options": {
@@ -10159,14 +10159,14 @@
                   "json_name": "domainname"
                 }
               },
-              "typeName": {
+              "type_name": {
                 "type": "TypeName",
                 "id": 2,
                 "options": {
                   "json_name": "typeName"
                 }
               },
-              "collClause": {
+              "coll_clause": {
                 "type": "CollateClause",
                 "id": 3,
                 "options": {
@@ -10223,7 +10223,7 @@
                   "json_name": "items"
                 }
               },
-              "isDefault": {
+              "is_default": {
                 "type": "bool",
                 "id": 6,
                 "options": {
@@ -10255,7 +10255,7 @@
                   "json_name": "number"
                 }
               },
-              "orderFamily": {
+              "order_family": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 4,
@@ -10263,7 +10263,7 @@
                   "json_name": "order_family"
                 }
               },
-              "classArgs": {
+              "class_args": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 5,
@@ -10316,7 +10316,7 @@
                   "json_name": "amname"
                 }
               },
-              "isDrop": {
+              "is_drop": {
                 "type": "bool",
                 "id": 3,
                 "options": {
@@ -10343,7 +10343,7 @@
                   "json_name": "objects"
                 }
               },
-              "removeType": {
+              "remove_type": {
                 "type": "ObjectType",
                 "id": 2,
                 "options": {
@@ -10357,7 +10357,7 @@
                   "json_name": "behavior"
                 }
               },
-              "missingOk": {
+              "missing_ok": {
                 "type": "bool",
                 "id": 4,
                 "options": {
@@ -10383,7 +10383,7 @@
                   "json_name": "relations"
                 }
               },
-              "restartSeqs": {
+              "restart_seqs": {
                 "type": "bool",
                 "id": 2,
                 "options": {
@@ -10501,7 +10501,7 @@
                   "json_name": "direction"
                 }
               },
-              "howMany": {
+              "how_many": {
                 "type": "int64",
                 "id": 2,
                 "options": {
@@ -10540,21 +10540,21 @@
                   "json_name": "relation"
                 }
               },
-              "accessMethod": {
+              "access_method": {
                 "type": "string",
                 "id": 3,
                 "options": {
                   "json_name": "accessMethod"
                 }
               },
-              "tableSpace": {
+              "table_space": {
                 "type": "string",
                 "id": 4,
                 "options": {
                   "json_name": "tableSpace"
                 }
               },
-              "indexParams": {
+              "index_params": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 5,
@@ -10562,7 +10562,7 @@
                   "json_name": "indexParams"
                 }
               },
-              "indexIncludingParams": {
+              "index_including_params": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 6,
@@ -10578,14 +10578,14 @@
                   "json_name": "options"
                 }
               },
-              "whereClause": {
+              "where_clause": {
                 "type": "Node",
                 "id": 8,
                 "options": {
                   "json_name": "whereClause"
                 }
               },
-              "excludeOpNames": {
+              "exclude_op_names": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 9,
@@ -10600,28 +10600,28 @@
                   "json_name": "idxcomment"
                 }
               },
-              "indexOid": {
+              "index_oid": {
                 "type": "uint32",
                 "id": 11,
                 "options": {
                   "json_name": "indexOid"
                 }
               },
-              "oldNumber": {
+              "old_number": {
                 "type": "uint32",
                 "id": 12,
                 "options": {
                   "json_name": "oldNumber"
                 }
               },
-              "oldCreateSubid": {
+              "old_create_subid": {
                 "type": "uint32",
                 "id": 13,
                 "options": {
                   "json_name": "oldCreateSubid"
                 }
               },
-              "oldFirstRelfilelocatorSubid": {
+              "old_first_relfilelocator_subid": {
                 "type": "uint32",
                 "id": 14,
                 "options": {
@@ -10635,7 +10635,7 @@
                   "json_name": "unique"
                 }
               },
-              "nullsNotDistinct": {
+              "nulls_not_distinct": {
                 "type": "bool",
                 "id": 16,
                 "options": {
@@ -10684,14 +10684,14 @@
                   "json_name": "concurrent"
                 }
               },
-              "ifNotExists": {
+              "if_not_exists": {
                 "type": "bool",
                 "id": 23,
                 "options": {
                   "json_name": "if_not_exists"
                 }
               },
-              "resetDefaultTblspc": {
+              "reset_default_tblspc": {
                 "type": "bool",
                 "id": 24,
                 "options": {
@@ -10710,7 +10710,7 @@
                   "json_name": "defnames"
                 }
               },
-              "statTypes": {
+              "stat_types": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 2,
@@ -10748,7 +10748,7 @@
                   "json_name": "transformed"
                 }
               },
-              "ifNotExists": {
+              "if_not_exists": {
                 "type": "bool",
                 "id": 7,
                 "options": {
@@ -10792,7 +10792,7 @@
                   "json_name": "stxstattarget"
                 }
               },
-              "missingOk": {
+              "missing_ok": {
                 "type": "bool",
                 "id": 3,
                 "options": {
@@ -10803,7 +10803,7 @@
           },
           "CreateFunctionStmt": {
             "fields": {
-              "isProcedure": {
+              "is_procedure": {
                 "type": "bool",
                 "id": 1,
                 "options": {
@@ -10833,7 +10833,7 @@
                   "json_name": "parameters"
                 }
               },
-              "returnType": {
+              "return_type": {
                 "type": "TypeName",
                 "id": 5,
                 "options": {
@@ -10848,7 +10848,7 @@
                   "json_name": "options"
                 }
               },
-              "sqlBody": {
+              "sql_body": {
                 "type": "Node",
                 "id": 7,
                 "options": {
@@ -10866,7 +10866,7 @@
                   "json_name": "name"
                 }
               },
-              "argType": {
+              "arg_type": {
                 "type": "TypeName",
                 "id": 2,
                 "options": {
@@ -10929,21 +10929,21 @@
           },
           "InlineCodeBlock": {
             "fields": {
-              "sourceText": {
+              "source_text": {
                 "type": "string",
                 "id": 1,
                 "options": {
                   "json_name": "source_text"
                 }
               },
-              "langOid": {
+              "lang_oid": {
                 "type": "uint32",
                 "id": 2,
                 "options": {
                   "json_name": "langOid"
                 }
               },
-              "langIsTrusted": {
+              "lang_is_trusted": {
                 "type": "bool",
                 "id": 3,
                 "options": {
@@ -10998,14 +10998,14 @@
           },
           "RenameStmt": {
             "fields": {
-              "renameType": {
+              "rename_type": {
                 "type": "ObjectType",
                 "id": 1,
                 "options": {
                   "json_name": "renameType"
                 }
               },
-              "relationType": {
+              "relation_type": {
                 "type": "ObjectType",
                 "id": 2,
                 "options": {
@@ -11047,7 +11047,7 @@
                   "json_name": "behavior"
                 }
               },
-              "missingOk": {
+              "missing_ok": {
                 "type": "bool",
                 "id": 8,
                 "options": {
@@ -11058,7 +11058,7 @@
           },
           "AlterObjectDependsStmt": {
             "fields": {
-              "objectType": {
+              "object_type": {
                 "type": "ObjectType",
                 "id": 1,
                 "options": {
@@ -11097,7 +11097,7 @@
           },
           "AlterObjectSchemaStmt": {
             "fields": {
-              "objectType": {
+              "object_type": {
                 "type": "ObjectType",
                 "id": 1,
                 "options": {
@@ -11125,7 +11125,7 @@
                   "json_name": "newschema"
                 }
               },
-              "missingOk": {
+              "missing_ok": {
                 "type": "bool",
                 "id": 5,
                 "options": {
@@ -11136,7 +11136,7 @@
           },
           "AlterOwnerStmt": {
             "fields": {
-              "objectType": {
+              "object_type": {
                 "type": "ObjectType",
                 "id": 1,
                 "options": {
@@ -11187,7 +11187,7 @@
           },
           "AlterTypeStmt": {
             "fields": {
-              "typeName": {
+              "type_name": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 1,
@@ -11221,7 +11221,7 @@
                   "json_name": "rulename"
                 }
               },
-              "whereClause": {
+              "where_clause": {
                 "type": "Node",
                 "id": 3,
                 "options": {
@@ -11316,7 +11316,7 @@
                   "json_name": "options"
                 }
               },
-              "savepointName": {
+              "savepoint_name": {
                 "type": "string",
                 "id": 3,
                 "options": {
@@ -11360,7 +11360,7 @@
           },
           "CreateEnumStmt": {
             "fields": {
-              "typeName": {
+              "type_name": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 1,
@@ -11380,7 +11380,7 @@
           },
           "CreateRangeStmt": {
             "fields": {
-              "typeName": {
+              "type_name": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 1,
@@ -11400,7 +11400,7 @@
           },
           "AlterEnumStmt": {
             "fields": {
-              "typeName": {
+              "type_name": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 1,
@@ -11408,35 +11408,35 @@
                   "json_name": "typeName"
                 }
               },
-              "oldVal": {
+              "old_val": {
                 "type": "string",
                 "id": 2,
                 "options": {
                   "json_name": "oldVal"
                 }
               },
-              "newVal": {
+              "new_val": {
                 "type": "string",
                 "id": 3,
                 "options": {
                   "json_name": "newVal"
                 }
               },
-              "newValNeighbor": {
+              "new_val_neighbor": {
                 "type": "string",
                 "id": 4,
                 "options": {
                   "json_name": "newValNeighbor"
                 }
               },
-              "newValIsAfter": {
+              "new_val_is_after": {
                 "type": "bool",
                 "id": 5,
                 "options": {
                   "json_name": "newValIsAfter"
                 }
               },
-              "skipIfNewValExists": {
+              "skip_if_new_val_exists": {
                 "type": "bool",
                 "id": 6,
                 "options": {
@@ -11484,7 +11484,7 @@
                   "json_name": "options"
                 }
               },
-              "withCheckOption": {
+              "with_check_option": {
                 "type": "ViewCheckOption",
                 "id": 6,
                 "options": {
@@ -11580,7 +11580,7 @@
                   "json_name": "dbname"
                 }
               },
-              "missingOk": {
+              "missing_ok": {
                 "type": "bool",
                 "id": 2,
                 "options": {
@@ -11652,7 +11652,7 @@
                   "json_name": "rels"
                 }
               },
-              "isVacuumcmd": {
+              "is_vacuumcmd": {
                 "type": "bool",
                 "id": 3,
                 "options": {
@@ -11677,7 +11677,7 @@
                   "json_name": "oid"
                 }
               },
-              "vaCols": {
+              "va_cols": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 3,
@@ -11729,14 +11729,14 @@
                   "json_name": "objtype"
                 }
               },
-              "isSelectInto": {
+              "is_select_into": {
                 "type": "bool",
                 "id": 4,
                 "options": {
                   "json_name": "is_select_into"
                 }
               },
-              "ifNotExists": {
+              "if_not_exists": {
                 "type": "bool",
                 "id": 5,
                 "options": {
@@ -11754,7 +11754,7 @@
                   "json_name": "concurrent"
                 }
               },
-              "skipData": {
+              "skip_data": {
                 "type": "bool",
                 "id": 2,
                 "options": {
@@ -11864,7 +11864,7 @@
           },
           "CreateConversionStmt": {
             "fields": {
-              "conversionName": {
+              "conversion_name": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 1,
@@ -11872,21 +11872,21 @@
                   "json_name": "conversion_name"
                 }
               },
-              "forEncodingName": {
+              "for_encoding_name": {
                 "type": "string",
                 "id": 2,
                 "options": {
                   "json_name": "for_encoding_name"
                 }
               },
-              "toEncodingName": {
+              "to_encoding_name": {
                 "type": "string",
                 "id": 3,
                 "options": {
                   "json_name": "to_encoding_name"
                 }
               },
-              "funcName": {
+              "func_name": {
                 "rule": "repeated",
                 "type": "Node",
                 "id": 4,
@@ -11951,7 +11951,7 @@
                   "json_name": "replace"
                 }
               },
-              "typeName": {
+              "type_name": {
                 "type": "TypeName",
                 "id": 2,
                 "options": {
@@ -12142,7 +12142,7 @@
                   "json_name": "replace"
                 }
               },
-              "missingOk": {
+              "missing_ok": {
                 "type": "bool",
                 "id": 7,
                 "options": {
@@ -12160,7 +12160,7 @@
                   "json_name": "relation"
                 }
               },
-              "whereClause": {
+              "where_clause": {
                 "type": "Node",
                 "id": 2,
                 "options": {
@@ -12234,7 +12234,7 @@
                   "json_name": "pubobjects"
                 }
               },
-              "forAllTables": {
+              "for_all_tables": {
                 "type": "bool",
                 "id": 4,
                 "options": {
@@ -12268,7 +12268,7 @@
                   "json_name": "pubobjects"
                 }
               },
-              "forAllTables": {
+              "for_all_tables": {
                 "type": "bool",
                 "id": 4,
                 "options": {
@@ -12368,7 +12368,7 @@
                   "json_name": "subname"
                 }
               },
-              "missingOk": {
+              "missing_ok": {
                 "type": "bool",
                 "id": 2,
                 "options": {
@@ -13124,7 +13124,7 @@
                 "type": "Token",
                 "id": 4
               },
-              "keywordKind": {
+              "keyword_kind": {
                 "type": "KeywordKind",
                 "id": 5
               }

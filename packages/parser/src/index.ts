@@ -1,3 +1,1 @@
-export default () => {
-  console.log('hello world!')
-}
+export * from './store';
