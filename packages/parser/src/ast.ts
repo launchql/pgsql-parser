@@ -102,7 +102,7 @@ export const generateTSEnumFunction = (enums: Enum[]) => {
 }
 export const generateTSASTHelperMethods = (types: Type[]) => {
   const ast = t.file(t.program([
-    generateMacroForTypes(),
+    // generateMacroForTypes(),
     generateAstHelperMethodsAST(types)
   ]));
   const { code } = generate(ast);
