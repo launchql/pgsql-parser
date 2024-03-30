@@ -42,18 +42,18 @@ With the AST helper methods, creating complex SQL ASTs becomes straightforward a
 import { CreateStmt, ColumnDef } from '@pgsql/types';
 import ast from '@pgsql/utils';
 
-const newColumn = ast.columnDef({
-  colname: 'id',
-  typeName: ast.typeName({
-    names: [ast.string({ str: 'int4' })]
-  })
+const newColumn: ColumnDef = ast.columnDef({
+    colname: 'id',
+    typeName: ast.typeName({
+        names: [ast.string({ str: 'int4' })]
+    })
 });
 
-const createStmt = ast.createStmt({
-  relation: ast.rangeVar({
-    relname: 'new_table'
-  }),
-  tableElts: [newColumn]
+const createStmt: CreateStmt = ast.createStmt({
+    relation: ast.rangeVar({
+        relname: 'new_table'
+    }),
+    tableElts: [newColumn]
 });
 ```
 
