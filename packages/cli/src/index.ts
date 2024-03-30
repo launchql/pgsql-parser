@@ -1,18 +1,18 @@
-// import { PgProtoParser } from 'pg-proto-parser';
+import { PgProtoParser } from 'pg-proto-parser';
 
-// export default async (argv) => {
+export default async (argv) => {
 
-//   if (!argv.inputFile || !argv.outputDir) {
-//     console.log('inputFile and outputDir are required!');
-//     console.log('Usage:');
-//     console.log('pg-proto-parser --inputFile=input.proto --outputDir=out');
-//     process.exit(1);
-//   }
+  if (!argv.inputFile || !argv.outputDir) {
+    console.log('inputFile and outputDir are required!');
+    console.log('Usage:');
+    console.log('pg-proto-parser --inputFile=input.proto --outputDir=out');
+    process.exit(1);
+  }
 
 
-//   const parser = new PgProtoParser(argv.inputFIle, argv.outputDir);
+  const parser = new PgProtoParser(argv.inputFIle, argv.outputDir);
 
-//   // Generate TypeScript and JSON files
-//   await parser.write();
+  // Generate TypeScript and JSON files
+  await parser.write();
 
-// };
+};
