@@ -70,6 +70,8 @@ pg-proto-parser --inFile <path-to-proto> --outDir <output-directory> [--includeE
 | `--keepCase`            | Keeps field casing as defined in the protobuf file. If false, fields will be converted to camelCase. | `true`               |
 | `--alternateCommentMode`| Use alternate comment mode. Useful if the default parsing of comments is problematic.            | `true`               |
 | `--preferTrailingComment`| Give preference to trailing comments during parsing.                                             | `false`              |
+| `--removeUndefinedAt0`          | Removes the initial `UNDEFINED` enum entry and adjusts the subsequent values by decrementing them.   | `true`                  |
+
 
 To explicitly set a boolean option to false, prepend the option with `--no-`. For example, to disable JSON enum mapping, use `--no-includeEnumsJSON`.
 

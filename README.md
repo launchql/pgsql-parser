@@ -92,6 +92,7 @@ This table describes the options available for `PgProtoParserOptions`, their fun
 | `parser.keepCase`       | Keeps field casing as defined in the protobuf file. If false, fields will be converted to camelCase. | `true`               |
 | `parser.alternateCommentMode` | Use alternate comment mode. Useful if the default parsing of comments is problematic.        | `true`               |
 | `parser.preferTrailingComment` | Give preference to trailing comments during parsing.                                          | `false`              |
+| `removeUndefinedAt0`          | Removes the initial `UNDEFINED` enum entry and adjusts the subsequent values by decrementing them.   | `true`                  |
 
 Each of these options can be set when initializing the `PgProtoParser` to customize its behavior and output.
 

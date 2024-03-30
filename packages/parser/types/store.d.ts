@@ -20,6 +20,7 @@ export declare class ProtoStore implements IProtoStore {
     namespaces: Namespace[];
     constructor(root: ReflectionObject, options?: PgProtoStoreOptions);
     _parse(node: ReflectionObject, name?: string): void;
+    _processEnum(enumNode: Enum): Enum;
     write(): void;
 }
 export {};
