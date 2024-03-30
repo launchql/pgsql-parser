@@ -32,12 +32,6 @@ export const help = (): void => {
 
 export default async (argv) => {
 
-  if (!argv.inFile || !argv.outDir) {
-    console.log('inFile and outDir are required!');
-    help();
-    process.exit(1);
-  }
-
   if (argv.help || argv.h) {
     help();
     process.exit(0);
@@ -46,6 +40,12 @@ export default async (argv) => {
   if (argv.version || argv.v) {
     console.log(`Version: ${pkg.version}`);
     process.exit(0);
+  }
+
+  if (!argv.inFile || !argv.outDir) {
+    console.log('Input Error: inFile and outDir are required!');
+    help();
+    process.exit(1);
   }
 
   const options: PgProtoParserOptions = {
