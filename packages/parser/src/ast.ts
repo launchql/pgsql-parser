@@ -65,7 +65,7 @@ export const resolveTypeName = (type: string) => {
 }
 
 export const generateTSInterfaces = (types: Type[], options: PgProtoParserOptions) => {
-  const node = createUnionTypeAST(types.filter(type=>type.name !== 'Node'));
+  const node = createUnionTypeAST(types.filter(type => type.name !== 'Node'));
   const typeDefns = types.reduce((m, type) => {
     if (type.name === 'Node') return m;
     return [...m, transformTypeToAST(type, options)]
@@ -99,7 +99,10 @@ export const generateTSEnumFunction = (enums: Enum[]) => {
   return code;
 }
 export const generateTSASTHelperMethods = (types: Type[]) => {
-  const ast = t.file(t.program([generateAstHelperMethodsAST(types)]));
+  const ast = t.file(t.program([
+    generateMacroForTypes(),
+    generateAstHelperMethodsAST(types)
+  ]));
   const { code } = generate(ast);
   return code;
 }
@@ -127,9 +130,52 @@ export const generateImportSpecifiersAST = (types: Type[], options: PgProtoParse
   const importDeclaration = t.importDeclaration(importSpecifiers, t.stringLiteral(options.astHelperTypeSource));
   return importDeclaration;
 }
+// export type ASTType<T> = {
+//   [K in keyof T as `${K & string}`]: T;
+// };
+
+export const generateMacroForTypes = () => {
+
+  const op = t.tsTypeOperator(t.tsTypeReference(t.identifier('T')));
+  op.operator = 'keyof';
+
+  const typeParam = t.tsTypeParameter(op, null, 'K')
+  typeParam.constraint = op;
+
+  const ast = t.exportNamedDeclaration(
+    t.tsTypeAliasDeclaration(
+      t.identifier('ASTType'),
+      t.tsTypeParameterDeclaration([
+        t.tsTypeParameter(null, null, 'T')
+      ]),
+      t.tsMappedType(
+        typeParam,
+        t.tsTypeReference(t.identifier('T')),
+        t.tsLiteralType(
+          t.templateLiteral(
+            [
+              t.templateElement({ raw: '', cooked: '' }, false),
+              t.templateElement({ raw: '', cooked: '' }, true)
+            ],
+            [
+              t.tsIntersectionType([
+                t.tsTypeReference(t.identifier('K')),
+                t.tsStringKeyword()
+              ])
+            ]
+          )
+        )
+      )
+    ),
+    [],
+    null
+  );
+  ast.exportKind = 'type';
+  return ast;
+}
 
 export const generateAstHelperMethodsAST = (types: Type[]): t.ExportDefaultDeclaration => {
-  const creators = types.filter(type=>type.name !== 'Node').map((type: Type) => {
+  const creators = types.filter(type => type.name !== 'Node').map((type: Type) => {
     const typeName = type.name;
     const param = t.identifier('_p');
     param.optional = true;
@@ -152,6 +198,18 @@ export const generateAstHelperMethodsAST = (types: Type[]): t.ExportDefaultDecla
         );
       });
 
+    // Get method body
+    let body = t.objectExpression([
+      ...properties
+    ]);
+
+    const specialTypes = ['TypeName'];
+    if (!specialTypes.includes(type.name)) {
+      body = t.objectExpression([
+        t.objectProperty(t.identifier(type.name), body)
+      ]);
+    }
+
     // Ensures camel case
     const methodName = toSpecialCamelCase(typeName);
 
@@ -162,13 +220,31 @@ export const generateAstHelperMethodsAST = (types: Type[]): t.ExportDefaultDecla
       [param],
       t.blockStatement([
         t.returnStatement(
-          t.objectExpression([
-            ...properties
-          ])
+          body
         )
       ])
     );
-    method.returnType = t.tsTypeAnnotation(t.tsTypeReference(t.identifier(typeName)));
+
+    // method.returnType = t.tsTypeAnnotation(t.tsTypeReference(t.identifier(typeName)));
+
+    // method.returnType = t.tsTypeAnnotation(
+    //   t.tsTypeReference(
+    //     t.identifier('ASTType'),
+    //     t.tsTypeParameterInstantiation([
+    //       t.tsTypeReference(t.identifier(typeName))
+    //     ])
+    //   )
+    // );
+    method.returnType =
+      t.tsTypeAnnotation(
+        t.tsTypeLiteral([
+          t.tsPropertySignature(
+            t.identifier(typeName),
+            t.tsTypeAnnotation(t.tsTypeReference(t.identifier(typeName)))
+          )
+        ])
+      );
+
     return method;
   });
 
