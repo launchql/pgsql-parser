@@ -22,5 +22,6 @@ export declare class ProtoStore implements IProtoStore {
     _parse(node: ReflectionObject, name?: string): void;
     _processEnum(enumNode: Enum): Enum;
     write(): void;
+    writeFile(filename: string, content: string): void;
 }
 export {};
