@@ -65,7 +65,7 @@ export const resolveTypeName = (type: string) => {
 }
 
 export const generateTSInterfaces = (types: Type[], options: PgProtoParserOptions) => {
-  const node = createUnionTypeAST(types);
+  const node = createUnionTypeAST(types.filter(type=>type.name !== 'Node'));
   const typeDefns = types.reduce((m, type) => {
     if (type.name === 'Node') return m;
     return [...m, transformTypeToAST(type, options)]
