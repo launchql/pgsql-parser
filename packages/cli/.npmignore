@@ -30,4 +30,3 @@ __tests__
 .travis.yml
 .vscode
 CHANGELOG.md
-package.json

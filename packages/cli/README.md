@@ -57,20 +57,37 @@ pg-proto-parser --inFile <path-to-proto> --outDir <output-directory>
 ## Options
 
 ```bash
-pg-proto-parser --inFile <path-to-proto> --outDir <output-directory> [--includeEnumsJSON] [--includeTypes] [--includeUtils] [--keepCase] [--alternateCommentMode] [--preferTrailingComment]
+pg-proto-parser --inFile <path-to-proto> \
+                --outDir <output-directory> \
+                [--alternateCommentMode] \
+                [--includeEnums] \
+                [--includeEnumsJSON] \
+                [--includeEnumTypeUnion] \
+                [--includeHeader] \
+                [--includeTypes] \
+                [--includeUtils] \
+                [--keepCase] \
+                [--optionalFields] \
+                [--preferTrailingComment] \
+                [--removeUndefinedAt0]
+
 ```
 
-| Option                  | Description                                                                                       | Default Value        |
-|-------------------------|---------------------------------------------------------------------------------------------------|----------------------|
-| `--inFile`              | Path to the `.proto` file to be parsed.                                                           | *Required*           |
-| `--outDir`              | Directory to save the generated TypeScript files.                                                 | *Required*           |
-| `--includeEnumsJSON`    | Generate JSON files mapping enum names to integer values and vice versa.                         | `true`               |
-| `--includeTypes`        | Generate TypeScript interfaces for protobuf messages.                                            | `true`               |
-| `--includeUtils`        | Generate TypeScript utility functions for enums.                                                 | `true`               |
-| `--keepCase`            | Keeps field casing as defined in the protobuf file. If false, fields will be converted to camelCase. | `true`               |
-| `--alternateCommentMode`| Use alternate comment mode. Useful if the default parsing of comments is problematic.            | `true`               |
-| `--preferTrailingComment`| Give preference to trailing comments during parsing.                                             | `false`              |
-| `--removeUndefinedAt0`          | Removes the initial `UNDEFINED` enum entry and adjusts the subsequent values by decrementing them.   | `true`                  |
+| Option                        | Description                                                                                                                     | Default Value            |
+|-------------------------------|---------------------------------------------------------------------------------------------------------------------------------|--------------------------|
+| `--inFile`                    | Path to the `.proto` file to be parsed.                                                                                         | *Required*               |
+| `--outDir`                    | Directory to save the generated TypeScript files.                                                                               | *Required*               |
+| `--alternateCommentMode`      | Use alternate comment mode. Useful if the default parsing of comments is problematic.                                           | `true`                   |
+| `--includeEnums`              | Outputs TypeScript enum types for the PostgreSQL enums.                                                                         | `true`                   |
+| `--includeEnumsJSON`          | Generate JSON files mapping enum names to integer values and vice versa.                                                        | `true`                   |
+| `--includeEnumTypeUnion`      | Uses strings to define enum types as specified for the fields of each proto message type (the PostgreSQL node types' fields type). | `true`                  |
+| `--includeHeader`             | Includes a header at the top of generated TypeScript files to avoid manual manipulation which could cause issues in CI/CD pipelines. | `true`                |
+| `--includeTypes`              | Generate TypeScript interfaces for protobuf messages.                                                                           | `true`                   |
+| `--includeUtils`              | Generate TypeScript utility functions for enums.                                                                                | `true`                   |
+| `--keepCase`                  | Keeps field casing as defined in the protobuf file. If false, fields will be converted to camelCase.                           | `true`                   |
+| `--optionalFields`            | Generates TypeScript interfaces with optional fields mapping to the PostgreSQL node types' fields; sets all fields to optional. | `true`                   |
+| `--preferTrailingComment`     | Give preference to trailing comments during parsing.                                                                            | `false`                  |
+| `--removeUndefinedAt0`        | Removes the initial `UNDEFINED` enum entry and adjusts the subsequent values by decrementing them.                             | `true`                   |
 
 
 To explicitly set a boolean option to false, prepend the option with `--no-`. For example, to disable JSON enum mapping, use `--no-includeEnumsJSON`.
@@ -79,8 +96,11 @@ Note: Boolean flags default to true when specified without a value. To set them 
 
 ## Related
 
-- [launchql/pgsql-parser](https://github.com/launchql/pgsql-parser): A PostgreSQL parser that interprets and converts SQL syntax into a structured format.
-- [launchql/libpg-query-node](https://github.com/launchql/libpg-query-node): Node.js bindings for the libpg_query library, allowing parsing of PostgreSQL queries into parse trees.
+* [launchql/pgsql-parser](https://github.com/launchql/pgsql-parser): A node.js PostgreSQL parser/deparser that interprets and converts PostgresSQL syntax.
+* [launchql/libpg-query-node](https://github.com/launchql/libpg-query-node): Node.js bindings for the libpg_query library, allowing parsing of PostgreSQL queries into parse trees.
+* [@pgsql/enums](https://github.com/launchql/pgsql-parser/tree/main/packages/enums): Provides PostgreSQL AST enums in TypeScript, enhancing type safety and usability in projects interacting with PostgreSQL AST nodes.
+* [@pgsql/types](https://github.com/launchql/pgsql-parser/tree/main/packages/types): Offers TypeScript type definitions for PostgreSQL AST nodes, facilitating type-safe construction, analysis, and manipulation of ASTs.
+* [@pgsql/utils](https://github.com/launchql/pgsql-parser/tree/main/packages/utils): A utility library for working with PostgreSQL AST node enumerations in a type-safe way, easing enum name and value conversions.
 
 ## Disclaimer
 
