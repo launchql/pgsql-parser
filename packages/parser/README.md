@@ -1,6 +1,10 @@
 # pg-proto-parser
 
 <p align="center" width="100%">
+  <img height="120" src="https://github.com/launchql/pgsql-parser/assets/545047/6440fa7d-918b-4a3b-8d1b-755d85de8bea" />
+</p>
+
+<p align="center" width="100%">
   <a href="https://github.com/launchql/pg-proto-parser/actions/workflows/run-tests.yaml">
     <img height="20" src="https://github.com/launchql/pg-proto-parser/actions/workflows/run-tests.yaml/badge.svg" />
   </a>
