@@ -1,6 +1,6 @@
 {
   "name": "pgsql-enums",
-  "version": "13.2.1",
+  "version": "13.2.2",
   "description": "PostgreSQL AST enums for deparsing",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/pgsql-parser",
@@ -56,8 +56,8 @@
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-prettier": "^3.1.2",
     "jest": "^25.1.0",
-    "prettier": "^2.1.2",
     "pg-proto-parser": "^1.2.0",
+    "prettier": "^2.1.2",
     "regenerator-runtime": "^0.13.2"
   },
   "dependencies": {

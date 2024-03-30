@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.7.3](https://github.com/launchql/pgsql-parser/compare/pgsql-parser@13.7.2...pgsql-parser@13.7.3) (2024-03-30)
+
+**Note:** Version bump only for package pgsql-parser
+
+
+
+
+
 ## [13.7.2](https://github.com/launchql/pgsql-parser/compare/pgsql-parser@13.7.1...pgsql-parser@13.7.2) (2024-03-30)
 
 **Note:** Version bump only for package pgsql-parser
