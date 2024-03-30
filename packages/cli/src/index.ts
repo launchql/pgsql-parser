@@ -1,21 +1,26 @@
-// import { parse } from 'pg-proto-parser/compiler'
-// import { writeFileSync } from 'fs';
-// import { sync as mkdirp } from 'mkdirp';
-// import { join, basename } from 'path';
+import { ProtoStore } from 'pg-proto-parser';
+import fs from 'fs';
 
 export default async (argv) => {
-  console.log(argv);
+
   if (!argv.inputFile || !argv.outputDir) {
-    console.log('inputFile and outputDir required!');
-    console.log(`
-interweb --inputFile input.tsx --outputDir out
-  `);
+    console.log('inputFile and outputDir are required!');
+    console.log('Usage:');
+    console.log('pg-proto-parser --inputFile=input.proto --outputDir=out');
     process.exit(1);
   }
 
-  // const input = fileToAst(argv.inputFile);
-  // const result = parse(input, true);
-  // const outCodePretty = prettyPrint(result.ast).code;
-  // mkdirp(argv.outputDir);
-  // writeFileSync(join(argv.outputDir, basename(argv.inputFile)), outCodePretty);
+
+  // Read the .proto file
+  const protoContent = fs.readFileSync(argv.inputFile, 'utf8');
+
+  // Load the protobuf definition
+  const root = Root.fromJSON(JSON.parse(protoContent));
+
+  // Create an instance of ProtoStore with the loaded root and specified output directory
+  const protoStore = new ProtoStore(root, argv.outputDir);
+
+  // Generate TypeScript and JSON files
+  await protoStore.write();
+
 };
