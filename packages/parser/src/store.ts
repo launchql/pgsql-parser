@@ -113,7 +113,7 @@ export class ProtoStore implements IProtoStore {
     }
 
     if (this.options.includeTypes) {
-      const typesTS = generateTSInterfaces(this.types);
+      const typesTS = generateTSInterfaces(this.types, this.options);
       let enumsTS = '';
 
       if (this.options.includeEnumTypeUnion) {

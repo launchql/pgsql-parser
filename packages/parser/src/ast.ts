@@ -2,6 +2,8 @@ import { Service, Type, Field, Enum, Root, Namespace, ReflectionObject } from '@
 import * as t from '@babel/types';
 import generate from '@babel/generator';
 import { getFieldName } from './utils';
+import { PgProtoParser } from './parser';
+import { PgProtoParserOptions } from './types';
 
 export const getTSType = (type: string) => {
   switch (type) {
@@ -60,42 +62,8 @@ export const resolveTypeName = (type: string) => {
   return t.tsTypeReference(t.identifier(type));
 }
 
-export const transformEnumToAST = (enumData) => {
-  const members = Object.entries(enumData.values).map(([key, value]) =>
-    t.tsEnumMember(t.identifier(key), t.numericLiteral(value as number))
-  );
-
-  const enumDeclaration = t.tsEnumDeclaration(t.identifier(enumData.name), members);
-  return t.exportNamedDeclaration(enumDeclaration);
-};
-
-export const transformTypeToAST = (type: Type) => {
-  const typeName = type.name;
-  // @ts-ignore
-  const fields: Field[] = type.fields;
-  const properties =
-    Object.entries(fields)
-      .map(([fieldName, fieldData]) => {
-        const type = resolveTypeName(fieldData.type);
-        const fieldType = fieldData.rule === 'repeated' ?
-          t.tsArrayType(type) :
-          type;
-        return t.tsPropertySignature(t.identifier(getFieldName(fieldData, fieldName)), t.tsTypeAnnotation(fieldType));
-      });
-
-  const interfaceDecl = t.tsInterfaceDeclaration(
-    t.identifier(typeName),
-    null,
-    [],
-    t.tsInterfaceBody(properties)
-  );
-
-  // Wrap the interface declaration in an export statement
-  return t.exportNamedDeclaration(interfaceDecl, []);
-}
-
-export const generateTSInterfaces = (types: Type[]) => {
-  const ast = t.file(t.program(types.map(type => transformTypeToAST(type))));
+export const generateTSInterfaces = (types: Type[], options: PgProtoParserOptions) => {
+  const ast = t.file(t.program(types.map(type => transformTypeToAST(type, options))));
   const { code } = generate(ast);
   return code;
 }
@@ -117,6 +85,46 @@ export const generateTSEnumFunction = (enums: Enum[]) => {
   const { code } = generate(ast);
   return code;
 }
+
+export const transformEnumToAST = (enumData) => {
+  const members = Object.entries(enumData.values).map(([key, value]) =>
+    t.tsEnumMember(t.identifier(key), t.numericLiteral(value as number))
+  );
+
+  const enumDeclaration = t.tsEnumDeclaration(t.identifier(enumData.name), members);
+  return t.exportNamedDeclaration(enumDeclaration);
+};
+
+export const transformTypeToAST = (type: Type, options: PgProtoParserOptions) => {
+  const typeName = type.name;
+  // @ts-ignore
+  const fields: Field[] = type.fields;
+  const properties =
+    Object.entries(fields)
+      .map(([fieldName, fieldData]) => {
+        const type = resolveTypeName(fieldData.type);
+        const fieldType = fieldData.rule === 'repeated' ?
+          t.tsArrayType(type) :
+          type;
+        const prop = t.tsPropertySignature(
+          t.identifier(getFieldName(fieldData, fieldName)),
+          t.tsTypeAnnotation(fieldType)
+        );
+        prop.optional = options.optionalFields;
+        return prop;
+      });
+
+  const interfaceDecl = t.tsInterfaceDeclaration(
+    t.identifier(typeName),
+    null,
+    [],
+    t.tsInterfaceBody(properties)
+  );
+
+  // Wrap the interface declaration in an export statement
+  return t.exportNamedDeclaration(interfaceDecl, []);
+}
+
 
 export const transformEnumToTypeUnionAST = (enumData: Enum) => {
   const literals = Object.keys(enumData.values).map(key =>
