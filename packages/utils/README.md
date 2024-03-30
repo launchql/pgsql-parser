@@ -14,13 +14,15 @@
    <a href="https://www.npmjs.com/package/@pgsql/utils"><img height="20" src="https://img.shields.io/github/package-json/v/launchql/pgsql-parser?filename=packages%2Futils%2Fpackage.json"/></a>
 </p>
 
-`@pgsql/utils` is a companion utility library for `@pgsql/types`, providing convenient functions to work with PostgreSQL Abstract Syntax Tree (AST) node enumerations in a type-safe manner. This library simplifies the process of converting between enum names and their respective integer values, as defined in the PostgreSQL parser output.
+`@pgsql/utils` is a companion utility library for `@pgsql/types`, offering convenient functions to work with PostgreSQL Abstract Syntax Tree (AST) nodes and enums in a type-safe manner. This library facilitates the creation of AST nodes and simplifies the process of converting between enum names and their respective integer values, as defined in the PostgreSQL parser output.
 
 ## Features
 
-- Type-safe enum value conversion: Convert between string and integer representations of PostgreSQL AST enum values.
-- Comprehensive coverage: Supports all enum types defined in the PostgreSQL AST.
-- Designed to be used alongside the `@pgsql/types` package for a complete AST handling solution.
+- **AST Node Creation**: Simplifies the process of constructing PostgreSQL AST nodes, allowing for easy assembly of SQL queries or statements programmatically.
+- **Type-safe Enum Conversion**: Convert between string and integer representations of PostgreSQL AST enum values.
+- **Comprehensive Coverage**: Supports all enum types and node types defined in the PostgreSQL AST.
+- **Seamless Integration**: Designed to be used alongside the `@pgsql/types` package for a complete AST handling solution.
+
 
 ## Installation
 
@@ -32,11 +34,36 @@ npm install @pgsql/utils
 
 ## Usage
 
+### AST Node Creation
+
+With the AST helper methods, creating complex SQL ASTs becomes straightforward and intuitive.
+
+```ts
+import { CreateStmt, ColumnDef } from '@pgsql/types';
+import ast from '@pgsql/utils';
+
+const newColumn = ast.columnDef({
+  colname: 'id',
+  typeName: ast.typeName({
+    names: [ast.string({ str: 'int4' })]
+  })
+});
+
+const createStmt = ast.createStmt({
+  relation: ast.rangeVar({
+    relname: 'new_table'
+  }),
+  tableElts: [newColumn]
+});
+```
+
+### Enum Value Conversion
+
 `@pgsql/utils` provides the `getEnumValue` function to convert between the string and integer representations of enum values.
 
 Here are a couple of examples demonstrating how to use `@pgsql/utils` in real applications:
 
-### Example 1: Converting Enum Name to Integer
+#### Example 1: Converting Enum Name to Integer
 
 Suppose you are working with the A_Expr_Kind enum and you have the name of an enum value. You can get its integer representation like this:
 
@@ -49,7 +76,7 @@ const enumValue = getEnumValue('A_Expr_Kind', enumName);
 console.log(enumValue); // Outputs the integer value corresponding to 'AEXPR_OP'
 ```
 
-### Example 2: Converting Integer to Enum Name
+#### Example 2: Converting Integer to Enum Name
 
 ```ts
 import { getEnumValue } from '@pgsql/utils';

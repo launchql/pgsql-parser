@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`A_Expr_Kind 1`] = `"AEXPR_OP"`;
+exports[`getEnumValue 1`] = `"AEXPR_OP"`;
 
-exports[`A_Expr_Kind 2`] = `"AEXPR_OP_ANY"`;
+exports[`getEnumValue 2`] = `"AEXPR_OP_ANY"`;
 
-exports[`A_Expr_Kind 3`] = `"AEXPR_OP_ALL"`;
+exports[`getEnumValue 3`] = `"AEXPR_OP_ALL"`;
 
-exports[`A_Expr_Kind 4`] = `"AEXPR_DISTINCT"`;
+exports[`getEnumValue 4`] = `"AEXPR_DISTINCT"`;
 
-exports[`A_Expr_Kind 5`] = `"AEXPR_NOT_DISTINCT"`;
+exports[`getEnumValue 5`] = `"AEXPR_NOT_DISTINCT"`;
 
-exports[`A_Expr_Kind 6`] = `"AEXPR_NULLIF"`;
+exports[`getEnumValue 6`] = `"AEXPR_NULLIF"`;

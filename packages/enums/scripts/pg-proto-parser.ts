@@ -6,6 +6,8 @@ const outDir: string = resolve(join(__dirname, '../src'));
 
 const parser = new PgProtoParser(inFile, {
   outDir,
+  includeAstHelpers: false,
+  includeHeader: true,
   includeEnums: true,
   includeEnumsJSON: false,
   includeEnumTypeUnion: false,
