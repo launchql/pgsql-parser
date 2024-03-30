@@ -1,6 +1,6 @@
 {
   "name": "@pgsql/utils",
-  "version": "13.4.0",
+  "version": "13.5.0",
   "description": "PostgreSQL AST utils for pgsql-parser",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/pgsql-parser",
@@ -73,6 +73,6 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@pgsql/types": "13.4.0"
+    "@pgsql/types": "^13.5.0"
   }
 }
