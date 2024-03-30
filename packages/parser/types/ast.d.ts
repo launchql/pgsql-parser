@@ -12,6 +12,7 @@ export declare const generateTSASTHelperMethods: (types: Type[]) => string;
 export declare const generateTSASTHelpersImports: (types: Type[], options: PgProtoParserOptions) => string;
 export declare const transformEnumToAST: (enumData: any) => t.ExportNamedDeclaration;
 export declare const generateImportSpecifiersAST: (types: Type[], options: PgProtoParserOptions) => t.ImportDeclaration;
+export declare const generateMacroForTypes: () => t.ExportNamedDeclaration;
 export declare const generateAstHelperMethodsAST: (types: Type[]) => t.ExportDefaultDeclaration;
 export declare const createUnionTypeAST: (types: Type[]) => t.ExportNamedDeclaration;
 export declare const transformTypeToAST: (type: Type, options: PgProtoParserOptions) => t.ExportNamedDeclaration;

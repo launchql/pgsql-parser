@@ -960,9 +960,7 @@ export default {
       }
     };
   },
-  typeName(_p?: TypeName): {
-    TypeName: TypeName;
-  } {
+  typeName(_p?: TypeName): TypeName {
     return {
       names: _p?.names,
       typeOid: _p?.typeOid,

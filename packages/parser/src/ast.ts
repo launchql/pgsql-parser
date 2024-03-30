@@ -5,6 +5,8 @@ import { getFieldName, toSpecialCamelCase } from './utils';
 import { PgProtoParserOptions } from './types';
 import { PgProtoParser } from './parser';
 
+const specialTypes = ['TypeName'];
+
 export const getTSType = (type: string = 'any') => {
   switch (type) {
     case 'string':
@@ -203,7 +205,6 @@ export const generateAstHelperMethodsAST = (types: Type[]): t.ExportDefaultDecla
       ...properties
     ]);
 
-    const specialTypes = ['TypeName'];
     if (!specialTypes.includes(type.name)) {
       body = t.objectExpression([
         t.objectProperty(t.identifier(type.name), body)
@@ -225,25 +226,20 @@ export const generateAstHelperMethodsAST = (types: Type[]): t.ExportDefaultDecla
       ])
     );
 
-    // method.returnType = t.tsTypeAnnotation(t.tsTypeReference(t.identifier(typeName)));
+    if (specialTypes.includes(typeName)) {
+      method.returnType = t.tsTypeAnnotation(t.tsTypeReference(t.identifier(typeName)));
+    } else {
+      method.returnType =
+        t.tsTypeAnnotation(
+          t.tsTypeLiteral([
+            t.tsPropertySignature(
+              t.identifier(typeName),
+              t.tsTypeAnnotation(t.tsTypeReference(t.identifier(typeName)))
+            )
+          ])
+        );
+    }
 
-    // method.returnType = t.tsTypeAnnotation(
-    //   t.tsTypeReference(
-    //     t.identifier('ASTType'),
-    //     t.tsTypeParameterInstantiation([
-    //       t.tsTypeReference(t.identifier(typeName))
-    //     ])
-    //   )
-    // );
-    method.returnType =
-      t.tsTypeAnnotation(
-        t.tsTypeLiteral([
-          t.tsPropertySignature(
-            t.identifier(typeName),
-            t.tsTypeAnnotation(t.tsTypeReference(t.identifier(typeName)))
-          )
-        ])
-      );
 
     return method;
   });
