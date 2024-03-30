@@ -4,6 +4,7 @@ import { generateEnum2IntJSON, generateEnum2StrJSON } from './json';
 import { sync as mkdirp } from 'mkdirp';
 import { writeFileSync } from 'fs';
 import { defaultPgProtoParserOptions, PgProtoStoreOptions } from './types';
+import { getUndefinedKey, hasUndefinedInitialValue } from './utils';
 
 const cloneAndNameNode = (node: ReflectionObject, name: string) => {
   const clone = JSON.parse(JSON.stringify(node));
@@ -62,7 +63,7 @@ export class ProtoStore implements IProtoStore {
       this.types.push(cloneAndNameNode(node, name));
       node.fieldsArray.forEach(field => this.fields.push(field));
     } else if (node instanceof Enum) {
-      this.enums.push(cloneAndNameNode(node, name));
+      this.enums.push(cloneAndNameNode(this._processEnum(node), name));
     }
 
     if (node instanceof Namespace) {
@@ -72,6 +73,30 @@ export class ProtoStore implements IProtoStore {
       });
     }
   }
+
+  _processEnum(enumNode: Enum): Enum {
+    const undefinedKey = getUndefinedKey(enumNode.name);
+    const clone = cloneAndNameNode(enumNode, enumNode.name);
+    if (!this.options.removeUndefinedAt0 || !hasUndefinedInitialValue(enumNode)) {
+      return clone;
+    }
+
+    const newValues = {};
+    let decrement = 0;
+
+    for (const [key, value] of Object.entries(enumNode.values)) {
+        if (key.endsWith('_UNDEFINED') && value === 0) {
+            decrement = 1;
+            continue;
+        }
+        newValues[key] = value - decrement;
+    }
+
+    clone.values = newValues;
+    return clone;
+
+    
+}
 
   write() {
     // Ensure the output directory exists

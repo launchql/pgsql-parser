@@ -6,6 +6,7 @@ export interface PgProtoStoreOptions {
     includeEnumsJSON?: boolean;
     includeTypes?: boolean;
     includeUtils?: boolean;
+    removeUndefinedAt0?: boolean;
     outDir?: string;
 }
 
@@ -20,6 +21,7 @@ export const defaultPgProtoParserOptions: PgProtoParserOptions = {
     includeEnumsJSON: true,
     includeTypes: true,
     includeUtils: true,
+    removeUndefinedAt0: true,
     outDir: `${process.cwd()}/out`,
     parser: {
         keepCase: true,

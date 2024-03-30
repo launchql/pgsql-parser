@@ -20,6 +20,7 @@ export class PgProtoParser {
     if (options?.parser) {
       this.options.parser = { ...defaultPgProtoParserOptions.parser, ...options.parser };
     }
+
   }
 
   private readProtoFile(): string {

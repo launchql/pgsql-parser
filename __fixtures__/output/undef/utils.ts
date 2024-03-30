@@ -4,17 +4,21 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "OverridingKind":
       {
         switch (key) {
-          case "OVERRIDING_NOT_SET":
+          case "OVERRIDING_KIND_UNDEFINED":
             return 0;
-          case "OVERRIDING_USER_VALUE":
+          case "OVERRIDING_NOT_SET":
             return 1;
-          case "OVERRIDING_SYSTEM_VALUE":
+          case "OVERRIDING_USER_VALUE":
             return 2;
+          case "OVERRIDING_SYSTEM_VALUE":
+            return 3;
           case 0:
-            return "OVERRIDING_NOT_SET";
+            return "OVERRIDING_KIND_UNDEFINED";
           case 1:
-            return "OVERRIDING_USER_VALUE";
+            return "OVERRIDING_NOT_SET";
           case 2:
+            return "OVERRIDING_USER_VALUE";
+          case 3:
             return "OVERRIDING_SYSTEM_VALUE";
           default:
             throw new Error("Key not recognized in enum OverridingKind");
@@ -23,25 +27,29 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "QuerySource":
       {
         switch (key) {
-          case "QSRC_ORIGINAL":
+          case "QUERY_SOURCE_UNDEFINED":
             return 0;
-          case "QSRC_PARSER":
+          case "QSRC_ORIGINAL":
             return 1;
-          case "QSRC_INSTEAD_RULE":
+          case "QSRC_PARSER":
             return 2;
-          case "QSRC_QUAL_INSTEAD_RULE":
+          case "QSRC_INSTEAD_RULE":
             return 3;
-          case "QSRC_NON_INSTEAD_RULE":
+          case "QSRC_QUAL_INSTEAD_RULE":
             return 4;
+          case "QSRC_NON_INSTEAD_RULE":
+            return 5;
           case 0:
-            return "QSRC_ORIGINAL";
+            return "QUERY_SOURCE_UNDEFINED";
           case 1:
-            return "QSRC_PARSER";
+            return "QSRC_ORIGINAL";
           case 2:
-            return "QSRC_INSTEAD_RULE";
+            return "QSRC_PARSER";
           case 3:
-            return "QSRC_QUAL_INSTEAD_RULE";
+            return "QSRC_INSTEAD_RULE";
           case 4:
+            return "QSRC_QUAL_INSTEAD_RULE";
+          case 5:
             return "QSRC_NON_INSTEAD_RULE";
           default:
             throw new Error("Key not recognized in enum QuerySource");
@@ -50,21 +58,25 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "SortByDir":
       {
         switch (key) {
-          case "SORTBY_DEFAULT":
+          case "SORT_BY_DIR_UNDEFINED":
             return 0;
-          case "SORTBY_ASC":
+          case "SORTBY_DEFAULT":
             return 1;
-          case "SORTBY_DESC":
+          case "SORTBY_ASC":
             return 2;
-          case "SORTBY_USING":
+          case "SORTBY_DESC":
             return 3;
+          case "SORTBY_USING":
+            return 4;
           case 0:
-            return "SORTBY_DEFAULT";
+            return "SORT_BY_DIR_UNDEFINED";
           case 1:
-            return "SORTBY_ASC";
+            return "SORTBY_DEFAULT";
           case 2:
-            return "SORTBY_DESC";
+            return "SORTBY_ASC";
           case 3:
+            return "SORTBY_DESC";
+          case 4:
             return "SORTBY_USING";
           default:
             throw new Error("Key not recognized in enum SortByDir");
@@ -73,17 +85,21 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "SortByNulls":
       {
         switch (key) {
-          case "SORTBY_NULLS_DEFAULT":
+          case "SORT_BY_NULLS_UNDEFINED":
             return 0;
-          case "SORTBY_NULLS_FIRST":
+          case "SORTBY_NULLS_DEFAULT":
             return 1;
-          case "SORTBY_NULLS_LAST":
+          case "SORTBY_NULLS_FIRST":
             return 2;
+          case "SORTBY_NULLS_LAST":
+            return 3;
           case 0:
-            return "SORTBY_NULLS_DEFAULT";
+            return "SORT_BY_NULLS_UNDEFINED";
           case 1:
-            return "SORTBY_NULLS_FIRST";
+            return "SORTBY_NULLS_DEFAULT";
           case 2:
+            return "SORTBY_NULLS_FIRST";
+          case 3:
             return "SORTBY_NULLS_LAST";
           default:
             throw new Error("Key not recognized in enum SortByNulls");
@@ -92,17 +108,21 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "SetQuantifier":
       {
         switch (key) {
-          case "SET_QUANTIFIER_DEFAULT":
+          case "SET_QUANTIFIER_UNDEFINED":
             return 0;
-          case "SET_QUANTIFIER_ALL":
+          case "SET_QUANTIFIER_DEFAULT":
             return 1;
-          case "SET_QUANTIFIER_DISTINCT":
+          case "SET_QUANTIFIER_ALL":
             return 2;
+          case "SET_QUANTIFIER_DISTINCT":
+            return 3;
           case 0:
-            return "SET_QUANTIFIER_DEFAULT";
+            return "SET_QUANTIFIER_UNDEFINED";
           case 1:
-            return "SET_QUANTIFIER_ALL";
+            return "SET_QUANTIFIER_DEFAULT";
           case 2:
+            return "SET_QUANTIFIER_ALL";
+          case 3:
             return "SET_QUANTIFIER_DISTINCT";
           default:
             throw new Error("Key not recognized in enum SetQuantifier");
@@ -111,61 +131,65 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "A_Expr_Kind":
       {
         switch (key) {
-          case "AEXPR_OP":
+          case "A_EXPR_KIND_UNDEFINED":
             return 0;
-          case "AEXPR_OP_ANY":
+          case "AEXPR_OP":
             return 1;
-          case "AEXPR_OP_ALL":
+          case "AEXPR_OP_ANY":
             return 2;
-          case "AEXPR_DISTINCT":
+          case "AEXPR_OP_ALL":
             return 3;
-          case "AEXPR_NOT_DISTINCT":
+          case "AEXPR_DISTINCT":
             return 4;
-          case "AEXPR_NULLIF":
+          case "AEXPR_NOT_DISTINCT":
             return 5;
-          case "AEXPR_IN":
+          case "AEXPR_NULLIF":
             return 6;
-          case "AEXPR_LIKE":
+          case "AEXPR_IN":
             return 7;
-          case "AEXPR_ILIKE":
+          case "AEXPR_LIKE":
             return 8;
-          case "AEXPR_SIMILAR":
+          case "AEXPR_ILIKE":
             return 9;
-          case "AEXPR_BETWEEN":
+          case "AEXPR_SIMILAR":
             return 10;
-          case "AEXPR_NOT_BETWEEN":
+          case "AEXPR_BETWEEN":
             return 11;
-          case "AEXPR_BETWEEN_SYM":
+          case "AEXPR_NOT_BETWEEN":
             return 12;
-          case "AEXPR_NOT_BETWEEN_SYM":
+          case "AEXPR_BETWEEN_SYM":
             return 13;
+          case "AEXPR_NOT_BETWEEN_SYM":
+            return 14;
           case 0:
-            return "AEXPR_OP";
+            return "A_EXPR_KIND_UNDEFINED";
           case 1:
-            return "AEXPR_OP_ANY";
+            return "AEXPR_OP";
           case 2:
-            return "AEXPR_OP_ALL";
+            return "AEXPR_OP_ANY";
           case 3:
-            return "AEXPR_DISTINCT";
+            return "AEXPR_OP_ALL";
           case 4:
-            return "AEXPR_NOT_DISTINCT";
+            return "AEXPR_DISTINCT";
           case 5:
-            return "AEXPR_NULLIF";
+            return "AEXPR_NOT_DISTINCT";
           case 6:
-            return "AEXPR_IN";
+            return "AEXPR_NULLIF";
           case 7:
-            return "AEXPR_LIKE";
+            return "AEXPR_IN";
           case 8:
-            return "AEXPR_ILIKE";
+            return "AEXPR_LIKE";
           case 9:
-            return "AEXPR_SIMILAR";
+            return "AEXPR_ILIKE";
           case 10:
-            return "AEXPR_BETWEEN";
+            return "AEXPR_SIMILAR";
           case 11:
-            return "AEXPR_NOT_BETWEEN";
+            return "AEXPR_BETWEEN";
           case 12:
-            return "AEXPR_BETWEEN_SYM";
+            return "AEXPR_NOT_BETWEEN";
           case 13:
+            return "AEXPR_BETWEEN_SYM";
+          case 14:
             return "AEXPR_NOT_BETWEEN_SYM";
           default:
             throw new Error("Key not recognized in enum A_Expr_Kind");
@@ -174,25 +198,29 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "RoleSpecType":
       {
         switch (key) {
-          case "ROLESPEC_CSTRING":
+          case "ROLE_SPEC_TYPE_UNDEFINED":
             return 0;
-          case "ROLESPEC_CURRENT_ROLE":
+          case "ROLESPEC_CSTRING":
             return 1;
-          case "ROLESPEC_CURRENT_USER":
+          case "ROLESPEC_CURRENT_ROLE":
             return 2;
-          case "ROLESPEC_SESSION_USER":
+          case "ROLESPEC_CURRENT_USER":
             return 3;
-          case "ROLESPEC_PUBLIC":
+          case "ROLESPEC_SESSION_USER":
             return 4;
+          case "ROLESPEC_PUBLIC":
+            return 5;
           case 0:
-            return "ROLESPEC_CSTRING";
+            return "ROLE_SPEC_TYPE_UNDEFINED";
           case 1:
-            return "ROLESPEC_CURRENT_ROLE";
+            return "ROLESPEC_CSTRING";
           case 2:
-            return "ROLESPEC_CURRENT_USER";
+            return "ROLESPEC_CURRENT_ROLE";
           case 3:
-            return "ROLESPEC_SESSION_USER";
+            return "ROLESPEC_CURRENT_USER";
           case 4:
+            return "ROLESPEC_SESSION_USER";
+          case 5:
             return "ROLESPEC_PUBLIC";
           default:
             throw new Error("Key not recognized in enum RoleSpecType");
@@ -201,45 +229,49 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "TableLikeOption":
       {
         switch (key) {
-          case "CREATE_TABLE_LIKE_COMMENTS":
+          case "TABLE_LIKE_OPTION_UNDEFINED":
             return 0;
-          case "CREATE_TABLE_LIKE_COMPRESSION":
+          case "CREATE_TABLE_LIKE_COMMENTS":
             return 1;
-          case "CREATE_TABLE_LIKE_CONSTRAINTS":
+          case "CREATE_TABLE_LIKE_COMPRESSION":
             return 2;
-          case "CREATE_TABLE_LIKE_DEFAULTS":
+          case "CREATE_TABLE_LIKE_CONSTRAINTS":
             return 3;
-          case "CREATE_TABLE_LIKE_GENERATED":
+          case "CREATE_TABLE_LIKE_DEFAULTS":
             return 4;
-          case "CREATE_TABLE_LIKE_IDENTITY":
+          case "CREATE_TABLE_LIKE_GENERATED":
             return 5;
-          case "CREATE_TABLE_LIKE_INDEXES":
+          case "CREATE_TABLE_LIKE_IDENTITY":
             return 6;
-          case "CREATE_TABLE_LIKE_STATISTICS":
+          case "CREATE_TABLE_LIKE_INDEXES":
             return 7;
-          case "CREATE_TABLE_LIKE_STORAGE":
+          case "CREATE_TABLE_LIKE_STATISTICS":
             return 8;
-          case "CREATE_TABLE_LIKE_ALL":
+          case "CREATE_TABLE_LIKE_STORAGE":
             return 9;
+          case "CREATE_TABLE_LIKE_ALL":
+            return 10;
           case 0:
-            return "CREATE_TABLE_LIKE_COMMENTS";
+            return "TABLE_LIKE_OPTION_UNDEFINED";
           case 1:
-            return "CREATE_TABLE_LIKE_COMPRESSION";
+            return "CREATE_TABLE_LIKE_COMMENTS";
           case 2:
-            return "CREATE_TABLE_LIKE_CONSTRAINTS";
+            return "CREATE_TABLE_LIKE_COMPRESSION";
           case 3:
-            return "CREATE_TABLE_LIKE_DEFAULTS";
+            return "CREATE_TABLE_LIKE_CONSTRAINTS";
           case 4:
-            return "CREATE_TABLE_LIKE_GENERATED";
+            return "CREATE_TABLE_LIKE_DEFAULTS";
           case 5:
-            return "CREATE_TABLE_LIKE_IDENTITY";
+            return "CREATE_TABLE_LIKE_GENERATED";
           case 6:
-            return "CREATE_TABLE_LIKE_INDEXES";
+            return "CREATE_TABLE_LIKE_IDENTITY";
           case 7:
-            return "CREATE_TABLE_LIKE_STATISTICS";
+            return "CREATE_TABLE_LIKE_INDEXES";
           case 8:
-            return "CREATE_TABLE_LIKE_STORAGE";
+            return "CREATE_TABLE_LIKE_STATISTICS";
           case 9:
+            return "CREATE_TABLE_LIKE_STORAGE";
+          case 10:
             return "CREATE_TABLE_LIKE_ALL";
           default:
             throw new Error("Key not recognized in enum TableLikeOption");
@@ -248,21 +280,25 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "DefElemAction":
       {
         switch (key) {
-          case "DEFELEM_UNSPEC":
+          case "DEF_ELEM_ACTION_UNDEFINED":
             return 0;
-          case "DEFELEM_SET":
+          case "DEFELEM_UNSPEC":
             return 1;
-          case "DEFELEM_ADD":
+          case "DEFELEM_SET":
             return 2;
-          case "DEFELEM_DROP":
+          case "DEFELEM_ADD":
             return 3;
+          case "DEFELEM_DROP":
+            return 4;
           case 0:
-            return "DEFELEM_UNSPEC";
+            return "DEF_ELEM_ACTION_UNDEFINED";
           case 1:
-            return "DEFELEM_SET";
+            return "DEFELEM_UNSPEC";
           case 2:
-            return "DEFELEM_ADD";
+            return "DEFELEM_SET";
           case 3:
+            return "DEFELEM_ADD";
+          case 4:
             return "DEFELEM_DROP";
           default:
             throw new Error("Key not recognized in enum DefElemAction");
@@ -271,17 +307,21 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "PartitionStrategy":
       {
         switch (key) {
-          case "PARTITION_STRATEGY_LIST":
+          case "PARTITION_STRATEGY_UNDEFINED":
             return 0;
-          case "PARTITION_STRATEGY_RANGE":
+          case "PARTITION_STRATEGY_LIST":
             return 1;
-          case "PARTITION_STRATEGY_HASH":
+          case "PARTITION_STRATEGY_RANGE":
             return 2;
+          case "PARTITION_STRATEGY_HASH":
+            return 3;
           case 0:
-            return "PARTITION_STRATEGY_LIST";
+            return "PARTITION_STRATEGY_UNDEFINED";
           case 1:
-            return "PARTITION_STRATEGY_RANGE";
+            return "PARTITION_STRATEGY_LIST";
           case 2:
+            return "PARTITION_STRATEGY_RANGE";
+          case 3:
             return "PARTITION_STRATEGY_HASH";
           default:
             throw new Error("Key not recognized in enum PartitionStrategy");
@@ -290,17 +330,21 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "PartitionRangeDatumKind":
       {
         switch (key) {
-          case "PARTITION_RANGE_DATUM_MINVALUE":
+          case "PARTITION_RANGE_DATUM_KIND_UNDEFINED":
             return 0;
-          case "PARTITION_RANGE_DATUM_VALUE":
+          case "PARTITION_RANGE_DATUM_MINVALUE":
             return 1;
-          case "PARTITION_RANGE_DATUM_MAXVALUE":
+          case "PARTITION_RANGE_DATUM_VALUE":
             return 2;
+          case "PARTITION_RANGE_DATUM_MAXVALUE":
+            return 3;
           case 0:
-            return "PARTITION_RANGE_DATUM_MINVALUE";
+            return "PARTITION_RANGE_DATUM_KIND_UNDEFINED";
           case 1:
-            return "PARTITION_RANGE_DATUM_VALUE";
+            return "PARTITION_RANGE_DATUM_MINVALUE";
           case 2:
+            return "PARTITION_RANGE_DATUM_VALUE";
+          case 3:
             return "PARTITION_RANGE_DATUM_MAXVALUE";
           default:
             throw new Error("Key not recognized in enum PartitionRangeDatumKind");
@@ -309,41 +353,45 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "RTEKind":
       {
         switch (key) {
-          case "RTE_RELATION":
+          case "RTEKIND_UNDEFINED":
             return 0;
-          case "RTE_SUBQUERY":
+          case "RTE_RELATION":
             return 1;
-          case "RTE_JOIN":
+          case "RTE_SUBQUERY":
             return 2;
-          case "RTE_FUNCTION":
+          case "RTE_JOIN":
             return 3;
-          case "RTE_TABLEFUNC":
+          case "RTE_FUNCTION":
             return 4;
-          case "RTE_VALUES":
+          case "RTE_TABLEFUNC":
             return 5;
-          case "RTE_CTE":
+          case "RTE_VALUES":
             return 6;
-          case "RTE_NAMEDTUPLESTORE":
+          case "RTE_CTE":
             return 7;
-          case "RTE_RESULT":
+          case "RTE_NAMEDTUPLESTORE":
             return 8;
+          case "RTE_RESULT":
+            return 9;
           case 0:
-            return "RTE_RELATION";
+            return "RTEKIND_UNDEFINED";
           case 1:
-            return "RTE_SUBQUERY";
+            return "RTE_RELATION";
           case 2:
-            return "RTE_JOIN";
+            return "RTE_SUBQUERY";
           case 3:
-            return "RTE_FUNCTION";
+            return "RTE_JOIN";
           case 4:
-            return "RTE_TABLEFUNC";
+            return "RTE_FUNCTION";
           case 5:
-            return "RTE_VALUES";
+            return "RTE_TABLEFUNC";
           case 6:
-            return "RTE_CTE";
+            return "RTE_VALUES";
           case 7:
-            return "RTE_NAMEDTUPLESTORE";
+            return "RTE_CTE";
           case 8:
+            return "RTE_NAMEDTUPLESTORE";
+          case 9:
             return "RTE_RESULT";
           default:
             throw new Error("Key not recognized in enum RTEKind");
@@ -352,29 +400,33 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "WCOKind":
       {
         switch (key) {
-          case "WCO_VIEW_CHECK":
+          case "WCOKIND_UNDEFINED":
             return 0;
-          case "WCO_RLS_INSERT_CHECK":
+          case "WCO_VIEW_CHECK":
             return 1;
-          case "WCO_RLS_UPDATE_CHECK":
+          case "WCO_RLS_INSERT_CHECK":
             return 2;
-          case "WCO_RLS_CONFLICT_CHECK":
+          case "WCO_RLS_UPDATE_CHECK":
             return 3;
-          case "WCO_RLS_MERGE_UPDATE_CHECK":
+          case "WCO_RLS_CONFLICT_CHECK":
             return 4;
-          case "WCO_RLS_MERGE_DELETE_CHECK":
+          case "WCO_RLS_MERGE_UPDATE_CHECK":
             return 5;
+          case "WCO_RLS_MERGE_DELETE_CHECK":
+            return 6;
           case 0:
-            return "WCO_VIEW_CHECK";
+            return "WCOKIND_UNDEFINED";
           case 1:
-            return "WCO_RLS_INSERT_CHECK";
+            return "WCO_VIEW_CHECK";
           case 2:
-            return "WCO_RLS_UPDATE_CHECK";
+            return "WCO_RLS_INSERT_CHECK";
           case 3:
-            return "WCO_RLS_CONFLICT_CHECK";
+            return "WCO_RLS_UPDATE_CHECK";
           case 4:
-            return "WCO_RLS_MERGE_UPDATE_CHECK";
+            return "WCO_RLS_CONFLICT_CHECK";
           case 5:
+            return "WCO_RLS_MERGE_UPDATE_CHECK";
+          case 6:
             return "WCO_RLS_MERGE_DELETE_CHECK";
           default:
             throw new Error("Key not recognized in enum WCOKind");
@@ -383,25 +435,29 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "GroupingSetKind":
       {
         switch (key) {
-          case "GROUPING_SET_EMPTY":
+          case "GROUPING_SET_KIND_UNDEFINED":
             return 0;
-          case "GROUPING_SET_SIMPLE":
+          case "GROUPING_SET_EMPTY":
             return 1;
-          case "GROUPING_SET_ROLLUP":
+          case "GROUPING_SET_SIMPLE":
             return 2;
-          case "GROUPING_SET_CUBE":
+          case "GROUPING_SET_ROLLUP":
             return 3;
-          case "GROUPING_SET_SETS":
+          case "GROUPING_SET_CUBE":
             return 4;
+          case "GROUPING_SET_SETS":
+            return 5;
           case 0:
-            return "GROUPING_SET_EMPTY";
+            return "GROUPING_SET_KIND_UNDEFINED";
           case 1:
-            return "GROUPING_SET_SIMPLE";
+            return "GROUPING_SET_EMPTY";
           case 2:
-            return "GROUPING_SET_ROLLUP";
+            return "GROUPING_SET_SIMPLE";
           case 3:
-            return "GROUPING_SET_CUBE";
+            return "GROUPING_SET_ROLLUP";
           case 4:
+            return "GROUPING_SET_CUBE";
+          case 5:
             return "GROUPING_SET_SETS";
           default:
             throw new Error("Key not recognized in enum GroupingSetKind");
@@ -410,17 +466,21 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "CTEMaterialize":
       {
         switch (key) {
-          case "CTEMaterializeDefault":
+          case "CTEMATERIALIZE_UNDEFINED":
             return 0;
-          case "CTEMaterializeAlways":
+          case "CTEMaterializeDefault":
             return 1;
-          case "CTEMaterializeNever":
+          case "CTEMaterializeAlways":
             return 2;
+          case "CTEMaterializeNever":
+            return 3;
           case 0:
-            return "CTEMaterializeDefault";
+            return "CTEMATERIALIZE_UNDEFINED";
           case 1:
-            return "CTEMaterializeAlways";
+            return "CTEMaterializeDefault";
           case 2:
+            return "CTEMaterializeAlways";
+          case 3:
             return "CTEMaterializeNever";
           default:
             throw new Error("Key not recognized in enum CTEMaterialize");
@@ -429,21 +489,25 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "SetOperation":
       {
         switch (key) {
-          case "SETOP_NONE":
+          case "SET_OPERATION_UNDEFINED":
             return 0;
-          case "SETOP_UNION":
+          case "SETOP_NONE":
             return 1;
-          case "SETOP_INTERSECT":
+          case "SETOP_UNION":
             return 2;
-          case "SETOP_EXCEPT":
+          case "SETOP_INTERSECT":
             return 3;
+          case "SETOP_EXCEPT":
+            return 4;
           case 0:
-            return "SETOP_NONE";
+            return "SET_OPERATION_UNDEFINED";
           case 1:
-            return "SETOP_UNION";
+            return "SETOP_NONE";
           case 2:
-            return "SETOP_INTERSECT";
+            return "SETOP_UNION";
           case 3:
+            return "SETOP_INTERSECT";
+          case 4:
             return "SETOP_EXCEPT";
           default:
             throw new Error("Key not recognized in enum SetOperation");
@@ -452,213 +516,217 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "ObjectType":
       {
         switch (key) {
-          case "OBJECT_ACCESS_METHOD":
+          case "OBJECT_TYPE_UNDEFINED":
             return 0;
-          case "OBJECT_AGGREGATE":
+          case "OBJECT_ACCESS_METHOD":
             return 1;
-          case "OBJECT_AMOP":
+          case "OBJECT_AGGREGATE":
             return 2;
-          case "OBJECT_AMPROC":
+          case "OBJECT_AMOP":
             return 3;
-          case "OBJECT_ATTRIBUTE":
+          case "OBJECT_AMPROC":
             return 4;
-          case "OBJECT_CAST":
+          case "OBJECT_ATTRIBUTE":
             return 5;
-          case "OBJECT_COLUMN":
+          case "OBJECT_CAST":
             return 6;
-          case "OBJECT_COLLATION":
+          case "OBJECT_COLUMN":
             return 7;
-          case "OBJECT_CONVERSION":
+          case "OBJECT_COLLATION":
             return 8;
-          case "OBJECT_DATABASE":
+          case "OBJECT_CONVERSION":
             return 9;
-          case "OBJECT_DEFAULT":
+          case "OBJECT_DATABASE":
             return 10;
-          case "OBJECT_DEFACL":
+          case "OBJECT_DEFAULT":
             return 11;
-          case "OBJECT_DOMAIN":
+          case "OBJECT_DEFACL":
             return 12;
-          case "OBJECT_DOMCONSTRAINT":
+          case "OBJECT_DOMAIN":
             return 13;
-          case "OBJECT_EVENT_TRIGGER":
+          case "OBJECT_DOMCONSTRAINT":
             return 14;
-          case "OBJECT_EXTENSION":
+          case "OBJECT_EVENT_TRIGGER":
             return 15;
-          case "OBJECT_FDW":
+          case "OBJECT_EXTENSION":
             return 16;
-          case "OBJECT_FOREIGN_SERVER":
+          case "OBJECT_FDW":
             return 17;
-          case "OBJECT_FOREIGN_TABLE":
+          case "OBJECT_FOREIGN_SERVER":
             return 18;
-          case "OBJECT_FUNCTION":
+          case "OBJECT_FOREIGN_TABLE":
             return 19;
-          case "OBJECT_INDEX":
+          case "OBJECT_FUNCTION":
             return 20;
-          case "OBJECT_LANGUAGE":
+          case "OBJECT_INDEX":
             return 21;
-          case "OBJECT_LARGEOBJECT":
+          case "OBJECT_LANGUAGE":
             return 22;
-          case "OBJECT_MATVIEW":
+          case "OBJECT_LARGEOBJECT":
             return 23;
-          case "OBJECT_OPCLASS":
+          case "OBJECT_MATVIEW":
             return 24;
-          case "OBJECT_OPERATOR":
+          case "OBJECT_OPCLASS":
             return 25;
-          case "OBJECT_OPFAMILY":
+          case "OBJECT_OPERATOR":
             return 26;
-          case "OBJECT_PARAMETER_ACL":
+          case "OBJECT_OPFAMILY":
             return 27;
-          case "OBJECT_POLICY":
+          case "OBJECT_PARAMETER_ACL":
             return 28;
-          case "OBJECT_PROCEDURE":
+          case "OBJECT_POLICY":
             return 29;
-          case "OBJECT_PUBLICATION":
+          case "OBJECT_PROCEDURE":
             return 30;
-          case "OBJECT_PUBLICATION_NAMESPACE":
+          case "OBJECT_PUBLICATION":
             return 31;
-          case "OBJECT_PUBLICATION_REL":
+          case "OBJECT_PUBLICATION_NAMESPACE":
             return 32;
-          case "OBJECT_ROLE":
+          case "OBJECT_PUBLICATION_REL":
             return 33;
-          case "OBJECT_ROUTINE":
+          case "OBJECT_ROLE":
             return 34;
-          case "OBJECT_RULE":
+          case "OBJECT_ROUTINE":
             return 35;
-          case "OBJECT_SCHEMA":
+          case "OBJECT_RULE":
             return 36;
-          case "OBJECT_SEQUENCE":
+          case "OBJECT_SCHEMA":
             return 37;
-          case "OBJECT_SUBSCRIPTION":
+          case "OBJECT_SEQUENCE":
             return 38;
-          case "OBJECT_STATISTIC_EXT":
+          case "OBJECT_SUBSCRIPTION":
             return 39;
-          case "OBJECT_TABCONSTRAINT":
+          case "OBJECT_STATISTIC_EXT":
             return 40;
-          case "OBJECT_TABLE":
+          case "OBJECT_TABCONSTRAINT":
             return 41;
-          case "OBJECT_TABLESPACE":
+          case "OBJECT_TABLE":
             return 42;
-          case "OBJECT_TRANSFORM":
+          case "OBJECT_TABLESPACE":
             return 43;
-          case "OBJECT_TRIGGER":
+          case "OBJECT_TRANSFORM":
             return 44;
-          case "OBJECT_TSCONFIGURATION":
+          case "OBJECT_TRIGGER":
             return 45;
-          case "OBJECT_TSDICTIONARY":
+          case "OBJECT_TSCONFIGURATION":
             return 46;
-          case "OBJECT_TSPARSER":
+          case "OBJECT_TSDICTIONARY":
             return 47;
-          case "OBJECT_TSTEMPLATE":
+          case "OBJECT_TSPARSER":
             return 48;
-          case "OBJECT_TYPE":
+          case "OBJECT_TSTEMPLATE":
             return 49;
-          case "OBJECT_USER_MAPPING":
+          case "OBJECT_TYPE":
             return 50;
-          case "OBJECT_VIEW":
+          case "OBJECT_USER_MAPPING":
             return 51;
+          case "OBJECT_VIEW":
+            return 52;
           case 0:
-            return "OBJECT_ACCESS_METHOD";
+            return "OBJECT_TYPE_UNDEFINED";
           case 1:
-            return "OBJECT_AGGREGATE";
+            return "OBJECT_ACCESS_METHOD";
           case 2:
-            return "OBJECT_AMOP";
+            return "OBJECT_AGGREGATE";
           case 3:
-            return "OBJECT_AMPROC";
+            return "OBJECT_AMOP";
           case 4:
-            return "OBJECT_ATTRIBUTE";
+            return "OBJECT_AMPROC";
           case 5:
-            return "OBJECT_CAST";
+            return "OBJECT_ATTRIBUTE";
           case 6:
-            return "OBJECT_COLUMN";
+            return "OBJECT_CAST";
           case 7:
-            return "OBJECT_COLLATION";
+            return "OBJECT_COLUMN";
           case 8:
-            return "OBJECT_CONVERSION";
+            return "OBJECT_COLLATION";
           case 9:
-            return "OBJECT_DATABASE";
+            return "OBJECT_CONVERSION";
           case 10:
-            return "OBJECT_DEFAULT";
+            return "OBJECT_DATABASE";
           case 11:
-            return "OBJECT_DEFACL";
+            return "OBJECT_DEFAULT";
           case 12:
-            return "OBJECT_DOMAIN";
+            return "OBJECT_DEFACL";
           case 13:
-            return "OBJECT_DOMCONSTRAINT";
+            return "OBJECT_DOMAIN";
           case 14:
-            return "OBJECT_EVENT_TRIGGER";
+            return "OBJECT_DOMCONSTRAINT";
           case 15:
-            return "OBJECT_EXTENSION";
+            return "OBJECT_EVENT_TRIGGER";
           case 16:
-            return "OBJECT_FDW";
+            return "OBJECT_EXTENSION";
           case 17:
-            return "OBJECT_FOREIGN_SERVER";
+            return "OBJECT_FDW";
           case 18:
-            return "OBJECT_FOREIGN_TABLE";
+            return "OBJECT_FOREIGN_SERVER";
           case 19:
-            return "OBJECT_FUNCTION";
+            return "OBJECT_FOREIGN_TABLE";
           case 20:
-            return "OBJECT_INDEX";
+            return "OBJECT_FUNCTION";
           case 21:
-            return "OBJECT_LANGUAGE";
+            return "OBJECT_INDEX";
           case 22:
-            return "OBJECT_LARGEOBJECT";
+            return "OBJECT_LANGUAGE";
           case 23:
-            return "OBJECT_MATVIEW";
+            return "OBJECT_LARGEOBJECT";
           case 24:
-            return "OBJECT_OPCLASS";
+            return "OBJECT_MATVIEW";
           case 25:
-            return "OBJECT_OPERATOR";
+            return "OBJECT_OPCLASS";
           case 26:
-            return "OBJECT_OPFAMILY";
+            return "OBJECT_OPERATOR";
           case 27:
-            return "OBJECT_PARAMETER_ACL";
+            return "OBJECT_OPFAMILY";
           case 28:
-            return "OBJECT_POLICY";
+            return "OBJECT_PARAMETER_ACL";
           case 29:
-            return "OBJECT_PROCEDURE";
+            return "OBJECT_POLICY";
           case 30:
-            return "OBJECT_PUBLICATION";
+            return "OBJECT_PROCEDURE";
           case 31:
-            return "OBJECT_PUBLICATION_NAMESPACE";
+            return "OBJECT_PUBLICATION";
           case 32:
-            return "OBJECT_PUBLICATION_REL";
+            return "OBJECT_PUBLICATION_NAMESPACE";
           case 33:
-            return "OBJECT_ROLE";
+            return "OBJECT_PUBLICATION_REL";
           case 34:
-            return "OBJECT_ROUTINE";
+            return "OBJECT_ROLE";
           case 35:
-            return "OBJECT_RULE";
+            return "OBJECT_ROUTINE";
           case 36:
-            return "OBJECT_SCHEMA";
+            return "OBJECT_RULE";
           case 37:
-            return "OBJECT_SEQUENCE";
+            return "OBJECT_SCHEMA";
           case 38:
-            return "OBJECT_SUBSCRIPTION";
+            return "OBJECT_SEQUENCE";
           case 39:
-            return "OBJECT_STATISTIC_EXT";
+            return "OBJECT_SUBSCRIPTION";
           case 40:
-            return "OBJECT_TABCONSTRAINT";
+            return "OBJECT_STATISTIC_EXT";
           case 41:
-            return "OBJECT_TABLE";
+            return "OBJECT_TABCONSTRAINT";
           case 42:
-            return "OBJECT_TABLESPACE";
+            return "OBJECT_TABLE";
           case 43:
-            return "OBJECT_TRANSFORM";
+            return "OBJECT_TABLESPACE";
           case 44:
-            return "OBJECT_TRIGGER";
+            return "OBJECT_TRANSFORM";
           case 45:
-            return "OBJECT_TSCONFIGURATION";
+            return "OBJECT_TRIGGER";
           case 46:
-            return "OBJECT_TSDICTIONARY";
+            return "OBJECT_TSCONFIGURATION";
           case 47:
-            return "OBJECT_TSPARSER";
+            return "OBJECT_TSDICTIONARY";
           case 48:
-            return "OBJECT_TSTEMPLATE";
+            return "OBJECT_TSPARSER";
           case 49:
-            return "OBJECT_TYPE";
+            return "OBJECT_TSTEMPLATE";
           case 50:
-            return "OBJECT_USER_MAPPING";
+            return "OBJECT_TYPE";
           case 51:
+            return "OBJECT_USER_MAPPING";
+          case 52:
             return "OBJECT_VIEW";
           default:
             throw new Error("Key not recognized in enum ObjectType");
@@ -667,13 +735,17 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "DropBehavior":
       {
         switch (key) {
-          case "DROP_RESTRICT":
+          case "DROP_BEHAVIOR_UNDEFINED":
             return 0;
-          case "DROP_CASCADE":
+          case "DROP_RESTRICT":
             return 1;
+          case "DROP_CASCADE":
+            return 2;
           case 0:
-            return "DROP_RESTRICT";
+            return "DROP_BEHAVIOR_UNDEFINED";
           case 1:
+            return "DROP_RESTRICT";
+          case 2:
             return "DROP_CASCADE";
           default:
             throw new Error("Key not recognized in enum DropBehavior");
@@ -682,269 +754,273 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "AlterTableType":
       {
         switch (key) {
-          case "AT_AddColumn":
+          case "ALTER_TABLE_TYPE_UNDEFINED":
             return 0;
-          case "AT_AddColumnToView":
+          case "AT_AddColumn":
             return 1;
-          case "AT_ColumnDefault":
+          case "AT_AddColumnToView":
             return 2;
-          case "AT_CookedColumnDefault":
+          case "AT_ColumnDefault":
             return 3;
-          case "AT_DropNotNull":
+          case "AT_CookedColumnDefault":
             return 4;
-          case "AT_SetNotNull":
+          case "AT_DropNotNull":
             return 5;
-          case "AT_DropExpression":
+          case "AT_SetNotNull":
             return 6;
-          case "AT_CheckNotNull":
+          case "AT_DropExpression":
             return 7;
-          case "AT_SetStatistics":
+          case "AT_CheckNotNull":
             return 8;
-          case "AT_SetOptions":
+          case "AT_SetStatistics":
             return 9;
-          case "AT_ResetOptions":
+          case "AT_SetOptions":
             return 10;
-          case "AT_SetStorage":
+          case "AT_ResetOptions":
             return 11;
-          case "AT_SetCompression":
+          case "AT_SetStorage":
             return 12;
-          case "AT_DropColumn":
+          case "AT_SetCompression":
             return 13;
-          case "AT_AddIndex":
+          case "AT_DropColumn":
             return 14;
-          case "AT_ReAddIndex":
+          case "AT_AddIndex":
             return 15;
-          case "AT_AddConstraint":
+          case "AT_ReAddIndex":
             return 16;
-          case "AT_ReAddConstraint":
+          case "AT_AddConstraint":
             return 17;
-          case "AT_ReAddDomainConstraint":
+          case "AT_ReAddConstraint":
             return 18;
-          case "AT_AlterConstraint":
+          case "AT_ReAddDomainConstraint":
             return 19;
-          case "AT_ValidateConstraint":
+          case "AT_AlterConstraint":
             return 20;
-          case "AT_AddIndexConstraint":
+          case "AT_ValidateConstraint":
             return 21;
-          case "AT_DropConstraint":
+          case "AT_AddIndexConstraint":
             return 22;
-          case "AT_ReAddComment":
+          case "AT_DropConstraint":
             return 23;
-          case "AT_AlterColumnType":
+          case "AT_ReAddComment":
             return 24;
-          case "AT_AlterColumnGenericOptions":
+          case "AT_AlterColumnType":
             return 25;
-          case "AT_ChangeOwner":
+          case "AT_AlterColumnGenericOptions":
             return 26;
-          case "AT_ClusterOn":
+          case "AT_ChangeOwner":
             return 27;
-          case "AT_DropCluster":
+          case "AT_ClusterOn":
             return 28;
-          case "AT_SetLogged":
+          case "AT_DropCluster":
             return 29;
-          case "AT_SetUnLogged":
+          case "AT_SetLogged":
             return 30;
-          case "AT_DropOids":
+          case "AT_SetUnLogged":
             return 31;
-          case "AT_SetAccessMethod":
+          case "AT_DropOids":
             return 32;
-          case "AT_SetTableSpace":
+          case "AT_SetAccessMethod":
             return 33;
-          case "AT_SetRelOptions":
+          case "AT_SetTableSpace":
             return 34;
-          case "AT_ResetRelOptions":
+          case "AT_SetRelOptions":
             return 35;
-          case "AT_ReplaceRelOptions":
+          case "AT_ResetRelOptions":
             return 36;
-          case "AT_EnableTrig":
+          case "AT_ReplaceRelOptions":
             return 37;
-          case "AT_EnableAlwaysTrig":
+          case "AT_EnableTrig":
             return 38;
-          case "AT_EnableReplicaTrig":
+          case "AT_EnableAlwaysTrig":
             return 39;
-          case "AT_DisableTrig":
+          case "AT_EnableReplicaTrig":
             return 40;
-          case "AT_EnableTrigAll":
+          case "AT_DisableTrig":
             return 41;
-          case "AT_DisableTrigAll":
+          case "AT_EnableTrigAll":
             return 42;
-          case "AT_EnableTrigUser":
+          case "AT_DisableTrigAll":
             return 43;
-          case "AT_DisableTrigUser":
+          case "AT_EnableTrigUser":
             return 44;
-          case "AT_EnableRule":
+          case "AT_DisableTrigUser":
             return 45;
-          case "AT_EnableAlwaysRule":
+          case "AT_EnableRule":
             return 46;
-          case "AT_EnableReplicaRule":
+          case "AT_EnableAlwaysRule":
             return 47;
-          case "AT_DisableRule":
+          case "AT_EnableReplicaRule":
             return 48;
-          case "AT_AddInherit":
+          case "AT_DisableRule":
             return 49;
-          case "AT_DropInherit":
+          case "AT_AddInherit":
             return 50;
-          case "AT_AddOf":
+          case "AT_DropInherit":
             return 51;
-          case "AT_DropOf":
+          case "AT_AddOf":
             return 52;
-          case "AT_ReplicaIdentity":
+          case "AT_DropOf":
             return 53;
-          case "AT_EnableRowSecurity":
+          case "AT_ReplicaIdentity":
             return 54;
-          case "AT_DisableRowSecurity":
+          case "AT_EnableRowSecurity":
             return 55;
-          case "AT_ForceRowSecurity":
+          case "AT_DisableRowSecurity":
             return 56;
-          case "AT_NoForceRowSecurity":
+          case "AT_ForceRowSecurity":
             return 57;
-          case "AT_GenericOptions":
+          case "AT_NoForceRowSecurity":
             return 58;
-          case "AT_AttachPartition":
+          case "AT_GenericOptions":
             return 59;
-          case "AT_DetachPartition":
+          case "AT_AttachPartition":
             return 60;
-          case "AT_DetachPartitionFinalize":
+          case "AT_DetachPartition":
             return 61;
-          case "AT_AddIdentity":
+          case "AT_DetachPartitionFinalize":
             return 62;
-          case "AT_SetIdentity":
+          case "AT_AddIdentity":
             return 63;
-          case "AT_DropIdentity":
+          case "AT_SetIdentity":
             return 64;
-          case "AT_ReAddStatistics":
+          case "AT_DropIdentity":
             return 65;
+          case "AT_ReAddStatistics":
+            return 66;
           case 0:
-            return "AT_AddColumn";
+            return "ALTER_TABLE_TYPE_UNDEFINED";
           case 1:
-            return "AT_AddColumnToView";
+            return "AT_AddColumn";
           case 2:
-            return "AT_ColumnDefault";
+            return "AT_AddColumnToView";
           case 3:
-            return "AT_CookedColumnDefault";
+            return "AT_ColumnDefault";
           case 4:
-            return "AT_DropNotNull";
+            return "AT_CookedColumnDefault";
           case 5:
-            return "AT_SetNotNull";
+            return "AT_DropNotNull";
           case 6:
-            return "AT_DropExpression";
+            return "AT_SetNotNull";
           case 7:
-            return "AT_CheckNotNull";
+            return "AT_DropExpression";
           case 8:
-            return "AT_SetStatistics";
+            return "AT_CheckNotNull";
           case 9:
-            return "AT_SetOptions";
+            return "AT_SetStatistics";
           case 10:
-            return "AT_ResetOptions";
+            return "AT_SetOptions";
           case 11:
-            return "AT_SetStorage";
+            return "AT_ResetOptions";
           case 12:
-            return "AT_SetCompression";
+            return "AT_SetStorage";
           case 13:
-            return "AT_DropColumn";
+            return "AT_SetCompression";
           case 14:
-            return "AT_AddIndex";
+            return "AT_DropColumn";
           case 15:
-            return "AT_ReAddIndex";
+            return "AT_AddIndex";
           case 16:
-            return "AT_AddConstraint";
+            return "AT_ReAddIndex";
           case 17:
-            return "AT_ReAddConstraint";
+            return "AT_AddConstraint";
           case 18:
-            return "AT_ReAddDomainConstraint";
+            return "AT_ReAddConstraint";
           case 19:
-            return "AT_AlterConstraint";
+            return "AT_ReAddDomainConstraint";
           case 20:
-            return "AT_ValidateConstraint";
+            return "AT_AlterConstraint";
           case 21:
-            return "AT_AddIndexConstraint";
+            return "AT_ValidateConstraint";
           case 22:
-            return "AT_DropConstraint";
+            return "AT_AddIndexConstraint";
           case 23:
-            return "AT_ReAddComment";
+            return "AT_DropConstraint";
           case 24:
-            return "AT_AlterColumnType";
+            return "AT_ReAddComment";
           case 25:
-            return "AT_AlterColumnGenericOptions";
+            return "AT_AlterColumnType";
           case 26:
-            return "AT_ChangeOwner";
+            return "AT_AlterColumnGenericOptions";
           case 27:
-            return "AT_ClusterOn";
+            return "AT_ChangeOwner";
           case 28:
-            return "AT_DropCluster";
+            return "AT_ClusterOn";
           case 29:
-            return "AT_SetLogged";
+            return "AT_DropCluster";
           case 30:
-            return "AT_SetUnLogged";
+            return "AT_SetLogged";
           case 31:
-            return "AT_DropOids";
+            return "AT_SetUnLogged";
           case 32:
-            return "AT_SetAccessMethod";
+            return "AT_DropOids";
           case 33:
-            return "AT_SetTableSpace";
+            return "AT_SetAccessMethod";
           case 34:
-            return "AT_SetRelOptions";
+            return "AT_SetTableSpace";
           case 35:
-            return "AT_ResetRelOptions";
+            return "AT_SetRelOptions";
           case 36:
-            return "AT_ReplaceRelOptions";
+            return "AT_ResetRelOptions";
           case 37:
-            return "AT_EnableTrig";
+            return "AT_ReplaceRelOptions";
           case 38:
-            return "AT_EnableAlwaysTrig";
+            return "AT_EnableTrig";
           case 39:
-            return "AT_EnableReplicaTrig";
+            return "AT_EnableAlwaysTrig";
           case 40:
-            return "AT_DisableTrig";
+            return "AT_EnableReplicaTrig";
           case 41:
-            return "AT_EnableTrigAll";
+            return "AT_DisableTrig";
           case 42:
-            return "AT_DisableTrigAll";
+            return "AT_EnableTrigAll";
           case 43:
-            return "AT_EnableTrigUser";
+            return "AT_DisableTrigAll";
           case 44:
-            return "AT_DisableTrigUser";
+            return "AT_EnableTrigUser";
           case 45:
-            return "AT_EnableRule";
+            return "AT_DisableTrigUser";
           case 46:
-            return "AT_EnableAlwaysRule";
+            return "AT_EnableRule";
           case 47:
-            return "AT_EnableReplicaRule";
+            return "AT_EnableAlwaysRule";
           case 48:
-            return "AT_DisableRule";
+            return "AT_EnableReplicaRule";
           case 49:
-            return "AT_AddInherit";
+            return "AT_DisableRule";
           case 50:
-            return "AT_DropInherit";
+            return "AT_AddInherit";
           case 51:
-            return "AT_AddOf";
+            return "AT_DropInherit";
           case 52:
-            return "AT_DropOf";
+            return "AT_AddOf";
           case 53:
-            return "AT_ReplicaIdentity";
+            return "AT_DropOf";
           case 54:
-            return "AT_EnableRowSecurity";
+            return "AT_ReplicaIdentity";
           case 55:
-            return "AT_DisableRowSecurity";
+            return "AT_EnableRowSecurity";
           case 56:
-            return "AT_ForceRowSecurity";
+            return "AT_DisableRowSecurity";
           case 57:
-            return "AT_NoForceRowSecurity";
+            return "AT_ForceRowSecurity";
           case 58:
-            return "AT_GenericOptions";
+            return "AT_NoForceRowSecurity";
           case 59:
-            return "AT_AttachPartition";
+            return "AT_GenericOptions";
           case 60:
-            return "AT_DetachPartition";
+            return "AT_AttachPartition";
           case 61:
-            return "AT_DetachPartitionFinalize";
+            return "AT_DetachPartition";
           case 62:
-            return "AT_AddIdentity";
+            return "AT_DetachPartitionFinalize";
           case 63:
-            return "AT_SetIdentity";
+            return "AT_AddIdentity";
           case 64:
-            return "AT_DropIdentity";
+            return "AT_SetIdentity";
           case 65:
+            return "AT_DropIdentity";
+          case 66:
             return "AT_ReAddStatistics";
           default:
             throw new Error("Key not recognized in enum AlterTableType");
@@ -953,17 +1029,21 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "GrantTargetType":
       {
         switch (key) {
-          case "ACL_TARGET_OBJECT":
+          case "GRANT_TARGET_TYPE_UNDEFINED":
             return 0;
-          case "ACL_TARGET_ALL_IN_SCHEMA":
+          case "ACL_TARGET_OBJECT":
             return 1;
-          case "ACL_TARGET_DEFAULTS":
+          case "ACL_TARGET_ALL_IN_SCHEMA":
             return 2;
+          case "ACL_TARGET_DEFAULTS":
+            return 3;
           case 0:
-            return "ACL_TARGET_OBJECT";
+            return "GRANT_TARGET_TYPE_UNDEFINED";
           case 1:
-            return "ACL_TARGET_ALL_IN_SCHEMA";
+            return "ACL_TARGET_OBJECT";
           case 2:
+            return "ACL_TARGET_ALL_IN_SCHEMA";
+          case 3:
             return "ACL_TARGET_DEFAULTS";
           default:
             throw new Error("Key not recognized in enum GrantTargetType");
@@ -972,29 +1052,33 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "VariableSetKind":
       {
         switch (key) {
-          case "VAR_SET_VALUE":
+          case "VARIABLE_SET_KIND_UNDEFINED":
             return 0;
-          case "VAR_SET_DEFAULT":
+          case "VAR_SET_VALUE":
             return 1;
-          case "VAR_SET_CURRENT":
+          case "VAR_SET_DEFAULT":
             return 2;
-          case "VAR_SET_MULTI":
+          case "VAR_SET_CURRENT":
             return 3;
-          case "VAR_RESET":
+          case "VAR_SET_MULTI":
             return 4;
-          case "VAR_RESET_ALL":
+          case "VAR_RESET":
             return 5;
+          case "VAR_RESET_ALL":
+            return 6;
           case 0:
-            return "VAR_SET_VALUE";
+            return "VARIABLE_SET_KIND_UNDEFINED";
           case 1:
-            return "VAR_SET_DEFAULT";
+            return "VAR_SET_VALUE";
           case 2:
-            return "VAR_SET_CURRENT";
+            return "VAR_SET_DEFAULT";
           case 3:
-            return "VAR_SET_MULTI";
+            return "VAR_SET_CURRENT";
           case 4:
-            return "VAR_RESET";
+            return "VAR_SET_MULTI";
           case 5:
+            return "VAR_RESET";
+          case 6:
             return "VAR_RESET_ALL";
           default:
             throw new Error("Key not recognized in enum VariableSetKind");
@@ -1003,61 +1087,65 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "ConstrType":
       {
         switch (key) {
-          case "CONSTR_NULL":
+          case "CONSTR_TYPE_UNDEFINED":
             return 0;
-          case "CONSTR_NOTNULL":
+          case "CONSTR_NULL":
             return 1;
-          case "CONSTR_DEFAULT":
+          case "CONSTR_NOTNULL":
             return 2;
-          case "CONSTR_IDENTITY":
+          case "CONSTR_DEFAULT":
             return 3;
-          case "CONSTR_GENERATED":
+          case "CONSTR_IDENTITY":
             return 4;
-          case "CONSTR_CHECK":
+          case "CONSTR_GENERATED":
             return 5;
-          case "CONSTR_PRIMARY":
+          case "CONSTR_CHECK":
             return 6;
-          case "CONSTR_UNIQUE":
+          case "CONSTR_PRIMARY":
             return 7;
-          case "CONSTR_EXCLUSION":
+          case "CONSTR_UNIQUE":
             return 8;
-          case "CONSTR_FOREIGN":
+          case "CONSTR_EXCLUSION":
             return 9;
-          case "CONSTR_ATTR_DEFERRABLE":
+          case "CONSTR_FOREIGN":
             return 10;
-          case "CONSTR_ATTR_NOT_DEFERRABLE":
+          case "CONSTR_ATTR_DEFERRABLE":
             return 11;
-          case "CONSTR_ATTR_DEFERRED":
+          case "CONSTR_ATTR_NOT_DEFERRABLE":
             return 12;
-          case "CONSTR_ATTR_IMMEDIATE":
+          case "CONSTR_ATTR_DEFERRED":
             return 13;
+          case "CONSTR_ATTR_IMMEDIATE":
+            return 14;
           case 0:
-            return "CONSTR_NULL";
+            return "CONSTR_TYPE_UNDEFINED";
           case 1:
-            return "CONSTR_NOTNULL";
+            return "CONSTR_NULL";
           case 2:
-            return "CONSTR_DEFAULT";
+            return "CONSTR_NOTNULL";
           case 3:
-            return "CONSTR_IDENTITY";
+            return "CONSTR_DEFAULT";
           case 4:
-            return "CONSTR_GENERATED";
+            return "CONSTR_IDENTITY";
           case 5:
-            return "CONSTR_CHECK";
+            return "CONSTR_GENERATED";
           case 6:
-            return "CONSTR_PRIMARY";
+            return "CONSTR_CHECK";
           case 7:
-            return "CONSTR_UNIQUE";
+            return "CONSTR_PRIMARY";
           case 8:
-            return "CONSTR_EXCLUSION";
+            return "CONSTR_UNIQUE";
           case 9:
-            return "CONSTR_FOREIGN";
+            return "CONSTR_EXCLUSION";
           case 10:
-            return "CONSTR_ATTR_DEFERRABLE";
+            return "CONSTR_FOREIGN";
           case 11:
-            return "CONSTR_ATTR_NOT_DEFERRABLE";
+            return "CONSTR_ATTR_DEFERRABLE";
           case 12:
-            return "CONSTR_ATTR_DEFERRED";
+            return "CONSTR_ATTR_NOT_DEFERRABLE";
           case 13:
+            return "CONSTR_ATTR_DEFERRED";
+          case 14:
             return "CONSTR_ATTR_IMMEDIATE";
           default:
             throw new Error("Key not recognized in enum ConstrType");
@@ -1066,17 +1154,21 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "ImportForeignSchemaType":
       {
         switch (key) {
-          case "FDW_IMPORT_SCHEMA_ALL":
+          case "IMPORT_FOREIGN_SCHEMA_TYPE_UNDEFINED":
             return 0;
-          case "FDW_IMPORT_SCHEMA_LIMIT_TO":
+          case "FDW_IMPORT_SCHEMA_ALL":
             return 1;
-          case "FDW_IMPORT_SCHEMA_EXCEPT":
+          case "FDW_IMPORT_SCHEMA_LIMIT_TO":
             return 2;
+          case "FDW_IMPORT_SCHEMA_EXCEPT":
+            return 3;
           case 0:
-            return "FDW_IMPORT_SCHEMA_ALL";
+            return "IMPORT_FOREIGN_SCHEMA_TYPE_UNDEFINED";
           case 1:
-            return "FDW_IMPORT_SCHEMA_LIMIT_TO";
+            return "FDW_IMPORT_SCHEMA_ALL";
           case 2:
+            return "FDW_IMPORT_SCHEMA_LIMIT_TO";
+          case 3:
             return "FDW_IMPORT_SCHEMA_EXCEPT";
           default:
             throw new Error("Key not recognized in enum ImportForeignSchemaType");
@@ -1085,17 +1177,21 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "RoleStmtType":
       {
         switch (key) {
-          case "ROLESTMT_ROLE":
+          case "ROLE_STMT_TYPE_UNDEFINED":
             return 0;
-          case "ROLESTMT_USER":
+          case "ROLESTMT_ROLE":
             return 1;
-          case "ROLESTMT_GROUP":
+          case "ROLESTMT_USER":
             return 2;
+          case "ROLESTMT_GROUP":
+            return 3;
           case 0:
-            return "ROLESTMT_ROLE";
+            return "ROLE_STMT_TYPE_UNDEFINED";
           case 1:
-            return "ROLESTMT_USER";
+            return "ROLESTMT_ROLE";
           case 2:
+            return "ROLESTMT_USER";
+          case 3:
             return "ROLESTMT_GROUP";
           default:
             throw new Error("Key not recognized in enum RoleStmtType");
@@ -1104,21 +1200,25 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "FetchDirection":
       {
         switch (key) {
-          case "FETCH_FORWARD":
+          case "FETCH_DIRECTION_UNDEFINED":
             return 0;
-          case "FETCH_BACKWARD":
+          case "FETCH_FORWARD":
             return 1;
-          case "FETCH_ABSOLUTE":
+          case "FETCH_BACKWARD":
             return 2;
-          case "FETCH_RELATIVE":
+          case "FETCH_ABSOLUTE":
             return 3;
+          case "FETCH_RELATIVE":
+            return 4;
           case 0:
-            return "FETCH_FORWARD";
+            return "FETCH_DIRECTION_UNDEFINED";
           case 1:
-            return "FETCH_BACKWARD";
+            return "FETCH_FORWARD";
           case 2:
-            return "FETCH_ABSOLUTE";
+            return "FETCH_BACKWARD";
           case 3:
+            return "FETCH_ABSOLUTE";
+          case 4:
             return "FETCH_RELATIVE";
           default:
             throw new Error("Key not recognized in enum FetchDirection");
@@ -1127,29 +1227,33 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "FunctionParameterMode":
       {
         switch (key) {
-          case "FUNC_PARAM_IN":
+          case "FUNCTION_PARAMETER_MODE_UNDEFINED":
             return 0;
-          case "FUNC_PARAM_OUT":
+          case "FUNC_PARAM_IN":
             return 1;
-          case "FUNC_PARAM_INOUT":
+          case "FUNC_PARAM_OUT":
             return 2;
-          case "FUNC_PARAM_VARIADIC":
+          case "FUNC_PARAM_INOUT":
             return 3;
-          case "FUNC_PARAM_TABLE":
+          case "FUNC_PARAM_VARIADIC":
             return 4;
-          case "FUNC_PARAM_DEFAULT":
+          case "FUNC_PARAM_TABLE":
             return 5;
+          case "FUNC_PARAM_DEFAULT":
+            return 6;
           case 0:
-            return "FUNC_PARAM_IN";
+            return "FUNCTION_PARAMETER_MODE_UNDEFINED";
           case 1:
-            return "FUNC_PARAM_OUT";
+            return "FUNC_PARAM_IN";
           case 2:
-            return "FUNC_PARAM_INOUT";
+            return "FUNC_PARAM_OUT";
           case 3:
-            return "FUNC_PARAM_VARIADIC";
+            return "FUNC_PARAM_INOUT";
           case 4:
-            return "FUNC_PARAM_TABLE";
+            return "FUNC_PARAM_VARIADIC";
           case 5:
+            return "FUNC_PARAM_TABLE";
+          case 6:
             return "FUNC_PARAM_DEFAULT";
           default:
             throw new Error("Key not recognized in enum FunctionParameterMode");
@@ -1158,45 +1262,49 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "TransactionStmtKind":
       {
         switch (key) {
-          case "TRANS_STMT_BEGIN":
+          case "TRANSACTION_STMT_KIND_UNDEFINED":
             return 0;
-          case "TRANS_STMT_START":
+          case "TRANS_STMT_BEGIN":
             return 1;
-          case "TRANS_STMT_COMMIT":
+          case "TRANS_STMT_START":
             return 2;
-          case "TRANS_STMT_ROLLBACK":
+          case "TRANS_STMT_COMMIT":
             return 3;
-          case "TRANS_STMT_SAVEPOINT":
+          case "TRANS_STMT_ROLLBACK":
             return 4;
-          case "TRANS_STMT_RELEASE":
+          case "TRANS_STMT_SAVEPOINT":
             return 5;
-          case "TRANS_STMT_ROLLBACK_TO":
+          case "TRANS_STMT_RELEASE":
             return 6;
-          case "TRANS_STMT_PREPARE":
+          case "TRANS_STMT_ROLLBACK_TO":
             return 7;
-          case "TRANS_STMT_COMMIT_PREPARED":
+          case "TRANS_STMT_PREPARE":
             return 8;
-          case "TRANS_STMT_ROLLBACK_PREPARED":
+          case "TRANS_STMT_COMMIT_PREPARED":
             return 9;
+          case "TRANS_STMT_ROLLBACK_PREPARED":
+            return 10;
           case 0:
-            return "TRANS_STMT_BEGIN";
+            return "TRANSACTION_STMT_KIND_UNDEFINED";
           case 1:
-            return "TRANS_STMT_START";
+            return "TRANS_STMT_BEGIN";
           case 2:
-            return "TRANS_STMT_COMMIT";
+            return "TRANS_STMT_START";
           case 3:
-            return "TRANS_STMT_ROLLBACK";
+            return "TRANS_STMT_COMMIT";
           case 4:
-            return "TRANS_STMT_SAVEPOINT";
+            return "TRANS_STMT_ROLLBACK";
           case 5:
-            return "TRANS_STMT_RELEASE";
+            return "TRANS_STMT_SAVEPOINT";
           case 6:
-            return "TRANS_STMT_ROLLBACK_TO";
+            return "TRANS_STMT_RELEASE";
           case 7:
-            return "TRANS_STMT_PREPARE";
+            return "TRANS_STMT_ROLLBACK_TO";
           case 8:
-            return "TRANS_STMT_COMMIT_PREPARED";
+            return "TRANS_STMT_PREPARE";
           case 9:
+            return "TRANS_STMT_COMMIT_PREPARED";
+          case 10:
             return "TRANS_STMT_ROLLBACK_PREPARED";
           default:
             throw new Error("Key not recognized in enum TransactionStmtKind");
@@ -1205,17 +1313,21 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "ViewCheckOption":
       {
         switch (key) {
-          case "NO_CHECK_OPTION":
+          case "VIEW_CHECK_OPTION_UNDEFINED":
             return 0;
-          case "LOCAL_CHECK_OPTION":
+          case "NO_CHECK_OPTION":
             return 1;
-          case "CASCADED_CHECK_OPTION":
+          case "LOCAL_CHECK_OPTION":
             return 2;
+          case "CASCADED_CHECK_OPTION":
+            return 3;
           case 0:
-            return "NO_CHECK_OPTION";
+            return "VIEW_CHECK_OPTION_UNDEFINED";
           case 1:
-            return "LOCAL_CHECK_OPTION";
+            return "NO_CHECK_OPTION";
           case 2:
+            return "LOCAL_CHECK_OPTION";
+          case 3:
             return "CASCADED_CHECK_OPTION";
           default:
             throw new Error("Key not recognized in enum ViewCheckOption");
@@ -1224,21 +1336,25 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "DiscardMode":
       {
         switch (key) {
-          case "DISCARD_ALL":
+          case "DISCARD_MODE_UNDEFINED":
             return 0;
-          case "DISCARD_PLANS":
+          case "DISCARD_ALL":
             return 1;
-          case "DISCARD_SEQUENCES":
+          case "DISCARD_PLANS":
             return 2;
-          case "DISCARD_TEMP":
+          case "DISCARD_SEQUENCES":
             return 3;
+          case "DISCARD_TEMP":
+            return 4;
           case 0:
-            return "DISCARD_ALL";
+            return "DISCARD_MODE_UNDEFINED";
           case 1:
-            return "DISCARD_PLANS";
+            return "DISCARD_ALL";
           case 2:
-            return "DISCARD_SEQUENCES";
+            return "DISCARD_PLANS";
           case 3:
+            return "DISCARD_SEQUENCES";
+          case 4:
             return "DISCARD_TEMP";
           default:
             throw new Error("Key not recognized in enum DiscardMode");
@@ -1247,25 +1363,29 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "ReindexObjectType":
       {
         switch (key) {
-          case "REINDEX_OBJECT_INDEX":
+          case "REINDEX_OBJECT_TYPE_UNDEFINED":
             return 0;
-          case "REINDEX_OBJECT_TABLE":
+          case "REINDEX_OBJECT_INDEX":
             return 1;
-          case "REINDEX_OBJECT_SCHEMA":
+          case "REINDEX_OBJECT_TABLE":
             return 2;
-          case "REINDEX_OBJECT_SYSTEM":
+          case "REINDEX_OBJECT_SCHEMA":
             return 3;
-          case "REINDEX_OBJECT_DATABASE":
+          case "REINDEX_OBJECT_SYSTEM":
             return 4;
+          case "REINDEX_OBJECT_DATABASE":
+            return 5;
           case 0:
-            return "REINDEX_OBJECT_INDEX";
+            return "REINDEX_OBJECT_TYPE_UNDEFINED";
           case 1:
-            return "REINDEX_OBJECT_TABLE";
+            return "REINDEX_OBJECT_INDEX";
           case 2:
-            return "REINDEX_OBJECT_SCHEMA";
+            return "REINDEX_OBJECT_TABLE";
           case 3:
-            return "REINDEX_OBJECT_SYSTEM";
+            return "REINDEX_OBJECT_SCHEMA";
           case 4:
+            return "REINDEX_OBJECT_SYSTEM";
+          case 5:
             return "REINDEX_OBJECT_DATABASE";
           default:
             throw new Error("Key not recognized in enum ReindexObjectType");
@@ -1274,25 +1394,29 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "AlterTSConfigType":
       {
         switch (key) {
-          case "ALTER_TSCONFIG_ADD_MAPPING":
+          case "ALTER_TSCONFIG_TYPE_UNDEFINED":
             return 0;
-          case "ALTER_TSCONFIG_ALTER_MAPPING_FOR_TOKEN":
+          case "ALTER_TSCONFIG_ADD_MAPPING":
             return 1;
-          case "ALTER_TSCONFIG_REPLACE_DICT":
+          case "ALTER_TSCONFIG_ALTER_MAPPING_FOR_TOKEN":
             return 2;
-          case "ALTER_TSCONFIG_REPLACE_DICT_FOR_TOKEN":
+          case "ALTER_TSCONFIG_REPLACE_DICT":
             return 3;
-          case "ALTER_TSCONFIG_DROP_MAPPING":
+          case "ALTER_TSCONFIG_REPLACE_DICT_FOR_TOKEN":
             return 4;
+          case "ALTER_TSCONFIG_DROP_MAPPING":
+            return 5;
           case 0:
-            return "ALTER_TSCONFIG_ADD_MAPPING";
+            return "ALTER_TSCONFIG_TYPE_UNDEFINED";
           case 1:
-            return "ALTER_TSCONFIG_ALTER_MAPPING_FOR_TOKEN";
+            return "ALTER_TSCONFIG_ADD_MAPPING";
           case 2:
-            return "ALTER_TSCONFIG_REPLACE_DICT";
+            return "ALTER_TSCONFIG_ALTER_MAPPING_FOR_TOKEN";
           case 3:
-            return "ALTER_TSCONFIG_REPLACE_DICT_FOR_TOKEN";
+            return "ALTER_TSCONFIG_REPLACE_DICT";
           case 4:
+            return "ALTER_TSCONFIG_REPLACE_DICT_FOR_TOKEN";
+          case 5:
             return "ALTER_TSCONFIG_DROP_MAPPING";
           default:
             throw new Error("Key not recognized in enum AlterTSConfigType");
@@ -1301,21 +1425,25 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "PublicationObjSpecType":
       {
         switch (key) {
-          case "PUBLICATIONOBJ_TABLE":
+          case "PUBLICATION_OBJ_SPEC_TYPE_UNDEFINED":
             return 0;
-          case "PUBLICATIONOBJ_TABLES_IN_SCHEMA":
+          case "PUBLICATIONOBJ_TABLE":
             return 1;
-          case "PUBLICATIONOBJ_TABLES_IN_CUR_SCHEMA":
+          case "PUBLICATIONOBJ_TABLES_IN_SCHEMA":
             return 2;
-          case "PUBLICATIONOBJ_CONTINUATION":
+          case "PUBLICATIONOBJ_TABLES_IN_CUR_SCHEMA":
             return 3;
+          case "PUBLICATIONOBJ_CONTINUATION":
+            return 4;
           case 0:
-            return "PUBLICATIONOBJ_TABLE";
+            return "PUBLICATION_OBJ_SPEC_TYPE_UNDEFINED";
           case 1:
-            return "PUBLICATIONOBJ_TABLES_IN_SCHEMA";
+            return "PUBLICATIONOBJ_TABLE";
           case 2:
-            return "PUBLICATIONOBJ_TABLES_IN_CUR_SCHEMA";
+            return "PUBLICATIONOBJ_TABLES_IN_SCHEMA";
           case 3:
+            return "PUBLICATIONOBJ_TABLES_IN_CUR_SCHEMA";
+          case 4:
             return "PUBLICATIONOBJ_CONTINUATION";
           default:
             throw new Error("Key not recognized in enum PublicationObjSpecType");
@@ -1324,17 +1452,21 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "AlterPublicationAction":
       {
         switch (key) {
-          case "AP_AddObjects":
+          case "ALTER_PUBLICATION_ACTION_UNDEFINED":
             return 0;
-          case "AP_DropObjects":
+          case "AP_AddObjects":
             return 1;
-          case "AP_SetObjects":
+          case "AP_DropObjects":
             return 2;
+          case "AP_SetObjects":
+            return 3;
           case 0:
-            return "AP_AddObjects";
+            return "ALTER_PUBLICATION_ACTION_UNDEFINED";
           case 1:
-            return "AP_DropObjects";
+            return "AP_AddObjects";
           case 2:
+            return "AP_DropObjects";
+          case 3:
             return "AP_SetObjects";
           default:
             throw new Error("Key not recognized in enum AlterPublicationAction");
@@ -1343,37 +1475,41 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "AlterSubscriptionType":
       {
         switch (key) {
-          case "ALTER_SUBSCRIPTION_OPTIONS":
+          case "ALTER_SUBSCRIPTION_TYPE_UNDEFINED":
             return 0;
-          case "ALTER_SUBSCRIPTION_CONNECTION":
+          case "ALTER_SUBSCRIPTION_OPTIONS":
             return 1;
-          case "ALTER_SUBSCRIPTION_SET_PUBLICATION":
+          case "ALTER_SUBSCRIPTION_CONNECTION":
             return 2;
-          case "ALTER_SUBSCRIPTION_ADD_PUBLICATION":
+          case "ALTER_SUBSCRIPTION_SET_PUBLICATION":
             return 3;
-          case "ALTER_SUBSCRIPTION_DROP_PUBLICATION":
+          case "ALTER_SUBSCRIPTION_ADD_PUBLICATION":
             return 4;
-          case "ALTER_SUBSCRIPTION_REFRESH":
+          case "ALTER_SUBSCRIPTION_DROP_PUBLICATION":
             return 5;
-          case "ALTER_SUBSCRIPTION_ENABLED":
+          case "ALTER_SUBSCRIPTION_REFRESH":
             return 6;
-          case "ALTER_SUBSCRIPTION_SKIP":
+          case "ALTER_SUBSCRIPTION_ENABLED":
             return 7;
+          case "ALTER_SUBSCRIPTION_SKIP":
+            return 8;
           case 0:
-            return "ALTER_SUBSCRIPTION_OPTIONS";
+            return "ALTER_SUBSCRIPTION_TYPE_UNDEFINED";
           case 1:
-            return "ALTER_SUBSCRIPTION_CONNECTION";
+            return "ALTER_SUBSCRIPTION_OPTIONS";
           case 2:
-            return "ALTER_SUBSCRIPTION_SET_PUBLICATION";
+            return "ALTER_SUBSCRIPTION_CONNECTION";
           case 3:
-            return "ALTER_SUBSCRIPTION_ADD_PUBLICATION";
+            return "ALTER_SUBSCRIPTION_SET_PUBLICATION";
           case 4:
-            return "ALTER_SUBSCRIPTION_DROP_PUBLICATION";
+            return "ALTER_SUBSCRIPTION_ADD_PUBLICATION";
           case 5:
-            return "ALTER_SUBSCRIPTION_REFRESH";
+            return "ALTER_SUBSCRIPTION_DROP_PUBLICATION";
           case 6:
-            return "ALTER_SUBSCRIPTION_ENABLED";
+            return "ALTER_SUBSCRIPTION_REFRESH";
           case 7:
+            return "ALTER_SUBSCRIPTION_ENABLED";
+          case 8:
             return "ALTER_SUBSCRIPTION_SKIP";
           default:
             throw new Error("Key not recognized in enum AlterSubscriptionType");
@@ -1382,21 +1518,25 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "OnCommitAction":
       {
         switch (key) {
-          case "ONCOMMIT_NOOP":
+          case "ON_COMMIT_ACTION_UNDEFINED":
             return 0;
-          case "ONCOMMIT_PRESERVE_ROWS":
+          case "ONCOMMIT_NOOP":
             return 1;
-          case "ONCOMMIT_DELETE_ROWS":
+          case "ONCOMMIT_PRESERVE_ROWS":
             return 2;
-          case "ONCOMMIT_DROP":
+          case "ONCOMMIT_DELETE_ROWS":
             return 3;
+          case "ONCOMMIT_DROP":
+            return 4;
           case 0:
-            return "ONCOMMIT_NOOP";
+            return "ON_COMMIT_ACTION_UNDEFINED";
           case 1:
-            return "ONCOMMIT_PRESERVE_ROWS";
+            return "ONCOMMIT_NOOP";
           case 2:
-            return "ONCOMMIT_DELETE_ROWS";
+            return "ONCOMMIT_PRESERVE_ROWS";
           case 3:
+            return "ONCOMMIT_DELETE_ROWS";
+          case 4:
             return "ONCOMMIT_DROP";
           default:
             throw new Error("Key not recognized in enum OnCommitAction");
@@ -1405,21 +1545,25 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "ParamKind":
       {
         switch (key) {
-          case "PARAM_EXTERN":
+          case "PARAM_KIND_UNDEFINED":
             return 0;
-          case "PARAM_EXEC":
+          case "PARAM_EXTERN":
             return 1;
-          case "PARAM_SUBLINK":
+          case "PARAM_EXEC":
             return 2;
-          case "PARAM_MULTIEXPR":
+          case "PARAM_SUBLINK":
             return 3;
+          case "PARAM_MULTIEXPR":
+            return 4;
           case 0:
-            return "PARAM_EXTERN";
+            return "PARAM_KIND_UNDEFINED";
           case 1:
-            return "PARAM_EXEC";
+            return "PARAM_EXTERN";
           case 2:
-            return "PARAM_SUBLINK";
+            return "PARAM_EXEC";
           case 3:
+            return "PARAM_SUBLINK";
+          case 4:
             return "PARAM_MULTIEXPR";
           default:
             throw new Error("Key not recognized in enum ParamKind");
@@ -1428,21 +1572,25 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "CoercionContext":
       {
         switch (key) {
-          case "COERCION_IMPLICIT":
+          case "COERCION_CONTEXT_UNDEFINED":
             return 0;
-          case "COERCION_ASSIGNMENT":
+          case "COERCION_IMPLICIT":
             return 1;
-          case "COERCION_PLPGSQL":
+          case "COERCION_ASSIGNMENT":
             return 2;
-          case "COERCION_EXPLICIT":
+          case "COERCION_PLPGSQL":
             return 3;
+          case "COERCION_EXPLICIT":
+            return 4;
           case 0:
-            return "COERCION_IMPLICIT";
+            return "COERCION_CONTEXT_UNDEFINED";
           case 1:
-            return "COERCION_ASSIGNMENT";
+            return "COERCION_IMPLICIT";
           case 2:
-            return "COERCION_PLPGSQL";
+            return "COERCION_ASSIGNMENT";
           case 3:
+            return "COERCION_PLPGSQL";
+          case 4:
             return "COERCION_EXPLICIT";
           default:
             throw new Error("Key not recognized in enum CoercionContext");
@@ -1451,21 +1599,25 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "CoercionForm":
       {
         switch (key) {
-          case "COERCE_EXPLICIT_CALL":
+          case "COERCION_FORM_UNDEFINED":
             return 0;
-          case "COERCE_EXPLICIT_CAST":
+          case "COERCE_EXPLICIT_CALL":
             return 1;
-          case "COERCE_IMPLICIT_CAST":
+          case "COERCE_EXPLICIT_CAST":
             return 2;
-          case "COERCE_SQL_SYNTAX":
+          case "COERCE_IMPLICIT_CAST":
             return 3;
+          case "COERCE_SQL_SYNTAX":
+            return 4;
           case 0:
-            return "COERCE_EXPLICIT_CALL";
+            return "COERCION_FORM_UNDEFINED";
           case 1:
-            return "COERCE_EXPLICIT_CAST";
+            return "COERCE_EXPLICIT_CALL";
           case 2:
-            return "COERCE_IMPLICIT_CAST";
+            return "COERCE_EXPLICIT_CAST";
           case 3:
+            return "COERCE_IMPLICIT_CAST";
+          case 4:
             return "COERCE_SQL_SYNTAX";
           default:
             throw new Error("Key not recognized in enum CoercionForm");
@@ -1474,17 +1626,21 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "BoolExprType":
       {
         switch (key) {
-          case "AND_EXPR":
+          case "BOOL_EXPR_TYPE_UNDEFINED":
             return 0;
-          case "OR_EXPR":
+          case "AND_EXPR":
             return 1;
-          case "NOT_EXPR":
+          case "OR_EXPR":
             return 2;
+          case "NOT_EXPR":
+            return 3;
           case 0:
-            return "AND_EXPR";
+            return "BOOL_EXPR_TYPE_UNDEFINED";
           case 1:
-            return "OR_EXPR";
+            return "AND_EXPR";
           case 2:
+            return "OR_EXPR";
+          case 3:
             return "NOT_EXPR";
           default:
             throw new Error("Key not recognized in enum BoolExprType");
@@ -1493,37 +1649,41 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "SubLinkType":
       {
         switch (key) {
-          case "EXISTS_SUBLINK":
+          case "SUB_LINK_TYPE_UNDEFINED":
             return 0;
-          case "ALL_SUBLINK":
+          case "EXISTS_SUBLINK":
             return 1;
-          case "ANY_SUBLINK":
+          case "ALL_SUBLINK":
             return 2;
-          case "ROWCOMPARE_SUBLINK":
+          case "ANY_SUBLINK":
             return 3;
-          case "EXPR_SUBLINK":
+          case "ROWCOMPARE_SUBLINK":
             return 4;
-          case "MULTIEXPR_SUBLINK":
+          case "EXPR_SUBLINK":
             return 5;
-          case "ARRAY_SUBLINK":
+          case "MULTIEXPR_SUBLINK":
             return 6;
-          case "CTE_SUBLINK":
+          case "ARRAY_SUBLINK":
             return 7;
+          case "CTE_SUBLINK":
+            return 8;
           case 0:
-            return "EXISTS_SUBLINK";
+            return "SUB_LINK_TYPE_UNDEFINED";
           case 1:
-            return "ALL_SUBLINK";
+            return "EXISTS_SUBLINK";
           case 2:
-            return "ANY_SUBLINK";
+            return "ALL_SUBLINK";
           case 3:
-            return "ROWCOMPARE_SUBLINK";
+            return "ANY_SUBLINK";
           case 4:
-            return "EXPR_SUBLINK";
+            return "ROWCOMPARE_SUBLINK";
           case 5:
-            return "MULTIEXPR_SUBLINK";
+            return "EXPR_SUBLINK";
           case 6:
-            return "ARRAY_SUBLINK";
+            return "MULTIEXPR_SUBLINK";
           case 7:
+            return "ARRAY_SUBLINK";
+          case 8:
             return "CTE_SUBLINK";
           default:
             throw new Error("Key not recognized in enum SubLinkType");
@@ -1532,29 +1692,33 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "RowCompareType":
       {
         switch (key) {
-          case "ROWCOMPARE_LT":
+          case "ROW_COMPARE_TYPE_UNDEFINED":
             return 0;
-          case "ROWCOMPARE_LE":
+          case "ROWCOMPARE_LT":
             return 1;
-          case "ROWCOMPARE_EQ":
+          case "ROWCOMPARE_LE":
             return 2;
-          case "ROWCOMPARE_GE":
+          case "ROWCOMPARE_EQ":
             return 3;
-          case "ROWCOMPARE_GT":
+          case "ROWCOMPARE_GE":
             return 4;
-          case "ROWCOMPARE_NE":
+          case "ROWCOMPARE_GT":
             return 5;
+          case "ROWCOMPARE_NE":
+            return 6;
           case 0:
-            return "ROWCOMPARE_LT";
+            return "ROW_COMPARE_TYPE_UNDEFINED";
           case 1:
-            return "ROWCOMPARE_LE";
+            return "ROWCOMPARE_LT";
           case 2:
-            return "ROWCOMPARE_EQ";
+            return "ROWCOMPARE_LE";
           case 3:
-            return "ROWCOMPARE_GE";
+            return "ROWCOMPARE_EQ";
           case 4:
-            return "ROWCOMPARE_GT";
+            return "ROWCOMPARE_GE";
           case 5:
+            return "ROWCOMPARE_GT";
+          case 6:
             return "ROWCOMPARE_NE";
           default:
             throw new Error("Key not recognized in enum RowCompareType");
@@ -1563,13 +1727,17 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "MinMaxOp":
       {
         switch (key) {
-          case "IS_GREATEST":
+          case "MIN_MAX_OP_UNDEFINED":
             return 0;
-          case "IS_LEAST":
+          case "IS_GREATEST":
             return 1;
+          case "IS_LEAST":
+            return 2;
           case 0:
-            return "IS_GREATEST";
+            return "MIN_MAX_OP_UNDEFINED";
           case 1:
+            return "IS_GREATEST";
+          case 2:
             return "IS_LEAST";
           default:
             throw new Error("Key not recognized in enum MinMaxOp");
@@ -1578,65 +1746,69 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "SQLValueFunctionOp":
       {
         switch (key) {
-          case "SVFOP_CURRENT_DATE":
+          case "SQLVALUE_FUNCTION_OP_UNDEFINED":
             return 0;
-          case "SVFOP_CURRENT_TIME":
+          case "SVFOP_CURRENT_DATE":
             return 1;
-          case "SVFOP_CURRENT_TIME_N":
+          case "SVFOP_CURRENT_TIME":
             return 2;
-          case "SVFOP_CURRENT_TIMESTAMP":
+          case "SVFOP_CURRENT_TIME_N":
             return 3;
-          case "SVFOP_CURRENT_TIMESTAMP_N":
+          case "SVFOP_CURRENT_TIMESTAMP":
             return 4;
-          case "SVFOP_LOCALTIME":
+          case "SVFOP_CURRENT_TIMESTAMP_N":
             return 5;
-          case "SVFOP_LOCALTIME_N":
+          case "SVFOP_LOCALTIME":
             return 6;
-          case "SVFOP_LOCALTIMESTAMP":
+          case "SVFOP_LOCALTIME_N":
             return 7;
-          case "SVFOP_LOCALTIMESTAMP_N":
+          case "SVFOP_LOCALTIMESTAMP":
             return 8;
-          case "SVFOP_CURRENT_ROLE":
+          case "SVFOP_LOCALTIMESTAMP_N":
             return 9;
-          case "SVFOP_CURRENT_USER":
+          case "SVFOP_CURRENT_ROLE":
             return 10;
-          case "SVFOP_USER":
+          case "SVFOP_CURRENT_USER":
             return 11;
-          case "SVFOP_SESSION_USER":
+          case "SVFOP_USER":
             return 12;
-          case "SVFOP_CURRENT_CATALOG":
+          case "SVFOP_SESSION_USER":
             return 13;
-          case "SVFOP_CURRENT_SCHEMA":
+          case "SVFOP_CURRENT_CATALOG":
             return 14;
+          case "SVFOP_CURRENT_SCHEMA":
+            return 15;
           case 0:
-            return "SVFOP_CURRENT_DATE";
+            return "SQLVALUE_FUNCTION_OP_UNDEFINED";
           case 1:
-            return "SVFOP_CURRENT_TIME";
+            return "SVFOP_CURRENT_DATE";
           case 2:
-            return "SVFOP_CURRENT_TIME_N";
+            return "SVFOP_CURRENT_TIME";
           case 3:
-            return "SVFOP_CURRENT_TIMESTAMP";
+            return "SVFOP_CURRENT_TIME_N";
           case 4:
-            return "SVFOP_CURRENT_TIMESTAMP_N";
+            return "SVFOP_CURRENT_TIMESTAMP";
           case 5:
-            return "SVFOP_LOCALTIME";
+            return "SVFOP_CURRENT_TIMESTAMP_N";
           case 6:
-            return "SVFOP_LOCALTIME_N";
+            return "SVFOP_LOCALTIME";
           case 7:
-            return "SVFOP_LOCALTIMESTAMP";
+            return "SVFOP_LOCALTIME_N";
           case 8:
-            return "SVFOP_LOCALTIMESTAMP_N";
+            return "SVFOP_LOCALTIMESTAMP";
           case 9:
-            return "SVFOP_CURRENT_ROLE";
+            return "SVFOP_LOCALTIMESTAMP_N";
           case 10:
-            return "SVFOP_CURRENT_USER";
+            return "SVFOP_CURRENT_ROLE";
           case 11:
-            return "SVFOP_USER";
+            return "SVFOP_CURRENT_USER";
           case 12:
-            return "SVFOP_SESSION_USER";
+            return "SVFOP_USER";
           case 13:
-            return "SVFOP_CURRENT_CATALOG";
+            return "SVFOP_SESSION_USER";
           case 14:
+            return "SVFOP_CURRENT_CATALOG";
+          case 15:
             return "SVFOP_CURRENT_SCHEMA";
           default:
             throw new Error("Key not recognized in enum SQLValueFunctionOp");
@@ -1645,37 +1817,41 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "XmlExprOp":
       {
         switch (key) {
-          case "IS_XMLCONCAT":
+          case "XML_EXPR_OP_UNDEFINED":
             return 0;
-          case "IS_XMLELEMENT":
+          case "IS_XMLCONCAT":
             return 1;
-          case "IS_XMLFOREST":
+          case "IS_XMLELEMENT":
             return 2;
-          case "IS_XMLPARSE":
+          case "IS_XMLFOREST":
             return 3;
-          case "IS_XMLPI":
+          case "IS_XMLPARSE":
             return 4;
-          case "IS_XMLROOT":
+          case "IS_XMLPI":
             return 5;
-          case "IS_XMLSERIALIZE":
+          case "IS_XMLROOT":
             return 6;
-          case "IS_DOCUMENT":
+          case "IS_XMLSERIALIZE":
             return 7;
+          case "IS_DOCUMENT":
+            return 8;
           case 0:
-            return "IS_XMLCONCAT";
+            return "XML_EXPR_OP_UNDEFINED";
           case 1:
-            return "IS_XMLELEMENT";
+            return "IS_XMLCONCAT";
           case 2:
-            return "IS_XMLFOREST";
+            return "IS_XMLELEMENT";
           case 3:
-            return "IS_XMLPARSE";
+            return "IS_XMLFOREST";
           case 4:
-            return "IS_XMLPI";
+            return "IS_XMLPARSE";
           case 5:
-            return "IS_XMLROOT";
+            return "IS_XMLPI";
           case 6:
-            return "IS_XMLSERIALIZE";
+            return "IS_XMLROOT";
           case 7:
+            return "IS_XMLSERIALIZE";
+          case 8:
             return "IS_DOCUMENT";
           default:
             throw new Error("Key not recognized in enum XmlExprOp");
@@ -1684,13 +1860,17 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "XmlOptionType":
       {
         switch (key) {
-          case "XMLOPTION_DOCUMENT":
+          case "XML_OPTION_TYPE_UNDEFINED":
             return 0;
-          case "XMLOPTION_CONTENT":
+          case "XMLOPTION_DOCUMENT":
             return 1;
+          case "XMLOPTION_CONTENT":
+            return 2;
           case 0:
-            return "XMLOPTION_DOCUMENT";
+            return "XML_OPTION_TYPE_UNDEFINED";
           case 1:
+            return "XMLOPTION_DOCUMENT";
+          case 2:
             return "XMLOPTION_CONTENT";
           default:
             throw new Error("Key not recognized in enum XmlOptionType");
@@ -1699,21 +1879,25 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "JsonEncoding":
       {
         switch (key) {
-          case "JS_ENC_DEFAULT":
+          case "JSON_ENCODING_UNDEFINED":
             return 0;
-          case "JS_ENC_UTF8":
+          case "JS_ENC_DEFAULT":
             return 1;
-          case "JS_ENC_UTF16":
+          case "JS_ENC_UTF8":
             return 2;
-          case "JS_ENC_UTF32":
+          case "JS_ENC_UTF16":
             return 3;
+          case "JS_ENC_UTF32":
+            return 4;
           case 0:
-            return "JS_ENC_DEFAULT";
+            return "JSON_ENCODING_UNDEFINED";
           case 1:
-            return "JS_ENC_UTF8";
+            return "JS_ENC_DEFAULT";
           case 2:
-            return "JS_ENC_UTF16";
+            return "JS_ENC_UTF8";
           case 3:
+            return "JS_ENC_UTF16";
+          case 4:
             return "JS_ENC_UTF32";
           default:
             throw new Error("Key not recognized in enum JsonEncoding");
@@ -1722,17 +1906,21 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "JsonFormatType":
       {
         switch (key) {
-          case "JS_FORMAT_DEFAULT":
+          case "JSON_FORMAT_TYPE_UNDEFINED":
             return 0;
-          case "JS_FORMAT_JSON":
+          case "JS_FORMAT_DEFAULT":
             return 1;
-          case "JS_FORMAT_JSONB":
+          case "JS_FORMAT_JSON":
             return 2;
+          case "JS_FORMAT_JSONB":
+            return 3;
           case 0:
-            return "JS_FORMAT_DEFAULT";
+            return "JSON_FORMAT_TYPE_UNDEFINED";
           case 1:
-            return "JS_FORMAT_JSON";
+            return "JS_FORMAT_DEFAULT";
           case 2:
+            return "JS_FORMAT_JSON";
+          case 3:
             return "JS_FORMAT_JSONB";
           default:
             throw new Error("Key not recognized in enum JsonFormatType");
@@ -1741,21 +1929,25 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "JsonConstructorType":
       {
         switch (key) {
-          case "JSCTOR_JSON_OBJECT":
+          case "JSON_CONSTRUCTOR_TYPE_UNDEFINED":
             return 0;
-          case "JSCTOR_JSON_ARRAY":
+          case "JSCTOR_JSON_OBJECT":
             return 1;
-          case "JSCTOR_JSON_OBJECTAGG":
+          case "JSCTOR_JSON_ARRAY":
             return 2;
-          case "JSCTOR_JSON_ARRAYAGG":
+          case "JSCTOR_JSON_OBJECTAGG":
             return 3;
+          case "JSCTOR_JSON_ARRAYAGG":
+            return 4;
           case 0:
-            return "JSCTOR_JSON_OBJECT";
+            return "JSON_CONSTRUCTOR_TYPE_UNDEFINED";
           case 1:
-            return "JSCTOR_JSON_ARRAY";
+            return "JSCTOR_JSON_OBJECT";
           case 2:
-            return "JSCTOR_JSON_OBJECTAGG";
+            return "JSCTOR_JSON_ARRAY";
           case 3:
+            return "JSCTOR_JSON_OBJECTAGG";
+          case 4:
             return "JSCTOR_JSON_ARRAYAGG";
           default:
             throw new Error("Key not recognized in enum JsonConstructorType");
@@ -1764,21 +1956,25 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "JsonValueType":
       {
         switch (key) {
-          case "JS_TYPE_ANY":
+          case "JSON_VALUE_TYPE_UNDEFINED":
             return 0;
-          case "JS_TYPE_OBJECT":
+          case "JS_TYPE_ANY":
             return 1;
-          case "JS_TYPE_ARRAY":
+          case "JS_TYPE_OBJECT":
             return 2;
-          case "JS_TYPE_SCALAR":
+          case "JS_TYPE_ARRAY":
             return 3;
+          case "JS_TYPE_SCALAR":
+            return 4;
           case 0:
-            return "JS_TYPE_ANY";
+            return "JSON_VALUE_TYPE_UNDEFINED";
           case 1:
-            return "JS_TYPE_OBJECT";
+            return "JS_TYPE_ANY";
           case 2:
-            return "JS_TYPE_ARRAY";
+            return "JS_TYPE_OBJECT";
           case 3:
+            return "JS_TYPE_ARRAY";
+          case 4:
             return "JS_TYPE_SCALAR";
           default:
             throw new Error("Key not recognized in enum JsonValueType");
@@ -1787,13 +1983,17 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "NullTestType":
       {
         switch (key) {
-          case "IS_NULL":
+          case "NULL_TEST_TYPE_UNDEFINED":
             return 0;
-          case "IS_NOT_NULL":
+          case "IS_NULL":
             return 1;
+          case "IS_NOT_NULL":
+            return 2;
           case 0:
-            return "IS_NULL";
+            return "NULL_TEST_TYPE_UNDEFINED";
           case 1:
+            return "IS_NULL";
+          case 2:
             return "IS_NOT_NULL";
           default:
             throw new Error("Key not recognized in enum NullTestType");
@@ -1802,29 +2002,33 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "BoolTestType":
       {
         switch (key) {
-          case "IS_TRUE":
+          case "BOOL_TEST_TYPE_UNDEFINED":
             return 0;
-          case "IS_NOT_TRUE":
+          case "IS_TRUE":
             return 1;
-          case "IS_FALSE":
+          case "IS_NOT_TRUE":
             return 2;
-          case "IS_NOT_FALSE":
+          case "IS_FALSE":
             return 3;
-          case "IS_UNKNOWN":
+          case "IS_NOT_FALSE":
             return 4;
-          case "IS_NOT_UNKNOWN":
+          case "IS_UNKNOWN":
             return 5;
+          case "IS_NOT_UNKNOWN":
+            return 6;
           case 0:
-            return "IS_TRUE";
+            return "BOOL_TEST_TYPE_UNDEFINED";
           case 1:
-            return "IS_NOT_TRUE";
+            return "IS_TRUE";
           case 2:
-            return "IS_FALSE";
+            return "IS_NOT_TRUE";
           case 3:
-            return "IS_NOT_FALSE";
+            return "IS_FALSE";
           case 4:
-            return "IS_UNKNOWN";
+            return "IS_NOT_FALSE";
           case 5:
+            return "IS_UNKNOWN";
+          case 6:
             return "IS_NOT_UNKNOWN";
           default:
             throw new Error("Key not recognized in enum BoolTestType");
@@ -1833,37 +2037,41 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "CmdType":
       {
         switch (key) {
-          case "CMD_UNKNOWN":
+          case "CMD_TYPE_UNDEFINED":
             return 0;
-          case "CMD_SELECT":
+          case "CMD_UNKNOWN":
             return 1;
-          case "CMD_UPDATE":
+          case "CMD_SELECT":
             return 2;
-          case "CMD_INSERT":
+          case "CMD_UPDATE":
             return 3;
-          case "CMD_DELETE":
+          case "CMD_INSERT":
             return 4;
-          case "CMD_MERGE":
+          case "CMD_DELETE":
             return 5;
-          case "CMD_UTILITY":
+          case "CMD_MERGE":
             return 6;
-          case "CMD_NOTHING":
+          case "CMD_UTILITY":
             return 7;
+          case "CMD_NOTHING":
+            return 8;
           case 0:
-            return "CMD_UNKNOWN";
+            return "CMD_TYPE_UNDEFINED";
           case 1:
-            return "CMD_SELECT";
+            return "CMD_UNKNOWN";
           case 2:
-            return "CMD_UPDATE";
+            return "CMD_SELECT";
           case 3:
-            return "CMD_INSERT";
+            return "CMD_UPDATE";
           case 4:
-            return "CMD_DELETE";
+            return "CMD_INSERT";
           case 5:
-            return "CMD_MERGE";
+            return "CMD_DELETE";
           case 6:
-            return "CMD_UTILITY";
+            return "CMD_MERGE";
           case 7:
+            return "CMD_UTILITY";
+          case 8:
             return "CMD_NOTHING";
           default:
             throw new Error("Key not recognized in enum CmdType");
@@ -1872,41 +2080,45 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "JoinType":
       {
         switch (key) {
-          case "JOIN_INNER":
+          case "JOIN_TYPE_UNDEFINED":
             return 0;
-          case "JOIN_LEFT":
+          case "JOIN_INNER":
             return 1;
-          case "JOIN_FULL":
+          case "JOIN_LEFT":
             return 2;
-          case "JOIN_RIGHT":
+          case "JOIN_FULL":
             return 3;
-          case "JOIN_SEMI":
+          case "JOIN_RIGHT":
             return 4;
-          case "JOIN_ANTI":
+          case "JOIN_SEMI":
             return 5;
-          case "JOIN_RIGHT_ANTI":
+          case "JOIN_ANTI":
             return 6;
-          case "JOIN_UNIQUE_OUTER":
+          case "JOIN_RIGHT_ANTI":
             return 7;
-          case "JOIN_UNIQUE_INNER":
+          case "JOIN_UNIQUE_OUTER":
             return 8;
+          case "JOIN_UNIQUE_INNER":
+            return 9;
           case 0:
-            return "JOIN_INNER";
+            return "JOIN_TYPE_UNDEFINED";
           case 1:
-            return "JOIN_LEFT";
+            return "JOIN_INNER";
           case 2:
-            return "JOIN_FULL";
+            return "JOIN_LEFT";
           case 3:
-            return "JOIN_RIGHT";
+            return "JOIN_FULL";
           case 4:
-            return "JOIN_SEMI";
+            return "JOIN_RIGHT";
           case 5:
-            return "JOIN_ANTI";
+            return "JOIN_SEMI";
           case 6:
-            return "JOIN_RIGHT_ANTI";
+            return "JOIN_ANTI";
           case 7:
-            return "JOIN_UNIQUE_OUTER";
+            return "JOIN_RIGHT_ANTI";
           case 8:
+            return "JOIN_UNIQUE_OUTER";
+          case 9:
             return "JOIN_UNIQUE_INNER";
           default:
             throw new Error("Key not recognized in enum JoinType");
@@ -1915,21 +2127,25 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "AggStrategy":
       {
         switch (key) {
-          case "AGG_PLAIN":
+          case "AGG_STRATEGY_UNDEFINED":
             return 0;
-          case "AGG_SORTED":
+          case "AGG_PLAIN":
             return 1;
-          case "AGG_HASHED":
+          case "AGG_SORTED":
             return 2;
-          case "AGG_MIXED":
+          case "AGG_HASHED":
             return 3;
+          case "AGG_MIXED":
+            return 4;
           case 0:
-            return "AGG_PLAIN";
+            return "AGG_STRATEGY_UNDEFINED";
           case 1:
-            return "AGG_SORTED";
+            return "AGG_PLAIN";
           case 2:
-            return "AGG_HASHED";
+            return "AGG_SORTED";
           case 3:
+            return "AGG_HASHED";
+          case 4:
             return "AGG_MIXED";
           default:
             throw new Error("Key not recognized in enum AggStrategy");
@@ -1938,17 +2154,21 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "AggSplit":
       {
         switch (key) {
-          case "AGGSPLIT_SIMPLE":
+          case "AGG_SPLIT_UNDEFINED":
             return 0;
-          case "AGGSPLIT_INITIAL_SERIAL":
+          case "AGGSPLIT_SIMPLE":
             return 1;
-          case "AGGSPLIT_FINAL_DESERIAL":
+          case "AGGSPLIT_INITIAL_SERIAL":
             return 2;
+          case "AGGSPLIT_FINAL_DESERIAL":
+            return 3;
           case 0:
-            return "AGGSPLIT_SIMPLE";
+            return "AGG_SPLIT_UNDEFINED";
           case 1:
-            return "AGGSPLIT_INITIAL_SERIAL";
+            return "AGGSPLIT_SIMPLE";
           case 2:
+            return "AGGSPLIT_INITIAL_SERIAL";
+          case 3:
             return "AGGSPLIT_FINAL_DESERIAL";
           default:
             throw new Error("Key not recognized in enum AggSplit");
@@ -1957,21 +2177,25 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "SetOpCmd":
       {
         switch (key) {
-          case "SETOPCMD_INTERSECT":
+          case "SET_OP_CMD_UNDEFINED":
             return 0;
-          case "SETOPCMD_INTERSECT_ALL":
+          case "SETOPCMD_INTERSECT":
             return 1;
-          case "SETOPCMD_EXCEPT":
+          case "SETOPCMD_INTERSECT_ALL":
             return 2;
-          case "SETOPCMD_EXCEPT_ALL":
+          case "SETOPCMD_EXCEPT":
             return 3;
+          case "SETOPCMD_EXCEPT_ALL":
+            return 4;
           case 0:
-            return "SETOPCMD_INTERSECT";
+            return "SET_OP_CMD_UNDEFINED";
           case 1:
-            return "SETOPCMD_INTERSECT_ALL";
+            return "SETOPCMD_INTERSECT";
           case 2:
-            return "SETOPCMD_EXCEPT";
+            return "SETOPCMD_INTERSECT_ALL";
           case 3:
+            return "SETOPCMD_EXCEPT";
+          case 4:
             return "SETOPCMD_EXCEPT_ALL";
           default:
             throw new Error("Key not recognized in enum SetOpCmd");
@@ -1980,13 +2204,17 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "SetOpStrategy":
       {
         switch (key) {
-          case "SETOP_SORTED":
+          case "SET_OP_STRATEGY_UNDEFINED":
             return 0;
-          case "SETOP_HASHED":
+          case "SETOP_SORTED":
             return 1;
+          case "SETOP_HASHED":
+            return 2;
           case 0:
-            return "SETOP_SORTED";
+            return "SET_OP_STRATEGY_UNDEFINED";
           case 1:
+            return "SETOP_SORTED";
+          case 2:
             return "SETOP_HASHED";
           default:
             throw new Error("Key not recognized in enum SetOpStrategy");
@@ -1995,17 +2223,21 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "OnConflictAction":
       {
         switch (key) {
-          case "ONCONFLICT_NONE":
+          case "ON_CONFLICT_ACTION_UNDEFINED":
             return 0;
-          case "ONCONFLICT_NOTHING":
+          case "ONCONFLICT_NONE":
             return 1;
-          case "ONCONFLICT_UPDATE":
+          case "ONCONFLICT_NOTHING":
             return 2;
+          case "ONCONFLICT_UPDATE":
+            return 3;
           case 0:
-            return "ONCONFLICT_NONE";
+            return "ON_CONFLICT_ACTION_UNDEFINED";
           case 1:
-            return "ONCONFLICT_NOTHING";
+            return "ONCONFLICT_NONE";
           case 2:
+            return "ONCONFLICT_NOTHING";
+          case 3:
             return "ONCONFLICT_UPDATE";
           default:
             throw new Error("Key not recognized in enum OnConflictAction");
@@ -2014,17 +2246,21 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "LimitOption":
       {
         switch (key) {
-          case "LIMIT_OPTION_DEFAULT":
+          case "LIMIT_OPTION_UNDEFINED":
             return 0;
-          case "LIMIT_OPTION_COUNT":
+          case "LIMIT_OPTION_DEFAULT":
             return 1;
-          case "LIMIT_OPTION_WITH_TIES":
+          case "LIMIT_OPTION_COUNT":
             return 2;
+          case "LIMIT_OPTION_WITH_TIES":
+            return 3;
           case 0:
-            return "LIMIT_OPTION_DEFAULT";
+            return "LIMIT_OPTION_UNDEFINED";
           case 1:
-            return "LIMIT_OPTION_COUNT";
+            return "LIMIT_OPTION_DEFAULT";
           case 2:
+            return "LIMIT_OPTION_COUNT";
+          case 3:
             return "LIMIT_OPTION_WITH_TIES";
           default:
             throw new Error("Key not recognized in enum LimitOption");
@@ -2033,25 +2269,29 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "LockClauseStrength":
       {
         switch (key) {
-          case "LCS_NONE":
+          case "LOCK_CLAUSE_STRENGTH_UNDEFINED":
             return 0;
-          case "LCS_FORKEYSHARE":
+          case "LCS_NONE":
             return 1;
-          case "LCS_FORSHARE":
+          case "LCS_FORKEYSHARE":
             return 2;
-          case "LCS_FORNOKEYUPDATE":
+          case "LCS_FORSHARE":
             return 3;
-          case "LCS_FORUPDATE":
+          case "LCS_FORNOKEYUPDATE":
             return 4;
+          case "LCS_FORUPDATE":
+            return 5;
           case 0:
-            return "LCS_NONE";
+            return "LOCK_CLAUSE_STRENGTH_UNDEFINED";
           case 1:
-            return "LCS_FORKEYSHARE";
+            return "LCS_NONE";
           case 2:
-            return "LCS_FORSHARE";
+            return "LCS_FORKEYSHARE";
           case 3:
-            return "LCS_FORNOKEYUPDATE";
+            return "LCS_FORSHARE";
           case 4:
+            return "LCS_FORNOKEYUPDATE";
+          case 5:
             return "LCS_FORUPDATE";
           default:
             throw new Error("Key not recognized in enum LockClauseStrength");
@@ -2060,17 +2300,21 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "LockWaitPolicy":
       {
         switch (key) {
-          case "LockWaitBlock":
+          case "LOCK_WAIT_POLICY_UNDEFINED":
             return 0;
-          case "LockWaitSkip":
+          case "LockWaitBlock":
             return 1;
-          case "LockWaitError":
+          case "LockWaitSkip":
             return 2;
+          case "LockWaitError":
+            return 3;
           case 0:
-            return "LockWaitBlock";
+            return "LOCK_WAIT_POLICY_UNDEFINED";
           case 1:
-            return "LockWaitSkip";
+            return "LockWaitBlock";
           case 2:
+            return "LockWaitSkip";
+          case 3:
             return "LockWaitError";
           default:
             throw new Error("Key not recognized in enum LockWaitPolicy");
@@ -2079,21 +2323,25 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
     case "LockTupleMode":
       {
         switch (key) {
-          case "LockTupleKeyShare":
+          case "LOCK_TUPLE_MODE_UNDEFINED":
             return 0;
-          case "LockTupleShare":
+          case "LockTupleKeyShare":
             return 1;
-          case "LockTupleNoKeyExclusive":
+          case "LockTupleShare":
             return 2;
-          case "LockTupleExclusive":
+          case "LockTupleNoKeyExclusive":
             return 3;
+          case "LockTupleExclusive":
+            return 4;
           case 0:
-            return "LockTupleKeyShare";
+            return "LOCK_TUPLE_MODE_UNDEFINED";
           case 1:
-            return "LockTupleShare";
+            return "LockTupleKeyShare";
           case 2:
-            return "LockTupleNoKeyExclusive";
+            return "LockTupleShare";
           case 3:
+            return "LockTupleNoKeyExclusive";
+          case 4:
             return "LockTupleExclusive";
           default:
             throw new Error("Key not recognized in enum LockTupleMode");
