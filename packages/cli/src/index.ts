@@ -1,33 +1,31 @@
 import pkg from '../package.json';
-import { PgProtoParser, PgProtoParserOptions } from 'pg-proto-parser';
+import { PgProtoParser, PgProtoParserOptions, getOptionsWithDefaults } from 'pg-proto-parser';
+import o from 'nested-obj';
 
 export const help = (): void => {
   console.log(`
   Usage:
   
-  pg-proto-parser --inFile <path-to-proto> --outDir <output-directory>
-                  [--alternateCommentMode] [--includeEnums] [--includeEnumsJSON]
-                  [--includeEnumTypeUnion] [--includeHeader] [--includeTypes]
-                  [--includeUtils] [--keepCase] [--optionalFields]
-                  [--preferTrailingComment] [--removeUndefinedAt0]
+  pg-proto-parser --input <path-to-proto> --output <output-directory>
+                  [--enums] [--enumsJSON] [--typeUnion] 
+                  [--header] [--types] [--utils] 
+                  [--case] [--optional] [--removeUndefined]
   
   Options:
   
-  --help                      Show this help message and exit.
-  --inFile                    Path to the .proto file to be parsed.
-  --outDir                    Directory to save the generated TypeScript files.
-  --alternateCommentMode      Use alternate comment mode for parsing comments.
-  --includeAstHelpers        Generate TypeScript helpers to generate PostgreSQL ASTs.
-  --includeEnums              Generate TypeScript enum types for PostgreSQL enums.
-  --includeEnumsJSON          Generate JSON files mapping enum names to values.
-  --includeEnumTypeUnion      Generate TypeScript unions from enum types.
-  --includeHeader             Include a header in the generated TypeScript files.
-  --includeTypes              Generate TypeScript interfaces for protobuf messages.
-  --includeUtils              Generate TypeScript utility functions for enums.
-  --keepCase                  Keep field casing as defined in the protobuf file.
-  --optionalFields            Generate TypeScript interfaces with optional fields.
-  --preferTrailingComment     Prefer trailing comments during parsing.
-  --removeUndefinedAt0        Remove the 'UNDEFINED' enum entry if it exists.
+  --help, -h                 Show this help message and exit.
+  --input, -i                Path to the .proto file to be parsed.
+  --output, -o               Directory to save the generated TypeScript files.
+  --enums                    Generate TypeScript enum types for PostgreSQL enums.
+  --enumsJSON                Generate JSON files mapping enum names to values.
+  --typeUnion                Generate TypeScript unions from enum types.
+  --header                   Include a header in the generated TypeScript files.
+  --types                    Generate TypeScript interfaces for protobuf messages.
+  --utils                    Generate TypeScript utility functions for enums.
+  --case                     Keep field casing as defined in the protobuf file.
+  --optional                 Generate TypeScript interfaces with optional fields.
+  --removeUndefined          Remove the 'UNDEFINED' enum entry if it exists.
+  --version, -v              Show the version number and exit.
   `);
 }
 
@@ -43,33 +41,29 @@ export default async (argv) => {
     process.exit(0);
   }
 
-  if (!argv.inFile || !argv.outDir) {
-    console.log('Input Error: inFile and outDir are required!');
+  if (!argv.input || !argv.output) {
+    console.log('Input Error: input and output are required!');
     help();
     process.exit(1);
   }
 
-  const options: PgProtoParserOptions = {
-    outDir: argv.outDir,
-    includeAstHelpers: argv.includeAstHelpers ?? true,
-    includeEnumsJSON: argv.includeEnumsJSON ?? true,
-    includeTypes: argv.includeTypes ?? true,
-    includeUtils: argv.includeUtils ?? true,
-    includeEnumTypeUnion: argv.includeEnumTypeUnion ?? true,
-    includeEnums: argv.includeEnums ?? true,
-    includeHeader: argv.includeHeader ?? true,
-    optionalFields: argv.optionalFields ?? true,
-    removeUndefinedAt0: argv.removeUndefinedAt0 ?? true,
-    parser: {
-      keepCase: argv.keepCase ?? true,
-      alternateCommentMode: argv.alternateCommentMode ?? true,
-      preferTrailingComment: argv.preferTrailingComment ?? false
-    }
-  };
+  const options: PgProtoParserOptions = getOptionsWithDefaults({
+    outDir: argv.output
+  });
 
-  const parser = new PgProtoParser(argv.inFile, options);
+  // Setting nested options using objectPath
+  o.set(options, 'enums.enabled', argv.enums);
+  o.set(options, 'enums.enumsAsTypeUnion', argv.typeUnion);
+  o.set(options, 'enums.json.enabled', argv.enumsJSON);
+  o.set(options, 'enums.removeUndefinedAt0', argv.removeUndefined);
+  o.set(options, 'includeHeader', argv.header);
+  o.set(options, 'parser.keepCase', argv.case);
+  o.set(options, 'types.enabled', argv.types);
+  o.set(options, 'types.optionalFields', argv.optional);
+  o.set(options, 'utils.astHelpers.enabled', argv.utils);
+
+  const parser = new PgProtoParser(argv.input, options);
 
   // Generate TypeScript and JSON files
   await parser.write();
-
 };

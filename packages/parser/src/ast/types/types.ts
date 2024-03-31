@@ -121,7 +121,7 @@ export const transformTypeToAST = (
           t.identifier(getFieldName(field, fieldName)),
           t.tsTypeAnnotation(fieldType)
         );
-        prop.optional = options.optionalFields;
+        prop.optional = options.types.optionalFields;
         return prop;
       });
 

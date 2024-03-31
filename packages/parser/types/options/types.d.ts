@@ -1,18 +1,36 @@
 export type PgProtoParserOptions = PgProtoStoreOptions & {
     parser?: ParseProtoOptions;
 };
+/**
+ * Configuration options for PgProtoStore.
+ */
 export interface PgProtoStoreOptions {
-    astHelperTypeSource?: string;
-    includeAstHelpers?: boolean;
-    includeEnums?: boolean;
-    includeEnumsJSON?: boolean;
-    includeEnumTypeUnion?: boolean;
-    includeHeader?: boolean;
-    includeTypes?: boolean;
-    includeUtils?: boolean;
-    optionalFields?: boolean;
     outDir?: string;
-    removeUndefinedAt0?: boolean;
+    astHelperTypeSource?: string;
+    utils?: {
+        enums?: {
+            enabled?: boolean;
+        };
+        astHelpers?: {
+            enabled?: boolean;
+            typeSource?: string;
+        };
+    };
+    types?: {
+        enabled?: boolean;
+        optionalFields?: boolean;
+        enumsAsTypeUnion?: boolean;
+    };
+    enums?: {
+        enabled?: boolean;
+        json?: {
+            enabled?: boolean;
+            toIntOutFile?: string;
+            toStrOutFile?: string;
+        };
+        removeUndefinedAt0?: boolean;
+    };
+    includeHeader?: boolean;
 }
 export interface ParseProtoOptions {
     keepCase?: boolean;

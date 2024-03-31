@@ -2,7 +2,7 @@ import { Service, Type, Field, Enum, Namespace, ReflectionObject } from '@launch
 import { generateTSEnums, generateTSInterfaces, generateTSEnumFunction, generateTSEnumsTypeUnionAST, generateTSASTHelpersImports, generateTSASTHelperMethods } from './ast';
 import { generateEnum2IntJSON, generateEnum2StrJSON } from './ast/enums/enums-json';
 import { sync as mkdirp } from 'mkdirp';
-import { defaultPgProtoParserOptions, PgProtoStoreOptions } from './options';
+import { defaultPgProtoParserOptions, getOptionsWithDefaults, PgProtoStoreOptions } from './options';
 import { cloneAndNameNode, getUndefinedKey, hasUndefinedInitialValue, writeFileToDisk } from './utils';
 
 interface IProtoStore {
@@ -29,14 +29,7 @@ export class ProtoStore implements IProtoStore {
     root: ReflectionObject,
     options: PgProtoStoreOptions = {} as PgProtoStoreOptions
   ) {
-    this.options = {
-      includeEnumsJSON: defaultPgProtoParserOptions.includeEnumsJSON,
-      includeTypes: defaultPgProtoParserOptions.includeTypes,
-      includeUtils: defaultPgProtoParserOptions.includeUtils,
-      includeEnumTypeUnion: defaultPgProtoParserOptions.includeEnumTypeUnion,
-      outDir: defaultPgProtoParserOptions.outDir,
-      ...options
-    };
+    this.options = getOptionsWithDefaults(options);
 
     this.root = root;
     this.services = [];
@@ -69,7 +62,7 @@ export class ProtoStore implements IProtoStore {
   _processEnum(enumNode: Enum): Enum {
     const undefinedKey = getUndefinedKey(enumNode.name);
     const clone = cloneAndNameNode(enumNode, enumNode.name);
-    if (!this.options.removeUndefinedAt0 || !hasUndefinedInitialValue(enumNode)) {
+    if (!this.options.enums.removeUndefinedAt0 || !hasUndefinedInitialValue(enumNode)) {
       return clone;
     }
 
@@ -94,7 +87,7 @@ export class ProtoStore implements IProtoStore {
     // Ensure the output directory exists
     mkdirp(this.options.outDir);
 
-    if (this.options.includeEnumsJSON) {
+    if (this.options.enums.json.enabled) {
       const enums2int = generateEnum2IntJSON(this.enums);
       const enums2str = generateEnum2StrJSON(this.enums);
 
@@ -103,7 +96,7 @@ export class ProtoStore implements IProtoStore {
       this.writeFile(`${this.options.outDir}/enums2str.json`, JSON.stringify(enums2str, null, 2));
     }
 
-    if (this.options.includeTypes) {
+    if (this.options.types.enabled) {
       // TODO
       // TODO
       // TODO
@@ -113,7 +106,7 @@ export class ProtoStore implements IProtoStore {
       const typesTS = generateTSInterfaces(this.types, this.options, false);
       let enumsTS = '';
 
-      if (this.options.includeEnumTypeUnion) {
+      if (this.options.types.enumsAsTypeUnion) {
         enumsTS = generateTSEnumsTypeUnionAST(this.enums);
       } else {
         enumsTS = generateTSEnums(this.enums);
@@ -124,20 +117,20 @@ export class ProtoStore implements IProtoStore {
       this.writeFile(`${this.options.outDir}/wrapped.ts`, [enumsTS, wrapped].join('\n'));
     }
 
-    if (this.options.includeEnums) {
+    if (this.options.enums.enabled) {
       const enumsTS = generateTSEnums(this.enums);
       // Write the files
       this.writeFile(`${this.options.outDir}/enums.ts`, enumsTS);
     }
 
-    if (this.options.includeUtils) {
+    if (this.options.utils.enums.enabled) {
       const utilsTS = generateTSEnumFunction(this.enums);
 
       // Write the files
       this.writeFile(`${this.options.outDir}/utils.ts`, utilsTS);
     }
 
-    if (this.options.includeAstHelpers) {
+    if (this.options.utils.astHelpers.enabled) {
       const imports = generateTSASTHelpersImports(this.types, this.options);
       const astsTS = generateTSASTHelperMethods(this.types);
 

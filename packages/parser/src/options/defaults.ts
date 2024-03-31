@@ -4,17 +4,31 @@ import { PgProtoParserOptions } from "./types";
 
 // Define default options outside of the class
 export const defaultPgProtoParserOptions: PgProtoParserOptions = {
-    astHelperTypeSource: './types',
-    includeAstHelpers: true,
-    includeEnums: true,
-    includeEnumsJSON: true,
-    includeEnumTypeUnion: true,
-    includeHeader: true,
-    includeTypes: true,
-    includeUtils: true,
-    optionalFields: true,
     outDir: `${process.cwd()}/out`,
-    removeUndefinedAt0: true,
+    includeHeader: true,
+    utils: {
+        enums: {
+            enabled: false
+        },
+        astHelpers: {
+            enabled: false,
+            typeSource: './types'
+        }
+    },
+    types: {
+        enabled: true,
+        optionalFields: true,
+        enumsAsTypeUnion: true
+    },
+    enums: {
+        enabled: true,
+        json: {
+            enabled: true,
+            toIntOutFile: 'enums2int.json',
+            toStrOutFile: 'enums2str.json'
+        },
+        removeUndefinedAt0: true
+    },
     parser: {
         keepCase: true,
         alternateCommentMode: true,

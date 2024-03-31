@@ -14,9 +14,17 @@ it('parser', () => {
   // https://raw.githubusercontent.com/pganalyze/libpg_query/16-latest/protobuf/pg_query.proto
   const testProtoFile = resolve(join(__dirname, '../../../__fixtures__/proto/16-latest.proto'));
   const outDir = resolve(join(__dirname, '../../../__fixtures__/', 'output', 'parser'));
-  const parser = new PgProtoParser(testProtoFile, {outDir, removeUndefinedAt0: true});
+  const parser = new PgProtoParser(testProtoFile, {
+    outDir,
+    types: {
+      optionalFields: false
+    },
+    enums: {
+      removeUndefinedAt0: true
+    }
+  });
   parser.write();
-  const out = glob(outDir + '**/*').map(file=>({file: basename(file), code: readFileSync(file, 'utf-8')}));
+  const out = glob(outDir + '**/*').map(file => ({ file: basename(file), code: readFileSync(file, 'utf-8') }));
   expect(out).toMatchSnapshot();
 })
 
@@ -24,8 +32,16 @@ it('keep undefined', () => {
   // https://raw.githubusercontent.com/pganalyze/libpg_query/16-latest/protobuf/pg_query.proto
   const testProtoFile = resolve(join(__dirname, '../../../__fixtures__/proto/16-latest.proto'));
   const outDir = resolve(join(__dirname, '../../../__fixtures__/', 'output', 'undef'));
-  const parser = new PgProtoParser(testProtoFile, {outDir, removeUndefinedAt0: false});
+  const parser = new PgProtoParser(testProtoFile, {
+    outDir,
+    types: {
+      optionalFields: true
+    },
+    enums: {
+      removeUndefinedAt0: false
+    }
+  });
   parser.write();
-  const out = glob(outDir + '**/*').map(file=>({file: basename(file), code: readFileSync(file, 'utf-8')}));
+  const out = glob(outDir + '**/*').map(file => ({ file: basename(file), code: readFileSync(file, 'utf-8') }));
   expect(out).toMatchSnapshot();
 })

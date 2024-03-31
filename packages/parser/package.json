@@ -83,6 +83,7 @@
     "@launchql/protobufjs": "6.11.7",
     "case": "1.6.3",
     "deepmerge": "4.3.1",
+    "nested-obj": "^0.0.1",
     "node-html-parser": "6.1.12",
     "recast": "0.23.6"
   }
