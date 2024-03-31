@@ -4,7 +4,7 @@ import { ProtoStore } from './store';
 import {
   defaultPgProtoParserOptions,
   PgProtoParserOptions
-} from './types';
+} from './options';
 
 export class PgProtoParser {
   inFile: string;

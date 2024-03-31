@@ -1,1 +1,2 @@
-export declare const STUB_SOURCE = "@genomoic/stubs";
+export declare const SPECIAL_TYPES: string[];
+export declare const NODE_TYPE = "Node";

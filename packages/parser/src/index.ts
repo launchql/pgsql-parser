@@ -1,3 +1,3 @@
 export * from './store';
 export * from './parser';
-export * from './types';
+export * from './options';

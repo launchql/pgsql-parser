@@ -1,6 +1,6 @@
 import { Enum, Field, ReflectionObject } from '@launchql/protobufjs';
 import pkg from '../package.json';
-import { PgProtoParserOptions } from './types';
+import { PgProtoParserOptions } from './options';
 import { writeFileSync } from 'fs';
 import { extname } from 'path';
 
