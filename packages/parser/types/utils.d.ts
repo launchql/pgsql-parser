@@ -1,5 +1,5 @@
 import { Enum, Field, ReflectionObject } from '@launchql/protobufjs';
-import { PgProtoParserOptions } from './types';
+import { PgProtoParserOptions } from './options';
 export declare const getUndefinedKey: (enumName: any) => string;
 export declare const toSpecialCamelCase: (s: any) => any;
 export declare const hasUndefinedInitialValue: (enumData: Enum) => boolean;

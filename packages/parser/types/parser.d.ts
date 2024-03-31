@@ -1,4 +1,4 @@
-import { PgProtoParserOptions } from './types';
+import { PgProtoParserOptions } from './options';
 export declare class PgProtoParser {
     inFile: string;
     options: PgProtoParserOptions;
