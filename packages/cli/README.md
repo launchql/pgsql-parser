@@ -57,42 +57,38 @@ pg-proto-parser --inFile <path-to-proto> --outDir <output-directory>
 ## Options
 
 ```bash
-pg-proto-parser --inFile <path-to-proto> \
-                --outDir <output-directory> \
-                [--alternateCommentMode] \
-                [--includeEnums] \
-                [--includeEnumsJSON] \
-                [--includeEnumTypeUnion] \
-                [--includeHeader] \
-                [--includeTypes] \
-                [--includeUtils] \
-                [--keepCase] \
-                [--optionalFields] \
-                [--preferTrailingComment] \
-                [--removeUndefinedAt0]
-
+pg-proto-parser --input <path-to-proto> \
+                --output <output-directory> \
+                [--enums] \
+                [--enumsJSON] \
+                [--typeUnion] \
+                [--header] \
+                [--types] \
+                [--utils] \
+                [--case] \
+                [--optional] \
+                [--removeUndefined]
 ```
 
-| Option                        | Description                                                                                                                     | Default Value            |
-|-------------------------------|---------------------------------------------------------------------------------------------------------------------------------|--------------------------|
-| `--inFile`                    | Path to the `.proto` file to be parsed.                                                                                         | *Required*               |
-| `--outDir`                    | Directory to save the generated TypeScript files.                                                                               | *Required*               |
-| `--alternateCommentMode`      | Use alternate comment mode. Useful if the default parsing of comments is problematic.                                           | `true`                   |
-| `--includeEnums`              | Outputs TypeScript enum types for the PostgreSQL enums.                                                                         | `true`                   |
-| `--includeEnumsJSON`          | Generate JSON files mapping enum names to integer values and vice versa.                                                        | `true`                   |
-| `--includeEnumTypeUnion`      | Uses strings to define enum types as specified for the fields of each proto message type (the PostgreSQL node types' fields type). | `true`                  |
-| `--includeHeader`             | Includes a header at the top of generated TypeScript files to avoid manual manipulation which could cause issues in CI/CD pipelines. | `true`                |
-| `--includeTypes`              | Generate TypeScript interfaces for protobuf messages.                                                                           | `true`                   |
-| `--includeUtils`              | Generate TypeScript utility functions for enums.                                                                                | `true`                   |
-| `--keepCase`                  | Keeps field casing as defined in the protobuf file. If false, fields will be converted to camelCase.                           | `true`                   |
-| `--optionalFields`            | Generates TypeScript interfaces with optional fields mapping to the PostgreSQL node types' fields; sets all fields to optional. | `true`                   |
-| `--preferTrailingComment`     | Give preference to trailing comments during parsing.                                                                            | `false`                  |
-| `--removeUndefinedAt0`        | Removes the initial `UNDEFINED` enum entry and adjusts the subsequent values by decrementing them.                             | `true`                   |
+
+| Option                | Description                                                                                                                         | Default Value |
+|-----------------------|-------------------------------------------------------------------------------------------------------------------------------------|---------------|
+| `--input`, `-i`       | Path to the `.proto` file to be parsed.                                                                                             | *Required*    |
+| `--output`, `-o`      | Directory to save the generated TypeScript files.                                                                                   | *Required*    |
+| `--enums`             | Generate TypeScript enum types for PostgreSQL enums.                                                                                | `true`        |
+| `--enumsJSON`         | Generate JSON files mapping enum names to integer values and vice versa.                                                            | `true`        |
+| `--typeUnion`         | Generate TypeScript unions from enum types.                                                                                         | `true`        |
+| `--header`            | Include a header in the generated TypeScript files to avoid manual manipulation which could cause issues in CI/CD pipelines.        | `true`        |
+| `--types`             | Generate TypeScript interfaces for protobuf messages.                                                                               | `true`        |
+| `--utils`             | Generate TypeScript utility functions for building ASTs.                                                                            | `false`       |
+| `--case`              | Keep field casing as defined in the protobuf file. If false, fields will be converted to camelCase.                                 | `true`        |
+| `--optional`          | Generate TypeScript interfaces with optional fields mapping to the PostgreSQL node types' fields; sets all fields to optional.      | `true`        |
+| `--removeUndefined`   | Remove the initial `UNDEFINED` enum entry and adjust the subsequent values by decrementing them.                                    | `true`        |
 
 
-To explicitly set a boolean option to false, prepend the option with `--no-`. For example, to disable JSON enum mapping, use `--no-includeEnumsJSON`.
+To explicitly set a boolean option to false, prepend the option with `--no-`. For example, to disable JSON enum mapping, use `--no-enumsJSON`.
 
-Note: Boolean flags default to true when specified without a value. To set them to false, use the no- prefix (e.g., `--no-includeEnumsJSON` will set `includeEnumsJSON` to false).
+Note: Boolean flags default to true when specified without a value. To set them to false, use the no- prefix (e.g., `--no-enumsJSON` will set `enumsJSON` to false).
 
 ## Related
 
