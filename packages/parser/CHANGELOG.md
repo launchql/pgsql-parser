@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.14.0](https://github.com/launchql/pg-proto-parser/compare/pg-proto-parser@1.13.0...pg-proto-parser@1.14.0) (2024-03-31)
+
+**Note:** Version bump only for package pg-proto-parser
+
+
+
+
+
 # [1.13.0](https://github.com/launchql/pg-proto-parser/compare/pg-proto-parser@1.12.2...pg-proto-parser@1.13.0) (2024-03-31)
 
 **Note:** Version bump only for package pg-proto-parser
