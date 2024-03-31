@@ -6,7 +6,6 @@ export type PgProtoParserOptions = PgProtoStoreOptions & {
  */
 export interface PgProtoStoreOptions {
     outDir?: string;
-    astHelperTypeSource?: string;
     utils?: {
         enums?: {
             enabled?: boolean;

@@ -9,19 +9,18 @@ export interface PgProtoStoreOptions {
     // The directory where the generated files will be saved.
     outDir?: string;
 
-    // Source file for AST helper types.
-    astHelperTypeSource?: string;
-
     // Options related to utility functions.
     utils?: {
         enums?: {
             // Whether to include TypeScript utils for enums
             enabled?: boolean;
         }
-
+        
         // AST helper functions.
         astHelpers?: {
+            // Whether to include TypeScript AST builders
             enabled?: boolean;
+            // Source file for AST helper types.
             typeSource?: string;
         }
     };

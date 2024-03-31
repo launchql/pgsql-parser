@@ -10,7 +10,7 @@ export const generateImportSpecifiersAST = (types: Type[], options: PgProtoParse
     t.importSpecifier(t.identifier(type.name), t.identifier(type.name))
   );
 
-  const importDeclaration = t.importDeclaration(importSpecifiers, t.stringLiteral(options.astHelperTypeSource));
+  const importDeclaration = t.importDeclaration(importSpecifiers, t.stringLiteral(options.utils.astHelpers.typeSource));
   return importDeclaration;
 }
 
