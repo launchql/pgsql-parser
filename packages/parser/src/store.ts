@@ -2,6 +2,7 @@ import { Service, Type, Field, Enum, Namespace, ReflectionObject } from '@launch
 import { generateTSInterfaces, buildEnumNamedImports, createAstHelperMethodsAST, generateImportSpecifiersAST, buildEnumValueFunctionAST, transformEnumToTypeUnionAST, transformEnumToAST } from './ast';
 import { generateEnum2IntJSON, generateEnum2StrJSON } from './ast/enums/enums-json';
 import { sync as mkdirp } from 'mkdirp';
+import { join } from 'path';
 import { defaultPgProtoParserOptions, getOptionsWithDefaults, PgProtoStoreOptions } from './options';
 import { cloneAndNameNode, convertAstToCode, createDefaultImport, getUndefinedKey, hasUndefinedInitialValue, stripExtension, writeFileToDisk } from './utils';
 import { nestedObjCode } from './inline-helpers';
@@ -88,73 +89,78 @@ export class ProtoStore implements IProtoStore {
     // Ensure the output directory exists
     mkdirp(this.options.outDir);
 
+
+    this.writeEnumsJSON();
+    this.writeTypes();
+    this.writeEnums();
+    this.writeUtilsEnums();
+    this.writeAstHelpers();
+
+  }
+
+
+  writeEnumsJSON() {
     if (this.options.enums.json.enabled) {
       const enums2int = generateEnum2IntJSON(this.enums);
       const enums2str = generateEnum2StrJSON(this.enums);
 
-      // Write the files
-      this.writeFile(`${this.options.outDir}/${this.options.enums.json.toIntOutFile}`, JSON.stringify(enums2int, null, 2));
-      this.writeFile(`${this.options.outDir}/${this.options.enums.json.toStrOutFile}`, JSON.stringify(enums2str, null, 2));
+      this.writeFile(this.options.enums.json.toIntOutFile, JSON.stringify(enums2int, null, 2));
+      this.writeFile(this.options.enums.json.toStrOutFile, JSON.stringify(enums2str, null, 2));
     }
+  }
 
+  writeTypes() {
     if (this.options.types.enabled) {
-      const code = convertAstToCode(
-        [
-          buildEnumNamedImports(this.enums, this.options.types.enumsSource),
-          ...generateTSInterfaces(this.types, this.options, false)
-        ]
-      );
-      
-      // Write the files
-      this.writeFile(`${this.options.outDir}/${this.options.types.filename}`, code);
-      // this.writeFile(`${this.options.outDir}/wrapped.ts`, [enumsTS, wrapped].join('\n'));
-    }
-
-    if (this.options.enums.enabled) {
-      
-      const code = convertAstToCode(
-        [
-          ...this.enums.map(enm => this.options.enums.enumsAsTypeUnion ? 
-            transformEnumToTypeUnionAST(enm) :
-            transformEnumToAST(enm) 
-          )
-        ]
-      )
-      // Write the files
-      this.writeFile(`${this.options.outDir}/${this.options.enums.filename}`, code);
-    }
-
-    if (this.options.utils.enums.enabled) {
-      const code = 
-        convertAstToCode([
-          ...buildEnumValueFunctionAST(this.enums)
-        ]);
-
-      // Write the files
-      this.writeFile(`${this.options.outDir}/utils.ts`, code);
-    }
-
-    if (this.options.utils.astHelpers.enabled) {
       const code = convertAstToCode([
-        // no need for enums since we are only doing types
-        // buildEnumNamedImports(this.enums, 'myenums'),
-        this.options.utils.astHelpers.inlineNestedObj ?
+        buildEnumNamedImports(this.enums, this.options.types.enumsSource),
+        ...generateTSInterfaces(this.types, this.options, this.options.types.wrapped)
+      ]);
+      this.writeFile(this.options.types.filename, code);
+    }
+  }
+
+  writeEnums() {
+    if (this.options.enums.enabled) {
+      const code = convertAstToCode(
+        this.enums.map(enm => this.options.enums.enumsAsTypeUnion ?
+          transformEnumToTypeUnionAST(enm) :
+          transformEnumToAST(enm)
+        )
+      );
+      this.writeFile(this.options.enums.filename, code);
+    }
+  }
+
+  writeUtilsEnums() {
+    if (this.options.utils.enums.enabled) {
+      const code = convertAstToCode(buildEnumValueFunctionAST(this.enums));
+      this.writeFile(this.options.utils.enums.filename, code);
+    }
+  }
+
+  writeAstHelpers() {
+    if (this.options.utils.astHelpers.enabled) {
+      const imports = this.options.utils.astHelpers.inlineNestedObj ?
         createDefaultImport('_o', './' + stripExtension(this.options.utils.astHelpers.nestedObjFile)) :
-        createDefaultImport('_o', 'nested-obj'),
+        createDefaultImport('_o', 'nested-obj');
+
+      const code = convertAstToCode([
+        imports,
         generateImportSpecifiersAST(this.types, this.options),
         createAstHelperMethodsAST(this.types)
       ]);
-      
 
-      // Write the files
-      this.writeFile(`${this.options.outDir}/asts.ts`, code);
+      this.writeFile(this.options.utils.astHelpers.filename, code);
+
       if (this.options.utils.astHelpers.inlineNestedObj) {
-        this.writeFile(`${this.options.outDir}/${this.options.utils.astHelpers.nestedObjFile}`, nestedObjCode);
+        this.writeFile(this.options.utils.astHelpers.nestedObjFile, nestedObjCode);
       }
     }
   }
+
   writeFile (filename: string, content: string) {
-    writeFileToDisk(filename, content, this.options);
+    const file = join(this.options.outDir, filename);
+    writeFileToDisk(file, content, this.options);
   }
 
 }

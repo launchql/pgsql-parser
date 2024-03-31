@@ -14,6 +14,8 @@ export interface PgProtoStoreOptions {
         enums?: {
             // Whether to include TypeScript utils for enums
             enabled?: boolean;
+            // Enums helpers filename
+            filename?: string;
         }
 
         // AST helper functions.
@@ -22,11 +24,12 @@ export interface PgProtoStoreOptions {
             enabled?: boolean;
             // Source file for AST helper types.
             typeSource?: string;
-
             // Whether to inline nested-obj
             inlineNestedObj?: boolean;
             // if inlined, filename
             nestedObjFile?: string;
+            // ASTs helpers filename
+            filename?: string;
         }
     };
 
@@ -34,28 +37,24 @@ export interface PgProtoStoreOptions {
     types?: {
         // Whether to generate TypeScript interfaces for protobuf messages.
         enabled?: boolean;
-
         // Types filename
         filename?: string;
-
         // Whether fields in TypeScript interfaces should be optional.
         optionalFields?: boolean;
-
         // Enums source specifier
         enumsSource?: string;
+        // Enabled wrapped types, to match AST
+        wrapped?: boolean;
     };
 
     // Options related to enumeration handling.
     enums?: {
         // Whether to include TypeScript enums.
         enabled?: boolean;
-
         // Enums filename
         filename?: string;
-
         // Whether enums in TypeScript are a union type
         enumsAsTypeUnion?: boolean;
-
         // Options for JSON mappings of enums.
         json?: {
             // Whether to generate JSON files mapping enum names to values.
@@ -63,7 +62,6 @@ export interface PgProtoStoreOptions {
             toIntOutFile?: string;
             toStrOutFile?: string;
         };
-
         // Whether to remove the initial `UNDEFINED` enum entry and adjust subsequent values.
         removeUndefinedAt0?: boolean;
     };

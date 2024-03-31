@@ -9,19 +9,22 @@ export const defaultPgProtoParserOptions: PgProtoParserOptions = {
     utils: {
         enums: {
             enabled: false,
+            filename: 'utils.ts',
         },
         astHelpers: {
             enabled: false,
             typeSource: './types',
             inlineNestedObj: false,
-            nestedObjFile: 'nested-obj.ts'
+            nestedObjFile: 'nested-obj.ts',
+            filename: 'asts.ts',
         }
     },
     types: {
         enabled: false,
         filename: 'types.ts',
         optionalFields: true,
-        enumsSource: './enums'
+        enumsSource: './enums',
+        wrapped: false
     },
     enums: {
         enabled: false,

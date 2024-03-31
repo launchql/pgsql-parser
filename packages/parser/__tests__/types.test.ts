@@ -16,4 +16,14 @@ describe('types', () => {
         }
     });
   });
+  it('wrapped', () => {
+    parseAndSnap('types/wrapped', {
+        types: {
+          enabled: true,
+          enumsSource: 'my-enums.ts',
+          wrapped: true,
+          filename: 'wrapped.ts'
+        }
+    });
+  });
 });
