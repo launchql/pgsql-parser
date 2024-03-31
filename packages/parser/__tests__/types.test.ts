@@ -1,18 +1,19 @@
 import { parseAndSnap } from '../test-utils';
 
-it('types', () => {
-  parseAndSnap('types', {
-    types: {
-      enabled: true,
-      optionalFields: false
-    }
+describe('types', () => {
+  it('optionalFields', () => {
+    parseAndSnap('types/optionalFields', {
+      types: {
+        enabled: true,
+        optionalFields: false
+      }
+    });
   });
-});
-
-it('keep undefined', () => {
-  parseAndSnap('undef', {
-    types: {
-      enabled: true
-    }
+  it('fieldsRequired', () => {
+    parseAndSnap('types/fieldsRequired', {
+        types: {
+          enabled: true
+        }
+    });
   });
 });

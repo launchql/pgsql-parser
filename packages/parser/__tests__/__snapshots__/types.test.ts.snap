@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`keep undefined 1`] = `
+exports[`types fieldsRequired 1`] = `
 [
   {
     "code": "/**
@@ -1824,7 +1824,7 @@ export interface ScanToken {
 ]
 `;
 
-exports[`types 1`] = `
+exports[`types optionalFields 1`] = `
 [
   {
     "code": "/**

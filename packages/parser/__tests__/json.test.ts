@@ -1,11 +1,13 @@
 import { parseAndSnap } from '../test-utils';
 
-it('json', () => {
-  parseAndSnap('json', {
-    enums: {
-      json: {
-        enabled: true
+describe('enums', () => {
+  it('json enabled', () => {
+    parseAndSnap('enums/json/enabled', {
+      enums: {
+        json: {
+          enabled: true
+        }
       }
-    }
+    });
   });
 });

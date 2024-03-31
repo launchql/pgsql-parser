@@ -1,8 +1,8 @@
 import { parseAndSnap } from '../test-utils';
 
-describe('pure enums', () => {
+describe('pure', () => {
   it('enums', () => {
-    parseAndSnap('pure-enums', {
+    parseAndSnap('enums/pure/noRemoveUndef', {
       enums: {
         enabled: true,
         enumsAsTypeUnion: false,
@@ -12,7 +12,7 @@ describe('pure enums', () => {
   })
 
   it('removeAt0', () => {
-    parseAndSnap('pure-enums-rm0', {
+    parseAndSnap('enums/pure/removeUndef', {
       enums: {
         enabled: true,
         enumsAsTypeUnion: false,
@@ -24,7 +24,7 @@ describe('pure enums', () => {
 
 describe('typeUnion', () => {
   it('enums', () => {
-    parseAndSnap('str-enums', {
+    parseAndSnap('enums/typeUnion/noRemoveUndef', {
       enums: {
         enabled: true,
         enumsAsTypeUnion: true,
@@ -33,7 +33,7 @@ describe('typeUnion', () => {
     });
   })
   it('removeAt0', () => {
-    parseAndSnap('str-enums-rm0', {
+    parseAndSnap('enums/typeUnion/removeUndef', {
       enums: {
         enabled: true,
         enumsAsTypeUnion: true,

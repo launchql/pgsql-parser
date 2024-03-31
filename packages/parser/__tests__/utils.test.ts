@@ -1,29 +1,31 @@
 import { parseAndSnap } from '../test-utils';
 
-it('utils', () => {
-  parseAndSnap('utils', {
-    utils: {
-      astHelpers: {
-        enabled: true
-      },
-      enums: {
-        enabled: true
+describe('utils', () => {
+  it('astHelpers enabled', () => {
+    parseAndSnap('utils/astHelpers/enabled', {
+      utils: {
+        astHelpers: {
+          enabled: true
+        },
+        enums: {
+          enabled: true
+        }
       }
-    }
+    });
   });
-});
 
-it('inline', () => {
-  parseAndSnap('inline', {
-    utils: {
-      astHelpers: {
-        enabled: true,
-        inlineNestedObj: true,
-        nestedObjFile: 'path-obj.ts'
-      },
-      enums: {
-        enabled: true
+  it('astHelpers with inlineNestedObj', () => {
+    parseAndSnap('utils/astHelpers/inlineNestedObj', {
+      utils: {
+        astHelpers: {
+          enabled: true,
+          inlineNestedObj: true,
+          nestedObjFile: 'path-obj.ts'
+        },
+        enums: {
+          enabled: true
+        }
       }
-    }
+    });
   });
 });

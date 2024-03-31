@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`json 1`] = `
+exports[`enums json enabled 1`] = `
 [
   {
     "code": "{
