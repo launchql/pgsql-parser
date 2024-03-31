@@ -16,14 +16,14 @@ export const defaultPgProtoParserOptions: PgProtoParserOptions = {
         }
     },
     types: {
-        enabled: true,
+        enabled: false,
         optionalFields: true,
         enumsAsTypeUnion: true
     },
     enums: {
-        enabled: true,
+        enabled: false,
         json: {
-            enabled: true,
+            enabled: false,
             toIntOutFile: 'enums2int.json',
             toStrOutFile: 'enums2str.json'
         },

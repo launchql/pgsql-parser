@@ -22964,7 +22964,7 @@ export interface ScanToken {
   start: number;
   end: number;
   token: Token;
-  keyword_kind: KeywordKind;
+  keywordKind: KeywordKind;
 }",
     "file": "types.ts",
   },
@@ -29588,7 +29588,7 @@ export interface ScanToken {
     start: number;
     end: number;
     token: Token;
-    keyword_kind: KeywordKind;
+    keywordKind: KeywordKind;
   };
 }",
     "file": "wrapped.ts",

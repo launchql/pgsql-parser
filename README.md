@@ -85,23 +85,23 @@ pg-proto-parser --input pg_query.proto --output out
 
 This table describes the options available for `PgProtoParserOptions`, their functionality, and default values.
 
-This table describes the options available for `PgProtoParserOptions`, their functionality, and default values.
 
 | Option                                   | Description                                                                                                                     | Default Value            |
 |------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|--------------------------|
 | `outDir`                                 | The directory where the generated files will be saved.                                                                          | `process.cwd() + "/out"` |
-| `utils.enums.enabled`                    | Whether to generate TypeScript utility functions for enums.                                                                     | `true`                   |
+| `utils.enums.enabled`                    | Whether to generate TypeScript utility functions for enums.                                                                     | `false`                   |
 | `utils.astHelpers.enabled`               | Outputs TypeScript helpers for building PostgreSQL ASTs.                                                                        | `false`                  |
 | `utils.astHelpers.typeSource`            | Path to the TypeScript types to use when generating AST helpers.                                                                | `./types`                |
-| `types.enabled`                          | Whether to generate TypeScript interfaces for protobuf messages.                                                                | `true`                   |
+| `types.enabled`                          | Whether to generate TypeScript interfaces for protobuf messages.                                                                | `false`                   |
 | `types.optionalFields`                   | Generates TypeScript interfaces with optional fields mapping to the PostgreSQL node types' fields; sets all fields to optional. | `true`                   |
 | `types.enumsAsTypeUnion`                 | Uses strings to define enum types as specified for the fields of each proto message type (the PostgreSQL node types' fields type). | `true`                |
-| `enums.enabled`                          | Outputs TypeScript enum types for the PostgreSQL enums.                                                                         | `true`                   |
-| `enums.json.enabled`                     | Whether to generate JSON files mapping enum names to integer values and vice versa.                                             | `true`                   |
+| `enums.enabled`                          | Outputs TypeScript enum types for the PostgreSQL enums.                                                                         | `false`                   |
+| `enums.json.enabled`                     | Whether to generate JSON files mapping enum names to integer values and vice versa.                                             | `false`                   |
 | `enums.json.toIntOutFile`                | Output file name for the JSON mapping of enum names to integer values.                                                          | `undefined`              |
 | `enums.json.toStrOutFile`                | Output file name for the JSON mapping of integer values to enum names.                                                          | `undefined`              |
-| `enums.removeUndefinedAt0`               | Removes the initial `UNDEFINED` enum entry and adjusts the subsequent values by decrementing them.                              | `true`                   |
+| `enums.removeUndefinedAt0`               | Removes the initial `UNDEFINED` enum entry and adjusts the subsequent values by decrementing them.                             | `true`                   |
 | `includeHeader`                          | Includes a header at the top of generated TypeScript files to avoid manual manipulation which could cause issues in CI/CD pipelines. | `true`                |
+         |
 
 Each of these options can be set when initializing the `PgProtoParser` to customize its behavior and output.
 

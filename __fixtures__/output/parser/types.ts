@@ -1875,5 +1875,5 @@ export interface ScanToken {
   start: number;
   end: number;
   token: Token;
-  keyword_kind: KeywordKind;
+  keywordKind: KeywordKind;
 }
