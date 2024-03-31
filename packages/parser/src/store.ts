@@ -98,7 +98,6 @@ export class ProtoStore implements IProtoStore {
 
   }
 
-
   writeEnumsJSON() {
     if (this.options.enums.json.enabled) {
       const enums2int = generateEnum2IntJSON(this.enums);
