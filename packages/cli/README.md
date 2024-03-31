@@ -81,7 +81,7 @@ pg-proto-parser --input <path-to-proto> \
 | `--header`            | Include a header in the generated TypeScript files to avoid manual manipulation which could cause issues in CI/CD pipelines.        | `true`        |
 | `--types`             | Generate TypeScript interfaces for protobuf messages.                                                                               | `true`        |
 | `--utils`             | Generate TypeScript utility functions for building ASTs.                                                                            | `false`       |
-| `--case`              | Keep field casing as defined in the protobuf file. If false, fields will be converted to camelCase.                                 | `true`        |
+| `--case`              | Keep field casing as defined in the protobuf file. If false, fields will be converted to camelCase.                                 | `false`        |
 | `--optional`          | Generate TypeScript interfaces with optional fields mapping to the PostgreSQL node types' fields; sets all fields to optional.      | `true`        |
 | `--removeUndefined`   | Remove the initial `UNDEFINED` enum entry and adjust the subsequent values by decrementing them.                                    | `true`        |
 

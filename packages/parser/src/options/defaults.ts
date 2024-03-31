@@ -30,7 +30,7 @@ export const defaultPgProtoParserOptions: PgProtoParserOptions = {
         removeUndefinedAt0: true
     },
     parser: {
-        keepCase: true,
+        keepCase: false,
         alternateCommentMode: true,
         preferTrailingComment: false
     }
