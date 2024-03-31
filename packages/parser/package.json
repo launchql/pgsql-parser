@@ -82,8 +82,8 @@
     "@babel/types": "7.24.0",
     "@launchql/protobufjs": "6.11.7",
     "case": "1.6.3",
+    "deepmerge": "4.3.1",
     "node-html-parser": "6.1.12",
     "recast": "0.23.6"
-  },
-  "gitHead": "82a446d1c1df68222c85c7be87679201b8204eb9"
+  }
 }

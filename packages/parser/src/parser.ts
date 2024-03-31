@@ -2,7 +2,7 @@ import { parse } from '@launchql/protobufjs';
 import { readFileSync } from 'fs';
 import { ProtoStore } from './store';
 import {
-  defaultPgProtoParserOptions,
+  getOptionsWithDefaults,
   PgProtoParserOptions
 } from './options';
 
@@ -12,15 +12,7 @@ export class PgProtoParser {
 
   constructor(inFile: string, options?: PgProtoParserOptions) {
     this.inFile = inFile;
-
-    // Merge the provided options with the default options
-    this.options = { ...defaultPgProtoParserOptions, ...options };
-
-    // If the 'parser' sub-object is explicitly provided, merge it separately to ensure deep merging
-    if (options?.parser) {
-      this.options.parser = { ...defaultPgProtoParserOptions.parser, ...options.parser };
-    }
-
+    this.options = getOptionsWithDefaults(options);
   }
 
   private readProtoFile(): string {

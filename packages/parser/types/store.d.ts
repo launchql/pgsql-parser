@@ -1,5 +1,5 @@
 import { Service, Type, Field, Enum, Namespace, ReflectionObject } from '@launchql/protobufjs';
-import { PgProtoStoreOptions } from './types';
+import { PgProtoStoreOptions } from './options';
 interface IProtoStore {
     options: PgProtoStoreOptions;
     root: ReflectionObject;
