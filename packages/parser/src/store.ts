@@ -2,7 +2,7 @@ import { Service, Type, Field, Enum, Namespace, ReflectionObject } from '@launch
 import { generateTSEnums, generateTSInterfaces, generateTSEnumFunction, generateTSEnumsTypeUnionAST, generateTSASTHelpersImports, generateTSASTHelperMethods } from './ast';
 import { generateEnum2IntJSON, generateEnum2StrJSON } from './ast/enums/enums-json';
 import { sync as mkdirp } from 'mkdirp';
-import { defaultPgProtoParserOptions, PgProtoStoreOptions } from './types';
+import { defaultPgProtoParserOptions, PgProtoStoreOptions } from './options';
 import { cloneAndNameNode, getUndefinedKey, hasUndefinedInitialValue, writeFileToDisk } from './utils';
 
 interface IProtoStore {

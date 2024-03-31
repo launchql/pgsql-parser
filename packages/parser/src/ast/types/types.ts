@@ -1,7 +1,7 @@
 import { Type, Field } from '@launchql/protobufjs';
 import * as t from '@babel/types';
 import { getFieldName, toSpecialCamelCase } from '../../utils';
-import { PgProtoParserOptions } from '../../types';
+import { PgProtoParserOptions } from '../../options';
 import { SPECIAL_TYPES } from '../../constants';
 import { resolveTypeName } from './utils';
 

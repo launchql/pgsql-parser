@@ -1,7 +1,7 @@
 import { Type, Enum } from '@launchql/protobufjs';
 import * as t from '@babel/types';
 import generate from '@babel/generator';
-import { PgProtoParserOptions } from '../types';
+import { PgProtoParserOptions } from '../options';
 import { createAstHelperMethodsAST, createUnionTypeAST, transformTypeToAST } from './types';
 import { buildEnumValueFunctionAST, transformEnumToAST, transformEnumToTypeUnionAST } from './enums';
 
