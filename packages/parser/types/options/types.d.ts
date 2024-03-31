@@ -9,8 +9,6 @@ export interface PgProtoStoreOptions {
     utils?: {
         enums?: {
             enabled?: boolean;
-            filename?: string;
-            enumsAsTypeUnion?: boolean;
         };
         astHelpers?: {
             enabled?: boolean;
@@ -21,10 +19,14 @@ export interface PgProtoStoreOptions {
     };
     types?: {
         enabled?: boolean;
+        filename?: string;
         optionalFields?: boolean;
+        enumsSource?: string;
     };
     enums?: {
         enabled?: boolean;
+        filename?: string;
+        enumsAsTypeUnion?: boolean;
         json?: {
             enabled?: boolean;
             toIntOutFile?: string;

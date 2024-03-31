@@ -25,9 +25,11 @@
     "buidl": "npm run build",
     "buidl:clean": "npm run clean && npm run buidl",
     "clean": "rimraf ./types && rimraf ./main && rimraf ./module",
+    "clean:output": "rimraf ../../__fixtures__/output",
     "prepare": "npm run clean && npm run build",
     "lint": "eslint .",
     "format": "eslint . --fix",
+    "pretest": "npm run clean:output",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:debug": "node --inspect node_modules/.bin/jest --runInBand"
