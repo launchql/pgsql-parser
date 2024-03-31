@@ -24,8 +24,6 @@
     "build:main": "yarn tsc -p tsconfig.json --outDir main --module commonjs",
     "build:module": "yarn tsc -p tsconfig.json --outDir module --module es2022",
     "build": "npm run build:module && npm run build:main",
-    "buidl": "npm run build",
-    "buidl:clean": "npm run clean && npm run buidl",
     "clean": "rimraf ./types && rimraf ./main && rimraf ./module",
     "prepare": "npm run clean && npm run build",
     "lint": "eslint .",
