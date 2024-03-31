@@ -2,6 +2,8 @@ import { Type, Enum } from '@launchql/protobufjs';
 import * as t from '@babel/types';
 import { PgProtoParserOptions } from '../options';
 export declare const generateImportSpecifiersAST: (types: Type[], options: PgProtoParserOptions) => t.ImportDeclaration;
+export declare const createDefaultImport: (importName: string, source: string) => t.ImportDeclaration;
+export declare const createNamedImport: (importNames: string[], source: string) => t.ImportDeclaration;
 export declare const generateTSInterfaces: (types: Type[], options: PgProtoParserOptions, useNestedTypes: boolean) => string;
 export declare const generateTSEnums: (enums: Enum[]) => string;
 export declare const generateTSEnumsTypeUnionAST: (enums: Enum[]) => string;

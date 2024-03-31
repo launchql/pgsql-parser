@@ -9,16 +9,19 @@ export interface PgProtoStoreOptions {
     utils?: {
         enums?: {
             enabled?: boolean;
+            filename?: string;
+            enumsAsTypeUnion?: boolean;
         };
         astHelpers?: {
             enabled?: boolean;
             typeSource?: string;
+            inlineNestedObj?: boolean;
+            nestedObjFile?: string;
         };
     };
     types?: {
         enabled?: boolean;
         optionalFields?: boolean;
-        enumsAsTypeUnion?: boolean;
     };
     enums?: {
         enabled?: boolean;

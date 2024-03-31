@@ -15,7 +15,7 @@ export interface PgProtoStoreOptions {
             // Whether to include TypeScript utils for enums
             enabled?: boolean;
         }
-        
+
         // AST helper functions.
         astHelpers?: {
             // Whether to include TypeScript AST builders
@@ -35,17 +35,26 @@ export interface PgProtoStoreOptions {
         // Whether to generate TypeScript interfaces for protobuf messages.
         enabled?: boolean;
 
+        // Types filename
+        filename?: string;
+
         // Whether fields in TypeScript interfaces should be optional.
         optionalFields?: boolean;
-        
-        // Whether enums in TypeScript are a union type
-        enumsAsTypeUnion?: boolean;
+
+        // Enums source specifier
+        enumsSource?: string;
     };
 
     // Options related to enumeration handling.
     enums?: {
         // Whether to include TypeScript enums.
         enabled?: boolean;
+
+        // Enums filename
+        filename?: string;
+
+        // Whether enums in TypeScript are a union type
+        enumsAsTypeUnion?: boolean;
 
         // Options for JSON mappings of enums.
         json?: {

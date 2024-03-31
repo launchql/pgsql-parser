@@ -8,7 +8,7 @@ export const defaultPgProtoParserOptions: PgProtoParserOptions = {
     includeHeader: true,
     utils: {
         enums: {
-            enabled: false
+            enabled: false,
         },
         astHelpers: {
             enabled: false,
@@ -19,11 +19,15 @@ export const defaultPgProtoParserOptions: PgProtoParserOptions = {
     },
     types: {
         enabled: false,
+        filename: 'types.ts',
         optionalFields: true,
-        enumsAsTypeUnion: true
+        enumsSource: './enums'
     },
     enums: {
         enabled: false,
+        filename: 'enums.ts',
+        enumsAsTypeUnion: true,
+
         json: {
             enabled: false,
             toIntOutFile: 'enums2int.json',

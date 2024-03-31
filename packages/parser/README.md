@@ -64,7 +64,7 @@ This table describes the options available for `PgProtoParserOptions`, their fun
 | `utils.astHelpers.typeSource`            | Path to the TypeScript types to use when generating AST helpers.                                                                | `./types`                |
 | `types.enabled`                          | Whether to generate TypeScript interfaces for protobuf messages.                                                                | `false`                   |
 | `types.optionalFields`                   | Generates TypeScript interfaces with optional fields mapping to the PostgreSQL node types' fields; sets all fields to optional. | `true`                   |
-| `types.enumsAsTypeUnion`                 | Uses strings to define enum types as specified for the fields of each proto message type (the PostgreSQL node types' fields type). | `true`                |
+| `enums.enumsAsTypeUnion`                 | Uses strings to define enum types as specified for the fields of each proto message type (the PostgreSQL node types' fields type). | `true`                |
 | `enums.enabled`                          | Outputs TypeScript enum types for the PostgreSQL enums.                                                                         | `false`                   |
 | `enums.json.enabled`                     | Whether to generate JSON files mapping enum names to integer values and vice versa.                                             | `false`                   |
 | `enums.json.toIntOutFile`                | Output file name for the JSON mapping of enum names to integer values.                                                          | `undefined`              |

@@ -143,3 +143,29 @@ export const transformTypeToAST = (
   // Wrap the interface declaration in an export statement
   return t.exportNamedDeclaration(interfaceDecl, []);
 }
+
+export const generateTSInterfaces = (
+  types: Type[],
+  options: PgProtoParserOptions,
+  useNestedTypes: boolean
+) => {
+  const node = createUnionTypeAST(types.filter(type => type.name !== 'Node'));
+  const typeDefns = types.reduce((m, type) => {
+    if (type.name === 'Node') return m;
+    return [...m, transformTypeToAST(type, options, useNestedTypes)]
+  }, []);
+
+  return [
+    node,
+    ...typeDefns
+  ];
+};
+
+export const generateImportSpecifiersAST = (types: Type[], options: PgProtoParserOptions) => {
+  const importSpecifiers = types.map(type =>
+    t.importSpecifier(t.identifier(type.name), t.identifier(type.name))
+  );
+
+  const importDeclaration = t.importDeclaration(importSpecifiers, t.stringLiteral(options.utils.astHelpers.typeSource));
+  return importDeclaration;
+}

@@ -1,6 +1,6 @@
 import { Enum } from '@launchql/protobufjs';
 import * as t from '@babel/types';
-
+import { createNamedImport } from '../../utils';
 
 export const transformEnumToAST = (enumData: Enum) => {
   const members = Object.entries(enumData.values).map(([key, value]) =>
@@ -9,6 +9,10 @@ export const transformEnumToAST = (enumData: Enum) => {
 
   const enumDeclaration = t.tsEnumDeclaration(t.identifier(enumData.name), members);
   return t.exportNamedDeclaration(enumDeclaration);
+};
+
+export const buildEnumNamedImports = (enums: Enum[], source: string) => {
+  return createNamedImport(enums.map(e=>e.name), source);
 };
 
 export const transformEnumToTypeUnionAST = (enumData: Enum) => {
