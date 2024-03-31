@@ -23,34 +23,42 @@ export const createAstHelperMethodsAST = (types: Type[]): t.ExportDefaultDeclara
       param.typeAnnotation = t.tsTypeAnnotation(t.tsTypeReference(t.identifier(typeName)));
     }
 
+    let init: any = [t.objectProperty(t.identifier(typeName), t.objectExpression([]))];
+    if (SPECIAL_TYPES.includes(typeName)) {
+      init = [];
+    }
 
     // @ts-ignore
     const fields: Field[] = type.fields;
-    const properties = Object.entries(fields)
-      .map(([fieldName, field]) => {
-        return t.objectProperty(
-          t.identifier(getFieldName(field, fieldName)),
-          t.optionalMemberExpression(
-            t.identifier('_p'),
-            t.identifier(getFieldName(field, fieldName)),
-            false,
-            true // OPTIONAL
-          ),
-          false,
-          true
-        );
-      });
-
-    // Get method body
-    let body = t.objectExpression([
-      ...properties
+    const astNodeInit = t.variableDeclaration('const', [
+      t.variableDeclarator(
+        t.identifier('_j'),
+        t.tsAsExpression(
+          t.objectExpression(init),
+          t.tsTypeReference(t.identifier(typeName))
+        )
+      )
     ]);
 
-    if (!SPECIAL_TYPES.includes(type.name)) {
-      body = t.objectExpression([
-        t.objectProperty(t.identifier(type.name), body)
-      ]);
-    }
+    const setStatements = Object.entries(fields)
+      .map(([fName, field]) => {
+        const fieldName = getFieldName(field, fName);
+        return t.expressionStatement(
+          t.callExpression(
+            t.memberExpression(t.identifier('_o'), t.identifier('set')),
+            [
+              t.identifier('_j'),
+              t.stringLiteral(SPECIAL_TYPES.includes(typeName) ? fieldName : `${typeName}.${fieldName}`),
+              t.optionalMemberExpression(
+                t.identifier('_p'),
+                t.identifier(fieldName),
+                false,
+                true
+              )
+            ]
+          )
+        );
+      });
 
     // Ensures camel case
     const methodName = toSpecialCamelCase(typeName);
@@ -61,28 +69,13 @@ export const createAstHelperMethodsAST = (types: Type[]): t.ExportDefaultDeclara
       t.identifier(methodName),
       [param],
       t.blockStatement([
-        t.returnStatement(
-          body
-        )
+        astNodeInit,
+        ...setStatements,
+        t.returnStatement(t.identifier('_j'))
       ])
     );
 
     method.returnType = t.tsTypeAnnotation(t.tsTypeReference(t.identifier(typeName)));
-    // if (SPECIAL_TYPES.includes(typeName)) {
-    //   method.returnType = t.tsTypeAnnotation(t.tsTypeReference(t.identifier(typeName)));
-    // } else {
-    //   method.returnType =
-    //     t.tsTypeAnnotation(
-    //       t.tsTypeLiteral([
-    //         t.tsPropertySignature(
-    //           t.identifier(typeName),
-    //           t.tsTypeAnnotation(t.tsTypeReference(t.identifier(typeName)))
-    //         )
-    //       ])
-    //     );
-    // }
-
-
     return method;
   });
 

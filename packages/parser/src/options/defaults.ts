@@ -12,7 +12,9 @@ export const defaultPgProtoParserOptions: PgProtoParserOptions = {
         },
         astHelpers: {
             enabled: false,
-            typeSource: './types'
+            typeSource: './types',
+            inlineNestedObj: false,
+            nestedObjFile: 'nested-obj.ts'
         }
     },
     types: {

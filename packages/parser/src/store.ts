@@ -4,6 +4,7 @@ import { generateEnum2IntJSON, generateEnum2StrJSON } from './ast/enums/enums-js
 import { sync as mkdirp } from 'mkdirp';
 import { defaultPgProtoParserOptions, getOptionsWithDefaults, PgProtoStoreOptions } from './options';
 import { cloneAndNameNode, getUndefinedKey, hasUndefinedInitialValue, writeFileToDisk } from './utils';
+import { nestedObjCode } from './inline-helpers';
 
 interface IProtoStore {
   options: PgProtoStoreOptions;
@@ -136,6 +137,9 @@ export class ProtoStore implements IProtoStore {
 
       // Write the files
       this.writeFile(`${this.options.outDir}/asts.ts`, [imports, astsTS].join('\n'));
+      if (this.options.utils.astHelpers.inlineNestedObj) {
+        this.writeFile(`${this.options.outDir}/${this.options.utils.astHelpers.nestedObjFile}`, nestedObjCode);
+      }
     }
   }
   writeFile (filename: string, content: string) {

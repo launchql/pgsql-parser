@@ -4,6 +4,7 @@ import generate from '@babel/generator';
 import { PgProtoParserOptions } from '../options';
 import { createAstHelperMethodsAST, createUnionTypeAST, transformTypeToAST } from './types';
 import { buildEnumValueFunctionAST, transformEnumToAST, transformEnumToTypeUnionAST } from './enums';
+import { stripExtension } from '../utils';
 
 export const generateImportSpecifiersAST = (types: Type[], options: PgProtoParserOptions) => {
   const importSpecifiers = types.map(type =>
@@ -13,6 +14,20 @@ export const generateImportSpecifiersAST = (types: Type[], options: PgProtoParse
   const importDeclaration = t.importDeclaration(importSpecifiers, t.stringLiteral(options.utils.astHelpers.typeSource));
   return importDeclaration;
 }
+
+export const createDefaultImport = (importName: string, source: string) => {
+  return t.importDeclaration(
+    [t.importDefaultSpecifier(t.identifier(importName))],
+    t.stringLiteral(source)
+  );
+};
+
+export const createNamedImport = (importNames: string[], source: string) => {
+  const specifiers = importNames.map(name => 
+    t.importSpecifier(t.identifier(name), t.identifier(name))
+  );
+  return t.importDeclaration(specifiers, t.stringLiteral(source));
+};
 
 export const generateTSInterfaces = (
   types: Type[],
@@ -54,7 +69,6 @@ export const generateTSEnumFunction = (enums: Enum[]) => {
 }
 export const generateTSASTHelperMethods = (types: Type[]) => {
   const ast = t.file(t.program([
-    // generateMacroForTypes(),
     createAstHelperMethodsAST(types)
   ]));
   const { code } = generate(ast);
@@ -62,7 +76,12 @@ export const generateTSASTHelperMethods = (types: Type[]) => {
 }
 
 export const generateTSASTHelpersImports = (types: Type[], options: PgProtoParserOptions) => {
-  const ast = t.file(t.program([generateImportSpecifiersAST(types, options)]));
+  const ast = t.file(t.program([
+    options.utils.astHelpers.inlineNestedObj ?
+    createDefaultImport('_o', './' + stripExtension(options.utils.astHelpers.nestedObjFile)) :
+    createDefaultImport('_o', 'nested-obj'),
+    generateImportSpecifiersAST(types, options)
+  ]));
   const { code } = generate(ast);
   return code;
 };

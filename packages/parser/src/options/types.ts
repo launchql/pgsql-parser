@@ -22,6 +22,11 @@ export interface PgProtoStoreOptions {
             enabled?: boolean;
             // Source file for AST helper types.
             typeSource?: string;
+
+            // Whether to inline nested-obj
+            inlineNestedObj?: boolean;
+            // if inlined, filename
+            nestedObjFile?: string;
         }
     };
 
