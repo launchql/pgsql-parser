@@ -6,8 +6,8 @@
   },
   "private": true,
   "scripts": {
-    "build": "lerna run prepare --parallel",
-    "buidl": "lerna run buidl --parallel",
+    "build": "lerna run prepare",
+    "buidl": "lerna run buidl",
     "buidl:clean": "lerna run buidl:clean",
     "bootstrap": "yarn --use-workspaces",
     "lint": "lerna run lint",

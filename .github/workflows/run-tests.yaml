@@ -23,7 +23,7 @@ jobs:
       - name: deps
         run: |
           yarn
-          yarn build
+          yarn buidl
 
       - name: parser
         run: |
