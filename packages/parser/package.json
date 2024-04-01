@@ -26,6 +26,7 @@
     "clean:output": "rimraf ../../__fixtures__/output",
     "prepare": "npm run clean && npm run build",
     "lint": "eslint .",
+    "generate:test-utils": "ts-node ./scripts/generate-test-utils",
     "format": "eslint . --fix",
     "pretest": "npm run clean:output",
     "test": "jest",

@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST to AST to create AST — meta 🤯 1`] = `
+{
+  "SelectStmt": {
+    "fromClause": [
+      {
+        "RangeVar": {
+          "inh": true,
+          "relname": "some_amazing_table",
+          "relpersistence": "p",
+        },
+      },
+    ],
+    "limitOption": "LIMIT_OPTION_DEFAULT",
+    "op": "SETOP_NONE",
+    "targetList": [
+      {
+        "ResTarget": {
+          "val": {
+            "ColumnRef": {
+              "fields": [
+                {
+                  "A_Star": {},
+                },
+              ],
+            },
+          },
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`AST to AST to create AST — meta 🤯 2`] = `
+"ast.selectStmt({
+  targetList: [ast.resTarget({
+    val: ast.columnRef({
+      fields: [ast.aStar({})]
+    })
+  })],
+  fromClause: [ast.rangeVar({
+    relname: "some_amazing_table",
+    inh: true,
+    relpersistence: "p"
+  })],
+  limitOption: "LIMIT_OPTION_DEFAULT",
+  op: "SETOP_NONE"
+})"
+`;
+
+exports[`works 1`] = `
+"ast.selectStmt({
+  targetList: [ast.resTarget({
+    val: ast.columnRef({
+      fields: [ast.aStar({})],
+      location: 7
+    }),
+    location: 7
+  })],
+  fromClause: [ast.rangeVar({
+    relname: "my_table",
+    inh: true,
+    relpersistence: "p",
+    location: 14
+  })],
+  whereClause: ast.aExpr({
+    kind: "AEXPR_OP",
+    name: [ast.string({
+      str: "="
+    })],
+    lexpr: ast.columnRef({
+      fields: [ast.string({
+        str: "id"
+      })],
+      location: 29
+    }),
+    rexpr: ast.aConst({
+      val: ast.integer({
+        ival: 1
+      }),
+      location: 34
+    }),
+    location: 32
+  }),
+  limitOption: "LIMIT_OPTION_DEFAULT",
+  op: "SETOP_NONE"
+})"
+`;
