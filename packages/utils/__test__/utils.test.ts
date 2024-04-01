@@ -1,6 +1,6 @@
 import * as u from '../src';
 import ast from '../src/asts';
-import { CreateStmt, ColumnDef } from '@pgsql/types/types/wrapped';
+import { CreateStmt, ColumnDef, Node } from '../src/wrapped';
 import { deparse } from 'pgsql-deparser';
 
 it('getEnumValue', () => {

@@ -10,7 +10,7 @@ const options: PgProtoParserOptions = {
     enabled: false,
     wrapped: {
       enabled: true,
-      typesSource: '@pgsql/types',
+      enumsSource: '@pgsql/types',
     }
   },
   utils: {

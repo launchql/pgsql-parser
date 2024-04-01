@@ -3,48 +3,16 @@
 exports[`asts 1`] = `
 {
   "CreateStmt": {
-    "accessMethod": undefined,
-    "constraints": undefined,
-    "if_not_exists": undefined,
-    "inhRelations": undefined,
-    "ofTypename": undefined,
-    "oncommit": undefined,
-    "options": undefined,
-    "partbound": undefined,
-    "partspec": undefined,
     "relation": {
       "RangeVar": {
-        "alias": undefined,
-        "catalogname": undefined,
-        "inh": undefined,
-        "location": undefined,
         "relname": "new_table",
-        "relpersistence": undefined,
-        "schemaname": undefined,
       },
     },
     "tableElts": [
       {
         "ColumnDef": {
-          "collClause": undefined,
-          "collOid": undefined,
           "colname": "id",
-          "constraints": undefined,
-          "cooked_default": undefined,
-          "fdwoptions": undefined,
-          "generated": undefined,
-          "identity": undefined,
-          "identitySequence": undefined,
-          "inhcount": undefined,
-          "is_from_type": undefined,
-          "is_local": undefined,
-          "is_not_null": undefined,
-          "location": undefined,
-          "raw_default": undefined,
-          "storage": undefined,
           "typeName": {
-            "arrayBounds": undefined,
-            "location": undefined,
             "names": [
               {
                 "String": {
@@ -52,16 +20,10 @@ exports[`asts 1`] = `
                 },
               },
             ],
-            "pct_type": undefined,
-            "setof": undefined,
-            "typeOid": undefined,
-            "typemod": undefined,
-            "typmods": undefined,
           },
         },
       },
     ],
-    "tablespacename": undefined,
   },
 }
 `;
@@ -69,7 +31,7 @@ exports[`asts 1`] = `
 exports[`asts 2`] = `
 "CREATE TABLE  (
  	id int4 
-) INHERITS (  )"
+)"
 `;
 
 exports[`getEnumValue 1`] = `"AEXPR_OP"`;
