@@ -1,35 +1,41 @@
 import * as u from '../src';
-import ast, { CreateStmt, ColumnDef, SelectStmt } from '../src';
+import ast, { SelectStmt } from '../src';
 import { deparse } from 'pgsql-deparser';
 
-it('getEnumValue', () => {
-  expect(u.getEnumValue('A_Expr_Kind', 0)).toMatchSnapshot();
-  expect(u.getEnumValue('A_Expr_Kind', 1)).toMatchSnapshot();
-  expect(u.getEnumValue('A_Expr_Kind', 2)).toMatchSnapshot();
-  expect(u.getEnumValue('A_Expr_Kind', 3)).toMatchSnapshot();
-  expect(u.getEnumValue('A_Expr_Kind', 4)).toMatchSnapshot();
-  expect(u.getEnumValue('A_Expr_Kind', 5)).toMatchSnapshot();
+it('getEnumValue snapshots', () => {
+  for (let i = 0; i <= 5; i++) {
+    expect(u.getEnumValue('A_Expr_Kind', i)).toMatchSnapshot();
+  }
 });
 
-it('asts', () => {
-  const newColumn: ColumnDef = ast.columnDef({
-    colname: 'id',
-    typeName: ast.typeName({
-      names: [ast.string({ str: 'int4' })]
-    })
+it('simple SelectStmt', () => {
+  const stmt: SelectStmt = ast.selectStmt({
+    targetList: [
+      ast.resTarget({
+        val: ast.columnRef({
+          fields: [ast.aStar()]
+        })
+      })
+    ],
+    fromClause: [
+      ast.rangeVar({
+        relname: 'some_table',
+        inh: true,
+        relpersistence: 'p'
+      })
+    ],
+    limitOption: 'LIMIT_OPTION_DEFAULT',
+    op: 'SETOP_NONE'
   });
+  
+  // @ts-ignore (because of optional args)
+  stmt.SelectStmt.fromClause[0].RangeVar.relname = 'another_table';
 
-  const createStmt: CreateStmt = ast.createStmt({
-    relation: ast.rangeVar({
-      relname: 'new_table'
-    }),
-    tableElts: [newColumn]
-  })
-  expect(createStmt).toMatchSnapshot();
-  expect(deparse(createStmt, {})).toMatchSnapshot();
+  expect(stmt).toMatchSnapshot();
+  expect(deparse(stmt, {})).toMatchSnapshot();
 });
 
-it('SelectStmt', () => {
+it('SelectStmt with WHERE clause', () => {
   const selectStmt: SelectStmt = ast.selectStmt({
     targetList: [
       ast.resTarget({

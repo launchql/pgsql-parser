@@ -30,25 +30,41 @@ npm install pgsql-deparser
 
 ## Deparser Example
 
-The deparser functionality is provided as a standalone module, enabling you to serialize AST (Abstract Syntax Tree) objects back to SQL statements without the need for the full parsing engine. This separation is particularly beneficial for environments where the native dependencies of the full parser are problematic or unnecessary. For instance, if you already have an AST representation of your SQL query and merely need to convert it back to a SQL string, you can use the pgsql-deparser module directly. This module is implemented in pure TypeScript, avoiding the need for native bindings and thereby simplifying deployment and compatibility across different environments.
+The `pgsql-deparser` module serializes ASTs to SQL in pure TypeScript, avoiding the full parser's native dependencies. It's useful when only SQL string conversion from ASTs is needed, and is written in pure TypeScript for easy cross-environment deployment.
 
-Here's how you can use the deparser in your TypeScript code:
+Here's how you can use the deparser in your TypeScript code, using [`@pgsql/utils`](https://github.com/launchql/pgsql-parser/tree/main/packages/utils) to create an AST for `deparse`:
 
 ```ts
+import ast, { SelectStmt } from '@pgsql/utils';
 import { deparse } from 'pgsql-deparser';
 
-// Assuming `stmts` is an AST object for the query 'SELECT * FROM test_table'
-// This could have been obtained from any source, not necessarily the pgsql-parser
-const stmts = getAstFromSomewhere();
+// This could have been obtained from any JSON or AST, not necessarily @pgsql/utils
+const stmt: SelectStmt = ast.selectStmt({
+  targetList: [
+    ast.resTarget({
+      val: ast.columnRef({
+        fields: [ast.aStar()]
+      })
+    })
+  ],
+  fromClause: [
+    ast.rangeVar({
+      relname: 'some_table',
+      inh: true,
+      relpersistence: 'p'
+    })
+  ],
+  limitOption: 'LIMIT_OPTION_DEFAULT',
+  op: 'SETOP_NONE'
+});
 
-// Modify the AST as needed
-stmts[0].RawStmt.stmt.SelectStmt.fromClause[0].RangeVar.relname = 'another_table';
+// Modify the AST if needed
+stmt.SelectStmt.fromClause[0].RangeVar.relname = 'another_table';
 
 // Deparse the modified AST back to a SQL string
 console.log(deparse(stmts));
 
-// Output: SELECT * FROM "another_table"
-
+// Output: SELECT * FROM another_table
 ```
 
 ## Why Use `pgsql-deparser`?
