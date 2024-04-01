@@ -8,6 +8,9 @@ const options: PgProtoParserOptions = {
   outDir,
   types: {
     enabled: true,
+  },
+  enums: {
+    enabled: true,
     enumsAsTypeUnion: true
   }
 };
