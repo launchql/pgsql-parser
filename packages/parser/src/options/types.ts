@@ -50,12 +50,10 @@ export interface PgProtoStoreOptions {
         wrapped?: {
             // Enabled wrapped types, to match AST
             enabled?: boolean;
-            // Source file for types
-            typesSource?: string;
+            // Source file for enums
+            enumsSource?: string;
             // Types filename
             filename?: string;
-            // Types suffix when importing
-            suffix?: string;
         }
     };
 

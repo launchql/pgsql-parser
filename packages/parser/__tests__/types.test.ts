@@ -25,7 +25,7 @@ describe('types', () => {
           wrapped: {
             enabled: true,
             filename: 'wrapped.ts',
-            typesSource: './types.ts'
+            enumsSource: 'my-enums.ts'
           }
         }
     });

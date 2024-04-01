@@ -101,11 +101,11 @@ export const createNodeUnionTypeAST = (types: Type[]) => {
   return t.exportNamedDeclaration(unionTypeAlias, []);
 };
 
-export const transformTypeToTSInterface = (
+const getTypeFieldsAsTS = (
   type: Type,
   options: PgProtoParserOptions
 ) => {
-  const typeName = type.name;
+
   // @ts-ignore
   const fields: Field[] = type.fields;
   const properties =
@@ -123,6 +123,16 @@ export const transformTypeToTSInterface = (
         return prop;
       });
 
+  return properties;
+}
+
+export const transformTypeToTSInterface = (
+  type: Type,
+  options: PgProtoParserOptions
+) => {
+  const typeName = type.name;
+  const properties = getTypeFieldsAsTS(type, options);
+
   const interfaceDecl = t.tsInterfaceDeclaration(
     t.identifier(typeName),
     null,
@@ -133,39 +143,31 @@ export const transformTypeToTSInterface = (
   // Wrap the interface declaration in an export statement
   return t.exportNamedDeclaration(interfaceDecl, []);
 }
-
 export const transformTypeToTSWrappedInterface = (
   type: Type,
-  options: PgProtoParserOptions,
-): t.ExportNamedDeclaration => {
-
+  options: PgProtoParserOptions
+) => {
   const typeName = type.name;
+  if (SPECIAL_TYPES.includes(typeName)) return transformTypeToTSInterface(type, options);
 
-  if (SPECIAL_TYPES.includes(typeName)) {
-    return t.exportNamedDeclaration(
-      t.tsTypeAliasDeclaration(
-        t.identifier(typeName),
-        null,
-        t.tsTypeReference(t.identifier(`${typeName}${options.types.wrapped.suffix}`))
-      ),
-      []
-    );
-  }
-  return t.exportNamedDeclaration(
-    t.tsInterfaceDeclaration(
+  const properties = getTypeFieldsAsTS(type, options);
+
+  const nestedInterfaceBody = t.tsInterfaceBody([
+    t.tsPropertySignature(
       t.identifier(typeName),
-      null,
-      [],
-      t.tsInterfaceBody([
-        t.tsPropertySignature(
-          t.identifier(typeName),
-          t.tsTypeAnnotation(t.tsTypeReference(t.identifier(`${typeName}${options.types.wrapped.suffix}`)))
-        )
-      ])
-    ),
-    []
+      t.tsTypeAnnotation(t.tsTypeLiteral(properties))
+    )
+  ]);
+
+  const interfaceDecl = t.tsInterfaceDeclaration(
+    t.identifier(typeName),
+    null,
+    [],
+    nestedInterfaceBody
   );
-}
+
+  return t.exportNamedDeclaration(interfaceDecl, []);
+};
 
 export const generateImportSpecifiersAST = (types: Type[], options: PgProtoParserOptions) => {
   const importSpecifiers = types.map(type =>

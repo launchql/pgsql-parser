@@ -27,9 +27,8 @@ export interface PgProtoStoreOptions {
         enumsSource?: string;
         wrapped?: {
             enabled?: boolean;
-            typesSource?: string;
+            enumsSource?: string;
             filename?: string;
-            suffix?: string;
         };
     };
     enums?: {
