@@ -36,7 +36,7 @@ const parser = new PgProtoParser(inFile, { outDir });
 await parser.write();
 ```
 
-This will generate the following files in the specified `outDir`:
+`pg-proto-parser` will generate the following files in the specified `outDir`:
 
 - [`types.ts`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/types/optionalFields/types.ts): TypeScript file containing interfaces for protobuf messages.
 - [`enums.ts`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/enums/pure/removeUndef/enums.ts): TypeScript file containing enums for protobuf messages.
