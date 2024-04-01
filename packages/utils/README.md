@@ -19,7 +19,7 @@
 # Table of Contents
 
 1. [@pgsql/utils](#pgsql-utils)
-   - [Key Features](#key-features)
+   - [Features](#features)
 2. [Installation](#installation)
 3. [Usage](#usage)
    - [AST Node Creation](#ast-node-creation)
