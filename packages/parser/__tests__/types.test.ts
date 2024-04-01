@@ -5,14 +5,15 @@ describe('types', () => {
     parseAndSnap('types/optionalFields', {
       types: {
         enabled: true,
-        optionalFields: false
+        optionalFields: true
       }
     });
   });
   it('fieldsRequired', () => {
     parseAndSnap('types/fieldsRequired', {
         types: {
-          enabled: true
+          enabled: true,
+          optionalFields: false
         }
     });
   });
