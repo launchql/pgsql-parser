@@ -1,6 +1,6 @@
 {
   "name": "@launchql/proto-cli",
-  "version": "1.23.1",
+  "version": "1.23.2",
   "description": "The LaunchQL PG Proto parser",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/pg-proto-parser/tree/master/packages/parser#readme",
@@ -78,6 +78,6 @@
     "minimist": "1.2.8",
     "mkdirp": "3.0.1",
     "nested-obj": "^0.0.1",
-    "pg-proto-parser": "^1.22.1"
+    "pg-proto-parser": "^1.22.2"
   }
 }
