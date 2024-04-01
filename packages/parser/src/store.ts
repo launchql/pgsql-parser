@@ -141,8 +141,6 @@ export class ProtoStore implements IProtoStore {
   writeWrappedTypes() {
     if (this.options.types.wrapped.enabled) {
       const typesToProcess = this.typesToProcess();
-      const enumsToProcess = this.enumsToProcess();
-      const enumImports = buildEnumNamedImports(enumsToProcess, this.options.types.enumsSource);
       const typeImports = buildTypeNamedImports(
         typesToProcess,
         this.options.types.wrapped.typesSource,
@@ -152,7 +150,6 @@ export class ProtoStore implements IProtoStore {
         return [...m, transformTypeToTSWrappedInterface(type, this.options)]
       }, []);
       this.writeCodeToFile(this.options.types.wrapped.filename, [
-        enumImports,
         typeImports,
         ...types
       ]);
