@@ -7,3 +7,4 @@ export declare const cloneAndNameNode: (node: ReflectionObject, name: string) =>
 export declare const getFieldName: (field: Field, fallbackName: string) => any;
 export declare const getHeader: () => string;
 export declare const writeFileToDisk: (path: string, contents: string, options: PgProtoParserOptions) => void;
+export declare const stripExtension: (filename: any) => string;
