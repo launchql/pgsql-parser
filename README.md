@@ -89,19 +89,30 @@ This table describes the options available for `PgProtoParserOptions`, their fun
 | Option                                   | Description                                                                                                                     | Default Value            |
 |------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|--------------------------|
 | `outDir`                                 | The directory where the generated files will be saved.                                                                          | `process.cwd() + "/out"` |
-| `utils.enums.enabled`                    | Whether to generate TypeScript utility functions for enums.                                                                     | `false`                   |
+| `exclude`                                | List of type or enum names to exclude during processing.                                                                        | `[]`                     |
+| `utils.enums.enabled`                    | Whether to generate TypeScript utility functions for enums.                                                                     | `false`                  |
+| `utils.enums.filename`                   | Filename for the generated enums utilities.                                                                                    | `'utils.ts'`             |
 | `utils.astHelpers.enabled`               | Outputs TypeScript helpers for building PostgreSQL ASTs.                                                                        | `false`                  |
-| `utils.astHelpers.typeSource`            | Path to the TypeScript types to use when generating AST helpers.                                                                | `./types`                |
-| `types.enabled`                          | Whether to generate TypeScript interfaces for protobuf messages.                                                                | `false`                   |
+| `utils.astHelpers.wrappedTypesSource`    | Path to the TypeScript types to use when generating AST helpers.                                                                | `'./wrapped'`            |
+| `utils.astHelpers.inlineNestedObj`       | Whether to inline `nested-obj` code within the generated file.                                                                  | `false`                  |
+| `utils.astHelpers.nestedObjFile`         | Filename for the inlined `nested-obj` code, if `inlineNestedObj` is true.                                                      | `'nested-obj.ts'`        |
+| `utils.astHelpers.filename`              | Filename for the generated AST helpers.                                                                                        | `'asts.ts'`              |
+| `types.enabled`                          | Whether to generate TypeScript interfaces for protobuf messages.                                                                | `false`                  |
+| `types.filename`                         | Filename for the generated TypeScript interfaces.                                                                               | `'types.ts'`             |
 | `types.optionalFields`                   | Generates TypeScript interfaces with optional fields mapping to the PostgreSQL node types' fields; sets all fields to optional. | `true`                   |
-| `enums.enumsAsTypeUnion`                 | Uses strings to define enum types as specified for the fields of each proto message type (the PostgreSQL node types' fields type). | `true`                |
-| `enums.enabled`                          | Outputs TypeScript enum types for the PostgreSQL enums.                                                                         | `false`                   |
-| `enums.json.enabled`                     | Whether to generate JSON files mapping enum names to integer values and vice versa.                                             | `false`                   |
-| `enums.json.toIntOutFile`                | Output file name for the JSON mapping of enum names to integer values.                                                          | `undefined`              |
-| `enums.json.toStrOutFile`                | Output file name for the JSON mapping of integer values to enum names.                                                          | `undefined`              |
+| `types.enumsSource`                      | Path to the TypeScript enums to use when generating TypeScript interfaces.                                                      | `'./enums'`              |
+| `types.wrapped.enabled`                  | Whether to generate wrapped TypeScript interfaces to match AST nodes.                                                           | `false`                  |
+| `types.wrapped.enumsSource`              | Path to the TypeScript enums to use when generating wrapped TypeScript interfaces.                                              | `'./enums'`              |
+| `types.wrapped.filename`                 | Filename for the generated wrapped TypeScript interfaces.                                                                       | `'wrapped.ts'`           |
+| `enums.enabled`                          | Outputs TypeScript enum types for the PostgreSQL enums.                                                                         | `false`                  |
+| `enums.filename`                         | Filename for the generated TypeScript enums.                                                                                    | `'enums.ts'`             |
+| `enums.enumsAsTypeUnion`                 | Uses strings to define enum types as specified for the fields of each proto message type.                                       | `true`                   |
+| `enums.json.enabled`                     | Whether to generate JSON files mapping enum names to integer values and vice versa.                                             | `false`                  |
+| `enums.json.toIntOutFile`                | Output file name for the JSON mapping of enum names to integer values.                                                          | `'enums2int.json'`       |
+| `enums.json.toStrOutFile`                | Output file name for the JSON mapping of integer values to enum names.                                                          | `'enums2str.json'`       |
 | `enums.removeUndefinedAt0`               | Removes the initial `UNDEFINED` enum entry and adjusts the subsequent values by decrementing them.                             | `true`                   |
 | `includeHeader`                          | Includes a header at the top of generated TypeScript files to avoid manual manipulation which could cause issues in CI/CD pipelines. | `true`                |
-         |
+
 
 Each of these options can be set when initializing the `PgProtoParser` to customize its behavior and output.
 
