@@ -17,7 +17,7 @@
 ## Installation
 
 ```bash
-npm install -g @lauchql/proto-cli
+npm install -g @launchql/proto-cli
 ```
 
 ## Getting Started

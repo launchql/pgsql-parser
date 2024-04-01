@@ -67,7 +67,7 @@ await parser.write();
 ## Using the CLI
 
 ```bash
-npm install -g @lauchql/proto-cli
+npm install -g @launchql/proto-cli
 ```
 
 First, download the latest protobuf definition from `libpg_query`:
