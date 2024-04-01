@@ -74,6 +74,7 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@pgsql/types": "^13.8.0"
+    "@pgsql/types": "^13.8.0",
+    "nested-obj": "0.0.1"
   }
 }

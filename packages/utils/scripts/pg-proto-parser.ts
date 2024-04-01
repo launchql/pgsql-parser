@@ -16,7 +16,7 @@ const options: PgProtoParserOptions = {
   utils: {
     astHelpers: {
       enabled: true,
-      wrappedTypesSource: './wrapped',
+      wrappedTypesSource: './wrapped'
     }
   }
 };
