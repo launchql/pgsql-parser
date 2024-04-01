@@ -1,5 +1,5 @@
 import * as u from '../src';
-import ast, { SelectStmt } from '../src';
+import ast, { SelectStmt, RangeVar } from '../src';
 import { deparse } from 'pgsql-deparser';
 
 it('getEnumValue snapshots', () => {
@@ -83,15 +83,19 @@ it('dynamic creation of tables', () => {
     "tableName": "users",
     "columns": [
       { "name": "id", "type": "int", "constraints": ["PRIMARY KEY"] },
-      { "name": "username", "type": "string" },
-      { "name": "email", "type": "string", "constraints": ["UNIQUE"] },
+      { "name": "username", "type": "text" },
+      { "name": "email", "type": "text", "constraints": ["UNIQUE"] },
       { "name": "created_at", "type": "timestamp", "constraints": ["NOT NULL"] }
     ]
   };
 
   // Construct the CREATE TABLE statement
   const createStmt = ast.createStmt({
-    relation: ast.rangeVar({ relname: schema.tableName }),
+    relation: ast.rangeVar({ 
+      relname: schema.tableName,
+      inh: true,
+      relpersistence: 'p'
+    }).RangeVar as RangeVar, // special case due to PG AST
     tableElts: schema.columns.map(column => ast.columnDef({
       colname: column.name,
       typeName: ast.typeName({
@@ -99,14 +103,13 @@ it('dynamic creation of tables', () => {
       }),
       constraints: column.constraints?.map(constraint =>
         ast.constraint({
-          contype: constraint === "PRIMARY KEY" ? "CONSTR_PRIMARY" : constraint === "UNIQUE" ? "CONSTR_UNIQUE" : "CONSTR_NOTNULL",
-          keys: [ast.string({ str: column.name })]
+          contype: constraint === "PRIMARY KEY" ? "CONSTR_PRIMARY" : constraint === "UNIQUE" ? "CONSTR_UNIQUE" : "CONSTR_NOTNULL"
         })
       )
     }))
   });
 
-  // Assuming `deparse` function converts AST to SQL string
+  // `deparse` function converts AST to SQL string
   const sql = deparse(createStmt, {});
   expect(sql).toMatchSnapshot();
 })

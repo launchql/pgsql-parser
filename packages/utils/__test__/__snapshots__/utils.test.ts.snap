@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`dynamic creation of tables 1`] = `
-"CREATE TABLE  (
- 	id int PRIMARY KEY ( id ),
-	username string,
-	email string UNIQUE ( email ),
-	created_at timestamp NOT NULL ( created_at ) 
+"CREATE TABLE users (
+ 	id int PRIMARY KEY,
+	username text,
+	email text UNIQUE,
+	created_at timestamp NOT NULL 
 )"
 `;
 

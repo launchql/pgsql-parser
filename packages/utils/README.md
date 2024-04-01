@@ -23,6 +23,7 @@
 2. [Installation](#installation)
 3. [Usage](#usage)
    - [AST Node Creation](#ast-node-creation)
+     - [JSON AST](#json-ast)
      - [Select Statement](#select-statement)
      - [Creating Table Schemas Dynamically](#creating-table-schemas-dynamically)
    - [Enum Value Conversion](#enum-value-conversion)
@@ -52,6 +53,34 @@ npm install @pgsql/utils
 ### AST Node Creation
 
 With the AST helper methods, creating complex SQL ASTs becomes straightforward and intuitive.
+
+#### JSON AST
+
+Explore the PostgreSQL Abstract Syntax Tree (AST) as JSON objects with ease using `@pgsql/utils`. Below is an example of how you can generate a JSON AST using TypeScript:
+
+```ts
+import ast from '@pgsql/utils';
+const selectStmt = ast.selectStmt({
+  targetList: [
+    ast.resTarget({
+      val: ast.columnRef({
+        fields: [ast.aStar()]
+      })
+    })
+  ],
+  fromClause: [
+    ast.rangeVar({
+      relname: 'some_amazing_table',
+      inh: true,
+      relpersistence: 'p'
+    })
+  ],
+  limitOption: 'LIMIT_OPTION_DEFAULT',
+  op: 'SETOP_NONE'
+});
+console.log(selectStmt);
+// Output: { "SelectStmt": { "targetList": [ { "ResTarget": { "val": { "ColumnRef": { "fields": [ { "A_Star": {} } ] } } } } ], "fromClause": [ { "RangeVar": { "relname": "some_amazing_table", "inh": true, "relpersistence": "p" } } ], "limitOption": "LIMIT_OPTION_DEFAULT", "op": "SETOP_NONE" } }
+```
 
 #### Select Statement
 
@@ -105,7 +134,7 @@ deparse(createStmt, {});
 #### Creating Table Schemas Dynamically
 
 ```ts
-// Example JSON with schema
+// Example JSON schema
 const schema = {
   "tableName": "users",
   "columns": [
@@ -118,7 +147,11 @@ const schema = {
 
 // Construct the CREATE TABLE statement
 const createStmt = ast.createStmt({
-  relation: ast.rangeVar({ relname: schema.tableName }),
+  relation: ast.rangeVar({ 
+    relname: schema.tableName,
+    inh: true,
+    relpersistence: 'p'
+  }).RangeVar as RangeVar, // special case due to PG AST
   tableElts: schema.columns.map(column => ast.columnDef({
     colname: column.name,
     typeName: ast.typeName({
@@ -126,23 +159,24 @@ const createStmt = ast.createStmt({
     }),
     constraints: column.constraints?.map(constraint =>
       ast.constraint({
-        contype: constraint === "PRIMARY KEY" ? "CONSTR_PRIMARY" : constraint === "UNIQUE" ? "CONSTR_UNIQUE" : "CONSTR_NOTNULL",
-        keys: [ast.string({ str: column.name })]
+        contype: constraint === "PRIMARY KEY" ? "CONSTR_PRIMARY" : constraint === "UNIQUE" ? "CONSTR_UNIQUE" : "CONSTR_NOTNULL"
       })
     )
   }))
 });
 
-// Assuming `deparse` function converts AST to SQL string
+// `deparse` function converts AST to SQL string
 const sql = deparse(createStmt, {});
-console.log(sql);
-//  CREATE TABLE  (
-//  	id int PRIMARY KEY ( id ),
-// 	  username string,
-// 	  email string UNIQUE ( email ),
-// 	  created_at timestamp NOT NULL ( created_at ) 
-// )
 
+console.log(sql);
+// OUTPUT: 
+
+// CREATE TABLE users (
+//  id int PRIMARY KEY,
+// 	username text,
+// 	email text UNIQUE,
+// 	created_at timestamp NOT NULL 
+// )
 ```
 
 ### Enum Value Conversion
