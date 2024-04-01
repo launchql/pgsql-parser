@@ -16,6 +16,21 @@
 
 `@pgsql/utils` is a companion utility library for `@pgsql/types`, offering convenient functions to work with PostgreSQL Abstract Syntax Tree (AST) nodes and enums in a type-safe manner. This library facilitates the creation of AST nodes and simplifies the process of converting between enum names and their respective integer values, as defined in the PostgreSQL parser output.
 
+# Table of Contents
+
+1. [@pgsql/utils](#pgsql-utils)
+   - [Key Features](#key-features)
+2. [Installation](#installation)
+3. [Usage](#usage)
+   - [AST Node Creation](#ast-node-creation)
+     - [Select Statement](#select-statement)
+     - [Creating Table Schemas Dynamically](#creating-table-schemas-dynamically)
+   - [Enum Value Conversion](#enum-value-conversion)
+     - [Example 1: Converting Enum Name to Integer](#example-1-converting-enum-name-to-integer)
+     - [Example 2: Converting Integer to Enum Name](#example-2-converting-integer-to-enum-name)
+4. [Related Projects](#related)
+5. [Disclaimer](#disclaimer)
+
 ## Features
 
 - **AST Node Creation**: Simplifies the process of constructing PostgreSQL AST nodes, allowing for easy assembly of SQL queries or statements programmatically.
@@ -38,25 +53,96 @@ npm install @pgsql/utils
 
 With the AST helper methods, creating complex SQL ASTs becomes straightforward and intuitive.
 
+#### Select Statement
+
 ```ts
 import ast, { CreateStmt, ColumnDef } from '@pgsql/utils';
 import { deparse } from 'pgsql-deparser';
 
-const newColumn: ColumnDef = ast.columnDef({
-    colname: 'id',
-    typeName: ast.typeName({
-        names: [ast.string({ str: 'int4' })]
+const selectStmt: SelectStmt = ast.selectStmt({
+  targetList: [
+    ast.resTarget({
+      val: ast.columnRef({
+        fields: [ast.aStar()]
+      })
     })
-});
-
-const createStmt: CreateStmt = ast.createStmt({
-    relation: ast.rangeVar({
-        relname: 'new_table'
+  ],
+  fromClause: [
+    ast.rangeVar({
+      schemaname: 'myschema',
+      relname: 'mytable',
+      inh: true,
+      relpersistence: 'p'
+    })
+  ],
+  whereClause: ast.aExpr({
+    kind: 'AEXPR_OP',
+    name: [ast.string({ str: '=' })],
+    lexpr: ast.columnRef({
+      fields: [ast.string({ str: 'a' })]
     }),
-    tableElts: [newColumn]
+    rexpr: ast.typeCast({
+      arg: ast.aConst({
+        val: ast.string({ str: 't' })
+      }),
+      typeName: ast.typeName({
+        names: [
+          ast.string({ str: 'pg_catalog' }),
+          ast.string({ str: 'bool' })
+        ],
+        typemod: -1
+      })
+    })
+  }),
+  limitOption: 'LIMIT_OPTION_DEFAULT',
+  op: 'SETOP_NONE'
 });
 
-deparse(createStmt, {}) // SQL!
+deparse(createStmt, {});
+// SELECT * FROM myschema.mytable WHERE a = TRUE
+```
+
+#### Creating Table Schemas Dynamically
+
+```ts
+// Example JSON with schema
+const schema = {
+  "tableName": "users",
+  "columns": [
+    { "name": "id", "type": "int", "constraints": ["PRIMARY KEY"] },
+    { "name": "username", "type": "string" },
+    { "name": "email", "type": "string", "constraints": ["UNIQUE"] },
+    { "name": "created_at", "type": "timestamp", "constraints": ["NOT NULL"] }
+  ]
+};
+
+// Construct the CREATE TABLE statement
+const createStmt = ast.createStmt({
+  relation: ast.rangeVar({ relname: schema.tableName }),
+  tableElts: schema.columns.map(column => ast.columnDef({
+    colname: column.name,
+    typeName: ast.typeName({
+      names: [ast.string({ str: column.type })]
+    }),
+    constraints: column.constraints?.map(constraint =>
+      ast.constraint({
+        contype: constraint === "PRIMARY KEY" ? "CONSTR_PRIMARY" : constraint === "UNIQUE" ? "CONSTR_UNIQUE" : "CONSTR_NOTNULL",
+        keys: [ast.string({ str: column.name })]
+      })
+    )
+  }))
+});
+
+// Assuming `deparse` function converts AST to SQL string
+const sql = deparse(createStmt, {});
+console.log(sql);
+//  CREATE TABLE  (
+//  	id int PRIMARY KEY ( id ),
+// 	  username string,
+// 	  email string UNIQUE ( email ),
+// 	  created_at timestamp NOT NULL ( created_at ) 
+// )
+
 ```
 
 ### Enum Value Conversion

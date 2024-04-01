@@ -34,6 +34,15 @@ exports[`asts 2`] = `
 )"
 `;
 
+exports[`dynamic creation of tables 1`] = `
+"CREATE TABLE  (
+ 	id int PRIMARY KEY ( id ),
+	username string,
+	email string UNIQUE ( email ),
+	created_at timestamp NOT NULL ( created_at ) 
+)"
+`;
+
 exports[`getEnumValue 1`] = `"AEXPR_OP"`;
 
 exports[`getEnumValue 2`] = `"AEXPR_OP_ANY"`;
