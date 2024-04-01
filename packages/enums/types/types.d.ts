@@ -45,4 +45,4 @@ export declare const TYPE_NAMES: {
     OBJECT_VIEW: string;
 };
 export declare const objtypeName: (arg: any) => any;
-export declare const getConstraintFromConstrType: (type: any) => "NULL" | "NOT NULL" | "DEFAULT" | "CHECK" | "PRIMARY KEY" | "UNIQUE" | "EXCLUDE" | "REFERENCES" | "GENERATED" | "IDENTITY";
+export declare const getConstraintFromConstrType: (type: any) => "CHECK" | "DEFAULT" | "EXCLUDE" | "GENERATED" | "REFERENCES" | "UNIQUE" | "NULL" | "NOT NULL" | "PRIMARY KEY" | "IDENTITY";

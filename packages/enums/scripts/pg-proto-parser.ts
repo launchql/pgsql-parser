@@ -7,7 +7,8 @@ const outDir: string = resolve(join(__dirname, '../src'));
 const options: PgProtoParserOptions = {
   outDir,
   enums: {
-    enabled: true
+    enabled: true,
+    enumsAsTypeUnion: false
   }
 };
 const parser = new PgProtoParser(inFile, options);

@@ -39,9 +39,8 @@ npm install @pgsql/utils
 With the AST helper methods, creating complex SQL ASTs becomes straightforward and intuitive.
 
 ```ts
-import { CreateStmt, ColumnDef } from '@pgsql/types/types/wrapped';
+import ast, { CreateStmt, ColumnDef } from '@pgsql/utils';
 import { deparse } from 'pgsql-deparser';
-import ast from '@pgsql/utils';
 
 const newColumn: ColumnDef = ast.columnDef({
     colname: 'id',
