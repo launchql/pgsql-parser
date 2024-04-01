@@ -36,14 +36,14 @@ const parser = new PgProtoParser(inFile, { outDir });
 await parser.write();
 ```
 
-This will generate the following files in the specified [`outDir`](https://github.com/launchql/pg-proto-parser/tree/main/__fixtures__/output/parser):
+This will generate the following files in the specified `outDir`:
 
-- [`types.ts`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/parser/types.ts): TypeScript file containing interfaces for protobuf messages.
-- [`enums.ts`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/parser/enums.ts): TypeScript file containing enums for protobuf messages.
-- [`asts.ts`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/parser/asts.ts): TypeScript file containing helpers to create PostgreSQL ASTs.
-- [`utils.ts`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/parser/utils.ts): TypeScript file containing utility functions for enums.
-- [`enums2int.json`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/parser/enums2int.json): JSON mapping of enum names to integer values.
-- [`enums2str.json`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/parser/enums2str.json): JSON mapping of integer values to enum names.
+- [`types.ts`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/types/optionalFields/types.ts): TypeScript file containing interfaces for protobuf messages.
+- [`enums.ts`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/enums/pure/removeUndef/enums.ts): TypeScript file containing enums for protobuf messages.
+- [`asts.ts`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/utils/astHelpers/inlineNestedObj/asts.ts): TypeScript file containing helpers to create PostgreSQL ASTs.
+- [`utils.ts`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/utils/astHelpers/inlineNestedObj/utils.ts): TypeScript file containing utility functions for enums.
+- [`enums2int.json`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/enums/json/enabled/enums2int.json): JSON mapping of enum names to integer values.
+- [`enums2str.json`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/enums/json/enabled/enums2str.json): JSON mapping of integer values to enum names.
 
 ## Configuration
 
