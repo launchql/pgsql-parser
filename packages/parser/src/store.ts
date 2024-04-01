@@ -1,11 +1,12 @@
 import { Service, Type, Field, Enum, Namespace, ReflectionObject } from '@launchql/protobufjs';
-import { generateTSInterfaces, buildEnumNamedImports, createAstHelperMethodsAST, generateImportSpecifiersAST, buildEnumValueFunctionAST, transformEnumToTypeUnionAST, transformEnumToAST } from './ast';
+import { buildEnumNamedImports, createAstHelperMethodsAST, generateImportSpecifiersAST, buildEnumValueFunctionAST, transformEnumToTypeUnionAST, transformEnumToAST, createNodeUnionTypeAST, buildTypeNamedImports, transformTypeToTSInterface, transformTypeToTSWrappedInterface } from './ast';
 import { generateEnum2IntJSON, generateEnum2StrJSON } from './ast/enums/enums-json';
 import { sync as mkdirp } from 'mkdirp';
 import { join } from 'path';
 import { defaultPgProtoParserOptions, getOptionsWithDefaults, PgProtoStoreOptions } from './options';
 import { cloneAndNameNode, convertAstToCode, createDefaultImport, getUndefinedKey, hasUndefinedInitialValue, stripExtension, writeFileToDisk } from './utils';
 import { nestedObjCode } from './inline-helpers';
+import * as t from '@babel/types';
 
 interface IProtoStore {
   options: PgProtoStoreOptions;
@@ -72,30 +73,27 @@ export class ProtoStore implements IProtoStore {
     let decrement = 0;
 
     for (const [key, value] of Object.entries(enumNode.values)) {
-        if (key === undefinedKey && value === 0) {
-            decrement = 1;
-            continue;
-        }
-        newValues[key] = value - decrement;
+      if (key === undefinedKey && value === 0) {
+        decrement = 1;
+        continue;
+      }
+      newValues[key] = value - decrement;
     }
 
     clone.values = newValues;
     return clone;
-
-    
-}
+  }
 
   write() {
     // Ensure the output directory exists
     mkdirp(this.options.outDir);
 
-
     this.writeEnumsJSON();
     this.writeTypes();
+    this.writeWrappedTypes();
     this.writeEnums();
     this.writeUtilsEnums();
     this.writeAstHelpers();
-
   }
 
   writeEnumsJSON() {
@@ -108,31 +106,73 @@ export class ProtoStore implements IProtoStore {
     }
   }
 
+  allTypesExceptNode () {
+    return this.types.filter(type => type.name !== 'Node');
+  }
+
+  typesToProcess () {
+    return this.types
+      .filter(type => type.name !== 'Node')
+      .filter(type => !this.options.exclude.includes(type.name));
+  }
+
+  enumsToProcess () {
+    return this.enums
+      .filter(enm => !this.options.exclude.includes(enm.name));
+  }
+
   writeTypes() {
     if (this.options.types.enabled) {
-      const code = convertAstToCode([
-        buildEnumNamedImports(this.enums, this.options.types.enumsSource),
-        ...generateTSInterfaces(this.types, this.options, this.options.types.wrapped)
+      const typesToProcess = this.typesToProcess();
+      const enumsToProcess = this.enumsToProcess();
+      const node = createNodeUnionTypeAST(typesToProcess);
+      const enumImports = buildEnumNamedImports(enumsToProcess, this.options.types.enumsSource);
+      const types = typesToProcess.reduce((m, type) => {
+        return [...m, transformTypeToTSInterface(type, this.options)]
+      }, []);
+      this.writeCodeToFile(this.options.types.filename, [
+        enumImports,
+        node,
+        ...types
       ]);
-      this.writeFile(this.options.types.filename, code);
+    }
+  }
+
+  writeWrappedTypes() {
+    if (this.options.types.wrapped.enabled) {
+      const typesToProcess = this.typesToProcess();
+      const enumsToProcess = this.enumsToProcess();
+      const enumImports = buildEnumNamedImports(enumsToProcess, this.options.types.enumsSource);
+      const typeImports = buildTypeNamedImports(
+        typesToProcess,
+        this.options.types.wrapped.typesSource,
+        this.options.types.wrapped.suffix
+      );
+      const types = typesToProcess.reduce((m, type) => {
+        return [...m, transformTypeToTSWrappedInterface(type, this.options)]
+      }, []);
+      this.writeCodeToFile(this.options.types.wrapped.filename, [
+        enumImports,
+        typeImports,
+        ...types
+      ]);
     }
   }
 
   writeEnums() {
     if (this.options.enums.enabled) {
-      const code = convertAstToCode(
-        this.enums.map(enm => this.options.enums.enumsAsTypeUnion ?
+      this.writeCodeToFile(this.options.enums.filename, 
+        this.enumsToProcess().map(enm => this.options.enums.enumsAsTypeUnion ?
           transformEnumToTypeUnionAST(enm) :
           transformEnumToAST(enm)
         )
       );
-      this.writeFile(this.options.enums.filename, code);
     }
   }
 
   writeUtilsEnums() {
     if (this.options.utils.enums.enabled) {
-      const code = convertAstToCode(buildEnumValueFunctionAST(this.enums));
+      const code = convertAstToCode(buildEnumValueFunctionAST(this.enumsToProcess()));
       this.writeFile(this.options.utils.enums.filename, code);
     }
   }
@@ -143,10 +183,11 @@ export class ProtoStore implements IProtoStore {
         createDefaultImport('_o', './' + stripExtension(this.options.utils.astHelpers.nestedObjFile)) :
         createDefaultImport('_o', 'nested-obj');
 
+      const typesToProcess = this.typesToProcess();
       const code = convertAstToCode([
         imports,
-        generateImportSpecifiersAST(this.types, this.options),
-        createAstHelperMethodsAST(this.types)
+        generateImportSpecifiersAST(typesToProcess, this.options),
+        createAstHelperMethodsAST(typesToProcess)
       ]);
 
       this.writeFile(this.options.utils.astHelpers.filename, code);
@@ -157,9 +198,15 @@ export class ProtoStore implements IProtoStore {
     }
   }
 
-  writeFile (filename: string, content: string) {
+  writeFile(filename: string, content: string) {
     const file = join(this.options.outDir, filename);
     writeFileToDisk(file, content, this.options);
+  }
+
+  writeCodeToFile(filename: string, nodes: t.Node[]) {
+    const code = convertAstToCode(nodes);
+    const filePath = join(this.options.outDir, filename);
+    writeFileToDisk(filePath, code, this.options);
   }
 
 }

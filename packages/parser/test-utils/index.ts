@@ -3,8 +3,10 @@ import { join, resolve, basename } from 'path'
 import { readFileSync } from 'fs';
 import { PgProtoParser } from '../src/parser'
 import { sync as glob } from 'glob'
-import { PgProtoParserOptions } from '../src/options';
+import { getOptionsWithDefaults, PgProtoParserOptions } from '../src/options';
 import { prettyPrint } from 'recast';
+import { ProtoStore } from '../src/store';
+import { parse } from '@launchql/protobufjs';
 
 export const printAst = (ast: any) => {
     const results = generate(ast);
@@ -47,4 +49,16 @@ export const parseAndSnap = (
     parser.write();
     const out = readFilesFromDir(outDir);
     expect(out).toMatchSnapshot();
+}
+
+export const getStore = (
+    options: PgProtoParserOptions
+) => {
+
+    const opts = getOptionsWithDefaults(options);
+    const content = readFileSync(getTestProtoPath(), 'utf-8');
+    const ast = parse(content, opts.parser);
+    const store = new ProtoStore(ast.root, options);
+
+    return store;
 }

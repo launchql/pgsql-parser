@@ -16,6 +16,15 @@ describe('utils', () => {
 
   it('astHelpers with inlineNestedObj', () => {
     parseAndSnap('utils/astHelpers/inlineNestedObj', {
+      enums: {
+        enabled: true
+      },
+      types: {
+        enabled: true,
+        wrapped: {
+          enabled: true
+        }
+      },
       utils: {
         astHelpers: {
           enabled: true,

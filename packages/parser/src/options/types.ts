@@ -9,6 +9,9 @@ export interface PgProtoStoreOptions {
     // The directory where the generated files will be saved.
     outDir?: string;
 
+    // Types and Enums to skip during processing
+    exclude?: string[],
+
     // Options related to utility functions.
     utils?: {
         enums?: {
@@ -23,7 +26,7 @@ export interface PgProtoStoreOptions {
             // Whether to include TypeScript AST builders
             enabled?: boolean;
             // Source file for AST helper types.
-            typeSource?: string;
+            wrappedTypesSource?: string;
             // Whether to inline nested-obj
             inlineNestedObj?: boolean;
             // if inlined, filename
@@ -43,8 +46,17 @@ export interface PgProtoStoreOptions {
         optionalFields?: boolean;
         // Enums source specifier
         enumsSource?: string;
-        // Enabled wrapped types, to match AST
-        wrapped?: boolean;
+        // wrapped types, for building AST
+        wrapped?: {
+            // Enabled wrapped types, to match AST
+            enabled?: boolean;
+            // Source file for types
+            typesSource?: string;
+            // Types filename
+            filename?: string;
+            // Types suffix when importing
+            suffix?: string;
+        }
     };
 
     // Options related to enumeration handling.

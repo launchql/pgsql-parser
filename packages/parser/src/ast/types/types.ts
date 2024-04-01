@@ -1,12 +1,18 @@
 import { Type, Field } from '@launchql/protobufjs';
 import * as t from '@babel/types';
-import { getFieldName, toSpecialCamelCase } from '../../utils';
+import { createNamedImport, createNamedImportAsSuffix, getFieldName, toSpecialCamelCase } from '../../utils';
 import { PgProtoParserOptions } from '../../options';
 import { SPECIAL_TYPES } from '../../constants';
 import { resolveTypeName } from './utils';
 
+export const buildTypeNamedImports = (types: Type[], source: string, suffix?: string) => {
+  return suffix ?
+    createNamedImportAsSuffix(types.map(e => e.name), source, suffix) :
+    createNamedImport(types.map(e => e.name), source);
+};
+
 export const createAstHelperMethodsAST = (types: Type[]): t.ExportDefaultDeclaration => {
-  const creators = types.filter(type => type.name !== 'Node').map((type: Type) => {
+  const creators = types.map((type: Type) => {
     const typeName = type.name;
     const param = t.identifier('_p');
     param.optional = true;
@@ -83,7 +89,7 @@ export const createAstHelperMethodsAST = (types: Type[]): t.ExportDefaultDeclara
 }
 
 // special for Node
-export const createUnionTypeAST = (types: Type[]) => {
+export const createNodeUnionTypeAST = (types: Type[]) => {
   const unionTypeNames = types.map(type => t.tsTypeReference(t.identifier(type.name)));
 
   const unionTypeAlias = t.tsTypeAliasDeclaration(
@@ -95,10 +101,9 @@ export const createUnionTypeAST = (types: Type[]) => {
   return t.exportNamedDeclaration(unionTypeAlias, []);
 };
 
-export const transformTypeToAST = (
+export const transformTypeToTSInterface = (
   type: Type,
-  options: PgProtoParserOptions,
-  useNestedTypes: boolean
+  options: PgProtoParserOptions
 ) => {
   const typeName = type.name;
   // @ts-ignore
@@ -118,54 +123,55 @@ export const transformTypeToAST = (
         return prop;
       });
 
-
-  const nestedType = t.tsTypeLiteral(properties);
-  const nestedProperty = t.tsPropertySignature(
-    t.identifier(typeName),
-    t.tsTypeAnnotation(nestedType)
-  );
-
-
-  let body = [];
-  if (useNestedTypes && !SPECIAL_TYPES.includes(typeName)) {
-    body = [nestedProperty];
-  } else {
-    body = properties;
-  }
-
   const interfaceDecl = t.tsInterfaceDeclaration(
     t.identifier(typeName),
     null,
     [],
-    t.tsInterfaceBody(body)
+    t.tsInterfaceBody(properties)
   );
 
   // Wrap the interface declaration in an export statement
   return t.exportNamedDeclaration(interfaceDecl, []);
 }
 
-export const generateTSInterfaces = (
-  types: Type[],
+export const transformTypeToTSWrappedInterface = (
+  type: Type,
   options: PgProtoParserOptions,
-  useNestedTypes: boolean
-) => {
-  const node = createUnionTypeAST(types.filter(type => type.name !== 'Node'));
-  const typeDefns = types.reduce((m, type) => {
-    if (type.name === 'Node') return m;
-    return [...m, transformTypeToAST(type, options, useNestedTypes)]
-  }, []);
+): t.ExportNamedDeclaration => {
 
-  return [
-    node,
-    ...typeDefns
-  ];
-};
+  const typeName = type.name;
+
+  if (SPECIAL_TYPES.includes(typeName)) {
+    return t.exportNamedDeclaration(
+      t.tsTypeAliasDeclaration(
+        t.identifier(typeName),
+        null,
+        t.tsTypeReference(t.identifier(`${typeName}${options.types.wrapped.suffix}`))
+      ),
+      []
+    );
+  }
+  return t.exportNamedDeclaration(
+    t.tsInterfaceDeclaration(
+      t.identifier(typeName),
+      null,
+      [],
+      t.tsInterfaceBody([
+        t.tsPropertySignature(
+          t.identifier(typeName),
+          t.tsTypeAnnotation(t.tsTypeReference(t.identifier(`${typeName}${options.types.wrapped.suffix}`)))
+        )
+      ])
+    ),
+    []
+  );
+}
 
 export const generateImportSpecifiersAST = (types: Type[], options: PgProtoParserOptions) => {
   const importSpecifiers = types.map(type =>
     t.importSpecifier(t.identifier(type.name), t.identifier(type.name))
   );
 
-  const importDeclaration = t.importDeclaration(importSpecifiers, t.stringLiteral(options.utils.astHelpers.typeSource));
+  const importDeclaration = t.importDeclaration(importSpecifiers, t.stringLiteral(options.utils.astHelpers.wrappedTypesSource));
   return importDeclaration;
 }

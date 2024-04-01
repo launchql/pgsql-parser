@@ -6,6 +6,7 @@ import { PgProtoParserOptions } from "./types";
 export const defaultPgProtoParserOptions: PgProtoParserOptions = {
     outDir: `${process.cwd()}/out`,
     includeHeader: true,
+    exclude: [],
     utils: {
         enums: {
             enabled: false,
@@ -13,7 +14,7 @@ export const defaultPgProtoParserOptions: PgProtoParserOptions = {
         },
         astHelpers: {
             enabled: false,
-            typeSource: './types',
+            wrappedTypesSource: './wrapped',
             inlineNestedObj: false,
             nestedObjFile: 'nested-obj.ts',
             filename: 'asts.ts',
@@ -24,7 +25,12 @@ export const defaultPgProtoParserOptions: PgProtoParserOptions = {
         filename: 'types.ts',
         optionalFields: true,
         enumsSource: './enums',
-        wrapped: false
+        wrapped: {
+            enabled: false,
+            typesSource: './types',
+            filename: 'wrapped.ts',
+            suffix: '_Type'
+        }
     },
     enums: {
         enabled: false,

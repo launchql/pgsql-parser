@@ -13,3 +13,10 @@ export const createNamedImport = (importNames: string[], source: string) => {
   );
   return t.importDeclaration(specifiers, t.stringLiteral(source));
 };
+
+export const createNamedImportAsSuffix = (importNames: string[], source: string, suffix: string) => {
+  const specifiers = importNames.map(name =>
+    t.importSpecifier(t.identifier(name + suffix), t.identifier(name))
+  );
+  return t.importDeclaration(specifiers, t.stringLiteral(source));
+};
