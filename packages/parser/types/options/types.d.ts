@@ -6,15 +6,18 @@ export type PgProtoParserOptions = PgProtoStoreOptions & {
  */
 export interface PgProtoStoreOptions {
     outDir?: string;
+    exclude?: string[];
     utils?: {
         enums?: {
             enabled?: boolean;
+            filename?: string;
         };
         astHelpers?: {
             enabled?: boolean;
-            typeSource?: string;
+            wrappedTypesSource?: string;
             inlineNestedObj?: boolean;
             nestedObjFile?: string;
+            filename?: string;
         };
     };
     types?: {
@@ -22,6 +25,12 @@ export interface PgProtoStoreOptions {
         filename?: string;
         optionalFields?: boolean;
         enumsSource?: string;
+        wrapped?: {
+            enabled?: boolean;
+            typesSource?: string;
+            filename?: string;
+            suffix?: string;
+        };
     };
     enums?: {
         enabled?: boolean;
