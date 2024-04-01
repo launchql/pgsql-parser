@@ -1,6 +1,6 @@
 {
   "name": "@pgsql/utils",
-  "version": "13.9.0",
+  "version": "13.10.0",
   "description": "PostgreSQL AST utils for pgsql-parser",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/pgsql-parser",
@@ -66,7 +66,7 @@
     "esprima": "4.0.1",
     "jest": "^29.5.0",
     "pg-proto-parser": "^1.20.0",
-    "pgsql-deparser": "^13.13.0",
+    "pgsql-deparser": "^13.14.0",
     "prettier": "^2.8.7",
     "rimraf": "5.0.5",
     "ts-jest": "^29.1.0",
