@@ -1,8 +1,8 @@
-import { Type, Enum, Field, ReflectionObject } from '@launchql/protobufjs';
+import { Enum, Field, ReflectionObject } from '@launchql/protobufjs';
 import pkg from '../../package.json';
 import { PgProtoParserOptions } from '../options';
 import { writeFileSync } from 'fs';
-import { extname } from 'path';
+import { extname, basename } from 'path';
 
 export const getUndefinedKey = (enumName) => {
   // Split the name into parts where a lowercase letter is followed by an uppercase letter
@@ -65,3 +65,9 @@ export const writeFileToDisk = (path: string, contents: string, options: PgProto
   const c = (options.includeHeader && extname(path) === '.ts') ? `${getHeader()}${contents}` : contents;
   writeFileSync(path, c);
 }
+
+export const stripExtension = (filename) => {
+  const extension = extname(filename);
+  return basename(filename, extension);
+}
+

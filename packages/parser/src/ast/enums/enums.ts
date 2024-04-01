@@ -2,7 +2,7 @@ import { Enum } from '@launchql/protobufjs';
 import * as t from '@babel/types';
 import { createNamedImport } from '../../utils';
 
-export const transformEnumToAST = (enumData: Enum) => {
+export const convertEnumToTsEnumDeclaration = (enumData: Enum) => {
   const members = Object.entries(enumData.values).map(([key, value]) =>
     t.tsEnumMember(t.identifier(key), t.numericLiteral(value as number))
   );
@@ -11,11 +11,11 @@ export const transformEnumToAST = (enumData: Enum) => {
   return t.exportNamedDeclaration(enumDeclaration);
 };
 
-export const buildEnumNamedImports = (enums: Enum[], source: string) => {
+export const generateEnumImports = (enums: Enum[], source: string) => {
   return createNamedImport(enums.map(e=>e.name), source);
 };
 
-export const transformEnumToTypeUnionAST = (enumData: Enum) => {
+export const convertEnumToTsUnionType = (enumData: Enum) => {
   const literals = Object.keys(enumData.values).map(key =>
     t.tsLiteralType(t.stringLiteral(key))
   );
@@ -31,7 +31,7 @@ export const transformEnumToTypeUnionAST = (enumData: Enum) => {
   return t.exportNamedDeclaration(typeAlias);
 };
 
-export const buildEnumValueFunctionAST = (enumData: Enum[]) => {
+export const generateEnumValueFunctions = (enumData: Enum[]) => {
   // Create the union type for EnumType
   const enumTypeIdentifier = t.identifier('EnumType');
   const enumTypeUnion = t.tsUnionType(

@@ -1,9 +1,9 @@
 import { Service, Type, Field, Enum, Namespace, ReflectionObject } from '@launchql/protobufjs';
-import { buildEnumNamedImports, createAstHelperMethodsAST, generateImportSpecifiersAST, buildEnumValueFunctionAST, transformEnumToTypeUnionAST, transformEnumToAST, createNodeUnionTypeAST, buildTypeNamedImports, transformTypeToTSInterface, transformTypeToTSWrappedInterface } from './ast';
+import { generateEnumImports, generateAstHelperMethods, generateTypeImportSpecifiers, generateEnumValueFunctions, convertEnumToTsUnionType, convertEnumToTsEnumDeclaration, generateNodeUnionType, convertTypeToTsInterface, convertTypeToWrappedTsInterface } from './ast';
 import { generateEnum2IntJSON, generateEnum2StrJSON } from './ast/enums/enums-json';
 import { sync as mkdirp } from 'mkdirp';
 import { join } from 'path';
-import { defaultPgProtoParserOptions, getOptionsWithDefaults, PgProtoStoreOptions } from './options';
+import { getOptionsWithDefaults, PgProtoStoreOptions } from './options';
 import { cloneAndNameNode, convertAstToCode, createDefaultImport, getUndefinedKey, hasUndefinedInitialValue, stripExtension, writeFileToDisk } from './utils';
 import { nestedObjCode } from './inline-helpers';
 import * as t from '@babel/types';
@@ -125,10 +125,10 @@ export class ProtoStore implements IProtoStore {
     if (this.options.types.enabled) {
       const typesToProcess = this.typesToProcess();
       const enumsToProcess = this.enumsToProcess();
-      const node = createNodeUnionTypeAST(typesToProcess);
-      const enumImports = buildEnumNamedImports(enumsToProcess, this.options.types.enumsSource);
+      const node = generateNodeUnionType(typesToProcess);
+      const enumImports = generateEnumImports(enumsToProcess, this.options.types.enumsSource);
       const types = typesToProcess.reduce((m, type) => {
-        return [...m, transformTypeToTSInterface(type, this.options)]
+        return [...m, convertTypeToTsInterface(type, this.options)]
       }, []);
       this.writeCodeToFile(this.options.types.filename, [
         enumImports,
@@ -141,13 +141,13 @@ export class ProtoStore implements IProtoStore {
   writeWrappedTypes() {
     if (this.options.types.wrapped.enabled) {
       const typesToProcess = this.typesToProcess();
-      const enumImports = buildEnumNamedImports(
+      const enumImports = generateEnumImports(
         this.enumsToProcess(),
         this.options.types.wrapped.enumsSource
       );
-      const node = createNodeUnionTypeAST(typesToProcess);
+      const node = generateNodeUnionType(typesToProcess);
       const types = typesToProcess.reduce((m, type) => {
-        return [...m, transformTypeToTSWrappedInterface(type, this.options)]
+        return [...m, convertTypeToWrappedTsInterface(type, this.options)]
       }, []);
       this.writeCodeToFile(this.options.types.wrapped.filename, [
         enumImports,
@@ -161,8 +161,8 @@ export class ProtoStore implements IProtoStore {
     if (this.options.enums.enabled) {
       this.writeCodeToFile(this.options.enums.filename, 
         this.enumsToProcess().map(enm => this.options.enums.enumsAsTypeUnion ?
-          transformEnumToTypeUnionAST(enm) :
-          transformEnumToAST(enm)
+          convertEnumToTsUnionType(enm) :
+          convertEnumToTsEnumDeclaration(enm)
         )
       );
     }
@@ -170,7 +170,7 @@ export class ProtoStore implements IProtoStore {
 
   writeUtilsEnums() {
     if (this.options.utils.enums.enabled) {
-      const code = convertAstToCode(buildEnumValueFunctionAST(this.enumsToProcess()));
+      const code = convertAstToCode(generateEnumValueFunctions(this.enumsToProcess()));
       this.writeFile(this.options.utils.enums.filename, code);
     }
   }
@@ -184,8 +184,8 @@ export class ProtoStore implements IProtoStore {
       const typesToProcess = this.typesToProcess();
       const code = convertAstToCode([
         imports,
-        generateImportSpecifiersAST(typesToProcess, this.options),
-        createAstHelperMethodsAST(typesToProcess)
+        generateTypeImportSpecifiers(typesToProcess, this.options),
+        generateAstHelperMethods(typesToProcess)
       ]);
 
       this.writeFile(this.options.utils.astHelpers.filename, code);
