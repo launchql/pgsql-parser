@@ -1,4 +1,4 @@
-import { toSpecialCamelCase } from 'pg-proto-parser';
+import { toSpecialCamelCase } from './index';
 import * as t from '@babel/types';
 
 /**

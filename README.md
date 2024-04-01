@@ -23,6 +23,7 @@
 - [Using `PgProtoParser`](#using-pgprotoparser)
 - [Using the CLI](#using-the-cli)
 - [Options](#options)
+- [Meta AST](#meta-ast-generatetsastcodefrompgast)
 - [Related](#related)
 - [Disclaimer](#disclaimer)
 
