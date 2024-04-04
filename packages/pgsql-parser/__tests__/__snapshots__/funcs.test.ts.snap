@@ -11,8 +11,7 @@ exports[`works 1`] = `
               "PLpgSQL_stmt_assign": {
                 "expr": {
                   "PLpgSQL_expr": {
-                    "parseMode": 3,
-                    "query": "result = ast.jsonb_set(result, '{IndexElem, name}', to_jsonb(v_name))",
+                    "query": "SELECT ast.jsonb_set(result, '{IndexElem, name}', to_jsonb(v_name))",
                   },
                 },
                 "lineno": 5,
@@ -23,8 +22,7 @@ exports[`works 1`] = `
               "PLpgSQL_stmt_assign": {
                 "expr": {
                   "PLpgSQL_expr": {
-                    "parseMode": 3,
-                    "query": "result = ast.jsonb_set(result, '{IndexElem, ordering}', to_jsonb(v_ordering))",
+                    "query": "SELECT ast.jsonb_set(result, '{IndexElem, ordering}', to_jsonb(v_ordering))",
                   },
                 },
                 "lineno": 6,
@@ -35,8 +33,7 @@ exports[`works 1`] = `
               "PLpgSQL_stmt_assign": {
                 "expr": {
                   "PLpgSQL_expr": {
-                    "parseMode": 3,
-                    "query": "result = ast.jsonb_set(result, '{IndexElem, nulls_ordering}', to_jsonb(v_nulls_ordering))",
+                    "query": "SELECT ast.jsonb_set(result, '{IndexElem, nulls_ordering}', to_jsonb(v_nulls_ordering))",
                   },
                 },
                 "lineno": 7,
@@ -47,8 +44,7 @@ exports[`works 1`] = `
               "PLpgSQL_stmt_assign": {
                 "expr": {
                   "PLpgSQL_expr": {
-                    "parseMode": 3,
-                    "query": "result = ast.jsonb_set(result, '{IndexElem, expr}', v_expr)",
+                    "query": "SELECT ast.jsonb_set(result, '{IndexElem, expr}', v_expr)",
                   },
                 },
                 "lineno": 8,
@@ -59,8 +55,7 @@ exports[`works 1`] = `
               "PLpgSQL_stmt_assign": {
                 "expr": {
                   "PLpgSQL_expr": {
-                    "parseMode": 3,
-                    "query": "result = ast.jsonb_set(result, '{IndexElem, opclass}', v_opclass)",
+                    "query": "SELECT ast.jsonb_set(result, '{IndexElem, opclass}', v_opclass)",
                   },
                 },
                 "lineno": 9,
@@ -71,8 +66,7 @@ exports[`works 1`] = `
               "PLpgSQL_stmt_assign": {
                 "expr": {
                   "PLpgSQL_expr": {
-                    "parseMode": 3,
-                    "query": "result = ast.jsonb_set(result, '{IndexElem, collation}', v_collation)",
+                    "query": "SELECT ast.jsonb_set(result, '{IndexElem, collation}', v_collation)",
                   },
                 },
                 "lineno": 10,
@@ -83,8 +77,7 @@ exports[`works 1`] = `
               "PLpgSQL_stmt_return": {
                 "expr": {
                   "PLpgSQL_expr": {
-                    "parseMode": 2,
-                    "query": "result",
+                    "query": "SELECT result",
                   },
                 },
                 "lineno": 11,
@@ -174,8 +167,7 @@ exports[`works 1`] = `
             },
             "default_val": {
               "PLpgSQL_expr": {
-                "parseMode": 2,
-                "query": "'{"IndexElem":{}}'::jsonb",
+                "query": "SELECT '{"IndexElem":{}}'::jsonb",
               },
             },
             "lineno": 3,

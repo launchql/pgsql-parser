@@ -1,5 +1,4 @@
-import { Node } from '@pgsql/types';
-
+import { Deparser, deparse } from 'pgsql-deparser';
 import {
   parseQuery,
   parseQuerySync,
@@ -16,7 +15,7 @@ function mapStmt({ stmt, stmt_len, stmt_location }) {
   };
 }
 
-export const parse = (sql): Node => {
+export const parse = (sql) => {
   if (!sql) throw new Error('no SQL provided to parser');
   const result = parseQuerySync(sql);
   return result.stmts.map(mapStmt);
@@ -28,4 +27,4 @@ export const parseAsync = async (sql) => {
   return result.stmts.map(mapStmt);
 };
 
-export { parseFunction };
+export { deparse, Deparser, parseFunction };
