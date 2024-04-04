@@ -14,9 +14,9 @@
    <a href="https://www.npmjs.com/package/pgsql-parser"><img height="20" src="https://img.shields.io/github/package-json/v/launchql/pgsql-parser?filename=packages%2Fparser%2Fpackage.json"/></a>
 </p>
 
-**NOTE** This is a version of `pgsql-parser` that only contains the parser, for those who don't need deparsing. This is for PG16 only.
+**NOTE:** This version of `@pgsql/parser` only contains the parsing functionality, optimized for users who do not require deparsing capabilities. This version is specifically tailored for PostgreSQL 16.
 
-The real PostgreSQL parser for Node.js, `@pgsql/parser` provides symmetric parsing and deparsing of SQL statements using the actual [PostgreSQL parser](https://github.com/pganalyze/libpg_query). It allows you to parse SQL queries into AST and modify or reconstruct SQL queries from the AST.
+The real PostgreSQL parser for Node.js, `@pgsql/parser` offers the ability to parse SQL statements into ASTs using the actual [PostgreSQL parser](https://github.com/pganalyze/libpg_query). It enables users to parse SQL queries into AST format for further manipulation and analysis. Deparsing functionality is (yet) not included in this package.
 
 ## Installation
 
