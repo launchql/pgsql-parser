@@ -57,6 +57,14 @@ jobs:
           POSTGRES_HOST: localhost
           POSTGRES_PORT: 5432
 
+      - name: pgsql-parser
+        run: cd ./packages/pgsql-parser && yarn test
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+
       - name: deparser
         run: cd ./packages/deparser && yarn test
         env:
@@ -64,6 +72,9 @@ jobs:
           POSTGRES_PASSWORD: password
           POSTGRES_HOST: localhost
           POSTGRES_PORT: 5432
+
+      - name: pgsql-enums
+        run: cd ./packages/pgsql-enums && yarn test
 
       - name: enums
         run: cd ./packages/enums && yarn test
