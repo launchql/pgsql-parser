@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.15.0](https://github.com/launchql/pgsql-parser/compare/pgsql-deparser@13.14.0...pgsql-deparser@13.15.0) (2024-04-04)
+
+**Note:** Version bump only for package pgsql-deparser
+
+
+
+
+
 # [13.14.0](https://github.com/launchql/pgsql-parser/compare/pgsql-deparser@13.13.0...pgsql-deparser@13.14.0) (2024-04-01)
 
 **Note:** Version bump only for package pgsql-deparser
