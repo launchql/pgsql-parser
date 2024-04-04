@@ -46,7 +46,7 @@ exports[`works 1`] = `
                         "fields": [
                           {
                             "String": {
-                              "sval": "health_grade",
+                              "str": "health_grade",
                             },
                           },
                         ],
@@ -57,15 +57,17 @@ exports[`works 1`] = `
                     "name": [
                       {
                         "String": {
-                          "sval": "=",
+                          "str": "=",
                         },
                       },
                     ],
                     "rexpr": {
                       "A_Const": {
                         "location": undefined,
-                        "sval": {
-                          "sval": "A",
+                        "val": {
+                          "String": {
+                            "str": "A",
+                          },
                         },
                       },
                     },
@@ -79,7 +81,7 @@ exports[`works 1`] = `
                         "fields": [
                           {
                             "String": {
-                              "sval": "average_rating",
+                              "str": "average_rating",
                             },
                           },
                         ],
@@ -90,16 +92,18 @@ exports[`works 1`] = `
                     "name": [
                       {
                         "String": {
-                          "sval": ">=",
+                          "str": ">=",
                         },
                       },
                     ],
                     "rexpr": {
                       "A_Const": {
-                        "fval": {
-                          "fval": "4.5",
-                        },
                         "location": undefined,
+                        "val": {
+                          "Float": {
+                            "str": "4.5",
+                          },
+                        },
                       },
                     },
                   },
