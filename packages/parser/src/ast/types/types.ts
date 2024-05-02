@@ -101,13 +101,18 @@ export const generateNodeUnionType = (types: Type[]) => {
   return t.exportNamedDeclaration(unionTypeAlias, []);
 };
 
+// TODO: why is the Field.rule missing in types, but there in the JSON?
+interface FieldType extends Field {
+  rule: string;
+}
+
 const extractTypeFieldsAsTsProperties = (
   type: Type,
   options: PgProtoParserOptions
 ) => {
 
   // @ts-ignore
-  const fields: Field[] = type.fields;
+  const fields: FieldType[] = type.fields;
   const properties =
     Object.entries(fields)
       .map(([fieldName, field]) => {

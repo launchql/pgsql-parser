@@ -80,7 +80,7 @@
     "@babel/parser": "^7.23.6",
     "@babel/traverse": "7.24.1",
     "@babel/types": "7.24.0",
-    "@launchql/protobufjs": "6.11.7",
+    "@launchql/protobufjs": "7.2.6",
     "case": "1.6.3",
     "deepmerge": "4.3.1",
     "nested-obj": "^0.0.1",
