@@ -1,3 +1,3 @@
-export declare const help: () => void;
-declare const _default: (argv: any) => Promise<void>;
-export default _default;
+#!/usr/bin/env node
+import { CLIOptions } from 'inquirerer';
+export declare const options: Partial<CLIOptions>;
