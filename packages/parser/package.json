@@ -85,7 +85,7 @@
   },
   "dependencies": {
     "@pgsql/types": "^13.9.0",
-    "libpg-query": "16.1.0",
+    "libpg-query": "16.2.0",
     "minimist": "^1.2.6"
   }
 }

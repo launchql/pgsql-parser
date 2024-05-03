@@ -546,6 +546,13 @@
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
 
+"@emnapi/runtime@^0.43.1":
+  version "0.43.1"
+  resolved "https://registry.npmjs.org/@emnapi/runtime/-/runtime-0.43.1.tgz#c72d5e32f9331f313ae6690d8a64454647ab245b"
+  integrity sha512-Q5sMc4Z4gsD4tlmlyFu+MpNAwpR7Gv2errDhVJ+SOhNjWcx8UTqy+hswb8L31RfC8jBvDgcnT87l3xI2w08rAg==
+  dependencies:
+    tslib "^2.4.0"
+
 "@eslint-community/eslint-utils@^4.2.0":
   version "4.4.0"
   resolved "https://registry.npmjs.org/@eslint-community/eslint-utils/-/eslint-utils-4.4.0.tgz#a23514e8fb9af1269d5f7788aa556798d61c6b59"
@@ -885,10 +892,10 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@launchql/protobufjs@6.11.7":
-  version "6.11.7"
-  resolved "https://registry.npmjs.org/@launchql/protobufjs/-/protobufjs-6.11.7.tgz#74a54eaeb29f599f78bca3a0bfcffc18242b56a7"
-  integrity sha512-srD7PvRzJyuWhi+LA/U1YrmMFX5qoplrH7DGauXDS5qWXCg6ZvQ8kLStauhGrvzwGqfZ5zTM/QKAzjwz9X4TAw==
+"@launchql/protobufjs@7.2.6":
+  version "7.2.6"
+  resolved "https://registry.npmjs.org/@launchql/protobufjs/-/protobufjs-7.2.6.tgz#f8b8fe02ca411d496390064eb398ba5245ca4e22"
+  integrity sha512-vwi1nG2/heVFsIMHQU1KxTjUp5c757CTtRAZn/jutApCkFlle1iv8tzM/DHlSZJKDldxaYqnNYTg0pTyp8Bbtg==
   dependencies:
     "@protobufjs/aspromise" "^1.1.2"
     "@protobufjs/base64" "^1.1.2"
@@ -900,9 +907,8 @@
     "@protobufjs/path" "^1.1.2"
     "@protobufjs/pool" "^1.1.0"
     "@protobufjs/utf8" "^1.1.0"
-    "@types/long" "^4.0.1"
     "@types/node" ">=13.7.0"
-    long "^4.0.0"
+    long "^5.0.0"
 
 "@lerna/child-process@7.0.2":
   version "7.0.2"
@@ -1480,11 +1486,6 @@
   dependencies:
     expect "^29.0.0"
     pretty-format "^29.0.0"
-
-"@types/long@^4.0.1":
-  version "4.0.2"
-  resolved "https://registry.npmjs.org/@types/long/-/long-4.0.2.tgz#b74129719fc8d11c01868010082d483b7545591a"
-  integrity sha512-MqTGEo5bj5t157U6fA/BiDynNkn0YknVdh48CMPkTSpFTVmvao5UQmm7uEF6xBEo7qIMAlY/JSleYaE6VOdpaA==
 
 "@types/minimatch@^3.0.3":
   version "3.0.5"
@@ -4426,13 +4427,14 @@ libpg-query@13.3.2:
     node-addon-api "^1.6.3"
     node-gyp "^8.0.0"
 
-libpg-query@16.1.0:
-  version "16.1.0"
-  resolved "https://registry.npmjs.org/libpg-query/-/libpg-query-16.1.0.tgz#fc3068be91284f2113d36bdb8b9ab4d6d7701ccb"
-  integrity sha512-8UHEwWEU++ZQ0mnLjW0ZueVuZEJSxchWGCsg04ZWEXDLmmfg9Cpa968ShfHFmDXKsB1ugQGppEqSa9iwaGsCMg==
+libpg-query@16.2.0:
+  version "16.2.0"
+  resolved "https://registry.npmjs.org/libpg-query/-/libpg-query-16.2.0.tgz#abf7485650f1c63e3b39db365c0f5d3a58ea6f7e"
+  integrity sha512-quviVdvqHPxQNhHKOHzc4XhIF/29TAwYPTfnNralWdWWORBCFI+m70cN3FeOEdTn/ndp83PBnok3+Tt7ofUjnw==
   dependencies:
+    "@emnapi/runtime" "^0.43.1"
     "@mapbox/node-pre-gyp" "^1.0.8"
-    node-addon-api "^1.6.3"
+    node-addon-api "^7.0.0"
     node-gyp "^10.0.1"
 
 lines-and-columns@^1.1.6:
@@ -4515,10 +4517,10 @@ log-symbols@^4.1.0:
     chalk "^4.1.0"
     is-unicode-supported "^0.1.0"
 
-long@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.npmjs.org/long/-/long-4.0.0.tgz#9a7b71cfb7d361a194ea555241c92f7468d5bf28"
-  integrity sha512-XsP+KhQif4bjX1kbuSiySJFNAehNxgLb6hPRGJ9QsUr8ajHkuXGdrHmFUTUUXhDwVX2R5bY4JNZEwbUiMhV+MA==
+long@^5.0.0:
+  version "5.2.3"
+  resolved "https://registry.npmjs.org/long/-/long-5.2.3.tgz#a3ba97f3877cf1d778eccbcb048525ebb77499e1"
+  integrity sha512-lcHwpNoggQTObv5apGNCTdJrO69eHOZMi4BNC+rTLER8iHAqGrUVeLh/irVIM7zTw2bOXA8T6uNPeujwOLg/2Q==
 
 lru-cache@^10.0.1, lru-cache@^10.2.0:
   version "10.2.0"
@@ -4957,6 +4959,11 @@ node-addon-api@^3.2.1:
   version "3.2.1"
   resolved "https://registry.npmjs.org/node-addon-api/-/node-addon-api-3.2.1.tgz#81325e0a2117789c0128dab65e7e38f07ceba161"
   integrity sha512-mmcei9JghVNDYydghQmeDX8KoAm0FAiYyIcUt/N4nhyAipB17pllZQDOJD2fotxABnt4Mdz+dKTO7eftLg4d0A==
+
+node-addon-api@^7.0.0:
+  version "7.1.0"
+  resolved "https://registry.npmjs.org/node-addon-api/-/node-addon-api-7.1.0.tgz#71f609369379c08e251c558527a107107b5e0fdb"
+  integrity sha512-mNcltoe1R8o7STTegSOHdnJNN7s5EUvhoS7ShnTHDyOSd+8H+UdWODq6qSv67PjC8Zc5JRT8+oLAMCr0SIXw7g==
 
 node-fetch@2.6.7, node-fetch@^2.6.5:
   version "2.6.7"
@@ -5567,15 +5574,15 @@ path-type@^4.0.0:
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
 pg-proto-parser@^1.20.0:
-  version "1.20.0"
-  resolved "https://registry.npmjs.org/pg-proto-parser/-/pg-proto-parser-1.20.0.tgz#20b003b69d31b3c433e5793385de667ddff5ec9c"
-  integrity sha512-z4B+nvhsjqTc3+9/pLhlqEQ6aa/uPa6z3tiRfVJnQs4JksPXciwyBJhmphWQobqpNU6d+Ce6BsSNvnW3Tz7gqw==
+  version "1.23.0"
+  resolved "https://registry.npmjs.org/pg-proto-parser/-/pg-proto-parser-1.23.0.tgz#a342d34a4a4b38d01c88158e0e9475d489efd716"
+  integrity sha512-LzX7va8HdHwAK1QLwWYmF8wfeHYV39lWbQICgSyBX5idv/ctsurQhej4WxK1CVt0B075t5Ojvf/rgw2KZVP/AA==
   dependencies:
     "@babel/generator" "^7.23.6"
     "@babel/parser" "^7.23.6"
     "@babel/traverse" "7.24.1"
     "@babel/types" "7.24.0"
-    "@launchql/protobufjs" "6.11.7"
+    "@launchql/protobufjs" "7.2.6"
     case "1.6.3"
     deepmerge "4.3.1"
     nested-obj "^0.0.1"
