@@ -18,7 +18,7 @@
     "main"
   ],
   "bin": {
-    "pg-proto-parser": "main/parser.js"
+    "pg-proto-parser": "main/index.js"
   },
   "scripts": {
     "build:main": "yarn tsc -p tsconfig.json --outDir main --module commonjs",
@@ -28,7 +28,7 @@
     "prepare": "npm run clean && npm run build",
     "lint": "eslint .",
     "format": "eslint . --fix",
-    "dev": "NODE_ENV=development ts-node src/parser",
+    "dev": "ts-node src/index",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:debug": "node --inspect node_modules/.bin/jest --runInBand"
@@ -74,7 +74,11 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
+    "@launchql/protobufjs": "7.2.6",
+    "@launchql/protobufjs-cli": "1.1.5",
+    "chalk": "^4.1.0",
     "glob": "8.0.3",
+    "inquirerer": "1.9.0",
     "minimist": "1.2.8",
     "mkdirp": "3.0.1",
     "nested-obj": "^0.0.1",
