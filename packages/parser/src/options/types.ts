@@ -46,6 +46,9 @@ export interface PgProtoStoreOptions {
         optionalFields?: boolean;
         // Enums source specifier
         enumsSource?: string;
+        // Node Object Keys, e.g. { ParseResult: ParseResult, ... }
+        // meant for simpler user cases where wrapped is advanced
+        wrappedNodeTypeExport?: boolean;
         // wrapped types, for building AST
         wrapped?: {
             // Enabled wrapped types, to match AST

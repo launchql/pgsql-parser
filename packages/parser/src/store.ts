@@ -7,6 +7,7 @@ import { getOptionsWithDefaults, PgProtoStoreOptions } from './options';
 import { cloneAndNameNode, convertAstToCode, createDefaultImport, getUndefinedKey, hasUndefinedInitialValue, stripExtension, writeFileToDisk } from './utils';
 import { nestedObjCode } from './inline-helpers';
 import * as t from '@babel/types';
+import { NODE_TYPE } from './constants';
 
 interface IProtoStore {
   options: PgProtoStoreOptions;
@@ -107,12 +108,12 @@ export class ProtoStore implements IProtoStore {
   }
 
   allTypesExceptNode () {
-    return this.types.filter(type => type.name !== 'Node');
+    return this.types.filter(type => type.name !== NODE_TYPE);
   }
 
   typesToProcess () {
     return this.types
-      .filter(type => type.name !== 'Node')
+      .filter(type => type.name !== NODE_TYPE)
       .filter(type => !this.options.exclude.includes(type.name));
   }
 
@@ -125,7 +126,7 @@ export class ProtoStore implements IProtoStore {
     if (this.options.types.enabled) {
       const typesToProcess = this.typesToProcess();
       const enumsToProcess = this.enumsToProcess();
-      const node = generateNodeUnionType(typesToProcess);
+      const node = generateNodeUnionType(this.options, typesToProcess);
       const enumImports = generateEnumImports(enumsToProcess, this.options.types.enumsSource);
       const types = typesToProcess.reduce((m, type) => {
         return [...m, convertTypeToTsInterface(type, this.options)]
@@ -145,7 +146,7 @@ export class ProtoStore implements IProtoStore {
         this.enumsToProcess(),
         this.options.types.wrapped.enumsSource
       );
-      const node = generateNodeUnionType(typesToProcess);
+      const node = generateNodeUnionType(this.options, typesToProcess);
       const types = typesToProcess.reduce((m, type) => {
         return [...m, convertTypeToWrappedTsInterface(type, this.options)]
       }, []);

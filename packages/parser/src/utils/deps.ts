@@ -1,8 +1,9 @@
-import { Type, Enum, Field, ReflectionObject } from '@launchql/protobufjs';
+import { Type, Enum, Field } from '@launchql/protobufjs';
 import { isPrimitiveType } from './types';
+import { NODE_TYPE } from '../constants';
 
 const dependenciesResolve = (types: Type[], enums: Enum[], symbolName: string, resolved: string[], unresolved: string[]) => {
-    if (symbolName === 'Node') return;
+    if (symbolName === NODE_TYPE) return;
 
     unresolved.push(symbolName);
 
@@ -41,7 +42,7 @@ export const getDependencies = (name: string, types: Type[], enums: Enum[]) => {
 }
 
 const dependentsResolve = (types, enums, symbolName, resolved, unresolved) => {
-    if (symbolName === 'Node') return;
+    if (symbolName === NODE_TYPE) return;
 
     unresolved.push(symbolName);
 

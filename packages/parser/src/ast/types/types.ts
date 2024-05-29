@@ -2,7 +2,7 @@ import { Type, Field } from '@launchql/protobufjs';
 import * as t from '@babel/types';
 import { createNamedImport, createNamedImportAsSuffix, getFieldName, toSpecialCamelCase } from '../../utils';
 import { PgProtoParserOptions } from '../../options';
-import { SPECIAL_TYPES } from '../../constants';
+import { NODE_TYPE, SPECIAL_TYPES } from '../../constants';
 import { resolveTypeName } from './utils';
 
 export const generateTypeImports = (types: Type[], source: string, suffix?: string) => {
@@ -89,17 +89,49 @@ export const generateAstHelperMethods = (types: Type[]): t.ExportDefaultDeclarat
 }
 
 // special for Node
-export const generateNodeUnionType = (types: Type[]) => {
+export const generateNodeUnionType = (
+  options: PgProtoParserOptions,
+  types: Type[]
+) => {
+  if (options.types.wrappedNodeTypeExport) {
+    return generateNodeUnionTypeObjectKeys(types);
+  }
   const unionTypeNames = types.map(type => t.tsTypeReference(t.identifier(type.name)));
 
   const unionTypeAlias = t.tsTypeAliasDeclaration(
-    t.identifier('Node'),
+    t.identifier(NODE_TYPE),
     null,
     t.tsUnionType(unionTypeNames)
   );
 
   return t.exportNamedDeclaration(unionTypeAlias, []);
 };
+
+
+export const generateNodeUnionTypeObjectKeys = (types: Type[]) => {
+  // Mapping types to TypeScript object type annotations
+  const unionTypeNames = types.map(type => 
+    t.tsTypeLiteral([
+      t.tsPropertySignature(
+        t.identifier(type.name),
+        t.tsTypeAnnotation(t.tsTypeReference(t.identifier(type.name)))
+      )
+    ])
+  );
+
+  // Creating the TypeScript union type
+  const unionTypeAlias = t.tsTypeAliasDeclaration(
+    t.identifier(NODE_TYPE),
+    null,
+    t.tsUnionType(unionTypeNames)
+  );
+
+  // Exporting the union type declaration
+  return t.exportNamedDeclaration(unionTypeAlias, []);
+};
+
+
+
 
 // TODO: why is the Field.rule missing in types, but there in the JSON?
 interface FieldType extends Field {

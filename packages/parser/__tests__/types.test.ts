@@ -31,4 +31,14 @@ describe('types', () => {
         }
     });
   });
+  it('wrappedNodeTypeExport', () => {
+    parseAndSnap('types/node-wrapped', {
+        types: {
+          enabled: true,
+          enumsSource: 'my-enums.ts',
+          filename: 'types.ts',
+          wrappedNodeTypeExport: true
+        }
+    });
+  });
 });

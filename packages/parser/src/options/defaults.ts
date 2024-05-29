@@ -25,6 +25,7 @@ export const defaultPgProtoParserOptions: PgProtoParserOptions = {
         filename: 'types.ts',
         optionalFields: true,
         enumsSource: './enums',
+        wrappedNodeTypeExport: false,
         wrapped: {
             enabled: false,
             enumsSource: './enums',
