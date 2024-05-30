@@ -48,6 +48,8 @@ export interface PgProtoStoreOptions {
         enumsSource?: string;
         // Node Object Keys, e.g. { ParseResult: ParseResult, ... }
         // meant for simpler user cases where wrapped is advanced
+        // if a field in an object uses Node, it's wrapped
+        // if a field in an object references a type, e.g. RangeVar, it's flat
         wrappedNodeTypeExport?: boolean;
         // wrapped types, for building AST
         wrapped?: {

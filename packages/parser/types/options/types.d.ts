@@ -25,6 +25,7 @@ export interface PgProtoStoreOptions {
         filename?: string;
         optionalFields?: boolean;
         enumsSource?: string;
+        wrappedNodeTypeExport?: boolean;
         wrapped?: {
             enabled?: boolean;
             enumsSource?: string;
