@@ -1548,6 +1548,14 @@ export default class Deparser {
     const output = [];
     if (node.name) {
       output.push(node.name);
+      if (node.opclass && node.opclass.length) {
+        output.push(this.deparse(node.opclass[0]));
+      }
+      if (node.opclassopts && node.opclassopts.length) {
+        output.push('(');
+        output.push(node.opclassopts.map((opclassopt) => this.deparse(opclassopt)).join(', '));
+        output.push(')');
+      }
       if (node.ordering === 'SORTBY_DESC') {
         output.push('DESC');
       } else if (node.ordering === 'SORTBY_ASC') {
