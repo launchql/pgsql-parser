@@ -1510,6 +1510,9 @@ export default class Deparser {
     if (node.concurrent) {
       output.push('CONCURRENTLY');
     }
+    if (node.if_not_exists) {
+      output.push('IF NOT EXISTS');
+    }
 
     if (node.idxname) {
       output.push(node.idxname);

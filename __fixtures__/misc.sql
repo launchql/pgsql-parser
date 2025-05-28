@@ -19,4 +19,6 @@ create table if not exists users (
   handle text not null,
   created_at timestamp not null default now(),
   updated_at timestamp not null default now()
-)
+);
+
+CREATE INDEX CONCURRENTLY IF NOT EXISTS index_email_logs_on_created_at ON public.email_logs USING btree (created_at DESC);
