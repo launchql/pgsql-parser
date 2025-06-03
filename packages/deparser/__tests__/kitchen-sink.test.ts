@@ -1,4 +1,4 @@
-import { parse } from 'pgsql-parser';
+import { parse } from '@pgsql/parser';
 import { deparse } from '../src';
 import { cleanTree, cleanLines } from '../src/utils';
 import { readFileSync } from 'fs';

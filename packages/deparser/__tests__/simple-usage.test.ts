@@ -1,4 +1,4 @@
-import { parse } from 'pgsql-parser';
+import { parse } from '@pgsql/parser';
 import { deparse } from '../src';
 import { readFileSync } from 'fs';
 import { sync as glob } from 'glob';
@@ -37,7 +37,9 @@ it('simple "dumb" api', () => {
   expect(
     // @ts-ignore
     deparse([
+      // @ts-ignore
       tree3[0].RawStmt.stmt.CreatePolicyStmt.qual,
+      // @ts-ignore
       tree3[0].RawStmt.stmt.CreatePolicyStmt.roles[0]
     ])
   ).toMatchSnapshot();

@@ -35,7 +35,7 @@ exports[`parens 1`] = `
                                 "fields": [
                                   {
                                     "String": {
-                                      "str": "node",
+                                      "sval": "node",
                                     },
                                   },
                                 ],
@@ -46,17 +46,15 @@ exports[`parens 1`] = `
                             "name": [
                               {
                                 "String": {
-                                  "str": "->",
+                                  "sval": "->",
                                 },
                               },
                             ],
                             "rexpr": {
                               "A_Const": {
                                 "location": 13,
-                                "val": {
-                                  "String": {
-                                    "str": "relation",
-                                  },
+                                "sval": {
+                                  "sval": "relation",
                                 },
                               },
                             },
@@ -66,17 +64,15 @@ exports[`parens 1`] = `
                         "name": [
                           {
                             "String": {
-                              "str": "->",
+                              "sval": "->",
                             },
                           },
                         ],
                         "rexpr": {
                           "A_Const": {
                             "location": 25,
-                            "val": {
-                              "String": {
-                                "str": "RangeVar",
-                              },
+                            "sval": {
+                              "sval": "RangeVar",
                             },
                           },
                         },
@@ -131,7 +127,7 @@ exports[`parens 1`] = `
                                       "fields": [
                                         {
                                           "String": {
-                                            "str": "node",
+                                            "sval": "node",
                                           },
                                         },
                                       ],
@@ -142,17 +138,15 @@ exports[`parens 1`] = `
                                   "name": [
                                     {
                                       "String": {
-                                        "str": "->",
+                                        "sval": "->",
                                       },
                                     },
                                   ],
                                   "rexpr": {
                                     "A_Const": {
                                       "location": 82,
-                                      "val": {
-                                        "String": {
-                                          "str": "relation",
-                                        },
+                                      "sval": {
+                                        "sval": "relation",
                                       },
                                     },
                                   },
@@ -162,17 +156,15 @@ exports[`parens 1`] = `
                               "name": [
                                 {
                                   "String": {
-                                    "str": "->",
+                                    "sval": "->",
                                   },
                                 },
                               ],
                               "rexpr": {
                                 "A_Const": {
                                   "location": 94,
-                                  "val": {
-                                    "String": {
-                                      "str": "RangeVar",
-                                    },
+                                  "sval": {
+                                    "sval": "RangeVar",
                                   },
                                 },
                               },
@@ -198,7 +190,7 @@ exports[`parens 1`] = `
                                           "fields": [
                                             {
                                               "String": {
-                                                "str": "node",
+                                                "sval": "node",
                                               },
                                             },
                                           ],
@@ -209,17 +201,15 @@ exports[`parens 1`] = `
                                       "name": [
                                         {
                                           "String": {
-                                            "str": "->",
+                                            "sval": "->",
                                           },
                                         },
                                       ],
                                       "rexpr": {
                                         "A_Const": {
                                           "location": 135,
-                                          "val": {
-                                            "String": {
-                                              "str": "relation",
-                                            },
+                                          "sval": {
+                                            "sval": "relation",
                                           },
                                         },
                                       },
@@ -229,17 +219,15 @@ exports[`parens 1`] = `
                                   "name": [
                                     {
                                       "String": {
-                                        "str": "->",
+                                        "sval": "->",
                                       },
                                     },
                                   ],
                                   "rexpr": {
                                     "A_Const": {
                                       "location": 147,
-                                      "val": {
-                                        "String": {
-                                          "str": "RangeVar",
-                                        },
+                                      "sval": {
+                                        "sval": "RangeVar",
                                       },
                                     },
                                   },
@@ -249,17 +237,15 @@ exports[`parens 1`] = `
                               "name": [
                                 {
                                   "String": {
-                                    "str": "->>",
+                                    "sval": "->>",
                                   },
                                 },
                               ],
                               "rexpr": {
                                 "A_Const": {
                                   "location": 160,
-                                  "val": {
-                                    "String": {
-                                      "str": "inh",
-                                    },
+                                  "sval": {
+                                    "sval": "inh",
                                   },
                                 },
                               },
@@ -316,7 +302,7 @@ exports[`parens 1`] = `
                                     "fields": [
                                       {
                                         "String": {
-                                          "str": "a",
+                                          "sval": "a",
                                         },
                                       },
                                     ],
@@ -334,7 +320,7 @@ exports[`parens 1`] = `
                                     "fields": [
                                       {
                                         "String": {
-                                          "str": "b",
+                                          "sval": "b",
                                         },
                                       },
                                     ],
@@ -360,7 +346,7 @@ exports[`parens 1`] = `
                                     "fields": [
                                       {
                                         "String": {
-                                          "str": "c",
+                                          "sval": "c",
                                         },
                                       },
                                     ],
@@ -383,7 +369,7 @@ exports[`parens 1`] = `
                                             "fields": [
                                               {
                                                 "String": {
-                                                  "str": "a",
+                                                  "sval": "a",
                                                 },
                                               },
                                             ],
@@ -394,17 +380,15 @@ exports[`parens 1`] = `
                                         "name": [
                                           {
                                             "String": {
-                                              "str": "->",
+                                              "sval": "->",
                                             },
                                           },
                                         ],
                                         "rexpr": {
                                           "A_Const": {
                                             "location": 280,
-                                            "val": {
-                                              "String": {
-                                                "str": "inh",
-                                              },
+                                            "sval": {
+                                              "sval": "inh",
                                             },
                                           },
                                         },
@@ -416,7 +400,7 @@ exports[`parens 1`] = `
                                       "names": [
                                         {
                                           "String": {
-                                            "str": "bool",
+                                            "sval": "bool",
                                           },
                                         },
                                       ],
@@ -486,7 +470,7 @@ exports[`parens 1`] = `
                                             "fields": [
                                               {
                                                 "String": {
-                                                  "str": "node",
+                                                  "sval": "node",
                                                 },
                                               },
                                             ],
@@ -497,17 +481,15 @@ exports[`parens 1`] = `
                                         "name": [
                                           {
                                             "String": {
-                                              "str": "->",
+                                              "sval": "->",
                                             },
                                           },
                                         ],
                                         "rexpr": {
                                           "A_Const": {
                                             "location": 337,
-                                            "val": {
-                                              "String": {
-                                                "str": "relation",
-                                              },
+                                            "sval": {
+                                              "sval": "relation",
                                             },
                                           },
                                         },
@@ -517,17 +499,15 @@ exports[`parens 1`] = `
                                     "name": [
                                       {
                                         "String": {
-                                          "str": "->",
+                                          "sval": "->",
                                         },
                                       },
                                     ],
                                     "rexpr": {
                                       "A_Const": {
                                         "location": 349,
-                                        "val": {
-                                          "String": {
-                                            "str": "RangeVar",
-                                          },
+                                        "sval": {
+                                          "sval": "RangeVar",
                                         },
                                       },
                                     },
@@ -553,7 +533,7 @@ exports[`parens 1`] = `
                                                 "fields": [
                                                   {
                                                     "String": {
-                                                      "str": "node",
+                                                      "sval": "node",
                                                     },
                                                   },
                                                 ],
@@ -564,17 +544,15 @@ exports[`parens 1`] = `
                                             "name": [
                                               {
                                                 "String": {
-                                                  "str": "->",
+                                                  "sval": "->",
                                                 },
                                               },
                                             ],
                                             "rexpr": {
                                               "A_Const": {
                                                 "location": 390,
-                                                "val": {
-                                                  "String": {
-                                                    "str": "relation",
-                                                  },
+                                                "sval": {
+                                                  "sval": "relation",
                                                 },
                                               },
                                             },
@@ -584,17 +562,15 @@ exports[`parens 1`] = `
                                         "name": [
                                           {
                                             "String": {
-                                              "str": "->",
+                                              "sval": "->",
                                             },
                                           },
                                         ],
                                         "rexpr": {
                                           "A_Const": {
                                             "location": 402,
-                                            "val": {
-                                              "String": {
-                                                "str": "RangeVar",
-                                              },
+                                            "sval": {
+                                              "sval": "RangeVar",
                                             },
                                           },
                                         },
@@ -604,17 +580,15 @@ exports[`parens 1`] = `
                                     "name": [
                                       {
                                         "String": {
-                                          "str": "->",
+                                          "sval": "->",
                                         },
                                       },
                                     ],
                                     "rexpr": {
                                       "A_Const": {
                                         "location": 414,
-                                        "val": {
-                                          "String": {
-                                            "str": "inh",
-                                          },
+                                        "sval": {
+                                          "sval": "inh",
                                         },
                                       },
                                     },
@@ -648,7 +622,7 @@ exports[`parens 1`] = `
                                                 "fields": [
                                                   {
                                                     "String": {
-                                                      "str": "node",
+                                                      "sval": "node",
                                                     },
                                                   },
                                                 ],
@@ -659,17 +633,15 @@ exports[`parens 1`] = `
                                             "name": [
                                               {
                                                 "String": {
-                                                  "str": "->",
+                                                  "sval": "->",
                                                 },
                                               },
                                             ],
                                             "rexpr": {
                                               "A_Const": {
                                                 "location": 446,
-                                                "val": {
-                                                  "String": {
-                                                    "str": "relation",
-                                                  },
+                                                "sval": {
+                                                  "sval": "relation",
                                                 },
                                               },
                                             },
@@ -679,17 +651,15 @@ exports[`parens 1`] = `
                                         "name": [
                                           {
                                             "String": {
-                                              "str": "->",
+                                              "sval": "->",
                                             },
                                           },
                                         ],
                                         "rexpr": {
                                           "A_Const": {
                                             "location": 458,
-                                            "val": {
-                                              "String": {
-                                                "str": "RangeVar",
-                                              },
+                                            "sval": {
+                                              "sval": "RangeVar",
                                             },
                                           },
                                         },
@@ -699,17 +669,15 @@ exports[`parens 1`] = `
                                     "name": [
                                       {
                                         "String": {
-                                          "str": "->",
+                                          "sval": "->",
                                         },
                                       },
                                     ],
                                     "rexpr": {
                                       "A_Const": {
                                         "location": 470,
-                                        "val": {
-                                          "String": {
-                                            "str": "inh",
-                                          },
+                                        "sval": {
+                                          "sval": "inh",
                                         },
                                       },
                                     },
@@ -737,7 +705,7 @@ exports[`parens 1`] = `
                                                     "fields": [
                                                       {
                                                         "String": {
-                                                          "str": "node",
+                                                          "sval": "node",
                                                         },
                                                       },
                                                     ],
@@ -748,17 +716,15 @@ exports[`parens 1`] = `
                                                 "name": [
                                                   {
                                                     "String": {
-                                                      "str": "->",
+                                                      "sval": "->",
                                                     },
                                                   },
                                                 ],
                                                 "rexpr": {
                                                   "A_Const": {
                                                     "location": 507,
-                                                    "val": {
-                                                      "String": {
-                                                        "str": "relation",
-                                                      },
+                                                    "sval": {
+                                                      "sval": "relation",
                                                     },
                                                   },
                                                 },
@@ -768,17 +734,15 @@ exports[`parens 1`] = `
                                             "name": [
                                               {
                                                 "String": {
-                                                  "str": "->",
+                                                  "sval": "->",
                                                 },
                                               },
                                             ],
                                             "rexpr": {
                                               "A_Const": {
                                                 "location": 519,
-                                                "val": {
-                                                  "String": {
-                                                    "str": "RangeVar",
-                                                  },
+                                                "sval": {
+                                                  "sval": "RangeVar",
                                                 },
                                               },
                                             },
@@ -788,17 +752,15 @@ exports[`parens 1`] = `
                                         "name": [
                                           {
                                             "String": {
-                                              "str": "->",
+                                              "sval": "->",
                                             },
                                           },
                                         ],
                                         "rexpr": {
                                           "A_Const": {
                                             "location": 531,
-                                            "val": {
-                                              "String": {
-                                                "str": "inh",
-                                              },
+                                            "sval": {
+                                              "sval": "inh",
                                             },
                                           },
                                         },
@@ -810,7 +772,7 @@ exports[`parens 1`] = `
                                       "names": [
                                         {
                                           "String": {
-                                            "str": "bool",
+                                            "sval": "bool",
                                           },
                                         },
                                       ],
@@ -872,7 +834,7 @@ exports[`parens 1`] = `
                                 "fields": [
                                   {
                                     "String": {
-                                      "str": "a",
+                                      "sval": "a",
                                     },
                                   },
                                 ],
@@ -884,7 +846,7 @@ exports[`parens 1`] = `
                                 "fields": [
                                   {
                                     "String": {
-                                      "str": "b",
+                                      "sval": "b",
                                     },
                                   },
                                 ],
@@ -896,7 +858,7 @@ exports[`parens 1`] = `
                                 "fields": [
                                   {
                                     "String": {
-                                      "str": "c",
+                                      "sval": "c",
                                     },
                                   },
                                 ],
@@ -913,7 +875,7 @@ exports[`parens 1`] = `
                           "fields": [
                             {
                               "String": {
-                                "str": "d",
+                                "sval": "d",
                               },
                             },
                           ],
@@ -965,7 +927,7 @@ exports[`parens 1`] = `
                                 "fields": [
                                   {
                                     "String": {
-                                      "str": "a",
+                                      "sval": "a",
                                     },
                                   },
                                 ],
@@ -977,7 +939,7 @@ exports[`parens 1`] = `
                                 "fields": [
                                   {
                                     "String": {
-                                      "str": "b",
+                                      "sval": "b",
                                     },
                                   },
                                 ],
@@ -989,7 +951,7 @@ exports[`parens 1`] = `
                                 "fields": [
                                   {
                                     "String": {
-                                      "str": "c",
+                                      "sval": "c",
                                     },
                                   },
                                 ],
@@ -1006,7 +968,7 @@ exports[`parens 1`] = `
                           "fields": [
                             {
                               "String": {
-                                "str": "d",
+                                "sval": "d",
                               },
                             },
                           ],
@@ -1024,7 +986,7 @@ exports[`parens 1`] = `
                                       "fields": [
                                         {
                                           "String": {
-                                            "str": "e",
+                                            "sval": "e",
                                           },
                                         },
                                       ],
@@ -1036,7 +998,7 @@ exports[`parens 1`] = `
                                       "fields": [
                                         {
                                           "String": {
-                                            "str": "f",
+                                            "sval": "f",
                                           },
                                         },
                                       ],
@@ -1053,7 +1015,7 @@ exports[`parens 1`] = `
                                 "fields": [
                                   {
                                     "String": {
-                                      "str": "g",
+                                      "sval": "g",
                                     },
                                   },
                                 ],
@@ -1110,7 +1072,7 @@ exports[`parens 1`] = `
                                 "fields": [
                                   {
                                     "String": {
-                                      "str": "a",
+                                      "sval": "a",
                                     },
                                   },
                                 ],
@@ -1122,7 +1084,7 @@ exports[`parens 1`] = `
                                 "fields": [
                                   {
                                     "String": {
-                                      "str": "b",
+                                      "sval": "b",
                                     },
                                   },
                                 ],
@@ -1138,7 +1100,7 @@ exports[`parens 1`] = `
                                         "fields": [
                                           {
                                             "String": {
-                                              "str": "c",
+                                              "sval": "c",
                                             },
                                           },
                                         ],
@@ -1151,7 +1113,7 @@ exports[`parens 1`] = `
                                       "names": [
                                         {
                                           "String": {
-                                            "str": "bool",
+                                            "sval": "bool",
                                           },
                                         },
                                       ],
@@ -1173,7 +1135,7 @@ exports[`parens 1`] = `
                           "fields": [
                             {
                               "String": {
-                                "str": "d",
+                                "sval": "d",
                               },
                             },
                           ],
@@ -1191,7 +1153,7 @@ exports[`parens 1`] = `
                                       "fields": [
                                         {
                                           "String": {
-                                            "str": "e",
+                                            "sval": "e",
                                           },
                                         },
                                       ],
@@ -1203,7 +1165,7 @@ exports[`parens 1`] = `
                                       "fields": [
                                         {
                                           "String": {
-                                            "str": "f",
+                                            "sval": "f",
                                           },
                                         },
                                       ],
@@ -1220,7 +1182,7 @@ exports[`parens 1`] = `
                                 "fields": [
                                   {
                                     "String": {
-                                      "str": "g",
+                                      "sval": "g",
                                     },
                                   },
                                 ],
@@ -1283,7 +1245,7 @@ exports[`parens 1`] = `
                                             "fields": [
                                               {
                                                 "String": {
-                                                  "str": "a",
+                                                  "sval": "a",
                                                 },
                                               },
                                             ],
@@ -1295,7 +1257,7 @@ exports[`parens 1`] = `
                                             "fields": [
                                               {
                                                 "String": {
-                                                  "str": "b",
+                                                  "sval": "b",
                                                 },
                                               },
                                             ],
@@ -1317,7 +1279,7 @@ exports[`parens 1`] = `
                                 "fields": [
                                   {
                                     "String": {
-                                      "str": "c",
+                                      "sval": "c",
                                     },
                                   },
                                 ],
@@ -1337,7 +1299,7 @@ exports[`parens 1`] = `
                                 "fields": [
                                   {
                                     "String": {
-                                      "str": "d",
+                                      "sval": "d",
                                     },
                                   },
                                 ],
@@ -1397,7 +1359,7 @@ exports[`parens 1`] = `
                                       "fields": [
                                         {
                                           "String": {
-                                            "str": "a",
+                                            "sval": "a",
                                           },
                                         },
                                       ],
@@ -1409,7 +1371,7 @@ exports[`parens 1`] = `
                                       "fields": [
                                         {
                                           "String": {
-                                            "str": "b",
+                                            "sval": "b",
                                           },
                                         },
                                       ],
@@ -1431,7 +1393,7 @@ exports[`parens 1`] = `
                           "fields": [
                             {
                               "String": {
-                                "str": "c",
+                                "sval": "c",
                               },
                             },
                           ],
@@ -1486,7 +1448,7 @@ exports[`parens 1`] = `
                                       "fields": [
                                         {
                                           "String": {
-                                            "str": "a",
+                                            "sval": "a",
                                           },
                                         },
                                       ],
@@ -1498,7 +1460,7 @@ exports[`parens 1`] = `
                                       "fields": [
                                         {
                                           "String": {
-                                            "str": "b",
+                                            "sval": "b",
                                           },
                                         },
                                       ],
@@ -1520,7 +1482,7 @@ exports[`parens 1`] = `
                           "fields": [
                             {
                               "String": {
-                                "str": "c",
+                                "sval": "c",
                               },
                             },
                           ],
@@ -1564,7 +1526,7 @@ exports[`parens 1`] = `
                                   "fields": [
                                     {
                                       "String": {
-                                        "str": "field",
+                                        "sval": "field",
                                       },
                                     },
                                   ],
@@ -1575,18 +1537,16 @@ exports[`parens 1`] = `
                               "name": [
                                 {
                                   "String": {
-                                    "str": "=",
+                                    "sval": "=",
                                   },
                                 },
                               ],
                               "rexpr": {
                                 "A_Const": {
-                                  "location": 875,
-                                  "val": {
-                                    "Integer": {
-                                      "ival": 1,
-                                    },
+                                  "ival": {
+                                    "ival": 1,
                                   },
+                                  "location": 875,
                                 },
                               },
                             },
@@ -1599,7 +1559,7 @@ exports[`parens 1`] = `
                                   "fields": [
                                     {
                                       "String": {
-                                        "str": "field",
+                                        "sval": "field",
                                       },
                                     },
                                   ],
@@ -1610,18 +1570,16 @@ exports[`parens 1`] = `
                               "name": [
                                 {
                                   "String": {
-                                    "str": "=",
+                                    "sval": "=",
                                   },
                                 },
                               ],
                               "rexpr": {
                                 "A_Const": {
-                                  "location": 886,
-                                  "val": {
-                                    "Integer": {
-                                      "ival": 2,
-                                    },
+                                  "ival": {
+                                    "ival": 2,
                                   },
+                                  "location": 886,
                                 },
                               },
                             },
@@ -1665,7 +1623,7 @@ exports[`parens 1`] = `
                               "fields": [
                                 {
                                   "String": {
-                                    "str": "field",
+                                    "sval": "field",
                                   },
                                 },
                               ],
@@ -1676,18 +1634,16 @@ exports[`parens 1`] = `
                           "name": [
                             {
                               "String": {
-                                "str": "=",
+                                "sval": "=",
                               },
                             },
                           ],
                           "rexpr": {
                             "A_Const": {
-                              "location": 912,
-                              "val": {
-                                "Integer": {
-                                  "ival": 1,
-                                },
+                              "ival": {
+                                "ival": 1,
                               },
+                              "location": 912,
                             },
                           },
                         },
@@ -1702,7 +1658,7 @@ exports[`parens 1`] = `
                                   "fields": [
                                     {
                                       "String": {
-                                        "str": "field",
+                                        "sval": "field",
                                       },
                                     },
                                   ],
@@ -1713,18 +1669,16 @@ exports[`parens 1`] = `
                               "name": [
                                 {
                                   "String": {
-                                    "str": "=",
+                                    "sval": "=",
                                   },
                                 },
                               ],
                               "rexpr": {
                                 "A_Const": {
-                                  "location": 923,
-                                  "val": {
-                                    "Integer": {
-                                      "ival": 2,
-                                    },
+                                  "ival": {
+                                    "ival": 2,
                                   },
+                                  "location": 923,
                                 },
                               },
                             },

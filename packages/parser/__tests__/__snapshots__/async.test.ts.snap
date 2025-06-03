@@ -46,7 +46,7 @@ exports[`works 1`] = `
                         "fields": [
                           {
                             "String": {
-                              "str": "health_grade",
+                              "sval": "health_grade",
                             },
                           },
                         ],
@@ -57,17 +57,15 @@ exports[`works 1`] = `
                     "name": [
                       {
                         "String": {
-                          "str": "=",
+                          "sval": "=",
                         },
                       },
                     ],
                     "rexpr": {
                       "A_Const": {
                         "location": undefined,
-                        "val": {
-                          "String": {
-                            "str": "A",
-                          },
+                        "sval": {
+                          "sval": "A",
                         },
                       },
                     },
@@ -81,7 +79,7 @@ exports[`works 1`] = `
                         "fields": [
                           {
                             "String": {
-                              "str": "average_rating",
+                              "sval": "average_rating",
                             },
                           },
                         ],
@@ -92,18 +90,16 @@ exports[`works 1`] = `
                     "name": [
                       {
                         "String": {
-                          "str": ">=",
+                          "sval": ">=",
                         },
                       },
                     ],
                     "rexpr": {
                       "A_Const": {
-                        "location": undefined,
-                        "val": {
-                          "Float": {
-                            "str": "4.5",
-                          },
+                        "fval": {
+                          "fval": "4.5",
                         },
+                        "location": undefined,
                       },
                     },
                   },
