@@ -1,0 +1,248 @@
+{
+    "query": {
+      "version": 130002,
+      "stmts": [
+        {
+          "stmt": {
+            "CreateStmt": {
+              "relation": {
+                "RangeVar": { 
+                    "relname": "people",
+                    "inh": true,
+                    "relpersistence": "p",
+                    "location": 16
+                }
+              },
+              "tableElts": [
+                {
+                  "ColumnDef": {
+                    "colname": "color_id",
+                    "typeName": {
+                    "TypeName": {
+                      "names": [
+                        {
+                          "String": {
+                            "str": "pg_catalog"
+                          }
+                        },
+                        {
+                          "String": {
+                            "str": "int4"
+                          }
+                        }
+                      ],
+                      "typemod": -1,
+                      "location": 37
+                    }
+                    },
+                    "is_local": true,
+                    "constraints": [
+                      {
+                        "Constraint": {
+                          "contype": 3,
+                          "location": 41,
+                          "generated_when": "a",
+                          "options": [
+                            {
+                              "DefElem": {
+                                "defname": "start",
+                                "arg": {
+                                  "Integer": {
+                                    "ival": 17
+                                  }
+                                },
+                                "defaction": 0,
+                                "location": 71
+                              }
+                            },
+                            {
+                              "DefElem": {
+                                "defname": "increment",
+                                "arg": {
+                                  "Integer": {
+                                    "ival": 21
+                                  }
+                                },
+                                "defaction": 0,
+                                "location": 85
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    ],
+                    "location": 28
+                  }
+                },
+                {
+                  "ColumnDef": {
+                    "colname": "height_cm",
+                    "typeName": {
+                        "TypeName": {
+                      "names": [
+                        {
+                          "String": {
+                            "str": "pg_catalog"
+                          }
+                        },
+                        {
+                          "String": {
+                            "str": "numeric"
+                          }
+                        }
+                      ],
+                      "typemod": -1,
+                      "location": 117
+                    }
+                    },
+                    "is_local": true,
+                    "location": 107
+                  }
+                },
+                {
+                  "ColumnDef": {
+                    "colname": "height_in",
+                    "typeName": {
+                        "TypeName": {
+                      "names": [
+                        {
+                          "String": {
+                            "str": "pg_catalog"
+                          }
+                        },
+                        {
+                          "String": {
+                            "str": "numeric"
+                          }
+                        }
+                      ],
+                      "typemod": -1,
+                      "location": 140
+                    }
+                    },
+                    "is_local": true,
+                    "constraints": [
+                      {
+                        "Constraint": {
+                          "contype": 13,
+                          "location": 148,
+                          "raw_expr": {
+                            "A_Expr": {
+                              "kind": 0,
+                              "name": [
+                                {
+                                  "String": {
+                                    "str": "/"
+                                  }
+                                }
+                              ],
+                              "lexpr": {
+                                "ColumnRef": {
+                                  "fields": [
+                                    {
+                                      "String": {
+                                        "str": "height_cm"
+                                      }
+                                    }
+                                  ],
+                                  "location": 169
+                                }
+                              },
+                              "rexpr": {
+                                "A_Const": {
+                                  "val": {
+                                    "Float": {
+                                      "str": "2.54"
+                                    }
+                                  },
+                                  "location": 181
+                                }
+                              },
+                              "location": 179
+                            }
+                          },
+                          "generated_when": "a"
+                        }
+                      }
+                    ],
+                    "location": 130
+                  }
+                },
+                {
+                  "ColumnDef": {
+                    "colname": "gen_def_identity",
+                    "typeName": {
+                        "TypeName": {
+                      "names": [
+                        {
+                          "String": {
+                            "str": "pg_catalog"
+                          }
+                        },
+                        {
+                          "String": {
+                            "str": "numeric"
+                          }
+                        }
+                      ],
+                      "typemod": -1,
+                      "location": 216
+                    }
+                    },
+                    "is_local": true,
+                    "constraints": [
+                      {
+                        "Constraint": {
+                          "contype": 3,
+                          "location": 224,
+                          "generated_when": "d"
+                        }
+                      }
+                    ],
+                    "location": 199
+                  }
+                },
+                {
+                  "ColumnDef": {
+                    "colname": "gen_alw_identity",
+                    "typeName": {
+                    "TypeName": {
+                      "names": [
+                        {
+                          "String": {
+                            "str": "pg_catalog"
+                          }
+                        },
+                        {
+                          "String": {
+                            "str": "numeric"
+                          }
+                        }
+                      ],
+                      "typemod": -1,
+                      "location": 279
+                    }
+                    },
+                    "is_local": true,
+                    "constraints": [
+                      {
+                        "Constraint": {
+                          "contype": 3,
+                          "location": 287,
+                          "generated_when": "a"
+                        }
+                      }
+                    ],
+                    "location": 262
+                  }
+                }
+              ],
+              "oncommit": 0
+            }
+          },
+          "stmt_len": 317
+        }
+      ]
+    },
+    "stderr": ""
+  }
