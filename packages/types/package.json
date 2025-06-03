@@ -28,7 +28,7 @@
     "build:proto": "ts-node scripts/pg-proto-parser",
     "lint": "eslint . --fix",
     "test": "jest",
-    "test:watch": "jest --watch",
+    "test:watch": "jest --watch"
   },
   "devDependencies": {
     "pg-proto-parser": "^1.20.0"
