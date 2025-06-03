@@ -39,7 +39,7 @@ export default class Deparser {
     DefineStmt(node: DefineStmt, context?: {}): string;
     DefElem(node: DefElem, context?: {}): any;
     DoStmt(node: DoStmt): string;
-    Float(node: Float): string;
+    Float(node: Float): any;
     FuncCall(node: FuncCall, context?: {}): string;
     GroupingFunc(node: GroupingFunc, context?: {}): string;
     GroupingSet(node: GroupingSet, context?: {}): string;
@@ -104,7 +104,7 @@ export default class Deparser {
     TransactionStmt(node: TransactionStmt, context?: {}): string;
     SortBy(node: SortBy, context?: {}): string;
     ObjectWithArgs(node: ObjectWithArgs, context?: {}): string;
-    String(node: TString): string;
+    String(node: TString): any;
     SubLink(node: SubLink, context?: {}): string;
     TypeCast(node: TypeCast, context?: {}): string;
     TypeName(node: TypeName, context?: {}): string;
