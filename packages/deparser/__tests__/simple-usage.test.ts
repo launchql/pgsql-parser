@@ -5,7 +5,7 @@ import { sync as glob } from 'glob';
 
 const FIXTURE_DIR = `${__dirname}/../../../__fixtures__`;
 
-export const getSql = (file) => {
+export const getSql = (file: string) => {
   const testsql = glob(`${FIXTURE_DIR}/${file}`).map((f) =>
     readFileSync(f).toString()
   )[0];

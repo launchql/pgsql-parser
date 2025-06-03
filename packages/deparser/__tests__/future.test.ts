@@ -5,7 +5,7 @@ import { sync as glob } from 'glob';
 
 const FIXTURE_DIR = `${__dirname}/../../../__future__`;
 
-export const check = (file) => {
+export const check = (file: string) => {
   const testsql = glob(`${FIXTURE_DIR}/${file}.sql`).map((f) =>
     readFileSync(f, 'utf-8')
   )[0];
@@ -13,7 +13,7 @@ export const check = (file) => {
     JSON.parse(readFileSync(f, 'utf-8'))
   )[0];
 
-  const tree = testjson.query.stmts.map(({ stmt, stmt_len }) => ({
+  const tree = testjson.query.stmts.map(({ stmt, stmt_len }: { stmt: string; stmt_len: number }) => ({
     RawStmt: { stmt, stmt_len }
   }));
 

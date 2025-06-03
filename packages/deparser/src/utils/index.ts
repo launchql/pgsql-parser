@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 
-export const cleanLines = (sql) => {
+export const cleanLines = (sql: string) => {
   return sql
     .split('\n')
     .map((l) => l.trim())
@@ -8,8 +8,8 @@ export const cleanLines = (sql) => {
     .join('\n');
 };
 
-export const transform = (obj, props) => {
-  let copy = null;
+export const transform = (obj: any, props: any): any => {
+  let copy: any = null;
   // Handle the 3 simple types, and null or undefined
   if (obj == null || typeof obj !== 'object') {
     return obj;
@@ -57,14 +57,14 @@ export const transform = (obj, props) => {
   throw new Error("Unable to copy obj! Its type isn't supported.");
 };
 
-const noop = () => undefined;
+const noop = (): undefined => undefined;
 
-export const cleanTree = (tree) => {
+export const cleanTree = (tree: any) => {
   return transform(tree, {
     stmt_len: noop,
     stmt_location: noop,
     location: noop,
-    DefElem: (obj) => {
+    DefElem: (obj: any) => {
       if (obj.defname === 'as') {
         if (Array.isArray(obj.arg) && obj.arg.length) {
           // function
@@ -84,7 +84,7 @@ export const cleanTree = (tree) => {
   });
 };
 
-export const cleanTreeWithStmt = (tree) => {
+export const cleanTreeWithStmt = (tree: any) => {
   return transform(tree, {
     stmt_location: noop,
     location: noop

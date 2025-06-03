@@ -6,7 +6,7 @@ import { sync as glob } from 'glob';
 
 const FIXTURE_DIR = `${__dirname}/../../../__fixtures__`;
 
-function printErrorMessage(sql, position) {
+function printErrorMessage(sql: string, position: number) {
   const lineNumber = sql.slice(0, position).match(/\n/g)?.length || 0;
   const lines = sql.split('\n');
   let colNumber = position - 1;
@@ -29,10 +29,10 @@ function printErrorMessage(sql, position) {
   console.error(errMessage.join('\n'));
 }
 
-function tryParse(sql) {
+function tryParse(sql: string) {
   try {
     return parse(sql);
-  } catch (err) {
+  } catch (err: any) {
     // if there is position information, print a readable error message
     if (err.cursorPosition) {
       printErrorMessage(sql, err.cursorPosition);
@@ -41,7 +41,7 @@ function tryParse(sql) {
   }
 }
 
-export const check = (file) => {
+export const check = (file: string) => {
   const testsql = glob(`${FIXTURE_DIR}/${file}`).map((f) =>
     readFileSync(f).toString()
   )[0];
