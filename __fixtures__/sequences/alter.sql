@@ -1,5 +1,0 @@
-ALTER SEQUENCE public."User_id_seq" OWNED BY public."User".id;
-ALTER SEQUENCE serial RESTART WITH 105;
-ALTER SEQUENCE payments_id_seq RESTART WITH 22;
-ALTER SEQUENCE payments_id_seq START WITH 22;
-ALTER SEQUENCE payments_id_seq RESTART;

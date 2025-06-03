@@ -1,36 +1,45 @@
 {
   "name": "pgsql-parser",
   "version": "0.0.1",
-  "publishConfig": {
-    "access": "restricted"
-  },
+  "author": "Dan Lynch <pyramation@gmail.com>",
   "private": true,
-  "scripts": {
-    "build": "lerna run prepare --parallel",
-    "buidl": "lerna run buidl --parallel",
-    "buidl:clean": "lerna run buidl:clean",
-    "bootstrap": "yarn --use-workspaces",
-    "lint": "lerna run lint",
-    "format": "lerna run format",
-    "test": "lerna run test --stream"
-  },
-  "devDependencies": {
-    "eslint": "8.38.0",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "esprima": "4.0.1",
-    "jest": "29.7.0",
-    "lerna": "7.0.2",
-    "prettier": "2.8.7"
-  },
-  "workspaces": [
-    "packages/*"
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/launchql/pgsql-parser"
   },
-  "dependencies": {
-    "@jest/transform": "29.7.0"
+  "license": "SEE LICENSE IN LICENSE",
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "clean": "lerna run clean",
+    "build": "lerna run build --stream",
+    "build:dev": "lerna run build:dev --stream; yarn symlink",
+    "lint": "lerna run lint --parallel",
+    "symlink": "symlink-workspace --logLevel error",
+    "postinstall": "yarn symlink"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.11",
+    "@types/node": "^20.12.7",
+    "@typescript-eslint/eslint-plugin": "^7.10.0",
+    "@typescript-eslint/parser": "^7.10.0",
+    "copyfiles": "^2.4.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-simple-import-sort": "^12.1.0",
+    "eslint-plugin-unused-imports": "^4.0.0",
+    "eslint": "^8.56.0",
+    "jest": "^29.6.2",
+    "lerna": "^6",
+    "prettier": "^3.0.2",
+    "rimraf": "4.4.1",
+    "strip-ansi": "^6",
+    "symlink-workspace": "^1.9.0",
+    "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.1.6"
   }
 }

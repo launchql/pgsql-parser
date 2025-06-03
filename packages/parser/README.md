@@ -1,4 +1,4 @@
-# @pgsql/parser 
+# pgsql-parser 
 
 <p align="center" width="100%">
   <img height="120" src="https://github.com/launchql/pgsql-parser/assets/545047/6440fa7d-918b-4a3b-8d1b-755d85de8bea" />
@@ -14,14 +14,12 @@
    <a href="https://www.npmjs.com/package/pgsql-parser"><img height="20" src="https://img.shields.io/github/package-json/v/launchql/pgsql-parser?filename=packages%2Fparser%2Fpackage.json"/></a>
 </p>
 
-**NOTE:** This version of `@pgsql/parser` only contains the parsing functionality, optimized for users who do not require deparsing capabilities. This version is specifically tailored for PostgreSQL 16.
-
-The real PostgreSQL parser for Node.js, `@pgsql/parser` offers the ability to parse SQL statements into ASTs using the actual [PostgreSQL parser](https://github.com/pganalyze/libpg_query). It enables users to parse SQL queries into AST format for further manipulation and analysis. Deparsing functionality is (yet) not included in this package.
+The real PostgreSQL parser for Node.js, `pgsql-parser` provides symmetric parsing and deparsing of SQL statements using the actual [PostgreSQL parser](https://github.com/pganalyze/libpg_query). It allows you to parse SQL queries into AST and modify or reconstruct SQL queries from the AST.
 
 ## Installation
 
 ```sh
-npm install @pgsql/parser
+npm install pgsql-parser
 ```
 
 ## Key Features
@@ -35,15 +33,61 @@ npm install @pgsql/parser
 Rewrite part of a SQL query:
 
 ```js
-import { parse } from '@pgsql/parser';
+import { parse, deparse } from 'pgsql-parser';
 
 const stmts = parse('SELECT * FROM test_table');
+
+// Assuming the structure of stmts is known and matches the expected type
+stmts[0].RawStmt.stmt.SelectStmt.fromClause[0].RangeVar.relname = 'another_table';
+
+console.log(deparse(stmts));
+
+// SELECT * FROM "another_table"
+```
+
+## Deparser Example
+
+The `pgsql-deparser` module serializes ASTs to SQL in pure TypeScript, avoiding the full parser's native dependencies. It's useful when only SQL string conversion from ASTs is needed, and is written in pure TypeScript for easy cross-environment deployment.
+
+Here's how you can use the deparser in your TypeScript code, using [`@pgsql/utils`](https://github.com/launchql/pgsql-parser/tree/main/packages/utils) to create an AST for `deparse`:
+
+```ts
+import ast, { SelectStmt } from '@pgsql/utils';
+import { deparse } from 'pgsql-deparser';
+
+// This could have been obtained from any JSON or AST, not necessarily @pgsql/utils
+const stmt: SelectStmt = ast.selectStmt({
+  targetList: [
+    ast.resTarget({
+      val: ast.columnRef({
+        fields: [ast.aStar()]
+      })
+    })
+  ],
+  fromClause: [
+    ast.rangeVar({
+      relname: 'some_table',
+      inh: true,
+      relpersistence: 'p'
+    })
+  ],
+  limitOption: 'LIMIT_OPTION_DEFAULT',
+  op: 'SETOP_NONE'
+});
+
+// Modify the AST if needed
+stmt.SelectStmt.fromClause[0].RangeVar.relname = 'another_table';
+
+// Deparse the modified AST back to a SQL string
+console.log(deparse(stmts));
+
+// Output: SELECT * FROM another_table
 ```
 
 ## CLI
 
 ```
-npm install -g @pgsql/parser
+npm install -g pgsql-parser
 ```
 
 ### usage
@@ -96,10 +140,7 @@ Our latest is built with `13-latest` branch from libpg_query
 
 | PostgreSQL Major Version | libpg_query | Status              | npm 
 |--------------------------|-------------|---------------------|---------|
-| 16                       | 16-latest   | Active development  | `latest`
-| 15                       | (n/a)       | Not supported       | 
-| 14                       | (n/a)       | Not supported       | 
-| 13                       | 13-latest   | use `pgsql-parser`  | 
+| 13                       | 13-latest   | Active development  | `latest`
 | 12                       | (n/a)       | Not supported       |
 | 11                       | (n/a)       | Not supported       |
 | 10                       | 10-latest   | Not supported       | `@1.3.1` ([tree](https://github.com/launchql/pgsql-parser/tree/39b7b1adc8914253226e286a48105785219a81ca))      | 

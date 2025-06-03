@@ -1,28 +1,36 @@
 {
   "name": "@pgsql/parser",
-  "version": "16.1.0",
-  "description": "The real PostgreSQL query parser",
+  "version": "17.0.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
+  "description": "The real PostgreSQL query parser",
+  "main": "index.js",
+  "module": "esm/index.js",
+  "types": "index.d.ts",
   "homepage": "https://github.com/launchql/pgsql-parser",
   "license": "SEE LICENSE IN LICENSE",
-  "main": "main/index.js",
-  "module": "module/index.js",
-  "typings": "types/index.d.ts",
-  "directories": {
-    "lib": "src",
-    "test": "__tests__"
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
   },
-  "files": [
-    "types",
-    "module",
-    "src",
-    "main"
-  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/launchql/pgsql-parser"
+  },
+  "bugs": {
+    "url": "https://github.com/launchql/pgsql-parser/issues"
+  },
   "bin": {
     "pgsql-parser": "main/cli.js"
   },
-  "publishConfig": {
-    "access": "public"
+  "scripts": {
+    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
+    "clean": "rimraf dist/**",
+    "prepare": "npm run build",
+    "build": "npm run clean; tsc; tsc -p tsconfig.esm.json; npm run copy",
+    "build:dev": "npm run clean; tsc --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
+    "lint": "eslint . --fix",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "keywords": [
     "sql",
@@ -33,59 +41,9 @@
     "query",
     "database"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/launchql/pgsql-parser"
-  },
-  "scripts": {
-    "build:main": "yarn tsc -p tsconfig.json --outDir main --module commonjs",
-    "build:module": "yarn tsc -p tsconfig.json --outDir module --module es2022",
-    "build": "npm run build:module && npm run build:main",
-    "buidl": "npm run build",
-    "buidl:clean": "npm run clean && npm run buidl",
-    "clean": "rimraf ./types",
-    "prepare": "npm run build",
-    "lint": "eslint .",
-    "format": "eslint . --fix",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:debug": "node --inspect node_modules/.bin/jest --runInBand"
-  },
-  "bugs": {
-    "url": "https://github.com/launchql/pgsql-parser/issues"
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node",
-    "transform": {
-      "^.+\\.ts?$": "ts-jest"
-    },
-    "transformIgnorePatterns": [
-      "<rootDir>/node_modules/"
-    ],
-    "testPathIgnorePatterns": [
-      "main/",
-      "module/",
-      "types/"
-    ]
-  },
-  "devDependencies": {
-    "@types/jest": "^29.5.0",
-    "eslint": "8.38.0",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "esprima": "4.0.1",
-    "glob": "8.0.3",
-    "jest": "^29.5.0",
-    "prettier": "^2.8.7",
-    "rimraf": "5.0.5",
-    "ts-jest": "^29.1.0",
-    "ts-node": "10.9.2",
-    "typescript": "^5.0.4"
-  },
   "dependencies": {
-    "@pgsql/types": "^13.9.0",
-    "libpg-query": "16.2.0",
+    "@pgsql/types": "^17.0.0",
+    "libpg-query": "17.1.1",
     "minimist": "^1.2.6"
   }
 }

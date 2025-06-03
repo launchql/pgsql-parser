@@ -1,8 +1,8 @@
 {
-  "name": "@pgsql/utils",
-  "version": "17.0.0",
+  "name": "@launchql/types",
+  "version": "0.0.1",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "description": "PostgreSQL AST utils for pgsql-parser",
+  "description": "types",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
@@ -23,20 +23,11 @@
     "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
     "clean": "rimraf dist/**",
     "prepare": "npm run build",
-    "build": "npm run build:proto && npm run clean; tsc; tsc -p tsconfig.esm.json; npm run copy",
+    "build": "npm run clean; tsc; tsc -p tsconfig.esm.json; npm run copy",
     "build:dev": "npm run clean; tsc --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
-    "build:proto": "ts-node scripts/pg-proto-parser",
     "lint": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch"
-  },
-  "devDependencies": {
-    "pg-proto-parser": "^1.20.0",
-    "pgsql-deparser": "^17.0.0"
-  },
-  "dependencies": {
-    "@pgsql/types": "^17.0.0",
-    "nested-obj": "0.0.1"
   },
   "keywords": []
 }
