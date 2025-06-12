@@ -25,6 +25,7 @@
     "prepare": "npm run build",
     "build": "npm run clean; tsc; tsc -p tsconfig.esm.json; npm run copy",
     "build:dev": "npm run clean; tsc --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
+    "fixtures": "ts-node scripts/make-fixtures.ts",
     "lint": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch"
