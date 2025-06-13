@@ -24,9 +24,9 @@ export class Deparser {
   constructor(tree: Node | Node[], opts: DeparserOptions = {}) {
     this.formatter = new SqlFormatter(opts.newline, opts.tab);
     this.expressionVisitor = new ExpressionVisitor(this.formatter);
-    this.typeVisitor = new TypeVisitor(this.formatter, this.expressionVisitor);
+    this.typeVisitor = new TypeVisitor(this.formatter, this.expressionVisitor, this);
     this.statementVisitor = new StatementVisitor(this.formatter, this.expressionVisitor, this);
-    this.utilityVisitor = new UtilityVisitor(this.formatter, this.expressionVisitor, this.typeVisitor);
+    this.utilityVisitor = new UtilityVisitor(this.formatter, this.expressionVisitor, this.typeVisitor, this);
     this.valueVisitor = new ValueVisitor();
     
     this.tree = Array.isArray(tree) ? tree : [tree];
@@ -107,7 +107,8 @@ export class Deparser {
       'CreateStmt', 'DropStmt', 'AlterTableStmt', 'IndexStmt', 'ViewStmt',
       'CreateFunctionStmt', 'TruncateStmt', 'CommentStmt', 'DefineStmt',
       'CompositeTypeStmt', 'RenameStmt', 'AlterOwnerStmt', 'AlterObjectSchemaStmt',
-      'DoStmt', 'VariableSetStmt', 'VariableShowStmt', 'ExplainStmt', 'CreateTrigStmt'
+      'DoStmt', 'VariableSetStmt', 'VariableShowStmt', 'ExplainStmt', 'CreateTrigStmt',
+      'ColumnDef', 'Constraint'
     ]);
     return utilityTypes.has(nodeType);
   }

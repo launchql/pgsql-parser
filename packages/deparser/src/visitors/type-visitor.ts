@@ -7,11 +7,13 @@ import { SqlFormatter } from '../utils/sql-formatter';
 export class TypeVisitor extends BaseVisitor {
   private formatter: SqlFormatter;
   private expressionVisitor: any;
+  private deparser?: any;
 
-  constructor(formatter: SqlFormatter, expressionVisitor: any) {
+  constructor(formatter: SqlFormatter, expressionVisitor: any, deparser?: any) {
     super();
     this.formatter = formatter;
     this.expressionVisitor = expressionVisitor;
+    this.deparser = deparser;
   }
 
   visit(node: Node, context: DeparserContext = {}): string {
@@ -32,7 +34,12 @@ export class TypeVisitor extends BaseVisitor {
 
   private TypeName(node: TypeName, context: DeparserContext): string {
     const names = ListUtils.unwrapList(node.names);
-    const catalogAndType = names.map(name => this.visit(name, context));
+    const catalogAndType = names.map(name => {
+      if (this.deparser) {
+        return this.deparser.deparse(name, context);
+      }
+      return this.visit(name, context);
+    });
     const catalog = catalogAndType[0];
     const type = catalogAndType[1];
 
@@ -54,7 +61,10 @@ export class TypeVisitor extends BaseVisitor {
     }
 
     if (catalog !== 'pg_catalog') {
-      const quotedNames = names.map(name => QuoteUtils.quote(this.visit(name, context)));
+      const quotedNames = names.map(name => {
+        const nameStr = this.deparser ? this.deparser.deparse(name, context) : this.visit(name, context);
+        return QuoteUtils.quote(nameStr);
+      });
       return mods(quotedNames.join('.'), args);
     }
 
@@ -68,7 +78,10 @@ export class TypeVisitor extends BaseVisitor {
 
     if (node.colnames) {
       const colnames = ListUtils.unwrapList(node.colnames);
-      const quotedColnames = colnames.map(col => QuoteUtils.quote(this.visit(col, context)));
+      const quotedColnames = colnames.map(col => {
+        const colStr = this.deparser ? this.deparser.deparse(col, context) : this.visit(col, context);
+        return QuoteUtils.quote(colStr);
+      });
       output.push(QuoteUtils.quote(name) + this.formatter.parens(quotedColnames.join(', ')));
     } else {
       output.push(QuoteUtils.quote(name));
@@ -88,7 +101,8 @@ export class TypeVisitor extends BaseVisitor {
     output.push(QuoteUtils.quote(node.relname));
 
     if (node.alias) {
-      output.push(this.visit(node.alias, context));
+      const aliasStr = this.deparser ? this.deparser.deparse(node.alias, context) : this.visit(node.alias, context);
+      output.push(aliasStr);
     }
 
     return output.join(' ');
@@ -102,7 +116,9 @@ export class TypeVisitor extends BaseVisitor {
     }
 
     const mods = ListUtils.unwrapList(typmods);
-    return mods.map(mod => this.visit(mod, context)).join(', ');
+    return mods.map(mod => {
+      return this.deparser ? this.deparser.deparse(mod, context) : this.visit(mod, context);
+    }).join(', ');
   }
 
   private getPgCatalogTypeName(typeName: string, size: string | null): string {

@@ -42,9 +42,9 @@ export class StatementVisitor extends BaseVisitor {
 
   private RawStmt(node: RawStmt, context: DeparserContext): string {
     if (node.stmt_len) {
-      return this.visit(node.stmt, context) + ';';
+      return this.deparser ? this.deparser.deparse(node.stmt, context) + ';' : this.visit(node.stmt, context) + ';';
     }
-    return this.visit(node.stmt, context);
+    return this.deparser ? this.deparser.deparse(node.stmt, context) : this.visit(node.stmt, context);
   }
 
   private SelectStmt(node: SelectStmt, context: DeparserContext): string {

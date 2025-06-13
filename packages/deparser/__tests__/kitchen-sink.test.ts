@@ -5,8 +5,8 @@ import { readFileSync } from 'fs';
 import * as path from 'path';
 
 const GENERATED_JSON = path.join(__dirname, '../../../__fixtures__/generated/generated.json');
-// const SINGLE_TEST = process.env.SINGLE_TEST;
-const SINGLE_TEST = 'upstream/rowtypes-88.sql';
+const SINGLE_TEST = process.env.SINGLE_TEST;
+// const SINGLE_TEST = 'upstream/rowtypes-88.sql';
 
 function printErrorMessage(sql: string, position: number) {
   const lineNumber = sql.slice(0, position).match(/\n/g)?.length || 0;
@@ -30,7 +30,6 @@ function printErrorMessage(sql: string, position: number) {
   }
   console.error(errMessage.join('\n'));
 }
-
 function tryParse(sql: string) {
   try {
     return parse(sql);
@@ -51,12 +50,14 @@ describe('kitchen sink', () => {
   const entries = SINGLE_TEST
     ? Object.entries(fixtures).filter(([relPath]) => relPath === SINGLE_TEST)
     : Object.entries(fixtures);
+
   entries.forEach(([relativePath, sql]) => {
     it(relativePath, () => {
       const tree = tryParse(sql);
       tree.stmts.forEach((stmt) => {
         expect(stmt).toMatchSnapshot();
         const outSql = deparse(stmt);
+
         expect(cleanLines(outSql)).toMatchSnapshot();
         expect(cleanTree(parse(outSql))).toEqual(cleanTree([stmt]));
       });

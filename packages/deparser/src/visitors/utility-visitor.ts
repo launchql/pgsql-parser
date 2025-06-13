@@ -8,12 +8,14 @@ export class UtilityVisitor extends BaseVisitor {
   private formatter: SqlFormatter;
   private expressionVisitor: any;
   private typeVisitor: any;
+  private deparser?: any;
 
-  constructor(formatter: SqlFormatter, expressionVisitor: any, typeVisitor: any) {
+  constructor(formatter: SqlFormatter, expressionVisitor: any, typeVisitor: any, deparser?: any) {
     super();
     this.formatter = formatter;
     this.expressionVisitor = expressionVisitor;
     this.typeVisitor = typeVisitor;
+    this.deparser = deparser;
   }
 
   visit(node: Node, context: DeparserContext = {}): string {
@@ -57,6 +59,10 @@ export class UtilityVisitor extends BaseVisitor {
         return this.ExplainStmt(nodeData, context);
       case 'CreateTrigStmt':
         return this.CreateTrigStmt(nodeData, context);
+      case 'ColumnDef':
+        return this.ColumnDef(nodeData, context);
+      case 'Constraint':
+        return this.Constraint(nodeData, context);
       default:
         throw new Error(`Utility visitor does not handle node type: ${nodeType}`);
     }
@@ -75,7 +81,12 @@ export class UtilityVisitor extends BaseVisitor {
 
     if (node.tableElts) {
       const elements = ListUtils.unwrapList(node.tableElts);
-      const elementStrs = elements.map(el => this.expressionVisitor.visit(el, context));
+      const elementStrs = elements.map(el => {
+        if (this.deparser) {
+          return this.deparser.deparse(el, context);
+        }
+        return this.expressionVisitor.visit(el, context);
+      });
       output.push(this.formatter.parens(elementStrs.join(', ')));
     }
 
@@ -413,6 +424,98 @@ export class UtilityVisitor extends BaseVisitor {
       const funcname = ListUtils.unwrapList(node.funcname);
       const funcnameStr = funcname.map(name => QuoteUtils.quote(this.expressionVisitor.visit(name, context))).join('.');
       output.push(funcnameStr + '()');
+    }
+
+    return output.join(' ');
+  }
+
+  private ColumnDef(node: any, context: DeparserContext): string {
+    const output: string[] = [];
+
+    if (node.colname) {
+      output.push(QuoteUtils.quote(node.colname));
+    }
+
+    if (node.typeName) {
+      output.push(this.typeVisitor.visit(node.typeName, context));
+    }
+
+    if (node.constraints) {
+      const constraints = ListUtils.unwrapList(node.constraints);
+      const constraintStrs = constraints.map(constraint => {
+        if (this.deparser) {
+          return this.deparser.deparse(constraint, context);
+        }
+        return this.expressionVisitor.visit(constraint, context);
+      });
+      output.push(...constraintStrs);
+    }
+
+    if (node.raw_default) {
+      output.push('DEFAULT');
+      output.push(this.expressionVisitor.visit(node.raw_default, context));
+    }
+
+    if (node.is_not_null) {
+      output.push('NOT NULL');
+    }
+
+    return output.join(' ');
+  }
+
+  private Constraint(node: any, context: DeparserContext): string {
+    const output: string[] = [];
+
+    switch (node.contype) {
+      case 'CONSTR_PRIMARY':
+        output.push('PRIMARY KEY');
+        break;
+      case 'CONSTR_UNIQUE':
+        output.push('UNIQUE');
+        break;
+      case 'CONSTR_CHECK':
+        output.push('CHECK');
+        if (node.raw_expr) {
+          output.push('(');
+          output.push(this.expressionVisitor.visit(node.raw_expr, context));
+          output.push(')');
+        }
+        break;
+      case 'CONSTR_NOT_NULL':
+        output.push('NOT NULL');
+        break;
+      case 'CONSTR_NULL':
+        output.push('NULL');
+        break;
+      case 'CONSTR_DEFAULT':
+        output.push('DEFAULT');
+        if (node.raw_expr) {
+          output.push(this.expressionVisitor.visit(node.raw_expr, context));
+        }
+        break;
+      case 'CONSTR_FOREIGN':
+        output.push('FOREIGN KEY');
+        if (node.fk_attrs) {
+          const attrs = ListUtils.unwrapList(node.fk_attrs);
+          const attrStrs = attrs.map(attr => QuoteUtils.quote(this.expressionVisitor.visit(attr, context)));
+          output.push('(' + attrStrs.join(', ') + ')');
+        }
+        if (node.pktable) {
+          output.push('REFERENCES');
+          output.push(this.expressionVisitor.visit(node.pktable, context));
+          if (node.pk_attrs) {
+            const pkAttrs = ListUtils.unwrapList(node.pk_attrs);
+            const pkAttrStrs = pkAttrs.map(attr => QuoteUtils.quote(this.expressionVisitor.visit(attr, context)));
+            output.push('(' + pkAttrStrs.join(', ') + ')');
+          }
+        }
+        break;
+      default:
+        throw new Error(`Unknown constraint type: ${node.contype}`);
+    }
+
+    if (node.conname) {
+      return `CONSTRAINT ${QuoteUtils.quote(node.conname)} ${output.join(' ')}`;
     }
 
     return output.join(' ');
