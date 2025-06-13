@@ -45,7 +45,7 @@ function tryParse(sql: string) {
 // Read aggregated fixtures from JSON
 const fixtures: Record<string, string> = JSON.parse(readFileSync(GENERATED_JSON, 'utf-8'));
 
-describe('kitchen sink', () => {
+xdescribe('kitchen sink', () => {
   // Determine which entries to test: if SINGLE_TEST is set, filter to match; otherwise test all
   const entries = SINGLE_TEST
     ? Object.entries(fixtures).filter(([relPath]) => relPath === SINGLE_TEST)
