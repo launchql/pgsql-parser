@@ -3,7 +3,8 @@ import { SqlFormatter } from './utils/sql-formatter';
 import { DeparserContext, DeparserVisitor } from './visitors/base';
 import { QuoteUtils } from './utils/quote-utils';
 import { ListUtils } from './utils/list-utils';
-
+import typeNameProperties from './type-name-properties.json';
+import * as t from '@pgsql/utils/wrapped';
 export interface DeparserOptions {
   newline?: string;
   tab?: string;
@@ -49,6 +50,20 @@ export class Deparser implements DeparserVisitor {
     const nodeType = this.getNodeType(node);
     const nodeData = this.getNodeData(node);
 
+    // Check if this node has TypeName properties that should be unwrapped
+    const typeNameProps = (typeNameProperties as any)[nodeType];
+    if (typeNameProps) {
+      for (const propName of typeNameProps) {
+        if (nodeData[propName]) {
+          const typeName = nodeData[propName];
+          if (typeName.TypeName) {
+            // If it's wrapped in a TypeName object, unwrap it
+            nodeData[propName] = typeName.TypeName;
+          }
+        }
+      }
+    }
+
     const methodName = nodeType as keyof this;
     if (typeof this[methodName] === 'function') {
       return (this[methodName] as any)(nodeData, context);
@@ -57,37 +72,37 @@ export class Deparser implements DeparserVisitor {
     throw new Error(`Deparser does not handle node type: ${nodeType}`);
   }
 
-  private getNodeType(node: Node): string {
+  getNodeType(node: Node): string {
     return Object.keys(node)[0];
   }
 
-  private getNodeData(node: Node): any {
+  getNodeData(node: Node): any {
     const type = this.getNodeType(node);
     return (node as any)[type];
   }
 
-  private RawStmt(node: any, context: DeparserContext): string {
+  RawStmt(node: t.RawStmt['RawStmt'], context: DeparserContext): string {
     if (node.stmt_len) {
       return this.deparse(node.stmt, context) + ';';
     }
     return this.deparse(node.stmt, context);
   }
 
-  private SelectStmt(node: any, context: DeparserContext): string {
+  SelectStmt(node: t.SelectStmt['SelectStmt'], context: DeparserContext): string {
     const output: string[] = [];
 
     if (node && node.withClause) {
       output.push(this.visit(node.withClause, context));
     }
 
-    if (node && (!node.op || (node.op as string) === 'SETOP_NONE')) {
+    if (node && (!node.op || node.op === 'SETOP_NONE')) {
       if (node.valuesLists == null) {
         output.push('SELECT');
       }
     } else if (node && node.op) {
-      output.push(this.formatter.parens(this.SelectStmt(node.larg as any, context)));
+      output.push(this.formatter.parens(this.SelectStmt(node.larg as t.SelectStmt['SelectStmt'], context)));
 
-      switch (node.op as string) {
+      switch (node.op) {
         case 'SETOP_NONE':
           output.push('NONE');
           break;
@@ -109,7 +124,7 @@ export class Deparser implements DeparserVisitor {
       }
 
       if (node) {
-        output.push(this.formatter.parens(this.SelectStmt(node.rarg as any, context)));
+        output.push(this.formatter.parens(this.SelectStmt(node.rarg as t.SelectStmt['SelectStmt'], context)));
       }
     }
 
@@ -198,7 +213,7 @@ export class Deparser implements DeparserVisitor {
     return output.join(' ');
   }
 
-  private A_Expr(node: any, context: DeparserContext): string {
+  A_Expr(node: t.A_Expr['A_Expr'], context: DeparserContext): string {
     const kind = node.kind as string;
     const name = ListUtils.unwrapList(node.name);
     const lexpr = node.lexpr;
@@ -306,12 +321,12 @@ export class Deparser implements DeparserVisitor {
     throw new Error(`Unhandled A_Expr kind: ${kind}`);
   }
 
-  private deparseOperatorName(name: any[]): string {
+  deparseOperatorName(name: t.Node[]): string {
     if (!name || name.length === 0) {
       return '';
     }
     
-    return name.map(n => {
+    return name.map((n: any) => {
       if (n.String) {
         return n.String.sval || n.String.str;
       }
@@ -319,7 +334,7 @@ export class Deparser implements DeparserVisitor {
     }).join('.');
   }
 
-  private InsertStmt(node: any, context: DeparserContext): string {
+  InsertStmt(node: t.InsertStmt['InsertStmt'], context: DeparserContext): string {
     const output: string[] = [];
 
     if (node && node.withClause) {
@@ -346,7 +361,7 @@ export class Deparser implements DeparserVisitor {
     }
 
     if (node.onConflictClause) {
-      const clause = node.onConflictClause;
+      const clause = node.onConflictClause as any;
       output.push('ON CONFLICT');
 
       if (clause.infer?.indexElems) {
@@ -364,7 +379,7 @@ export class Deparser implements DeparserVisitor {
           break;
         case 'ONCONFLICT_UPDATE':
           output.push('DO');
-          output.push(this.UpdateStmt(clause as any, context));
+          output.push(this.UpdateStmt(clause as unknown as t.UpdateStmt['UpdateStmt'], context));
           break;
         default:
           throw new Error('Unhandled CONFLICT CLAUSE');
@@ -379,7 +394,7 @@ export class Deparser implements DeparserVisitor {
     return output.join(' ');
   }
 
-  private UpdateStmt(node: any, context: DeparserContext): string {
+  UpdateStmt(node: t.UpdateStmt['UpdateStmt'], context: DeparserContext): string {
     const output: string[] = [];
 
     if (node.withClause) {
@@ -394,12 +409,12 @@ export class Deparser implements DeparserVisitor {
 
     const targetList = ListUtils.unwrapList(node.targetList);
     if (targetList && targetList.length) {
-      const firstTarget = targetList[0] as any;
-      if (firstTarget.ResTarget?.val?.MultiAssignRef) {
-        const names = targetList.map((target: any) => target.ResTarget.name);
+      const firstTarget = targetList[0];
+      if (firstTarget.val?.MultiAssignRef) {
+        const names = targetList.map(target => target.name);
         output.push(this.formatter.parens(names.join(',')));
         output.push('=');
-        output.push(this.visit(firstTarget.ResTarget.val, context));
+        output.push(this.visit(firstTarget.val, context));
       } else {
         const assignments = targetList.map(target => 
           this.visit(target, { ...context, update: true })
@@ -428,7 +443,7 @@ export class Deparser implements DeparserVisitor {
     return output.join(' ');
   }
 
-  private DeleteStmt(node: any, context: DeparserContext): string {
+  DeleteStmt(node: t.DeleteStmt['DeleteStmt'], context: DeparserContext): string {
     const output: string[] = [];
 
     if (node.withClause) {
@@ -459,7 +474,7 @@ export class Deparser implements DeparserVisitor {
     return output.join(' ');
   }
 
-  private WithClause(node: any, context: DeparserContext): string {
+  WithClause(node: t.WithClause['WithClause'], context: DeparserContext): string {
     const output: string[] = ['WITH'];
     
     if (node.recursive) {
@@ -473,7 +488,7 @@ export class Deparser implements DeparserVisitor {
     return output.join(' ');
   }
 
-  private ResTarget(node: any, context: DeparserContext): string {
+  ResTarget(node: t.ResTarget['ResTarget'], context: DeparserContext): string {
     const output: string[] = [];
     
     if (context.update && node.name) {
@@ -496,18 +511,17 @@ export class Deparser implements DeparserVisitor {
     return output.join(' ');
   }
 
-  private deparseReturningList(list: Node[], context: DeparserContext): string {
+  deparseReturningList(list: t.Node[], context: DeparserContext): string {
     return ListUtils.unwrapList(list)
       .map(returning => {
-        const resTarget = (returning as any).ResTarget;
-        const val = this.visit(resTarget.val, context);
-        const alias = resTarget.name ? ` AS ${QuoteUtils.quote(resTarget.name)}` : '';
+        const val = this.visit(returning.val, context);
+        const alias = returning.name ? ` AS ${QuoteUtils.quote(returning.name)}` : '';
         return val + alias;
       })
       .join(',');
   }
 
-  private BoolExpr(node: any, context: DeparserContext): string {
+  BoolExpr(node: t.BoolExpr['BoolExpr'], context: DeparserContext): string {
     const boolop = node.boolop as string;
     const args = ListUtils.unwrapList(node.args);
     
@@ -532,7 +546,7 @@ export class Deparser implements DeparserVisitor {
     }
   }
 
-  private FuncCall(node: any, context: DeparserContext): string {
+  FuncCall(node: t.FuncCall['FuncCall'], context: DeparserContext): string {
     const funcname = ListUtils.unwrapList(node.funcname);
     const args = ListUtils.unwrapList(node.args);
     const name = funcname.map(n => this.visit(n, context)).join('.');
@@ -562,24 +576,28 @@ export class Deparser implements DeparserVisitor {
     return result;
   }
 
-  private A_Const(node: any, context: DeparserContext): string {
-    if (node.ival) {
+  A_Const(node: t.A_Const['A_Const'], context: DeparserContext): string {
+    if (node.ival?.Integer?.ival !== undefined) {
+      return node.ival.Integer.ival.toString();
+    } else if (typeof node.ival === 'object' && 'ival' in node.ival) {
       return node.ival.ival.toString();
-    } else if (node.fval) {
-      return node.fval.fval;
-    } else if (node.sval) {
-      return QuoteUtils.escape(node.sval.sval);
-    } else if (node.boolval !== undefined) {
-      return node.boolval.boolval ? 'true' : 'false';
-    } else if (node.bsval) {
-      return node.bsval.bsval;
+    } else if (node.fval?.Float?.fval !== undefined) {
+      return node.fval.Float.fval;
+    } else if (node.sval?.String?.sval !== undefined) {
+      return QuoteUtils.escape(node.sval.String.sval);
+    } else if (typeof node.sval === 'object' && 'sval' in node.sval) {
+      return QuoteUtils.escape(node.sval.sval as string);
+    } else if (node.boolval?.Boolean?.boolval !== undefined) {
+      return node.boolval.Boolean.boolval ? 'true' : 'false';
+    } else if (node.bsval?.BitString?.bsval !== undefined) {
+      return node.bsval.BitString.bsval;
     } else if (node.isnull) {
       return 'NULL';
     }
     return 'NULL';
   }
 
-  private ColumnRef(node: any, context: DeparserContext): string {
+  ColumnRef(node: t.ColumnRef['ColumnRef'], context: DeparserContext): string {
     const fields = ListUtils.unwrapList(node.fields);
     return fields.map(field => {
       if (field.String) {
@@ -591,13 +609,20 @@ export class Deparser implements DeparserVisitor {
     }).join('.');
   }
 
-  private TypeName(node: any, context: DeparserContext): string {
-    const names = ListUtils.unwrapList(node.names);
-    const catalogAndType = names.map(name => {
-      return this.deparse(name, context);
-    });
-    const catalog = catalogAndType[0];
-    const type = catalogAndType[1];
+  TypeName(node: t.TypeName['TypeName'], context: DeparserContext): string {
+    if (!node.names) {
+      return '';
+    }
+
+    const names = node.names.map((name: any) => {
+      if (name.String) {
+        return name.String.sval || name.String.str;
+      }
+      return '';
+    }).filter(Boolean);
+
+    const catalog = names[0];
+    const type = names[1];
 
     const args = node.typmods ? this.formatTypeMods(node.typmods, context) : null;
 
@@ -617,10 +642,7 @@ export class Deparser implements DeparserVisitor {
     }
 
     if (catalog !== 'pg_catalog') {
-      const quotedNames = names.map(name => {
-        const nameStr = this.deparse(name, context);
-        return QuoteUtils.quote(nameStr);
-      });
+      const quotedNames = names.map((name: string) => QuoteUtils.quote(name));
       return mods(quotedNames.join('.'), args);
     }
 
@@ -628,7 +650,7 @@ export class Deparser implements DeparserVisitor {
     return mods(pgTypeName, args);
   }
 
-  private Alias(node: any, context: DeparserContext): string {
+  Alias(node: t.Alias['Alias'], context: DeparserContext): string {
     const name = node.aliasname;
     const output: string[] = ['AS'];
 
@@ -646,7 +668,7 @@ export class Deparser implements DeparserVisitor {
     return output.join(' ');
   }
 
-  private RangeVar(node: any, context: DeparserContext): string {
+  RangeVar(node: t.RangeVar['RangeVar'], context: DeparserContext): string {
     const output: string[] = [];
 
     if (node.schemaname) {
@@ -664,7 +686,7 @@ export class Deparser implements DeparserVisitor {
     return output.join(' ');
   }
 
-  private formatTypeMods(typmods: Node[], context: DeparserContext): string | null {
+  formatTypeMods(typmods: t.Node[], context: DeparserContext): string | null {
     if (!typmods || typmods.length === 0) {
       return null;
     }
@@ -675,7 +697,7 @@ export class Deparser implements DeparserVisitor {
     }).join(', ');
   }
 
-  private getPgCatalogTypeName(typeName: string, size: string | null): string {
+  getPgCatalogTypeName(typeName: string, size: string | null): string {
     switch (typeName) {
       case 'bpchar':
         if (size != null) {
@@ -709,20 +731,20 @@ export class Deparser implements DeparserVisitor {
     }
   }
 
-  private A_ArrayExpr(node: any, context: DeparserContext): string {
+  A_ArrayExpr(node: t.A_ArrayExpr['A_ArrayExpr'], context: DeparserContext): string {
     const elements = ListUtils.unwrapList(node.elements);
     const elementStrs = elements.map(el => this.visit(el, context));
     return `ARRAY[${elementStrs.join(', ')}]`;
   }
 
-  private A_Indices(node: any, context: DeparserContext): string {
+  A_Indices(node: t.A_Indices['A_Indices'], context: DeparserContext): string {
     if (node.lidx) {
       return `[${this.visit(node.lidx, context)}:${this.visit(node.uidx, context)}]`;
     }
     return `[${this.visit(node.uidx, context)}]`;
   }
 
-  private A_Indirection(node: any, context: DeparserContext): string {
+  A_Indirection(node: t.A_Indirection['A_Indirection'], context: DeparserContext): string {
     const output = [this.visit(node.arg, context)];
     const indirection = ListUtils.unwrapList(node.indirection);
     
@@ -738,11 +760,11 @@ export class Deparser implements DeparserVisitor {
     return output.join('');
   }
 
-  private A_Star(node: any, context: DeparserContext): string { 
+  A_Star(node: t.A_Star['A_Star'], context: DeparserContext): string { 
     return '*'; 
   }
 
-  private CaseExpr(node: any, context: DeparserContext): string {
+  CaseExpr(node: t.CaseExpr['CaseExpr'], context: DeparserContext): string {
     const output: string[] = ['CASE'];
 
     if (node.arg) {
@@ -763,13 +785,13 @@ export class Deparser implements DeparserVisitor {
     return output.join(' ');
   }
 
-  private CoalesceExpr(node: any, context: DeparserContext): string {
+  CoalesceExpr(node: t.CoalesceExpr['CoalesceExpr'], context: DeparserContext): string {
     const args = ListUtils.unwrapList(node.args);
     const argStrs = args.map(arg => this.visit(arg, context));
     return `COALESCE(${argStrs.join(', ')})`;
   }
 
-  private TypeCast(node: any, context: DeparserContext): string {
+  TypeCast(node: t.TypeCast['TypeCast'], context: DeparserContext): string {
     return this.formatter.format([
       this.visit(node.arg, context),
       '::',
@@ -777,7 +799,7 @@ export class Deparser implements DeparserVisitor {
     ]);
   }
 
-  private CollateClause(node: any, context: DeparserContext): string {
+  CollateClause(node: t.CollateClause['CollateClause'], context: DeparserContext): string {
     const output: string[] = [];
     
     if (node.arg) {
@@ -794,7 +816,7 @@ export class Deparser implements DeparserVisitor {
     return output.join(' ');
   }
 
-  private BooleanTest(node: any, context: DeparserContext): string {
+  BooleanTest(node: t.BooleanTest['BooleanTest'], context: DeparserContext): string {
     const output: string[] = [];
     const boolContext = { ...context, bool: true };
     
@@ -824,7 +846,7 @@ export class Deparser implements DeparserVisitor {
     return output.join(' ');
   }
 
-  private NullTest(node: any, context: DeparserContext): string {
+  NullTest(node: t.NullTest['NullTest'], context: DeparserContext): string {
     const output: string[] = [];
     
     output.push(this.visit(node.arg, context));
@@ -841,31 +863,31 @@ export class Deparser implements DeparserVisitor {
     return output.join(' ');
   }
 
-  private String(node: any, context: DeparserContext): string { 
-    return node.str || node.sval || ''; 
+  String(node: t.String['String'], context: DeparserContext): string { 
+    return node.sval || ''; 
   }
   
-  private Integer(node: any, context: DeparserContext): string { 
+  Integer(node: t.Integer['Integer'], context: DeparserContext): string { 
     return node.ival?.toString() || '0'; 
   }
   
-  private Float(node: any, context: DeparserContext): string { 
-    return node.str || '0.0'; 
+  Float(node: t.Float['Float'], context: DeparserContext): string { 
+    return node.fval || '0.0'; 
   }
   
-  private Boolean(node: any, context: DeparserContext): string { 
+  Boolean(node: t.Boolean['Boolean'], context: DeparserContext): string { 
     return node.boolval ? 'true' : 'false'; 
   }
   
-  private BitString(node: any, context: DeparserContext): string { 
-    return `B'${node.str}'`; 
+  BitString(node: t.BitString['BitString'], context: DeparserContext): string { 
+    return `B'${node.bsval}'`; 
   }
   
-  private Null(node: any, context: DeparserContext): string { 
+  Null(node: t.Node, context: DeparserContext): string { 
     return 'NULL'; 
   }
 
-  private CreateStmt(node: any, context: DeparserContext): string {
+  CreateStmt(node: t.CreateStmt['CreateStmt'], context: DeparserContext): string {
     const output: string[] = ['CREATE'];
 
     if (node.if_not_exists) {
@@ -894,7 +916,7 @@ export class Deparser implements DeparserVisitor {
     return output.join(' ');
   }
 
-  private ColumnDef(node: any, context: DeparserContext): string {
+  ColumnDef(node: t.ColumnDef['ColumnDef'], context: DeparserContext): string {
     const output: string[] = [];
 
     if (node.colname) {
@@ -925,7 +947,7 @@ export class Deparser implements DeparserVisitor {
     return output.join(' ');
   }
 
-  private Constraint(node: any, context: DeparserContext): string {
+  Constraint(node: t.Constraint['Constraint'], context: DeparserContext): string {
     const output: string[] = [];
 
     switch (node.contype) {
@@ -969,11 +991,11 @@ export class Deparser implements DeparserVisitor {
     return output.join(' ');
   }
 
-  private SubLink(node: any, context: DeparserContext): string {
+  SubLink(node: t.SubLink['SubLink'], context: DeparserContext): string {
     return this.formatter.parens(this.visit(node.subselect, context));
   }
 
-  private CaseWhen(node: any, context: DeparserContext): string {
+  CaseWhen(node: t.CaseWhen['CaseWhen'], context: DeparserContext): string {
     const output: string[] = ['WHEN'];
     
     if (node.expr) {
@@ -989,7 +1011,7 @@ export class Deparser implements DeparserVisitor {
     return output.join(' ');
   }
 
-  private WindowDef(node: any, context: DeparserContext): string {
+  WindowDef(node: t.WindowDef['WindowDef'], context: DeparserContext): string {
     const output: string[] = [];
     
     if (node.name) {
@@ -1017,7 +1039,7 @@ export class Deparser implements DeparserVisitor {
     return output.join(' ');
   }
 
-  private SortBy(node: any, context: DeparserContext): string {
+  SortBy(node: t.SortBy['SortBy'], context: DeparserContext): string {
     const output: string[] = [];
     
     if (node.node) {
@@ -1028,37 +1050,46 @@ export class Deparser implements DeparserVisitor {
       output.push('USING');
       const useOp = ListUtils.unwrapList(node.useOp);
       output.push(useOp.map(op => this.visit(op, context)).join('.'));
-    } else if (node.sortby_dir === 1 || node.sortby_dir === 'SORTBY_ASC') {
+    } else if (node.sortby_dir === 'SORTBY_ASC') {
       output.push('ASC');
-    } else if (node.sortby_dir === 2 || node.sortby_dir === 'SORTBY_DESC') {
+    } else if (node.sortby_dir === 'SORTBY_DESC') {
       output.push('DESC');
     }
     
-    if (node.sortby_nulls === 1 || node.sortby_nulls === 'SORTBY_NULLS_FIRST') {
+    if (node.sortby_nulls === 'SORTBY_NULLS_FIRST') {
       output.push('NULLS FIRST');
-    } else if (node.sortby_nulls === 2 || node.sortby_nulls === 'SORTBY_NULLS_LAST') {
+    } else if (node.sortby_nulls === 'SORTBY_NULLS_LAST') {
       output.push('NULLS LAST');
     }
     
     return output.join(' ');
   }
 
-  private GroupingSet(node: any, context: DeparserContext): string {
-    if (node.kind === 0) {
-      const content = ListUtils.unwrapList(node.content);
-      const contentStrs = content.map(c => this.visit(c, context));
-      return this.formatter.parens(contentStrs.join(', '));
-    } else if (node.kind === 1) {
-      return 'ROLLUP';
-    } else if (node.kind === 2) {
-      return 'CUBE';
-    } else if (node.kind === 3) {
-      return 'GROUPING SETS';
+  GroupingSet(node: t.GroupingSet['GroupingSet'], context: DeparserContext): string {
+    switch (node.kind) {
+      case 'GROUPING_SET_EMPTY':
+        return '()';
+      case 'GROUPING_SET_SIMPLE':
+        // Not present in raw parse trees
+        return '';
+      case 'GROUPING_SET_ROLLUP':
+        const rollupContent = ListUtils.unwrapList(node.content);
+        const rollupStrs = rollupContent.map(c => this.visit(c, context));
+        return `ROLLUP (${rollupStrs.join(', ')})`;
+      case 'GROUPING_SET_CUBE':
+        const cubeContent = ListUtils.unwrapList(node.content);
+        const cubeStrs = cubeContent.map(c => this.visit(c, context));
+        return `CUBE (${cubeStrs.join(', ')})`;
+      case 'GROUPING_SET_SETS':
+        const setsContent = ListUtils.unwrapList(node.content);
+        const setsStrs = setsContent.map(c => this.visit(c, context));
+        return `GROUPING SETS (${setsStrs.join(', ')})`;
+      default:
+        return '';
     }
-    return '';
   }
 
-  private CommonTableExpr(node: any, context: DeparserContext): string {
+  CommonTableExpr(node: t.CommonTableExpr['CommonTableExpr'], context: DeparserContext): string {
     const output: string[] = [];
     
     if (node.ctename) {
@@ -1080,28 +1111,28 @@ export class Deparser implements DeparserVisitor {
     return output.join(' ');
   }
 
-  private ParamRef(node: any, context: DeparserContext): string {
+  ParamRef(node: t.ParamRef['ParamRef'], context: DeparserContext): string {
     return `$${node.number}`;
   }
 
-  private MinMaxExpr(node: any, context: DeparserContext): string {
+  MinMaxExpr(node: t.MinMaxExpr['MinMaxExpr'], context: DeparserContext): string {
     const args = ListUtils.unwrapList(node.args);
     const argStrs = args.map(arg => this.visit(arg, context));
     
-    if (node.op === 0) {
+    if (node.op === 'IS_GREATEST') {
       return `GREATEST(${argStrs.join(', ')})`;
     } else {
       return `LEAST(${argStrs.join(', ')})`;
     }
   }
 
-  private RowExpr(node: any, context: DeparserContext): string {
+  RowExpr(node: t.RowExpr['RowExpr'], context: DeparserContext): string {
     const args = ListUtils.unwrapList(node.args);
     const argStrs = args.map(arg => this.visit(arg, context));
     return `ROW(${argStrs.join(', ')})`;
   }
 
-  private JoinExpr(node: any, context: DeparserContext): string {
+  JoinExpr(node: t.JoinExpr['JoinExpr'], context: DeparserContext): string {
     const output: string[] = [];
     
     if (node.larg) {
@@ -1109,16 +1140,16 @@ export class Deparser implements DeparserVisitor {
     }
     
     switch (node.jointype) {
-      case 0:
+      case 'JOIN_INNER':
         output.push('INNER JOIN');
         break;
-      case 1:
+      case 'JOIN_LEFT':
         output.push('LEFT JOIN');
         break;
-      case 2:
+      case 'JOIN_FULL':
         output.push('FULL JOIN');
         break;
-      case 3:
+      case 'JOIN_RIGHT':
         output.push('RIGHT JOIN');
         break;
       default:
@@ -1137,7 +1168,7 @@ export class Deparser implements DeparserVisitor {
     return output.join(' ');
   }
 
-  private FromExpr(node: any, context: DeparserContext): string {
+  FromExpr(node: t.FromExpr['FromExpr'], context: DeparserContext): string {
     const fromlist = ListUtils.unwrapList(node.fromlist);
     const fromStrs = fromlist.map(item => this.visit(item, context));
     
@@ -1149,5 +1180,4 @@ export class Deparser implements DeparserVisitor {
     
     return result;
   }
-
 }

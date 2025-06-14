@@ -21,38 +21,18 @@ describe('CREATE TABLE statements', () => {
                   ColumnDef: {
                     colname: 'id',
                     typeName: {
-                      TypeName: {
-                        names: [
-                          {
-                            String: {
-                              sval: 'int4'
-                            }
-                          }
-                        ],
-                        typemod: -1
-                      }
-                    },
-                    is_local: true,
-                    is_not_null: false
+                      names: [{ String: { sval: 'int4' } }],
+                      typemod: -1
+                    }
                   }
                 },
                 {
                   ColumnDef: {
                     colname: 'name',
                     typeName: {
-                      TypeName: {
-                        names: [
-                          {
-                            String: {
-                              sval: 'text'
-                            }
-                          }
-                        ],
-                        typemod: -1
-                      }
-                    },
-                    is_local: true,
-                    is_not_null: false
+                      names: [{ String: { sval: 'text' } }],
+                      typemod: -1
+                    }
                   }
                 }
               ],
@@ -87,19 +67,9 @@ describe('CREATE TABLE statements', () => {
                   ColumnDef: {
                     colname: 'product_id',
                     typeName: {
-                      TypeName: {
-                        names: [
-                          {
-                            String: {
-                              sval: 'int4'
-                            }
-                          }
-                        ],
-                        typemod: -1
-                      }
-                    },
-                    is_local: true,
-                    is_not_null: false
+                      names: [{ String: { sval: 'int4' } }],
+                      typemod: -1
+                    }
                   }
                 }
               ],
@@ -133,19 +103,9 @@ describe('CREATE TABLE statements', () => {
                   ColumnDef: {
                     colname: 'session_id',
                     typeName: {
-                      TypeName: {
-                        names: [
-                          {
-                            String: {
-                              sval: 'text'
-                            }
-                          }
-                        ],
-                        typemod: -1
-                      }
-                    },
-                    is_local: true,
-                    is_not_null: false
+                      names: [{ String: { sval: 'text' } }],
+                      typemod: -1
+                    }
                   }
                 }
               ],
@@ -181,16 +141,8 @@ describe('CREATE TABLE statements', () => {
                   ColumnDef: {
                     colname: 'order_id',
                     typeName: {
-                      TypeName: {
-                        names: [
-                          {
-                            String: {
-                              sval: 'int4'
-                            }
-                          }
-                        ],
-                        typemod: -1
-                      }
+                      names: [{ String: { sval: 'int4' } }],
+                      typemod: -1
                     },
                     constraints: [
                       {
@@ -235,16 +187,8 @@ describe('CREATE TABLE statements', () => {
                   ColumnDef: {
                     colname: 'email',
                     typeName: {
-                      TypeName: {
-                        names: [
-                          {
-                            String: {
-                              sval: 'text'
-                            }
-                          }
-                        ],
-                        typemod: -1
-                      }
+                      names: [{ String: { sval: 'text' } }],
+                      typemod: -1
                     },
                     is_local: true,
                     is_not_null: true
@@ -281,16 +225,8 @@ describe('CREATE TABLE statements', () => {
                   ColumnDef: {
                     colname: 'price',
                     typeName: {
-                      TypeName: {
-                        names: [
-                          {
-                            String: {
-                              sval: 'numeric'
-                            }
-                          }
-                        ],
-                        typemod: -1
-                      }
+                      names: [{ String: { sval: 'numeric' } }],
+                      typemod: -1
                     },
                     constraints: [
                       {
@@ -299,22 +235,10 @@ describe('CREATE TABLE statements', () => {
                           raw_expr: {
                             A_Expr: {
                               kind: 'AEXPR_OP',
-                              name: [
-                                {
-                                  String: {
-                                    sval: '>'
-                                  }
-                                }
-                              ],
+                              name: [{ String: { sval: '>' } }],
                               lexpr: {
                                 ColumnRef: {
-                                  fields: [
-                                    {
-                                      String: {
-                                        sval: 'price'
-                                      }
-                                    }
-                                  ]
+                                  fields: [{ String: { sval: 'price' } }],
                                 }
                               },
                               rexpr: {
@@ -366,16 +290,8 @@ describe('CREATE TABLE statements', () => {
                   ColumnDef: {
                     colname: 'username',
                     typeName: {
-                      TypeName: {
-                        names: [
-                          {
-                            String: {
-                              sval: 'text'
-                            }
-                          }
-                        ],
-                        typemod: -1
-                      }
+                      names: [{ String: { sval: 'text' } }],
+                      typemod: -1
                     },
                     constraints: [
                       {
@@ -422,16 +338,8 @@ describe('CREATE TABLE statements', () => {
                   ColumnDef: {
                     colname: 'timeout',
                     typeName: {
-                      TypeName: {
-                        names: [
-                          {
-                            String: {
-                              sval: 'int4'
-                            }
-                          }
-                        ],
-                        typemod: -1
-                      }
+                      names: [{ String: { sval: 'int4' } }],
+                      typemod: -1
                     },
                     raw_default: {
                       A_Const: {
@@ -475,16 +383,8 @@ describe('CREATE TABLE statements', () => {
                   ColumnDef: {
                     colname: 'status',
                     typeName: {
-                      TypeName: {
-                        names: [
-                          {
-                            String: {
-                              sval: 'text'
-                            }
-                          }
-                        ],
-                        typemod: -1
-                      }
+                      names: [{ String: { sval: 'text' } }],
+                      typemod: -1
                     },
                     raw_default: {
                       A_Const: {
@@ -528,16 +428,8 @@ describe('CREATE TABLE statements', () => {
                   ColumnDef: {
                     colname: 'enabled',
                     typeName: {
-                      TypeName: {
-                        names: [
-                          {
-                            String: {
-                              sval: 'bool'
-                            }
-                          }
-                        ],
-                        typemod: -1
-                      }
+                      names: [{ String: { sval: 'bool' } }],
+                      typemod: -1
                     },
                     raw_default: {
                       A_Const: {
@@ -583,16 +475,8 @@ describe('CREATE TABLE statements', () => {
                   ColumnDef: {
                     colname: 'id',
                     typeName: {
-                      TypeName: {
-                        names: [
-                          {
-                            String: {
-                              sval: 'int4'
-                            }
-                          }
-                        ],
-                        typemod: -1
-                      }
+                      names: [{ String: { sval: 'int4' } }],
+                      typemod: -1
                     },
                     is_local: true,
                     is_not_null: false
@@ -602,16 +486,8 @@ describe('CREATE TABLE statements', () => {
                   ColumnDef: {
                     colname: 'name',
                     typeName: {
-                      TypeName: {
-                        names: [
-                          {
-                            String: {
-                              sval: 'varchar'
-                            }
-                          }
-                        ],
-                        typemod: 104
-                      }
+                      names: [{ String: { sval: 'varchar' } }],
+                      typemod: 104
                     },
                     is_local: true,
                     is_not_null: false
@@ -621,16 +497,8 @@ describe('CREATE TABLE statements', () => {
                   ColumnDef: {
                     colname: 'price',
                     typeName: {
-                      TypeName: {
-                        names: [
-                          {
-                            String: {
-                              sval: 'numeric'
-                            }
-                          }
-                        ],
-                        typemod: 655366
-                      }
+                      names: [{ String: { sval: 'numeric' } }],
+                      typemod: 655366
                     },
                     is_local: true,
                     is_not_null: false
@@ -640,16 +508,8 @@ describe('CREATE TABLE statements', () => {
                   ColumnDef: {
                     colname: 'created_at',
                     typeName: {
-                      TypeName: {
-                        names: [
-                          {
-                            String: {
-                              sval: 'timestamp'
-                            }
-                          }
-                        ],
-                        typemod: -1
-                      }
+                      names: [{ String: { sval: 'timestamp' } }],
+                      typemod: -1
                     },
                     is_local: true,
                     is_not_null: false
@@ -659,16 +519,8 @@ describe('CREATE TABLE statements', () => {
                   ColumnDef: {
                     colname: 'is_active',
                     typeName: {
-                      TypeName: {
-                        names: [
-                          {
-                            String: {
-                              sval: 'bool'
-                            }
-                          }
-                        ],
-                        typemod: -1
-                      }
+                      names: [{ String: { sval: 'bool' } }],
+                      typemod: -1
                     },
                     is_local: true,
                     is_not_null: false
@@ -710,16 +562,8 @@ describe('CREATE TABLE statements', () => {
                   ColumnDef: {
                     colname: 'user_id',
                     typeName: {
-                      TypeName: {
-                        names: [
-                          {
-                            String: {
-                              sval: 'int4'
-                            }
-                          }
-                        ],
-                        typemod: -1
-                      }
+                      names: [{ String: { sval: 'int4' } }],
+                      typemod: -1
                     },
                     is_local: true,
                     is_not_null: false
@@ -729,16 +573,8 @@ describe('CREATE TABLE statements', () => {
                   ColumnDef: {
                     colname: 'role_id',
                     typeName: {
-                      TypeName: {
-                        names: [
-                          {
-                            String: {
-                              sval: 'int4'
-                            }
-                          }
-                        ],
-                        typemod: -1
-                      }
+                      names: [{ String: { sval: 'int4' } }],
+                      typemod: -1
                     },
                     is_local: true,
                     is_not_null: false
@@ -747,18 +583,7 @@ describe('CREATE TABLE statements', () => {
                 {
                   Constraint: {
                     contype: 'CONSTR_PRIMARY',
-                    keys: [
-                      {
-                        String: {
-                          sval: 'user_id'
-                        }
-                      },
-                      {
-                        String: {
-                          sval: 'role_id'
-                        }
-                      }
-                    ],
+                    keys: [{ String: { sval: 'user_id' } }, { String: { sval: 'role_id' } }],
                     location: 50
                   }
                 }
@@ -794,16 +619,8 @@ describe('CREATE TABLE statements', () => {
                   ColumnDef: {
                     colname: 'price',
                     typeName: {
-                      TypeName: {
-                        names: [
-                          {
-                            String: {
-                              sval: 'numeric'
-                            }
-                          }
-                        ],
-                        typemod: -1
-                      }
+                      names: [{ String: { sval: 'numeric' } }],
+                      typemod: -1
                     },
                     is_local: true,
                     is_not_null: false
@@ -813,16 +630,8 @@ describe('CREATE TABLE statements', () => {
                   ColumnDef: {
                     colname: 'discounted_price',
                     typeName: {
-                      TypeName: {
-                        names: [
-                          {
-                            String: {
-                              sval: 'numeric'
-                            }
-                          }
-                        ],
-                        typemod: -1
-                      }
+                      names: [{ String: { sval: 'numeric' } }],
+                      typemod: -1
                     },
                     is_local: true,
                     is_not_null: false
@@ -834,33 +643,15 @@ describe('CREATE TABLE statements', () => {
                     raw_expr: {
                       A_Expr: {
                         kind: 'AEXPR_OP',
-                        name: [
-                          {
-                            String: {
-                              sval: '>'
-                            }
-                          }
-                        ],
+                        name: [{ String: { sval: '>' } }],
                         lexpr: {
                           ColumnRef: {
-                            fields: [
-                              {
-                                String: {
-                                  sval: 'price'
-                                }
-                              }
-                            ]
+                            fields: [{ String: { sval: 'price' } }],
                           }
                         },
                         rexpr: {
                           ColumnRef: {
-                            fields: [
-                              {
-                                String: {
-                                  sval: 'discounted_price'
-                                }
-                              }
-                            ]
+                            fields: [{ String: { sval: 'discounted_price' } }],
                           }
                         }
                       }
