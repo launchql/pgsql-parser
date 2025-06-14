@@ -1,10 +1,10 @@
 import { Deparser } from '../src/deparser';
-// import { parse } from '@pgsql/parser';  
+import { parse } from '@pgsql/parser';
+import { cleanTree } from '../src/utils';  
 
 describe('CREATE TABLE statements', () => {
   describe('basic CREATE TABLE', () => {
     it('should deparse simple CREATE TABLE', () => {
-      // const correctAst = parse(`CREATE TABLE users (id int4, name text)`);
       const ast = {
         RawStmt: {
           stmt: {
@@ -44,7 +44,6 @@ describe('CREATE TABLE statements', () => {
       };
 
       const result = Deparser.deparse(ast);
-      // expect(ast).toEqual(correctAst);
       expect(result).toBe('CREATE TABLE users (id int4, name text)');
     });
 

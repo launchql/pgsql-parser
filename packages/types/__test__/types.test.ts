@@ -44,13 +44,14 @@ it('types', () => {
             location: 87,
             names: [
               {
+                
                 String: {
-                  str: 'pg_catalog',
+                  sval: 'pg_catalog',
                 },
               },
               {
                 String: {
-                  str: 'varchar',
+                  sval: 'varchar',
                 },
               },
             ],
@@ -69,10 +70,8 @@ it('types', () => {
                 raw_expr: {
                   A_Const: {
                     location: 141,
-                    val: {
-                      Integer: {
-                        ival: 0,
-                      },
+                    ival: {
+                      ival: 0
                     },
                   },
                 },
@@ -92,12 +91,12 @@ it('types', () => {
             names: [
               {
                 String: {
-                  str: 'pg_catalog',
+                  sval: 'pg_catalog',
                 },
               },
               {
                 String: {
-                  str: 'int4',
+                  sval: 'int4',
                 },
               },
             ],
@@ -115,12 +114,12 @@ it('types', () => {
             names: [
               {
                 String: {
-                  str: 'pg_catalog',
+                  sval: 'pg_catalog',
                 },
               },
               {
                 String: {
-                  str: 'timestamptz',
+                  sval: 'timestamptz',
                 },
               },
             ],
@@ -138,12 +137,12 @@ it('types', () => {
             names: [
               {
                 String: {
-                  str: 'pg_catalog',
+                  sval: 'pg_catalog',
                 },
               },
               {
                 String: {
-                  str: 'varchar',
+                  sval: 'varchar',
                 },
               },
             ],

@@ -299,11 +299,11 @@ describe('Deparser', () => {
                   ResTarget: {
                     val: {
                       FuncCall: {
-                        funcname: [{ String: { str: 'jsonb_path_query' } }],
+                        funcname: [{ String: { sval: 'jsonb_path_query' } }],
                         args: [
                           {
                             ColumnRef: {
-                              fields: [{ String: { str: 'doc' } }]
+                              fields: [{ String: { sval: 'doc' } }]
                             }
                           },
                           {

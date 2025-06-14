@@ -8,6 +8,7 @@ const options: PgProtoParserOptions = {
   outDir,
   types: {
     enabled: true,
+    wrappedNodeTypeExport: true
   },
   enums: {
     enabled: true,
