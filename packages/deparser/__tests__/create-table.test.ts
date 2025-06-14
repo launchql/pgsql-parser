@@ -45,9 +45,7 @@ describe('CREATE TABLE statements', () => {
 
       const result = Deparser.deparse(ast);
       // expect(ast).toEqual(correctAst);
-      expect(result).toContain('CREATE TABLE users');
-      expect(result).toContain('id int4');
-      expect(result).toContain('name text');
+      expect(result).toBe('CREATE TABLE users (id int4, name text)');
     });
 
     it('should deparse CREATE TABLE IF NOT EXISTS', () => {
@@ -82,8 +80,7 @@ describe('CREATE TABLE statements', () => {
       };
 
       const result = Deparser.deparse(ast);
-      expect(result).toContain('CREATE TABLE IF NOT EXISTS products');
-      expect(result).toContain('product_id int4');
+      expect(result).toBe('CREATE TABLE IF NOT EXISTS products (product_id int4)');
     });
 
     it('should deparse CREATE TEMPORARY TABLE', () => {
@@ -117,9 +114,42 @@ describe('CREATE TABLE statements', () => {
       };
 
       const result = Deparser.deparse(ast);
-      expect(result).toContain('CREATE');
-      expect(result).toContain('TABLE temp_data');
-      expect(result).toContain('session_id text');
+      expect(result).toBe('CREATE TEMPORARY TABLE temp_data (session_id text)');
+    });
+
+    it('should deparse CREATE TABLE with schema', () => {
+      const ast = {
+        RawStmt: {
+          stmt: {
+            CreateStmt: {
+              relation: {
+                RangeVar: {
+                  relname: 'users',
+                  schemaname: 'public',
+                  inh: true,
+                  relpersistence: 'p'
+                }
+              },
+              tableElts: [
+                {
+                  ColumnDef: {
+                    colname: 'id',
+                    typeName: {
+                      names: [{ String: { sval: 'int4' } }],
+                      typemod: -1
+                    }
+                  }
+                }
+              ],
+              oncommit: 'ONCOMMIT_NOOP'
+            }
+          },
+          stmt_location: 0
+        }
+      };
+
+      const result = Deparser.deparse(ast);
+      expect(result).toBe('CREATE TABLE public.users (id int4)');
     });
   });
 
@@ -151,9 +181,7 @@ describe('CREATE TABLE statements', () => {
                           location: 25
                         }
                       }
-                    ],
-                    is_local: true,
-                    is_not_null: false
+                    ]
                   }
                 }
               ],
@@ -165,9 +193,7 @@ describe('CREATE TABLE statements', () => {
       };
 
       const result = Deparser.deparse(ast);
-      expect(result).toContain('CREATE TABLE orders');
-      expect(result).toContain('order_id int4');
-      expect(result).toContain('PRIMARY KEY');
+      expect(result).toBe('CREATE TABLE orders (order_id int4 PRIMARY KEY)');
     });
 
     it('should deparse CREATE TABLE with NOT NULL constraint', () => {
@@ -190,7 +216,6 @@ describe('CREATE TABLE statements', () => {
                       names: [{ String: { sval: 'text' } }],
                       typemod: -1
                     },
-                    is_local: true,
                     is_not_null: true
                   }
                 }
@@ -203,9 +228,7 @@ describe('CREATE TABLE statements', () => {
       };
 
       const result = Deparser.deparse(ast);
-      expect(result).toContain('CREATE TABLE customers');
-      expect(result).toContain('email text');
-      expect(result).toContain('NOT NULL');
+      expect(result).toBe('CREATE TABLE customers (email text NOT NULL)');
     });
 
     it('should deparse CREATE TABLE with CHECK constraint', () => {
@@ -238,7 +261,7 @@ describe('CREATE TABLE statements', () => {
                               name: [{ String: { sval: '>' } }],
                               lexpr: {
                                 ColumnRef: {
-                                  fields: [{ String: { sval: 'price' } }],
+                                  fields: [{ String: { sval: 'price' } }]
                                 }
                               },
                               rexpr: {
@@ -249,13 +272,10 @@ describe('CREATE TABLE statements', () => {
                                 }
                               }
                             }
-                          },
-                          location: 30
+                          }
                         }
                       }
-                    ],
-                    is_local: true,
-                    is_not_null: false
+                    ]
                   }
                 }
               ],
@@ -267,10 +287,7 @@ describe('CREATE TABLE statements', () => {
       };
 
       const result = Deparser.deparse(ast);
-      expect(result).toContain('CREATE TABLE products');
-      expect(result).toContain('price numeric');
-      expect(result).toContain('CHECK');
-      expect(result).toContain('price > 0');
+      expect(result).toBe('CREATE TABLE products (price numeric CHECK (price > 0))');
     });
 
     it('should deparse CREATE TABLE with UNIQUE constraint', () => {
@@ -296,13 +313,10 @@ describe('CREATE TABLE statements', () => {
                     constraints: [
                       {
                         Constraint: {
-                          contype: 'CONSTR_UNIQUE',
-                          location: 25
+                          contype: 'CONSTR_UNIQUE'
                         }
                       }
-                    ],
-                    is_local: true,
-                    is_not_null: false
+                    ]
                   }
                 }
               ],
@@ -314,9 +328,7 @@ describe('CREATE TABLE statements', () => {
       };
 
       const result = Deparser.deparse(ast);
-      expect(result).toContain('CREATE TABLE users');
-      expect(result).toContain('username text');
-      expect(result).toContain('UNIQUE');
+      expect(result).toBe('CREATE TABLE users (username text UNIQUE)');
     });
   });
 
@@ -347,9 +359,7 @@ describe('CREATE TABLE statements', () => {
                           ival: 30
                         }
                       }
-                    },
-                    is_local: true,
-                    is_not_null: false
+                    }
                   }
                 }
               ],
@@ -361,9 +371,7 @@ describe('CREATE TABLE statements', () => {
       };
 
       const result = Deparser.deparse(ast);
-      expect(result).toContain('CREATE TABLE settings');
-      expect(result).toContain('timeout int4');
-      expect(result).toContain('DEFAULT 30');
+      expect(result).toBe('CREATE TABLE settings (timeout int4 DEFAULT 30)');
     });
 
     it('should deparse CREATE TABLE with DEFAULT string', () => {
@@ -392,9 +400,7 @@ describe('CREATE TABLE statements', () => {
                           sval: 'active'
                         }
                       }
-                    },
-                    is_local: true,
-                    is_not_null: false
+                    }
                   }
                 }
               ],
@@ -406,9 +412,7 @@ describe('CREATE TABLE statements', () => {
       };
 
       const result = Deparser.deparse(ast);
-      expect(result).toContain('CREATE TABLE users');
-      expect(result).toContain('status text');
-      expect(result).toContain('DEFAULT \'active\'');
+      expect(result).toBe('CREATE TABLE users (status text DEFAULT \'active\')');
     });
 
     it('should deparse CREATE TABLE with DEFAULT boolean', () => {
@@ -437,9 +441,7 @@ describe('CREATE TABLE statements', () => {
                           boolval: true
                         }
                       }
-                    },
-                    is_local: true,
-                    is_not_null: false
+                    }
                   }
                 }
               ],
@@ -451,9 +453,7 @@ describe('CREATE TABLE statements', () => {
       };
 
       const result = Deparser.deparse(ast);
-      expect(result).toContain('CREATE TABLE features');
-      expect(result).toContain('enabled bool');
-      expect(result).toContain('DEFAULT true');
+      expect(result).toBe('CREATE TABLE features (enabled bool DEFAULT true)');
     });
   });
 
@@ -477,9 +477,7 @@ describe('CREATE TABLE statements', () => {
                     typeName: {
                       names: [{ String: { sval: 'int4' } }],
                       typemod: -1
-                    },
-                    is_local: true,
-                    is_not_null: false
+                    }
                   }
                 },
                 {
@@ -488,9 +486,7 @@ describe('CREATE TABLE statements', () => {
                     typeName: {
                       names: [{ String: { sval: 'varchar' } }],
                       typemod: 104
-                    },
-                    is_local: true,
-                    is_not_null: false
+                    }
                   }
                 },
                 {
@@ -499,9 +495,7 @@ describe('CREATE TABLE statements', () => {
                     typeName: {
                       names: [{ String: { sval: 'numeric' } }],
                       typemod: 655366
-                    },
-                    is_local: true,
-                    is_not_null: false
+                    }
                   }
                 },
                 {
@@ -510,9 +504,7 @@ describe('CREATE TABLE statements', () => {
                     typeName: {
                       names: [{ String: { sval: 'timestamp' } }],
                       typemod: -1
-                    },
-                    is_local: true,
-                    is_not_null: false
+                    }
                   }
                 },
                 {
@@ -521,9 +513,7 @@ describe('CREATE TABLE statements', () => {
                     typeName: {
                       names: [{ String: { sval: 'bool' } }],
                       typemod: -1
-                    },
-                    is_local: true,
-                    is_not_null: false
+                    }
                   }
                 }
               ],
@@ -535,12 +525,7 @@ describe('CREATE TABLE statements', () => {
       };
 
       const result = Deparser.deparse(ast);
-      expect(result).toContain('CREATE TABLE mixed_types');
-      expect(result).toContain('id int4');
-      expect(result).toContain('name varchar');
-      expect(result).toContain('price numeric');
-      expect(result).toContain('created_at timestamp');
-      expect(result).toContain('is_active bool');
+      expect(result).toBe('CREATE TABLE mixed_types (id int4, name varchar(40), price numeric(10,2), created_at timestamp, is_active bool)');
     });
   });
 
@@ -564,9 +549,7 @@ describe('CREATE TABLE statements', () => {
                     typeName: {
                       names: [{ String: { sval: 'int4' } }],
                       typemod: -1
-                    },
-                    is_local: true,
-                    is_not_null: false
+                    }
                   }
                 },
                 {
@@ -575,16 +558,13 @@ describe('CREATE TABLE statements', () => {
                     typeName: {
                       names: [{ String: { sval: 'int4' } }],
                       typemod: -1
-                    },
-                    is_local: true,
-                    is_not_null: false
+                    }
                   }
                 },
                 {
                   Constraint: {
                     contype: 'CONSTR_PRIMARY',
-                    keys: [{ String: { sval: 'user_id' } }, { String: { sval: 'role_id' } }],
-                    location: 50
+                    keys: [{ String: { sval: 'user_id' } }, { String: { sval: 'role_id' } }]
                   }
                 }
               ],
@@ -596,10 +576,7 @@ describe('CREATE TABLE statements', () => {
       };
 
       const result = Deparser.deparse(ast);
-      expect(result).toContain('CREATE TABLE composite_key');
-      expect(result).toContain('user_id int4');
-      expect(result).toContain('role_id int4');
-      expect(result).toContain('PRIMARY KEY');
+      expect(result).toBe('CREATE TABLE composite_key (user_id int4, role_id int4, PRIMARY KEY (user_id, role_id))');
     });
 
     it('should deparse CREATE TABLE with table-level CHECK constraint', () => {
@@ -621,9 +598,7 @@ describe('CREATE TABLE statements', () => {
                     typeName: {
                       names: [{ String: { sval: 'numeric' } }],
                       typemod: -1
-                    },
-                    is_local: true,
-                    is_not_null: false
+                    }
                   }
                 },
                 {
@@ -632,9 +607,7 @@ describe('CREATE TABLE statements', () => {
                     typeName: {
                       names: [{ String: { sval: 'numeric' } }],
                       typemod: -1
-                    },
-                    is_local: true,
-                    is_not_null: false
+                    }
                   }
                 },
                 {
@@ -646,17 +619,16 @@ describe('CREATE TABLE statements', () => {
                         name: [{ String: { sval: '>' } }],
                         lexpr: {
                           ColumnRef: {
-                            fields: [{ String: { sval: 'price' } }],
+                            fields: [{ String: { sval: 'price' } }]
                           }
                         },
                         rexpr: {
                           ColumnRef: {
-                            fields: [{ String: { sval: 'discounted_price' } }],
+                            fields: [{ String: { sval: 'discounted_price' } }]
                           }
                         }
                       }
-                    },
-                    location: 80
+                    }
                   }
                 }
               ],
@@ -668,11 +640,7 @@ describe('CREATE TABLE statements', () => {
       };
 
       const result = Deparser.deparse(ast);
-      expect(result).toContain('CREATE TABLE products');
-      expect(result).toContain('price numeric');
-      expect(result).toContain('discounted_price numeric');
-      expect(result).toContain('CHECK');
-      expect(result).toContain('price > discounted_price');
+      expect(result).toBe('CREATE TABLE products (price numeric, discounted_price numeric, CHECK (price > discounted_price))');
     });
   });
 });
