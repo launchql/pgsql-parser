@@ -1,2 +1,2 @@
 export { RuntimeSchemaGenerator } from './generator';
-export { NodeSpec, FieldSpec, RuntimeSchemaOptions } from './types';
+export type { NodeSpec, FieldSpec, RuntimeSchemaOptions } from './types';
