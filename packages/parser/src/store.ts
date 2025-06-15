@@ -236,16 +236,28 @@ export class ProtoStore implements IProtoStore {
   }
 
   generateRuntimeSchemaTypeScript(nodeSpecs: any[]): string {
-    const imports = [
-      "import { NodeSpec, FieldSpec } from './runtime-schema/types';"
+    const interfaceDefinitions = [
+      'export interface FieldSpec {',
+      '  name: string;',
+      '  type: string;',
+      '  isNode: boolean;',
+      '  isArray: boolean;',
+      '  optional: boolean;',
+      '}',
+      '',
+      'export interface NodeSpec {',
+      '  name: string;',
+      '  wrapped: boolean;',
+      '  fields: FieldSpec[];',
+      '}',
+      ''
     ];
 
     const exportStatement = `export const runtimeSchema: NodeSpec[] = ${JSON.stringify(nodeSpecs, null, 2)};`;
 
     return [
       this.options.includeHeader ? this.getHeader() : '',
-      ...imports,
-      '',
+      ...interfaceDefinitions,
       exportStatement
     ].filter(Boolean).join('\n');
   }

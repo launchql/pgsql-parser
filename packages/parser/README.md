@@ -82,6 +82,9 @@ This table describes the options available for `PgProtoParserOptions`, their fun
 | `enums.json.toIntOutFile`                | Output file name for the JSON mapping of enum names to integer values.                                                          | `'enums2int.json'`       |
 | `enums.json.toStrOutFile`                | Output file name for the JSON mapping of integer values to enum names.                                                          | `'enums2str.json'`       |
 | `enums.removeUndefinedAt0`               | Removes the initial `UNDEFINED` enum entry and adjusts the subsequent values by decrementing them.                             | `true`                   |
+| `runtimeSchema.enabled`                  | Whether to generate runtime schema for AST nodes with metadata about node types and field specifications.                      | `false`                  |
+| `runtimeSchema.filename`                 | Filename for the generated runtime schema file.                                                                                | `'runtime-schema'`       |
+| `runtimeSchema.format`                   | Output format for runtime schema generation ('json' or 'typescript').                                                         | `'json'`                 |
 | `includeHeader`                          | Includes a header at the top of generated TypeScript files to avoid manual manipulation which could cause issues in CI/CD pipelines. | `true`                |
 
 
