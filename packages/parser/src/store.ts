@@ -29,6 +29,7 @@ export class ProtoStore implements IProtoStore {
   fields: Field[];
   enums: Enum[];
   namespaces: Namespace[];
+  private _runtimeSchema?: any[];
 
   constructor(
     root: ReflectionObject,
@@ -150,7 +151,7 @@ export class ProtoStore implements IProtoStore {
       );
       const node = generateNodeUnionType(this.options, typesToProcess);
       const types = typesToProcess.reduce((m, type) => {
-        return [...m, convertTypeToWrappedTsInterface(type, this.options)]
+        return [...m, convertTypeToWrappedTsInterface(type, this.options, (typeName: string) => this.isWrappedType(typeName))]
       }, []);
       this.writeCodeToFile(this.options.types.wrapped.filename, [
         enumImports,
@@ -188,7 +189,7 @@ export class ProtoStore implements IProtoStore {
       const code = convertAstToCode([
         imports,
         generateTypeImportSpecifiers(typesToProcess, this.options),
-        generateAstHelperMethods(typesToProcess)
+        generateAstHelperMethods(typesToProcess, (typeName: string) => this.isWrappedType(typeName))
       ]);
 
       this.writeFile(this.options.utils.astHelpers.filename, code);
@@ -218,6 +219,20 @@ export class ProtoStore implements IProtoStore {
       const outFile = join(this.options.outDir, `${filename}.ts`);
       writeFileToDisk(outFile, tsContent, this.options);
     }
+  }
+
+  getRuntimeSchema() {
+    if (!this._runtimeSchema) {
+      const generator = new RuntimeSchemaGenerator(this.root);
+      this._runtimeSchema = generator.generateNodeSpecs();
+    }
+    return this._runtimeSchema;
+  }
+
+  isWrappedType(typeName: string): boolean {
+    const schema = this.getRuntimeSchema();
+    const nodeSpec = schema.find(spec => spec.name === typeName);
+    return nodeSpec ? nodeSpec.wrapped : false;
   }
 
   generateRuntimeSchemaTypeScript(nodeSpecs: any[]): string {
