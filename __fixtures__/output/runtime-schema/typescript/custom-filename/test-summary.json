@@ -1,9 +1,0 @@
-{
-  "testName": "runtime-schema/typescript/custom-filename",
-  "description": "Runtime schema TypeScript with custom filename",
-  "filesGenerated": [
-    "custom-node-specs.ts"
-  ],
-  "timestamp": "2025-06-15T07:17:52.970Z",
-  "success": true
-}

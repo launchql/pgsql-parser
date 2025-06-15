@@ -1,9 +1,0 @@
-{
-  "testName": "runtime-schema/json/custom-filename",
-  "description": "Runtime schema with custom filename",
-  "filesGenerated": [
-    "custom-node-specs.json"
-  ],
-  "timestamp": "2025-06-15T07:17:52.969Z",
-  "success": true
-}

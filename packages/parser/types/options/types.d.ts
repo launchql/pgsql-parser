@@ -32,6 +32,11 @@ export interface PgProtoStoreOptions {
             filename?: string;
         };
     };
+    runtimeSchema?: {
+        enabled?: boolean;
+        filename?: string;
+        format?: 'json' | 'typescript';
+    };
     enums?: {
         enabled?: boolean;
         filename?: string;

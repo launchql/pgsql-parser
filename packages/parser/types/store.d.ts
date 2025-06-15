@@ -19,6 +19,7 @@ export declare class ProtoStore implements IProtoStore {
     fields: Field[];
     enums: Enum[];
     namespaces: Namespace[];
+    private _runtimeSchema?;
     constructor(root: ReflectionObject, options?: PgProtoStoreOptions);
     _parse(node: ReflectionObject, name?: string): void;
     _processEnum(enumNode: Enum): Enum;
@@ -32,6 +33,11 @@ export declare class ProtoStore implements IProtoStore {
     writeEnums(): void;
     writeUtilsEnums(): void;
     writeAstHelpers(): void;
+    writeRuntimeSchema(): void;
+    getRuntimeSchema(): any[];
+    isWrappedType(typeName: string): boolean;
+    generateRuntimeSchemaTypeScript(nodeSpecs: any[]): string;
+    getHeader(): string;
     writeFile(filename: string, content: string): void;
     writeCodeToFile(filename: string, nodes: t.Node[]): void;
 }

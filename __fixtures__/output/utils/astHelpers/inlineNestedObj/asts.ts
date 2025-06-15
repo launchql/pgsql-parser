@@ -22,808 +22,678 @@ export default {
     _o.set(_j, "ScanResult.tokens", _p?.tokens);
     return _j;
   },
-  integer(_p?: Integer["Integer"]): Integer {
-    const _j = ({
-      Integer: {}
-    } as Integer);
-    _o.set(_j, "Integer.ival", _p?.ival);
-    return _j;
-  },
-  float(_p?: Float["Float"]): Float {
-    const _j = ({
-      Float: {}
-    } as Float);
-    _o.set(_j, "Float.fval", _p?.fval);
-    return _j;
-  },
-  boolean(_p?: Boolean["Boolean"]): Boolean {
-    const _j = ({
-      Boolean: {}
-    } as Boolean);
-    _o.set(_j, "Boolean.boolval", _p?.boolval);
-    return _j;
-  },
-  string(_p?: String["String"]): String {
-    const _j = ({
-      String: {}
-    } as String);
-    _o.set(_j, "String.sval", _p?.sval);
-    return _j;
-  },
-  bitString(_p?: BitString["BitString"]): BitString {
-    const _j = ({
-      BitString: {}
-    } as BitString);
-    _o.set(_j, "BitString.bsval", _p?.bsval);
-    return _j;
-  },
-  list(_p?: List["List"]): List {
-    const _j = ({
-      List: {}
-    } as List);
-    _o.set(_j, "List.items", _p?.items);
-    return _j;
-  },
-  oidList(_p?: OidList["OidList"]): OidList {
-    const _j = ({
-      OidList: {}
-    } as OidList);
-    _o.set(_j, "OidList.items", _p?.items);
-    return _j;
-  },
-  intList(_p?: IntList["IntList"]): IntList {
-    const _j = ({
-      IntList: {}
-    } as IntList);
-    _o.set(_j, "IntList.items", _p?.items);
-    return _j;
-  },
-  aConst(_p?: A_Const["A_Const"]): A_Const {
-    const _j = ({
-      A_Const: {}
-    } as A_Const);
-    _o.set(_j, "A_Const.ival", _p?.ival);
-    _o.set(_j, "A_Const.fval", _p?.fval);
-    _o.set(_j, "A_Const.boolval", _p?.boolval);
-    _o.set(_j, "A_Const.sval", _p?.sval);
-    _o.set(_j, "A_Const.bsval", _p?.bsval);
-    _o.set(_j, "A_Const.isnull", _p?.isnull);
-    _o.set(_j, "A_Const.location", _p?.location);
-    return _j;
-  },
-  alias(_p?: Alias["Alias"]): Alias {
-    const _j = ({
-      Alias: {}
-    } as Alias);
-    _o.set(_j, "Alias.aliasname", _p?.aliasname);
-    _o.set(_j, "Alias.colnames", _p?.colnames);
-    return _j;
-  },
-  rangeVar(_p?: RangeVar["RangeVar"]): RangeVar {
-    const _j = ({
-      RangeVar: {}
-    } as RangeVar);
-    _o.set(_j, "RangeVar.catalogname", _p?.catalogname);
-    _o.set(_j, "RangeVar.schemaname", _p?.schemaname);
-    _o.set(_j, "RangeVar.relname", _p?.relname);
-    _o.set(_j, "RangeVar.inh", _p?.inh);
-    _o.set(_j, "RangeVar.relpersistence", _p?.relpersistence);
-    _o.set(_j, "RangeVar.alias", _p?.alias);
-    _o.set(_j, "RangeVar.location", _p?.location);
-    return _j;
-  },
-  tableFunc(_p?: TableFunc["TableFunc"]): TableFunc {
-    const _j = ({
-      TableFunc: {}
-    } as TableFunc);
-    _o.set(_j, "TableFunc.ns_uris", _p?.ns_uris);
-    _o.set(_j, "TableFunc.ns_names", _p?.ns_names);
-    _o.set(_j, "TableFunc.docexpr", _p?.docexpr);
-    _o.set(_j, "TableFunc.rowexpr", _p?.rowexpr);
-    _o.set(_j, "TableFunc.colnames", _p?.colnames);
-    _o.set(_j, "TableFunc.coltypes", _p?.coltypes);
-    _o.set(_j, "TableFunc.coltypmods", _p?.coltypmods);
-    _o.set(_j, "TableFunc.colcollations", _p?.colcollations);
-    _o.set(_j, "TableFunc.colexprs", _p?.colexprs);
-    _o.set(_j, "TableFunc.coldefexprs", _p?.coldefexprs);
-    _o.set(_j, "TableFunc.notnulls", _p?.notnulls);
-    _o.set(_j, "TableFunc.ordinalitycol", _p?.ordinalitycol);
-    _o.set(_j, "TableFunc.location", _p?.location);
-    return _j;
-  },
-  intoClause(_p?: IntoClause["IntoClause"]): IntoClause {
-    const _j = ({
-      IntoClause: {}
-    } as IntoClause);
-    _o.set(_j, "IntoClause.rel", _p?.rel);
-    _o.set(_j, "IntoClause.colNames", _p?.colNames);
-    _o.set(_j, "IntoClause.accessMethod", _p?.accessMethod);
-    _o.set(_j, "IntoClause.options", _p?.options);
-    _o.set(_j, "IntoClause.onCommit", _p?.onCommit);
-    _o.set(_j, "IntoClause.tableSpaceName", _p?.tableSpaceName);
-    _o.set(_j, "IntoClause.viewQuery", _p?.viewQuery);
-    _o.set(_j, "IntoClause.skipData", _p?.skipData);
-    return _j;
-  },
-  var(_p?: Var["Var"]): Var {
-    const _j = ({
-      Var: {}
-    } as Var);
-    _o.set(_j, "Var.xpr", _p?.xpr);
-    _o.set(_j, "Var.varno", _p?.varno);
-    _o.set(_j, "Var.varattno", _p?.varattno);
-    _o.set(_j, "Var.vartype", _p?.vartype);
-    _o.set(_j, "Var.vartypmod", _p?.vartypmod);
-    _o.set(_j, "Var.varcollid", _p?.varcollid);
-    _o.set(_j, "Var.varnullingrels", _p?.varnullingrels);
-    _o.set(_j, "Var.varlevelsup", _p?.varlevelsup);
-    _o.set(_j, "Var.location", _p?.location);
-    return _j;
-  },
-  param(_p?: Param["Param"]): Param {
-    const _j = ({
-      Param: {}
-    } as Param);
-    _o.set(_j, "Param.xpr", _p?.xpr);
-    _o.set(_j, "Param.paramkind", _p?.paramkind);
-    _o.set(_j, "Param.paramid", _p?.paramid);
-    _o.set(_j, "Param.paramtype", _p?.paramtype);
-    _o.set(_j, "Param.paramtypmod", _p?.paramtypmod);
-    _o.set(_j, "Param.paramcollid", _p?.paramcollid);
-    _o.set(_j, "Param.location", _p?.location);
-    return _j;
-  },
-  aggref(_p?: Aggref["Aggref"]): Aggref {
-    const _j = ({
-      Aggref: {}
-    } as Aggref);
-    _o.set(_j, "Aggref.xpr", _p?.xpr);
-    _o.set(_j, "Aggref.aggfnoid", _p?.aggfnoid);
-    _o.set(_j, "Aggref.aggtype", _p?.aggtype);
-    _o.set(_j, "Aggref.aggcollid", _p?.aggcollid);
-    _o.set(_j, "Aggref.inputcollid", _p?.inputcollid);
-    _o.set(_j, "Aggref.aggargtypes", _p?.aggargtypes);
-    _o.set(_j, "Aggref.aggdirectargs", _p?.aggdirectargs);
-    _o.set(_j, "Aggref.args", _p?.args);
-    _o.set(_j, "Aggref.aggorder", _p?.aggorder);
-    _o.set(_j, "Aggref.aggdistinct", _p?.aggdistinct);
-    _o.set(_j, "Aggref.aggfilter", _p?.aggfilter);
-    _o.set(_j, "Aggref.aggstar", _p?.aggstar);
-    _o.set(_j, "Aggref.aggvariadic", _p?.aggvariadic);
-    _o.set(_j, "Aggref.aggkind", _p?.aggkind);
-    _o.set(_j, "Aggref.agglevelsup", _p?.agglevelsup);
-    _o.set(_j, "Aggref.aggsplit", _p?.aggsplit);
-    _o.set(_j, "Aggref.aggno", _p?.aggno);
-    _o.set(_j, "Aggref.aggtransno", _p?.aggtransno);
-    _o.set(_j, "Aggref.location", _p?.location);
-    return _j;
-  },
-  groupingFunc(_p?: GroupingFunc["GroupingFunc"]): GroupingFunc {
-    const _j = ({
-      GroupingFunc: {}
-    } as GroupingFunc);
-    _o.set(_j, "GroupingFunc.xpr", _p?.xpr);
-    _o.set(_j, "GroupingFunc.args", _p?.args);
-    _o.set(_j, "GroupingFunc.refs", _p?.refs);
-    _o.set(_j, "GroupingFunc.agglevelsup", _p?.agglevelsup);
-    _o.set(_j, "GroupingFunc.location", _p?.location);
-    return _j;
-  },
-  windowFunc(_p?: WindowFunc["WindowFunc"]): WindowFunc {
-    const _j = ({
-      WindowFunc: {}
-    } as WindowFunc);
-    _o.set(_j, "WindowFunc.xpr", _p?.xpr);
-    _o.set(_j, "WindowFunc.winfnoid", _p?.winfnoid);
-    _o.set(_j, "WindowFunc.wintype", _p?.wintype);
-    _o.set(_j, "WindowFunc.wincollid", _p?.wincollid);
-    _o.set(_j, "WindowFunc.inputcollid", _p?.inputcollid);
-    _o.set(_j, "WindowFunc.args", _p?.args);
-    _o.set(_j, "WindowFunc.aggfilter", _p?.aggfilter);
-    _o.set(_j, "WindowFunc.winref", _p?.winref);
-    _o.set(_j, "WindowFunc.winstar", _p?.winstar);
-    _o.set(_j, "WindowFunc.winagg", _p?.winagg);
-    _o.set(_j, "WindowFunc.location", _p?.location);
-    return _j;
-  },
-  subscriptingRef(_p?: SubscriptingRef["SubscriptingRef"]): SubscriptingRef {
-    const _j = ({
-      SubscriptingRef: {}
-    } as SubscriptingRef);
-    _o.set(_j, "SubscriptingRef.xpr", _p?.xpr);
-    _o.set(_j, "SubscriptingRef.refcontainertype", _p?.refcontainertype);
-    _o.set(_j, "SubscriptingRef.refelemtype", _p?.refelemtype);
-    _o.set(_j, "SubscriptingRef.refrestype", _p?.refrestype);
-    _o.set(_j, "SubscriptingRef.reftypmod", _p?.reftypmod);
-    _o.set(_j, "SubscriptingRef.refcollid", _p?.refcollid);
-    _o.set(_j, "SubscriptingRef.refupperindexpr", _p?.refupperindexpr);
-    _o.set(_j, "SubscriptingRef.reflowerindexpr", _p?.reflowerindexpr);
-    _o.set(_j, "SubscriptingRef.refexpr", _p?.refexpr);
-    _o.set(_j, "SubscriptingRef.refassgnexpr", _p?.refassgnexpr);
-    return _j;
-  },
-  funcExpr(_p?: FuncExpr["FuncExpr"]): FuncExpr {
-    const _j = ({
-      FuncExpr: {}
-    } as FuncExpr);
-    _o.set(_j, "FuncExpr.xpr", _p?.xpr);
-    _o.set(_j, "FuncExpr.funcid", _p?.funcid);
-    _o.set(_j, "FuncExpr.funcresulttype", _p?.funcresulttype);
-    _o.set(_j, "FuncExpr.funcretset", _p?.funcretset);
-    _o.set(_j, "FuncExpr.funcvariadic", _p?.funcvariadic);
-    _o.set(_j, "FuncExpr.funcformat", _p?.funcformat);
-    _o.set(_j, "FuncExpr.funccollid", _p?.funccollid);
-    _o.set(_j, "FuncExpr.inputcollid", _p?.inputcollid);
-    _o.set(_j, "FuncExpr.args", _p?.args);
-    _o.set(_j, "FuncExpr.location", _p?.location);
-    return _j;
-  },
-  namedArgExpr(_p?: NamedArgExpr["NamedArgExpr"]): NamedArgExpr {
-    const _j = ({
-      NamedArgExpr: {}
-    } as NamedArgExpr);
-    _o.set(_j, "NamedArgExpr.xpr", _p?.xpr);
-    _o.set(_j, "NamedArgExpr.arg", _p?.arg);
-    _o.set(_j, "NamedArgExpr.name", _p?.name);
-    _o.set(_j, "NamedArgExpr.argnumber", _p?.argnumber);
-    _o.set(_j, "NamedArgExpr.location", _p?.location);
-    return _j;
-  },
-  opExpr(_p?: OpExpr["OpExpr"]): OpExpr {
-    const _j = ({
-      OpExpr: {}
-    } as OpExpr);
-    _o.set(_j, "OpExpr.xpr", _p?.xpr);
-    _o.set(_j, "OpExpr.opno", _p?.opno);
-    _o.set(_j, "OpExpr.opresulttype", _p?.opresulttype);
-    _o.set(_j, "OpExpr.opretset", _p?.opretset);
-    _o.set(_j, "OpExpr.opcollid", _p?.opcollid);
-    _o.set(_j, "OpExpr.inputcollid", _p?.inputcollid);
-    _o.set(_j, "OpExpr.args", _p?.args);
-    _o.set(_j, "OpExpr.location", _p?.location);
-    return _j;
-  },
-  distinctExpr(_p?: DistinctExpr["DistinctExpr"]): DistinctExpr {
-    const _j = ({
-      DistinctExpr: {}
-    } as DistinctExpr);
-    _o.set(_j, "DistinctExpr.xpr", _p?.xpr);
-    _o.set(_j, "DistinctExpr.opno", _p?.opno);
-    _o.set(_j, "DistinctExpr.opresulttype", _p?.opresulttype);
-    _o.set(_j, "DistinctExpr.opretset", _p?.opretset);
-    _o.set(_j, "DistinctExpr.opcollid", _p?.opcollid);
-    _o.set(_j, "DistinctExpr.inputcollid", _p?.inputcollid);
-    _o.set(_j, "DistinctExpr.args", _p?.args);
-    _o.set(_j, "DistinctExpr.location", _p?.location);
-    return _j;
-  },
-  nullIfExpr(_p?: NullIfExpr["NullIfExpr"]): NullIfExpr {
-    const _j = ({
-      NullIfExpr: {}
-    } as NullIfExpr);
-    _o.set(_j, "NullIfExpr.xpr", _p?.xpr);
-    _o.set(_j, "NullIfExpr.opno", _p?.opno);
-    _o.set(_j, "NullIfExpr.opresulttype", _p?.opresulttype);
-    _o.set(_j, "NullIfExpr.opretset", _p?.opretset);
-    _o.set(_j, "NullIfExpr.opcollid", _p?.opcollid);
-    _o.set(_j, "NullIfExpr.inputcollid", _p?.inputcollid);
-    _o.set(_j, "NullIfExpr.args", _p?.args);
-    _o.set(_j, "NullIfExpr.location", _p?.location);
-    return _j;
-  },
-  scalarArrayOpExpr(_p?: ScalarArrayOpExpr["ScalarArrayOpExpr"]): ScalarArrayOpExpr {
-    const _j = ({
-      ScalarArrayOpExpr: {}
-    } as ScalarArrayOpExpr);
-    _o.set(_j, "ScalarArrayOpExpr.xpr", _p?.xpr);
-    _o.set(_j, "ScalarArrayOpExpr.opno", _p?.opno);
-    _o.set(_j, "ScalarArrayOpExpr.useOr", _p?.useOr);
-    _o.set(_j, "ScalarArrayOpExpr.inputcollid", _p?.inputcollid);
-    _o.set(_j, "ScalarArrayOpExpr.args", _p?.args);
-    _o.set(_j, "ScalarArrayOpExpr.location", _p?.location);
-    return _j;
-  },
-  boolExpr(_p?: BoolExpr["BoolExpr"]): BoolExpr {
-    const _j = ({
-      BoolExpr: {}
-    } as BoolExpr);
-    _o.set(_j, "BoolExpr.xpr", _p?.xpr);
-    _o.set(_j, "BoolExpr.boolop", _p?.boolop);
-    _o.set(_j, "BoolExpr.args", _p?.args);
-    _o.set(_j, "BoolExpr.location", _p?.location);
-    return _j;
-  },
-  subLink(_p?: SubLink["SubLink"]): SubLink {
-    const _j = ({
-      SubLink: {}
-    } as SubLink);
-    _o.set(_j, "SubLink.xpr", _p?.xpr);
-    _o.set(_j, "SubLink.subLinkType", _p?.subLinkType);
-    _o.set(_j, "SubLink.subLinkId", _p?.subLinkId);
-    _o.set(_j, "SubLink.testexpr", _p?.testexpr);
-    _o.set(_j, "SubLink.operName", _p?.operName);
-    _o.set(_j, "SubLink.subselect", _p?.subselect);
-    _o.set(_j, "SubLink.location", _p?.location);
-    return _j;
-  },
-  subPlan(_p?: SubPlan["SubPlan"]): SubPlan {
-    const _j = ({
-      SubPlan: {}
-    } as SubPlan);
-    _o.set(_j, "SubPlan.xpr", _p?.xpr);
-    _o.set(_j, "SubPlan.subLinkType", _p?.subLinkType);
-    _o.set(_j, "SubPlan.testexpr", _p?.testexpr);
-    _o.set(_j, "SubPlan.paramIds", _p?.paramIds);
-    _o.set(_j, "SubPlan.plan_id", _p?.plan_id);
-    _o.set(_j, "SubPlan.plan_name", _p?.plan_name);
-    _o.set(_j, "SubPlan.firstColType", _p?.firstColType);
-    _o.set(_j, "SubPlan.firstColTypmod", _p?.firstColTypmod);
-    _o.set(_j, "SubPlan.firstColCollation", _p?.firstColCollation);
-    _o.set(_j, "SubPlan.useHashTable", _p?.useHashTable);
-    _o.set(_j, "SubPlan.unknownEqFalse", _p?.unknownEqFalse);
-    _o.set(_j, "SubPlan.parallel_safe", _p?.parallel_safe);
-    _o.set(_j, "SubPlan.setParam", _p?.setParam);
-    _o.set(_j, "SubPlan.parParam", _p?.parParam);
-    _o.set(_j, "SubPlan.args", _p?.args);
-    _o.set(_j, "SubPlan.startup_cost", _p?.startup_cost);
-    _o.set(_j, "SubPlan.per_call_cost", _p?.per_call_cost);
-    return _j;
-  },
-  alternativeSubPlan(_p?: AlternativeSubPlan["AlternativeSubPlan"]): AlternativeSubPlan {
-    const _j = ({
-      AlternativeSubPlan: {}
-    } as AlternativeSubPlan);
-    _o.set(_j, "AlternativeSubPlan.xpr", _p?.xpr);
-    _o.set(_j, "AlternativeSubPlan.subplans", _p?.subplans);
-    return _j;
-  },
-  fieldSelect(_p?: FieldSelect["FieldSelect"]): FieldSelect {
-    const _j = ({
-      FieldSelect: {}
-    } as FieldSelect);
-    _o.set(_j, "FieldSelect.xpr", _p?.xpr);
-    _o.set(_j, "FieldSelect.arg", _p?.arg);
-    _o.set(_j, "FieldSelect.fieldnum", _p?.fieldnum);
-    _o.set(_j, "FieldSelect.resulttype", _p?.resulttype);
-    _o.set(_j, "FieldSelect.resulttypmod", _p?.resulttypmod);
-    _o.set(_j, "FieldSelect.resultcollid", _p?.resultcollid);
-    return _j;
-  },
-  fieldStore(_p?: FieldStore["FieldStore"]): FieldStore {
-    const _j = ({
-      FieldStore: {}
-    } as FieldStore);
-    _o.set(_j, "FieldStore.xpr", _p?.xpr);
-    _o.set(_j, "FieldStore.arg", _p?.arg);
-    _o.set(_j, "FieldStore.newvals", _p?.newvals);
-    _o.set(_j, "FieldStore.fieldnums", _p?.fieldnums);
-    _o.set(_j, "FieldStore.resulttype", _p?.resulttype);
-    return _j;
-  },
-  relabelType(_p?: RelabelType["RelabelType"]): RelabelType {
-    const _j = ({
-      RelabelType: {}
-    } as RelabelType);
-    _o.set(_j, "RelabelType.xpr", _p?.xpr);
-    _o.set(_j, "RelabelType.arg", _p?.arg);
-    _o.set(_j, "RelabelType.resulttype", _p?.resulttype);
-    _o.set(_j, "RelabelType.resulttypmod", _p?.resulttypmod);
-    _o.set(_j, "RelabelType.resultcollid", _p?.resultcollid);
-    _o.set(_j, "RelabelType.relabelformat", _p?.relabelformat);
-    _o.set(_j, "RelabelType.location", _p?.location);
-    return _j;
-  },
-  coerceViaio(_p?: CoerceViaIO["CoerceViaIO"]): CoerceViaIO {
-    const _j = ({
-      CoerceViaIO: {}
-    } as CoerceViaIO);
-    _o.set(_j, "CoerceViaIO.xpr", _p?.xpr);
-    _o.set(_j, "CoerceViaIO.arg", _p?.arg);
-    _o.set(_j, "CoerceViaIO.resulttype", _p?.resulttype);
-    _o.set(_j, "CoerceViaIO.resultcollid", _p?.resultcollid);
-    _o.set(_j, "CoerceViaIO.coerceformat", _p?.coerceformat);
-    _o.set(_j, "CoerceViaIO.location", _p?.location);
-    return _j;
-  },
-  arrayCoerceExpr(_p?: ArrayCoerceExpr["ArrayCoerceExpr"]): ArrayCoerceExpr {
-    const _j = ({
-      ArrayCoerceExpr: {}
-    } as ArrayCoerceExpr);
-    _o.set(_j, "ArrayCoerceExpr.xpr", _p?.xpr);
-    _o.set(_j, "ArrayCoerceExpr.arg", _p?.arg);
-    _o.set(_j, "ArrayCoerceExpr.elemexpr", _p?.elemexpr);
-    _o.set(_j, "ArrayCoerceExpr.resulttype", _p?.resulttype);
-    _o.set(_j, "ArrayCoerceExpr.resulttypmod", _p?.resulttypmod);
-    _o.set(_j, "ArrayCoerceExpr.resultcollid", _p?.resultcollid);
-    _o.set(_j, "ArrayCoerceExpr.coerceformat", _p?.coerceformat);
-    _o.set(_j, "ArrayCoerceExpr.location", _p?.location);
-    return _j;
-  },
-  convertRowtypeExpr(_p?: ConvertRowtypeExpr["ConvertRowtypeExpr"]): ConvertRowtypeExpr {
-    const _j = ({
-      ConvertRowtypeExpr: {}
-    } as ConvertRowtypeExpr);
-    _o.set(_j, "ConvertRowtypeExpr.xpr", _p?.xpr);
-    _o.set(_j, "ConvertRowtypeExpr.arg", _p?.arg);
-    _o.set(_j, "ConvertRowtypeExpr.resulttype", _p?.resulttype);
-    _o.set(_j, "ConvertRowtypeExpr.convertformat", _p?.convertformat);
-    _o.set(_j, "ConvertRowtypeExpr.location", _p?.location);
-    return _j;
-  },
-  collateExpr(_p?: CollateExpr["CollateExpr"]): CollateExpr {
-    const _j = ({
-      CollateExpr: {}
-    } as CollateExpr);
-    _o.set(_j, "CollateExpr.xpr", _p?.xpr);
-    _o.set(_j, "CollateExpr.arg", _p?.arg);
-    _o.set(_j, "CollateExpr.collOid", _p?.collOid);
-    _o.set(_j, "CollateExpr.location", _p?.location);
-    return _j;
-  },
-  caseExpr(_p?: CaseExpr["CaseExpr"]): CaseExpr {
-    const _j = ({
-      CaseExpr: {}
-    } as CaseExpr);
-    _o.set(_j, "CaseExpr.xpr", _p?.xpr);
-    _o.set(_j, "CaseExpr.casetype", _p?.casetype);
-    _o.set(_j, "CaseExpr.casecollid", _p?.casecollid);
-    _o.set(_j, "CaseExpr.arg", _p?.arg);
-    _o.set(_j, "CaseExpr.args", _p?.args);
-    _o.set(_j, "CaseExpr.defresult", _p?.defresult);
-    _o.set(_j, "CaseExpr.location", _p?.location);
-    return _j;
-  },
-  caseWhen(_p?: CaseWhen["CaseWhen"]): CaseWhen {
-    const _j = ({
-      CaseWhen: {}
-    } as CaseWhen);
-    _o.set(_j, "CaseWhen.xpr", _p?.xpr);
-    _o.set(_j, "CaseWhen.expr", _p?.expr);
-    _o.set(_j, "CaseWhen.result", _p?.result);
-    _o.set(_j, "CaseWhen.location", _p?.location);
-    return _j;
-  },
-  caseTestExpr(_p?: CaseTestExpr["CaseTestExpr"]): CaseTestExpr {
-    const _j = ({
-      CaseTestExpr: {}
-    } as CaseTestExpr);
-    _o.set(_j, "CaseTestExpr.xpr", _p?.xpr);
-    _o.set(_j, "CaseTestExpr.typeId", _p?.typeId);
-    _o.set(_j, "CaseTestExpr.typeMod", _p?.typeMod);
-    _o.set(_j, "CaseTestExpr.collation", _p?.collation);
-    return _j;
-  },
-  arrayExpr(_p?: ArrayExpr["ArrayExpr"]): ArrayExpr {
-    const _j = ({
-      ArrayExpr: {}
-    } as ArrayExpr);
-    _o.set(_j, "ArrayExpr.xpr", _p?.xpr);
-    _o.set(_j, "ArrayExpr.array_typeid", _p?.array_typeid);
-    _o.set(_j, "ArrayExpr.array_collid", _p?.array_collid);
-    _o.set(_j, "ArrayExpr.element_typeid", _p?.element_typeid);
-    _o.set(_j, "ArrayExpr.elements", _p?.elements);
-    _o.set(_j, "ArrayExpr.multidims", _p?.multidims);
-    _o.set(_j, "ArrayExpr.location", _p?.location);
-    return _j;
-  },
-  rowExpr(_p?: RowExpr["RowExpr"]): RowExpr {
-    const _j = ({
-      RowExpr: {}
-    } as RowExpr);
-    _o.set(_j, "RowExpr.xpr", _p?.xpr);
-    _o.set(_j, "RowExpr.args", _p?.args);
-    _o.set(_j, "RowExpr.row_typeid", _p?.row_typeid);
-    _o.set(_j, "RowExpr.row_format", _p?.row_format);
-    _o.set(_j, "RowExpr.colnames", _p?.colnames);
-    _o.set(_j, "RowExpr.location", _p?.location);
-    return _j;
-  },
-  rowCompareExpr(_p?: RowCompareExpr["RowCompareExpr"]): RowCompareExpr {
-    const _j = ({
-      RowCompareExpr: {}
-    } as RowCompareExpr);
-    _o.set(_j, "RowCompareExpr.xpr", _p?.xpr);
-    _o.set(_j, "RowCompareExpr.rctype", _p?.rctype);
-    _o.set(_j, "RowCompareExpr.opnos", _p?.opnos);
-    _o.set(_j, "RowCompareExpr.opfamilies", _p?.opfamilies);
-    _o.set(_j, "RowCompareExpr.inputcollids", _p?.inputcollids);
-    _o.set(_j, "RowCompareExpr.largs", _p?.largs);
-    _o.set(_j, "RowCompareExpr.rargs", _p?.rargs);
-    return _j;
-  },
-  coalesceExpr(_p?: CoalesceExpr["CoalesceExpr"]): CoalesceExpr {
-    const _j = ({
-      CoalesceExpr: {}
-    } as CoalesceExpr);
-    _o.set(_j, "CoalesceExpr.xpr", _p?.xpr);
-    _o.set(_j, "CoalesceExpr.coalescetype", _p?.coalescetype);
-    _o.set(_j, "CoalesceExpr.coalescecollid", _p?.coalescecollid);
-    _o.set(_j, "CoalesceExpr.args", _p?.args);
-    _o.set(_j, "CoalesceExpr.location", _p?.location);
-    return _j;
-  },
-  minMaxExpr(_p?: MinMaxExpr["MinMaxExpr"]): MinMaxExpr {
-    const _j = ({
-      MinMaxExpr: {}
-    } as MinMaxExpr);
-    _o.set(_j, "MinMaxExpr.xpr", _p?.xpr);
-    _o.set(_j, "MinMaxExpr.minmaxtype", _p?.minmaxtype);
-    _o.set(_j, "MinMaxExpr.minmaxcollid", _p?.minmaxcollid);
-    _o.set(_j, "MinMaxExpr.inputcollid", _p?.inputcollid);
-    _o.set(_j, "MinMaxExpr.op", _p?.op);
-    _o.set(_j, "MinMaxExpr.args", _p?.args);
-    _o.set(_j, "MinMaxExpr.location", _p?.location);
-    return _j;
-  },
-  sqlValueFunction(_p?: SQLValueFunction["SQLValueFunction"]): SQLValueFunction {
-    const _j = ({
-      SQLValueFunction: {}
-    } as SQLValueFunction);
-    _o.set(_j, "SQLValueFunction.xpr", _p?.xpr);
-    _o.set(_j, "SQLValueFunction.op", _p?.op);
-    _o.set(_j, "SQLValueFunction.type", _p?.type);
-    _o.set(_j, "SQLValueFunction.typmod", _p?.typmod);
-    _o.set(_j, "SQLValueFunction.location", _p?.location);
-    return _j;
-  },
-  xmlExpr(_p?: XmlExpr["XmlExpr"]): XmlExpr {
-    const _j = ({
-      XmlExpr: {}
-    } as XmlExpr);
-    _o.set(_j, "XmlExpr.xpr", _p?.xpr);
-    _o.set(_j, "XmlExpr.op", _p?.op);
-    _o.set(_j, "XmlExpr.name", _p?.name);
-    _o.set(_j, "XmlExpr.named_args", _p?.named_args);
-    _o.set(_j, "XmlExpr.arg_names", _p?.arg_names);
-    _o.set(_j, "XmlExpr.args", _p?.args);
-    _o.set(_j, "XmlExpr.xmloption", _p?.xmloption);
-    _o.set(_j, "XmlExpr.indent", _p?.indent);
-    _o.set(_j, "XmlExpr.type", _p?.type);
-    _o.set(_j, "XmlExpr.typmod", _p?.typmod);
-    _o.set(_j, "XmlExpr.location", _p?.location);
-    return _j;
-  },
-  jsonFormat(_p?: JsonFormat["JsonFormat"]): JsonFormat {
-    const _j = ({
-      JsonFormat: {}
-    } as JsonFormat);
-    _o.set(_j, "JsonFormat.format_type", _p?.format_type);
-    _o.set(_j, "JsonFormat.encoding", _p?.encoding);
-    _o.set(_j, "JsonFormat.location", _p?.location);
-    return _j;
-  },
-  jsonReturning(_p?: JsonReturning["JsonReturning"]): JsonReturning {
-    const _j = ({
-      JsonReturning: {}
-    } as JsonReturning);
-    _o.set(_j, "JsonReturning.format", _p?.format);
-    _o.set(_j, "JsonReturning.typid", _p?.typid);
-    _o.set(_j, "JsonReturning.typmod", _p?.typmod);
-    return _j;
-  },
-  jsonValueExpr(_p?: JsonValueExpr["JsonValueExpr"]): JsonValueExpr {
-    const _j = ({
-      JsonValueExpr: {}
-    } as JsonValueExpr);
-    _o.set(_j, "JsonValueExpr.raw_expr", _p?.raw_expr);
-    _o.set(_j, "JsonValueExpr.formatted_expr", _p?.formatted_expr);
-    _o.set(_j, "JsonValueExpr.format", _p?.format);
-    return _j;
-  },
-  jsonConstructorExpr(_p?: JsonConstructorExpr["JsonConstructorExpr"]): JsonConstructorExpr {
-    const _j = ({
-      JsonConstructorExpr: {}
-    } as JsonConstructorExpr);
-    _o.set(_j, "JsonConstructorExpr.xpr", _p?.xpr);
-    _o.set(_j, "JsonConstructorExpr.type", _p?.type);
-    _o.set(_j, "JsonConstructorExpr.args", _p?.args);
-    _o.set(_j, "JsonConstructorExpr.func", _p?.func);
-    _o.set(_j, "JsonConstructorExpr.coercion", _p?.coercion);
-    _o.set(_j, "JsonConstructorExpr.returning", _p?.returning);
-    _o.set(_j, "JsonConstructorExpr.absent_on_null", _p?.absent_on_null);
-    _o.set(_j, "JsonConstructorExpr.unique", _p?.unique);
-    _o.set(_j, "JsonConstructorExpr.location", _p?.location);
-    return _j;
-  },
-  jsonIsPredicate(_p?: JsonIsPredicate["JsonIsPredicate"]): JsonIsPredicate {
-    const _j = ({
-      JsonIsPredicate: {}
-    } as JsonIsPredicate);
-    _o.set(_j, "JsonIsPredicate.expr", _p?.expr);
-    _o.set(_j, "JsonIsPredicate.format", _p?.format);
-    _o.set(_j, "JsonIsPredicate.item_type", _p?.item_type);
-    _o.set(_j, "JsonIsPredicate.unique_keys", _p?.unique_keys);
-    _o.set(_j, "JsonIsPredicate.location", _p?.location);
-    return _j;
-  },
-  nullTest(_p?: NullTest["NullTest"]): NullTest {
-    const _j = ({
-      NullTest: {}
-    } as NullTest);
-    _o.set(_j, "NullTest.xpr", _p?.xpr);
-    _o.set(_j, "NullTest.arg", _p?.arg);
-    _o.set(_j, "NullTest.nulltesttype", _p?.nulltesttype);
-    _o.set(_j, "NullTest.argisrow", _p?.argisrow);
-    _o.set(_j, "NullTest.location", _p?.location);
-    return _j;
-  },
-  booleanTest(_p?: BooleanTest["BooleanTest"]): BooleanTest {
-    const _j = ({
-      BooleanTest: {}
-    } as BooleanTest);
-    _o.set(_j, "BooleanTest.xpr", _p?.xpr);
-    _o.set(_j, "BooleanTest.arg", _p?.arg);
-    _o.set(_j, "BooleanTest.booltesttype", _p?.booltesttype);
-    _o.set(_j, "BooleanTest.location", _p?.location);
-    return _j;
-  },
-  coerceToDomain(_p?: CoerceToDomain["CoerceToDomain"]): CoerceToDomain {
-    const _j = ({
-      CoerceToDomain: {}
-    } as CoerceToDomain);
-    _o.set(_j, "CoerceToDomain.xpr", _p?.xpr);
-    _o.set(_j, "CoerceToDomain.arg", _p?.arg);
-    _o.set(_j, "CoerceToDomain.resulttype", _p?.resulttype);
-    _o.set(_j, "CoerceToDomain.resulttypmod", _p?.resulttypmod);
-    _o.set(_j, "CoerceToDomain.resultcollid", _p?.resultcollid);
-    _o.set(_j, "CoerceToDomain.coercionformat", _p?.coercionformat);
-    _o.set(_j, "CoerceToDomain.location", _p?.location);
-    return _j;
-  },
-  coerceToDomainValue(_p?: CoerceToDomainValue["CoerceToDomainValue"]): CoerceToDomainValue {
-    const _j = ({
-      CoerceToDomainValue: {}
-    } as CoerceToDomainValue);
-    _o.set(_j, "CoerceToDomainValue.xpr", _p?.xpr);
-    _o.set(_j, "CoerceToDomainValue.typeId", _p?.typeId);
-    _o.set(_j, "CoerceToDomainValue.typeMod", _p?.typeMod);
-    _o.set(_j, "CoerceToDomainValue.collation", _p?.collation);
-    _o.set(_j, "CoerceToDomainValue.location", _p?.location);
-    return _j;
-  },
-  setToDefault(_p?: SetToDefault["SetToDefault"]): SetToDefault {
-    const _j = ({
-      SetToDefault: {}
-    } as SetToDefault);
-    _o.set(_j, "SetToDefault.xpr", _p?.xpr);
-    _o.set(_j, "SetToDefault.typeId", _p?.typeId);
-    _o.set(_j, "SetToDefault.typeMod", _p?.typeMod);
-    _o.set(_j, "SetToDefault.collation", _p?.collation);
-    _o.set(_j, "SetToDefault.location", _p?.location);
-    return _j;
-  },
-  currentOfExpr(_p?: CurrentOfExpr["CurrentOfExpr"]): CurrentOfExpr {
-    const _j = ({
-      CurrentOfExpr: {}
-    } as CurrentOfExpr);
-    _o.set(_j, "CurrentOfExpr.xpr", _p?.xpr);
-    _o.set(_j, "CurrentOfExpr.cvarno", _p?.cvarno);
-    _o.set(_j, "CurrentOfExpr.cursor_name", _p?.cursor_name);
-    _o.set(_j, "CurrentOfExpr.cursor_param", _p?.cursor_param);
-    return _j;
-  },
-  nextValueExpr(_p?: NextValueExpr["NextValueExpr"]): NextValueExpr {
-    const _j = ({
-      NextValueExpr: {}
-    } as NextValueExpr);
-    _o.set(_j, "NextValueExpr.xpr", _p?.xpr);
-    _o.set(_j, "NextValueExpr.seqid", _p?.seqid);
-    _o.set(_j, "NextValueExpr.typeId", _p?.typeId);
-    return _j;
-  },
-  inferenceElem(_p?: InferenceElem["InferenceElem"]): InferenceElem {
-    const _j = ({
-      InferenceElem: {}
-    } as InferenceElem);
-    _o.set(_j, "InferenceElem.xpr", _p?.xpr);
-    _o.set(_j, "InferenceElem.expr", _p?.expr);
-    _o.set(_j, "InferenceElem.infercollid", _p?.infercollid);
-    _o.set(_j, "InferenceElem.inferopclass", _p?.inferopclass);
-    return _j;
-  },
-  targetEntry(_p?: TargetEntry["TargetEntry"]): TargetEntry {
-    const _j = ({
-      TargetEntry: {}
-    } as TargetEntry);
-    _o.set(_j, "TargetEntry.xpr", _p?.xpr);
-    _o.set(_j, "TargetEntry.expr", _p?.expr);
-    _o.set(_j, "TargetEntry.resno", _p?.resno);
-    _o.set(_j, "TargetEntry.resname", _p?.resname);
-    _o.set(_j, "TargetEntry.ressortgroupref", _p?.ressortgroupref);
-    _o.set(_j, "TargetEntry.resorigtbl", _p?.resorigtbl);
-    _o.set(_j, "TargetEntry.resorigcol", _p?.resorigcol);
-    _o.set(_j, "TargetEntry.resjunk", _p?.resjunk);
-    return _j;
-  },
-  rangeTblRef(_p?: RangeTblRef["RangeTblRef"]): RangeTblRef {
-    const _j = ({
-      RangeTblRef: {}
-    } as RangeTblRef);
-    _o.set(_j, "RangeTblRef.rtindex", _p?.rtindex);
-    return _j;
-  },
-  joinExpr(_p?: JoinExpr["JoinExpr"]): JoinExpr {
-    const _j = ({
-      JoinExpr: {}
-    } as JoinExpr);
-    _o.set(_j, "JoinExpr.jointype", _p?.jointype);
-    _o.set(_j, "JoinExpr.isNatural", _p?.isNatural);
-    _o.set(_j, "JoinExpr.larg", _p?.larg);
-    _o.set(_j, "JoinExpr.rarg", _p?.rarg);
-    _o.set(_j, "JoinExpr.usingClause", _p?.usingClause);
-    _o.set(_j, "JoinExpr.join_using_alias", _p?.join_using_alias);
-    _o.set(_j, "JoinExpr.quals", _p?.quals);
-    _o.set(_j, "JoinExpr.alias", _p?.alias);
-    _o.set(_j, "JoinExpr.rtindex", _p?.rtindex);
-    return _j;
-  },
-  fromExpr(_p?: FromExpr["FromExpr"]): FromExpr {
-    const _j = ({
-      FromExpr: {}
-    } as FromExpr);
-    _o.set(_j, "FromExpr.fromlist", _p?.fromlist);
-    _o.set(_j, "FromExpr.quals", _p?.quals);
-    return _j;
-  },
-  onConflictExpr(_p?: OnConflictExpr["OnConflictExpr"]): OnConflictExpr {
-    const _j = ({
-      OnConflictExpr: {}
-    } as OnConflictExpr);
-    _o.set(_j, "OnConflictExpr.action", _p?.action);
-    _o.set(_j, "OnConflictExpr.arbiterElems", _p?.arbiterElems);
-    _o.set(_j, "OnConflictExpr.arbiterWhere", _p?.arbiterWhere);
-    _o.set(_j, "OnConflictExpr.constraint", _p?.constraint);
-    _o.set(_j, "OnConflictExpr.onConflictSet", _p?.onConflictSet);
-    _o.set(_j, "OnConflictExpr.onConflictWhere", _p?.onConflictWhere);
-    _o.set(_j, "OnConflictExpr.exclRelIndex", _p?.exclRelIndex);
-    _o.set(_j, "OnConflictExpr.exclRelTlist", _p?.exclRelTlist);
-    return _j;
-  },
-  query(_p?: Query["Query"]): Query {
-    const _j = ({
-      Query: {}
-    } as Query);
-    _o.set(_j, "Query.commandType", _p?.commandType);
-    _o.set(_j, "Query.querySource", _p?.querySource);
-    _o.set(_j, "Query.canSetTag", _p?.canSetTag);
-    _o.set(_j, "Query.utilityStmt", _p?.utilityStmt);
-    _o.set(_j, "Query.resultRelation", _p?.resultRelation);
-    _o.set(_j, "Query.hasAggs", _p?.hasAggs);
-    _o.set(_j, "Query.hasWindowFuncs", _p?.hasWindowFuncs);
-    _o.set(_j, "Query.hasTargetSRFs", _p?.hasTargetSRFs);
-    _o.set(_j, "Query.hasSubLinks", _p?.hasSubLinks);
-    _o.set(_j, "Query.hasDistinctOn", _p?.hasDistinctOn);
-    _o.set(_j, "Query.hasRecursive", _p?.hasRecursive);
-    _o.set(_j, "Query.hasModifyingCTE", _p?.hasModifyingCTE);
-    _o.set(_j, "Query.hasForUpdate", _p?.hasForUpdate);
-    _o.set(_j, "Query.hasRowSecurity", _p?.hasRowSecurity);
-    _o.set(_j, "Query.isReturn", _p?.isReturn);
-    _o.set(_j, "Query.cteList", _p?.cteList);
-    _o.set(_j, "Query.rtable", _p?.rtable);
-    _o.set(_j, "Query.rteperminfos", _p?.rteperminfos);
-    _o.set(_j, "Query.jointree", _p?.jointree);
-    _o.set(_j, "Query.mergeActionList", _p?.mergeActionList);
-    _o.set(_j, "Query.mergeUseOuterJoin", _p?.mergeUseOuterJoin);
-    _o.set(_j, "Query.targetList", _p?.targetList);
-    _o.set(_j, "Query.override", _p?.override);
-    _o.set(_j, "Query.onConflict", _p?.onConflict);
-    _o.set(_j, "Query.returningList", _p?.returningList);
-    _o.set(_j, "Query.groupClause", _p?.groupClause);
-    _o.set(_j, "Query.groupDistinct", _p?.groupDistinct);
-    _o.set(_j, "Query.groupingSets", _p?.groupingSets);
-    _o.set(_j, "Query.havingQual", _p?.havingQual);
-    _o.set(_j, "Query.windowClause", _p?.windowClause);
-    _o.set(_j, "Query.distinctClause", _p?.distinctClause);
-    _o.set(_j, "Query.sortClause", _p?.sortClause);
-    _o.set(_j, "Query.limitOffset", _p?.limitOffset);
-    _o.set(_j, "Query.limitCount", _p?.limitCount);
-    _o.set(_j, "Query.limitOption", _p?.limitOption);
-    _o.set(_j, "Query.rowMarks", _p?.rowMarks);
-    _o.set(_j, "Query.setOperations", _p?.setOperations);
-    _o.set(_j, "Query.constraintDeps", _p?.constraintDeps);
-    _o.set(_j, "Query.withCheckOptions", _p?.withCheckOptions);
-    _o.set(_j, "Query.stmt_location", _p?.stmt_location);
-    _o.set(_j, "Query.stmt_len", _p?.stmt_len);
+  integer(_p?: Integer): Integer {
+    const _j = ({} as Integer);
+    _o.set(_j, "ival", _p?.ival);
+    return _j;
+  },
+  float(_p?: Float): Float {
+    const _j = ({} as Float);
+    _o.set(_j, "fval", _p?.fval);
+    return _j;
+  },
+  boolean(_p?: Boolean): Boolean {
+    const _j = ({} as Boolean);
+    _o.set(_j, "boolval", _p?.boolval);
+    return _j;
+  },
+  string(_p?: String): String {
+    const _j = ({} as String);
+    _o.set(_j, "sval", _p?.sval);
+    return _j;
+  },
+  bitString(_p?: BitString): BitString {
+    const _j = ({} as BitString);
+    _o.set(_j, "bsval", _p?.bsval);
+    return _j;
+  },
+  list(_p?: List): List {
+    const _j = ({} as List);
+    _o.set(_j, "items", _p?.items);
+    return _j;
+  },
+  oidList(_p?: OidList): OidList {
+    const _j = ({} as OidList);
+    _o.set(_j, "items", _p?.items);
+    return _j;
+  },
+  intList(_p?: IntList): IntList {
+    const _j = ({} as IntList);
+    _o.set(_j, "items", _p?.items);
+    return _j;
+  },
+  aConst(_p?: A_Const): A_Const {
+    const _j = ({} as A_Const);
+    _o.set(_j, "ival", _p?.ival);
+    _o.set(_j, "fval", _p?.fval);
+    _o.set(_j, "boolval", _p?.boolval);
+    _o.set(_j, "sval", _p?.sval);
+    _o.set(_j, "bsval", _p?.bsval);
+    _o.set(_j, "isnull", _p?.isnull);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  alias(_p?: Alias): Alias {
+    const _j = ({} as Alias);
+    _o.set(_j, "aliasname", _p?.aliasname);
+    _o.set(_j, "colnames", _p?.colnames);
+    return _j;
+  },
+  rangeVar(_p?: RangeVar): RangeVar {
+    const _j = ({} as RangeVar);
+    _o.set(_j, "catalogname", _p?.catalogname);
+    _o.set(_j, "schemaname", _p?.schemaname);
+    _o.set(_j, "relname", _p?.relname);
+    _o.set(_j, "inh", _p?.inh);
+    _o.set(_j, "relpersistence", _p?.relpersistence);
+    _o.set(_j, "alias", _p?.alias);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  tableFunc(_p?: TableFunc): TableFunc {
+    const _j = ({} as TableFunc);
+    _o.set(_j, "ns_uris", _p?.ns_uris);
+    _o.set(_j, "ns_names", _p?.ns_names);
+    _o.set(_j, "docexpr", _p?.docexpr);
+    _o.set(_j, "rowexpr", _p?.rowexpr);
+    _o.set(_j, "colnames", _p?.colnames);
+    _o.set(_j, "coltypes", _p?.coltypes);
+    _o.set(_j, "coltypmods", _p?.coltypmods);
+    _o.set(_j, "colcollations", _p?.colcollations);
+    _o.set(_j, "colexprs", _p?.colexprs);
+    _o.set(_j, "coldefexprs", _p?.coldefexprs);
+    _o.set(_j, "notnulls", _p?.notnulls);
+    _o.set(_j, "ordinalitycol", _p?.ordinalitycol);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  intoClause(_p?: IntoClause): IntoClause {
+    const _j = ({} as IntoClause);
+    _o.set(_j, "rel", _p?.rel);
+    _o.set(_j, "colNames", _p?.colNames);
+    _o.set(_j, "accessMethod", _p?.accessMethod);
+    _o.set(_j, "options", _p?.options);
+    _o.set(_j, "onCommit", _p?.onCommit);
+    _o.set(_j, "tableSpaceName", _p?.tableSpaceName);
+    _o.set(_j, "viewQuery", _p?.viewQuery);
+    _o.set(_j, "skipData", _p?.skipData);
+    return _j;
+  },
+  var(_p?: Var): Var {
+    const _j = ({} as Var);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "varno", _p?.varno);
+    _o.set(_j, "varattno", _p?.varattno);
+    _o.set(_j, "vartype", _p?.vartype);
+    _o.set(_j, "vartypmod", _p?.vartypmod);
+    _o.set(_j, "varcollid", _p?.varcollid);
+    _o.set(_j, "varnullingrels", _p?.varnullingrels);
+    _o.set(_j, "varlevelsup", _p?.varlevelsup);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  param(_p?: Param): Param {
+    const _j = ({} as Param);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "paramkind", _p?.paramkind);
+    _o.set(_j, "paramid", _p?.paramid);
+    _o.set(_j, "paramtype", _p?.paramtype);
+    _o.set(_j, "paramtypmod", _p?.paramtypmod);
+    _o.set(_j, "paramcollid", _p?.paramcollid);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  aggref(_p?: Aggref): Aggref {
+    const _j = ({} as Aggref);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "aggfnoid", _p?.aggfnoid);
+    _o.set(_j, "aggtype", _p?.aggtype);
+    _o.set(_j, "aggcollid", _p?.aggcollid);
+    _o.set(_j, "inputcollid", _p?.inputcollid);
+    _o.set(_j, "aggargtypes", _p?.aggargtypes);
+    _o.set(_j, "aggdirectargs", _p?.aggdirectargs);
+    _o.set(_j, "args", _p?.args);
+    _o.set(_j, "aggorder", _p?.aggorder);
+    _o.set(_j, "aggdistinct", _p?.aggdistinct);
+    _o.set(_j, "aggfilter", _p?.aggfilter);
+    _o.set(_j, "aggstar", _p?.aggstar);
+    _o.set(_j, "aggvariadic", _p?.aggvariadic);
+    _o.set(_j, "aggkind", _p?.aggkind);
+    _o.set(_j, "agglevelsup", _p?.agglevelsup);
+    _o.set(_j, "aggsplit", _p?.aggsplit);
+    _o.set(_j, "aggno", _p?.aggno);
+    _o.set(_j, "aggtransno", _p?.aggtransno);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  groupingFunc(_p?: GroupingFunc): GroupingFunc {
+    const _j = ({} as GroupingFunc);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "args", _p?.args);
+    _o.set(_j, "refs", _p?.refs);
+    _o.set(_j, "agglevelsup", _p?.agglevelsup);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  windowFunc(_p?: WindowFunc): WindowFunc {
+    const _j = ({} as WindowFunc);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "winfnoid", _p?.winfnoid);
+    _o.set(_j, "wintype", _p?.wintype);
+    _o.set(_j, "wincollid", _p?.wincollid);
+    _o.set(_j, "inputcollid", _p?.inputcollid);
+    _o.set(_j, "args", _p?.args);
+    _o.set(_j, "aggfilter", _p?.aggfilter);
+    _o.set(_j, "winref", _p?.winref);
+    _o.set(_j, "winstar", _p?.winstar);
+    _o.set(_j, "winagg", _p?.winagg);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  subscriptingRef(_p?: SubscriptingRef): SubscriptingRef {
+    const _j = ({} as SubscriptingRef);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "refcontainertype", _p?.refcontainertype);
+    _o.set(_j, "refelemtype", _p?.refelemtype);
+    _o.set(_j, "refrestype", _p?.refrestype);
+    _o.set(_j, "reftypmod", _p?.reftypmod);
+    _o.set(_j, "refcollid", _p?.refcollid);
+    _o.set(_j, "refupperindexpr", _p?.refupperindexpr);
+    _o.set(_j, "reflowerindexpr", _p?.reflowerindexpr);
+    _o.set(_j, "refexpr", _p?.refexpr);
+    _o.set(_j, "refassgnexpr", _p?.refassgnexpr);
+    return _j;
+  },
+  funcExpr(_p?: FuncExpr): FuncExpr {
+    const _j = ({} as FuncExpr);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "funcid", _p?.funcid);
+    _o.set(_j, "funcresulttype", _p?.funcresulttype);
+    _o.set(_j, "funcretset", _p?.funcretset);
+    _o.set(_j, "funcvariadic", _p?.funcvariadic);
+    _o.set(_j, "funcformat", _p?.funcformat);
+    _o.set(_j, "funccollid", _p?.funccollid);
+    _o.set(_j, "inputcollid", _p?.inputcollid);
+    _o.set(_j, "args", _p?.args);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  namedArgExpr(_p?: NamedArgExpr): NamedArgExpr {
+    const _j = ({} as NamedArgExpr);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "arg", _p?.arg);
+    _o.set(_j, "name", _p?.name);
+    _o.set(_j, "argnumber", _p?.argnumber);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  opExpr(_p?: OpExpr): OpExpr {
+    const _j = ({} as OpExpr);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "opno", _p?.opno);
+    _o.set(_j, "opresulttype", _p?.opresulttype);
+    _o.set(_j, "opretset", _p?.opretset);
+    _o.set(_j, "opcollid", _p?.opcollid);
+    _o.set(_j, "inputcollid", _p?.inputcollid);
+    _o.set(_j, "args", _p?.args);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  distinctExpr(_p?: DistinctExpr): DistinctExpr {
+    const _j = ({} as DistinctExpr);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "opno", _p?.opno);
+    _o.set(_j, "opresulttype", _p?.opresulttype);
+    _o.set(_j, "opretset", _p?.opretset);
+    _o.set(_j, "opcollid", _p?.opcollid);
+    _o.set(_j, "inputcollid", _p?.inputcollid);
+    _o.set(_j, "args", _p?.args);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  nullIfExpr(_p?: NullIfExpr): NullIfExpr {
+    const _j = ({} as NullIfExpr);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "opno", _p?.opno);
+    _o.set(_j, "opresulttype", _p?.opresulttype);
+    _o.set(_j, "opretset", _p?.opretset);
+    _o.set(_j, "opcollid", _p?.opcollid);
+    _o.set(_j, "inputcollid", _p?.inputcollid);
+    _o.set(_j, "args", _p?.args);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  scalarArrayOpExpr(_p?: ScalarArrayOpExpr): ScalarArrayOpExpr {
+    const _j = ({} as ScalarArrayOpExpr);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "opno", _p?.opno);
+    _o.set(_j, "useOr", _p?.useOr);
+    _o.set(_j, "inputcollid", _p?.inputcollid);
+    _o.set(_j, "args", _p?.args);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  boolExpr(_p?: BoolExpr): BoolExpr {
+    const _j = ({} as BoolExpr);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "boolop", _p?.boolop);
+    _o.set(_j, "args", _p?.args);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  subLink(_p?: SubLink): SubLink {
+    const _j = ({} as SubLink);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "subLinkType", _p?.subLinkType);
+    _o.set(_j, "subLinkId", _p?.subLinkId);
+    _o.set(_j, "testexpr", _p?.testexpr);
+    _o.set(_j, "operName", _p?.operName);
+    _o.set(_j, "subselect", _p?.subselect);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  subPlan(_p?: SubPlan): SubPlan {
+    const _j = ({} as SubPlan);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "subLinkType", _p?.subLinkType);
+    _o.set(_j, "testexpr", _p?.testexpr);
+    _o.set(_j, "paramIds", _p?.paramIds);
+    _o.set(_j, "plan_id", _p?.plan_id);
+    _o.set(_j, "plan_name", _p?.plan_name);
+    _o.set(_j, "firstColType", _p?.firstColType);
+    _o.set(_j, "firstColTypmod", _p?.firstColTypmod);
+    _o.set(_j, "firstColCollation", _p?.firstColCollation);
+    _o.set(_j, "useHashTable", _p?.useHashTable);
+    _o.set(_j, "unknownEqFalse", _p?.unknownEqFalse);
+    _o.set(_j, "parallel_safe", _p?.parallel_safe);
+    _o.set(_j, "setParam", _p?.setParam);
+    _o.set(_j, "parParam", _p?.parParam);
+    _o.set(_j, "args", _p?.args);
+    _o.set(_j, "startup_cost", _p?.startup_cost);
+    _o.set(_j, "per_call_cost", _p?.per_call_cost);
+    return _j;
+  },
+  alternativeSubPlan(_p?: AlternativeSubPlan): AlternativeSubPlan {
+    const _j = ({} as AlternativeSubPlan);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "subplans", _p?.subplans);
+    return _j;
+  },
+  fieldSelect(_p?: FieldSelect): FieldSelect {
+    const _j = ({} as FieldSelect);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "arg", _p?.arg);
+    _o.set(_j, "fieldnum", _p?.fieldnum);
+    _o.set(_j, "resulttype", _p?.resulttype);
+    _o.set(_j, "resulttypmod", _p?.resulttypmod);
+    _o.set(_j, "resultcollid", _p?.resultcollid);
+    return _j;
+  },
+  fieldStore(_p?: FieldStore): FieldStore {
+    const _j = ({} as FieldStore);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "arg", _p?.arg);
+    _o.set(_j, "newvals", _p?.newvals);
+    _o.set(_j, "fieldnums", _p?.fieldnums);
+    _o.set(_j, "resulttype", _p?.resulttype);
+    return _j;
+  },
+  relabelType(_p?: RelabelType): RelabelType {
+    const _j = ({} as RelabelType);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "arg", _p?.arg);
+    _o.set(_j, "resulttype", _p?.resulttype);
+    _o.set(_j, "resulttypmod", _p?.resulttypmod);
+    _o.set(_j, "resultcollid", _p?.resultcollid);
+    _o.set(_j, "relabelformat", _p?.relabelformat);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  coerceViaio(_p?: CoerceViaIO): CoerceViaIO {
+    const _j = ({} as CoerceViaIO);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "arg", _p?.arg);
+    _o.set(_j, "resulttype", _p?.resulttype);
+    _o.set(_j, "resultcollid", _p?.resultcollid);
+    _o.set(_j, "coerceformat", _p?.coerceformat);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  arrayCoerceExpr(_p?: ArrayCoerceExpr): ArrayCoerceExpr {
+    const _j = ({} as ArrayCoerceExpr);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "arg", _p?.arg);
+    _o.set(_j, "elemexpr", _p?.elemexpr);
+    _o.set(_j, "resulttype", _p?.resulttype);
+    _o.set(_j, "resulttypmod", _p?.resulttypmod);
+    _o.set(_j, "resultcollid", _p?.resultcollid);
+    _o.set(_j, "coerceformat", _p?.coerceformat);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  convertRowtypeExpr(_p?: ConvertRowtypeExpr): ConvertRowtypeExpr {
+    const _j = ({} as ConvertRowtypeExpr);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "arg", _p?.arg);
+    _o.set(_j, "resulttype", _p?.resulttype);
+    _o.set(_j, "convertformat", _p?.convertformat);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  collateExpr(_p?: CollateExpr): CollateExpr {
+    const _j = ({} as CollateExpr);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "arg", _p?.arg);
+    _o.set(_j, "collOid", _p?.collOid);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  caseExpr(_p?: CaseExpr): CaseExpr {
+    const _j = ({} as CaseExpr);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "casetype", _p?.casetype);
+    _o.set(_j, "casecollid", _p?.casecollid);
+    _o.set(_j, "arg", _p?.arg);
+    _o.set(_j, "args", _p?.args);
+    _o.set(_j, "defresult", _p?.defresult);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  caseWhen(_p?: CaseWhen): CaseWhen {
+    const _j = ({} as CaseWhen);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "expr", _p?.expr);
+    _o.set(_j, "result", _p?.result);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  caseTestExpr(_p?: CaseTestExpr): CaseTestExpr {
+    const _j = ({} as CaseTestExpr);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "typeId", _p?.typeId);
+    _o.set(_j, "typeMod", _p?.typeMod);
+    _o.set(_j, "collation", _p?.collation);
+    return _j;
+  },
+  arrayExpr(_p?: ArrayExpr): ArrayExpr {
+    const _j = ({} as ArrayExpr);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "array_typeid", _p?.array_typeid);
+    _o.set(_j, "array_collid", _p?.array_collid);
+    _o.set(_j, "element_typeid", _p?.element_typeid);
+    _o.set(_j, "elements", _p?.elements);
+    _o.set(_j, "multidims", _p?.multidims);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  rowExpr(_p?: RowExpr): RowExpr {
+    const _j = ({} as RowExpr);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "args", _p?.args);
+    _o.set(_j, "row_typeid", _p?.row_typeid);
+    _o.set(_j, "row_format", _p?.row_format);
+    _o.set(_j, "colnames", _p?.colnames);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  rowCompareExpr(_p?: RowCompareExpr): RowCompareExpr {
+    const _j = ({} as RowCompareExpr);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "rctype", _p?.rctype);
+    _o.set(_j, "opnos", _p?.opnos);
+    _o.set(_j, "opfamilies", _p?.opfamilies);
+    _o.set(_j, "inputcollids", _p?.inputcollids);
+    _o.set(_j, "largs", _p?.largs);
+    _o.set(_j, "rargs", _p?.rargs);
+    return _j;
+  },
+  coalesceExpr(_p?: CoalesceExpr): CoalesceExpr {
+    const _j = ({} as CoalesceExpr);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "coalescetype", _p?.coalescetype);
+    _o.set(_j, "coalescecollid", _p?.coalescecollid);
+    _o.set(_j, "args", _p?.args);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  minMaxExpr(_p?: MinMaxExpr): MinMaxExpr {
+    const _j = ({} as MinMaxExpr);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "minmaxtype", _p?.minmaxtype);
+    _o.set(_j, "minmaxcollid", _p?.minmaxcollid);
+    _o.set(_j, "inputcollid", _p?.inputcollid);
+    _o.set(_j, "op", _p?.op);
+    _o.set(_j, "args", _p?.args);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  sqlValueFunction(_p?: SQLValueFunction): SQLValueFunction {
+    const _j = ({} as SQLValueFunction);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "op", _p?.op);
+    _o.set(_j, "type", _p?.type);
+    _o.set(_j, "typmod", _p?.typmod);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  xmlExpr(_p?: XmlExpr): XmlExpr {
+    const _j = ({} as XmlExpr);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "op", _p?.op);
+    _o.set(_j, "name", _p?.name);
+    _o.set(_j, "named_args", _p?.named_args);
+    _o.set(_j, "arg_names", _p?.arg_names);
+    _o.set(_j, "args", _p?.args);
+    _o.set(_j, "xmloption", _p?.xmloption);
+    _o.set(_j, "indent", _p?.indent);
+    _o.set(_j, "type", _p?.type);
+    _o.set(_j, "typmod", _p?.typmod);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  jsonFormat(_p?: JsonFormat): JsonFormat {
+    const _j = ({} as JsonFormat);
+    _o.set(_j, "format_type", _p?.format_type);
+    _o.set(_j, "encoding", _p?.encoding);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  jsonReturning(_p?: JsonReturning): JsonReturning {
+    const _j = ({} as JsonReturning);
+    _o.set(_j, "format", _p?.format);
+    _o.set(_j, "typid", _p?.typid);
+    _o.set(_j, "typmod", _p?.typmod);
+    return _j;
+  },
+  jsonValueExpr(_p?: JsonValueExpr): JsonValueExpr {
+    const _j = ({} as JsonValueExpr);
+    _o.set(_j, "raw_expr", _p?.raw_expr);
+    _o.set(_j, "formatted_expr", _p?.formatted_expr);
+    _o.set(_j, "format", _p?.format);
+    return _j;
+  },
+  jsonConstructorExpr(_p?: JsonConstructorExpr): JsonConstructorExpr {
+    const _j = ({} as JsonConstructorExpr);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "type", _p?.type);
+    _o.set(_j, "args", _p?.args);
+    _o.set(_j, "func", _p?.func);
+    _o.set(_j, "coercion", _p?.coercion);
+    _o.set(_j, "returning", _p?.returning);
+    _o.set(_j, "absent_on_null", _p?.absent_on_null);
+    _o.set(_j, "unique", _p?.unique);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  jsonIsPredicate(_p?: JsonIsPredicate): JsonIsPredicate {
+    const _j = ({} as JsonIsPredicate);
+    _o.set(_j, "expr", _p?.expr);
+    _o.set(_j, "format", _p?.format);
+    _o.set(_j, "item_type", _p?.item_type);
+    _o.set(_j, "unique_keys", _p?.unique_keys);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  nullTest(_p?: NullTest): NullTest {
+    const _j = ({} as NullTest);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "arg", _p?.arg);
+    _o.set(_j, "nulltesttype", _p?.nulltesttype);
+    _o.set(_j, "argisrow", _p?.argisrow);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  booleanTest(_p?: BooleanTest): BooleanTest {
+    const _j = ({} as BooleanTest);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "arg", _p?.arg);
+    _o.set(_j, "booltesttype", _p?.booltesttype);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  coerceToDomain(_p?: CoerceToDomain): CoerceToDomain {
+    const _j = ({} as CoerceToDomain);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "arg", _p?.arg);
+    _o.set(_j, "resulttype", _p?.resulttype);
+    _o.set(_j, "resulttypmod", _p?.resulttypmod);
+    _o.set(_j, "resultcollid", _p?.resultcollid);
+    _o.set(_j, "coercionformat", _p?.coercionformat);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  coerceToDomainValue(_p?: CoerceToDomainValue): CoerceToDomainValue {
+    const _j = ({} as CoerceToDomainValue);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "typeId", _p?.typeId);
+    _o.set(_j, "typeMod", _p?.typeMod);
+    _o.set(_j, "collation", _p?.collation);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  setToDefault(_p?: SetToDefault): SetToDefault {
+    const _j = ({} as SetToDefault);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "typeId", _p?.typeId);
+    _o.set(_j, "typeMod", _p?.typeMod);
+    _o.set(_j, "collation", _p?.collation);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  currentOfExpr(_p?: CurrentOfExpr): CurrentOfExpr {
+    const _j = ({} as CurrentOfExpr);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "cvarno", _p?.cvarno);
+    _o.set(_j, "cursor_name", _p?.cursor_name);
+    _o.set(_j, "cursor_param", _p?.cursor_param);
+    return _j;
+  },
+  nextValueExpr(_p?: NextValueExpr): NextValueExpr {
+    const _j = ({} as NextValueExpr);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "seqid", _p?.seqid);
+    _o.set(_j, "typeId", _p?.typeId);
+    return _j;
+  },
+  inferenceElem(_p?: InferenceElem): InferenceElem {
+    const _j = ({} as InferenceElem);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "expr", _p?.expr);
+    _o.set(_j, "infercollid", _p?.infercollid);
+    _o.set(_j, "inferopclass", _p?.inferopclass);
+    return _j;
+  },
+  targetEntry(_p?: TargetEntry): TargetEntry {
+    const _j = ({} as TargetEntry);
+    _o.set(_j, "xpr", _p?.xpr);
+    _o.set(_j, "expr", _p?.expr);
+    _o.set(_j, "resno", _p?.resno);
+    _o.set(_j, "resname", _p?.resname);
+    _o.set(_j, "ressortgroupref", _p?.ressortgroupref);
+    _o.set(_j, "resorigtbl", _p?.resorigtbl);
+    _o.set(_j, "resorigcol", _p?.resorigcol);
+    _o.set(_j, "resjunk", _p?.resjunk);
+    return _j;
+  },
+  rangeTblRef(_p?: RangeTblRef): RangeTblRef {
+    const _j = ({} as RangeTblRef);
+    _o.set(_j, "rtindex", _p?.rtindex);
+    return _j;
+  },
+  joinExpr(_p?: JoinExpr): JoinExpr {
+    const _j = ({} as JoinExpr);
+    _o.set(_j, "jointype", _p?.jointype);
+    _o.set(_j, "isNatural", _p?.isNatural);
+    _o.set(_j, "larg", _p?.larg);
+    _o.set(_j, "rarg", _p?.rarg);
+    _o.set(_j, "usingClause", _p?.usingClause);
+    _o.set(_j, "join_using_alias", _p?.join_using_alias);
+    _o.set(_j, "quals", _p?.quals);
+    _o.set(_j, "alias", _p?.alias);
+    _o.set(_j, "rtindex", _p?.rtindex);
+    return _j;
+  },
+  fromExpr(_p?: FromExpr): FromExpr {
+    const _j = ({} as FromExpr);
+    _o.set(_j, "fromlist", _p?.fromlist);
+    _o.set(_j, "quals", _p?.quals);
+    return _j;
+  },
+  onConflictExpr(_p?: OnConflictExpr): OnConflictExpr {
+    const _j = ({} as OnConflictExpr);
+    _o.set(_j, "action", _p?.action);
+    _o.set(_j, "arbiterElems", _p?.arbiterElems);
+    _o.set(_j, "arbiterWhere", _p?.arbiterWhere);
+    _o.set(_j, "constraint", _p?.constraint);
+    _o.set(_j, "onConflictSet", _p?.onConflictSet);
+    _o.set(_j, "onConflictWhere", _p?.onConflictWhere);
+    _o.set(_j, "exclRelIndex", _p?.exclRelIndex);
+    _o.set(_j, "exclRelTlist", _p?.exclRelTlist);
+    return _j;
+  },
+  query(_p?: Query): Query {
+    const _j = ({} as Query);
+    _o.set(_j, "commandType", _p?.commandType);
+    _o.set(_j, "querySource", _p?.querySource);
+    _o.set(_j, "canSetTag", _p?.canSetTag);
+    _o.set(_j, "utilityStmt", _p?.utilityStmt);
+    _o.set(_j, "resultRelation", _p?.resultRelation);
+    _o.set(_j, "hasAggs", _p?.hasAggs);
+    _o.set(_j, "hasWindowFuncs", _p?.hasWindowFuncs);
+    _o.set(_j, "hasTargetSRFs", _p?.hasTargetSRFs);
+    _o.set(_j, "hasSubLinks", _p?.hasSubLinks);
+    _o.set(_j, "hasDistinctOn", _p?.hasDistinctOn);
+    _o.set(_j, "hasRecursive", _p?.hasRecursive);
+    _o.set(_j, "hasModifyingCTE", _p?.hasModifyingCTE);
+    _o.set(_j, "hasForUpdate", _p?.hasForUpdate);
+    _o.set(_j, "hasRowSecurity", _p?.hasRowSecurity);
+    _o.set(_j, "isReturn", _p?.isReturn);
+    _o.set(_j, "cteList", _p?.cteList);
+    _o.set(_j, "rtable", _p?.rtable);
+    _o.set(_j, "rteperminfos", _p?.rteperminfos);
+    _o.set(_j, "jointree", _p?.jointree);
+    _o.set(_j, "mergeActionList", _p?.mergeActionList);
+    _o.set(_j, "mergeUseOuterJoin", _p?.mergeUseOuterJoin);
+    _o.set(_j, "targetList", _p?.targetList);
+    _o.set(_j, "override", _p?.override);
+    _o.set(_j, "onConflict", _p?.onConflict);
+    _o.set(_j, "returningList", _p?.returningList);
+    _o.set(_j, "groupClause", _p?.groupClause);
+    _o.set(_j, "groupDistinct", _p?.groupDistinct);
+    _o.set(_j, "groupingSets", _p?.groupingSets);
+    _o.set(_j, "havingQual", _p?.havingQual);
+    _o.set(_j, "windowClause", _p?.windowClause);
+    _o.set(_j, "distinctClause", _p?.distinctClause);
+    _o.set(_j, "sortClause", _p?.sortClause);
+    _o.set(_j, "limitOffset", _p?.limitOffset);
+    _o.set(_j, "limitCount", _p?.limitCount);
+    _o.set(_j, "limitOption", _p?.limitOption);
+    _o.set(_j, "rowMarks", _p?.rowMarks);
+    _o.set(_j, "setOperations", _p?.setOperations);
+    _o.set(_j, "constraintDeps", _p?.constraintDeps);
+    _o.set(_j, "withCheckOptions", _p?.withCheckOptions);
+    _o.set(_j, "stmt_location", _p?.stmt_location);
+    _o.set(_j, "stmt_len", _p?.stmt_len);
     return _j;
   },
   typeName(_p?: TypeName): TypeName {
@@ -838,1991 +708,1619 @@ export default {
     _o.set(_j, "location", _p?.location);
     return _j;
   },
-  columnRef(_p?: ColumnRef["ColumnRef"]): ColumnRef {
-    const _j = ({
-      ColumnRef: {}
-    } as ColumnRef);
-    _o.set(_j, "ColumnRef.fields", _p?.fields);
-    _o.set(_j, "ColumnRef.location", _p?.location);
-    return _j;
-  },
-  paramRef(_p?: ParamRef["ParamRef"]): ParamRef {
-    const _j = ({
-      ParamRef: {}
-    } as ParamRef);
-    _o.set(_j, "ParamRef.number", _p?.number);
-    _o.set(_j, "ParamRef.location", _p?.location);
-    return _j;
-  },
-  aExpr(_p?: A_Expr["A_Expr"]): A_Expr {
-    const _j = ({
-      A_Expr: {}
-    } as A_Expr);
-    _o.set(_j, "A_Expr.kind", _p?.kind);
-    _o.set(_j, "A_Expr.name", _p?.name);
-    _o.set(_j, "A_Expr.lexpr", _p?.lexpr);
-    _o.set(_j, "A_Expr.rexpr", _p?.rexpr);
-    _o.set(_j, "A_Expr.location", _p?.location);
-    return _j;
-  },
-  typeCast(_p?: TypeCast["TypeCast"]): TypeCast {
-    const _j = ({
-      TypeCast: {}
-    } as TypeCast);
-    _o.set(_j, "TypeCast.arg", _p?.arg);
-    _o.set(_j, "TypeCast.typeName", _p?.typeName);
-    _o.set(_j, "TypeCast.location", _p?.location);
-    return _j;
-  },
-  collateClause(_p?: CollateClause["CollateClause"]): CollateClause {
-    const _j = ({
-      CollateClause: {}
-    } as CollateClause);
-    _o.set(_j, "CollateClause.arg", _p?.arg);
-    _o.set(_j, "CollateClause.collname", _p?.collname);
-    _o.set(_j, "CollateClause.location", _p?.location);
-    return _j;
-  },
-  roleSpec(_p?: RoleSpec["RoleSpec"]): RoleSpec {
-    const _j = ({
-      RoleSpec: {}
-    } as RoleSpec);
-    _o.set(_j, "RoleSpec.roletype", _p?.roletype);
-    _o.set(_j, "RoleSpec.rolename", _p?.rolename);
-    _o.set(_j, "RoleSpec.location", _p?.location);
-    return _j;
-  },
-  funcCall(_p?: FuncCall["FuncCall"]): FuncCall {
-    const _j = ({
-      FuncCall: {}
-    } as FuncCall);
-    _o.set(_j, "FuncCall.funcname", _p?.funcname);
-    _o.set(_j, "FuncCall.args", _p?.args);
-    _o.set(_j, "FuncCall.agg_order", _p?.agg_order);
-    _o.set(_j, "FuncCall.agg_filter", _p?.agg_filter);
-    _o.set(_j, "FuncCall.over", _p?.over);
-    _o.set(_j, "FuncCall.agg_within_group", _p?.agg_within_group);
-    _o.set(_j, "FuncCall.agg_star", _p?.agg_star);
-    _o.set(_j, "FuncCall.agg_distinct", _p?.agg_distinct);
-    _o.set(_j, "FuncCall.func_variadic", _p?.func_variadic);
-    _o.set(_j, "FuncCall.funcformat", _p?.funcformat);
-    _o.set(_j, "FuncCall.location", _p?.location);
-    return _j;
-  },
-  aStar(_p?: A_Star["A_Star"]): A_Star {
-    const _j = ({
-      A_Star: {}
-    } as A_Star);
-    return _j;
-  },
-  aIndices(_p?: A_Indices["A_Indices"]): A_Indices {
-    const _j = ({
-      A_Indices: {}
-    } as A_Indices);
-    _o.set(_j, "A_Indices.is_slice", _p?.is_slice);
-    _o.set(_j, "A_Indices.lidx", _p?.lidx);
-    _o.set(_j, "A_Indices.uidx", _p?.uidx);
-    return _j;
-  },
-  aIndirection(_p?: A_Indirection["A_Indirection"]): A_Indirection {
-    const _j = ({
-      A_Indirection: {}
-    } as A_Indirection);
-    _o.set(_j, "A_Indirection.arg", _p?.arg);
-    _o.set(_j, "A_Indirection.indirection", _p?.indirection);
-    return _j;
-  },
-  aArrayExpr(_p?: A_ArrayExpr["A_ArrayExpr"]): A_ArrayExpr {
-    const _j = ({
-      A_ArrayExpr: {}
-    } as A_ArrayExpr);
-    _o.set(_j, "A_ArrayExpr.elements", _p?.elements);
-    _o.set(_j, "A_ArrayExpr.location", _p?.location);
-    return _j;
+  columnRef(_p?: ColumnRef): ColumnRef {
+    const _j = ({} as ColumnRef);
+    _o.set(_j, "fields", _p?.fields);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  paramRef(_p?: ParamRef): ParamRef {
+    const _j = ({} as ParamRef);
+    _o.set(_j, "number", _p?.number);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  aExpr(_p?: A_Expr): A_Expr {
+    const _j = ({} as A_Expr);
+    _o.set(_j, "kind", _p?.kind);
+    _o.set(_j, "name", _p?.name);
+    _o.set(_j, "lexpr", _p?.lexpr);
+    _o.set(_j, "rexpr", _p?.rexpr);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  typeCast(_p?: TypeCast): TypeCast {
+    const _j = ({} as TypeCast);
+    _o.set(_j, "arg", _p?.arg);
+    _o.set(_j, "typeName", _p?.typeName);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  collateClause(_p?: CollateClause): CollateClause {
+    const _j = ({} as CollateClause);
+    _o.set(_j, "arg", _p?.arg);
+    _o.set(_j, "collname", _p?.collname);
+    _o.set(_j, "location", _p?.location);
+    return _j;
   },
-  resTarget(_p?: ResTarget["ResTarget"]): ResTarget {
-    const _j = ({
-      ResTarget: {}
-    } as ResTarget);
-    _o.set(_j, "ResTarget.name", _p?.name);
-    _o.set(_j, "ResTarget.indirection", _p?.indirection);
-    _o.set(_j, "ResTarget.val", _p?.val);
-    _o.set(_j, "ResTarget.location", _p?.location);
-    return _j;
-  },
-  multiAssignRef(_p?: MultiAssignRef["MultiAssignRef"]): MultiAssignRef {
-    const _j = ({
-      MultiAssignRef: {}
-    } as MultiAssignRef);
-    _o.set(_j, "MultiAssignRef.source", _p?.source);
-    _o.set(_j, "MultiAssignRef.colno", _p?.colno);
-    _o.set(_j, "MultiAssignRef.ncolumns", _p?.ncolumns);
-    return _j;
-  },
-  sortBy(_p?: SortBy["SortBy"]): SortBy {
-    const _j = ({
-      SortBy: {}
-    } as SortBy);
-    _o.set(_j, "SortBy.node", _p?.node);
-    _o.set(_j, "SortBy.sortby_dir", _p?.sortby_dir);
-    _o.set(_j, "SortBy.sortby_nulls", _p?.sortby_nulls);
-    _o.set(_j, "SortBy.useOp", _p?.useOp);
-    _o.set(_j, "SortBy.location", _p?.location);
-    return _j;
-  },
-  windowDef(_p?: WindowDef["WindowDef"]): WindowDef {
-    const _j = ({
-      WindowDef: {}
-    } as WindowDef);
-    _o.set(_j, "WindowDef.name", _p?.name);
-    _o.set(_j, "WindowDef.refname", _p?.refname);
-    _o.set(_j, "WindowDef.partitionClause", _p?.partitionClause);
-    _o.set(_j, "WindowDef.orderClause", _p?.orderClause);
-    _o.set(_j, "WindowDef.frameOptions", _p?.frameOptions);
-    _o.set(_j, "WindowDef.startOffset", _p?.startOffset);
-    _o.set(_j, "WindowDef.endOffset", _p?.endOffset);
-    _o.set(_j, "WindowDef.location", _p?.location);
-    return _j;
-  },
-  rangeSubselect(_p?: RangeSubselect["RangeSubselect"]): RangeSubselect {
-    const _j = ({
-      RangeSubselect: {}
-    } as RangeSubselect);
-    _o.set(_j, "RangeSubselect.lateral", _p?.lateral);
-    _o.set(_j, "RangeSubselect.subquery", _p?.subquery);
-    _o.set(_j, "RangeSubselect.alias", _p?.alias);
-    return _j;
-  },
-  rangeFunction(_p?: RangeFunction["RangeFunction"]): RangeFunction {
-    const _j = ({
-      RangeFunction: {}
-    } as RangeFunction);
-    _o.set(_j, "RangeFunction.lateral", _p?.lateral);
-    _o.set(_j, "RangeFunction.ordinality", _p?.ordinality);
-    _o.set(_j, "RangeFunction.is_rowsfrom", _p?.is_rowsfrom);
-    _o.set(_j, "RangeFunction.functions", _p?.functions);
-    _o.set(_j, "RangeFunction.alias", _p?.alias);
-    _o.set(_j, "RangeFunction.coldeflist", _p?.coldeflist);
-    return _j;
-  },
-  rangeTableFunc(_p?: RangeTableFunc["RangeTableFunc"]): RangeTableFunc {
-    const _j = ({
-      RangeTableFunc: {}
-    } as RangeTableFunc);
-    _o.set(_j, "RangeTableFunc.lateral", _p?.lateral);
-    _o.set(_j, "RangeTableFunc.docexpr", _p?.docexpr);
-    _o.set(_j, "RangeTableFunc.rowexpr", _p?.rowexpr);
-    _o.set(_j, "RangeTableFunc.namespaces", _p?.namespaces);
-    _o.set(_j, "RangeTableFunc.columns", _p?.columns);
-    _o.set(_j, "RangeTableFunc.alias", _p?.alias);
-    _o.set(_j, "RangeTableFunc.location", _p?.location);
-    return _j;
-  },
-  rangeTableFuncCol(_p?: RangeTableFuncCol["RangeTableFuncCol"]): RangeTableFuncCol {
-    const _j = ({
-      RangeTableFuncCol: {}
-    } as RangeTableFuncCol);
-    _o.set(_j, "RangeTableFuncCol.colname", _p?.colname);
-    _o.set(_j, "RangeTableFuncCol.typeName", _p?.typeName);
-    _o.set(_j, "RangeTableFuncCol.for_ordinality", _p?.for_ordinality);
-    _o.set(_j, "RangeTableFuncCol.is_not_null", _p?.is_not_null);
-    _o.set(_j, "RangeTableFuncCol.colexpr", _p?.colexpr);
-    _o.set(_j, "RangeTableFuncCol.coldefexpr", _p?.coldefexpr);
-    _o.set(_j, "RangeTableFuncCol.location", _p?.location);
-    return _j;
-  },
-  rangeTableSample(_p?: RangeTableSample["RangeTableSample"]): RangeTableSample {
-    const _j = ({
-      RangeTableSample: {}
-    } as RangeTableSample);
-    _o.set(_j, "RangeTableSample.relation", _p?.relation);
-    _o.set(_j, "RangeTableSample.method", _p?.method);
-    _o.set(_j, "RangeTableSample.args", _p?.args);
-    _o.set(_j, "RangeTableSample.repeatable", _p?.repeatable);
-    _o.set(_j, "RangeTableSample.location", _p?.location);
-    return _j;
-  },
-  columnDef(_p?: ColumnDef["ColumnDef"]): ColumnDef {
-    const _j = ({
-      ColumnDef: {}
-    } as ColumnDef);
-    _o.set(_j, "ColumnDef.colname", _p?.colname);
-    _o.set(_j, "ColumnDef.typeName", _p?.typeName);
-    _o.set(_j, "ColumnDef.compression", _p?.compression);
-    _o.set(_j, "ColumnDef.inhcount", _p?.inhcount);
-    _o.set(_j, "ColumnDef.is_local", _p?.is_local);
-    _o.set(_j, "ColumnDef.is_not_null", _p?.is_not_null);
-    _o.set(_j, "ColumnDef.is_from_type", _p?.is_from_type);
-    _o.set(_j, "ColumnDef.storage", _p?.storage);
-    _o.set(_j, "ColumnDef.storage_name", _p?.storage_name);
-    _o.set(_j, "ColumnDef.raw_default", _p?.raw_default);
-    _o.set(_j, "ColumnDef.cooked_default", _p?.cooked_default);
-    _o.set(_j, "ColumnDef.identity", _p?.identity);
-    _o.set(_j, "ColumnDef.identitySequence", _p?.identitySequence);
-    _o.set(_j, "ColumnDef.generated", _p?.generated);
-    _o.set(_j, "ColumnDef.collClause", _p?.collClause);
-    _o.set(_j, "ColumnDef.collOid", _p?.collOid);
-    _o.set(_j, "ColumnDef.constraints", _p?.constraints);
-    _o.set(_j, "ColumnDef.fdwoptions", _p?.fdwoptions);
-    _o.set(_j, "ColumnDef.location", _p?.location);
-    return _j;
-  },
-  tableLikeClause(_p?: TableLikeClause["TableLikeClause"]): TableLikeClause {
-    const _j = ({
-      TableLikeClause: {}
-    } as TableLikeClause);
-    _o.set(_j, "TableLikeClause.relation", _p?.relation);
-    _o.set(_j, "TableLikeClause.options", _p?.options);
-    _o.set(_j, "TableLikeClause.relationOid", _p?.relationOid);
-    return _j;
-  },
-  indexElem(_p?: IndexElem["IndexElem"]): IndexElem {
-    const _j = ({
-      IndexElem: {}
-    } as IndexElem);
-    _o.set(_j, "IndexElem.name", _p?.name);
-    _o.set(_j, "IndexElem.expr", _p?.expr);
-    _o.set(_j, "IndexElem.indexcolname", _p?.indexcolname);
-    _o.set(_j, "IndexElem.collation", _p?.collation);
-    _o.set(_j, "IndexElem.opclass", _p?.opclass);
-    _o.set(_j, "IndexElem.opclassopts", _p?.opclassopts);
-    _o.set(_j, "IndexElem.ordering", _p?.ordering);
-    _o.set(_j, "IndexElem.nulls_ordering", _p?.nulls_ordering);
-    return _j;
-  },
-  defElem(_p?: DefElem["DefElem"]): DefElem {
-    const _j = ({
-      DefElem: {}
-    } as DefElem);
-    _o.set(_j, "DefElem.defnamespace", _p?.defnamespace);
-    _o.set(_j, "DefElem.defname", _p?.defname);
-    _o.set(_j, "DefElem.arg", _p?.arg);
-    _o.set(_j, "DefElem.defaction", _p?.defaction);
-    _o.set(_j, "DefElem.location", _p?.location);
-    return _j;
-  },
-  lockingClause(_p?: LockingClause["LockingClause"]): LockingClause {
-    const _j = ({
-      LockingClause: {}
-    } as LockingClause);
-    _o.set(_j, "LockingClause.lockedRels", _p?.lockedRels);
-    _o.set(_j, "LockingClause.strength", _p?.strength);
-    _o.set(_j, "LockingClause.waitPolicy", _p?.waitPolicy);
-    return _j;
-  },
-  xmlSerialize(_p?: XmlSerialize["XmlSerialize"]): XmlSerialize {
-    const _j = ({
-      XmlSerialize: {}
-    } as XmlSerialize);
-    _o.set(_j, "XmlSerialize.xmloption", _p?.xmloption);
-    _o.set(_j, "XmlSerialize.expr", _p?.expr);
-    _o.set(_j, "XmlSerialize.typeName", _p?.typeName);
-    _o.set(_j, "XmlSerialize.indent", _p?.indent);
-    _o.set(_j, "XmlSerialize.location", _p?.location);
-    return _j;
-  },
-  partitionElem(_p?: PartitionElem["PartitionElem"]): PartitionElem {
-    const _j = ({
-      PartitionElem: {}
-    } as PartitionElem);
-    _o.set(_j, "PartitionElem.name", _p?.name);
-    _o.set(_j, "PartitionElem.expr", _p?.expr);
-    _o.set(_j, "PartitionElem.collation", _p?.collation);
-    _o.set(_j, "PartitionElem.opclass", _p?.opclass);
-    _o.set(_j, "PartitionElem.location", _p?.location);
-    return _j;
-  },
-  partitionSpec(_p?: PartitionSpec["PartitionSpec"]): PartitionSpec {
-    const _j = ({
-      PartitionSpec: {}
-    } as PartitionSpec);
-    _o.set(_j, "PartitionSpec.strategy", _p?.strategy);
-    _o.set(_j, "PartitionSpec.partParams", _p?.partParams);
-    _o.set(_j, "PartitionSpec.location", _p?.location);
-    return _j;
-  },
-  partitionBoundSpec(_p?: PartitionBoundSpec["PartitionBoundSpec"]): PartitionBoundSpec {
-    const _j = ({
-      PartitionBoundSpec: {}
-    } as PartitionBoundSpec);
-    _o.set(_j, "PartitionBoundSpec.strategy", _p?.strategy);
-    _o.set(_j, "PartitionBoundSpec.is_default", _p?.is_default);
-    _o.set(_j, "PartitionBoundSpec.modulus", _p?.modulus);
-    _o.set(_j, "PartitionBoundSpec.remainder", _p?.remainder);
-    _o.set(_j, "PartitionBoundSpec.listdatums", _p?.listdatums);
-    _o.set(_j, "PartitionBoundSpec.lowerdatums", _p?.lowerdatums);
-    _o.set(_j, "PartitionBoundSpec.upperdatums", _p?.upperdatums);
-    _o.set(_j, "PartitionBoundSpec.location", _p?.location);
-    return _j;
-  },
-  partitionRangeDatum(_p?: PartitionRangeDatum["PartitionRangeDatum"]): PartitionRangeDatum {
-    const _j = ({
-      PartitionRangeDatum: {}
-    } as PartitionRangeDatum);
-    _o.set(_j, "PartitionRangeDatum.kind", _p?.kind);
-    _o.set(_j, "PartitionRangeDatum.value", _p?.value);
-    _o.set(_j, "PartitionRangeDatum.location", _p?.location);
-    return _j;
-  },
-  partitionCmd(_p?: PartitionCmd["PartitionCmd"]): PartitionCmd {
-    const _j = ({
-      PartitionCmd: {}
-    } as PartitionCmd);
-    _o.set(_j, "PartitionCmd.name", _p?.name);
-    _o.set(_j, "PartitionCmd.bound", _p?.bound);
-    _o.set(_j, "PartitionCmd.concurrent", _p?.concurrent);
-    return _j;
-  },
-  rangeTblEntry(_p?: RangeTblEntry["RangeTblEntry"]): RangeTblEntry {
-    const _j = ({
-      RangeTblEntry: {}
-    } as RangeTblEntry);
-    _o.set(_j, "RangeTblEntry.rtekind", _p?.rtekind);
-    _o.set(_j, "RangeTblEntry.relid", _p?.relid);
-    _o.set(_j, "RangeTblEntry.relkind", _p?.relkind);
-    _o.set(_j, "RangeTblEntry.rellockmode", _p?.rellockmode);
-    _o.set(_j, "RangeTblEntry.tablesample", _p?.tablesample);
-    _o.set(_j, "RangeTblEntry.perminfoindex", _p?.perminfoindex);
-    _o.set(_j, "RangeTblEntry.subquery", _p?.subquery);
-    _o.set(_j, "RangeTblEntry.security_barrier", _p?.security_barrier);
-    _o.set(_j, "RangeTblEntry.jointype", _p?.jointype);
-    _o.set(_j, "RangeTblEntry.joinmergedcols", _p?.joinmergedcols);
-    _o.set(_j, "RangeTblEntry.joinaliasvars", _p?.joinaliasvars);
-    _o.set(_j, "RangeTblEntry.joinleftcols", _p?.joinleftcols);
-    _o.set(_j, "RangeTblEntry.joinrightcols", _p?.joinrightcols);
-    _o.set(_j, "RangeTblEntry.join_using_alias", _p?.join_using_alias);
-    _o.set(_j, "RangeTblEntry.functions", _p?.functions);
-    _o.set(_j, "RangeTblEntry.funcordinality", _p?.funcordinality);
-    _o.set(_j, "RangeTblEntry.tablefunc", _p?.tablefunc);
-    _o.set(_j, "RangeTblEntry.values_lists", _p?.values_lists);
-    _o.set(_j, "RangeTblEntry.ctename", _p?.ctename);
-    _o.set(_j, "RangeTblEntry.ctelevelsup", _p?.ctelevelsup);
-    _o.set(_j, "RangeTblEntry.self_reference", _p?.self_reference);
-    _o.set(_j, "RangeTblEntry.coltypes", _p?.coltypes);
-    _o.set(_j, "RangeTblEntry.coltypmods", _p?.coltypmods);
-    _o.set(_j, "RangeTblEntry.colcollations", _p?.colcollations);
-    _o.set(_j, "RangeTblEntry.enrname", _p?.enrname);
-    _o.set(_j, "RangeTblEntry.enrtuples", _p?.enrtuples);
-    _o.set(_j, "RangeTblEntry.alias", _p?.alias);
-    _o.set(_j, "RangeTblEntry.eref", _p?.eref);
-    _o.set(_j, "RangeTblEntry.lateral", _p?.lateral);
-    _o.set(_j, "RangeTblEntry.inh", _p?.inh);
-    _o.set(_j, "RangeTblEntry.inFromCl", _p?.inFromCl);
-    _o.set(_j, "RangeTblEntry.securityQuals", _p?.securityQuals);
-    return _j;
-  },
-  rtePermissionInfo(_p?: RTEPermissionInfo["RTEPermissionInfo"]): RTEPermissionInfo {
-    const _j = ({
-      RTEPermissionInfo: {}
-    } as RTEPermissionInfo);
-    _o.set(_j, "RTEPermissionInfo.relid", _p?.relid);
-    _o.set(_j, "RTEPermissionInfo.inh", _p?.inh);
-    _o.set(_j, "RTEPermissionInfo.requiredPerms", _p?.requiredPerms);
-    _o.set(_j, "RTEPermissionInfo.checkAsUser", _p?.checkAsUser);
-    _o.set(_j, "RTEPermissionInfo.selectedCols", _p?.selectedCols);
-    _o.set(_j, "RTEPermissionInfo.insertedCols", _p?.insertedCols);
-    _o.set(_j, "RTEPermissionInfo.updatedCols", _p?.updatedCols);
-    return _j;
-  },
-  rangeTblFunction(_p?: RangeTblFunction["RangeTblFunction"]): RangeTblFunction {
-    const _j = ({
-      RangeTblFunction: {}
-    } as RangeTblFunction);
-    _o.set(_j, "RangeTblFunction.funcexpr", _p?.funcexpr);
-    _o.set(_j, "RangeTblFunction.funccolcount", _p?.funccolcount);
-    _o.set(_j, "RangeTblFunction.funccolnames", _p?.funccolnames);
-    _o.set(_j, "RangeTblFunction.funccoltypes", _p?.funccoltypes);
-    _o.set(_j, "RangeTblFunction.funccoltypmods", _p?.funccoltypmods);
-    _o.set(_j, "RangeTblFunction.funccolcollations", _p?.funccolcollations);
-    _o.set(_j, "RangeTblFunction.funcparams", _p?.funcparams);
-    return _j;
-  },
-  tableSampleClause(_p?: TableSampleClause["TableSampleClause"]): TableSampleClause {
-    const _j = ({
-      TableSampleClause: {}
-    } as TableSampleClause);
-    _o.set(_j, "TableSampleClause.tsmhandler", _p?.tsmhandler);
-    _o.set(_j, "TableSampleClause.args", _p?.args);
-    _o.set(_j, "TableSampleClause.repeatable", _p?.repeatable);
-    return _j;
-  },
-  withCheckOption(_p?: WithCheckOption["WithCheckOption"]): WithCheckOption {
-    const _j = ({
-      WithCheckOption: {}
-    } as WithCheckOption);
-    _o.set(_j, "WithCheckOption.kind", _p?.kind);
-    _o.set(_j, "WithCheckOption.relname", _p?.relname);
-    _o.set(_j, "WithCheckOption.polname", _p?.polname);
-    _o.set(_j, "WithCheckOption.qual", _p?.qual);
-    _o.set(_j, "WithCheckOption.cascaded", _p?.cascaded);
-    return _j;
-  },
-  sortGroupClause(_p?: SortGroupClause["SortGroupClause"]): SortGroupClause {
-    const _j = ({
-      SortGroupClause: {}
-    } as SortGroupClause);
-    _o.set(_j, "SortGroupClause.tleSortGroupRef", _p?.tleSortGroupRef);
-    _o.set(_j, "SortGroupClause.eqop", _p?.eqop);
-    _o.set(_j, "SortGroupClause.sortop", _p?.sortop);
-    _o.set(_j, "SortGroupClause.nulls_first", _p?.nulls_first);
-    _o.set(_j, "SortGroupClause.hashable", _p?.hashable);
-    return _j;
-  },
-  groupingSet(_p?: GroupingSet["GroupingSet"]): GroupingSet {
-    const _j = ({
-      GroupingSet: {}
-    } as GroupingSet);
-    _o.set(_j, "GroupingSet.kind", _p?.kind);
-    _o.set(_j, "GroupingSet.content", _p?.content);
-    _o.set(_j, "GroupingSet.location", _p?.location);
-    return _j;
-  },
-  windowClause(_p?: WindowClause["WindowClause"]): WindowClause {
-    const _j = ({
-      WindowClause: {}
-    } as WindowClause);
-    _o.set(_j, "WindowClause.name", _p?.name);
-    _o.set(_j, "WindowClause.refname", _p?.refname);
-    _o.set(_j, "WindowClause.partitionClause", _p?.partitionClause);
-    _o.set(_j, "WindowClause.orderClause", _p?.orderClause);
-    _o.set(_j, "WindowClause.frameOptions", _p?.frameOptions);
-    _o.set(_j, "WindowClause.startOffset", _p?.startOffset);
-    _o.set(_j, "WindowClause.endOffset", _p?.endOffset);
-    _o.set(_j, "WindowClause.runCondition", _p?.runCondition);
-    _o.set(_j, "WindowClause.startInRangeFunc", _p?.startInRangeFunc);
-    _o.set(_j, "WindowClause.endInRangeFunc", _p?.endInRangeFunc);
-    _o.set(_j, "WindowClause.inRangeColl", _p?.inRangeColl);
-    _o.set(_j, "WindowClause.inRangeAsc", _p?.inRangeAsc);
-    _o.set(_j, "WindowClause.inRangeNullsFirst", _p?.inRangeNullsFirst);
-    _o.set(_j, "WindowClause.winref", _p?.winref);
-    _o.set(_j, "WindowClause.copiedOrder", _p?.copiedOrder);
-    return _j;
-  },
-  rowMarkClause(_p?: RowMarkClause["RowMarkClause"]): RowMarkClause {
-    const _j = ({
-      RowMarkClause: {}
-    } as RowMarkClause);
-    _o.set(_j, "RowMarkClause.rti", _p?.rti);
-    _o.set(_j, "RowMarkClause.strength", _p?.strength);
-    _o.set(_j, "RowMarkClause.waitPolicy", _p?.waitPolicy);
-    _o.set(_j, "RowMarkClause.pushedDown", _p?.pushedDown);
-    return _j;
-  },
-  withClause(_p?: WithClause["WithClause"]): WithClause {
-    const _j = ({
-      WithClause: {}
-    } as WithClause);
-    _o.set(_j, "WithClause.ctes", _p?.ctes);
-    _o.set(_j, "WithClause.recursive", _p?.recursive);
-    _o.set(_j, "WithClause.location", _p?.location);
-    return _j;
-  },
-  inferClause(_p?: InferClause["InferClause"]): InferClause {
-    const _j = ({
-      InferClause: {}
-    } as InferClause);
-    _o.set(_j, "InferClause.indexElems", _p?.indexElems);
-    _o.set(_j, "InferClause.whereClause", _p?.whereClause);
-    _o.set(_j, "InferClause.conname", _p?.conname);
-    _o.set(_j, "InferClause.location", _p?.location);
-    return _j;
-  },
-  onConflictClause(_p?: OnConflictClause["OnConflictClause"]): OnConflictClause {
-    const _j = ({
-      OnConflictClause: {}
-    } as OnConflictClause);
-    _o.set(_j, "OnConflictClause.action", _p?.action);
-    _o.set(_j, "OnConflictClause.infer", _p?.infer);
-    _o.set(_j, "OnConflictClause.targetList", _p?.targetList);
-    _o.set(_j, "OnConflictClause.whereClause", _p?.whereClause);
-    _o.set(_j, "OnConflictClause.location", _p?.location);
-    return _j;
-  },
-  cteSearchClause(_p?: CTESearchClause["CTESearchClause"]): CTESearchClause {
-    const _j = ({
-      CTESearchClause: {}
-    } as CTESearchClause);
-    _o.set(_j, "CTESearchClause.search_col_list", _p?.search_col_list);
-    _o.set(_j, "CTESearchClause.search_breadth_first", _p?.search_breadth_first);
-    _o.set(_j, "CTESearchClause.search_seq_column", _p?.search_seq_column);
-    _o.set(_j, "CTESearchClause.location", _p?.location);
-    return _j;
-  },
-  cteCycleClause(_p?: CTECycleClause["CTECycleClause"]): CTECycleClause {
-    const _j = ({
-      CTECycleClause: {}
-    } as CTECycleClause);
-    _o.set(_j, "CTECycleClause.cycle_col_list", _p?.cycle_col_list);
-    _o.set(_j, "CTECycleClause.cycle_mark_column", _p?.cycle_mark_column);
-    _o.set(_j, "CTECycleClause.cycle_mark_value", _p?.cycle_mark_value);
-    _o.set(_j, "CTECycleClause.cycle_mark_default", _p?.cycle_mark_default);
-    _o.set(_j, "CTECycleClause.cycle_path_column", _p?.cycle_path_column);
-    _o.set(_j, "CTECycleClause.location", _p?.location);
-    _o.set(_j, "CTECycleClause.cycle_mark_type", _p?.cycle_mark_type);
-    _o.set(_j, "CTECycleClause.cycle_mark_typmod", _p?.cycle_mark_typmod);
-    _o.set(_j, "CTECycleClause.cycle_mark_collation", _p?.cycle_mark_collation);
-    _o.set(_j, "CTECycleClause.cycle_mark_neop", _p?.cycle_mark_neop);
-    return _j;
-  },
-  commonTableExpr(_p?: CommonTableExpr["CommonTableExpr"]): CommonTableExpr {
-    const _j = ({
-      CommonTableExpr: {}
-    } as CommonTableExpr);
-    _o.set(_j, "CommonTableExpr.ctename", _p?.ctename);
-    _o.set(_j, "CommonTableExpr.aliascolnames", _p?.aliascolnames);
-    _o.set(_j, "CommonTableExpr.ctematerialized", _p?.ctematerialized);
-    _o.set(_j, "CommonTableExpr.ctequery", _p?.ctequery);
-    _o.set(_j, "CommonTableExpr.search_clause", _p?.search_clause);
-    _o.set(_j, "CommonTableExpr.cycle_clause", _p?.cycle_clause);
-    _o.set(_j, "CommonTableExpr.location", _p?.location);
-    _o.set(_j, "CommonTableExpr.cterecursive", _p?.cterecursive);
-    _o.set(_j, "CommonTableExpr.cterefcount", _p?.cterefcount);
-    _o.set(_j, "CommonTableExpr.ctecolnames", _p?.ctecolnames);
-    _o.set(_j, "CommonTableExpr.ctecoltypes", _p?.ctecoltypes);
-    _o.set(_j, "CommonTableExpr.ctecoltypmods", _p?.ctecoltypmods);
-    _o.set(_j, "CommonTableExpr.ctecolcollations", _p?.ctecolcollations);
-    return _j;
-  },
-  mergeWhenClause(_p?: MergeWhenClause["MergeWhenClause"]): MergeWhenClause {
-    const _j = ({
-      MergeWhenClause: {}
-    } as MergeWhenClause);
-    _o.set(_j, "MergeWhenClause.matched", _p?.matched);
-    _o.set(_j, "MergeWhenClause.commandType", _p?.commandType);
-    _o.set(_j, "MergeWhenClause.override", _p?.override);
-    _o.set(_j, "MergeWhenClause.condition", _p?.condition);
-    _o.set(_j, "MergeWhenClause.targetList", _p?.targetList);
-    _o.set(_j, "MergeWhenClause.values", _p?.values);
-    return _j;
-  },
-  mergeAction(_p?: MergeAction["MergeAction"]): MergeAction {
-    const _j = ({
-      MergeAction: {}
-    } as MergeAction);
-    _o.set(_j, "MergeAction.matched", _p?.matched);
-    _o.set(_j, "MergeAction.commandType", _p?.commandType);
-    _o.set(_j, "MergeAction.override", _p?.override);
-    _o.set(_j, "MergeAction.qual", _p?.qual);
-    _o.set(_j, "MergeAction.targetList", _p?.targetList);
-    _o.set(_j, "MergeAction.updateColnos", _p?.updateColnos);
-    return _j;
-  },
-  triggerTransition(_p?: TriggerTransition["TriggerTransition"]): TriggerTransition {
-    const _j = ({
-      TriggerTransition: {}
-    } as TriggerTransition);
-    _o.set(_j, "TriggerTransition.name", _p?.name);
-    _o.set(_j, "TriggerTransition.isNew", _p?.isNew);
-    _o.set(_j, "TriggerTransition.isTable", _p?.isTable);
-    return _j;
-  },
-  jsonOutput(_p?: JsonOutput["JsonOutput"]): JsonOutput {
-    const _j = ({
-      JsonOutput: {}
-    } as JsonOutput);
-    _o.set(_j, "JsonOutput.typeName", _p?.typeName);
-    _o.set(_j, "JsonOutput.returning", _p?.returning);
-    return _j;
-  },
-  jsonKeyValue(_p?: JsonKeyValue["JsonKeyValue"]): JsonKeyValue {
-    const _j = ({
-      JsonKeyValue: {}
-    } as JsonKeyValue);
-    _o.set(_j, "JsonKeyValue.key", _p?.key);
-    _o.set(_j, "JsonKeyValue.value", _p?.value);
-    return _j;
-  },
-  jsonObjectConstructor(_p?: JsonObjectConstructor["JsonObjectConstructor"]): JsonObjectConstructor {
-    const _j = ({
-      JsonObjectConstructor: {}
-    } as JsonObjectConstructor);
-    _o.set(_j, "JsonObjectConstructor.exprs", _p?.exprs);
-    _o.set(_j, "JsonObjectConstructor.output", _p?.output);
-    _o.set(_j, "JsonObjectConstructor.absent_on_null", _p?.absent_on_null);
-    _o.set(_j, "JsonObjectConstructor.unique", _p?.unique);
-    _o.set(_j, "JsonObjectConstructor.location", _p?.location);
-    return _j;
-  },
-  jsonArrayConstructor(_p?: JsonArrayConstructor["JsonArrayConstructor"]): JsonArrayConstructor {
-    const _j = ({
-      JsonArrayConstructor: {}
-    } as JsonArrayConstructor);
-    _o.set(_j, "JsonArrayConstructor.exprs", _p?.exprs);
-    _o.set(_j, "JsonArrayConstructor.output", _p?.output);
-    _o.set(_j, "JsonArrayConstructor.absent_on_null", _p?.absent_on_null);
-    _o.set(_j, "JsonArrayConstructor.location", _p?.location);
-    return _j;
-  },
-  jsonArrayQueryConstructor(_p?: JsonArrayQueryConstructor["JsonArrayQueryConstructor"]): JsonArrayQueryConstructor {
-    const _j = ({
-      JsonArrayQueryConstructor: {}
-    } as JsonArrayQueryConstructor);
-    _o.set(_j, "JsonArrayQueryConstructor.query", _p?.query);
-    _o.set(_j, "JsonArrayQueryConstructor.output", _p?.output);
-    _o.set(_j, "JsonArrayQueryConstructor.format", _p?.format);
-    _o.set(_j, "JsonArrayQueryConstructor.absent_on_null", _p?.absent_on_null);
-    _o.set(_j, "JsonArrayQueryConstructor.location", _p?.location);
-    return _j;
-  },
-  jsonAggConstructor(_p?: JsonAggConstructor["JsonAggConstructor"]): JsonAggConstructor {
-    const _j = ({
-      JsonAggConstructor: {}
-    } as JsonAggConstructor);
-    _o.set(_j, "JsonAggConstructor.output", _p?.output);
-    _o.set(_j, "JsonAggConstructor.agg_filter", _p?.agg_filter);
-    _o.set(_j, "JsonAggConstructor.agg_order", _p?.agg_order);
-    _o.set(_j, "JsonAggConstructor.over", _p?.over);
-    _o.set(_j, "JsonAggConstructor.location", _p?.location);
-    return _j;
-  },
-  jsonObjectAgg(_p?: JsonObjectAgg["JsonObjectAgg"]): JsonObjectAgg {
-    const _j = ({
-      JsonObjectAgg: {}
-    } as JsonObjectAgg);
-    _o.set(_j, "JsonObjectAgg.constructor", _p?.constructor);
-    _o.set(_j, "JsonObjectAgg.arg", _p?.arg);
-    _o.set(_j, "JsonObjectAgg.absent_on_null", _p?.absent_on_null);
-    _o.set(_j, "JsonObjectAgg.unique", _p?.unique);
-    return _j;
-  },
-  jsonArrayAgg(_p?: JsonArrayAgg["JsonArrayAgg"]): JsonArrayAgg {
-    const _j = ({
-      JsonArrayAgg: {}
-    } as JsonArrayAgg);
-    _o.set(_j, "JsonArrayAgg.constructor", _p?.constructor);
-    _o.set(_j, "JsonArrayAgg.arg", _p?.arg);
-    _o.set(_j, "JsonArrayAgg.absent_on_null", _p?.absent_on_null);
-    return _j;
-  },
-  rawStmt(_p?: RawStmt["RawStmt"]): RawStmt {
-    const _j = ({
-      RawStmt: {}
-    } as RawStmt);
-    _o.set(_j, "RawStmt.stmt", _p?.stmt);
-    _o.set(_j, "RawStmt.stmt_location", _p?.stmt_location);
-    _o.set(_j, "RawStmt.stmt_len", _p?.stmt_len);
-    return _j;
-  },
-  insertStmt(_p?: InsertStmt["InsertStmt"]): InsertStmt {
-    const _j = ({
-      InsertStmt: {}
-    } as InsertStmt);
-    _o.set(_j, "InsertStmt.relation", _p?.relation);
-    _o.set(_j, "InsertStmt.cols", _p?.cols);
-    _o.set(_j, "InsertStmt.selectStmt", _p?.selectStmt);
-    _o.set(_j, "InsertStmt.onConflictClause", _p?.onConflictClause);
-    _o.set(_j, "InsertStmt.returningList", _p?.returningList);
-    _o.set(_j, "InsertStmt.withClause", _p?.withClause);
-    _o.set(_j, "InsertStmt.override", _p?.override);
-    return _j;
-  },
-  deleteStmt(_p?: DeleteStmt["DeleteStmt"]): DeleteStmt {
-    const _j = ({
-      DeleteStmt: {}
-    } as DeleteStmt);
-    _o.set(_j, "DeleteStmt.relation", _p?.relation);
-    _o.set(_j, "DeleteStmt.usingClause", _p?.usingClause);
-    _o.set(_j, "DeleteStmt.whereClause", _p?.whereClause);
-    _o.set(_j, "DeleteStmt.returningList", _p?.returningList);
-    _o.set(_j, "DeleteStmt.withClause", _p?.withClause);
-    return _j;
-  },
-  updateStmt(_p?: UpdateStmt["UpdateStmt"]): UpdateStmt {
-    const _j = ({
-      UpdateStmt: {}
-    } as UpdateStmt);
-    _o.set(_j, "UpdateStmt.relation", _p?.relation);
-    _o.set(_j, "UpdateStmt.targetList", _p?.targetList);
-    _o.set(_j, "UpdateStmt.whereClause", _p?.whereClause);
-    _o.set(_j, "UpdateStmt.fromClause", _p?.fromClause);
-    _o.set(_j, "UpdateStmt.returningList", _p?.returningList);
-    _o.set(_j, "UpdateStmt.withClause", _p?.withClause);
-    return _j;
-  },
-  mergeStmt(_p?: MergeStmt["MergeStmt"]): MergeStmt {
-    const _j = ({
-      MergeStmt: {}
-    } as MergeStmt);
-    _o.set(_j, "MergeStmt.relation", _p?.relation);
-    _o.set(_j, "MergeStmt.sourceRelation", _p?.sourceRelation);
-    _o.set(_j, "MergeStmt.joinCondition", _p?.joinCondition);
-    _o.set(_j, "MergeStmt.mergeWhenClauses", _p?.mergeWhenClauses);
-    _o.set(_j, "MergeStmt.withClause", _p?.withClause);
-    return _j;
-  },
-  selectStmt(_p?: SelectStmt["SelectStmt"]): SelectStmt {
-    const _j = ({
-      SelectStmt: {}
-    } as SelectStmt);
-    _o.set(_j, "SelectStmt.distinctClause", _p?.distinctClause);
-    _o.set(_j, "SelectStmt.intoClause", _p?.intoClause);
-    _o.set(_j, "SelectStmt.targetList", _p?.targetList);
-    _o.set(_j, "SelectStmt.fromClause", _p?.fromClause);
-    _o.set(_j, "SelectStmt.whereClause", _p?.whereClause);
-    _o.set(_j, "SelectStmt.groupClause", _p?.groupClause);
-    _o.set(_j, "SelectStmt.groupDistinct", _p?.groupDistinct);
-    _o.set(_j, "SelectStmt.havingClause", _p?.havingClause);
-    _o.set(_j, "SelectStmt.windowClause", _p?.windowClause);
-    _o.set(_j, "SelectStmt.valuesLists", _p?.valuesLists);
-    _o.set(_j, "SelectStmt.sortClause", _p?.sortClause);
-    _o.set(_j, "SelectStmt.limitOffset", _p?.limitOffset);
-    _o.set(_j, "SelectStmt.limitCount", _p?.limitCount);
-    _o.set(_j, "SelectStmt.limitOption", _p?.limitOption);
-    _o.set(_j, "SelectStmt.lockingClause", _p?.lockingClause);
-    _o.set(_j, "SelectStmt.withClause", _p?.withClause);
-    _o.set(_j, "SelectStmt.op", _p?.op);
-    _o.set(_j, "SelectStmt.all", _p?.all);
-    _o.set(_j, "SelectStmt.larg", _p?.larg);
-    _o.set(_j, "SelectStmt.rarg", _p?.rarg);
-    return _j;
-  },
-  setOperationStmt(_p?: SetOperationStmt["SetOperationStmt"]): SetOperationStmt {
-    const _j = ({
-      SetOperationStmt: {}
-    } as SetOperationStmt);
-    _o.set(_j, "SetOperationStmt.op", _p?.op);
-    _o.set(_j, "SetOperationStmt.all", _p?.all);
-    _o.set(_j, "SetOperationStmt.larg", _p?.larg);
-    _o.set(_j, "SetOperationStmt.rarg", _p?.rarg);
-    _o.set(_j, "SetOperationStmt.colTypes", _p?.colTypes);
-    _o.set(_j, "SetOperationStmt.colTypmods", _p?.colTypmods);
-    _o.set(_j, "SetOperationStmt.colCollations", _p?.colCollations);
-    _o.set(_j, "SetOperationStmt.groupClauses", _p?.groupClauses);
-    return _j;
-  },
-  returnStmt(_p?: ReturnStmt["ReturnStmt"]): ReturnStmt {
-    const _j = ({
-      ReturnStmt: {}
-    } as ReturnStmt);
-    _o.set(_j, "ReturnStmt.returnval", _p?.returnval);
-    return _j;
-  },
-  plAssignStmt(_p?: PLAssignStmt["PLAssignStmt"]): PLAssignStmt {
-    const _j = ({
-      PLAssignStmt: {}
-    } as PLAssignStmt);
-    _o.set(_j, "PLAssignStmt.name", _p?.name);
-    _o.set(_j, "PLAssignStmt.indirection", _p?.indirection);
-    _o.set(_j, "PLAssignStmt.nnames", _p?.nnames);
-    _o.set(_j, "PLAssignStmt.val", _p?.val);
-    _o.set(_j, "PLAssignStmt.location", _p?.location);
-    return _j;
-  },
-  createSchemaStmt(_p?: CreateSchemaStmt["CreateSchemaStmt"]): CreateSchemaStmt {
-    const _j = ({
-      CreateSchemaStmt: {}
-    } as CreateSchemaStmt);
-    _o.set(_j, "CreateSchemaStmt.schemaname", _p?.schemaname);
-    _o.set(_j, "CreateSchemaStmt.authrole", _p?.authrole);
-    _o.set(_j, "CreateSchemaStmt.schemaElts", _p?.schemaElts);
-    _o.set(_j, "CreateSchemaStmt.if_not_exists", _p?.if_not_exists);
-    return _j;
-  },
-  alterTableStmt(_p?: AlterTableStmt["AlterTableStmt"]): AlterTableStmt {
-    const _j = ({
-      AlterTableStmt: {}
-    } as AlterTableStmt);
-    _o.set(_j, "AlterTableStmt.relation", _p?.relation);
-    _o.set(_j, "AlterTableStmt.cmds", _p?.cmds);
-    _o.set(_j, "AlterTableStmt.objtype", _p?.objtype);
-    _o.set(_j, "AlterTableStmt.missing_ok", _p?.missing_ok);
-    return _j;
-  },
-  replicaIdentityStmt(_p?: ReplicaIdentityStmt["ReplicaIdentityStmt"]): ReplicaIdentityStmt {
-    const _j = ({
-      ReplicaIdentityStmt: {}
-    } as ReplicaIdentityStmt);
-    _o.set(_j, "ReplicaIdentityStmt.identity_type", _p?.identity_type);
-    _o.set(_j, "ReplicaIdentityStmt.name", _p?.name);
-    return _j;
-  },
-  alterTableCmd(_p?: AlterTableCmd["AlterTableCmd"]): AlterTableCmd {
-    const _j = ({
-      AlterTableCmd: {}
-    } as AlterTableCmd);
-    _o.set(_j, "AlterTableCmd.subtype", _p?.subtype);
-    _o.set(_j, "AlterTableCmd.name", _p?.name);
-    _o.set(_j, "AlterTableCmd.num", _p?.num);
-    _o.set(_j, "AlterTableCmd.newowner", _p?.newowner);
-    _o.set(_j, "AlterTableCmd.def", _p?.def);
-    _o.set(_j, "AlterTableCmd.behavior", _p?.behavior);
-    _o.set(_j, "AlterTableCmd.missing_ok", _p?.missing_ok);
-    _o.set(_j, "AlterTableCmd.recurse", _p?.recurse);
-    return _j;
-  },
-  alterCollationStmt(_p?: AlterCollationStmt["AlterCollationStmt"]): AlterCollationStmt {
-    const _j = ({
-      AlterCollationStmt: {}
-    } as AlterCollationStmt);
-    _o.set(_j, "AlterCollationStmt.collname", _p?.collname);
-    return _j;
-  },
-  alterDomainStmt(_p?: AlterDomainStmt["AlterDomainStmt"]): AlterDomainStmt {
-    const _j = ({
-      AlterDomainStmt: {}
-    } as AlterDomainStmt);
-    _o.set(_j, "AlterDomainStmt.subtype", _p?.subtype);
-    _o.set(_j, "AlterDomainStmt.typeName", _p?.typeName);
-    _o.set(_j, "AlterDomainStmt.name", _p?.name);
-    _o.set(_j, "AlterDomainStmt.def", _p?.def);
-    _o.set(_j, "AlterDomainStmt.behavior", _p?.behavior);
-    _o.set(_j, "AlterDomainStmt.missing_ok", _p?.missing_ok);
-    return _j;
-  },
-  grantStmt(_p?: GrantStmt["GrantStmt"]): GrantStmt {
-    const _j = ({
-      GrantStmt: {}
-    } as GrantStmt);
-    _o.set(_j, "GrantStmt.is_grant", _p?.is_grant);
-    _o.set(_j, "GrantStmt.targtype", _p?.targtype);
-    _o.set(_j, "GrantStmt.objtype", _p?.objtype);
-    _o.set(_j, "GrantStmt.objects", _p?.objects);
-    _o.set(_j, "GrantStmt.privileges", _p?.privileges);
-    _o.set(_j, "GrantStmt.grantees", _p?.grantees);
-    _o.set(_j, "GrantStmt.grant_option", _p?.grant_option);
-    _o.set(_j, "GrantStmt.grantor", _p?.grantor);
-    _o.set(_j, "GrantStmt.behavior", _p?.behavior);
-    return _j;
-  },
-  objectWithArgs(_p?: ObjectWithArgs["ObjectWithArgs"]): ObjectWithArgs {
-    const _j = ({
-      ObjectWithArgs: {}
-    } as ObjectWithArgs);
-    _o.set(_j, "ObjectWithArgs.objname", _p?.objname);
-    _o.set(_j, "ObjectWithArgs.objargs", _p?.objargs);
-    _o.set(_j, "ObjectWithArgs.objfuncargs", _p?.objfuncargs);
-    _o.set(_j, "ObjectWithArgs.args_unspecified", _p?.args_unspecified);
-    return _j;
-  },
-  accessPriv(_p?: AccessPriv["AccessPriv"]): AccessPriv {
-    const _j = ({
-      AccessPriv: {}
-    } as AccessPriv);
-    _o.set(_j, "AccessPriv.priv_name", _p?.priv_name);
-    _o.set(_j, "AccessPriv.cols", _p?.cols);
-    return _j;
-  },
-  grantRoleStmt(_p?: GrantRoleStmt["GrantRoleStmt"]): GrantRoleStmt {
-    const _j = ({
-      GrantRoleStmt: {}
-    } as GrantRoleStmt);
-    _o.set(_j, "GrantRoleStmt.granted_roles", _p?.granted_roles);
-    _o.set(_j, "GrantRoleStmt.grantee_roles", _p?.grantee_roles);
-    _o.set(_j, "GrantRoleStmt.is_grant", _p?.is_grant);
-    _o.set(_j, "GrantRoleStmt.opt", _p?.opt);
-    _o.set(_j, "GrantRoleStmt.grantor", _p?.grantor);
-    _o.set(_j, "GrantRoleStmt.behavior", _p?.behavior);
-    return _j;
-  },
-  alterDefaultPrivilegesStmt(_p?: AlterDefaultPrivilegesStmt["AlterDefaultPrivilegesStmt"]): AlterDefaultPrivilegesStmt {
-    const _j = ({
-      AlterDefaultPrivilegesStmt: {}
-    } as AlterDefaultPrivilegesStmt);
-    _o.set(_j, "AlterDefaultPrivilegesStmt.options", _p?.options);
-    _o.set(_j, "AlterDefaultPrivilegesStmt.action", _p?.action);
-    return _j;
-  },
-  copyStmt(_p?: CopyStmt["CopyStmt"]): CopyStmt {
-    const _j = ({
-      CopyStmt: {}
-    } as CopyStmt);
-    _o.set(_j, "CopyStmt.relation", _p?.relation);
-    _o.set(_j, "CopyStmt.query", _p?.query);
-    _o.set(_j, "CopyStmt.attlist", _p?.attlist);
-    _o.set(_j, "CopyStmt.is_from", _p?.is_from);
-    _o.set(_j, "CopyStmt.is_program", _p?.is_program);
-    _o.set(_j, "CopyStmt.filename", _p?.filename);
-    _o.set(_j, "CopyStmt.options", _p?.options);
-    _o.set(_j, "CopyStmt.whereClause", _p?.whereClause);
-    return _j;
-  },
-  variableSetStmt(_p?: VariableSetStmt["VariableSetStmt"]): VariableSetStmt {
-    const _j = ({
-      VariableSetStmt: {}
-    } as VariableSetStmt);
-    _o.set(_j, "VariableSetStmt.kind", _p?.kind);
-    _o.set(_j, "VariableSetStmt.name", _p?.name);
-    _o.set(_j, "VariableSetStmt.args", _p?.args);
-    _o.set(_j, "VariableSetStmt.is_local", _p?.is_local);
-    return _j;
-  },
-  variableShowStmt(_p?: VariableShowStmt["VariableShowStmt"]): VariableShowStmt {
-    const _j = ({
-      VariableShowStmt: {}
-    } as VariableShowStmt);
-    _o.set(_j, "VariableShowStmt.name", _p?.name);
-    return _j;
-  },
-  createStmt(_p?: CreateStmt["CreateStmt"]): CreateStmt {
-    const _j = ({
-      CreateStmt: {}
-    } as CreateStmt);
-    _o.set(_j, "CreateStmt.relation", _p?.relation);
-    _o.set(_j, "CreateStmt.tableElts", _p?.tableElts);
-    _o.set(_j, "CreateStmt.inhRelations", _p?.inhRelations);
-    _o.set(_j, "CreateStmt.partbound", _p?.partbound);
-    _o.set(_j, "CreateStmt.partspec", _p?.partspec);
-    _o.set(_j, "CreateStmt.ofTypename", _p?.ofTypename);
-    _o.set(_j, "CreateStmt.constraints", _p?.constraints);
-    _o.set(_j, "CreateStmt.options", _p?.options);
-    _o.set(_j, "CreateStmt.oncommit", _p?.oncommit);
-    _o.set(_j, "CreateStmt.tablespacename", _p?.tablespacename);
-    _o.set(_j, "CreateStmt.accessMethod", _p?.accessMethod);
-    _o.set(_j, "CreateStmt.if_not_exists", _p?.if_not_exists);
-    return _j;
-  },
-  constraint(_p?: Constraint["Constraint"]): Constraint {
-    const _j = ({
-      Constraint: {}
-    } as Constraint);
-    _o.set(_j, "Constraint.contype", _p?.contype);
-    _o.set(_j, "Constraint.conname", _p?.conname);
-    _o.set(_j, "Constraint.deferrable", _p?.deferrable);
-    _o.set(_j, "Constraint.initdeferred", _p?.initdeferred);
-    _o.set(_j, "Constraint.location", _p?.location);
-    _o.set(_j, "Constraint.is_no_inherit", _p?.is_no_inherit);
-    _o.set(_j, "Constraint.raw_expr", _p?.raw_expr);
-    _o.set(_j, "Constraint.cooked_expr", _p?.cooked_expr);
-    _o.set(_j, "Constraint.generated_when", _p?.generated_when);
-    _o.set(_j, "Constraint.nulls_not_distinct", _p?.nulls_not_distinct);
-    _o.set(_j, "Constraint.keys", _p?.keys);
-    _o.set(_j, "Constraint.including", _p?.including);
-    _o.set(_j, "Constraint.exclusions", _p?.exclusions);
-    _o.set(_j, "Constraint.options", _p?.options);
-    _o.set(_j, "Constraint.indexname", _p?.indexname);
-    _o.set(_j, "Constraint.indexspace", _p?.indexspace);
-    _o.set(_j, "Constraint.reset_default_tblspc", _p?.reset_default_tblspc);
-    _o.set(_j, "Constraint.access_method", _p?.access_method);
-    _o.set(_j, "Constraint.where_clause", _p?.where_clause);
-    _o.set(_j, "Constraint.pktable", _p?.pktable);
-    _o.set(_j, "Constraint.fk_attrs", _p?.fk_attrs);
-    _o.set(_j, "Constraint.pk_attrs", _p?.pk_attrs);
-    _o.set(_j, "Constraint.fk_matchtype", _p?.fk_matchtype);
-    _o.set(_j, "Constraint.fk_upd_action", _p?.fk_upd_action);
-    _o.set(_j, "Constraint.fk_del_action", _p?.fk_del_action);
-    _o.set(_j, "Constraint.fk_del_set_cols", _p?.fk_del_set_cols);
-    _o.set(_j, "Constraint.old_conpfeqop", _p?.old_conpfeqop);
-    _o.set(_j, "Constraint.old_pktable_oid", _p?.old_pktable_oid);
-    _o.set(_j, "Constraint.skip_validation", _p?.skip_validation);
-    _o.set(_j, "Constraint.initially_valid", _p?.initially_valid);
-    return _j;
-  },
-  createTableSpaceStmt(_p?: CreateTableSpaceStmt["CreateTableSpaceStmt"]): CreateTableSpaceStmt {
-    const _j = ({
-      CreateTableSpaceStmt: {}
-    } as CreateTableSpaceStmt);
-    _o.set(_j, "CreateTableSpaceStmt.tablespacename", _p?.tablespacename);
-    _o.set(_j, "CreateTableSpaceStmt.owner", _p?.owner);
-    _o.set(_j, "CreateTableSpaceStmt.location", _p?.location);
-    _o.set(_j, "CreateTableSpaceStmt.options", _p?.options);
-    return _j;
-  },
-  dropTableSpaceStmt(_p?: DropTableSpaceStmt["DropTableSpaceStmt"]): DropTableSpaceStmt {
-    const _j = ({
-      DropTableSpaceStmt: {}
-    } as DropTableSpaceStmt);
-    _o.set(_j, "DropTableSpaceStmt.tablespacename", _p?.tablespacename);
-    _o.set(_j, "DropTableSpaceStmt.missing_ok", _p?.missing_ok);
-    return _j;
-  },
-  alterTableSpaceOptionsStmt(_p?: AlterTableSpaceOptionsStmt["AlterTableSpaceOptionsStmt"]): AlterTableSpaceOptionsStmt {
-    const _j = ({
-      AlterTableSpaceOptionsStmt: {}
-    } as AlterTableSpaceOptionsStmt);
-    _o.set(_j, "AlterTableSpaceOptionsStmt.tablespacename", _p?.tablespacename);
-    _o.set(_j, "AlterTableSpaceOptionsStmt.options", _p?.options);
-    _o.set(_j, "AlterTableSpaceOptionsStmt.isReset", _p?.isReset);
-    return _j;
-  },
-  alterTableMoveAllStmt(_p?: AlterTableMoveAllStmt["AlterTableMoveAllStmt"]): AlterTableMoveAllStmt {
-    const _j = ({
-      AlterTableMoveAllStmt: {}
-    } as AlterTableMoveAllStmt);
-    _o.set(_j, "AlterTableMoveAllStmt.orig_tablespacename", _p?.orig_tablespacename);
-    _o.set(_j, "AlterTableMoveAllStmt.objtype", _p?.objtype);
-    _o.set(_j, "AlterTableMoveAllStmt.roles", _p?.roles);
-    _o.set(_j, "AlterTableMoveAllStmt.new_tablespacename", _p?.new_tablespacename);
-    _o.set(_j, "AlterTableMoveAllStmt.nowait", _p?.nowait);
-    return _j;
-  },
-  createExtensionStmt(_p?: CreateExtensionStmt["CreateExtensionStmt"]): CreateExtensionStmt {
-    const _j = ({
-      CreateExtensionStmt: {}
-    } as CreateExtensionStmt);
-    _o.set(_j, "CreateExtensionStmt.extname", _p?.extname);
-    _o.set(_j, "CreateExtensionStmt.if_not_exists", _p?.if_not_exists);
-    _o.set(_j, "CreateExtensionStmt.options", _p?.options);
-    return _j;
-  },
-  alterExtensionStmt(_p?: AlterExtensionStmt["AlterExtensionStmt"]): AlterExtensionStmt {
-    const _j = ({
-      AlterExtensionStmt: {}
-    } as AlterExtensionStmt);
-    _o.set(_j, "AlterExtensionStmt.extname", _p?.extname);
-    _o.set(_j, "AlterExtensionStmt.options", _p?.options);
-    return _j;
-  },
-  alterExtensionContentsStmt(_p?: AlterExtensionContentsStmt["AlterExtensionContentsStmt"]): AlterExtensionContentsStmt {
-    const _j = ({
-      AlterExtensionContentsStmt: {}
-    } as AlterExtensionContentsStmt);
-    _o.set(_j, "AlterExtensionContentsStmt.extname", _p?.extname);
-    _o.set(_j, "AlterExtensionContentsStmt.action", _p?.action);
-    _o.set(_j, "AlterExtensionContentsStmt.objtype", _p?.objtype);
-    _o.set(_j, "AlterExtensionContentsStmt.object", _p?.object);
-    return _j;
-  },
-  createFdwStmt(_p?: CreateFdwStmt["CreateFdwStmt"]): CreateFdwStmt {
-    const _j = ({
-      CreateFdwStmt: {}
-    } as CreateFdwStmt);
-    _o.set(_j, "CreateFdwStmt.fdwname", _p?.fdwname);
-    _o.set(_j, "CreateFdwStmt.func_options", _p?.func_options);
-    _o.set(_j, "CreateFdwStmt.options", _p?.options);
-    return _j;
-  },
-  alterFdwStmt(_p?: AlterFdwStmt["AlterFdwStmt"]): AlterFdwStmt {
-    const _j = ({
-      AlterFdwStmt: {}
-    } as AlterFdwStmt);
-    _o.set(_j, "AlterFdwStmt.fdwname", _p?.fdwname);
-    _o.set(_j, "AlterFdwStmt.func_options", _p?.func_options);
-    _o.set(_j, "AlterFdwStmt.options", _p?.options);
-    return _j;
-  },
-  createForeignServerStmt(_p?: CreateForeignServerStmt["CreateForeignServerStmt"]): CreateForeignServerStmt {
-    const _j = ({
-      CreateForeignServerStmt: {}
-    } as CreateForeignServerStmt);
-    _o.set(_j, "CreateForeignServerStmt.servername", _p?.servername);
-    _o.set(_j, "CreateForeignServerStmt.servertype", _p?.servertype);
-    _o.set(_j, "CreateForeignServerStmt.version", _p?.version);
-    _o.set(_j, "CreateForeignServerStmt.fdwname", _p?.fdwname);
-    _o.set(_j, "CreateForeignServerStmt.if_not_exists", _p?.if_not_exists);
-    _o.set(_j, "CreateForeignServerStmt.options", _p?.options);
-    return _j;
-  },
-  alterForeignServerStmt(_p?: AlterForeignServerStmt["AlterForeignServerStmt"]): AlterForeignServerStmt {
-    const _j = ({
-      AlterForeignServerStmt: {}
-    } as AlterForeignServerStmt);
-    _o.set(_j, "AlterForeignServerStmt.servername", _p?.servername);
-    _o.set(_j, "AlterForeignServerStmt.version", _p?.version);
-    _o.set(_j, "AlterForeignServerStmt.options", _p?.options);
-    _o.set(_j, "AlterForeignServerStmt.has_version", _p?.has_version);
-    return _j;
-  },
-  createForeignTableStmt(_p?: CreateForeignTableStmt["CreateForeignTableStmt"]): CreateForeignTableStmt {
-    const _j = ({
-      CreateForeignTableStmt: {}
-    } as CreateForeignTableStmt);
-    _o.set(_j, "CreateForeignTableStmt.base", _p?.base);
-    _o.set(_j, "CreateForeignTableStmt.servername", _p?.servername);
-    _o.set(_j, "CreateForeignTableStmt.options", _p?.options);
-    return _j;
-  },
-  createUserMappingStmt(_p?: CreateUserMappingStmt["CreateUserMappingStmt"]): CreateUserMappingStmt {
-    const _j = ({
-      CreateUserMappingStmt: {}
-    } as CreateUserMappingStmt);
-    _o.set(_j, "CreateUserMappingStmt.user", _p?.user);
-    _o.set(_j, "CreateUserMappingStmt.servername", _p?.servername);
-    _o.set(_j, "CreateUserMappingStmt.if_not_exists", _p?.if_not_exists);
-    _o.set(_j, "CreateUserMappingStmt.options", _p?.options);
-    return _j;
-  },
-  alterUserMappingStmt(_p?: AlterUserMappingStmt["AlterUserMappingStmt"]): AlterUserMappingStmt {
-    const _j = ({
-      AlterUserMappingStmt: {}
-    } as AlterUserMappingStmt);
-    _o.set(_j, "AlterUserMappingStmt.user", _p?.user);
-    _o.set(_j, "AlterUserMappingStmt.servername", _p?.servername);
-    _o.set(_j, "AlterUserMappingStmt.options", _p?.options);
-    return _j;
-  },
-  dropUserMappingStmt(_p?: DropUserMappingStmt["DropUserMappingStmt"]): DropUserMappingStmt {
-    const _j = ({
-      DropUserMappingStmt: {}
-    } as DropUserMappingStmt);
-    _o.set(_j, "DropUserMappingStmt.user", _p?.user);
-    _o.set(_j, "DropUserMappingStmt.servername", _p?.servername);
-    _o.set(_j, "DropUserMappingStmt.missing_ok", _p?.missing_ok);
-    return _j;
-  },
-  importForeignSchemaStmt(_p?: ImportForeignSchemaStmt["ImportForeignSchemaStmt"]): ImportForeignSchemaStmt {
-    const _j = ({
-      ImportForeignSchemaStmt: {}
-    } as ImportForeignSchemaStmt);
-    _o.set(_j, "ImportForeignSchemaStmt.server_name", _p?.server_name);
-    _o.set(_j, "ImportForeignSchemaStmt.remote_schema", _p?.remote_schema);
-    _o.set(_j, "ImportForeignSchemaStmt.local_schema", _p?.local_schema);
-    _o.set(_j, "ImportForeignSchemaStmt.list_type", _p?.list_type);
-    _o.set(_j, "ImportForeignSchemaStmt.table_list", _p?.table_list);
-    _o.set(_j, "ImportForeignSchemaStmt.options", _p?.options);
-    return _j;
-  },
-  createPolicyStmt(_p?: CreatePolicyStmt["CreatePolicyStmt"]): CreatePolicyStmt {
-    const _j = ({
-      CreatePolicyStmt: {}
-    } as CreatePolicyStmt);
-    _o.set(_j, "CreatePolicyStmt.policy_name", _p?.policy_name);
-    _o.set(_j, "CreatePolicyStmt.table", _p?.table);
-    _o.set(_j, "CreatePolicyStmt.cmd_name", _p?.cmd_name);
-    _o.set(_j, "CreatePolicyStmt.permissive", _p?.permissive);
-    _o.set(_j, "CreatePolicyStmt.roles", _p?.roles);
-    _o.set(_j, "CreatePolicyStmt.qual", _p?.qual);
-    _o.set(_j, "CreatePolicyStmt.with_check", _p?.with_check);
-    return _j;
-  },
-  alterPolicyStmt(_p?: AlterPolicyStmt["AlterPolicyStmt"]): AlterPolicyStmt {
-    const _j = ({
-      AlterPolicyStmt: {}
-    } as AlterPolicyStmt);
-    _o.set(_j, "AlterPolicyStmt.policy_name", _p?.policy_name);
-    _o.set(_j, "AlterPolicyStmt.table", _p?.table);
-    _o.set(_j, "AlterPolicyStmt.roles", _p?.roles);
-    _o.set(_j, "AlterPolicyStmt.qual", _p?.qual);
-    _o.set(_j, "AlterPolicyStmt.with_check", _p?.with_check);
-    return _j;
-  },
-  createAmStmt(_p?: CreateAmStmt["CreateAmStmt"]): CreateAmStmt {
-    const _j = ({
-      CreateAmStmt: {}
-    } as CreateAmStmt);
-    _o.set(_j, "CreateAmStmt.amname", _p?.amname);
-    _o.set(_j, "CreateAmStmt.handler_name", _p?.handler_name);
-    _o.set(_j, "CreateAmStmt.amtype", _p?.amtype);
-    return _j;
-  },
-  createTrigStmt(_p?: CreateTrigStmt["CreateTrigStmt"]): CreateTrigStmt {
-    const _j = ({
-      CreateTrigStmt: {}
-    } as CreateTrigStmt);
-    _o.set(_j, "CreateTrigStmt.replace", _p?.replace);
-    _o.set(_j, "CreateTrigStmt.isconstraint", _p?.isconstraint);
-    _o.set(_j, "CreateTrigStmt.trigname", _p?.trigname);
-    _o.set(_j, "CreateTrigStmt.relation", _p?.relation);
-    _o.set(_j, "CreateTrigStmt.funcname", _p?.funcname);
-    _o.set(_j, "CreateTrigStmt.args", _p?.args);
-    _o.set(_j, "CreateTrigStmt.row", _p?.row);
-    _o.set(_j, "CreateTrigStmt.timing", _p?.timing);
-    _o.set(_j, "CreateTrigStmt.events", _p?.events);
-    _o.set(_j, "CreateTrigStmt.columns", _p?.columns);
-    _o.set(_j, "CreateTrigStmt.whenClause", _p?.whenClause);
-    _o.set(_j, "CreateTrigStmt.transitionRels", _p?.transitionRels);
-    _o.set(_j, "CreateTrigStmt.deferrable", _p?.deferrable);
-    _o.set(_j, "CreateTrigStmt.initdeferred", _p?.initdeferred);
-    _o.set(_j, "CreateTrigStmt.constrrel", _p?.constrrel);
-    return _j;
-  },
-  createEventTrigStmt(_p?: CreateEventTrigStmt["CreateEventTrigStmt"]): CreateEventTrigStmt {
-    const _j = ({
-      CreateEventTrigStmt: {}
-    } as CreateEventTrigStmt);
-    _o.set(_j, "CreateEventTrigStmt.trigname", _p?.trigname);
-    _o.set(_j, "CreateEventTrigStmt.eventname", _p?.eventname);
-    _o.set(_j, "CreateEventTrigStmt.whenclause", _p?.whenclause);
-    _o.set(_j, "CreateEventTrigStmt.funcname", _p?.funcname);
-    return _j;
-  },
-  alterEventTrigStmt(_p?: AlterEventTrigStmt["AlterEventTrigStmt"]): AlterEventTrigStmt {
-    const _j = ({
-      AlterEventTrigStmt: {}
-    } as AlterEventTrigStmt);
-    _o.set(_j, "AlterEventTrigStmt.trigname", _p?.trigname);
-    _o.set(_j, "AlterEventTrigStmt.tgenabled", _p?.tgenabled);
-    return _j;
-  },
-  createpLangStmt(_p?: CreatePLangStmt["CreatePLangStmt"]): CreatePLangStmt {
-    const _j = ({
-      CreatePLangStmt: {}
-    } as CreatePLangStmt);
-    _o.set(_j, "CreatePLangStmt.replace", _p?.replace);
-    _o.set(_j, "CreatePLangStmt.plname", _p?.plname);
-    _o.set(_j, "CreatePLangStmt.plhandler", _p?.plhandler);
-    _o.set(_j, "CreatePLangStmt.plinline", _p?.plinline);
-    _o.set(_j, "CreatePLangStmt.plvalidator", _p?.plvalidator);
-    _o.set(_j, "CreatePLangStmt.pltrusted", _p?.pltrusted);
-    return _j;
-  },
-  createRoleStmt(_p?: CreateRoleStmt["CreateRoleStmt"]): CreateRoleStmt {
-    const _j = ({
-      CreateRoleStmt: {}
-    } as CreateRoleStmt);
-    _o.set(_j, "CreateRoleStmt.stmt_type", _p?.stmt_type);
-    _o.set(_j, "CreateRoleStmt.role", _p?.role);
-    _o.set(_j, "CreateRoleStmt.options", _p?.options);
-    return _j;
-  },
-  alterRoleStmt(_p?: AlterRoleStmt["AlterRoleStmt"]): AlterRoleStmt {
-    const _j = ({
-      AlterRoleStmt: {}
-    } as AlterRoleStmt);
-    _o.set(_j, "AlterRoleStmt.role", _p?.role);
-    _o.set(_j, "AlterRoleStmt.options", _p?.options);
-    _o.set(_j, "AlterRoleStmt.action", _p?.action);
-    return _j;
-  },
-  alterRoleSetStmt(_p?: AlterRoleSetStmt["AlterRoleSetStmt"]): AlterRoleSetStmt {
-    const _j = ({
-      AlterRoleSetStmt: {}
-    } as AlterRoleSetStmt);
-    _o.set(_j, "AlterRoleSetStmt.role", _p?.role);
-    _o.set(_j, "AlterRoleSetStmt.database", _p?.database);
-    _o.set(_j, "AlterRoleSetStmt.setstmt", _p?.setstmt);
-    return _j;
-  },
-  dropRoleStmt(_p?: DropRoleStmt["DropRoleStmt"]): DropRoleStmt {
-    const _j = ({
-      DropRoleStmt: {}
-    } as DropRoleStmt);
-    _o.set(_j, "DropRoleStmt.roles", _p?.roles);
-    _o.set(_j, "DropRoleStmt.missing_ok", _p?.missing_ok);
-    return _j;
-  },
-  createSeqStmt(_p?: CreateSeqStmt["CreateSeqStmt"]): CreateSeqStmt {
-    const _j = ({
-      CreateSeqStmt: {}
-    } as CreateSeqStmt);
-    _o.set(_j, "CreateSeqStmt.sequence", _p?.sequence);
-    _o.set(_j, "CreateSeqStmt.options", _p?.options);
-    _o.set(_j, "CreateSeqStmt.ownerId", _p?.ownerId);
-    _o.set(_j, "CreateSeqStmt.for_identity", _p?.for_identity);
-    _o.set(_j, "CreateSeqStmt.if_not_exists", _p?.if_not_exists);
-    return _j;
-  },
-  alterSeqStmt(_p?: AlterSeqStmt["AlterSeqStmt"]): AlterSeqStmt {
-    const _j = ({
-      AlterSeqStmt: {}
-    } as AlterSeqStmt);
-    _o.set(_j, "AlterSeqStmt.sequence", _p?.sequence);
-    _o.set(_j, "AlterSeqStmt.options", _p?.options);
-    _o.set(_j, "AlterSeqStmt.for_identity", _p?.for_identity);
-    _o.set(_j, "AlterSeqStmt.missing_ok", _p?.missing_ok);
-    return _j;
-  },
-  defineStmt(_p?: DefineStmt["DefineStmt"]): DefineStmt {
-    const _j = ({
-      DefineStmt: {}
-    } as DefineStmt);
-    _o.set(_j, "DefineStmt.kind", _p?.kind);
-    _o.set(_j, "DefineStmt.oldstyle", _p?.oldstyle);
-    _o.set(_j, "DefineStmt.defnames", _p?.defnames);
-    _o.set(_j, "DefineStmt.args", _p?.args);
-    _o.set(_j, "DefineStmt.definition", _p?.definition);
-    _o.set(_j, "DefineStmt.if_not_exists", _p?.if_not_exists);
-    _o.set(_j, "DefineStmt.replace", _p?.replace);
-    return _j;
-  },
-  createDomainStmt(_p?: CreateDomainStmt["CreateDomainStmt"]): CreateDomainStmt {
-    const _j = ({
-      CreateDomainStmt: {}
-    } as CreateDomainStmt);
-    _o.set(_j, "CreateDomainStmt.domainname", _p?.domainname);
-    _o.set(_j, "CreateDomainStmt.typeName", _p?.typeName);
-    _o.set(_j, "CreateDomainStmt.collClause", _p?.collClause);
-    _o.set(_j, "CreateDomainStmt.constraints", _p?.constraints);
-    return _j;
-  },
-  createOpClassStmt(_p?: CreateOpClassStmt["CreateOpClassStmt"]): CreateOpClassStmt {
-    const _j = ({
-      CreateOpClassStmt: {}
-    } as CreateOpClassStmt);
-    _o.set(_j, "CreateOpClassStmt.opclassname", _p?.opclassname);
-    _o.set(_j, "CreateOpClassStmt.opfamilyname", _p?.opfamilyname);
-    _o.set(_j, "CreateOpClassStmt.amname", _p?.amname);
-    _o.set(_j, "CreateOpClassStmt.datatype", _p?.datatype);
-    _o.set(_j, "CreateOpClassStmt.items", _p?.items);
-    _o.set(_j, "CreateOpClassStmt.isDefault", _p?.isDefault);
-    return _j;
-  },
-  createOpClassItem(_p?: CreateOpClassItem["CreateOpClassItem"]): CreateOpClassItem {
-    const _j = ({
-      CreateOpClassItem: {}
-    } as CreateOpClassItem);
-    _o.set(_j, "CreateOpClassItem.itemtype", _p?.itemtype);
-    _o.set(_j, "CreateOpClassItem.name", _p?.name);
-    _o.set(_j, "CreateOpClassItem.number", _p?.number);
-    _o.set(_j, "CreateOpClassItem.order_family", _p?.order_family);
-    _o.set(_j, "CreateOpClassItem.class_args", _p?.class_args);
-    _o.set(_j, "CreateOpClassItem.storedtype", _p?.storedtype);
-    return _j;
-  },
-  createOpFamilyStmt(_p?: CreateOpFamilyStmt["CreateOpFamilyStmt"]): CreateOpFamilyStmt {
-    const _j = ({
-      CreateOpFamilyStmt: {}
-    } as CreateOpFamilyStmt);
-    _o.set(_j, "CreateOpFamilyStmt.opfamilyname", _p?.opfamilyname);
-    _o.set(_j, "CreateOpFamilyStmt.amname", _p?.amname);
-    return _j;
-  },
-  alterOpFamilyStmt(_p?: AlterOpFamilyStmt["AlterOpFamilyStmt"]): AlterOpFamilyStmt {
-    const _j = ({
-      AlterOpFamilyStmt: {}
-    } as AlterOpFamilyStmt);
-    _o.set(_j, "AlterOpFamilyStmt.opfamilyname", _p?.opfamilyname);
-    _o.set(_j, "AlterOpFamilyStmt.amname", _p?.amname);
-    _o.set(_j, "AlterOpFamilyStmt.isDrop", _p?.isDrop);
-    _o.set(_j, "AlterOpFamilyStmt.items", _p?.items);
-    return _j;
-  },
-  dropStmt(_p?: DropStmt["DropStmt"]): DropStmt {
-    const _j = ({
-      DropStmt: {}
-    } as DropStmt);
-    _o.set(_j, "DropStmt.objects", _p?.objects);
-    _o.set(_j, "DropStmt.removeType", _p?.removeType);
-    _o.set(_j, "DropStmt.behavior", _p?.behavior);
-    _o.set(_j, "DropStmt.missing_ok", _p?.missing_ok);
-    _o.set(_j, "DropStmt.concurrent", _p?.concurrent);
-    return _j;
-  },
-  truncateStmt(_p?: TruncateStmt["TruncateStmt"]): TruncateStmt {
-    const _j = ({
-      TruncateStmt: {}
-    } as TruncateStmt);
-    _o.set(_j, "TruncateStmt.relations", _p?.relations);
-    _o.set(_j, "TruncateStmt.restart_seqs", _p?.restart_seqs);
-    _o.set(_j, "TruncateStmt.behavior", _p?.behavior);
-    return _j;
-  },
-  commentStmt(_p?: CommentStmt["CommentStmt"]): CommentStmt {
-    const _j = ({
-      CommentStmt: {}
-    } as CommentStmt);
-    _o.set(_j, "CommentStmt.objtype", _p?.objtype);
-    _o.set(_j, "CommentStmt.object", _p?.object);
-    _o.set(_j, "CommentStmt.comment", _p?.comment);
-    return _j;
-  },
-  secLabelStmt(_p?: SecLabelStmt["SecLabelStmt"]): SecLabelStmt {
-    const _j = ({
-      SecLabelStmt: {}
-    } as SecLabelStmt);
-    _o.set(_j, "SecLabelStmt.objtype", _p?.objtype);
-    _o.set(_j, "SecLabelStmt.object", _p?.object);
-    _o.set(_j, "SecLabelStmt.provider", _p?.provider);
-    _o.set(_j, "SecLabelStmt.label", _p?.label);
-    return _j;
-  },
-  declareCursorStmt(_p?: DeclareCursorStmt["DeclareCursorStmt"]): DeclareCursorStmt {
-    const _j = ({
-      DeclareCursorStmt: {}
-    } as DeclareCursorStmt);
-    _o.set(_j, "DeclareCursorStmt.portalname", _p?.portalname);
-    _o.set(_j, "DeclareCursorStmt.options", _p?.options);
-    _o.set(_j, "DeclareCursorStmt.query", _p?.query);
-    return _j;
-  },
-  closePortalStmt(_p?: ClosePortalStmt["ClosePortalStmt"]): ClosePortalStmt {
-    const _j = ({
-      ClosePortalStmt: {}
-    } as ClosePortalStmt);
-    _o.set(_j, "ClosePortalStmt.portalname", _p?.portalname);
-    return _j;
-  },
-  fetchStmt(_p?: FetchStmt["FetchStmt"]): FetchStmt {
-    const _j = ({
-      FetchStmt: {}
-    } as FetchStmt);
-    _o.set(_j, "FetchStmt.direction", _p?.direction);
-    _o.set(_j, "FetchStmt.howMany", _p?.howMany);
-    _o.set(_j, "FetchStmt.portalname", _p?.portalname);
-    _o.set(_j, "FetchStmt.ismove", _p?.ismove);
-    return _j;
-  },
-  indexStmt(_p?: IndexStmt["IndexStmt"]): IndexStmt {
-    const _j = ({
-      IndexStmt: {}
-    } as IndexStmt);
-    _o.set(_j, "IndexStmt.idxname", _p?.idxname);
-    _o.set(_j, "IndexStmt.relation", _p?.relation);
-    _o.set(_j, "IndexStmt.accessMethod", _p?.accessMethod);
-    _o.set(_j, "IndexStmt.tableSpace", _p?.tableSpace);
-    _o.set(_j, "IndexStmt.indexParams", _p?.indexParams);
-    _o.set(_j, "IndexStmt.indexIncludingParams", _p?.indexIncludingParams);
-    _o.set(_j, "IndexStmt.options", _p?.options);
-    _o.set(_j, "IndexStmt.whereClause", _p?.whereClause);
-    _o.set(_j, "IndexStmt.excludeOpNames", _p?.excludeOpNames);
-    _o.set(_j, "IndexStmt.idxcomment", _p?.idxcomment);
-    _o.set(_j, "IndexStmt.indexOid", _p?.indexOid);
-    _o.set(_j, "IndexStmt.oldNumber", _p?.oldNumber);
-    _o.set(_j, "IndexStmt.oldCreateSubid", _p?.oldCreateSubid);
-    _o.set(_j, "IndexStmt.oldFirstRelfilelocatorSubid", _p?.oldFirstRelfilelocatorSubid);
-    _o.set(_j, "IndexStmt.unique", _p?.unique);
-    _o.set(_j, "IndexStmt.nulls_not_distinct", _p?.nulls_not_distinct);
-    _o.set(_j, "IndexStmt.primary", _p?.primary);
-    _o.set(_j, "IndexStmt.isconstraint", _p?.isconstraint);
-    _o.set(_j, "IndexStmt.deferrable", _p?.deferrable);
-    _o.set(_j, "IndexStmt.initdeferred", _p?.initdeferred);
-    _o.set(_j, "IndexStmt.transformed", _p?.transformed);
-    _o.set(_j, "IndexStmt.concurrent", _p?.concurrent);
-    _o.set(_j, "IndexStmt.if_not_exists", _p?.if_not_exists);
-    _o.set(_j, "IndexStmt.reset_default_tblspc", _p?.reset_default_tblspc);
-    return _j;
-  },
-  createStatsStmt(_p?: CreateStatsStmt["CreateStatsStmt"]): CreateStatsStmt {
-    const _j = ({
-      CreateStatsStmt: {}
-    } as CreateStatsStmt);
-    _o.set(_j, "CreateStatsStmt.defnames", _p?.defnames);
-    _o.set(_j, "CreateStatsStmt.stat_types", _p?.stat_types);
-    _o.set(_j, "CreateStatsStmt.exprs", _p?.exprs);
-    _o.set(_j, "CreateStatsStmt.relations", _p?.relations);
-    _o.set(_j, "CreateStatsStmt.stxcomment", _p?.stxcomment);
-    _o.set(_j, "CreateStatsStmt.transformed", _p?.transformed);
-    _o.set(_j, "CreateStatsStmt.if_not_exists", _p?.if_not_exists);
-    return _j;
-  },
-  statsElem(_p?: StatsElem["StatsElem"]): StatsElem {
-    const _j = ({
-      StatsElem: {}
-    } as StatsElem);
-    _o.set(_j, "StatsElem.name", _p?.name);
-    _o.set(_j, "StatsElem.expr", _p?.expr);
-    return _j;
-  },
-  alterStatsStmt(_p?: AlterStatsStmt["AlterStatsStmt"]): AlterStatsStmt {
-    const _j = ({
-      AlterStatsStmt: {}
-    } as AlterStatsStmt);
-    _o.set(_j, "AlterStatsStmt.defnames", _p?.defnames);
-    _o.set(_j, "AlterStatsStmt.stxstattarget", _p?.stxstattarget);
-    _o.set(_j, "AlterStatsStmt.missing_ok", _p?.missing_ok);
-    return _j;
-  },
-  createFunctionStmt(_p?: CreateFunctionStmt["CreateFunctionStmt"]): CreateFunctionStmt {
-    const _j = ({
-      CreateFunctionStmt: {}
-    } as CreateFunctionStmt);
-    _o.set(_j, "CreateFunctionStmt.is_procedure", _p?.is_procedure);
-    _o.set(_j, "CreateFunctionStmt.replace", _p?.replace);
-    _o.set(_j, "CreateFunctionStmt.funcname", _p?.funcname);
-    _o.set(_j, "CreateFunctionStmt.parameters", _p?.parameters);
-    _o.set(_j, "CreateFunctionStmt.returnType", _p?.returnType);
-    _o.set(_j, "CreateFunctionStmt.options", _p?.options);
-    _o.set(_j, "CreateFunctionStmt.sql_body", _p?.sql_body);
-    return _j;
-  },
-  functionParameter(_p?: FunctionParameter["FunctionParameter"]): FunctionParameter {
-    const _j = ({
-      FunctionParameter: {}
-    } as FunctionParameter);
-    _o.set(_j, "FunctionParameter.name", _p?.name);
-    _o.set(_j, "FunctionParameter.argType", _p?.argType);
-    _o.set(_j, "FunctionParameter.mode", _p?.mode);
-    _o.set(_j, "FunctionParameter.defexpr", _p?.defexpr);
-    return _j;
-  },
-  alterFunctionStmt(_p?: AlterFunctionStmt["AlterFunctionStmt"]): AlterFunctionStmt {
-    const _j = ({
-      AlterFunctionStmt: {}
-    } as AlterFunctionStmt);
-    _o.set(_j, "AlterFunctionStmt.objtype", _p?.objtype);
-    _o.set(_j, "AlterFunctionStmt.func", _p?.func);
-    _o.set(_j, "AlterFunctionStmt.actions", _p?.actions);
-    return _j;
-  },
-  doStmt(_p?: DoStmt["DoStmt"]): DoStmt {
-    const _j = ({
-      DoStmt: {}
-    } as DoStmt);
-    _o.set(_j, "DoStmt.args", _p?.args);
-    return _j;
-  },
-  inlineCodeBlock(_p?: InlineCodeBlock["InlineCodeBlock"]): InlineCodeBlock {
-    const _j = ({
-      InlineCodeBlock: {}
-    } as InlineCodeBlock);
-    _o.set(_j, "InlineCodeBlock.source_text", _p?.source_text);
-    _o.set(_j, "InlineCodeBlock.langOid", _p?.langOid);
-    _o.set(_j, "InlineCodeBlock.langIsTrusted", _p?.langIsTrusted);
-    _o.set(_j, "InlineCodeBlock.atomic", _p?.atomic);
-    return _j;
-  },
-  callStmt(_p?: CallStmt["CallStmt"]): CallStmt {
-    const _j = ({
-      CallStmt: {}
-    } as CallStmt);
-    _o.set(_j, "CallStmt.funccall", _p?.funccall);
-    _o.set(_j, "CallStmt.funcexpr", _p?.funcexpr);
-    _o.set(_j, "CallStmt.outargs", _p?.outargs);
-    return _j;
-  },
-  callContext(_p?: CallContext["CallContext"]): CallContext {
-    const _j = ({
-      CallContext: {}
-    } as CallContext);
-    _o.set(_j, "CallContext.atomic", _p?.atomic);
-    return _j;
-  },
-  renameStmt(_p?: RenameStmt["RenameStmt"]): RenameStmt {
-    const _j = ({
-      RenameStmt: {}
-    } as RenameStmt);
-    _o.set(_j, "RenameStmt.renameType", _p?.renameType);
-    _o.set(_j, "RenameStmt.relationType", _p?.relationType);
-    _o.set(_j, "RenameStmt.relation", _p?.relation);
-    _o.set(_j, "RenameStmt.object", _p?.object);
-    _o.set(_j, "RenameStmt.subname", _p?.subname);
-    _o.set(_j, "RenameStmt.newname", _p?.newname);
-    _o.set(_j, "RenameStmt.behavior", _p?.behavior);
-    _o.set(_j, "RenameStmt.missing_ok", _p?.missing_ok);
-    return _j;
-  },
-  alterObjectDependsStmt(_p?: AlterObjectDependsStmt["AlterObjectDependsStmt"]): AlterObjectDependsStmt {
-    const _j = ({
-      AlterObjectDependsStmt: {}
-    } as AlterObjectDependsStmt);
-    _o.set(_j, "AlterObjectDependsStmt.objectType", _p?.objectType);
-    _o.set(_j, "AlterObjectDependsStmt.relation", _p?.relation);
-    _o.set(_j, "AlterObjectDependsStmt.object", _p?.object);
-    _o.set(_j, "AlterObjectDependsStmt.extname", _p?.extname);
-    _o.set(_j, "AlterObjectDependsStmt.remove", _p?.remove);
-    return _j;
-  },
-  alterObjectSchemaStmt(_p?: AlterObjectSchemaStmt["AlterObjectSchemaStmt"]): AlterObjectSchemaStmt {
-    const _j = ({
-      AlterObjectSchemaStmt: {}
-    } as AlterObjectSchemaStmt);
-    _o.set(_j, "AlterObjectSchemaStmt.objectType", _p?.objectType);
-    _o.set(_j, "AlterObjectSchemaStmt.relation", _p?.relation);
-    _o.set(_j, "AlterObjectSchemaStmt.object", _p?.object);
-    _o.set(_j, "AlterObjectSchemaStmt.newschema", _p?.newschema);
-    _o.set(_j, "AlterObjectSchemaStmt.missing_ok", _p?.missing_ok);
-    return _j;
-  },
-  alterOwnerStmt(_p?: AlterOwnerStmt["AlterOwnerStmt"]): AlterOwnerStmt {
-    const _j = ({
-      AlterOwnerStmt: {}
-    } as AlterOwnerStmt);
-    _o.set(_j, "AlterOwnerStmt.objectType", _p?.objectType);
-    _o.set(_j, "AlterOwnerStmt.relation", _p?.relation);
-    _o.set(_j, "AlterOwnerStmt.object", _p?.object);
-    _o.set(_j, "AlterOwnerStmt.newowner", _p?.newowner);
-    return _j;
-  },
-  alterOperatorStmt(_p?: AlterOperatorStmt["AlterOperatorStmt"]): AlterOperatorStmt {
-    const _j = ({
-      AlterOperatorStmt: {}
-    } as AlterOperatorStmt);
-    _o.set(_j, "AlterOperatorStmt.opername", _p?.opername);
-    _o.set(_j, "AlterOperatorStmt.options", _p?.options);
-    return _j;
-  },
-  alterTypeStmt(_p?: AlterTypeStmt["AlterTypeStmt"]): AlterTypeStmt {
-    const _j = ({
-      AlterTypeStmt: {}
-    } as AlterTypeStmt);
-    _o.set(_j, "AlterTypeStmt.typeName", _p?.typeName);
-    _o.set(_j, "AlterTypeStmt.options", _p?.options);
-    return _j;
-  },
-  ruleStmt(_p?: RuleStmt["RuleStmt"]): RuleStmt {
-    const _j = ({
-      RuleStmt: {}
-    } as RuleStmt);
-    _o.set(_j, "RuleStmt.relation", _p?.relation);
-    _o.set(_j, "RuleStmt.rulename", _p?.rulename);
-    _o.set(_j, "RuleStmt.whereClause", _p?.whereClause);
-    _o.set(_j, "RuleStmt.event", _p?.event);
-    _o.set(_j, "RuleStmt.instead", _p?.instead);
-    _o.set(_j, "RuleStmt.actions", _p?.actions);
-    _o.set(_j, "RuleStmt.replace", _p?.replace);
-    return _j;
-  },
-  notifyStmt(_p?: NotifyStmt["NotifyStmt"]): NotifyStmt {
-    const _j = ({
-      NotifyStmt: {}
-    } as NotifyStmt);
-    _o.set(_j, "NotifyStmt.conditionname", _p?.conditionname);
-    _o.set(_j, "NotifyStmt.payload", _p?.payload);
-    return _j;
-  },
-  listenStmt(_p?: ListenStmt["ListenStmt"]): ListenStmt {
-    const _j = ({
-      ListenStmt: {}
-    } as ListenStmt);
-    _o.set(_j, "ListenStmt.conditionname", _p?.conditionname);
-    return _j;
-  },
-  unlistenStmt(_p?: UnlistenStmt["UnlistenStmt"]): UnlistenStmt {
-    const _j = ({
-      UnlistenStmt: {}
-    } as UnlistenStmt);
-    _o.set(_j, "UnlistenStmt.conditionname", _p?.conditionname);
-    return _j;
-  },
-  transactionStmt(_p?: TransactionStmt["TransactionStmt"]): TransactionStmt {
-    const _j = ({
-      TransactionStmt: {}
-    } as TransactionStmt);
-    _o.set(_j, "TransactionStmt.kind", _p?.kind);
-    _o.set(_j, "TransactionStmt.options", _p?.options);
-    _o.set(_j, "TransactionStmt.savepoint_name", _p?.savepoint_name);
-    _o.set(_j, "TransactionStmt.gid", _p?.gid);
-    _o.set(_j, "TransactionStmt.chain", _p?.chain);
-    return _j;
-  },
-  compositeTypeStmt(_p?: CompositeTypeStmt["CompositeTypeStmt"]): CompositeTypeStmt {
-    const _j = ({
-      CompositeTypeStmt: {}
-    } as CompositeTypeStmt);
-    _o.set(_j, "CompositeTypeStmt.typevar", _p?.typevar);
-    _o.set(_j, "CompositeTypeStmt.coldeflist", _p?.coldeflist);
-    return _j;
-  },
-  createEnumStmt(_p?: CreateEnumStmt["CreateEnumStmt"]): CreateEnumStmt {
-    const _j = ({
-      CreateEnumStmt: {}
-    } as CreateEnumStmt);
-    _o.set(_j, "CreateEnumStmt.typeName", _p?.typeName);
-    _o.set(_j, "CreateEnumStmt.vals", _p?.vals);
-    return _j;
-  },
-  createRangeStmt(_p?: CreateRangeStmt["CreateRangeStmt"]): CreateRangeStmt {
-    const _j = ({
-      CreateRangeStmt: {}
-    } as CreateRangeStmt);
-    _o.set(_j, "CreateRangeStmt.typeName", _p?.typeName);
-    _o.set(_j, "CreateRangeStmt.params", _p?.params);
-    return _j;
-  },
-  alterEnumStmt(_p?: AlterEnumStmt["AlterEnumStmt"]): AlterEnumStmt {
-    const _j = ({
-      AlterEnumStmt: {}
-    } as AlterEnumStmt);
-    _o.set(_j, "AlterEnumStmt.typeName", _p?.typeName);
-    _o.set(_j, "AlterEnumStmt.oldVal", _p?.oldVal);
-    _o.set(_j, "AlterEnumStmt.newVal", _p?.newVal);
-    _o.set(_j, "AlterEnumStmt.newValNeighbor", _p?.newValNeighbor);
-    _o.set(_j, "AlterEnumStmt.newValIsAfter", _p?.newValIsAfter);
-    _o.set(_j, "AlterEnumStmt.skipIfNewValExists", _p?.skipIfNewValExists);
-    return _j;
-  },
-  viewStmt(_p?: ViewStmt["ViewStmt"]): ViewStmt {
-    const _j = ({
-      ViewStmt: {}
-    } as ViewStmt);
-    _o.set(_j, "ViewStmt.view", _p?.view);
-    _o.set(_j, "ViewStmt.aliases", _p?.aliases);
-    _o.set(_j, "ViewStmt.query", _p?.query);
-    _o.set(_j, "ViewStmt.replace", _p?.replace);
-    _o.set(_j, "ViewStmt.options", _p?.options);
-    _o.set(_j, "ViewStmt.withCheckOption", _p?.withCheckOption);
-    return _j;
-  },
-  loadStmt(_p?: LoadStmt["LoadStmt"]): LoadStmt {
-    const _j = ({
-      LoadStmt: {}
-    } as LoadStmt);
-    _o.set(_j, "LoadStmt.filename", _p?.filename);
-    return _j;
-  },
-  createdbStmt(_p?: CreatedbStmt["CreatedbStmt"]): CreatedbStmt {
-    const _j = ({
-      CreatedbStmt: {}
-    } as CreatedbStmt);
-    _o.set(_j, "CreatedbStmt.dbname", _p?.dbname);
-    _o.set(_j, "CreatedbStmt.options", _p?.options);
-    return _j;
-  },
-  alterDatabaseStmt(_p?: AlterDatabaseStmt["AlterDatabaseStmt"]): AlterDatabaseStmt {
-    const _j = ({
-      AlterDatabaseStmt: {}
-    } as AlterDatabaseStmt);
-    _o.set(_j, "AlterDatabaseStmt.dbname", _p?.dbname);
-    _o.set(_j, "AlterDatabaseStmt.options", _p?.options);
-    return _j;
-  },
-  alterDatabaseRefreshCollStmt(_p?: AlterDatabaseRefreshCollStmt["AlterDatabaseRefreshCollStmt"]): AlterDatabaseRefreshCollStmt {
-    const _j = ({
-      AlterDatabaseRefreshCollStmt: {}
-    } as AlterDatabaseRefreshCollStmt);
-    _o.set(_j, "AlterDatabaseRefreshCollStmt.dbname", _p?.dbname);
-    return _j;
-  },
-  alterDatabaseSetStmt(_p?: AlterDatabaseSetStmt["AlterDatabaseSetStmt"]): AlterDatabaseSetStmt {
-    const _j = ({
-      AlterDatabaseSetStmt: {}
-    } as AlterDatabaseSetStmt);
-    _o.set(_j, "AlterDatabaseSetStmt.dbname", _p?.dbname);
-    _o.set(_j, "AlterDatabaseSetStmt.setstmt", _p?.setstmt);
-    return _j;
-  },
-  dropdbStmt(_p?: DropdbStmt["DropdbStmt"]): DropdbStmt {
-    const _j = ({
-      DropdbStmt: {}
-    } as DropdbStmt);
-    _o.set(_j, "DropdbStmt.dbname", _p?.dbname);
-    _o.set(_j, "DropdbStmt.missing_ok", _p?.missing_ok);
-    _o.set(_j, "DropdbStmt.options", _p?.options);
-    return _j;
-  },
-  alterSystemStmt(_p?: AlterSystemStmt["AlterSystemStmt"]): AlterSystemStmt {
-    const _j = ({
-      AlterSystemStmt: {}
-    } as AlterSystemStmt);
-    _o.set(_j, "AlterSystemStmt.setstmt", _p?.setstmt);
-    return _j;
-  },
-  clusterStmt(_p?: ClusterStmt["ClusterStmt"]): ClusterStmt {
-    const _j = ({
-      ClusterStmt: {}
-    } as ClusterStmt);
-    _o.set(_j, "ClusterStmt.relation", _p?.relation);
-    _o.set(_j, "ClusterStmt.indexname", _p?.indexname);
-    _o.set(_j, "ClusterStmt.params", _p?.params);
-    return _j;
-  },
-  vacuumStmt(_p?: VacuumStmt["VacuumStmt"]): VacuumStmt {
-    const _j = ({
-      VacuumStmt: {}
-    } as VacuumStmt);
-    _o.set(_j, "VacuumStmt.options", _p?.options);
-    _o.set(_j, "VacuumStmt.rels", _p?.rels);
-    _o.set(_j, "VacuumStmt.is_vacuumcmd", _p?.is_vacuumcmd);
-    return _j;
-  },
-  vacuumRelation(_p?: VacuumRelation["VacuumRelation"]): VacuumRelation {
-    const _j = ({
-      VacuumRelation: {}
-    } as VacuumRelation);
-    _o.set(_j, "VacuumRelation.relation", _p?.relation);
-    _o.set(_j, "VacuumRelation.oid", _p?.oid);
-    _o.set(_j, "VacuumRelation.va_cols", _p?.va_cols);
-    return _j;
-  },
-  explainStmt(_p?: ExplainStmt["ExplainStmt"]): ExplainStmt {
-    const _j = ({
-      ExplainStmt: {}
-    } as ExplainStmt);
-    _o.set(_j, "ExplainStmt.query", _p?.query);
-    _o.set(_j, "ExplainStmt.options", _p?.options);
-    return _j;
-  },
-  createTableAsStmt(_p?: CreateTableAsStmt["CreateTableAsStmt"]): CreateTableAsStmt {
-    const _j = ({
-      CreateTableAsStmt: {}
-    } as CreateTableAsStmt);
-    _o.set(_j, "CreateTableAsStmt.query", _p?.query);
-    _o.set(_j, "CreateTableAsStmt.into", _p?.into);
-    _o.set(_j, "CreateTableAsStmt.objtype", _p?.objtype);
-    _o.set(_j, "CreateTableAsStmt.is_select_into", _p?.is_select_into);
-    _o.set(_j, "CreateTableAsStmt.if_not_exists", _p?.if_not_exists);
-    return _j;
-  },
-  refreshMatViewStmt(_p?: RefreshMatViewStmt["RefreshMatViewStmt"]): RefreshMatViewStmt {
-    const _j = ({
-      RefreshMatViewStmt: {}
-    } as RefreshMatViewStmt);
-    _o.set(_j, "RefreshMatViewStmt.concurrent", _p?.concurrent);
-    _o.set(_j, "RefreshMatViewStmt.skipData", _p?.skipData);
-    _o.set(_j, "RefreshMatViewStmt.relation", _p?.relation);
-    return _j;
-  },
-  checkPointStmt(_p?: CheckPointStmt["CheckPointStmt"]): CheckPointStmt {
-    const _j = ({
-      CheckPointStmt: {}
-    } as CheckPointStmt);
-    return _j;
-  },
-  discardStmt(_p?: DiscardStmt["DiscardStmt"]): DiscardStmt {
-    const _j = ({
-      DiscardStmt: {}
-    } as DiscardStmt);
-    _o.set(_j, "DiscardStmt.target", _p?.target);
-    return _j;
-  },
-  lockStmt(_p?: LockStmt["LockStmt"]): LockStmt {
-    const _j = ({
-      LockStmt: {}
-    } as LockStmt);
-    _o.set(_j, "LockStmt.relations", _p?.relations);
-    _o.set(_j, "LockStmt.mode", _p?.mode);
-    _o.set(_j, "LockStmt.nowait", _p?.nowait);
-    return _j;
-  },
-  constraintsSetStmt(_p?: ConstraintsSetStmt["ConstraintsSetStmt"]): ConstraintsSetStmt {
-    const _j = ({
-      ConstraintsSetStmt: {}
-    } as ConstraintsSetStmt);
-    _o.set(_j, "ConstraintsSetStmt.constraints", _p?.constraints);
-    _o.set(_j, "ConstraintsSetStmt.deferred", _p?.deferred);
-    return _j;
-  },
-  reindexStmt(_p?: ReindexStmt["ReindexStmt"]): ReindexStmt {
-    const _j = ({
-      ReindexStmt: {}
-    } as ReindexStmt);
-    _o.set(_j, "ReindexStmt.kind", _p?.kind);
-    _o.set(_j, "ReindexStmt.relation", _p?.relation);
-    _o.set(_j, "ReindexStmt.name", _p?.name);
-    _o.set(_j, "ReindexStmt.params", _p?.params);
-    return _j;
-  },
-  createConversionStmt(_p?: CreateConversionStmt["CreateConversionStmt"]): CreateConversionStmt {
-    const _j = ({
-      CreateConversionStmt: {}
-    } as CreateConversionStmt);
-    _o.set(_j, "CreateConversionStmt.conversion_name", _p?.conversion_name);
-    _o.set(_j, "CreateConversionStmt.for_encoding_name", _p?.for_encoding_name);
-    _o.set(_j, "CreateConversionStmt.to_encoding_name", _p?.to_encoding_name);
-    _o.set(_j, "CreateConversionStmt.func_name", _p?.func_name);
-    _o.set(_j, "CreateConversionStmt.def", _p?.def);
-    return _j;
-  },
-  createCastStmt(_p?: CreateCastStmt["CreateCastStmt"]): CreateCastStmt {
-    const _j = ({
-      CreateCastStmt: {}
-    } as CreateCastStmt);
-    _o.set(_j, "CreateCastStmt.sourcetype", _p?.sourcetype);
-    _o.set(_j, "CreateCastStmt.targettype", _p?.targettype);
-    _o.set(_j, "CreateCastStmt.func", _p?.func);
-    _o.set(_j, "CreateCastStmt.context", _p?.context);
-    _o.set(_j, "CreateCastStmt.inout", _p?.inout);
-    return _j;
-  },
-  createTransformStmt(_p?: CreateTransformStmt["CreateTransformStmt"]): CreateTransformStmt {
-    const _j = ({
-      CreateTransformStmt: {}
-    } as CreateTransformStmt);
-    _o.set(_j, "CreateTransformStmt.replace", _p?.replace);
-    _o.set(_j, "CreateTransformStmt.type_name", _p?.type_name);
-    _o.set(_j, "CreateTransformStmt.lang", _p?.lang);
-    _o.set(_j, "CreateTransformStmt.fromsql", _p?.fromsql);
-    _o.set(_j, "CreateTransformStmt.tosql", _p?.tosql);
-    return _j;
-  },
-  prepareStmt(_p?: PrepareStmt["PrepareStmt"]): PrepareStmt {
-    const _j = ({
-      PrepareStmt: {}
-    } as PrepareStmt);
-    _o.set(_j, "PrepareStmt.name", _p?.name);
-    _o.set(_j, "PrepareStmt.argtypes", _p?.argtypes);
-    _o.set(_j, "PrepareStmt.query", _p?.query);
-    return _j;
-  },
-  executeStmt(_p?: ExecuteStmt["ExecuteStmt"]): ExecuteStmt {
-    const _j = ({
-      ExecuteStmt: {}
-    } as ExecuteStmt);
-    _o.set(_j, "ExecuteStmt.name", _p?.name);
-    _o.set(_j, "ExecuteStmt.params", _p?.params);
-    return _j;
-  },
-  deallocateStmt(_p?: DeallocateStmt["DeallocateStmt"]): DeallocateStmt {
-    const _j = ({
-      DeallocateStmt: {}
-    } as DeallocateStmt);
-    _o.set(_j, "DeallocateStmt.name", _p?.name);
-    return _j;
-  },
-  dropOwnedStmt(_p?: DropOwnedStmt["DropOwnedStmt"]): DropOwnedStmt {
-    const _j = ({
-      DropOwnedStmt: {}
-    } as DropOwnedStmt);
-    _o.set(_j, "DropOwnedStmt.roles", _p?.roles);
-    _o.set(_j, "DropOwnedStmt.behavior", _p?.behavior);
-    return _j;
-  },
-  reassignOwnedStmt(_p?: ReassignOwnedStmt["ReassignOwnedStmt"]): ReassignOwnedStmt {
-    const _j = ({
-      ReassignOwnedStmt: {}
-    } as ReassignOwnedStmt);
-    _o.set(_j, "ReassignOwnedStmt.roles", _p?.roles);
-    _o.set(_j, "ReassignOwnedStmt.newrole", _p?.newrole);
-    return _j;
-  },
-  altertsDictionaryStmt(_p?: AlterTSDictionaryStmt["AlterTSDictionaryStmt"]): AlterTSDictionaryStmt {
-    const _j = ({
-      AlterTSDictionaryStmt: {}
-    } as AlterTSDictionaryStmt);
-    _o.set(_j, "AlterTSDictionaryStmt.dictname", _p?.dictname);
-    _o.set(_j, "AlterTSDictionaryStmt.options", _p?.options);
-    return _j;
-  },
-  altertsConfigurationStmt(_p?: AlterTSConfigurationStmt["AlterTSConfigurationStmt"]): AlterTSConfigurationStmt {
-    const _j = ({
-      AlterTSConfigurationStmt: {}
-    } as AlterTSConfigurationStmt);
-    _o.set(_j, "AlterTSConfigurationStmt.kind", _p?.kind);
-    _o.set(_j, "AlterTSConfigurationStmt.cfgname", _p?.cfgname);
-    _o.set(_j, "AlterTSConfigurationStmt.tokentype", _p?.tokentype);
-    _o.set(_j, "AlterTSConfigurationStmt.dicts", _p?.dicts);
-    _o.set(_j, "AlterTSConfigurationStmt.override", _p?.override);
-    _o.set(_j, "AlterTSConfigurationStmt.replace", _p?.replace);
-    _o.set(_j, "AlterTSConfigurationStmt.missing_ok", _p?.missing_ok);
-    return _j;
-  },
-  publicationTable(_p?: PublicationTable["PublicationTable"]): PublicationTable {
-    const _j = ({
-      PublicationTable: {}
-    } as PublicationTable);
-    _o.set(_j, "PublicationTable.relation", _p?.relation);
-    _o.set(_j, "PublicationTable.whereClause", _p?.whereClause);
-    _o.set(_j, "PublicationTable.columns", _p?.columns);
-    return _j;
-  },
-  publicationObjSpec(_p?: PublicationObjSpec["PublicationObjSpec"]): PublicationObjSpec {
-    const _j = ({
-      PublicationObjSpec: {}
-    } as PublicationObjSpec);
-    _o.set(_j, "PublicationObjSpec.pubobjtype", _p?.pubobjtype);
-    _o.set(_j, "PublicationObjSpec.name", _p?.name);
-    _o.set(_j, "PublicationObjSpec.pubtable", _p?.pubtable);
-    _o.set(_j, "PublicationObjSpec.location", _p?.location);
-    return _j;
-  },
-  createPublicationStmt(_p?: CreatePublicationStmt["CreatePublicationStmt"]): CreatePublicationStmt {
-    const _j = ({
-      CreatePublicationStmt: {}
-    } as CreatePublicationStmt);
-    _o.set(_j, "CreatePublicationStmt.pubname", _p?.pubname);
-    _o.set(_j, "CreatePublicationStmt.options", _p?.options);
-    _o.set(_j, "CreatePublicationStmt.pubobjects", _p?.pubobjects);
-    _o.set(_j, "CreatePublicationStmt.for_all_tables", _p?.for_all_tables);
-    return _j;
-  },
-  alterPublicationStmt(_p?: AlterPublicationStmt["AlterPublicationStmt"]): AlterPublicationStmt {
-    const _j = ({
-      AlterPublicationStmt: {}
-    } as AlterPublicationStmt);
-    _o.set(_j, "AlterPublicationStmt.pubname", _p?.pubname);
-    _o.set(_j, "AlterPublicationStmt.options", _p?.options);
-    _o.set(_j, "AlterPublicationStmt.pubobjects", _p?.pubobjects);
-    _o.set(_j, "AlterPublicationStmt.for_all_tables", _p?.for_all_tables);
-    _o.set(_j, "AlterPublicationStmt.action", _p?.action);
-    return _j;
-  },
-  createSubscriptionStmt(_p?: CreateSubscriptionStmt["CreateSubscriptionStmt"]): CreateSubscriptionStmt {
-    const _j = ({
-      CreateSubscriptionStmt: {}
-    } as CreateSubscriptionStmt);
-    _o.set(_j, "CreateSubscriptionStmt.subname", _p?.subname);
-    _o.set(_j, "CreateSubscriptionStmt.conninfo", _p?.conninfo);
-    _o.set(_j, "CreateSubscriptionStmt.publication", _p?.publication);
-    _o.set(_j, "CreateSubscriptionStmt.options", _p?.options);
-    return _j;
-  },
-  alterSubscriptionStmt(_p?: AlterSubscriptionStmt["AlterSubscriptionStmt"]): AlterSubscriptionStmt {
-    const _j = ({
-      AlterSubscriptionStmt: {}
-    } as AlterSubscriptionStmt);
-    _o.set(_j, "AlterSubscriptionStmt.kind", _p?.kind);
-    _o.set(_j, "AlterSubscriptionStmt.subname", _p?.subname);
-    _o.set(_j, "AlterSubscriptionStmt.conninfo", _p?.conninfo);
-    _o.set(_j, "AlterSubscriptionStmt.publication", _p?.publication);
-    _o.set(_j, "AlterSubscriptionStmt.options", _p?.options);
-    return _j;
-  },
-  dropSubscriptionStmt(_p?: DropSubscriptionStmt["DropSubscriptionStmt"]): DropSubscriptionStmt {
-    const _j = ({
-      DropSubscriptionStmt: {}
-    } as DropSubscriptionStmt);
-    _o.set(_j, "DropSubscriptionStmt.subname", _p?.subname);
-    _o.set(_j, "DropSubscriptionStmt.missing_ok", _p?.missing_ok);
-    _o.set(_j, "DropSubscriptionStmt.behavior", _p?.behavior);
+  roleSpec(_p?: RoleSpec): RoleSpec {
+    const _j = ({} as RoleSpec);
+    _o.set(_j, "roletype", _p?.roletype);
+    _o.set(_j, "rolename", _p?.rolename);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  funcCall(_p?: FuncCall): FuncCall {
+    const _j = ({} as FuncCall);
+    _o.set(_j, "funcname", _p?.funcname);
+    _o.set(_j, "args", _p?.args);
+    _o.set(_j, "agg_order", _p?.agg_order);
+    _o.set(_j, "agg_filter", _p?.agg_filter);
+    _o.set(_j, "over", _p?.over);
+    _o.set(_j, "agg_within_group", _p?.agg_within_group);
+    _o.set(_j, "agg_star", _p?.agg_star);
+    _o.set(_j, "agg_distinct", _p?.agg_distinct);
+    _o.set(_j, "func_variadic", _p?.func_variadic);
+    _o.set(_j, "funcformat", _p?.funcformat);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  aStar(_p?: A_Star): A_Star {
+    const _j = ({} as A_Star);
+    return _j;
+  },
+  aIndices(_p?: A_Indices): A_Indices {
+    const _j = ({} as A_Indices);
+    _o.set(_j, "is_slice", _p?.is_slice);
+    _o.set(_j, "lidx", _p?.lidx);
+    _o.set(_j, "uidx", _p?.uidx);
+    return _j;
+  },
+  aIndirection(_p?: A_Indirection): A_Indirection {
+    const _j = ({} as A_Indirection);
+    _o.set(_j, "arg", _p?.arg);
+    _o.set(_j, "indirection", _p?.indirection);
+    return _j;
+  },
+  aArrayExpr(_p?: A_ArrayExpr): A_ArrayExpr {
+    const _j = ({} as A_ArrayExpr);
+    _o.set(_j, "elements", _p?.elements);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  resTarget(_p?: ResTarget): ResTarget {
+    const _j = ({} as ResTarget);
+    _o.set(_j, "name", _p?.name);
+    _o.set(_j, "indirection", _p?.indirection);
+    _o.set(_j, "val", _p?.val);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  multiAssignRef(_p?: MultiAssignRef): MultiAssignRef {
+    const _j = ({} as MultiAssignRef);
+    _o.set(_j, "source", _p?.source);
+    _o.set(_j, "colno", _p?.colno);
+    _o.set(_j, "ncolumns", _p?.ncolumns);
+    return _j;
+  },
+  sortBy(_p?: SortBy): SortBy {
+    const _j = ({} as SortBy);
+    _o.set(_j, "node", _p?.node);
+    _o.set(_j, "sortby_dir", _p?.sortby_dir);
+    _o.set(_j, "sortby_nulls", _p?.sortby_nulls);
+    _o.set(_j, "useOp", _p?.useOp);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  windowDef(_p?: WindowDef): WindowDef {
+    const _j = ({} as WindowDef);
+    _o.set(_j, "name", _p?.name);
+    _o.set(_j, "refname", _p?.refname);
+    _o.set(_j, "partitionClause", _p?.partitionClause);
+    _o.set(_j, "orderClause", _p?.orderClause);
+    _o.set(_j, "frameOptions", _p?.frameOptions);
+    _o.set(_j, "startOffset", _p?.startOffset);
+    _o.set(_j, "endOffset", _p?.endOffset);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  rangeSubselect(_p?: RangeSubselect): RangeSubselect {
+    const _j = ({} as RangeSubselect);
+    _o.set(_j, "lateral", _p?.lateral);
+    _o.set(_j, "subquery", _p?.subquery);
+    _o.set(_j, "alias", _p?.alias);
+    return _j;
+  },
+  rangeFunction(_p?: RangeFunction): RangeFunction {
+    const _j = ({} as RangeFunction);
+    _o.set(_j, "lateral", _p?.lateral);
+    _o.set(_j, "ordinality", _p?.ordinality);
+    _o.set(_j, "is_rowsfrom", _p?.is_rowsfrom);
+    _o.set(_j, "functions", _p?.functions);
+    _o.set(_j, "alias", _p?.alias);
+    _o.set(_j, "coldeflist", _p?.coldeflist);
+    return _j;
+  },
+  rangeTableFunc(_p?: RangeTableFunc): RangeTableFunc {
+    const _j = ({} as RangeTableFunc);
+    _o.set(_j, "lateral", _p?.lateral);
+    _o.set(_j, "docexpr", _p?.docexpr);
+    _o.set(_j, "rowexpr", _p?.rowexpr);
+    _o.set(_j, "namespaces", _p?.namespaces);
+    _o.set(_j, "columns", _p?.columns);
+    _o.set(_j, "alias", _p?.alias);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  rangeTableFuncCol(_p?: RangeTableFuncCol): RangeTableFuncCol {
+    const _j = ({} as RangeTableFuncCol);
+    _o.set(_j, "colname", _p?.colname);
+    _o.set(_j, "typeName", _p?.typeName);
+    _o.set(_j, "for_ordinality", _p?.for_ordinality);
+    _o.set(_j, "is_not_null", _p?.is_not_null);
+    _o.set(_j, "colexpr", _p?.colexpr);
+    _o.set(_j, "coldefexpr", _p?.coldefexpr);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  rangeTableSample(_p?: RangeTableSample): RangeTableSample {
+    const _j = ({} as RangeTableSample);
+    _o.set(_j, "relation", _p?.relation);
+    _o.set(_j, "method", _p?.method);
+    _o.set(_j, "args", _p?.args);
+    _o.set(_j, "repeatable", _p?.repeatable);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  columnDef(_p?: ColumnDef): ColumnDef {
+    const _j = ({} as ColumnDef);
+    _o.set(_j, "colname", _p?.colname);
+    _o.set(_j, "typeName", _p?.typeName);
+    _o.set(_j, "compression", _p?.compression);
+    _o.set(_j, "inhcount", _p?.inhcount);
+    _o.set(_j, "is_local", _p?.is_local);
+    _o.set(_j, "is_not_null", _p?.is_not_null);
+    _o.set(_j, "is_from_type", _p?.is_from_type);
+    _o.set(_j, "storage", _p?.storage);
+    _o.set(_j, "storage_name", _p?.storage_name);
+    _o.set(_j, "raw_default", _p?.raw_default);
+    _o.set(_j, "cooked_default", _p?.cooked_default);
+    _o.set(_j, "identity", _p?.identity);
+    _o.set(_j, "identitySequence", _p?.identitySequence);
+    _o.set(_j, "generated", _p?.generated);
+    _o.set(_j, "collClause", _p?.collClause);
+    _o.set(_j, "collOid", _p?.collOid);
+    _o.set(_j, "constraints", _p?.constraints);
+    _o.set(_j, "fdwoptions", _p?.fdwoptions);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  tableLikeClause(_p?: TableLikeClause): TableLikeClause {
+    const _j = ({} as TableLikeClause);
+    _o.set(_j, "relation", _p?.relation);
+    _o.set(_j, "options", _p?.options);
+    _o.set(_j, "relationOid", _p?.relationOid);
+    return _j;
+  },
+  indexElem(_p?: IndexElem): IndexElem {
+    const _j = ({} as IndexElem);
+    _o.set(_j, "name", _p?.name);
+    _o.set(_j, "expr", _p?.expr);
+    _o.set(_j, "indexcolname", _p?.indexcolname);
+    _o.set(_j, "collation", _p?.collation);
+    _o.set(_j, "opclass", _p?.opclass);
+    _o.set(_j, "opclassopts", _p?.opclassopts);
+    _o.set(_j, "ordering", _p?.ordering);
+    _o.set(_j, "nulls_ordering", _p?.nulls_ordering);
+    return _j;
+  },
+  defElem(_p?: DefElem): DefElem {
+    const _j = ({} as DefElem);
+    _o.set(_j, "defnamespace", _p?.defnamespace);
+    _o.set(_j, "defname", _p?.defname);
+    _o.set(_j, "arg", _p?.arg);
+    _o.set(_j, "defaction", _p?.defaction);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  lockingClause(_p?: LockingClause): LockingClause {
+    const _j = ({} as LockingClause);
+    _o.set(_j, "lockedRels", _p?.lockedRels);
+    _o.set(_j, "strength", _p?.strength);
+    _o.set(_j, "waitPolicy", _p?.waitPolicy);
+    return _j;
+  },
+  xmlSerialize(_p?: XmlSerialize): XmlSerialize {
+    const _j = ({} as XmlSerialize);
+    _o.set(_j, "xmloption", _p?.xmloption);
+    _o.set(_j, "expr", _p?.expr);
+    _o.set(_j, "typeName", _p?.typeName);
+    _o.set(_j, "indent", _p?.indent);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  partitionElem(_p?: PartitionElem): PartitionElem {
+    const _j = ({} as PartitionElem);
+    _o.set(_j, "name", _p?.name);
+    _o.set(_j, "expr", _p?.expr);
+    _o.set(_j, "collation", _p?.collation);
+    _o.set(_j, "opclass", _p?.opclass);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  partitionSpec(_p?: PartitionSpec): PartitionSpec {
+    const _j = ({} as PartitionSpec);
+    _o.set(_j, "strategy", _p?.strategy);
+    _o.set(_j, "partParams", _p?.partParams);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  partitionBoundSpec(_p?: PartitionBoundSpec): PartitionBoundSpec {
+    const _j = ({} as PartitionBoundSpec);
+    _o.set(_j, "strategy", _p?.strategy);
+    _o.set(_j, "is_default", _p?.is_default);
+    _o.set(_j, "modulus", _p?.modulus);
+    _o.set(_j, "remainder", _p?.remainder);
+    _o.set(_j, "listdatums", _p?.listdatums);
+    _o.set(_j, "lowerdatums", _p?.lowerdatums);
+    _o.set(_j, "upperdatums", _p?.upperdatums);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  partitionRangeDatum(_p?: PartitionRangeDatum): PartitionRangeDatum {
+    const _j = ({} as PartitionRangeDatum);
+    _o.set(_j, "kind", _p?.kind);
+    _o.set(_j, "value", _p?.value);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  partitionCmd(_p?: PartitionCmd): PartitionCmd {
+    const _j = ({} as PartitionCmd);
+    _o.set(_j, "name", _p?.name);
+    _o.set(_j, "bound", _p?.bound);
+    _o.set(_j, "concurrent", _p?.concurrent);
+    return _j;
+  },
+  rangeTblEntry(_p?: RangeTblEntry): RangeTblEntry {
+    const _j = ({} as RangeTblEntry);
+    _o.set(_j, "rtekind", _p?.rtekind);
+    _o.set(_j, "relid", _p?.relid);
+    _o.set(_j, "relkind", _p?.relkind);
+    _o.set(_j, "rellockmode", _p?.rellockmode);
+    _o.set(_j, "tablesample", _p?.tablesample);
+    _o.set(_j, "perminfoindex", _p?.perminfoindex);
+    _o.set(_j, "subquery", _p?.subquery);
+    _o.set(_j, "security_barrier", _p?.security_barrier);
+    _o.set(_j, "jointype", _p?.jointype);
+    _o.set(_j, "joinmergedcols", _p?.joinmergedcols);
+    _o.set(_j, "joinaliasvars", _p?.joinaliasvars);
+    _o.set(_j, "joinleftcols", _p?.joinleftcols);
+    _o.set(_j, "joinrightcols", _p?.joinrightcols);
+    _o.set(_j, "join_using_alias", _p?.join_using_alias);
+    _o.set(_j, "functions", _p?.functions);
+    _o.set(_j, "funcordinality", _p?.funcordinality);
+    _o.set(_j, "tablefunc", _p?.tablefunc);
+    _o.set(_j, "values_lists", _p?.values_lists);
+    _o.set(_j, "ctename", _p?.ctename);
+    _o.set(_j, "ctelevelsup", _p?.ctelevelsup);
+    _o.set(_j, "self_reference", _p?.self_reference);
+    _o.set(_j, "coltypes", _p?.coltypes);
+    _o.set(_j, "coltypmods", _p?.coltypmods);
+    _o.set(_j, "colcollations", _p?.colcollations);
+    _o.set(_j, "enrname", _p?.enrname);
+    _o.set(_j, "enrtuples", _p?.enrtuples);
+    _o.set(_j, "alias", _p?.alias);
+    _o.set(_j, "eref", _p?.eref);
+    _o.set(_j, "lateral", _p?.lateral);
+    _o.set(_j, "inh", _p?.inh);
+    _o.set(_j, "inFromCl", _p?.inFromCl);
+    _o.set(_j, "securityQuals", _p?.securityQuals);
+    return _j;
+  },
+  rtePermissionInfo(_p?: RTEPermissionInfo): RTEPermissionInfo {
+    const _j = ({} as RTEPermissionInfo);
+    _o.set(_j, "relid", _p?.relid);
+    _o.set(_j, "inh", _p?.inh);
+    _o.set(_j, "requiredPerms", _p?.requiredPerms);
+    _o.set(_j, "checkAsUser", _p?.checkAsUser);
+    _o.set(_j, "selectedCols", _p?.selectedCols);
+    _o.set(_j, "insertedCols", _p?.insertedCols);
+    _o.set(_j, "updatedCols", _p?.updatedCols);
+    return _j;
+  },
+  rangeTblFunction(_p?: RangeTblFunction): RangeTblFunction {
+    const _j = ({} as RangeTblFunction);
+    _o.set(_j, "funcexpr", _p?.funcexpr);
+    _o.set(_j, "funccolcount", _p?.funccolcount);
+    _o.set(_j, "funccolnames", _p?.funccolnames);
+    _o.set(_j, "funccoltypes", _p?.funccoltypes);
+    _o.set(_j, "funccoltypmods", _p?.funccoltypmods);
+    _o.set(_j, "funccolcollations", _p?.funccolcollations);
+    _o.set(_j, "funcparams", _p?.funcparams);
+    return _j;
+  },
+  tableSampleClause(_p?: TableSampleClause): TableSampleClause {
+    const _j = ({} as TableSampleClause);
+    _o.set(_j, "tsmhandler", _p?.tsmhandler);
+    _o.set(_j, "args", _p?.args);
+    _o.set(_j, "repeatable", _p?.repeatable);
+    return _j;
+  },
+  withCheckOption(_p?: WithCheckOption): WithCheckOption {
+    const _j = ({} as WithCheckOption);
+    _o.set(_j, "kind", _p?.kind);
+    _o.set(_j, "relname", _p?.relname);
+    _o.set(_j, "polname", _p?.polname);
+    _o.set(_j, "qual", _p?.qual);
+    _o.set(_j, "cascaded", _p?.cascaded);
+    return _j;
+  },
+  sortGroupClause(_p?: SortGroupClause): SortGroupClause {
+    const _j = ({} as SortGroupClause);
+    _o.set(_j, "tleSortGroupRef", _p?.tleSortGroupRef);
+    _o.set(_j, "eqop", _p?.eqop);
+    _o.set(_j, "sortop", _p?.sortop);
+    _o.set(_j, "nulls_first", _p?.nulls_first);
+    _o.set(_j, "hashable", _p?.hashable);
+    return _j;
+  },
+  groupingSet(_p?: GroupingSet): GroupingSet {
+    const _j = ({} as GroupingSet);
+    _o.set(_j, "kind", _p?.kind);
+    _o.set(_j, "content", _p?.content);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  windowClause(_p?: WindowClause): WindowClause {
+    const _j = ({} as WindowClause);
+    _o.set(_j, "name", _p?.name);
+    _o.set(_j, "refname", _p?.refname);
+    _o.set(_j, "partitionClause", _p?.partitionClause);
+    _o.set(_j, "orderClause", _p?.orderClause);
+    _o.set(_j, "frameOptions", _p?.frameOptions);
+    _o.set(_j, "startOffset", _p?.startOffset);
+    _o.set(_j, "endOffset", _p?.endOffset);
+    _o.set(_j, "runCondition", _p?.runCondition);
+    _o.set(_j, "startInRangeFunc", _p?.startInRangeFunc);
+    _o.set(_j, "endInRangeFunc", _p?.endInRangeFunc);
+    _o.set(_j, "inRangeColl", _p?.inRangeColl);
+    _o.set(_j, "inRangeAsc", _p?.inRangeAsc);
+    _o.set(_j, "inRangeNullsFirst", _p?.inRangeNullsFirst);
+    _o.set(_j, "winref", _p?.winref);
+    _o.set(_j, "copiedOrder", _p?.copiedOrder);
+    return _j;
+  },
+  rowMarkClause(_p?: RowMarkClause): RowMarkClause {
+    const _j = ({} as RowMarkClause);
+    _o.set(_j, "rti", _p?.rti);
+    _o.set(_j, "strength", _p?.strength);
+    _o.set(_j, "waitPolicy", _p?.waitPolicy);
+    _o.set(_j, "pushedDown", _p?.pushedDown);
+    return _j;
+  },
+  withClause(_p?: WithClause): WithClause {
+    const _j = ({} as WithClause);
+    _o.set(_j, "ctes", _p?.ctes);
+    _o.set(_j, "recursive", _p?.recursive);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  inferClause(_p?: InferClause): InferClause {
+    const _j = ({} as InferClause);
+    _o.set(_j, "indexElems", _p?.indexElems);
+    _o.set(_j, "whereClause", _p?.whereClause);
+    _o.set(_j, "conname", _p?.conname);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  onConflictClause(_p?: OnConflictClause): OnConflictClause {
+    const _j = ({} as OnConflictClause);
+    _o.set(_j, "action", _p?.action);
+    _o.set(_j, "infer", _p?.infer);
+    _o.set(_j, "targetList", _p?.targetList);
+    _o.set(_j, "whereClause", _p?.whereClause);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  cteSearchClause(_p?: CTESearchClause): CTESearchClause {
+    const _j = ({} as CTESearchClause);
+    _o.set(_j, "search_col_list", _p?.search_col_list);
+    _o.set(_j, "search_breadth_first", _p?.search_breadth_first);
+    _o.set(_j, "search_seq_column", _p?.search_seq_column);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  cteCycleClause(_p?: CTECycleClause): CTECycleClause {
+    const _j = ({} as CTECycleClause);
+    _o.set(_j, "cycle_col_list", _p?.cycle_col_list);
+    _o.set(_j, "cycle_mark_column", _p?.cycle_mark_column);
+    _o.set(_j, "cycle_mark_value", _p?.cycle_mark_value);
+    _o.set(_j, "cycle_mark_default", _p?.cycle_mark_default);
+    _o.set(_j, "cycle_path_column", _p?.cycle_path_column);
+    _o.set(_j, "location", _p?.location);
+    _o.set(_j, "cycle_mark_type", _p?.cycle_mark_type);
+    _o.set(_j, "cycle_mark_typmod", _p?.cycle_mark_typmod);
+    _o.set(_j, "cycle_mark_collation", _p?.cycle_mark_collation);
+    _o.set(_j, "cycle_mark_neop", _p?.cycle_mark_neop);
+    return _j;
+  },
+  commonTableExpr(_p?: CommonTableExpr): CommonTableExpr {
+    const _j = ({} as CommonTableExpr);
+    _o.set(_j, "ctename", _p?.ctename);
+    _o.set(_j, "aliascolnames", _p?.aliascolnames);
+    _o.set(_j, "ctematerialized", _p?.ctematerialized);
+    _o.set(_j, "ctequery", _p?.ctequery);
+    _o.set(_j, "search_clause", _p?.search_clause);
+    _o.set(_j, "cycle_clause", _p?.cycle_clause);
+    _o.set(_j, "location", _p?.location);
+    _o.set(_j, "cterecursive", _p?.cterecursive);
+    _o.set(_j, "cterefcount", _p?.cterefcount);
+    _o.set(_j, "ctecolnames", _p?.ctecolnames);
+    _o.set(_j, "ctecoltypes", _p?.ctecoltypes);
+    _o.set(_j, "ctecoltypmods", _p?.ctecoltypmods);
+    _o.set(_j, "ctecolcollations", _p?.ctecolcollations);
+    return _j;
+  },
+  mergeWhenClause(_p?: MergeWhenClause): MergeWhenClause {
+    const _j = ({} as MergeWhenClause);
+    _o.set(_j, "matched", _p?.matched);
+    _o.set(_j, "commandType", _p?.commandType);
+    _o.set(_j, "override", _p?.override);
+    _o.set(_j, "condition", _p?.condition);
+    _o.set(_j, "targetList", _p?.targetList);
+    _o.set(_j, "values", _p?.values);
+    return _j;
+  },
+  mergeAction(_p?: MergeAction): MergeAction {
+    const _j = ({} as MergeAction);
+    _o.set(_j, "matched", _p?.matched);
+    _o.set(_j, "commandType", _p?.commandType);
+    _o.set(_j, "override", _p?.override);
+    _o.set(_j, "qual", _p?.qual);
+    _o.set(_j, "targetList", _p?.targetList);
+    _o.set(_j, "updateColnos", _p?.updateColnos);
+    return _j;
+  },
+  triggerTransition(_p?: TriggerTransition): TriggerTransition {
+    const _j = ({} as TriggerTransition);
+    _o.set(_j, "name", _p?.name);
+    _o.set(_j, "isNew", _p?.isNew);
+    _o.set(_j, "isTable", _p?.isTable);
+    return _j;
+  },
+  jsonOutput(_p?: JsonOutput): JsonOutput {
+    const _j = ({} as JsonOutput);
+    _o.set(_j, "typeName", _p?.typeName);
+    _o.set(_j, "returning", _p?.returning);
+    return _j;
+  },
+  jsonKeyValue(_p?: JsonKeyValue): JsonKeyValue {
+    const _j = ({} as JsonKeyValue);
+    _o.set(_j, "key", _p?.key);
+    _o.set(_j, "value", _p?.value);
+    return _j;
+  },
+  jsonObjectConstructor(_p?: JsonObjectConstructor): JsonObjectConstructor {
+    const _j = ({} as JsonObjectConstructor);
+    _o.set(_j, "exprs", _p?.exprs);
+    _o.set(_j, "output", _p?.output);
+    _o.set(_j, "absent_on_null", _p?.absent_on_null);
+    _o.set(_j, "unique", _p?.unique);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  jsonArrayConstructor(_p?: JsonArrayConstructor): JsonArrayConstructor {
+    const _j = ({} as JsonArrayConstructor);
+    _o.set(_j, "exprs", _p?.exprs);
+    _o.set(_j, "output", _p?.output);
+    _o.set(_j, "absent_on_null", _p?.absent_on_null);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  jsonArrayQueryConstructor(_p?: JsonArrayQueryConstructor): JsonArrayQueryConstructor {
+    const _j = ({} as JsonArrayQueryConstructor);
+    _o.set(_j, "query", _p?.query);
+    _o.set(_j, "output", _p?.output);
+    _o.set(_j, "format", _p?.format);
+    _o.set(_j, "absent_on_null", _p?.absent_on_null);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  jsonAggConstructor(_p?: JsonAggConstructor): JsonAggConstructor {
+    const _j = ({} as JsonAggConstructor);
+    _o.set(_j, "output", _p?.output);
+    _o.set(_j, "agg_filter", _p?.agg_filter);
+    _o.set(_j, "agg_order", _p?.agg_order);
+    _o.set(_j, "over", _p?.over);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  jsonObjectAgg(_p?: JsonObjectAgg): JsonObjectAgg {
+    const _j = ({} as JsonObjectAgg);
+    _o.set(_j, "constructor", _p?.constructor);
+    _o.set(_j, "arg", _p?.arg);
+    _o.set(_j, "absent_on_null", _p?.absent_on_null);
+    _o.set(_j, "unique", _p?.unique);
+    return _j;
+  },
+  jsonArrayAgg(_p?: JsonArrayAgg): JsonArrayAgg {
+    const _j = ({} as JsonArrayAgg);
+    _o.set(_j, "constructor", _p?.constructor);
+    _o.set(_j, "arg", _p?.arg);
+    _o.set(_j, "absent_on_null", _p?.absent_on_null);
+    return _j;
+  },
+  rawStmt(_p?: RawStmt): RawStmt {
+    const _j = ({} as RawStmt);
+    _o.set(_j, "stmt", _p?.stmt);
+    _o.set(_j, "stmt_location", _p?.stmt_location);
+    _o.set(_j, "stmt_len", _p?.stmt_len);
+    return _j;
+  },
+  insertStmt(_p?: InsertStmt): InsertStmt {
+    const _j = ({} as InsertStmt);
+    _o.set(_j, "relation", _p?.relation);
+    _o.set(_j, "cols", _p?.cols);
+    _o.set(_j, "selectStmt", _p?.selectStmt);
+    _o.set(_j, "onConflictClause", _p?.onConflictClause);
+    _o.set(_j, "returningList", _p?.returningList);
+    _o.set(_j, "withClause", _p?.withClause);
+    _o.set(_j, "override", _p?.override);
+    return _j;
+  },
+  deleteStmt(_p?: DeleteStmt): DeleteStmt {
+    const _j = ({} as DeleteStmt);
+    _o.set(_j, "relation", _p?.relation);
+    _o.set(_j, "usingClause", _p?.usingClause);
+    _o.set(_j, "whereClause", _p?.whereClause);
+    _o.set(_j, "returningList", _p?.returningList);
+    _o.set(_j, "withClause", _p?.withClause);
+    return _j;
+  },
+  updateStmt(_p?: UpdateStmt): UpdateStmt {
+    const _j = ({} as UpdateStmt);
+    _o.set(_j, "relation", _p?.relation);
+    _o.set(_j, "targetList", _p?.targetList);
+    _o.set(_j, "whereClause", _p?.whereClause);
+    _o.set(_j, "fromClause", _p?.fromClause);
+    _o.set(_j, "returningList", _p?.returningList);
+    _o.set(_j, "withClause", _p?.withClause);
+    return _j;
+  },
+  mergeStmt(_p?: MergeStmt): MergeStmt {
+    const _j = ({} as MergeStmt);
+    _o.set(_j, "relation", _p?.relation);
+    _o.set(_j, "sourceRelation", _p?.sourceRelation);
+    _o.set(_j, "joinCondition", _p?.joinCondition);
+    _o.set(_j, "mergeWhenClauses", _p?.mergeWhenClauses);
+    _o.set(_j, "withClause", _p?.withClause);
+    return _j;
+  },
+  selectStmt(_p?: SelectStmt): SelectStmt {
+    const _j = ({} as SelectStmt);
+    _o.set(_j, "distinctClause", _p?.distinctClause);
+    _o.set(_j, "intoClause", _p?.intoClause);
+    _o.set(_j, "targetList", _p?.targetList);
+    _o.set(_j, "fromClause", _p?.fromClause);
+    _o.set(_j, "whereClause", _p?.whereClause);
+    _o.set(_j, "groupClause", _p?.groupClause);
+    _o.set(_j, "groupDistinct", _p?.groupDistinct);
+    _o.set(_j, "havingClause", _p?.havingClause);
+    _o.set(_j, "windowClause", _p?.windowClause);
+    _o.set(_j, "valuesLists", _p?.valuesLists);
+    _o.set(_j, "sortClause", _p?.sortClause);
+    _o.set(_j, "limitOffset", _p?.limitOffset);
+    _o.set(_j, "limitCount", _p?.limitCount);
+    _o.set(_j, "limitOption", _p?.limitOption);
+    _o.set(_j, "lockingClause", _p?.lockingClause);
+    _o.set(_j, "withClause", _p?.withClause);
+    _o.set(_j, "op", _p?.op);
+    _o.set(_j, "all", _p?.all);
+    _o.set(_j, "larg", _p?.larg);
+    _o.set(_j, "rarg", _p?.rarg);
+    return _j;
+  },
+  setOperationStmt(_p?: SetOperationStmt): SetOperationStmt {
+    const _j = ({} as SetOperationStmt);
+    _o.set(_j, "op", _p?.op);
+    _o.set(_j, "all", _p?.all);
+    _o.set(_j, "larg", _p?.larg);
+    _o.set(_j, "rarg", _p?.rarg);
+    _o.set(_j, "colTypes", _p?.colTypes);
+    _o.set(_j, "colTypmods", _p?.colTypmods);
+    _o.set(_j, "colCollations", _p?.colCollations);
+    _o.set(_j, "groupClauses", _p?.groupClauses);
+    return _j;
+  },
+  returnStmt(_p?: ReturnStmt): ReturnStmt {
+    const _j = ({} as ReturnStmt);
+    _o.set(_j, "returnval", _p?.returnval);
+    return _j;
+  },
+  plAssignStmt(_p?: PLAssignStmt): PLAssignStmt {
+    const _j = ({} as PLAssignStmt);
+    _o.set(_j, "name", _p?.name);
+    _o.set(_j, "indirection", _p?.indirection);
+    _o.set(_j, "nnames", _p?.nnames);
+    _o.set(_j, "val", _p?.val);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  createSchemaStmt(_p?: CreateSchemaStmt): CreateSchemaStmt {
+    const _j = ({} as CreateSchemaStmt);
+    _o.set(_j, "schemaname", _p?.schemaname);
+    _o.set(_j, "authrole", _p?.authrole);
+    _o.set(_j, "schemaElts", _p?.schemaElts);
+    _o.set(_j, "if_not_exists", _p?.if_not_exists);
+    return _j;
+  },
+  alterTableStmt(_p?: AlterTableStmt): AlterTableStmt {
+    const _j = ({} as AlterTableStmt);
+    _o.set(_j, "relation", _p?.relation);
+    _o.set(_j, "cmds", _p?.cmds);
+    _o.set(_j, "objtype", _p?.objtype);
+    _o.set(_j, "missing_ok", _p?.missing_ok);
+    return _j;
+  },
+  replicaIdentityStmt(_p?: ReplicaIdentityStmt): ReplicaIdentityStmt {
+    const _j = ({} as ReplicaIdentityStmt);
+    _o.set(_j, "identity_type", _p?.identity_type);
+    _o.set(_j, "name", _p?.name);
+    return _j;
+  },
+  alterTableCmd(_p?: AlterTableCmd): AlterTableCmd {
+    const _j = ({} as AlterTableCmd);
+    _o.set(_j, "subtype", _p?.subtype);
+    _o.set(_j, "name", _p?.name);
+    _o.set(_j, "num", _p?.num);
+    _o.set(_j, "newowner", _p?.newowner);
+    _o.set(_j, "def", _p?.def);
+    _o.set(_j, "behavior", _p?.behavior);
+    _o.set(_j, "missing_ok", _p?.missing_ok);
+    _o.set(_j, "recurse", _p?.recurse);
+    return _j;
+  },
+  alterCollationStmt(_p?: AlterCollationStmt): AlterCollationStmt {
+    const _j = ({} as AlterCollationStmt);
+    _o.set(_j, "collname", _p?.collname);
+    return _j;
+  },
+  alterDomainStmt(_p?: AlterDomainStmt): AlterDomainStmt {
+    const _j = ({} as AlterDomainStmt);
+    _o.set(_j, "subtype", _p?.subtype);
+    _o.set(_j, "typeName", _p?.typeName);
+    _o.set(_j, "name", _p?.name);
+    _o.set(_j, "def", _p?.def);
+    _o.set(_j, "behavior", _p?.behavior);
+    _o.set(_j, "missing_ok", _p?.missing_ok);
+    return _j;
+  },
+  grantStmt(_p?: GrantStmt): GrantStmt {
+    const _j = ({} as GrantStmt);
+    _o.set(_j, "is_grant", _p?.is_grant);
+    _o.set(_j, "targtype", _p?.targtype);
+    _o.set(_j, "objtype", _p?.objtype);
+    _o.set(_j, "objects", _p?.objects);
+    _o.set(_j, "privileges", _p?.privileges);
+    _o.set(_j, "grantees", _p?.grantees);
+    _o.set(_j, "grant_option", _p?.grant_option);
+    _o.set(_j, "grantor", _p?.grantor);
+    _o.set(_j, "behavior", _p?.behavior);
+    return _j;
+  },
+  objectWithArgs(_p?: ObjectWithArgs): ObjectWithArgs {
+    const _j = ({} as ObjectWithArgs);
+    _o.set(_j, "objname", _p?.objname);
+    _o.set(_j, "objargs", _p?.objargs);
+    _o.set(_j, "objfuncargs", _p?.objfuncargs);
+    _o.set(_j, "args_unspecified", _p?.args_unspecified);
+    return _j;
+  },
+  accessPriv(_p?: AccessPriv): AccessPriv {
+    const _j = ({} as AccessPriv);
+    _o.set(_j, "priv_name", _p?.priv_name);
+    _o.set(_j, "cols", _p?.cols);
+    return _j;
+  },
+  grantRoleStmt(_p?: GrantRoleStmt): GrantRoleStmt {
+    const _j = ({} as GrantRoleStmt);
+    _o.set(_j, "granted_roles", _p?.granted_roles);
+    _o.set(_j, "grantee_roles", _p?.grantee_roles);
+    _o.set(_j, "is_grant", _p?.is_grant);
+    _o.set(_j, "opt", _p?.opt);
+    _o.set(_j, "grantor", _p?.grantor);
+    _o.set(_j, "behavior", _p?.behavior);
+    return _j;
+  },
+  alterDefaultPrivilegesStmt(_p?: AlterDefaultPrivilegesStmt): AlterDefaultPrivilegesStmt {
+    const _j = ({} as AlterDefaultPrivilegesStmt);
+    _o.set(_j, "options", _p?.options);
+    _o.set(_j, "action", _p?.action);
+    return _j;
+  },
+  copyStmt(_p?: CopyStmt): CopyStmt {
+    const _j = ({} as CopyStmt);
+    _o.set(_j, "relation", _p?.relation);
+    _o.set(_j, "query", _p?.query);
+    _o.set(_j, "attlist", _p?.attlist);
+    _o.set(_j, "is_from", _p?.is_from);
+    _o.set(_j, "is_program", _p?.is_program);
+    _o.set(_j, "filename", _p?.filename);
+    _o.set(_j, "options", _p?.options);
+    _o.set(_j, "whereClause", _p?.whereClause);
+    return _j;
+  },
+  variableSetStmt(_p?: VariableSetStmt): VariableSetStmt {
+    const _j = ({} as VariableSetStmt);
+    _o.set(_j, "kind", _p?.kind);
+    _o.set(_j, "name", _p?.name);
+    _o.set(_j, "args", _p?.args);
+    _o.set(_j, "is_local", _p?.is_local);
+    return _j;
+  },
+  variableShowStmt(_p?: VariableShowStmt): VariableShowStmt {
+    const _j = ({} as VariableShowStmt);
+    _o.set(_j, "name", _p?.name);
+    return _j;
+  },
+  createStmt(_p?: CreateStmt): CreateStmt {
+    const _j = ({} as CreateStmt);
+    _o.set(_j, "relation", _p?.relation);
+    _o.set(_j, "tableElts", _p?.tableElts);
+    _o.set(_j, "inhRelations", _p?.inhRelations);
+    _o.set(_j, "partbound", _p?.partbound);
+    _o.set(_j, "partspec", _p?.partspec);
+    _o.set(_j, "ofTypename", _p?.ofTypename);
+    _o.set(_j, "constraints", _p?.constraints);
+    _o.set(_j, "options", _p?.options);
+    _o.set(_j, "oncommit", _p?.oncommit);
+    _o.set(_j, "tablespacename", _p?.tablespacename);
+    _o.set(_j, "accessMethod", _p?.accessMethod);
+    _o.set(_j, "if_not_exists", _p?.if_not_exists);
+    return _j;
+  },
+  constraint(_p?: Constraint): Constraint {
+    const _j = ({} as Constraint);
+    _o.set(_j, "contype", _p?.contype);
+    _o.set(_j, "conname", _p?.conname);
+    _o.set(_j, "deferrable", _p?.deferrable);
+    _o.set(_j, "initdeferred", _p?.initdeferred);
+    _o.set(_j, "location", _p?.location);
+    _o.set(_j, "is_no_inherit", _p?.is_no_inherit);
+    _o.set(_j, "raw_expr", _p?.raw_expr);
+    _o.set(_j, "cooked_expr", _p?.cooked_expr);
+    _o.set(_j, "generated_when", _p?.generated_when);
+    _o.set(_j, "nulls_not_distinct", _p?.nulls_not_distinct);
+    _o.set(_j, "keys", _p?.keys);
+    _o.set(_j, "including", _p?.including);
+    _o.set(_j, "exclusions", _p?.exclusions);
+    _o.set(_j, "options", _p?.options);
+    _o.set(_j, "indexname", _p?.indexname);
+    _o.set(_j, "indexspace", _p?.indexspace);
+    _o.set(_j, "reset_default_tblspc", _p?.reset_default_tblspc);
+    _o.set(_j, "access_method", _p?.access_method);
+    _o.set(_j, "where_clause", _p?.where_clause);
+    _o.set(_j, "pktable", _p?.pktable);
+    _o.set(_j, "fk_attrs", _p?.fk_attrs);
+    _o.set(_j, "pk_attrs", _p?.pk_attrs);
+    _o.set(_j, "fk_matchtype", _p?.fk_matchtype);
+    _o.set(_j, "fk_upd_action", _p?.fk_upd_action);
+    _o.set(_j, "fk_del_action", _p?.fk_del_action);
+    _o.set(_j, "fk_del_set_cols", _p?.fk_del_set_cols);
+    _o.set(_j, "old_conpfeqop", _p?.old_conpfeqop);
+    _o.set(_j, "old_pktable_oid", _p?.old_pktable_oid);
+    _o.set(_j, "skip_validation", _p?.skip_validation);
+    _o.set(_j, "initially_valid", _p?.initially_valid);
+    return _j;
+  },
+  createTableSpaceStmt(_p?: CreateTableSpaceStmt): CreateTableSpaceStmt {
+    const _j = ({} as CreateTableSpaceStmt);
+    _o.set(_j, "tablespacename", _p?.tablespacename);
+    _o.set(_j, "owner", _p?.owner);
+    _o.set(_j, "location", _p?.location);
+    _o.set(_j, "options", _p?.options);
+    return _j;
+  },
+  dropTableSpaceStmt(_p?: DropTableSpaceStmt): DropTableSpaceStmt {
+    const _j = ({} as DropTableSpaceStmt);
+    _o.set(_j, "tablespacename", _p?.tablespacename);
+    _o.set(_j, "missing_ok", _p?.missing_ok);
+    return _j;
+  },
+  alterTableSpaceOptionsStmt(_p?: AlterTableSpaceOptionsStmt): AlterTableSpaceOptionsStmt {
+    const _j = ({} as AlterTableSpaceOptionsStmt);
+    _o.set(_j, "tablespacename", _p?.tablespacename);
+    _o.set(_j, "options", _p?.options);
+    _o.set(_j, "isReset", _p?.isReset);
+    return _j;
+  },
+  alterTableMoveAllStmt(_p?: AlterTableMoveAllStmt): AlterTableMoveAllStmt {
+    const _j = ({} as AlterTableMoveAllStmt);
+    _o.set(_j, "orig_tablespacename", _p?.orig_tablespacename);
+    _o.set(_j, "objtype", _p?.objtype);
+    _o.set(_j, "roles", _p?.roles);
+    _o.set(_j, "new_tablespacename", _p?.new_tablespacename);
+    _o.set(_j, "nowait", _p?.nowait);
+    return _j;
+  },
+  createExtensionStmt(_p?: CreateExtensionStmt): CreateExtensionStmt {
+    const _j = ({} as CreateExtensionStmt);
+    _o.set(_j, "extname", _p?.extname);
+    _o.set(_j, "if_not_exists", _p?.if_not_exists);
+    _o.set(_j, "options", _p?.options);
+    return _j;
+  },
+  alterExtensionStmt(_p?: AlterExtensionStmt): AlterExtensionStmt {
+    const _j = ({} as AlterExtensionStmt);
+    _o.set(_j, "extname", _p?.extname);
+    _o.set(_j, "options", _p?.options);
+    return _j;
+  },
+  alterExtensionContentsStmt(_p?: AlterExtensionContentsStmt): AlterExtensionContentsStmt {
+    const _j = ({} as AlterExtensionContentsStmt);
+    _o.set(_j, "extname", _p?.extname);
+    _o.set(_j, "action", _p?.action);
+    _o.set(_j, "objtype", _p?.objtype);
+    _o.set(_j, "object", _p?.object);
+    return _j;
+  },
+  createFdwStmt(_p?: CreateFdwStmt): CreateFdwStmt {
+    const _j = ({} as CreateFdwStmt);
+    _o.set(_j, "fdwname", _p?.fdwname);
+    _o.set(_j, "func_options", _p?.func_options);
+    _o.set(_j, "options", _p?.options);
+    return _j;
+  },
+  alterFdwStmt(_p?: AlterFdwStmt): AlterFdwStmt {
+    const _j = ({} as AlterFdwStmt);
+    _o.set(_j, "fdwname", _p?.fdwname);
+    _o.set(_j, "func_options", _p?.func_options);
+    _o.set(_j, "options", _p?.options);
+    return _j;
+  },
+  createForeignServerStmt(_p?: CreateForeignServerStmt): CreateForeignServerStmt {
+    const _j = ({} as CreateForeignServerStmt);
+    _o.set(_j, "servername", _p?.servername);
+    _o.set(_j, "servertype", _p?.servertype);
+    _o.set(_j, "version", _p?.version);
+    _o.set(_j, "fdwname", _p?.fdwname);
+    _o.set(_j, "if_not_exists", _p?.if_not_exists);
+    _o.set(_j, "options", _p?.options);
+    return _j;
+  },
+  alterForeignServerStmt(_p?: AlterForeignServerStmt): AlterForeignServerStmt {
+    const _j = ({} as AlterForeignServerStmt);
+    _o.set(_j, "servername", _p?.servername);
+    _o.set(_j, "version", _p?.version);
+    _o.set(_j, "options", _p?.options);
+    _o.set(_j, "has_version", _p?.has_version);
+    return _j;
+  },
+  createForeignTableStmt(_p?: CreateForeignTableStmt): CreateForeignTableStmt {
+    const _j = ({} as CreateForeignTableStmt);
+    _o.set(_j, "base", _p?.base);
+    _o.set(_j, "servername", _p?.servername);
+    _o.set(_j, "options", _p?.options);
+    return _j;
+  },
+  createUserMappingStmt(_p?: CreateUserMappingStmt): CreateUserMappingStmt {
+    const _j = ({} as CreateUserMappingStmt);
+    _o.set(_j, "user", _p?.user);
+    _o.set(_j, "servername", _p?.servername);
+    _o.set(_j, "if_not_exists", _p?.if_not_exists);
+    _o.set(_j, "options", _p?.options);
+    return _j;
+  },
+  alterUserMappingStmt(_p?: AlterUserMappingStmt): AlterUserMappingStmt {
+    const _j = ({} as AlterUserMappingStmt);
+    _o.set(_j, "user", _p?.user);
+    _o.set(_j, "servername", _p?.servername);
+    _o.set(_j, "options", _p?.options);
+    return _j;
+  },
+  dropUserMappingStmt(_p?: DropUserMappingStmt): DropUserMappingStmt {
+    const _j = ({} as DropUserMappingStmt);
+    _o.set(_j, "user", _p?.user);
+    _o.set(_j, "servername", _p?.servername);
+    _o.set(_j, "missing_ok", _p?.missing_ok);
+    return _j;
+  },
+  importForeignSchemaStmt(_p?: ImportForeignSchemaStmt): ImportForeignSchemaStmt {
+    const _j = ({} as ImportForeignSchemaStmt);
+    _o.set(_j, "server_name", _p?.server_name);
+    _o.set(_j, "remote_schema", _p?.remote_schema);
+    _o.set(_j, "local_schema", _p?.local_schema);
+    _o.set(_j, "list_type", _p?.list_type);
+    _o.set(_j, "table_list", _p?.table_list);
+    _o.set(_j, "options", _p?.options);
+    return _j;
+  },
+  createPolicyStmt(_p?: CreatePolicyStmt): CreatePolicyStmt {
+    const _j = ({} as CreatePolicyStmt);
+    _o.set(_j, "policy_name", _p?.policy_name);
+    _o.set(_j, "table", _p?.table);
+    _o.set(_j, "cmd_name", _p?.cmd_name);
+    _o.set(_j, "permissive", _p?.permissive);
+    _o.set(_j, "roles", _p?.roles);
+    _o.set(_j, "qual", _p?.qual);
+    _o.set(_j, "with_check", _p?.with_check);
+    return _j;
+  },
+  alterPolicyStmt(_p?: AlterPolicyStmt): AlterPolicyStmt {
+    const _j = ({} as AlterPolicyStmt);
+    _o.set(_j, "policy_name", _p?.policy_name);
+    _o.set(_j, "table", _p?.table);
+    _o.set(_j, "roles", _p?.roles);
+    _o.set(_j, "qual", _p?.qual);
+    _o.set(_j, "with_check", _p?.with_check);
+    return _j;
+  },
+  createAmStmt(_p?: CreateAmStmt): CreateAmStmt {
+    const _j = ({} as CreateAmStmt);
+    _o.set(_j, "amname", _p?.amname);
+    _o.set(_j, "handler_name", _p?.handler_name);
+    _o.set(_j, "amtype", _p?.amtype);
+    return _j;
+  },
+  createTrigStmt(_p?: CreateTrigStmt): CreateTrigStmt {
+    const _j = ({} as CreateTrigStmt);
+    _o.set(_j, "replace", _p?.replace);
+    _o.set(_j, "isconstraint", _p?.isconstraint);
+    _o.set(_j, "trigname", _p?.trigname);
+    _o.set(_j, "relation", _p?.relation);
+    _o.set(_j, "funcname", _p?.funcname);
+    _o.set(_j, "args", _p?.args);
+    _o.set(_j, "row", _p?.row);
+    _o.set(_j, "timing", _p?.timing);
+    _o.set(_j, "events", _p?.events);
+    _o.set(_j, "columns", _p?.columns);
+    _o.set(_j, "whenClause", _p?.whenClause);
+    _o.set(_j, "transitionRels", _p?.transitionRels);
+    _o.set(_j, "deferrable", _p?.deferrable);
+    _o.set(_j, "initdeferred", _p?.initdeferred);
+    _o.set(_j, "constrrel", _p?.constrrel);
+    return _j;
+  },
+  createEventTrigStmt(_p?: CreateEventTrigStmt): CreateEventTrigStmt {
+    const _j = ({} as CreateEventTrigStmt);
+    _o.set(_j, "trigname", _p?.trigname);
+    _o.set(_j, "eventname", _p?.eventname);
+    _o.set(_j, "whenclause", _p?.whenclause);
+    _o.set(_j, "funcname", _p?.funcname);
+    return _j;
+  },
+  alterEventTrigStmt(_p?: AlterEventTrigStmt): AlterEventTrigStmt {
+    const _j = ({} as AlterEventTrigStmt);
+    _o.set(_j, "trigname", _p?.trigname);
+    _o.set(_j, "tgenabled", _p?.tgenabled);
+    return _j;
+  },
+  createpLangStmt(_p?: CreatePLangStmt): CreatePLangStmt {
+    const _j = ({} as CreatePLangStmt);
+    _o.set(_j, "replace", _p?.replace);
+    _o.set(_j, "plname", _p?.plname);
+    _o.set(_j, "plhandler", _p?.plhandler);
+    _o.set(_j, "plinline", _p?.plinline);
+    _o.set(_j, "plvalidator", _p?.plvalidator);
+    _o.set(_j, "pltrusted", _p?.pltrusted);
+    return _j;
+  },
+  createRoleStmt(_p?: CreateRoleStmt): CreateRoleStmt {
+    const _j = ({} as CreateRoleStmt);
+    _o.set(_j, "stmt_type", _p?.stmt_type);
+    _o.set(_j, "role", _p?.role);
+    _o.set(_j, "options", _p?.options);
+    return _j;
+  },
+  alterRoleStmt(_p?: AlterRoleStmt): AlterRoleStmt {
+    const _j = ({} as AlterRoleStmt);
+    _o.set(_j, "role", _p?.role);
+    _o.set(_j, "options", _p?.options);
+    _o.set(_j, "action", _p?.action);
+    return _j;
+  },
+  alterRoleSetStmt(_p?: AlterRoleSetStmt): AlterRoleSetStmt {
+    const _j = ({} as AlterRoleSetStmt);
+    _o.set(_j, "role", _p?.role);
+    _o.set(_j, "database", _p?.database);
+    _o.set(_j, "setstmt", _p?.setstmt);
+    return _j;
+  },
+  dropRoleStmt(_p?: DropRoleStmt): DropRoleStmt {
+    const _j = ({} as DropRoleStmt);
+    _o.set(_j, "roles", _p?.roles);
+    _o.set(_j, "missing_ok", _p?.missing_ok);
+    return _j;
+  },
+  createSeqStmt(_p?: CreateSeqStmt): CreateSeqStmt {
+    const _j = ({} as CreateSeqStmt);
+    _o.set(_j, "sequence", _p?.sequence);
+    _o.set(_j, "options", _p?.options);
+    _o.set(_j, "ownerId", _p?.ownerId);
+    _o.set(_j, "for_identity", _p?.for_identity);
+    _o.set(_j, "if_not_exists", _p?.if_not_exists);
+    return _j;
+  },
+  alterSeqStmt(_p?: AlterSeqStmt): AlterSeqStmt {
+    const _j = ({} as AlterSeqStmt);
+    _o.set(_j, "sequence", _p?.sequence);
+    _o.set(_j, "options", _p?.options);
+    _o.set(_j, "for_identity", _p?.for_identity);
+    _o.set(_j, "missing_ok", _p?.missing_ok);
+    return _j;
+  },
+  defineStmt(_p?: DefineStmt): DefineStmt {
+    const _j = ({} as DefineStmt);
+    _o.set(_j, "kind", _p?.kind);
+    _o.set(_j, "oldstyle", _p?.oldstyle);
+    _o.set(_j, "defnames", _p?.defnames);
+    _o.set(_j, "args", _p?.args);
+    _o.set(_j, "definition", _p?.definition);
+    _o.set(_j, "if_not_exists", _p?.if_not_exists);
+    _o.set(_j, "replace", _p?.replace);
+    return _j;
+  },
+  createDomainStmt(_p?: CreateDomainStmt): CreateDomainStmt {
+    const _j = ({} as CreateDomainStmt);
+    _o.set(_j, "domainname", _p?.domainname);
+    _o.set(_j, "typeName", _p?.typeName);
+    _o.set(_j, "collClause", _p?.collClause);
+    _o.set(_j, "constraints", _p?.constraints);
+    return _j;
+  },
+  createOpClassStmt(_p?: CreateOpClassStmt): CreateOpClassStmt {
+    const _j = ({} as CreateOpClassStmt);
+    _o.set(_j, "opclassname", _p?.opclassname);
+    _o.set(_j, "opfamilyname", _p?.opfamilyname);
+    _o.set(_j, "amname", _p?.amname);
+    _o.set(_j, "datatype", _p?.datatype);
+    _o.set(_j, "items", _p?.items);
+    _o.set(_j, "isDefault", _p?.isDefault);
+    return _j;
+  },
+  createOpClassItem(_p?: CreateOpClassItem): CreateOpClassItem {
+    const _j = ({} as CreateOpClassItem);
+    _o.set(_j, "itemtype", _p?.itemtype);
+    _o.set(_j, "name", _p?.name);
+    _o.set(_j, "number", _p?.number);
+    _o.set(_j, "order_family", _p?.order_family);
+    _o.set(_j, "class_args", _p?.class_args);
+    _o.set(_j, "storedtype", _p?.storedtype);
+    return _j;
+  },
+  createOpFamilyStmt(_p?: CreateOpFamilyStmt): CreateOpFamilyStmt {
+    const _j = ({} as CreateOpFamilyStmt);
+    _o.set(_j, "opfamilyname", _p?.opfamilyname);
+    _o.set(_j, "amname", _p?.amname);
+    return _j;
+  },
+  alterOpFamilyStmt(_p?: AlterOpFamilyStmt): AlterOpFamilyStmt {
+    const _j = ({} as AlterOpFamilyStmt);
+    _o.set(_j, "opfamilyname", _p?.opfamilyname);
+    _o.set(_j, "amname", _p?.amname);
+    _o.set(_j, "isDrop", _p?.isDrop);
+    _o.set(_j, "items", _p?.items);
+    return _j;
+  },
+  dropStmt(_p?: DropStmt): DropStmt {
+    const _j = ({} as DropStmt);
+    _o.set(_j, "objects", _p?.objects);
+    _o.set(_j, "removeType", _p?.removeType);
+    _o.set(_j, "behavior", _p?.behavior);
+    _o.set(_j, "missing_ok", _p?.missing_ok);
+    _o.set(_j, "concurrent", _p?.concurrent);
+    return _j;
+  },
+  truncateStmt(_p?: TruncateStmt): TruncateStmt {
+    const _j = ({} as TruncateStmt);
+    _o.set(_j, "relations", _p?.relations);
+    _o.set(_j, "restart_seqs", _p?.restart_seqs);
+    _o.set(_j, "behavior", _p?.behavior);
+    return _j;
+  },
+  commentStmt(_p?: CommentStmt): CommentStmt {
+    const _j = ({} as CommentStmt);
+    _o.set(_j, "objtype", _p?.objtype);
+    _o.set(_j, "object", _p?.object);
+    _o.set(_j, "comment", _p?.comment);
+    return _j;
+  },
+  secLabelStmt(_p?: SecLabelStmt): SecLabelStmt {
+    const _j = ({} as SecLabelStmt);
+    _o.set(_j, "objtype", _p?.objtype);
+    _o.set(_j, "object", _p?.object);
+    _o.set(_j, "provider", _p?.provider);
+    _o.set(_j, "label", _p?.label);
+    return _j;
+  },
+  declareCursorStmt(_p?: DeclareCursorStmt): DeclareCursorStmt {
+    const _j = ({} as DeclareCursorStmt);
+    _o.set(_j, "portalname", _p?.portalname);
+    _o.set(_j, "options", _p?.options);
+    _o.set(_j, "query", _p?.query);
+    return _j;
+  },
+  closePortalStmt(_p?: ClosePortalStmt): ClosePortalStmt {
+    const _j = ({} as ClosePortalStmt);
+    _o.set(_j, "portalname", _p?.portalname);
+    return _j;
+  },
+  fetchStmt(_p?: FetchStmt): FetchStmt {
+    const _j = ({} as FetchStmt);
+    _o.set(_j, "direction", _p?.direction);
+    _o.set(_j, "howMany", _p?.howMany);
+    _o.set(_j, "portalname", _p?.portalname);
+    _o.set(_j, "ismove", _p?.ismove);
+    return _j;
+  },
+  indexStmt(_p?: IndexStmt): IndexStmt {
+    const _j = ({} as IndexStmt);
+    _o.set(_j, "idxname", _p?.idxname);
+    _o.set(_j, "relation", _p?.relation);
+    _o.set(_j, "accessMethod", _p?.accessMethod);
+    _o.set(_j, "tableSpace", _p?.tableSpace);
+    _o.set(_j, "indexParams", _p?.indexParams);
+    _o.set(_j, "indexIncludingParams", _p?.indexIncludingParams);
+    _o.set(_j, "options", _p?.options);
+    _o.set(_j, "whereClause", _p?.whereClause);
+    _o.set(_j, "excludeOpNames", _p?.excludeOpNames);
+    _o.set(_j, "idxcomment", _p?.idxcomment);
+    _o.set(_j, "indexOid", _p?.indexOid);
+    _o.set(_j, "oldNumber", _p?.oldNumber);
+    _o.set(_j, "oldCreateSubid", _p?.oldCreateSubid);
+    _o.set(_j, "oldFirstRelfilelocatorSubid", _p?.oldFirstRelfilelocatorSubid);
+    _o.set(_j, "unique", _p?.unique);
+    _o.set(_j, "nulls_not_distinct", _p?.nulls_not_distinct);
+    _o.set(_j, "primary", _p?.primary);
+    _o.set(_j, "isconstraint", _p?.isconstraint);
+    _o.set(_j, "deferrable", _p?.deferrable);
+    _o.set(_j, "initdeferred", _p?.initdeferred);
+    _o.set(_j, "transformed", _p?.transformed);
+    _o.set(_j, "concurrent", _p?.concurrent);
+    _o.set(_j, "if_not_exists", _p?.if_not_exists);
+    _o.set(_j, "reset_default_tblspc", _p?.reset_default_tblspc);
+    return _j;
+  },
+  createStatsStmt(_p?: CreateStatsStmt): CreateStatsStmt {
+    const _j = ({} as CreateStatsStmt);
+    _o.set(_j, "defnames", _p?.defnames);
+    _o.set(_j, "stat_types", _p?.stat_types);
+    _o.set(_j, "exprs", _p?.exprs);
+    _o.set(_j, "relations", _p?.relations);
+    _o.set(_j, "stxcomment", _p?.stxcomment);
+    _o.set(_j, "transformed", _p?.transformed);
+    _o.set(_j, "if_not_exists", _p?.if_not_exists);
+    return _j;
+  },
+  statsElem(_p?: StatsElem): StatsElem {
+    const _j = ({} as StatsElem);
+    _o.set(_j, "name", _p?.name);
+    _o.set(_j, "expr", _p?.expr);
+    return _j;
+  },
+  alterStatsStmt(_p?: AlterStatsStmt): AlterStatsStmt {
+    const _j = ({} as AlterStatsStmt);
+    _o.set(_j, "defnames", _p?.defnames);
+    _o.set(_j, "stxstattarget", _p?.stxstattarget);
+    _o.set(_j, "missing_ok", _p?.missing_ok);
+    return _j;
+  },
+  createFunctionStmt(_p?: CreateFunctionStmt): CreateFunctionStmt {
+    const _j = ({} as CreateFunctionStmt);
+    _o.set(_j, "is_procedure", _p?.is_procedure);
+    _o.set(_j, "replace", _p?.replace);
+    _o.set(_j, "funcname", _p?.funcname);
+    _o.set(_j, "parameters", _p?.parameters);
+    _o.set(_j, "returnType", _p?.returnType);
+    _o.set(_j, "options", _p?.options);
+    _o.set(_j, "sql_body", _p?.sql_body);
+    return _j;
+  },
+  functionParameter(_p?: FunctionParameter): FunctionParameter {
+    const _j = ({} as FunctionParameter);
+    _o.set(_j, "name", _p?.name);
+    _o.set(_j, "argType", _p?.argType);
+    _o.set(_j, "mode", _p?.mode);
+    _o.set(_j, "defexpr", _p?.defexpr);
+    return _j;
+  },
+  alterFunctionStmt(_p?: AlterFunctionStmt): AlterFunctionStmt {
+    const _j = ({} as AlterFunctionStmt);
+    _o.set(_j, "objtype", _p?.objtype);
+    _o.set(_j, "func", _p?.func);
+    _o.set(_j, "actions", _p?.actions);
+    return _j;
+  },
+  doStmt(_p?: DoStmt): DoStmt {
+    const _j = ({} as DoStmt);
+    _o.set(_j, "args", _p?.args);
+    return _j;
+  },
+  inlineCodeBlock(_p?: InlineCodeBlock): InlineCodeBlock {
+    const _j = ({} as InlineCodeBlock);
+    _o.set(_j, "source_text", _p?.source_text);
+    _o.set(_j, "langOid", _p?.langOid);
+    _o.set(_j, "langIsTrusted", _p?.langIsTrusted);
+    _o.set(_j, "atomic", _p?.atomic);
+    return _j;
+  },
+  callStmt(_p?: CallStmt): CallStmt {
+    const _j = ({} as CallStmt);
+    _o.set(_j, "funccall", _p?.funccall);
+    _o.set(_j, "funcexpr", _p?.funcexpr);
+    _o.set(_j, "outargs", _p?.outargs);
+    return _j;
+  },
+  callContext(_p?: CallContext): CallContext {
+    const _j = ({} as CallContext);
+    _o.set(_j, "atomic", _p?.atomic);
+    return _j;
+  },
+  renameStmt(_p?: RenameStmt): RenameStmt {
+    const _j = ({} as RenameStmt);
+    _o.set(_j, "renameType", _p?.renameType);
+    _o.set(_j, "relationType", _p?.relationType);
+    _o.set(_j, "relation", _p?.relation);
+    _o.set(_j, "object", _p?.object);
+    _o.set(_j, "subname", _p?.subname);
+    _o.set(_j, "newname", _p?.newname);
+    _o.set(_j, "behavior", _p?.behavior);
+    _o.set(_j, "missing_ok", _p?.missing_ok);
+    return _j;
+  },
+  alterObjectDependsStmt(_p?: AlterObjectDependsStmt): AlterObjectDependsStmt {
+    const _j = ({} as AlterObjectDependsStmt);
+    _o.set(_j, "objectType", _p?.objectType);
+    _o.set(_j, "relation", _p?.relation);
+    _o.set(_j, "object", _p?.object);
+    _o.set(_j, "extname", _p?.extname);
+    _o.set(_j, "remove", _p?.remove);
+    return _j;
+  },
+  alterObjectSchemaStmt(_p?: AlterObjectSchemaStmt): AlterObjectSchemaStmt {
+    const _j = ({} as AlterObjectSchemaStmt);
+    _o.set(_j, "objectType", _p?.objectType);
+    _o.set(_j, "relation", _p?.relation);
+    _o.set(_j, "object", _p?.object);
+    _o.set(_j, "newschema", _p?.newschema);
+    _o.set(_j, "missing_ok", _p?.missing_ok);
+    return _j;
+  },
+  alterOwnerStmt(_p?: AlterOwnerStmt): AlterOwnerStmt {
+    const _j = ({} as AlterOwnerStmt);
+    _o.set(_j, "objectType", _p?.objectType);
+    _o.set(_j, "relation", _p?.relation);
+    _o.set(_j, "object", _p?.object);
+    _o.set(_j, "newowner", _p?.newowner);
+    return _j;
+  },
+  alterOperatorStmt(_p?: AlterOperatorStmt): AlterOperatorStmt {
+    const _j = ({} as AlterOperatorStmt);
+    _o.set(_j, "opername", _p?.opername);
+    _o.set(_j, "options", _p?.options);
+    return _j;
+  },
+  alterTypeStmt(_p?: AlterTypeStmt): AlterTypeStmt {
+    const _j = ({} as AlterTypeStmt);
+    _o.set(_j, "typeName", _p?.typeName);
+    _o.set(_j, "options", _p?.options);
+    return _j;
+  },
+  ruleStmt(_p?: RuleStmt): RuleStmt {
+    const _j = ({} as RuleStmt);
+    _o.set(_j, "relation", _p?.relation);
+    _o.set(_j, "rulename", _p?.rulename);
+    _o.set(_j, "whereClause", _p?.whereClause);
+    _o.set(_j, "event", _p?.event);
+    _o.set(_j, "instead", _p?.instead);
+    _o.set(_j, "actions", _p?.actions);
+    _o.set(_j, "replace", _p?.replace);
+    return _j;
+  },
+  notifyStmt(_p?: NotifyStmt): NotifyStmt {
+    const _j = ({} as NotifyStmt);
+    _o.set(_j, "conditionname", _p?.conditionname);
+    _o.set(_j, "payload", _p?.payload);
+    return _j;
+  },
+  listenStmt(_p?: ListenStmt): ListenStmt {
+    const _j = ({} as ListenStmt);
+    _o.set(_j, "conditionname", _p?.conditionname);
+    return _j;
+  },
+  unlistenStmt(_p?: UnlistenStmt): UnlistenStmt {
+    const _j = ({} as UnlistenStmt);
+    _o.set(_j, "conditionname", _p?.conditionname);
+    return _j;
+  },
+  transactionStmt(_p?: TransactionStmt): TransactionStmt {
+    const _j = ({} as TransactionStmt);
+    _o.set(_j, "kind", _p?.kind);
+    _o.set(_j, "options", _p?.options);
+    _o.set(_j, "savepoint_name", _p?.savepoint_name);
+    _o.set(_j, "gid", _p?.gid);
+    _o.set(_j, "chain", _p?.chain);
+    return _j;
+  },
+  compositeTypeStmt(_p?: CompositeTypeStmt): CompositeTypeStmt {
+    const _j = ({} as CompositeTypeStmt);
+    _o.set(_j, "typevar", _p?.typevar);
+    _o.set(_j, "coldeflist", _p?.coldeflist);
+    return _j;
+  },
+  createEnumStmt(_p?: CreateEnumStmt): CreateEnumStmt {
+    const _j = ({} as CreateEnumStmt);
+    _o.set(_j, "typeName", _p?.typeName);
+    _o.set(_j, "vals", _p?.vals);
+    return _j;
+  },
+  createRangeStmt(_p?: CreateRangeStmt): CreateRangeStmt {
+    const _j = ({} as CreateRangeStmt);
+    _o.set(_j, "typeName", _p?.typeName);
+    _o.set(_j, "params", _p?.params);
+    return _j;
+  },
+  alterEnumStmt(_p?: AlterEnumStmt): AlterEnumStmt {
+    const _j = ({} as AlterEnumStmt);
+    _o.set(_j, "typeName", _p?.typeName);
+    _o.set(_j, "oldVal", _p?.oldVal);
+    _o.set(_j, "newVal", _p?.newVal);
+    _o.set(_j, "newValNeighbor", _p?.newValNeighbor);
+    _o.set(_j, "newValIsAfter", _p?.newValIsAfter);
+    _o.set(_j, "skipIfNewValExists", _p?.skipIfNewValExists);
+    return _j;
+  },
+  viewStmt(_p?: ViewStmt): ViewStmt {
+    const _j = ({} as ViewStmt);
+    _o.set(_j, "view", _p?.view);
+    _o.set(_j, "aliases", _p?.aliases);
+    _o.set(_j, "query", _p?.query);
+    _o.set(_j, "replace", _p?.replace);
+    _o.set(_j, "options", _p?.options);
+    _o.set(_j, "withCheckOption", _p?.withCheckOption);
+    return _j;
+  },
+  loadStmt(_p?: LoadStmt): LoadStmt {
+    const _j = ({} as LoadStmt);
+    _o.set(_j, "filename", _p?.filename);
+    return _j;
+  },
+  createdbStmt(_p?: CreatedbStmt): CreatedbStmt {
+    const _j = ({} as CreatedbStmt);
+    _o.set(_j, "dbname", _p?.dbname);
+    _o.set(_j, "options", _p?.options);
+    return _j;
+  },
+  alterDatabaseStmt(_p?: AlterDatabaseStmt): AlterDatabaseStmt {
+    const _j = ({} as AlterDatabaseStmt);
+    _o.set(_j, "dbname", _p?.dbname);
+    _o.set(_j, "options", _p?.options);
+    return _j;
+  },
+  alterDatabaseRefreshCollStmt(_p?: AlterDatabaseRefreshCollStmt): AlterDatabaseRefreshCollStmt {
+    const _j = ({} as AlterDatabaseRefreshCollStmt);
+    _o.set(_j, "dbname", _p?.dbname);
+    return _j;
+  },
+  alterDatabaseSetStmt(_p?: AlterDatabaseSetStmt): AlterDatabaseSetStmt {
+    const _j = ({} as AlterDatabaseSetStmt);
+    _o.set(_j, "dbname", _p?.dbname);
+    _o.set(_j, "setstmt", _p?.setstmt);
+    return _j;
+  },
+  dropdbStmt(_p?: DropdbStmt): DropdbStmt {
+    const _j = ({} as DropdbStmt);
+    _o.set(_j, "dbname", _p?.dbname);
+    _o.set(_j, "missing_ok", _p?.missing_ok);
+    _o.set(_j, "options", _p?.options);
+    return _j;
+  },
+  alterSystemStmt(_p?: AlterSystemStmt): AlterSystemStmt {
+    const _j = ({} as AlterSystemStmt);
+    _o.set(_j, "setstmt", _p?.setstmt);
+    return _j;
+  },
+  clusterStmt(_p?: ClusterStmt): ClusterStmt {
+    const _j = ({} as ClusterStmt);
+    _o.set(_j, "relation", _p?.relation);
+    _o.set(_j, "indexname", _p?.indexname);
+    _o.set(_j, "params", _p?.params);
+    return _j;
+  },
+  vacuumStmt(_p?: VacuumStmt): VacuumStmt {
+    const _j = ({} as VacuumStmt);
+    _o.set(_j, "options", _p?.options);
+    _o.set(_j, "rels", _p?.rels);
+    _o.set(_j, "is_vacuumcmd", _p?.is_vacuumcmd);
+    return _j;
+  },
+  vacuumRelation(_p?: VacuumRelation): VacuumRelation {
+    const _j = ({} as VacuumRelation);
+    _o.set(_j, "relation", _p?.relation);
+    _o.set(_j, "oid", _p?.oid);
+    _o.set(_j, "va_cols", _p?.va_cols);
+    return _j;
+  },
+  explainStmt(_p?: ExplainStmt): ExplainStmt {
+    const _j = ({} as ExplainStmt);
+    _o.set(_j, "query", _p?.query);
+    _o.set(_j, "options", _p?.options);
+    return _j;
+  },
+  createTableAsStmt(_p?: CreateTableAsStmt): CreateTableAsStmt {
+    const _j = ({} as CreateTableAsStmt);
+    _o.set(_j, "query", _p?.query);
+    _o.set(_j, "into", _p?.into);
+    _o.set(_j, "objtype", _p?.objtype);
+    _o.set(_j, "is_select_into", _p?.is_select_into);
+    _o.set(_j, "if_not_exists", _p?.if_not_exists);
+    return _j;
+  },
+  refreshMatViewStmt(_p?: RefreshMatViewStmt): RefreshMatViewStmt {
+    const _j = ({} as RefreshMatViewStmt);
+    _o.set(_j, "concurrent", _p?.concurrent);
+    _o.set(_j, "skipData", _p?.skipData);
+    _o.set(_j, "relation", _p?.relation);
+    return _j;
+  },
+  checkPointStmt(_p?: CheckPointStmt): CheckPointStmt {
+    const _j = ({} as CheckPointStmt);
+    return _j;
+  },
+  discardStmt(_p?: DiscardStmt): DiscardStmt {
+    const _j = ({} as DiscardStmt);
+    _o.set(_j, "target", _p?.target);
+    return _j;
+  },
+  lockStmt(_p?: LockStmt): LockStmt {
+    const _j = ({} as LockStmt);
+    _o.set(_j, "relations", _p?.relations);
+    _o.set(_j, "mode", _p?.mode);
+    _o.set(_j, "nowait", _p?.nowait);
+    return _j;
+  },
+  constraintsSetStmt(_p?: ConstraintsSetStmt): ConstraintsSetStmt {
+    const _j = ({} as ConstraintsSetStmt);
+    _o.set(_j, "constraints", _p?.constraints);
+    _o.set(_j, "deferred", _p?.deferred);
+    return _j;
+  },
+  reindexStmt(_p?: ReindexStmt): ReindexStmt {
+    const _j = ({} as ReindexStmt);
+    _o.set(_j, "kind", _p?.kind);
+    _o.set(_j, "relation", _p?.relation);
+    _o.set(_j, "name", _p?.name);
+    _o.set(_j, "params", _p?.params);
+    return _j;
+  },
+  createConversionStmt(_p?: CreateConversionStmt): CreateConversionStmt {
+    const _j = ({} as CreateConversionStmt);
+    _o.set(_j, "conversion_name", _p?.conversion_name);
+    _o.set(_j, "for_encoding_name", _p?.for_encoding_name);
+    _o.set(_j, "to_encoding_name", _p?.to_encoding_name);
+    _o.set(_j, "func_name", _p?.func_name);
+    _o.set(_j, "def", _p?.def);
+    return _j;
+  },
+  createCastStmt(_p?: CreateCastStmt): CreateCastStmt {
+    const _j = ({} as CreateCastStmt);
+    _o.set(_j, "sourcetype", _p?.sourcetype);
+    _o.set(_j, "targettype", _p?.targettype);
+    _o.set(_j, "func", _p?.func);
+    _o.set(_j, "context", _p?.context);
+    _o.set(_j, "inout", _p?.inout);
+    return _j;
+  },
+  createTransformStmt(_p?: CreateTransformStmt): CreateTransformStmt {
+    const _j = ({} as CreateTransformStmt);
+    _o.set(_j, "replace", _p?.replace);
+    _o.set(_j, "type_name", _p?.type_name);
+    _o.set(_j, "lang", _p?.lang);
+    _o.set(_j, "fromsql", _p?.fromsql);
+    _o.set(_j, "tosql", _p?.tosql);
+    return _j;
+  },
+  prepareStmt(_p?: PrepareStmt): PrepareStmt {
+    const _j = ({} as PrepareStmt);
+    _o.set(_j, "name", _p?.name);
+    _o.set(_j, "argtypes", _p?.argtypes);
+    _o.set(_j, "query", _p?.query);
+    return _j;
+  },
+  executeStmt(_p?: ExecuteStmt): ExecuteStmt {
+    const _j = ({} as ExecuteStmt);
+    _o.set(_j, "name", _p?.name);
+    _o.set(_j, "params", _p?.params);
+    return _j;
+  },
+  deallocateStmt(_p?: DeallocateStmt): DeallocateStmt {
+    const _j = ({} as DeallocateStmt);
+    _o.set(_j, "name", _p?.name);
+    return _j;
+  },
+  dropOwnedStmt(_p?: DropOwnedStmt): DropOwnedStmt {
+    const _j = ({} as DropOwnedStmt);
+    _o.set(_j, "roles", _p?.roles);
+    _o.set(_j, "behavior", _p?.behavior);
+    return _j;
+  },
+  reassignOwnedStmt(_p?: ReassignOwnedStmt): ReassignOwnedStmt {
+    const _j = ({} as ReassignOwnedStmt);
+    _o.set(_j, "roles", _p?.roles);
+    _o.set(_j, "newrole", _p?.newrole);
+    return _j;
+  },
+  altertsDictionaryStmt(_p?: AlterTSDictionaryStmt): AlterTSDictionaryStmt {
+    const _j = ({} as AlterTSDictionaryStmt);
+    _o.set(_j, "dictname", _p?.dictname);
+    _o.set(_j, "options", _p?.options);
+    return _j;
+  },
+  altertsConfigurationStmt(_p?: AlterTSConfigurationStmt): AlterTSConfigurationStmt {
+    const _j = ({} as AlterTSConfigurationStmt);
+    _o.set(_j, "kind", _p?.kind);
+    _o.set(_j, "cfgname", _p?.cfgname);
+    _o.set(_j, "tokentype", _p?.tokentype);
+    _o.set(_j, "dicts", _p?.dicts);
+    _o.set(_j, "override", _p?.override);
+    _o.set(_j, "replace", _p?.replace);
+    _o.set(_j, "missing_ok", _p?.missing_ok);
+    return _j;
+  },
+  publicationTable(_p?: PublicationTable): PublicationTable {
+    const _j = ({} as PublicationTable);
+    _o.set(_j, "relation", _p?.relation);
+    _o.set(_j, "whereClause", _p?.whereClause);
+    _o.set(_j, "columns", _p?.columns);
+    return _j;
+  },
+  publicationObjSpec(_p?: PublicationObjSpec): PublicationObjSpec {
+    const _j = ({} as PublicationObjSpec);
+    _o.set(_j, "pubobjtype", _p?.pubobjtype);
+    _o.set(_j, "name", _p?.name);
+    _o.set(_j, "pubtable", _p?.pubtable);
+    _o.set(_j, "location", _p?.location);
+    return _j;
+  },
+  createPublicationStmt(_p?: CreatePublicationStmt): CreatePublicationStmt {
+    const _j = ({} as CreatePublicationStmt);
+    _o.set(_j, "pubname", _p?.pubname);
+    _o.set(_j, "options", _p?.options);
+    _o.set(_j, "pubobjects", _p?.pubobjects);
+    _o.set(_j, "for_all_tables", _p?.for_all_tables);
+    return _j;
+  },
+  alterPublicationStmt(_p?: AlterPublicationStmt): AlterPublicationStmt {
+    const _j = ({} as AlterPublicationStmt);
+    _o.set(_j, "pubname", _p?.pubname);
+    _o.set(_j, "options", _p?.options);
+    _o.set(_j, "pubobjects", _p?.pubobjects);
+    _o.set(_j, "for_all_tables", _p?.for_all_tables);
+    _o.set(_j, "action", _p?.action);
+    return _j;
+  },
+  createSubscriptionStmt(_p?: CreateSubscriptionStmt): CreateSubscriptionStmt {
+    const _j = ({} as CreateSubscriptionStmt);
+    _o.set(_j, "subname", _p?.subname);
+    _o.set(_j, "conninfo", _p?.conninfo);
+    _o.set(_j, "publication", _p?.publication);
+    _o.set(_j, "options", _p?.options);
+    return _j;
+  },
+  alterSubscriptionStmt(_p?: AlterSubscriptionStmt): AlterSubscriptionStmt {
+    const _j = ({} as AlterSubscriptionStmt);
+    _o.set(_j, "kind", _p?.kind);
+    _o.set(_j, "subname", _p?.subname);
+    _o.set(_j, "conninfo", _p?.conninfo);
+    _o.set(_j, "publication", _p?.publication);
+    _o.set(_j, "options", _p?.options);
+    return _j;
+  },
+  dropSubscriptionStmt(_p?: DropSubscriptionStmt): DropSubscriptionStmt {
+    const _j = ({} as DropSubscriptionStmt);
+    _o.set(_j, "subname", _p?.subname);
+    _o.set(_j, "missing_ok", _p?.missing_ok);
+    _o.set(_j, "behavior", _p?.behavior);
     return _j;
   },
   scanToken(_p?: ScanToken["ScanToken"]): ScanToken {
