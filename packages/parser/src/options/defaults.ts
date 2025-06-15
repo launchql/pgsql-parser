@@ -44,6 +44,11 @@ export const defaultPgProtoParserOptions: PgProtoParserOptions = {
         },
         removeUndefinedAt0: true
     },
+    runtimeSchema: {
+        enabled: false,
+        filename: 'runtime-schema',
+        format: 'json'
+    },
     parser: {
         keepCase: false,
         alternateCommentMode: true,

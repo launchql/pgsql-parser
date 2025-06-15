@@ -62,6 +62,14 @@ export interface PgProtoStoreOptions {
         }
     };
 
+    // Options related to runtime schema generation.
+    runtimeSchema?: {
+        // Whether to generate runtime schema for AST nodes
+        enabled?: boolean;
+        filename?: string;
+        format?: 'json' | 'typescript';
+    };
+
     // Options related to enumeration handling.
     enums?: {
         // Whether to include TypeScript enums.
