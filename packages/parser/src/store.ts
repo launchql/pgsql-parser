@@ -205,7 +205,7 @@ export class ProtoStore implements IProtoStore {
       return;
     }
 
-    const generator = new RuntimeSchemaGenerator(this.root);
+    const generator = new RuntimeSchemaGenerator(this.root as Namespace);
     const nodeSpecs = generator.generateNodeSpecs();
     const format = this.options.runtimeSchema.format || 'json';
     const filename = this.options.runtimeSchema.filename || 'runtime-schema';
@@ -223,7 +223,7 @@ export class ProtoStore implements IProtoStore {
 
   getRuntimeSchema() {
     if (!this._runtimeSchema) {
-      const generator = new RuntimeSchemaGenerator(this.root);
+      const generator = new RuntimeSchemaGenerator(this.root as Namespace);
       this._runtimeSchema = generator.generateNodeSpecs();
     }
     return this._runtimeSchema;
