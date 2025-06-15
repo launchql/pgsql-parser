@@ -2,6 +2,7 @@ import { Service, Type, Field, Enum, Namespace, ReflectionObject } from '@launch
 import { generateEnumImports, generateAstHelperMethods, generateTypeImportSpecifiers, generateEnumValueFunctions, convertEnumToTsUnionType, convertEnumToTsEnumDeclaration, generateNodeUnionType, convertTypeToTsInterface, convertTypeToWrappedTsInterface } from './ast';
 import { RuntimeSchemaGenerator } from './runtime-schema';
 import { generateEnum2IntJSON, generateEnum2StrJSON } from './ast/enums/enums-json';
+import { jsStringify } from 'strfy-js';
 import { sync as mkdirp } from 'mkdirp';
 import { join } from 'path';
 import { getOptionsWithDefaults, PgProtoStoreOptions } from './options';
@@ -253,7 +254,11 @@ export class ProtoStore implements IProtoStore {
       ''
     ];
 
-    const exportStatement = `export const runtimeSchema: NodeSpec[] = ${JSON.stringify(nodeSpecs, null, 2)};`;
+    const exportStatement = `export const runtimeSchema: NodeSpec[] = ${jsStringify(nodeSpecs, {
+      space: 2,
+      camelCase: true,
+      quotes: 'single'
+    })};`;
 
     return [
       this.options.includeHeader ? this.getHeader() : '',

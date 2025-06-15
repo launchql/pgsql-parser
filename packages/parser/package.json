@@ -86,6 +86,7 @@
     "deepmerge": "4.3.1",
     "nested-obj": "^0.0.1",
     "node-html-parser": "6.1.12",
-    "recast": "0.23.6"
+    "recast": "0.23.6",
+    "strfy-js": "^3.0.1"
   }
 }
