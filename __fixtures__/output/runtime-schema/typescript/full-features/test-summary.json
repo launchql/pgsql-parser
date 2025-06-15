@@ -1,0 +1,10 @@
+{
+  "testName": "runtime-schema/typescript/full-features",
+  "description": "Runtime schema TypeScript with all features",
+  "filesGenerated": [
+    "complete-schema.ts",
+    "types.ts"
+  ],
+  "timestamp": "2025-06-15T07:17:52.972Z",
+  "success": true
+}

@@ -1,0 +1,9 @@
+{
+  "testName": "runtime-schema/json/enabled",
+  "description": "Runtime schema enabled with JSON format",
+  "filesGenerated": [
+    "runtime-schema.json"
+  ],
+  "timestamp": "2025-06-15T07:17:52.968Z",
+  "success": true
+}

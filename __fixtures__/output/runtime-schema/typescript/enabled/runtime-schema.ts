@@ -1,0 +1,29 @@
+import { NodeSpec, FieldSpec } from './runtime-schema/types';
+
+export const runtimeSchema: NodeSpec[] = [
+  {
+    name: "CreateStmt",
+    wrapped: true,
+    fields: [
+      { name: "relation", type: "RangeVar", isNode: true, isArray: false, optional: false },
+      { name: "of_typename", type: "TypeName", isNode: true, isArray: false, optional: true },
+      { name: "cols", type: "ColumnDef", isNode: true, isArray: true, optional: true }
+    ]
+  },
+  {
+    name: "TypeName",
+    wrapped: true,
+    fields: [
+      { name: "names", type: "String", isNode: false, isArray: true, optional: true },
+      { name: "typemod", type: "Integer", isNode: false, isArray: false, optional: true }
+    ]
+  },
+  {
+    name: "RangeVar",
+    wrapped: true,
+    fields: [
+      { name: "schemaname", type: "string", isNode: false, isArray: false, optional: true },
+      { name: "relname", type: "string", isNode: false, isArray: false, optional: false }
+    ]
+  }
+];

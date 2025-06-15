@@ -1,0 +1,63 @@
+[
+  {
+    "name": "CreateStmt",
+    "wrapped": true,
+    "fields": [
+      {
+        "name": "relation",
+        "type": "RangeVar",
+        "isNode": true,
+        "isArray": false,
+        "optional": false
+      },
+      {
+        "name": "of_typename",
+        "type": "TypeName",
+        "isNode": true,
+        "isArray": false,
+        "optional": true
+      },
+      {
+        "name": "cols",
+        "type": "ColumnDef",
+        "isNode": true,
+        "isArray": true,
+        "optional": true
+      },
+      {
+        "name": "inhRelations",
+        "type": "RangeVar",
+        "isNode": true,
+        "isArray": true,
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "TypeName",
+    "wrapped": true,
+    "fields": [
+      {
+        "name": "names",
+        "type": "String",
+        "isNode": false,
+        "isArray": true,
+        "optional": true
+      },
+      {
+        "name": "typemod",
+        "type": "Integer",
+        "isNode": false,
+        "isArray": false,
+        "optional": true
+      },
+      {
+        "name": "arrayBounds",
+        "type": "Integer",
+        "isNode": false,
+        "isArray": true,
+        "optional": true
+      }
+    ]
+  }
+]

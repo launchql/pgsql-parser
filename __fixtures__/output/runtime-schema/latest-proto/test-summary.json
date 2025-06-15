@@ -1,0 +1,9 @@
+{
+  "testName": "runtime-schema/latest-proto",
+  "description": "Runtime schema using latest proto file",
+  "filesGenerated": [
+    "latest-schema.json"
+  ],
+  "timestamp": "2025-06-15T07:17:52.972Z",
+  "success": true
+}
