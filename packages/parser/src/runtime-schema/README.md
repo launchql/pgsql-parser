@@ -70,10 +70,15 @@ interface FieldSpec {
 
 ## CLI Tool
 
-A standalone CLI tool is available for generating runtime schemas:
+A CLI tool is available for generating runtime schemas:
 
 ```bash
-node packages/parser/src/runtime-schema/cli.ts <proto-file> [output-dir]
+pg-proto-parser runtime-schema --inFile <proto-file> --outDir <output-directory>
+```
+
+For more options, see the CLI documentation or run:
+```bash
+pg-proto-parser runtime-schema --help
 ```
 
 ## Applications

@@ -100,6 +100,26 @@ pg-proto-parser protogen --protoUrl <URL to proto file> \
 | `--help`, `-h`          | Show this help message.                                                             |               |
 | `--version`, `-v`       | Show the version number.                                                            |               |
 
+### runtime-schema
+
+Generate runtime schema for PostgreSQL AST nodes:
+
+```bash
+pg-proto-parser runtime-schema --inFile <path-to-proto> --outDir <output-directory> \
+                               [--format <json|typescript>] [--filename <filename>]
+```
+
+#### Options for runtime-schema
+
+| Option              | Description                                                                         | Default Value |
+|---------------------|-------------------------------------------------------------------------------------|---------------|
+| `--inFile`          | Path to the `.proto` file to be parsed.                                             | *Required*    |
+| `--outDir`          | Directory to save the generated runtime schema files.                               | *Required*    |
+| `--format`          | Output format for runtime schema ('json' or 'typescript').                          | `json`        |
+| `--filename`        | Filename for the runtime schema file (without extension).                           | `runtime-schema` |
+| `--help`, `-h`      | Show this help message and exit.                                                   |               |
+| `--version`, `-v`   | Show the version number and exit.                                                  |               |
+
 
 ## Related
 

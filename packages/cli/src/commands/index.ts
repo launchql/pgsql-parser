@@ -3,9 +3,11 @@ import { ParsedArgs } from 'minimist';
 
 import { commands as codegen } from './codegen';
 import { commands as protogen } from './protogen';
+import { commands as runtimeSchema } from './runtime-schema';
 
 import { help as codegenHelp } from './codegen/cli';
 import { help as protogenHelp } from './protogen/cli';
+import { help as runtimeSchemaHelp } from './runtime-schema/cli';
 
 export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, _options: CLIOptions) => {
   let command;
@@ -21,6 +23,7 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
   if (argv.help || argv.h) {
     codegenHelp();
     protogenHelp();
+    runtimeSchemaHelp();
     process.exit(0);
   }
 
@@ -32,7 +35,8 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
       message: 'choose a command',
       options: [
         'protogen',
-        'codegen'
+        'codegen',
+        'runtime-schema'
       ]
     }
   ];
@@ -52,6 +56,10 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
 
     case 'codegen':
         argv = await codegen(argv, prompter, _options);
+        break;
+
+    case 'runtime-schema':
+        argv = await runtimeSchema(argv, prompter, _options);
         break;
 
     default:
