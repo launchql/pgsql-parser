@@ -26,14 +26,17 @@ export class RuntimeSchemaGenerator {
   public generateNodeSpecs(): NodeSpec[] {
     const nodeSpecs: NodeSpec[] = [];
     
-    this.root.nestedArray.forEach((nested) => {
-      if (nested instanceof Type && nested.name !== 'Node') {
-        const nodeSpec = this.createNodeSpec(nested);
-        if (nodeSpec) {
-          nodeSpecs.push(nodeSpec);
+    const pgQueryNamespace = this.root.nested?.pg_query;
+    if (pgQueryNamespace && pgQueryNamespace instanceof Namespace && pgQueryNamespace.nestedArray) {
+      pgQueryNamespace.nestedArray.forEach((nested) => {
+        if (nested instanceof Type && nested.name !== 'Node') {
+          const nodeSpec = this.createNodeSpec(nested);
+          if (nodeSpec) {
+            nodeSpecs.push(nodeSpec);
+          }
         }
-      }
-    });
+      });
+    }
 
     return nodeSpecs.sort((a, b) => a.name.localeCompare(b.name));
   }
