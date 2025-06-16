@@ -17,7 +17,6 @@ export const generateAstHelperMethods = (types: Type[], isWrappedTypeFn: (typeNa
     const param = t.identifier('_p');
     param.optional = true;
 
-
     if (!isWrappedTypeFn(type.name)) {
       param.typeAnnotation = t.tsTypeAnnotation(
         t.tsIndexedAccessType(
