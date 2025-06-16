@@ -84,6 +84,6 @@
   "dependencies": {
     "@pgsql/types": "^13.9.0",
     "dotty": "^0.1.0",
-    "pgsql-enums": "^13.10.0"
+    "@pgsql/enums": "^13.9.0"
   }
 }

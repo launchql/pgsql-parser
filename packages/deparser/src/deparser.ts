@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { format } from 'util';
-import { objtypeName, getConstraintFromConstrType } from 'pgsql-enums';
+import { objtypeName, getConstraintFromConstrType } from '@pgsql/enums';
 import { 
   A_ArrayExpr, 
   A_Const, 
