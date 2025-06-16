@@ -11,27 +11,15 @@ export const generateTypeImports = (types: Type[], source: string, suffix?: stri
     createNamedImport(types.map(e => e.name), source);
 };
 
-export const generateAstHelperMethods = (types: Type[], isWrappedTypeFn: (typeName: string) => boolean): t.ExportDefaultDeclaration => {
+export const generateAstHelperMethods = (types: Type[]): t.ExportDefaultDeclaration => {
   const creators = types.map((type: Type) => {
     const typeName = type.name;
     const param = t.identifier('_p');
     param.optional = true;
 
-    if (!isWrappedTypeFn(type.name)) {
-      param.typeAnnotation = t.tsTypeAnnotation(
-        t.tsIndexedAccessType(
-          t.tsTypeReference(t.identifier(typeName)),
-          t.tsLiteralType(t.stringLiteral(typeName))
-        )
-      );
-    } else {
-      param.typeAnnotation = t.tsTypeAnnotation(t.tsTypeReference(t.identifier(typeName)));
-    }
+    param.typeAnnotation = t.tsTypeAnnotation(t.tsTypeReference(t.identifier(typeName)));
 
-    let init: any = [t.objectProperty(t.identifier(typeName), t.objectExpression([]))];
-    if (isWrappedTypeFn(typeName)) {
-      init = [];
-    }
+    let init: any = [];
 
     // @ts-ignore
     const fields: Field[] = type.fields;
@@ -53,7 +41,7 @@ export const generateAstHelperMethods = (types: Type[], isWrappedTypeFn: (typeNa
             t.memberExpression(t.identifier('_o'), t.identifier('set')),
             [
               t.identifier('_j'),
-              t.stringLiteral(isWrappedTypeFn(typeName) ? fieldName : `${typeName}.${fieldName}`),
+              t.stringLiteral(fieldName),
               t.optionalMemberExpression(
                 t.identifier('_p'),
                 t.identifier(fieldName),

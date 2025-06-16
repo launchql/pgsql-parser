@@ -190,7 +190,7 @@ export class ProtoStore implements IProtoStore {
       const code = convertAstToCode([
         imports,
         generateTypeImportSpecifiers(typesToProcess, this.options),
-        generateAstHelperMethods(typesToProcess, (typeName: string) => this.isWrappedType(typeName))
+        generateAstHelperMethods(typesToProcess)
       ]);
 
       this.writeFile(this.options.utils.astHelpers.filename, code);
