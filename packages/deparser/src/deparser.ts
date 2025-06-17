@@ -1700,13 +1700,17 @@ export class Deparser implements DeparserVisitor {
     
     switch (node.kind) {
       case 'TRANS_STMT_BEGIN':
-        return 'BEGIN';
+        output.push('BEGIN');
+        break;
       case 'TRANS_STMT_START':
-        return 'START TRANSACTION';
+        output.push('START TRANSACTION');
+        break;
       case 'TRANS_STMT_COMMIT':
-        return 'COMMIT';
+        output.push('COMMIT');
+        break;
       case 'TRANS_STMT_ROLLBACK':
-        return 'ROLLBACK';
+        output.push('ROLLBACK');
+        break;
       case 'TRANS_STMT_SAVEPOINT':
         output.push('SAVEPOINT');
         if (node.savepoint_name) {
@@ -1747,6 +1751,29 @@ export class Deparser implements DeparserVisitor {
         throw new Error(`Unsupported TransactionStmt kind: ${node.kind}`);
     }
     
+    // Handle transaction options (e.g., READ ONLY, ISOLATION LEVEL)
+    if (node.options && node.options.length > 0) {
+      const options = ListUtils.unwrapList(node.options).map(option => {
+        if (option.DefElem) {
+          const defElem = option.DefElem;
+          if (defElem.defname === 'transaction_read_only') {
+            return 'READ ONLY';
+          } else if (defElem.defname === 'transaction_isolation') {
+            if (defElem.arg && defElem.arg.A_Const && defElem.arg.A_Const.sval) {
+              return `ISOLATION LEVEL ${defElem.arg.A_Const.sval.String.sval.toUpperCase()}`;
+            }
+          } else if (defElem.defname === 'transaction_deferrable') {
+            return 'DEFERRABLE';
+          }
+        }
+        return this.visit(option, context);
+      }).filter(Boolean);
+      
+      if (options.length > 0) {
+        output.push(options.join(', '));
+      }
+    }
+    
     return output.join(' ');
   }
 
@@ -1760,6 +1787,14 @@ export class Deparser implements DeparserVisitor {
         return `SET ${node.name} TO DEFAULT`;
       case 'VAR_SET_CURRENT':
         return `SET ${node.name} FROM CURRENT`;
+      case 'VAR_SET_MULTI':
+        const assignments = node.args ? ListUtils.unwrapList(node.args).map(arg => {
+          if (arg.VariableSetStmt) {
+            return this.VariableSetStmt(arg.VariableSetStmt, context);
+          }
+          return this.visit(arg, context);
+        }).join(', ') : '';
+        return `SET ${assignments}`;
       case 'VAR_RESET':
         return `RESET ${node.name}`;
       case 'VAR_RESET_ALL':
