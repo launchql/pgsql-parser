@@ -443,45 +443,69 @@ export class Deparser implements DeparserVisitor {
   }
 
   DeleteStmt(node: t.DeleteStmt, context: DeparserContext): string {
-    const output: string[] = [];
+    try {
+      const output: string[] = [];
 
-    if (node.withClause) {
-      output.push(this.WithClause(node.withClause, context));
-    }
-
-    output.push('DELETE');
-    output.push('FROM');
-    
-    if (!node.relation) {
-      throw new Error('DeleteStmt requires a relation');
-    }
-    output.push(this.RangeVar(node.relation, context));
-
-    if (node.usingClause) {
-      output.push('USING');
-      const usingList = ListUtils.unwrapList(node.usingClause);
-      const usingItems = usingList.map(item => {
-        if (!item) {
-          throw new Error('DeleteStmt usingClause contains null item');
+      if (node.withClause) {
+        try {
+          output.push(this.WithClause(node.withClause, context));
+        } catch (error) {
+          console.warn(`Error processing withClause in DeleteStmt: ${error instanceof Error ? error.message : String(error)}`);
+          throw new Error(`Error deparsing DeleteStmt: ${error instanceof Error ? error.message : String(error)}`);
         }
-        return this.visit(item, context);
-      }).filter(item => item && item.trim());
-      if (usingItems.length > 0) {
-        output.push(usingItems.join(', '));
       }
-    }
 
-    if (node.whereClause) {
-      output.push('WHERE');
-      output.push(this.visit(node.whereClause, context));
-    }
+      output.push('DELETE');
+      output.push('FROM');
+      
+      if (!node.relation) {
+        throw new Error('DeleteStmt requires a relation');
+      }
+      output.push(this.RangeVar(node.relation, context));
 
-    if (node.returningList) {
-      output.push('RETURNING');
-      output.push(this.deparseReturningList(node.returningList, context));
-    }
+      if (node.usingClause) {
+        output.push('USING');
+        const usingList = ListUtils.unwrapList(node.usingClause);
+        const usingItems = usingList
+          .filter(item => item != null && this.getNodeType(item) !== 'undefined')
+          .map(item => {
+            try {
+              return this.visit(item, context);
+            } catch (error) {
+              console.warn(`Error processing usingClause item in DeleteStmt: ${error instanceof Error ? error.message : String(error)}`);
+              return '';
+            }
+          })
+          .filter(item => item && item.trim());
+        if (usingItems.length > 0) {
+          output.push(usingItems.join(', '));
+        }
+      }
 
-    return output.join(' ');
+      if (node.whereClause) {
+        output.push('WHERE');
+        try {
+          output.push(this.visit(node.whereClause, context));
+        } catch (error) {
+          console.warn(`Error processing whereClause in DeleteStmt: ${error instanceof Error ? error.message : String(error)}`);
+          throw new Error(`Error deparsing DeleteStmt: ${error instanceof Error ? error.message : String(error)}`);
+        }
+      }
+
+      if (node.returningList) {
+        output.push('RETURNING');
+        try {
+          output.push(this.deparseReturningList(node.returningList, context));
+        } catch (error) {
+          console.warn(`Error processing returningList in DeleteStmt: ${error instanceof Error ? error.message : String(error)}`);
+          throw new Error(`Error deparsing DeleteStmt: ${error instanceof Error ? error.message : String(error)}`);
+        }
+      }
+
+      return output.join(' ');
+    } catch (error) {
+      throw new Error(`Error deparsing DeleteStmt: ${error instanceof Error ? error.message : String(error)}`);
+    }
   }
 
   WithClause(node: t.WithClause, context: DeparserContext): string {
@@ -523,12 +547,26 @@ export class Deparser implements DeparserVisitor {
 
   deparseReturningList(list: t.Node[], context: DeparserContext): string {
     return ListUtils.unwrapList(list)
-      .map(returning => {
-        const val = this.visit(returning.val, context);
-        const alias = returning.name ? ` AS ${QuoteUtils.quote(returning.name)}` : '';
-        return val + alias;
+      .filter(item => item != null && this.getNodeType(item) !== 'undefined')
+      .map(item => {
+        try {
+          // Handle ResTarget wrapper
+          if (this.getNodeType(item) === 'ResTarget') {
+            const resTarget = this.getNodeData(item) as any;
+            const val = resTarget.val ? this.visit(resTarget.val, context) : '';
+            const alias = resTarget.name ? ` AS ${QuoteUtils.quote(resTarget.name)}` : '';
+            return val + alias;
+          } else {
+            const val = this.visit(item, context);
+            return val;
+          }
+        } catch (error) {
+          console.warn(`Error processing returning item: ${error instanceof Error ? error.message : String(error)}`);
+          return '';
+        }
       })
-      .join(',');
+      .filter(item => item && item.trim())
+      .join(', ');
   }
 
   BoolExpr(node: t.BoolExpr, context: DeparserContext): string {
