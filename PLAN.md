@@ -82,7 +82,7 @@ Following the phased approach from IMPLEMENTATION_PLAN.md:
 #### 2.3 PostgreSQL 17 Compatibility
 - Update type definitions for new PostgreSQL 17 features
 - Handle new AST node types introduced in v17
-- Ensure backward compatibility with existing v13 structures
+- Focus exclusively on PostgreSQL 17 support (no backward compatibility needed)
 
 ### Phase 3: DDL Statement Support (Week 3)
 **Objective**: Implement comprehensive DDL statement deparsing
@@ -135,8 +135,8 @@ Following the phased approach from IMPLEMENTATION_PLAN.md:
 
 #### 5.2 PostgreSQL 17 Feature Testing
 - Test new PostgreSQL 17 syntax and features
-- Validate compatibility with existing PostgreSQL versions
-- Cross-version compatibility testing
+- Comprehensive validation of PostgreSQL 17 capabilities
+- Performance testing with PostgreSQL 17 specific features
 
 #### 5.3 Integration Testing
 - Test with real-world SQL queries
@@ -219,7 +219,7 @@ All test ASTs must use consistent node formats:
 ### Functional Requirements
 - [ ] All PostgreSQL 17 statement types supported
 - [ ] Round-trip parsing accuracy > 99.9%
-- [ ] Backward compatibility with PostgreSQL 13-16
+- [ ] Full PostgreSQL 17 feature support
 - [ ] Comprehensive test coverage > 95%
 - [ ] All test ASTs properly typed and consistent
 
