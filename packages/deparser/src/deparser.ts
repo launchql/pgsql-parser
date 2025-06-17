@@ -2245,6 +2245,17 @@ export class Deparser implements DeparserVisitor {
             const objName = objList.map(obj => this.visit(obj, context)).filter(name => name && name.trim()).join('.');
             return objName;
           }
+          
+          if (objList && objList.List && objList.List.items) {
+            const items = objList.List.items.map((item: any) => {
+              if (item.String && item.String.sval) {
+                return QuoteUtils.quote(item.String.sval);
+              }
+              return this.visit(item, context);
+            }).filter((name: string) => name && name.trim());
+            return items.join('.');
+          }
+          
           const objName = this.visit(objList, context);
           return objName;
         }).filter(name => name && name.trim()).join(', ');
