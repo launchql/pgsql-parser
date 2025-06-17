@@ -6085,6 +6085,18 @@ export class Deparser implements DeparserVisitor {
   }
 
   XmlExpr(node: t.XmlExpr, context: DeparserContext): string {
+    // Handle XMLPI with special syntax: xmlpi(name target, content)
+    if (node.op === 'IS_XMLPI') {
+      if (node.name && node.args && node.args.length > 0) {
+        const argStrs = ListUtils.unwrapList(node.args).map(arg => this.visit(arg, context));
+        return `xmlpi(name ${node.name}, ${argStrs.join(', ')})`;
+      } else if (node.name) {
+        return `xmlpi(name ${node.name})`;
+      } else {
+        return 'XMLPI()';
+      }
+    }
+    
     const output: string[] = [];
     
     switch (node.op) {
@@ -6099,9 +6111,6 @@ export class Deparser implements DeparserVisitor {
         break;
       case 'IS_XMLPARSE':
         output.push('XMLPARSE');
-        break;
-      case 'IS_XMLPI':
-        output.push('XMLPI');
         break;
       case 'IS_XMLROOT':
         output.push('XMLROOT');
