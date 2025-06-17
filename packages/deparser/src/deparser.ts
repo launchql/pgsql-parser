@@ -1182,6 +1182,12 @@ export class Deparser implements DeparserVisitor {
       output.push(this.visit(node.raw_default, context));
     }
 
+    if (node.generated) {
+      output.push('GENERATED ALWAYS AS');
+      output.push(`(${node.generated})`);
+      output.push('STORED');
+    }
+
     if (node.is_not_null) {
       output.push('NOT NULL');
     }
