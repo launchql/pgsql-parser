@@ -6024,16 +6024,33 @@ export class Deparser implements DeparserVisitor {
     
     if (node.functions && node.functions.length > 0) {
       const functionStrs = ListUtils.unwrapList(node.functions)
-        .filter(func => func != null && this.getNodeType(func) !== 'undefined')
+        .filter(func => {
+          if (func == null) return false;
+          const nodeType = this.getNodeType(func);
+          if (nodeType === 'undefined' || nodeType === null) return false;
+          return true;
+        })
         .map(func => {
           try {
+            const nodeType = this.getNodeType(func);
+            if (nodeType === 'List') {
+              // Handle nested List structures in function calls
+              const listData = this.getNodeData(func) as any;
+              if (listData && Array.isArray(listData)) {
+                return listData
+                  .filter(item => item != null && this.getNodeType(item) !== 'undefined')
+                  .map(item => this.visit(item, context))
+                  .filter(str => str && str.trim())
+                  .join(', ');
+              }
+            }
             return this.visit(func, context);
           } catch (error) {
             console.warn(`Error processing function in RangeFunction: ${error instanceof Error ? error.message : String(error)}`);
             return '';
           }
         })
-        .filter(str => str !== '');
+        .filter(str => str && str.trim());
       if (functionStrs.length > 0) {
         output.push(functionStrs.join(', '));
       }
