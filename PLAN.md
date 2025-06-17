@@ -149,25 +149,19 @@ Following the phased approach from IMPLEMENTATION_PLAN.md:
 Based on analysis of types.ts and current deparser implementation:
 
 ```typescript
-// Enhanced node type detection
+// Correct node type detection - only handles wrapped nodes
 getNodeType(node: any): string {
-  if (!node || typeof node !== 'object') {
-    return 'Unknown';
-  }
-  
-  // Handle wrapped nodes (e.g., { RangeVar: { ... } })
-  const keys = Object.keys(node);
-  if (keys.length === 1 && typeof node[keys[0]] === 'object') {
-    return keys[0];
-  }
-  
-  // Handle inlined nodes (direct properties)
-  if (node.relname !== undefined) return 'RangeVar';
-  if (node.names !== undefined && Array.isArray(node.names)) return 'TypeName';
-  
-  return 'Unknown';
+  return Object.keys(node)[0];
 }
+
+// Inlined nodes are handled directly in deparser methods, e.g.:
+// Inside SelectStmt method: this.RangeVar(node.relation, context)
+// Inside CreateStmt method: this.TypeName(node.typeName, context)
 ```
+
+**Important**: Inlined nodes should NEVER be handled in getNodeType. They are handled directly within the specific deparser methods that encounter them. For example:
+- `node.relation` (inlined RangeVar) is handled by calling `this.RangeVar(node.relation, context)`
+- `node.typeName` (inlined TypeName) is handled by calling `this.TypeName(node.typeName, context)`
 
 ### Test AST Standardization Strategy
 All test ASTs must use consistent node formats:
@@ -303,17 +297,25 @@ All test ASTs must conform to the type definitions in `/packages/types/src/types
 The current deparser uses a visitor pattern in `/packages/deparser/src/deparser.ts`:
 
 ```typescript
-visit(node: any, context: DeparserContext): string {
-  if (!node) return '';
-  
+visit(node: Node, context: DeparserContext = {}): string {
   const nodeType = this.getNodeType(node);
-  const visitor = this[nodeType as keyof this] as DeparserVisitor;
-  
-  if (typeof visitor === 'function') {
-    return visitor.call(this, this.getNodeData(node), context);
+  const nodeData = this.getNodeData(node);
+
+  const methodName = nodeType as keyof this;
+  if (typeof this[methodName] === 'function') {
+    return (this[methodName] as any)(nodeData, context);
   }
   
-  throw new Error(`No visitor found for node type: ${nodeType}`);
+  throw new Error(`Deparser does not handle node type: ${nodeType}`);
+}
+
+getNodeType(node: Node): string {
+  return Object.keys(node)[0];  // Only handles wrapped nodes
+}
+
+getNodeData(node: Node): any {
+  const type = this.getNodeType(node);
+  return (node as any)[type];   // Unwraps the node data
 }
 ```
 
