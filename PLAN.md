@@ -64,7 +64,7 @@ Analysis of test files reveals inconsistent String node representations:
 - Ensure all packages build successfully
 - Establish working test environment (run `cd packages/deparser && yarn test` for deparser-specific tests)
 - Set up proper linting and formatting
-- **Note**: `packages/deparser/reference/` contains old PostgreSQL 13 code for reference only - do not use or modify this code
+- **Note**: `packages/deparser/reference/` contains old PostgreSQL 13 code and C code deparser for reference only - do not use or modify this code
 
 ### Phase 2: Core Deparser Architecture (Week 2)
 **Objective**: Rebuild deparser with robust visitor pattern and PostgreSQL 17 compatibility
@@ -296,7 +296,7 @@ All test ASTs must conform to the type definitions in `/packages/types/src/types
 ## Implementation Patterns and Conventions
 
 ### Important: Reference Code Exclusion
-**Critical Note**: The `/packages/deparser/reference/` folder contains old PostgreSQL 13 code for reference purposes only. This code should NOT be used, modified, or referenced during implementation. Focus exclusively on the current implementation in `/packages/deparser/src/`.
+**Critical Note**: The `/packages/deparser/reference/` folder contains old PostgreSQL 13 code and C code deparser for reference purposes only. This code should NOT be used, modified, or referenced during implementation. Focus exclusively on the current implementation in `/packages/deparser/src/`.
 
 ### Existing Visitor Pattern Architecture
 The current deparser uses a visitor pattern in `/packages/deparser/src/deparser.ts`:
