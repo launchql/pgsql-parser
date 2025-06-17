@@ -1,5 +1,5 @@
-import { Deparser } from '../src/deparser';
-import { DeparserContext } from '../src/visitors/base';
+import { Deparser } from '../../src/deparser';
+import { DeparserContext } from '../../src/visitors/base';
 import { SetOperationStmt, CoercionForm } from '@pgsql/types';
 
 describe('Set Operation Statement Deparsers', () => {

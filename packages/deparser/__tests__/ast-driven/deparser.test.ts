@@ -1,4 +1,4 @@
-import { Deparser } from '../src/deparser';
+import { Deparser } from '../../src/deparser';
 import { A_Expr_Kind, LimitOption, SetOperation, CoercionForm } from '@pgsql/types';
 
 describe('Deparser', () => {

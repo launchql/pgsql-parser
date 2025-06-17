@@ -1,7 +1,7 @@
-import { Deparser } from '../src/deparser';
-import { DeparserContext } from '../src/visitors/base';
+import { Deparser } from '../../src/deparser';
+import { DeparserContext } from '../../src/visitors/base';
 import { parse } from '@pgsql/parser';
-import { cleanTree } from '../src/utils';
+import { cleanTree } from '../../src/utils';
 import { RoleSpecType, CoercionForm, ObjectType, CallStmt, CreatedbStmt, DropdbStmt, RenameStmt, AlterOwnerStmt, DefElem, DefElemAction } from '@pgsql/types';
 
 describe('Administrative Statement Deparsers', () => {

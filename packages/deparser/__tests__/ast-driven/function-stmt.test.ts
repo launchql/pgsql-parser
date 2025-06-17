@@ -1,5 +1,5 @@
-import { Deparser } from '../src/deparser';
-import { DeparserContext } from '../src/visitors/base';
+import { Deparser } from '../../src/deparser';
+import { DeparserContext } from '../../src/visitors/base';
 
 describe('Function Statement Deparsers', () => {
   const deparser = new Deparser([]);

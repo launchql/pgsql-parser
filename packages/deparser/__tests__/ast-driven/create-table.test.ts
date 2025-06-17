@@ -1,6 +1,4 @@
-import { Deparser } from '../src/deparser';
-import { parse } from '@pgsql/parser';
-import { cleanTree } from '../src/utils';
+import { Deparser } from '../../src/deparser';
 import { OnCommitAction, ConstrType, A_Expr_Kind, CreateStmt } from '@pgsql/types';
 
 describe('CREATE TABLE statements', () => {

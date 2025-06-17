@@ -1,7 +1,5 @@
-import { Deparser } from '../src/deparser';
-import { DeparserContext } from '../src/visitors/base';
-import { parse } from '@pgsql/parser';
-import { cleanTree } from '../src/utils';
+import { Deparser } from '../../src/deparser';
+import { DeparserContext } from '../../src/visitors/base';
 import { CoercionForm } from '@pgsql/types';
 
 describe('Expression Statement Deparsers', () => {

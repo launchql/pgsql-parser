@@ -1,5 +1,5 @@
-import { Deparser } from '../src/deparser';
-import { DeparserContext } from '../src/visitors/base';
+import { Deparser } from '../../src/deparser';
+import { DeparserContext } from '../../src/visitors/base';
 import { ObjectType } from '@pgsql/types';
 
 describe('Tablespace Operations Statement Deparsers', () => {

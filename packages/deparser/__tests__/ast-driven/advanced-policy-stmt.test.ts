@@ -1,5 +1,5 @@
-import { Deparser } from '../src/deparser';
-import { DeparserContext } from '../src/visitors/base';
+import { Deparser } from '../../src/deparser';
+import { DeparserContext } from '../../src/visitors/base';
 import { RoleSpecType, A_Expr_Kind, DefElemAction, CoercionForm, CreatePolicyStmt, CreateUserMappingStmt, CreateStatsStmt, CreatePublicationStmt, CreateSubscriptionStmt } from '@pgsql/types';
 
 describe('Advanced Policy Statement Deparsers', () => {

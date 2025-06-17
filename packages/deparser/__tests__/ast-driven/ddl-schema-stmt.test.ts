@@ -1,5 +1,5 @@
-import { Deparser } from '../src/deparser';
-import { DeparserContext } from '../src/visitors/base';
+import { Deparser } from '../../src/deparser';
+import { DeparserContext } from '../../src/visitors/base';
 import { ObjectType, RoleSpecType, DropBehavior, CoercionForm, AlterTableType } from '@pgsql/types';
 
 describe('DDL Schema Statement Deparsers', () => {

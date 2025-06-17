@@ -1,7 +1,5 @@
-import { Deparser } from '../src/deparser';
-import { DeparserContext } from '../src/visitors/base';
-import { parse } from '@pgsql/parser';
-import { cleanTree } from '../src/utils';
+import { Deparser } from '../../src/deparser';
+import { DeparserContext } from '../../src/visitors/base';
 import { ReturnStmt, PLAssignStmt, CopyStmt, AlterTableStmt, AlterObjectSchemaStmt, ObjectType, DropBehavior } from '@pgsql/types';
 
 describe('Advanced Statement Deparsers', () => {

@@ -1,7 +1,7 @@
-import { Deparser } from '../src/deparser';
-import { DeparserContext } from '../src/visitors/base';
+import { Deparser } from '../../src/deparser';
+import { DeparserContext } from '../../src/visitors/base';
 import { parse } from '@pgsql/parser';
-import { cleanTree } from '../src/utils';
+import { cleanTree } from '../../src/utils';
 
 describe('Notification Statement Deparsers', () => {
   const deparser = new Deparser([]);

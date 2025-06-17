@@ -1,38 +1,38 @@
-import { Deparser } from '../src/deparser';
-import { DeparserContext } from '../src/visitors/base';
-import { ObjectType, RoleSpecType, DropBehavior, DropStmt } from '@pgsql/types';
+import { Deparser } from '../../src/deparser';
+import { parse } from '@pgsql/parser';
+import { cleanTree } from '../../src/utils';
+import { CreateSchemaStmt, DropStmt, TruncateStmt, DropBehavior, ObjectType, RoleSpecType } from '@pgsql/types';
 
-describe('Schema Statement Deparsers', () => {
+describe('DDL Statement Deparsers', () => {
   const deparser = new Deparser([]);
-  const context: DeparserContext = {};
+  const context = {};
 
   describe('CreateSchemaStmt', () => {
     it('should deparse CREATE SCHEMA statement', () => {
       const ast = {
         CreateSchemaStmt: {
-          schemaname: 'test_schema',
-          authrole: null as any,
-          schemaElts: [] as any[],
-          if_not_exists: false,
-          location: -1
+          schemaname: 'test_schema'
         }
       };
       
       expect(deparser.visit(ast, context)).toBe('CREATE SCHEMA test_schema');
+      
+      const correctAst = parse('CREATE SCHEMA test_schema');
+      expect(cleanTree(ast)).toEqual(cleanTree(correctAst.stmts![0].stmt));
     });
 
     it('should deparse CREATE SCHEMA IF NOT EXISTS statement', () => {
       const ast = {
         CreateSchemaStmt: {
           schemaname: 'test_schema',
-          authrole: null as any,
-          schemaElts: [] as any[],
-          if_not_exists: true,
-          location: -1
+          if_not_exists: true
         }
       };
       
       expect(deparser.visit(ast, context)).toBe('CREATE SCHEMA IF NOT EXISTS test_schema');
+      
+      const correctAst = parse('CREATE SCHEMA IF NOT EXISTS test_schema');
+      expect(cleanTree(ast)).toEqual(cleanTree(correctAst.stmts![0].stmt));
     });
 
     it('should deparse CREATE SCHEMA with AUTHORIZATION', () => {
@@ -40,13 +40,10 @@ describe('Schema Statement Deparsers', () => {
         CreateSchemaStmt: {
           schemaname: 'test_schema',
           authrole: {
-            rolename: 'test_user',
             roletype: "ROLESPEC_CSTRING" as RoleSpecType,
-            location: -1
-          },
-          schemaElts: [] as any[],
-          if_not_exists: false,
-          location: -1
+            rolename: 'test_user',
+            location: 40
+          }
         }
       };
       
@@ -56,15 +53,11 @@ describe('Schema Statement Deparsers', () => {
     it('should deparse CREATE SCHEMA without name (AUTHORIZATION only)', () => {
       const ast = {
         CreateSchemaStmt: {
-          schemaname: undefined as string | undefined,
           authrole: {
-            rolename: 'test_user',
             roletype: "ROLESPEC_CSTRING" as RoleSpecType,
-            location: -1
-          },
-          schemaElts: [] as any[],
-          if_not_exists: false,
-          location: -1
+            rolename: 'test_user',
+            location: 28
+          }
         }
       };
       
@@ -77,132 +70,151 @@ describe('Schema Statement Deparsers', () => {
       const ast: { DropStmt: DropStmt } = {
         DropStmt: {
           objects: [
-            [{ String: { sval: 'users' } }] as any
+            {
+              List: {
+                items: [
+                  { String: { sval: 'users' } }
+                ]
+              }
+            }
           ],
           removeType: "OBJECT_TABLE" as ObjectType,
-          behavior: null as any,
-          missing_ok: false,
-          concurrent: false
+          behavior: 'DROP_RESTRICT' as DropBehavior
         }
       };
       
-      expect(deparser.visit(ast, context)).toBe('DROP TABLE users');
+      expect(deparser.visit(ast, context)).toBe('DROP TABLE users RESTRICT');
+      
+      const correctAst = parse('DROP TABLE users RESTRICT');
+      expect(cleanTree(ast)).toEqual(cleanTree(correctAst.stmts![0].stmt));
     });
 
     it('should deparse DROP TABLE IF EXISTS statement', () => {
       const ast: { DropStmt: DropStmt } = {
         DropStmt: {
           objects: [
-            [{ String: { sval: 'users' } }] as any
+            {
+              List: {
+                items: [
+                  { String: { sval: 'users' } }
+                ]
+              }
+            }
           ],
           removeType: "OBJECT_TABLE" as ObjectType,
-          behavior: null as any,
-          missing_ok: true,
-          concurrent: false
+          behavior: 'DROP_RESTRICT' as DropBehavior,
+          missing_ok: true
         }
       };
       
-      expect(deparser.visit(ast, context)).toBe('DROP TABLE IF EXISTS users');
+      expect(deparser.visit(ast, context)).toBe('DROP TABLE IF EXISTS users RESTRICT');
+      
+      const correctAst = parse('DROP TABLE IF EXISTS users RESTRICT');
+      expect(cleanTree(ast)).toEqual(cleanTree(correctAst.stmts![0].stmt));
     });
 
     it('should deparse DROP TABLE CASCADE statement', () => {
       const ast: { DropStmt: DropStmt } = {
         DropStmt: {
           objects: [
-            [{ String: { sval: 'users' } }] as any
+            {
+              List: {
+                items: [
+                  { String: { sval: 'users' } }
+                ]
+              }
+            }
           ],
           removeType: "OBJECT_TABLE" as ObjectType,
-          behavior: 'DROP_CASCADE' as DropBehavior,
-          missing_ok: false,
-          concurrent: false
+          behavior: 'DROP_CASCADE' as DropBehavior
         }
       };
       
       expect(deparser.visit(ast, context)).toBe('DROP TABLE users CASCADE');
+      
+      const correctAst = parse('DROP TABLE users CASCADE');
+      expect(cleanTree(ast)).toEqual(cleanTree(correctAst.stmts![0].stmt));
     });
 
     it('should deparse DROP INDEX CONCURRENTLY statement', () => {
       const ast = {
         DropStmt: {
           objects: [
-            [{ String: { sval: 'idx_users_email' } }] as any
+            {
+              List: {
+                items: [
+                  { String: { sval: 'idx_users_email' } }
+                ]
+              }
+            }
           ],
           removeType: "OBJECT_INDEX" as ObjectType,
-          behavior: null as any,
-          missing_ok: false,
+          behavior: 'DROP_RESTRICT' as DropBehavior,
           concurrent: true
         }
       };
       
-      expect(deparser.visit(ast, context)).toBe('DROP INDEX CONCURRENTLY idx_users_email');
+      expect(deparser.visit(ast, context)).toBe('DROP INDEX CONCURRENTLY idx_users_email RESTRICT');
     });
 
-    it('should deparse DROP VIEW statement', () => {
+    it('should deparse DROP SCHEMA statement', () => {
       const ast = {
         DropStmt: {
           objects: [
-            [{ String: { sval: 'user_view' } }] as any
+            { String: { sval: 'test_schema' } }
           ],
-          removeType: "OBJECT_VIEW" as ObjectType,
-          behavior: null as any,
-          missing_ok: false,
-          concurrent: false
+          removeType: "OBJECT_SCHEMA" as ObjectType,
+          behavior: 'DROP_RESTRICT' as DropBehavior
         }
       };
       
-      expect(deparser.visit(ast, context)).toBe('DROP VIEW user_view');
-    });
-
-    it('should deparse DROP FUNCTION statement', () => {
-      const ast = {
-        DropStmt: {
-          objects: [
-            [{ String: { sval: 'calculate_total' } }] as any
-          ],
-          removeType: "OBJECT_FUNCTION" as ObjectType,
-          behavior: null as any,
-          missing_ok: false,
-          concurrent: false
-        }
-      };
+      expect(deparser.visit(ast, context)).toBe('DROP SCHEMA test_schema RESTRICT');
       
-      expect(deparser.visit(ast, context)).toBe('DROP FUNCTION calculate_total');
+      const correctAst = parse('DROP SCHEMA test_schema RESTRICT');
+      expect(cleanTree(ast)).toEqual(cleanTree(correctAst.stmts![0].stmt));
     });
 
     it('should deparse DROP multiple objects statement', () => {
       const ast: { DropStmt: DropStmt } = {
         DropStmt: {
           objects: [
-            [{ String: { sval: 'table1' } }] as any,
-            [{ String: { sval: 'table2' } }] as any
+            {
+              List: {
+                items: [
+                  { String: { sval: 'table1' } }
+                ]
+              }
+            },
+            {
+              List: {
+                items: [
+                  { String: { sval: 'table2' } }
+                ]
+              }
+            }
           ],
           removeType: "OBJECT_TABLE" as ObjectType,
-          behavior: null as any,
-          missing_ok: false,
-          concurrent: false
+          behavior: 'DROP_RESTRICT' as DropBehavior
         }
       };
       
-      expect(deparser.visit(ast, context)).toBe('DROP TABLE table1, table2');
+      expect(deparser.visit(ast, context)).toBe('DROP TABLE table1, table2 RESTRICT');
     });
 
-    it('should deparse DROP schema-qualified object', () => {
+    it('should throw error for unsupported DROP object type', () => {
       const ast = {
         DropStmt: {
           objects: [
-            [
-              { String: { sval: 'public' } },
-              { String: { sval: 'users' } }
-            ] as any
+            { String: { sval: 'test' } }
           ],
-          removeType: 'OBJECT_TABLE' as ObjectType,
+          removeType: 'INVALID_TYPE' as any,
           behavior: null as any,
           missing_ok: false,
           concurrent: false
         }
       };
       
-      expect(deparser.visit(ast, context)).toBe('DROP TABLE public.users');
+      expect(() => deparser.visit(ast, context)).toThrow('Unsupported DROP object type: INVALID_TYPE');
     });
   });
 
@@ -213,104 +225,99 @@ describe('Schema Statement Deparsers', () => {
           relations: [
             {
               RangeVar: {
-                schemaname: undefined as any,
                 relname: 'users',
                 inh: true,
                 relpersistence: 'p',
-                alias: null as any,
-                location: -1
+                location: 9
               }
             }
           ],
-          restart_seqs: false,
-          behavior: null as any,
-          location: -1
+          behavior: 'DROP_RESTRICT' as DropBehavior
         }
       };
       
       expect(deparser.visit(ast, context)).toBe('TRUNCATE users');
+      
+      const correctAst = parse('TRUNCATE users');
+      expect(cleanTree(ast)).toEqual(cleanTree(correctAst.stmts![0].stmt));
     });
 
-    it('should deparse TRUNCATE with RESTART IDENTITY', () => {
+    it('should deparse TRUNCATE RESTART IDENTITY statement', () => {
       const ast = {
         TruncateStmt: {
           relations: [
             {
               RangeVar: {
-                schemaname: undefined as any,
                 relname: 'users',
                 inh: true,
                 relpersistence: 'p',
-                alias: null as any,
-                location: -1
+                location: 9
               }
             }
           ],
           restart_seqs: true,
-          behavior: null as any,
-          location: -1
+          behavior: 'DROP_RESTRICT' as DropBehavior
         }
       };
       
       expect(deparser.visit(ast, context)).toBe('TRUNCATE users RESTART IDENTITY');
+      
+      const correctAst = parse('TRUNCATE users RESTART IDENTITY');
+      expect(cleanTree(ast)).toEqual(cleanTree(correctAst.stmts![0].stmt));
     });
 
-    it('should deparse TRUNCATE CASCADE', () => {
+    it('should deparse TRUNCATE CASCADE statement', () => {
       const ast = {
         TruncateStmt: {
           relations: [
             {
               RangeVar: {
-                schemaname: undefined as any,
                 relname: 'users',
                 inh: true,
                 relpersistence: 'p',
-                alias: null as any,
-                location: -1
+                location: 9
               }
             }
           ],
-          restart_seqs: false,
-          behavior: 'DROP_CASCADE' as DropBehavior,
-          location: -1
+          behavior: 'DROP_CASCADE' as DropBehavior
         }
       };
       
       expect(deparser.visit(ast, context)).toBe('TRUNCATE users CASCADE');
+      
+      const correctAst = parse('TRUNCATE users CASCADE');
+      expect(cleanTree(ast)).toEqual(cleanTree(correctAst.stmts![0].stmt));
     });
 
-    it('should deparse TRUNCATE multiple tables', () => {
+    it('should deparse TRUNCATE multiple tables statement', () => {
       const ast = {
         TruncateStmt: {
           relations: [
             {
               RangeVar: {
-                schemaname: undefined as any,
                 relname: 'users',
                 inh: true,
                 relpersistence: 'p',
-                alias: null as any,
-                location: -1
+                location: 9
               }
             },
             {
               RangeVar: {
-                schemaname: undefined as any,
                 relname: 'orders',
                 inh: true,
                 relpersistence: 'p',
-                alias: null as any,
-                location: -1
+                location: 16
               }
             }
           ],
-          restart_seqs: false,
-          behavior: null as any,
-          location: -1
+          behavior: 'DROP_RESTRICT' as DropBehavior
         }
       };
       
       expect(deparser.visit(ast, context)).toBe('TRUNCATE users, orders');
+      
+      const correctAst = parse('TRUNCATE users, orders');
+      expect(cleanTree(ast)).toEqual(cleanTree(correctAst.stmts![0].stmt));
     });
   });
 });

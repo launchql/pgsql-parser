@@ -1,5 +1,5 @@
-import { Deparser } from '../src/deparser';
-import { DeparserContext } from '../src/visitors/base';
+import { Deparser } from '../../src/deparser';
+import { DeparserContext } from '../../src/visitors/base';
 import { DefElemAction, RoleStmtType } from '@pgsql/types';
 
 describe('Type Statement Deparsers', () => {

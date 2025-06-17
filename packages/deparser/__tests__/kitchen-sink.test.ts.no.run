@@ -3,6 +3,7 @@ import { deparse } from '../src';
 import { cleanTree, cleanLines } from '../src/utils';
 import { readFileSync } from 'fs';
 import * as path from 'path';
+import { TestUtils, FixtureTestUtils } from '../test-utils';
 
 const GENERATED_JSON = path.join(__dirname, '../../../__fixtures__/generated/generated.json');
 const SINGLE_TEST = process.env.SINGLE_TEST;
@@ -46,26 +47,7 @@ function tryParse(sql: string) {
 const fixtures: Record<string, string> = JSON.parse(readFileSync(GENERATED_JSON, 'utf-8'));
 
 describe('kitchen sink', () => {
-  // Determine which entries to test: if SINGLE_TEST is set, filter to match; otherwise test all
-  const entries = SINGLE_TEST
-    ? Object.entries(fixtures).filter(([relPath]) => relPath === SINGLE_TEST)
-    : Object.entries(fixtures);
-
-  entries.forEach(([relativePath, sql]) => {
-    it(relativePath, () => {
-      const tree = tryParse(sql);
-      if (tree.stmts) {
-        tree.stmts.forEach((stmt) => {
-          expect(stmt).toMatchSnapshot();
-          if (stmt.stmt) {
-            const outSql = deparse(stmt.stmt);
-
-            expect(cleanLines(outSql)).toMatchSnapshot();
-            const reparsed = parse(outSql);
-            expect(cleanTree(reparsed.stmts || [])).toEqual(cleanTree([stmt]));
-          }
-        });
-      }
-    });
-  });
+  const testUtils = new FixtureTestUtils();
+  const filters = process.env.SINGLE_TEST ? [process.env.SINGLE_TEST] : [];
+  testUtils.runFixtureTests(filters);
 });

@@ -1,5 +1,5 @@
-import { Deparser } from '../src/deparser';
-import { DeparserContext } from '../src/visitors/base';
+import { Deparser } from '../../src/deparser';
+import { DeparserContext } from '../../src/visitors/base';
 import { ObjectType, CommentStmt, DiscardMode, CoercionForm } from '@pgsql/types';
 
 describe('Maintenance Statement Deparsers', () => {
