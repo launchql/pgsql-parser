@@ -62,7 +62,7 @@ Analysis of test files reveals inconsistent String node representations:
 #### 1.4 Build Infrastructure
 - Fix TypeScript compilation errors
 - Ensure all packages build successfully
-- Establish working test environment
+- Establish working test environment (run `cd packages/deparser && yarn test` for deparser-specific tests)
 - Set up proper linting and formatting
 
 ### Phase 2: Core Deparser Architecture (Week 2)
@@ -182,7 +182,7 @@ All test ASTs must use consistent node formats:
 - Detailed logging for debugging
 
 ### Testing Strategy
-- **Unit Tests**: Individual node type handlers
+- **Unit Tests**: Individual node type handlers (use `cd packages/deparser && yarn test` for deparser tests)
 - **Integration Tests**: Complete statement deparsing
 - **Round-trip Tests**: SQL → AST → SQL validation
 - **Regression Tests**: Ensure no breaking changes
