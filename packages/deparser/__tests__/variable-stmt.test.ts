@@ -2,6 +2,7 @@ import { Deparser } from '../src/deparser';
 import { DeparserContext } from '../src/visitors/base';
 import { parse } from '@pgsql/parser';
 import { cleanTree } from '../src/utils';
+import { VariableSetStmt, VariableShowStmt } from '@pgsql/types';
 
 describe('Variable Statement Deparsers', () => {
   const deparser = new Deparser([]);
@@ -9,9 +10,9 @@ describe('Variable Statement Deparsers', () => {
 
   describe('VariableSetStmt', () => {
     it('should deparse SET variable = value statement', () => {
-      const ast = {
+      const ast: { VariableSetStmt: VariableSetStmt } = {
         VariableSetStmt: {
-          kind: 'VAR_SET_VALUE',
+          kind: "VAR_SET_VALUE",
           name: 'timezone',
           args: [{ A_Const: { sval: { sval: 'UTC' }, location: 15 } }]
         }
@@ -24,9 +25,9 @@ describe('Variable Statement Deparsers', () => {
     });
 
     it('should deparse SET LOCAL variable = value statement', () => {
-      const ast = {
+      const ast: { VariableSetStmt: VariableSetStmt } = {
         VariableSetStmt: {
-          kind: 'VAR_SET_VALUE',
+          kind: "VAR_SET_VALUE",
           name: 'work_mem',
           args: [{ A_Const: { sval: { sval: '64MB' }, location: 21 } }],
           is_local: true
@@ -40,9 +41,9 @@ describe('Variable Statement Deparsers', () => {
     });
 
     it('should deparse SET variable TO DEFAULT statement', () => {
-      const ast = {
+      const ast: { VariableSetStmt: VariableSetStmt } = {
         VariableSetStmt: {
-          kind: 'VAR_SET_DEFAULT',
+          kind: "VAR_SET_DEFAULT",
           name: 'timezone'
         }
       };
@@ -54,9 +55,9 @@ describe('Variable Statement Deparsers', () => {
     });
 
     it('should deparse SET variable FROM CURRENT statement', () => {
-      const ast = {
+      const ast: { VariableSetStmt: VariableSetStmt } = {
         VariableSetStmt: {
-          kind: 'VAR_SET_CURRENT',
+          kind: "VAR_SET_CURRENT",
           name: 'timezone'
         }
       };
@@ -68,9 +69,9 @@ describe('Variable Statement Deparsers', () => {
     });
 
     it('should deparse RESET variable statement', () => {
-      const ast = {
+      const ast: { VariableSetStmt: VariableSetStmt } = {
         VariableSetStmt: {
-          kind: 'VAR_RESET',
+          kind: "VAR_RESET",
           name: 'timezone'
         }
       };
@@ -82,9 +83,9 @@ describe('Variable Statement Deparsers', () => {
     });
 
     it('should deparse RESET ALL statement', () => {
-      const ast = {
+      const ast: { VariableSetStmt: VariableSetStmt } = {
         VariableSetStmt: {
-          kind: 'VAR_RESET_ALL'
+          kind: "VAR_RESET_ALL"
         }
       };
       
@@ -99,7 +100,7 @@ describe('Variable Statement Deparsers', () => {
         VariableSetStmt: {
           kind: 'INVALID_KIND' as any,
           name: 'test',
-          args: null as any[] | null,
+          args: undefined,
           is_local: false
         }
       };
@@ -110,7 +111,7 @@ describe('Variable Statement Deparsers', () => {
 
   describe('VariableShowStmt', () => {
     it('should deparse SHOW variable statement', () => {
-      const ast = {
+      const ast: { VariableShowStmt: VariableShowStmt } = {
         VariableShowStmt: {
           name: 'timezone'
         }
@@ -123,7 +124,7 @@ describe('Variable Statement Deparsers', () => {
     });
 
     it('should deparse SHOW ALL statement', () => {
-      const ast = {
+      const ast: { VariableShowStmt: VariableShowStmt } = {
         VariableShowStmt: {
           name: 'all'
         }
@@ -136,7 +137,7 @@ describe('Variable Statement Deparsers', () => {
     });
 
     it('should deparse SHOW with complex variable name', () => {
-      const ast = {
+      const ast: { VariableShowStmt: VariableShowStmt } = {
         VariableShowStmt: {
           name: 'log_statement'
         }

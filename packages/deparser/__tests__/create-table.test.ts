@@ -1,6 +1,7 @@
 import { Deparser } from '../src/deparser';
 import { parse } from '@pgsql/parser';
-import { cleanTree } from '../src/utils';  
+import { cleanTree } from '../src/utils';
+import { OnCommitAction, ConstrType, A_Expr_Kind } from '@pgsql/types';  
 
 describe('CREATE TABLE statements', () => {
   describe('basic CREATE TABLE', () => {
@@ -10,11 +11,9 @@ describe('CREATE TABLE statements', () => {
           stmt: {
             CreateStmt: {
               relation: {
-                RangeVar: {
-                  relname: 'users',
-                  inh: true,
-                  relpersistence: 'p'
-                }
+                relname: 'users',
+                inh: true,
+                relpersistence: 'p'
               },
               tableElts: [
                 {
@@ -36,7 +35,7 @@ describe('CREATE TABLE statements', () => {
                   }
                 }
               ],
-              oncommit: 'ONCOMMIT_NOOP'
+              oncommit: "ONCOMMIT_NOOP" as OnCommitAction
             }
           },
           stmt_location: 0
@@ -53,11 +52,9 @@ describe('CREATE TABLE statements', () => {
           stmt: {
             CreateStmt: {
               relation: {
-                RangeVar: {
-                  relname: 'products',
-                  inh: true,
-                  relpersistence: 'p'
-                }
+                relname: 'products',
+                inh: true,
+                relpersistence: 'p'
               },
               tableElts: [
                 {
@@ -71,7 +68,7 @@ describe('CREATE TABLE statements', () => {
                 }
               ],
               if_not_exists: true,
-              oncommit: 'ONCOMMIT_NOOP'
+              oncommit: "ONCOMMIT_NOOP" as OnCommitAction
             }
           },
           stmt_location: 0
@@ -88,11 +85,9 @@ describe('CREATE TABLE statements', () => {
           stmt: {
             CreateStmt: {
               relation: {
-                RangeVar: {
-                  relname: 'temp_data',
-                  inh: true,
-                  relpersistence: 't'
-                }
+                relname: 'temp_data',
+                inh: true,
+                relpersistence: 't'
               },
               tableElts: [
                 {
@@ -105,7 +100,7 @@ describe('CREATE TABLE statements', () => {
                   }
                 }
               ],
-              oncommit: 'ONCOMMIT_NOOP'
+              oncommit: "ONCOMMIT_NOOP" as OnCommitAction
             }
           },
           stmt_location: 0
@@ -122,12 +117,10 @@ describe('CREATE TABLE statements', () => {
           stmt: {
             CreateStmt: {
               relation: {
-                RangeVar: {
-                  relname: 'users',
-                  schemaname: 'public',
-                  inh: true,
-                  relpersistence: 'p'
-                }
+                relname: 'users',
+                schemaname: 'public',
+                inh: true,
+                relpersistence: 'p'
               },
               tableElts: [
                 {
@@ -140,7 +133,7 @@ describe('CREATE TABLE statements', () => {
                   }
                 }
               ],
-              oncommit: 'ONCOMMIT_NOOP'
+              oncommit: "ONCOMMIT_NOOP" as OnCommitAction
             }
           },
           stmt_location: 0
@@ -159,11 +152,9 @@ describe('CREATE TABLE statements', () => {
           stmt: {
             CreateStmt: {
               relation: {
-                RangeVar: {
-                  relname: 'orders',
-                  inh: true,
-                  relpersistence: 'p'
-                }
+                relname: 'orders',
+                inh: true,
+                relpersistence: 'p'
               },
               tableElts: [
                 {
@@ -176,7 +167,7 @@ describe('CREATE TABLE statements', () => {
                     constraints: [
                       {
                         Constraint: {
-                          contype: 'CONSTR_PRIMARY',
+                          contype: "CONSTR_PRIMARY" as ConstrType,
                           location: 25
                         }
                       }
@@ -184,7 +175,7 @@ describe('CREATE TABLE statements', () => {
                   }
                 }
               ],
-              oncommit: 'ONCOMMIT_NOOP'
+              oncommit: "ONCOMMIT_NOOP" as OnCommitAction
             }
           },
           stmt_location: 0
@@ -201,11 +192,9 @@ describe('CREATE TABLE statements', () => {
           stmt: {
             CreateStmt: {
               relation: {
-                RangeVar: {
-                  relname: 'customers',
-                  inh: true,
-                  relpersistence: 'p'
-                }
+                relname: 'customers',
+                inh: true,
+                relpersistence: 'p'
               },
               tableElts: [
                 {
@@ -219,7 +208,7 @@ describe('CREATE TABLE statements', () => {
                   }
                 }
               ],
-              oncommit: 'ONCOMMIT_NOOP'
+              oncommit: "ONCOMMIT_NOOP" as OnCommitAction
             }
           },
           stmt_location: 0
@@ -236,11 +225,9 @@ describe('CREATE TABLE statements', () => {
           stmt: {
             CreateStmt: {
               relation: {
-                RangeVar: {
-                  relname: 'products',
-                  inh: true,
-                  relpersistence: 'p'
-                }
+                relname: 'products',
+                inh: true,
+                relpersistence: 'p'
               },
               tableElts: [
                 {
@@ -253,10 +240,10 @@ describe('CREATE TABLE statements', () => {
                     constraints: [
                       {
                         Constraint: {
-                          contype: 'CONSTR_CHECK',
+                          contype: "CONSTR_CHECK" as ConstrType,
                           raw_expr: {
                             A_Expr: {
-                              kind: 'AEXPR_OP',
+                              kind: "AEXPR_OP" as A_Expr_Kind,
                               name: [{ String: { sval: '>' } }],
                               lexpr: {
                                 ColumnRef: {
@@ -278,7 +265,7 @@ describe('CREATE TABLE statements', () => {
                   }
                 }
               ],
-              oncommit: 'ONCOMMIT_NOOP'
+              oncommit: "ONCOMMIT_NOOP" as OnCommitAction
             }
           },
           stmt_location: 0
@@ -295,11 +282,9 @@ describe('CREATE TABLE statements', () => {
           stmt: {
             CreateStmt: {
               relation: {
-                RangeVar: {
-                  relname: 'users',
-                  inh: true,
-                  relpersistence: 'p'
-                }
+                relname: 'users',
+                inh: true,
+                relpersistence: 'p'
               },
               tableElts: [
                 {
@@ -312,14 +297,14 @@ describe('CREATE TABLE statements', () => {
                     constraints: [
                       {
                         Constraint: {
-                          contype: 'CONSTR_UNIQUE'
+                          contype: 'CONSTR_UNIQUE' as ConstrType
                         }
                       }
                     ]
                   }
                 }
               ],
-              oncommit: 'ONCOMMIT_NOOP'
+              oncommit: "ONCOMMIT_NOOP" as OnCommitAction
             }
           },
           stmt_location: 0
@@ -338,11 +323,9 @@ describe('CREATE TABLE statements', () => {
           stmt: {
             CreateStmt: {
               relation: {
-                RangeVar: {
-                  relname: 'settings',
-                  inh: true,
-                  relpersistence: 'p'
-                }
+                relname: 'settings',
+                inh: true,
+                relpersistence: 'p'
               },
               tableElts: [
                 {
@@ -362,7 +345,7 @@ describe('CREATE TABLE statements', () => {
                   }
                 }
               ],
-              oncommit: 'ONCOMMIT_NOOP'
+              oncommit: "ONCOMMIT_NOOP" as OnCommitAction
             }
           },
           stmt_location: 0
@@ -379,11 +362,9 @@ describe('CREATE TABLE statements', () => {
           stmt: {
             CreateStmt: {
               relation: {
-                RangeVar: {
-                  relname: 'users',
-                  inh: true,
-                  relpersistence: 'p'
-                }
+                relname: 'users',
+                inh: true,
+                relpersistence: 'p'
               },
               tableElts: [
                 {
@@ -403,7 +384,7 @@ describe('CREATE TABLE statements', () => {
                   }
                 }
               ],
-              oncommit: 'ONCOMMIT_NOOP'
+              oncommit: "ONCOMMIT_NOOP" as OnCommitAction
             }
           },
           stmt_location: 0
@@ -420,11 +401,9 @@ describe('CREATE TABLE statements', () => {
           stmt: {
             CreateStmt: {
               relation: {
-                RangeVar: {
-                  relname: 'features',
-                  inh: true,
-                  relpersistence: 'p'
-                }
+                relname: 'features',
+                inh: true,
+                relpersistence: 'p'
               },
               tableElts: [
                 {
@@ -444,7 +423,7 @@ describe('CREATE TABLE statements', () => {
                   }
                 }
               ],
-              oncommit: 'ONCOMMIT_NOOP'
+              oncommit: "ONCOMMIT_NOOP" as OnCommitAction
             }
           },
           stmt_location: 0
@@ -463,11 +442,9 @@ describe('CREATE TABLE statements', () => {
           stmt: {
             CreateStmt: {
               relation: {
-                RangeVar: {
-                  relname: 'mixed_types',
-                  inh: true,
-                  relpersistence: 'p'
-                }
+                relname: 'mixed_types',
+                inh: true,
+                relpersistence: 'p'
               },
               tableElts: [
                 {
@@ -516,7 +493,7 @@ describe('CREATE TABLE statements', () => {
                   }
                 }
               ],
-              oncommit: 'ONCOMMIT_NOOP'
+              oncommit: "ONCOMMIT_NOOP" as OnCommitAction
             }
           },
           stmt_location: 0
@@ -535,11 +512,9 @@ describe('CREATE TABLE statements', () => {
           stmt: {
             CreateStmt: {
               relation: {
-                RangeVar: {
-                  relname: 'composite_key',
-                  inh: true,
-                  relpersistence: 'p'
-                }
+                relname: 'composite_key',
+                inh: true,
+                relpersistence: 'p'
               },
               tableElts: [
                 {
@@ -562,12 +537,12 @@ describe('CREATE TABLE statements', () => {
                 },
                 {
                   Constraint: {
-                    contype: 'CONSTR_PRIMARY',
+                    contype: "CONSTR_PRIMARY" as ConstrType,
                     keys: [{ String: { sval: 'user_id' } }, { String: { sval: 'role_id' } }]
                   }
                 }
               ],
-              oncommit: 'ONCOMMIT_NOOP'
+              oncommit: "ONCOMMIT_NOOP" as OnCommitAction
             }
           },
           stmt_location: 0
@@ -584,11 +559,9 @@ describe('CREATE TABLE statements', () => {
           stmt: {
             CreateStmt: {
               relation: {
-                RangeVar: {
-                  relname: 'products',
-                  inh: true,
-                  relpersistence: 'p'
-                }
+                relname: 'products',
+                inh: true,
+                relpersistence: 'p'
               },
               tableElts: [
                 {
@@ -611,10 +584,10 @@ describe('CREATE TABLE statements', () => {
                 },
                 {
                   Constraint: {
-                    contype: 'CONSTR_CHECK',
+                    contype: "CONSTR_CHECK" as ConstrType,
                     raw_expr: {
                       A_Expr: {
-                        kind: 'AEXPR_OP',
+                        kind: "AEXPR_OP" as A_Expr_Kind,
                         name: [{ String: { sval: '>' } }],
                         lexpr: {
                           ColumnRef: {
@@ -631,7 +604,7 @@ describe('CREATE TABLE statements', () => {
                   }
                 }
               ],
-              oncommit: 'ONCOMMIT_NOOP'
+              oncommit: "ONCOMMIT_NOOP" as OnCommitAction
             }
           },
           stmt_location: 0

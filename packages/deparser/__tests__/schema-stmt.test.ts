@@ -1,5 +1,6 @@
 import { Deparser } from '../src/deparser';
 import { DeparserContext } from '../src/visitors/base';
+import { ObjectType, RoleSpecType, DropBehavior, DropStmt } from '@pgsql/types';
 
 describe('Schema Statement Deparsers', () => {
   const deparser = new Deparser([]);
@@ -41,7 +42,7 @@ describe('Schema Statement Deparsers', () => {
           authrole: {
             RoleSpec: {
               rolename: 'test_user',
-              roletype: 'ROLESPEC_CSTRING',
+              roletype: "ROLESPEC_CSTRING",
               location: -1
             }
           },
@@ -57,11 +58,11 @@ describe('Schema Statement Deparsers', () => {
     it('should deparse CREATE SCHEMA without name (AUTHORIZATION only)', () => {
       const ast = {
         CreateSchemaStmt: {
-          schemaname: null as string | null,
+          schemaname: undefined as string | undefined,
           authrole: {
             RoleSpec: {
               rolename: 'test_user',
-              roletype: 'ROLESPEC_CSTRING',
+              roletype: "ROLESPEC_CSTRING",
               location: -1
             }
           },
@@ -77,12 +78,12 @@ describe('Schema Statement Deparsers', () => {
 
   describe('DropStmt', () => {
     it('should deparse DROP TABLE statement', () => {
-      const ast = {
+      const ast: { DropStmt: DropStmt } = {
         DropStmt: {
           objects: [
             [{ String: { sval: 'users' } }]
           ],
-          removeType: 'OBJECT_TABLE',
+          removeType: "OBJECT_TABLE",
           behavior: null as any,
           missing_ok: false,
           concurrent: false,
@@ -94,12 +95,12 @@ describe('Schema Statement Deparsers', () => {
     });
 
     it('should deparse DROP TABLE IF EXISTS statement', () => {
-      const ast = {
+      const ast: { DropStmt: DropStmt } = {
         DropStmt: {
           objects: [
             [{ String: { sval: 'users' } }]
           ],
-          removeType: 'OBJECT_TABLE',
+          removeType: "OBJECT_TABLE",
           behavior: null as any,
           missing_ok: true,
           concurrent: false,
@@ -111,12 +112,12 @@ describe('Schema Statement Deparsers', () => {
     });
 
     it('should deparse DROP TABLE CASCADE statement', () => {
-      const ast = {
+      const ast: { DropStmt: DropStmt } = {
         DropStmt: {
           objects: [
             [{ String: { sval: 'users' } }]
           ],
-          removeType: 'OBJECT_TABLE',
+          removeType: "OBJECT_TABLE",
           behavior: 'DROP_CASCADE',
           missing_ok: false,
           concurrent: false,
@@ -133,7 +134,7 @@ describe('Schema Statement Deparsers', () => {
           objects: [
             [{ String: { sval: 'idx_users_email' } }]
           ],
-          removeType: 'OBJECT_INDEX',
+          removeType: "OBJECT_INDEX",
           behavior: null as any,
           missing_ok: false,
           concurrent: true,
@@ -150,7 +151,7 @@ describe('Schema Statement Deparsers', () => {
           objects: [
             [{ String: { sval: 'user_view' } }]
           ],
-          removeType: 'OBJECT_VIEW',
+          removeType: "OBJECT_VIEW",
           behavior: null as any,
           missing_ok: false,
           concurrent: false,
@@ -167,7 +168,7 @@ describe('Schema Statement Deparsers', () => {
           objects: [
             [{ String: { sval: 'calculate_total' } }]
           ],
-          removeType: 'OBJECT_FUNCTION',
+          removeType: "OBJECT_FUNCTION",
           behavior: null as any,
           missing_ok: false,
           concurrent: false,
@@ -179,13 +180,13 @@ describe('Schema Statement Deparsers', () => {
     });
 
     it('should deparse DROP multiple objects statement', () => {
-      const ast = {
+      const ast: { DropStmt: DropStmt } = {
         DropStmt: {
           objects: [
             [{ String: { sval: 'table1' } }],
             [{ String: { sval: 'table2' } }]
           ],
-          removeType: 'OBJECT_TABLE',
+          removeType: "OBJECT_TABLE",
           behavior: null as any,
           missing_ok: false,
           concurrent: false,
@@ -224,7 +225,7 @@ describe('Schema Statement Deparsers', () => {
           relations: [
             {
               RangeVar: {
-                schemaname: null as string | null,
+                schemaname: undefined as string | undefined,
                 relname: 'users',
                 inh: true,
                 relpersistence: 'p',
@@ -248,7 +249,7 @@ describe('Schema Statement Deparsers', () => {
           relations: [
             {
               RangeVar: {
-                schemaname: null as string | null,
+                schemaname: undefined as string | undefined,
                 relname: 'users',
                 inh: true,
                 relpersistence: 'p',
@@ -272,7 +273,7 @@ describe('Schema Statement Deparsers', () => {
           relations: [
             {
               RangeVar: {
-                schemaname: null as string | null,
+                schemaname: undefined as string | undefined,
                 relname: 'users',
                 inh: true,
                 relpersistence: 'p',
@@ -296,7 +297,7 @@ describe('Schema Statement Deparsers', () => {
           relations: [
             {
               RangeVar: {
-                schemaname: null as string | null,
+                schemaname: undefined as string | undefined,
                 relname: 'users',
                 inh: true,
                 relpersistence: 'p',
@@ -306,7 +307,7 @@ describe('Schema Statement Deparsers', () => {
             },
             {
               RangeVar: {
-                schemaname: null as string | null,
+                schemaname: undefined as string | undefined,
                 relname: 'orders',
                 inh: true,
                 relpersistence: 'p',

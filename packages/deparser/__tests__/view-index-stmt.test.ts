@@ -2,6 +2,7 @@ import { Deparser } from '../src/deparser';
 import { DeparserContext } from '../src/visitors/base';
 import { parse } from '@pgsql/parser';
 import { cleanTree } from '../src/utils';
+import { A_Expr_Kind } from '@pgsql/types';
 
 describe('View and Index Statement Deparsers', () => {
   const deparser = new Deparser([]);
@@ -27,7 +28,7 @@ describe('View and Index Statement Deparsers', () => {
         NamedArgExpr: {
           xpr: null as any,
           arg: { Integer: { ival: 42 } },
-          name: null as string | null,
+          name: undefined,
           argnumber: 1,
           location: -1
         }
@@ -43,7 +44,7 @@ describe('View and Index Statement Deparsers', () => {
           arg: {
             A_Const: {
               isnull: false,
-              sval: { String: { sval: 'complex_value' } },
+              sval: 'complex_value',
               location: -1
             }
           },
@@ -63,7 +64,7 @@ describe('View and Index Statement Deparsers', () => {
         ViewStmt: {
           view: {
             RangeVar: {
-              schemaname: null as string | null,
+              schemaname: undefined as string | undefined,
               relname: 'test_view',
               inh: true,
               relpersistence: 'p',
@@ -71,14 +72,14 @@ describe('View and Index Statement Deparsers', () => {
               location: -1
             }
           },
-          aliases: null as any[] | null,
+          aliases: undefined,
           query: {
             SelectStmt: {
               targetList: [
                 {
                   ResTarget: {
-                    name: null as string | null,
-                    indirection: null as any[] | null,
+                    name: undefined,
+                    indirection: undefined,
                     val: { A_Star: {} },
                     location: -1
                   }
@@ -87,7 +88,7 @@ describe('View and Index Statement Deparsers', () => {
               fromClause: [
                 {
                   RangeVar: {
-                    schemaname: null as string | null,
+                    schemaname: undefined as string | undefined,
                     relname: 'users',
                     inh: true,
                     relpersistence: 'p',
@@ -97,16 +98,16 @@ describe('View and Index Statement Deparsers', () => {
                 }
               ],
               whereClause: null as any,
-              groupClause: null as any[] | null,
+              groupClause: undefined,
               havingClause: null as any,
-              windowClause: null as any[] | null,
-              distinctClause: null as any[] | null,
+              windowClause: undefined,
+              distinctClause: undefined,
               intoClause: null as any,
-              sortClause: null as any[] | null,
+              sortClause: undefined,
               limitOffset: null as any,
               limitCount: null as any,
               limitOption: null as any,
-              lockingClause: null as any[] | null,
+              lockingClause: undefined,
               withClause: null as any,
               op: null as any,
               all: false,
@@ -115,7 +116,7 @@ describe('View and Index Statement Deparsers', () => {
             }
           },
           replace: false,
-          options: null as any[] | null,
+          options: undefined,
           withCheckOption: null as any
         }
       };
@@ -128,7 +129,7 @@ describe('View and Index Statement Deparsers', () => {
         ViewStmt: {
           view: {
             RangeVar: {
-              schemaname: null as string | null,
+              schemaname: undefined as string | undefined,
               relname: 'test_view',
               inh: true,
               relpersistence: 'p',
@@ -136,14 +137,14 @@ describe('View and Index Statement Deparsers', () => {
               location: -1
             }
           },
-          aliases: null as any[] | null,
+          aliases: undefined,
           query: {
             SelectStmt: {
               targetList: [
                 {
                   ResTarget: {
-                    name: null as string | null,
-                    indirection: null as any[] | null,
+                    name: undefined,
+                    indirection: undefined,
                     val: { A_Star: {} },
                     location: -1
                   }
@@ -152,7 +153,7 @@ describe('View and Index Statement Deparsers', () => {
               fromClause: [
                 {
                   RangeVar: {
-                    schemaname: null as string | null,
+                    schemaname: undefined as string | undefined,
                     relname: 'users',
                     inh: true,
                     relpersistence: 'p',
@@ -162,16 +163,16 @@ describe('View and Index Statement Deparsers', () => {
                 }
               ],
               whereClause: null as any,
-              groupClause: null as any[] | null,
+              groupClause: undefined,
               havingClause: null as any,
-              windowClause: null as any[] | null,
-              distinctClause: null as any[] | null,
+              windowClause: undefined,
+              distinctClause: undefined,
               intoClause: null as any,
-              sortClause: null as any[] | null,
+              sortClause: undefined,
               limitOffset: null as any,
               limitCount: null as any,
               limitOption: null as any,
-              lockingClause: null as any[] | null,
+              lockingClause: undefined,
               withClause: null as any,
               op: null as any,
               all: false,
@@ -180,7 +181,7 @@ describe('View and Index Statement Deparsers', () => {
             }
           },
           replace: true,
-          options: null as any[] | null,
+          options: undefined,
           withCheckOption: null as any
         }
       };
@@ -193,7 +194,7 @@ describe('View and Index Statement Deparsers', () => {
         ViewStmt: {
           view: {
             RangeVar: {
-              schemaname: null as string | null,
+              schemaname: undefined as string | undefined,
               relname: 'test_view',
               inh: true,
               relpersistence: 'p',
@@ -210,8 +211,8 @@ describe('View and Index Statement Deparsers', () => {
               targetList: [
                 {
                   ResTarget: {
-                    name: null as string | null,
-                    indirection: null as any[] | null,
+                    name: undefined,
+                    indirection: undefined,
                     val: { A_Star: {} },
                     location: -1
                   }
@@ -220,7 +221,7 @@ describe('View and Index Statement Deparsers', () => {
               fromClause: [
                 {
                   RangeVar: {
-                    schemaname: null as string | null,
+                    schemaname: undefined as string | undefined,
                     relname: 'users',
                     inh: true,
                     relpersistence: 'p',
@@ -230,16 +231,16 @@ describe('View and Index Statement Deparsers', () => {
                 }
               ],
               whereClause: null as any,
-              groupClause: null as any[] | null,
+              groupClause: undefined,
               havingClause: null as any,
-              windowClause: null as any[] | null,
-              distinctClause: null as any[] | null,
+              windowClause: undefined,
+              distinctClause: undefined,
               intoClause: null as any,
-              sortClause: null as any[] | null,
+              sortClause: undefined,
               limitOffset: null as any,
               limitCount: null as any,
               limitOption: null as any,
-              lockingClause: null as any[] | null,
+              lockingClause: undefined,
               withClause: null as any,
               op: null as any,
               all: false,
@@ -248,7 +249,7 @@ describe('View and Index Statement Deparsers', () => {
             }
           },
           replace: false,
-          options: null as any[] | null,
+          options: undefined,
           withCheckOption: null as any
         }
       };
@@ -261,7 +262,7 @@ describe('View and Index Statement Deparsers', () => {
         ViewStmt: {
           view: {
             RangeVar: {
-              schemaname: null as string | null,
+              schemaname: undefined as string | undefined,
               relname: 'test_view',
               inh: true,
               relpersistence: 'p',
@@ -269,14 +270,14 @@ describe('View and Index Statement Deparsers', () => {
               location: -1
             }
           },
-          aliases: null as any[] | null,
+          aliases: undefined,
           query: {
             SelectStmt: {
               targetList: [
                 {
                   ResTarget: {
-                    name: null as string | null,
-                    indirection: null as any[] | null,
+                    name: undefined,
+                    indirection: undefined,
                     val: { A_Star: {} },
                     location: -1
                   }
@@ -285,7 +286,7 @@ describe('View and Index Statement Deparsers', () => {
               fromClause: [
                 {
                   RangeVar: {
-                    schemaname: null as string | null,
+                    schemaname: undefined as string | undefined,
                     relname: 'users',
                     inh: true,
                     relpersistence: 'p',
@@ -295,16 +296,16 @@ describe('View and Index Statement Deparsers', () => {
                 }
               ],
               whereClause: null as any,
-              groupClause: null as any[] | null,
+              groupClause: undefined,
               havingClause: null as any,
-              windowClause: null as any[] | null,
-              distinctClause: null as any[] | null,
+              windowClause: undefined,
+              distinctClause: undefined,
               intoClause: null as any,
-              sortClause: null as any[] | null,
+              sortClause: undefined,
               limitOffset: null as any,
               limitCount: null as any,
               limitOption: null as any,
-              lockingClause: null as any[] | null,
+              lockingClause: undefined,
               withClause: null as any,
               op: null as any,
               all: false,
@@ -313,7 +314,7 @@ describe('View and Index Statement Deparsers', () => {
             }
           },
           replace: false,
-          options: null as any[] | null,
+          options: undefined,
           withCheckOption: 'CASCADED_CHECK_OPTION'
         }
       };
@@ -329,7 +330,7 @@ describe('View and Index Statement Deparsers', () => {
           idxname: 'idx_users_email',
           relation: {
             RangeVar: {
-              schemaname: null as string | null,
+              schemaname: undefined as string | undefined,
               relname: 'users',
               inh: true,
               relpersistence: 'p',
@@ -338,26 +339,26 @@ describe('View and Index Statement Deparsers', () => {
             }
           },
           accessMethod: 'btree',
-          tableSpace: null as string | null,
+          tableSpace: undefined,
           indexParams: [
             {
               IndexElem: {
                 name: 'email',
                 expr: null as any,
-                indexcolname: null as string | null,
-                collation: null as any[] | null,
-                opclass: null as any[] | null,
-                opclassopts: null as any[] | null,
+                indexcolname: undefined,
+                collation: undefined,
+                opclass: undefined,
+                opclassopts: undefined,
                 ordering: null as any,
                 nulls_ordering: null as any
               }
             }
           ],
-          indexIncludingParams: null as any[] | null,
-          options: null as any[] | null,
+          indexIncludingParams: undefined,
+          options: undefined,
           whereClause: null as any,
-          excludeOpNames: null as any[] | null,
-          idxcomment: null as string | null,
+          excludeOpNames: undefined,
+          idxcomment: undefined,
           indexOid: 0,
           oldNumber: 0,
           oldCreateSubid: 0,
@@ -384,7 +385,7 @@ describe('View and Index Statement Deparsers', () => {
           idxname: 'idx_users_email_unique',
           relation: {
             RangeVar: {
-              schemaname: null as string | null,
+              schemaname: undefined as string | undefined,
               relname: 'users',
               inh: true,
               relpersistence: 'p',
@@ -393,26 +394,26 @@ describe('View and Index Statement Deparsers', () => {
             }
           },
           accessMethod: 'btree',
-          tableSpace: null as string | null,
+          tableSpace: undefined,
           indexParams: [
             {
               IndexElem: {
                 name: 'email',
                 expr: null as any,
-                indexcolname: null as string | null,
-                collation: null as any[] | null,
-                opclass: null as any[] | null,
-                opclassopts: null as any[] | null,
+                indexcolname: undefined,
+                collation: undefined,
+                opclass: undefined,
+                opclassopts: undefined,
                 ordering: null as any,
                 nulls_ordering: null as any
               }
             }
           ],
-          indexIncludingParams: null as any[] | null,
-          options: null as any[] | null,
+          indexIncludingParams: undefined,
+          options: undefined,
           whereClause: null as any,
-          excludeOpNames: null as any[] | null,
-          idxcomment: null as string | null,
+          excludeOpNames: undefined,
+          idxcomment: undefined,
           indexOid: 0,
           oldNumber: 0,
           oldCreateSubid: 0,
@@ -439,7 +440,7 @@ describe('View and Index Statement Deparsers', () => {
           idxname: 'idx_users_name',
           relation: {
             RangeVar: {
-              schemaname: null as string | null,
+              schemaname: undefined as string | undefined,
               relname: 'users',
               inh: true,
               relpersistence: 'p',
@@ -448,26 +449,26 @@ describe('View and Index Statement Deparsers', () => {
             }
           },
           accessMethod: 'btree',
-          tableSpace: null as string | null,
+          tableSpace: undefined,
           indexParams: [
             {
               IndexElem: {
                 name: 'name',
                 expr: null as any,
-                indexcolname: null as string | null,
-                collation: null as any[] | null,
-                opclass: null as any[] | null,
-                opclassopts: null as any[] | null,
+                indexcolname: undefined,
+                collation: undefined,
+                opclass: undefined,
+                opclassopts: undefined,
                 ordering: null as any,
                 nulls_ordering: null as any
               }
             }
           ],
-          indexIncludingParams: null as any[] | null,
-          options: null as any[] | null,
+          indexIncludingParams: undefined,
+          options: undefined,
           whereClause: null as any,
-          excludeOpNames: null as any[] | null,
-          idxcomment: null as string | null,
+          excludeOpNames: undefined,
+          idxcomment: undefined,
           indexOid: 0,
           oldNumber: 0,
           oldCreateSubid: 0,
@@ -494,7 +495,7 @@ describe('View and Index Statement Deparsers', () => {
           idxname: 'idx_users_active',
           relation: {
             RangeVar: {
-              schemaname: null as string | null,
+              schemaname: undefined as string | undefined,
               relname: 'users',
               inh: true,
               relpersistence: 'p',
@@ -503,26 +504,26 @@ describe('View and Index Statement Deparsers', () => {
             }
           },
           accessMethod: 'btree',
-          tableSpace: null as string | null,
+          tableSpace: undefined,
           indexParams: [
             {
               IndexElem: {
                 name: 'id',
                 expr: null as any,
-                indexcolname: null as string | null,
-                collation: null as any[] | null,
-                opclass: null as any[] | null,
-                opclassopts: null as any[] | null,
+                indexcolname: undefined,
+                collation: undefined,
+                opclass: undefined,
+                opclassopts: undefined,
                 ordering: null as any,
                 nulls_ordering: null as any
               }
             }
           ],
-          indexIncludingParams: null as any[] | null,
-          options: null as any[] | null,
+          indexIncludingParams: undefined,
+          options: undefined,
           whereClause: {
             A_Expr: {
-              kind: 'AEXPR_OP',
+              kind: "AEXPR_OP" as A_Expr_Kind,
               name: [{ String: { sval: '=' } }],
               lexpr: {
                 ColumnRef: {
@@ -540,8 +541,8 @@ describe('View and Index Statement Deparsers', () => {
               location: -1
             }
           },
-          excludeOpNames: null as any[] | null,
-          idxcomment: null as string | null,
+          excludeOpNames: undefined,
+          idxcomment: undefined,
           indexOid: 0,
           oldNumber: 0,
           oldCreateSubid: 0,

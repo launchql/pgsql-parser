@@ -2,6 +2,7 @@ import { Deparser } from '../src/deparser';
 import { DeparserContext } from '../src/visitors/base';
 import { parse } from '@pgsql/parser';
 import { cleanTree } from '../src/utils';
+import { RoleSpecType, CoercionForm, ObjectType, CallStmt, CreatedbStmt, DropdbStmt, RenameStmt, AlterOwnerStmt, DefElem, DefElemAction } from '@pgsql/types';
 
 describe('Administrative Statement Deparsers', () => {
   const deparser = new Deparser([]);
@@ -9,7 +10,7 @@ describe('Administrative Statement Deparsers', () => {
 
   describe('CallStmt', () => {
     it('should deparse CALL statement with function call', () => {
-      const ast = {
+      const ast: { CallStmt: CallStmt } = {
         CallStmt: {
           funccall: {
             funcname: [{ String: { sval: 'my_procedure' } }],
@@ -17,7 +18,7 @@ describe('Administrative Statement Deparsers', () => {
               { A_Const: { ival: { ival: 123 }, location: -1 } },
               { A_Const: { sval: { sval: 'test' }, location: -1 } }
             ],
-            funcformat: 'COERCE_EXPLICIT_CALL',
+            funcformat: "COERCE_EXPLICIT_CALL",
             location: -1
           }
         }
@@ -27,21 +28,19 @@ describe('Administrative Statement Deparsers', () => {
     });
 
     it('should deparse CALL statement with function expression', () => {
-      const ast = {
+      const ast: { CallStmt: CallStmt } = {
         CallStmt: {
           funccall: null as any,
           funcexpr: {
-            FuncExpr: {
-              funcid: 12345,
-              funcresulttype: 2278,
-              funcretset: false,
-              funcvariadic: false,
-              funcformat: 'COERCE_EXPLICIT_CALL',
-              funccollid: 0,
-              inputcollid: 0,
-              args: [] as any[],
-              location: -1
-            }
+            funcid: 12345,
+            funcresulttype: 2278,
+            funcretset: false,
+            funcvariadic: false,
+            funcformat: "COERCE_EXPLICIT_CALL",
+            funccollid: 0,
+            inputcollid: 0,
+            args: [] as any[],
+            location: -1
           },
           outargs: [] as any[]
         }
@@ -65,7 +64,7 @@ describe('Administrative Statement Deparsers', () => {
 
   describe('CreatedbStmt', () => {
     it('should deparse CREATE DATABASE statement', () => {
-      const ast = {
+      const ast: { CreatedbStmt: CreatedbStmt } = {
         CreatedbStmt: {
           dbname: 'myapp'
         }
@@ -78,7 +77,7 @@ describe('Administrative Statement Deparsers', () => {
     });
 
     it('should deparse CREATE DATABASE statement with options', () => {
-      const ast = {
+      const ast: { CreatedbStmt: CreatedbStmt } = {
         CreatedbStmt: {
           dbname: 'testdb',
           options: [
@@ -109,10 +108,10 @@ describe('Administrative Statement Deparsers', () => {
     });
 
     it('should throw error for CREATE DATABASE without dbname', () => {
-      const ast = {
+      const ast: { CreatedbStmt: CreatedbStmt } = {
         CreatedbStmt: {
-          dbname: null as string | null,
-          options: [] as any[] as any[]
+          dbname: undefined as any,
+          options: [] as any[]
         }
       };
       
@@ -149,14 +148,14 @@ describe('Administrative Statement Deparsers', () => {
     });
 
     it('should deparse DROP DATABASE statement with options', () => {
-      const ast = {
+      const ast: { DropdbStmt: DropdbStmt } = {
         DropdbStmt: {
           dbname: 'testdb',
           missing_ok: false,
           options: [
             {
               DefElem: {
-                defnamespace: null as string | null,
+                defnamespace: undefined,
                 defname: 'force',
                 arg: { String: { sval: 'true' } },
                 defaction: 'DEFELEM_UNSPEC',
@@ -171,11 +170,11 @@ describe('Administrative Statement Deparsers', () => {
     });
 
     it('should throw error for DROP DATABASE without dbname', () => {
-      const ast = {
+      const ast: { DropdbStmt: DropdbStmt } = {
         DropdbStmt: {
-          dbname: null as string | null,
+          dbname: undefined as any,
           missing_ok: false,
-          options: [] as any[] as any[]
+          options: [] as any[]
         }
       };
       
@@ -185,18 +184,16 @@ describe('Administrative Statement Deparsers', () => {
 
   describe('RenameStmt', () => {
     it('should deparse ALTER TABLE RENAME TO statement', () => {
-      const ast = {
+      const ast: { RenameStmt: RenameStmt } = {
         RenameStmt: {
-          renameType: 'OBJECT_TABLE',
+          renameType: "OBJECT_TABLE",
           relation: {
-            RangeVar: {
-              schemaname: null as string | null,
-              relname: 'old_table',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'old_table',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           newname: 'new_table',
           missing_ok: false
@@ -207,19 +204,17 @@ describe('Administrative Statement Deparsers', () => {
     });
 
     it('should deparse ALTER TABLE RENAME COLUMN statement', () => {
-      const ast = {
+      const ast: { RenameStmt: RenameStmt } = {
         RenameStmt: {
-          renameType: 'OBJECT_COLUMN',
+          renameType: "OBJECT_COLUMN",
           relationType: null as any,
           relation: {
-            RangeVar: {
-              schemaname: null as string | null,
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'users',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           object: null as any,
           subname: 'old_column',
@@ -233,15 +228,15 @@ describe('Administrative Statement Deparsers', () => {
     });
 
     it('should deparse ALTER SCHEMA RENAME TO statement', () => {
-      const ast = {
+      const ast: { RenameStmt: RenameStmt } = {
         RenameStmt: {
-          renameType: 'OBJECT_SCHEMA',
+          renameType: "OBJECT_SCHEMA",
           relationType: null as any,
           relation: null as any,
           object: {
             String: { sval: 'old_schema' }
           },
-          subname: null as string | null,
+          subname: undefined,
           newname: 'new_schema',
           behavior: null as any,
           missing_ok: false
@@ -252,22 +247,20 @@ describe('Administrative Statement Deparsers', () => {
     });
 
     it('should deparse ALTER VIEW IF EXISTS RENAME TO statement', () => {
-      const ast = {
+      const ast: { RenameStmt: RenameStmt } = {
         RenameStmt: {
-          renameType: 'OBJECT_VIEW',
+          renameType: "OBJECT_VIEW",
           relationType: null as any,
           relation: {
-            RangeVar: {
-              schemaname: null as string | null,
-              relname: 'old_view',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'old_view',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           object: null as any,
-          subname: null as string | null,
+          subname: undefined,
           newname: 'new_view',
           behavior: null as any,
           missing_ok: true
@@ -278,13 +271,13 @@ describe('Administrative Statement Deparsers', () => {
     });
 
     it('should throw error for unsupported rename type', () => {
-      const ast = {
+      const ast: { RenameStmt: RenameStmt } = {
         RenameStmt: {
           renameType: 'OBJECT_UNKNOWN' as any,
           relationType: null as any,
           relation: null as any,
           object: null as any,
-          subname: null as string | null,
+          subname: undefined,
           newname: 'new_name',
           behavior: null as any,
           missing_ok: false
@@ -295,23 +288,21 @@ describe('Administrative Statement Deparsers', () => {
     });
 
     it('should throw error for RENAME without newname', () => {
-      const ast = {
+      const ast: { RenameStmt: RenameStmt } = {
         RenameStmt: {
-          renameType: 'OBJECT_TABLE',
+          renameType: "OBJECT_TABLE",
           relationType: null as any,
           relation: {
-            RangeVar: {
-              schemaname: null as string | null,
-              relname: 'test_table',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'test_table',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           object: null as any,
-          subname: null as string | null,
-          newname: null as string | null,
+          subname: undefined,
+          newname: undefined,
           behavior: null as any,
           missing_ok: false
         }
@@ -323,26 +314,22 @@ describe('Administrative Statement Deparsers', () => {
 
   describe('AlterOwnerStmt', () => {
     it('should deparse ALTER TABLE OWNER TO statement', () => {
-      const ast = {
+      const ast: { AlterOwnerStmt: AlterOwnerStmt } = {
         AlterOwnerStmt: {
-          objectType: 'OBJECT_TABLE',
+          objectType: "OBJECT_TABLE",
           relation: {
-            RangeVar: {
-              schemaname: null as string | null,
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'users',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           object: null as any,
           newowner: {
-            RoleSpec: {
-              roletype: 'ROLESPEC_CSTRING',
-              rolename: 'new_owner',
-              location: -1
-            }
+            roletype: "ROLESPEC_CSTRING" as RoleSpecType,
+            rolename: 'new_owner',
+            location: -1
           }
         }
       };
@@ -351,19 +338,17 @@ describe('Administrative Statement Deparsers', () => {
     });
 
     it('should deparse ALTER SCHEMA OWNER TO statement', () => {
-      const ast = {
+      const ast: { AlterOwnerStmt: AlterOwnerStmt } = {
         AlterOwnerStmt: {
-          objectType: 'OBJECT_SCHEMA',
+          objectType: "OBJECT_SCHEMA",
           relation: null as any,
           object: {
             String: { sval: 'public' }
           },
           newowner: {
-            RoleSpec: {
-              roletype: 'ROLESPEC_CSTRING',
-              rolename: 'schema_owner',
-              location: -1
-            }
+            roletype: "ROLESPEC_CSTRING" as RoleSpecType,
+            rolename: 'schema_owner',
+            location: -1
           }
         }
       };
@@ -372,19 +357,17 @@ describe('Administrative Statement Deparsers', () => {
     });
 
     it('should deparse ALTER DATABASE OWNER TO statement', () => {
-      const ast = {
+      const ast: { AlterOwnerStmt: AlterOwnerStmt } = {
         AlterOwnerStmt: {
-          objectType: 'OBJECT_DATABASE',
+          objectType: "OBJECT_DATABASE",
           relation: null as any,
           object: {
             String: { sval: 'myapp' }
           },
           newowner: {
-            RoleSpec: {
-              roletype: 'ROLESPEC_CSTRING',
-              rolename: 'db_admin',
-              location: -1
-            }
+            roletype: "ROLESPEC_CSTRING" as RoleSpecType,
+            rolename: 'db_admin',
+            location: -1
           }
         }
       };
@@ -393,17 +376,15 @@ describe('Administrative Statement Deparsers', () => {
     });
 
     it('should throw error for unsupported object type', () => {
-      const ast = {
+      const ast: { AlterOwnerStmt: AlterOwnerStmt } = {
         AlterOwnerStmt: {
           objectType: 'OBJECT_UNKNOWN' as any,
           relation: null as any,
           object: null as any,
           newowner: {
-            RoleSpec: {
-              roletype: 'ROLESPEC_CSTRING',
-              rolename: 'owner',
-              location: -1
-            }
+            roletype: "ROLESPEC_CSTRING" as RoleSpecType,
+            rolename: 'owner',
+            location: -1
           }
         }
       };
@@ -412,18 +393,16 @@ describe('Administrative Statement Deparsers', () => {
     });
 
     it('should throw error for ALTER OWNER without newowner', () => {
-      const ast = {
+      const ast: { AlterOwnerStmt: AlterOwnerStmt } = {
         AlterOwnerStmt: {
-          objectType: 'OBJECT_TABLE',
+          objectType: "OBJECT_TABLE",
           relation: {
-            RangeVar: {
-              schemaname: null as string | null,
-              relname: 'test_table',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'test_table',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           object: null as any,
           newowner: null as any

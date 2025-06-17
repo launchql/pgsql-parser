@@ -1,6 +1,7 @@
 import { Deparser } from '../src/deparser';
 import { parse } from '@pgsql/parser';
 import { cleanTree } from '../src/utils';
+import { CreateSchemaStmt, DropStmt, TruncateStmt, DropBehavior, ObjectType } from '@pgsql/types';
 
 describe('DDL Statement Deparsers', () => {
   const deparser = new Deparser([]);
@@ -39,11 +40,9 @@ describe('DDL Statement Deparsers', () => {
         CreateSchemaStmt: {
           schemaname: 'test_schema',
           authrole: {
-            RoleSpec: {
-              roletype: 'ROLESPEC_CSTRING',
-              rolename: 'test_user',
-              location: 40
-            }
+            roletype: "ROLESPEC_CSTRING",
+            rolename: 'test_user',
+            location: 40
           }
         }
       };
@@ -55,11 +54,9 @@ describe('DDL Statement Deparsers', () => {
       const ast = {
         CreateSchemaStmt: {
           authrole: {
-            RoleSpec: {
-              roletype: 'ROLESPEC_CSTRING',
-              rolename: 'test_user',
-              location: 28
-            }
+            roletype: "ROLESPEC_CSTRING",
+            rolename: 'test_user',
+            location: 28
           }
         }
       };
@@ -70,7 +67,7 @@ describe('DDL Statement Deparsers', () => {
 
   describe('DropStmt', () => {
     it('should deparse DROP TABLE statement', () => {
-      const ast = {
+      const ast: { DropStmt: DropStmt } = {
         DropStmt: {
           objects: [
             {
@@ -81,7 +78,7 @@ describe('DDL Statement Deparsers', () => {
               }
             }
           ],
-          removeType: 'OBJECT_TABLE',
+          removeType: "OBJECT_TABLE",
           behavior: 'DROP_RESTRICT'
         }
       };
@@ -93,7 +90,7 @@ describe('DDL Statement Deparsers', () => {
     });
 
     it('should deparse DROP TABLE IF EXISTS statement', () => {
-      const ast = {
+      const ast: { DropStmt: DropStmt } = {
         DropStmt: {
           objects: [
             {
@@ -104,7 +101,7 @@ describe('DDL Statement Deparsers', () => {
               }
             }
           ],
-          removeType: 'OBJECT_TABLE',
+          removeType: "OBJECT_TABLE",
           behavior: 'DROP_RESTRICT',
           missing_ok: true
         }
@@ -117,7 +114,7 @@ describe('DDL Statement Deparsers', () => {
     });
 
     it('should deparse DROP TABLE CASCADE statement', () => {
-      const ast = {
+      const ast: { DropStmt: DropStmt } = {
         DropStmt: {
           objects: [
             {
@@ -128,7 +125,7 @@ describe('DDL Statement Deparsers', () => {
               }
             }
           ],
-          removeType: 'OBJECT_TABLE',
+          removeType: "OBJECT_TABLE",
           behavior: 'DROP_CASCADE'
         }
       };
@@ -151,7 +148,7 @@ describe('DDL Statement Deparsers', () => {
               }
             }
           ],
-          removeType: 'OBJECT_INDEX',
+          removeType: "OBJECT_INDEX",
           behavior: 'DROP_RESTRICT',
           concurrent: true
         }
@@ -166,7 +163,7 @@ describe('DDL Statement Deparsers', () => {
           objects: [
             { String: { sval: 'test_schema' } }
           ],
-          removeType: 'OBJECT_SCHEMA',
+          removeType: "OBJECT_SCHEMA",
           behavior: 'DROP_RESTRICT'
         }
       };
@@ -178,7 +175,7 @@ describe('DDL Statement Deparsers', () => {
     });
 
     it('should deparse DROP multiple objects statement', () => {
-      const ast = {
+      const ast: { DropStmt: DropStmt } = {
         DropStmt: {
           objects: [
             {
@@ -196,7 +193,7 @@ describe('DDL Statement Deparsers', () => {
               }
             }
           ],
-          removeType: 'OBJECT_TABLE',
+          removeType: "OBJECT_TABLE",
           behavior: 'DROP_RESTRICT'
         }
       };

@@ -1,5 +1,6 @@
 import { Deparser } from '../src/deparser';
 import { DeparserContext } from '../src/visitors/base';
+import { DefElemAction } from '@pgsql/types';
 
 describe('Type Statement Deparsers', () => {
   const deparser = new Deparser([]);
@@ -151,7 +152,7 @@ describe('Type Statement Deparsers', () => {
               DefElem: {
                 defname: 'login',
                 arg: { Boolean: { boolval: true } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             },
@@ -159,7 +160,7 @@ describe('Type Statement Deparsers', () => {
               DefElem: {
                 defname: 'superuser',
                 arg: { Boolean: { boolval: true } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }

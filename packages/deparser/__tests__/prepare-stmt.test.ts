@@ -2,6 +2,7 @@ import { Deparser } from '../src/deparser';
 import { DeparserContext } from '../src/visitors/base';
 import { parse } from '@pgsql/parser';
 import { cleanTree } from '../src/utils';
+import { A_Expr_Kind } from '@pgsql/types';
 
 describe('Prepare Statement Deparsers', () => {
   const deparser = new Deparser([]);
@@ -19,7 +20,7 @@ describe('Prepare Statement Deparsers', () => {
                 {
                   ResTarget: {
                     val: { A_Star: {} },
-                    name: null as string | null,
+                    name: undefined,
                     indirection: null as any,
                     location: -1
                   }
@@ -28,7 +29,7 @@ describe('Prepare Statement Deparsers', () => {
               fromClause: [
                 {
                   RangeVar: {
-                    schemaname: null as string | null,
+                    schemaname: undefined as string | undefined,
                     relname: 'users',
                     inh: true,
                     relpersistence: 'p',
@@ -87,7 +88,7 @@ describe('Prepare Statement Deparsers', () => {
                 {
                   ResTarget: {
                     val: { A_Star: {} },
-                    name: null as string | null,
+                    name: undefined,
                     indirection: null as any,
                     location: -1
                   }
@@ -96,7 +97,7 @@ describe('Prepare Statement Deparsers', () => {
               fromClause: [
                 {
                   RangeVar: {
-                    schemaname: null as string | null,
+                    schemaname: undefined as string | undefined,
                     relname: 'users',
                     inh: true,
                     relpersistence: 'p',
@@ -107,7 +108,7 @@ describe('Prepare Statement Deparsers', () => {
               ],
               whereClause: {
                 A_Expr: {
-                  kind: 'AEXPR_OP',
+                  kind: "AEXPR_OP" as A_Expr_Kind,
                   name: [{ String: { sval: '=' } }],
                   lexpr: {
                     ColumnRef: {
@@ -189,7 +190,7 @@ describe('Prepare Statement Deparsers', () => {
     it('should deparse DEALLOCATE ALL statement', () => {
       const ast = {
         DeallocateStmt: {
-          name: null as string | null,
+          name: undefined,
           isall: true,
           location: -1
         }

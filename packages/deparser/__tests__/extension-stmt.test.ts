@@ -1,5 +1,6 @@
 import { Deparser } from '../src/deparser';
 import { DeparserContext } from '../src/visitors/base';
+import { DefElemAction } from '@pgsql/types';
 
 describe('Extension Statement Deparsers', () => {
   const deparser = new Deparser([]);
@@ -40,7 +41,7 @@ describe('Extension Statement Deparsers', () => {
               DefElem: {
                 defname: 'schema',
                 arg: { String: { sval: 'public' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }
@@ -61,7 +62,7 @@ describe('Extension Statement Deparsers', () => {
               DefElem: {
                 defname: 'version',
                 arg: { String: { sval: '1.8' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }
@@ -82,7 +83,7 @@ describe('Extension Statement Deparsers', () => {
               DefElem: {
                 defname: 'schema',
                 arg: { String: { sval: 'pg_catalog' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             },
@@ -90,7 +91,7 @@ describe('Extension Statement Deparsers', () => {
               DefElem: {
                 defname: 'version',
                 arg: { String: { sval: '1.0' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }
@@ -112,7 +113,7 @@ describe('Extension Statement Deparsers', () => {
               DefElem: {
                 defname: 'update',
                 arg: null as any,
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }
@@ -132,7 +133,7 @@ describe('Extension Statement Deparsers', () => {
               DefElem: {
                 defname: 'update',
                 arg: null as any,
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             },
@@ -140,7 +141,7 @@ describe('Extension Statement Deparsers', () => {
               DefElem: {
                 defname: 'to',
                 arg: { String: { sval: '1.1' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }
@@ -160,7 +161,7 @@ describe('Extension Statement Deparsers', () => {
               DefElem: {
                 defname: 'set',
                 arg: null as any,
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             },
@@ -168,7 +169,7 @@ describe('Extension Statement Deparsers', () => {
               DefElem: {
                 defname: 'schema',
                 arg: { String: { sval: 'extensions' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }
@@ -202,7 +203,7 @@ describe('Extension Statement Deparsers', () => {
               DefElem: {
                 defname: 'handler',
                 arg: { String: { sval: 'file_fdw_handler' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }
@@ -223,7 +224,7 @@ describe('Extension Statement Deparsers', () => {
               DefElem: {
                 defname: 'validator',
                 arg: { String: { sval: 'postgres_fdw_validator' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }
@@ -245,7 +246,7 @@ describe('Extension Statement Deparsers', () => {
               DefElem: {
                 defname: 'host',
                 arg: { String: { sval: 'localhost' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             },
@@ -253,7 +254,7 @@ describe('Extension Statement Deparsers', () => {
               DefElem: {
                 defname: 'port',
                 arg: { String: { sval: '5432' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }
@@ -273,7 +274,7 @@ describe('Extension Statement Deparsers', () => {
               DefElem: {
                 defname: 'handler',
                 arg: { String: { sval: 'postgres_fdw_handler' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             },
@@ -281,7 +282,7 @@ describe('Extension Statement Deparsers', () => {
               DefElem: {
                 defname: 'validator',
                 arg: { String: { sval: 'postgres_fdw_validator' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }
@@ -291,7 +292,7 @@ describe('Extension Statement Deparsers', () => {
               DefElem: {
                 defname: 'debug',
                 arg: { String: { sval: 'on' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }

@@ -2,6 +2,7 @@ import { Deparser } from '../src/deparser';
 import { DeparserContext } from '../src/visitors/base';
 import { parse } from '@pgsql/parser';
 import { cleanTree } from '../src/utils';
+import { DefElemAction } from '@pgsql/types';
 
 describe('Sequence Statement Deparsers', () => {
   const deparser = new Deparser([]);
@@ -60,7 +61,7 @@ describe('Sequence Statement Deparsers', () => {
               DefElem: {
                 defname: 'start',
                 arg: { Integer: { ival: 100 } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             },
@@ -68,7 +69,7 @@ describe('Sequence Statement Deparsers', () => {
               DefElem: {
                 defname: 'increment',
                 arg: { Integer: { ival: 5 } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }
@@ -98,7 +99,7 @@ describe('Sequence Statement Deparsers', () => {
               DefElem: {
                 defname: 'restart',
                 arg: { Integer: { ival: 1 } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }
@@ -127,7 +128,7 @@ describe('Sequence Statement Deparsers', () => {
               DefElem: {
                 defname: 'restart',
                 arg: { Integer: { ival: 1 } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }
@@ -155,7 +156,7 @@ describe('Sequence Statement Deparsers', () => {
               DefElem: {
                 defname: 'maxvalue',
                 arg: { Integer: { ival: 1000 } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }

@@ -2,15 +2,16 @@ import { Deparser } from '../src/deparser';
 import { DeparserContext } from '../src/visitors/base';
 import { parse } from '@pgsql/parser';
 import { cleanTree } from '../src/utils';
+import { TransactionStmt } from '@pgsql/types';
 
 describe('TransactionStmt Deparser', () => {
   const deparser = new Deparser([]);
   const context: DeparserContext = {};
 
   it('should deparse BEGIN statement', () => {
-    const ast = {
+    const ast: { TransactionStmt: TransactionStmt } = {
       TransactionStmt: {
-        kind: 'TRANS_STMT_BEGIN',
+        kind: "TRANS_STMT_BEGIN",
         location: -1
       }
     };
@@ -22,9 +23,9 @@ describe('TransactionStmt Deparser', () => {
   });
 
   it('should deparse START TRANSACTION statement', () => {
-    const ast = {
+    const ast: { TransactionStmt: TransactionStmt } = {
       TransactionStmt: {
-        kind: 'TRANS_STMT_START',
+        kind: "TRANS_STMT_START",
         location: -1
       }
     };
@@ -36,9 +37,9 @@ describe('TransactionStmt Deparser', () => {
   });
 
   it('should deparse COMMIT statement', () => {
-    const ast = {
+    const ast: { TransactionStmt: TransactionStmt } = {
       TransactionStmt: {
-        kind: 'TRANS_STMT_COMMIT',
+        kind: "TRANS_STMT_COMMIT",
         location: -1
       }
     };
@@ -50,9 +51,9 @@ describe('TransactionStmt Deparser', () => {
   });
 
   it('should deparse ROLLBACK statement', () => {
-    const ast = {
+    const ast: { TransactionStmt: TransactionStmt } = {
       TransactionStmt: {
-        kind: 'TRANS_STMT_ROLLBACK',
+        kind: "TRANS_STMT_ROLLBACK",
         location: -1
       }
     };
@@ -64,9 +65,9 @@ describe('TransactionStmt Deparser', () => {
   });
 
   it('should deparse SAVEPOINT statement', () => {
-    const ast = {
+    const ast: { TransactionStmt: TransactionStmt } = {
       TransactionStmt: {
-        kind: 'TRANS_STMT_SAVEPOINT',
+        kind: "TRANS_STMT_SAVEPOINT",
         savepoint_name: 'sp1',
         location: -1
       }
@@ -79,9 +80,9 @@ describe('TransactionStmt Deparser', () => {
   });
 
   it('should deparse RELEASE SAVEPOINT statement', () => {
-    const ast = {
+    const ast: { TransactionStmt: TransactionStmt } = {
       TransactionStmt: {
-        kind: 'TRANS_STMT_RELEASE',
+        kind: "TRANS_STMT_RELEASE",
         savepoint_name: 'sp1',
         location: -1
       }
@@ -94,9 +95,9 @@ describe('TransactionStmt Deparser', () => {
   });
 
   it('should deparse ROLLBACK TO statement', () => {
-    const ast = {
+    const ast: { TransactionStmt: TransactionStmt } = {
       TransactionStmt: {
-        kind: 'TRANS_STMT_ROLLBACK_TO',
+        kind: "TRANS_STMT_ROLLBACK_TO",
         savepoint_name: 'sp1',
         location: -1
       }
@@ -109,9 +110,9 @@ describe('TransactionStmt Deparser', () => {
   });
 
   it('should deparse PREPARE TRANSACTION statement', () => {
-    const ast = {
+    const ast: { TransactionStmt: TransactionStmt } = {
       TransactionStmt: {
-        kind: 'TRANS_STMT_PREPARE',
+        kind: "TRANS_STMT_PREPARE",
         gid: 'test_gid',
         location: -1
       }
@@ -124,9 +125,9 @@ describe('TransactionStmt Deparser', () => {
   });
 
   it('should deparse COMMIT PREPARED statement', () => {
-    const ast = {
+    const ast: { TransactionStmt: TransactionStmt } = {
       TransactionStmt: {
-        kind: 'TRANS_STMT_COMMIT_PREPARED',
+        kind: "TRANS_STMT_COMMIT_PREPARED",
         gid: 'test_gid',
         location: -1
       }
@@ -139,9 +140,9 @@ describe('TransactionStmt Deparser', () => {
   });
 
   it('should deparse ROLLBACK PREPARED statement', () => {
-    const ast = {
+    const ast: { TransactionStmt: TransactionStmt } = {
       TransactionStmt: {
-        kind: 'TRANS_STMT_ROLLBACK_PREPARED',
+        kind: "TRANS_STMT_ROLLBACK_PREPARED",
         gid: 'test_gid',
         location: -1
       }
@@ -158,8 +159,8 @@ describe('TransactionStmt Deparser', () => {
       TransactionStmt: {
         kind: 'INVALID_KIND' as any,
         options: [] as any[],
-        savepoint_name: null as string | null,
-        gid: null as string | null,
+        savepoint_name: undefined,
+        gid: undefined,
         chain: false,
         location: -1
       }

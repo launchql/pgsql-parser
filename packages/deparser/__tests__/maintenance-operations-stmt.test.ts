@@ -10,7 +10,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
       const ast = {
         ClusterStmt: {
           relation: null as any,
-          indexname: null as string | null,
+          indexname: undefined,
           params: [] as any[]
         }
       };
@@ -23,7 +23,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
         ClusterStmt: {
           relation: {
             RangeVar: {
-              schemaname: null as string | null,
+              schemaname: undefined as string | undefined,
               relname: 'users',
               inh: true,
               relpersistence: 'p',
@@ -31,7 +31,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
               location: -1
             }
           },
-          indexname: null as string | null,
+          indexname: undefined,
           params: [] as any[]
         }
       };
@@ -44,7 +44,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
         ClusterStmt: {
           relation: {
             RangeVar: {
-              schemaname: null as string | null,
+              schemaname: undefined as string | undefined,
               relname: 'orders',
               inh: true,
               relpersistence: 'p',
@@ -73,14 +73,14 @@ describe('Maintenance Operations Statement Deparsers', () => {
               location: -1
             }
           },
-          indexname: null as string | null,
+          indexname: undefined,
           params: [
             {
               DefElem: {
-                defnamespace: null as string | null,
+                defnamespace: undefined,
                 defname: 'verbose',
                 arg: { String: { sval: 'true' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }
@@ -111,19 +111,19 @@ describe('Maintenance Operations Statement Deparsers', () => {
           options: [
             {
               DefElem: {
-                defnamespace: null as string | null,
+                defnamespace: undefined,
                 defname: 'analyze',
                 arg: { String: { sval: 'true' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             },
             {
               DefElem: {
-                defnamespace: null as string | null,
+                defnamespace: undefined,
                 defname: 'verbose',
                 arg: { String: { sval: 'true' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }
@@ -145,7 +145,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
               VacuumRelation: {
                 relation: {
                   RangeVar: {
-                    schemaname: null as string | null,
+                    schemaname: undefined as string | undefined,
                     relname: 'users',
                     inh: true,
                     relpersistence: 'p',
@@ -161,7 +161,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
               VacuumRelation: {
                 relation: {
                   RangeVar: {
-                    schemaname: null as string | null,
+                    schemaname: undefined as string | undefined,
                     relname: 'orders',
                     inh: true,
                     relpersistence: 'p',
@@ -190,7 +190,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
               VacuumRelation: {
                 relation: {
                   RangeVar: {
-                    schemaname: null as string | null,
+                    schemaname: undefined as string | undefined,
                     relname: 'products',
                     inh: true,
                     relpersistence: 'p',
@@ -219,10 +219,10 @@ describe('Maintenance Operations Statement Deparsers', () => {
           options: [
             {
               DefElem: {
-                defnamespace: null as string | null,
+                defnamespace: undefined,
                 defname: 'full',
                 arg: { String: { sval: 'true' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }
@@ -257,7 +257,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
                 {
                   ResTarget: {
                     val: { A_Star: {} },
-                    name: null as string | null,
+                    name: undefined,
                     indirection: null as any,
                     location: -1
                   }
@@ -266,7 +266,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
               fromClause: [
                 {
                   RangeVar: {
-                    schemaname: null as string | null,
+                    schemaname: undefined as string | undefined,
                     relname: 'users',
                     inh: true,
                     relpersistence: 'p',
@@ -312,7 +312,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
                         location: -1
                       }
                     },
-                    name: null as string | null,
+                    name: undefined,
                     indirection: null as any,
                     location: -1
                   }
@@ -321,7 +321,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
               fromClause: [
                 {
                   RangeVar: {
-                    schemaname: null as string | null,
+                    schemaname: undefined as string | undefined,
                     relname: 'orders',
                     inh: true,
                     relpersistence: 'p',
@@ -349,19 +349,19 @@ describe('Maintenance Operations Statement Deparsers', () => {
           options: [
             {
               DefElem: {
-                defnamespace: null as string | null,
+                defnamespace: undefined,
                 defname: 'analyze',
                 arg: { String: { sval: 'true' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             },
             {
               DefElem: {
-                defnamespace: null as string | null,
+                defnamespace: undefined,
                 defname: 'verbose',
                 arg: { String: { sval: 'true' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }
@@ -380,7 +380,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
           kind: 'REINDEX_OBJECT_INDEX',
           relation: {
             RangeVar: {
-              schemaname: null as string | null,
+              schemaname: undefined as string | undefined,
               relname: 'idx_users_email',
               inh: true,
               relpersistence: 'p',
@@ -388,7 +388,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
               location: -1
             }
           },
-          name: null as string | null,
+          name: undefined,
           params: [] as any[]
         }
       };
@@ -410,7 +410,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
               location: -1
             }
           },
-          name: null as string | null,
+          name: undefined,
           params: [] as any[]
         }
       };
@@ -463,7 +463,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
           kind: 'REINDEX_OBJECT_INDEX',
           relation: {
             RangeVar: {
-              schemaname: null as string | null,
+              schemaname: undefined as string | undefined,
               relname: 'idx_orders_date',
               inh: true,
               relpersistence: 'p',
@@ -471,14 +471,14 @@ describe('Maintenance Operations Statement Deparsers', () => {
               location: -1
             }
           },
-          name: null as string | null,
+          name: undefined,
           params: [
             {
               DefElem: {
-                defnamespace: null as string | null,
+                defnamespace: undefined,
                 defname: 'verbose',
                 arg: { String: { sval: 'true' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }
@@ -494,7 +494,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
         ReindexStmt: {
           kind: 'REINDEX_OBJECT_UNKNOWN' as any,
           relation: null as any,
-          name: null as string | null,
+          name: undefined,
           params: [] as any[]
         }
       };

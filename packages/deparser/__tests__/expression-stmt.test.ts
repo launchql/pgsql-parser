@@ -285,8 +285,8 @@ describe('Expression Statement Deparsers', () => {
           aggfilter: null as any,
           winref: {
             WindowDef: {
-              name: null as string | null,
-              refname: null as string | null,
+              name: undefined,
+              refname: undefined,
               partitionClause: null as any,
               orderClause: [
                 {

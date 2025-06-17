@@ -1,5 +1,6 @@
 import { Deparser } from '../src/deparser';
 import { DeparserContext } from '../src/visitors/base';
+import { SetOperationStmt, CoercionForm } from '@pgsql/types';
 
 describe('Set Operation Statement Deparsers', () => {
   const deparser = new Deparser([]);
@@ -7,9 +8,9 @@ describe('Set Operation Statement Deparsers', () => {
 
   describe('SetOperationStmt', () => {
     it('should deparse UNION statement', () => {
-      const ast = {
+      const ast: { SetOperationStmt: SetOperationStmt } = {
         SetOperationStmt: {
-          op: 'SETOP_UNION',
+          op: "SETOP_UNION",
           all: false,
           larg: {
             SelectStmt: {
@@ -17,7 +18,7 @@ describe('Set Operation Statement Deparsers', () => {
                 {
                   ResTarget: {
                     val: { ColumnRef: { fields: [{ String: { sval: 'id' } }] } },
-                    name: null as string | null,
+                    name: undefined,
                     indirection: [] as any[],
                     location: -1
                   }
@@ -26,7 +27,7 @@ describe('Set Operation Statement Deparsers', () => {
               fromClause: [
                 {
                   RangeVar: {
-                    schemaname: null as string | null,
+                    schemaname: undefined as string | undefined,
                     relname: 'table1',
                     inh: true,
                     relpersistence: 'p',
@@ -43,7 +44,7 @@ describe('Set Operation Statement Deparsers', () => {
                 {
                   ResTarget: {
                     val: { ColumnRef: { fields: [{ String: { sval: 'id' } }] } },
-                    name: null as string | null,
+                    name: undefined,
                     indirection: [] as any[],
                     location: -1
                   }
@@ -52,7 +53,7 @@ describe('Set Operation Statement Deparsers', () => {
               fromClause: [
                 {
                   RangeVar: {
-                    schemaname: null as string | null,
+                    schemaname: undefined as string | undefined,
                     relname: 'table2',
                     inh: true,
                     relpersistence: 'p',
@@ -74,9 +75,9 @@ describe('Set Operation Statement Deparsers', () => {
     });
 
     it('should deparse UNION ALL statement', () => {
-      const ast = {
+      const ast: { SetOperationStmt: SetOperationStmt } = {
         SetOperationStmt: {
-          op: 'SETOP_UNION',
+          op: "SETOP_UNION",
           all: true,
           larg: {
             SelectStmt: {
@@ -84,7 +85,7 @@ describe('Set Operation Statement Deparsers', () => {
                 {
                   ResTarget: {
                     val: { ColumnRef: { fields: [{ String: { sval: 'name' } }] } },
-                    name: null as string | null,
+                    name: undefined,
                     indirection: [] as any[],
                     location: -1
                   }
@@ -93,7 +94,7 @@ describe('Set Operation Statement Deparsers', () => {
               fromClause: [
                 {
                   RangeVar: {
-                    schemaname: null as string | null,
+                    schemaname: undefined as string | undefined,
                     relname: 'users',
                     inh: true,
                     relpersistence: 'p',
@@ -110,7 +111,7 @@ describe('Set Operation Statement Deparsers', () => {
                 {
                   ResTarget: {
                     val: { ColumnRef: { fields: [{ String: { sval: 'name' } }] } },
-                    name: null as string | null,
+                    name: undefined,
                     indirection: [] as any[],
                     location: -1
                   }
@@ -119,7 +120,7 @@ describe('Set Operation Statement Deparsers', () => {
               fromClause: [
                 {
                   RangeVar: {
-                    schemaname: null as string | null,
+                    schemaname: undefined as string | undefined,
                     relname: 'customers',
                     inh: true,
                     relpersistence: 'p',
@@ -141,9 +142,9 @@ describe('Set Operation Statement Deparsers', () => {
     });
 
     it('should deparse INTERSECT statement', () => {
-      const ast = {
+      const ast: { SetOperationStmt: SetOperationStmt } = {
         SetOperationStmt: {
-          op: 'SETOP_INTERSECT',
+          op: "SETOP_INTERSECT",
           all: false,
           larg: {
             SelectStmt: {
@@ -151,7 +152,7 @@ describe('Set Operation Statement Deparsers', () => {
                 {
                   ResTarget: {
                     val: { ColumnRef: { fields: [{ String: { sval: 'email' } }] } },
-                    name: null as string | null,
+                    name: undefined,
                     indirection: [] as any[],
                     location: -1
                   }
@@ -160,7 +161,7 @@ describe('Set Operation Statement Deparsers', () => {
               fromClause: [
                 {
                   RangeVar: {
-                    schemaname: null as string | null,
+                    schemaname: undefined as string | undefined,
                     relname: 'active_users',
                     inh: true,
                     relpersistence: 'p',
@@ -177,7 +178,7 @@ describe('Set Operation Statement Deparsers', () => {
                 {
                   ResTarget: {
                     val: { ColumnRef: { fields: [{ String: { sval: 'email' } }] } },
-                    name: null as string | null,
+                    name: undefined,
                     indirection: [] as any[],
                     location: -1
                   }
@@ -186,7 +187,7 @@ describe('Set Operation Statement Deparsers', () => {
               fromClause: [
                 {
                   RangeVar: {
-                    schemaname: null as string | null,
+                    schemaname: undefined as string | undefined,
                     relname: 'premium_users',
                     inh: true,
                     relpersistence: 'p',
@@ -208,9 +209,9 @@ describe('Set Operation Statement Deparsers', () => {
     });
 
     it('should deparse EXCEPT statement', () => {
-      const ast = {
+      const ast: { SetOperationStmt: SetOperationStmt } = {
         SetOperationStmt: {
-          op: 'SETOP_EXCEPT',
+          op: "SETOP_EXCEPT",
           all: false,
           larg: {
             SelectStmt: {
@@ -218,7 +219,7 @@ describe('Set Operation Statement Deparsers', () => {
                 {
                   ResTarget: {
                     val: { ColumnRef: { fields: [{ String: { sval: 'user_id' } }] } },
-                    name: null as string | null,
+                    name: undefined,
                     indirection: [] as any[],
                     location: -1
                   }
@@ -227,7 +228,7 @@ describe('Set Operation Statement Deparsers', () => {
               fromClause: [
                 {
                   RangeVar: {
-                    schemaname: null as string | null,
+                    schemaname: undefined as string | undefined,
                     relname: 'all_users',
                     inh: true,
                     relpersistence: 'p',
@@ -244,7 +245,7 @@ describe('Set Operation Statement Deparsers', () => {
                 {
                   ResTarget: {
                     val: { ColumnRef: { fields: [{ String: { sval: 'user_id' } }] } },
-                    name: null as string | null,
+                    name: undefined,
                     indirection: [] as any[],
                     location: -1
                   }
@@ -253,7 +254,7 @@ describe('Set Operation Statement Deparsers', () => {
               fromClause: [
                 {
                   RangeVar: {
-                    schemaname: null as string | null,
+                    schemaname: undefined as string | undefined,
                     relname: 'banned_users',
                     inh: true,
                     relpersistence: 'p',
@@ -275,9 +276,9 @@ describe('Set Operation Statement Deparsers', () => {
     });
 
     it('should deparse EXCEPT ALL statement', () => {
-      const ast = {
+      const ast: { SetOperationStmt: SetOperationStmt } = {
         SetOperationStmt: {
-          op: 'SETOP_EXCEPT',
+          op: "SETOP_EXCEPT",
           all: true,
           larg: {
             SelectStmt: {
@@ -285,7 +286,7 @@ describe('Set Operation Statement Deparsers', () => {
                 {
                   ResTarget: {
                     val: { ColumnRef: { fields: [{ String: { sval: 'product_id' } }] } },
-                    name: null as string | null,
+                    name: undefined,
                     indirection: [] as any[],
                     location: -1
                   }
@@ -294,7 +295,7 @@ describe('Set Operation Statement Deparsers', () => {
               fromClause: [
                 {
                   RangeVar: {
-                    schemaname: null as string | null,
+                    schemaname: undefined as string | undefined,
                     relname: 'inventory',
                     inh: true,
                     relpersistence: 'p',
@@ -311,7 +312,7 @@ describe('Set Operation Statement Deparsers', () => {
                 {
                   ResTarget: {
                     val: { ColumnRef: { fields: [{ String: { sval: 'product_id' } }] } },
-                    name: null as string | null,
+                    name: undefined,
                     indirection: [] as any[],
                     location: -1
                   }
@@ -320,7 +321,7 @@ describe('Set Operation Statement Deparsers', () => {
               fromClause: [
                 {
                   RangeVar: {
-                    schemaname: null as string | null,
+                    schemaname: undefined as string | undefined,
                     relname: 'sold_items',
                     inh: true,
                     relpersistence: 'p',
@@ -462,11 +463,11 @@ describe('Set Operation Statement Deparsers', () => {
                         agg_star: true,
                         agg_distinct: false,
                         func_variadic: false,
-                        funcformat: 'COERCE_EXPLICIT_CALL',
+                        funcformat: "COERCE_EXPLICIT_CALL",
                         location: -1
                       }
                     },
-                    name: null as string | null,
+                    name: undefined,
                     indirection: [] as any[],
                     location: -1
                   }
@@ -475,7 +476,7 @@ describe('Set Operation Statement Deparsers', () => {
               fromClause: [
                 {
                   RangeVar: {
-                    schemaname: null as string | null,
+                    schemaname: undefined as string | undefined,
                     relname: 'users',
                     inh: true,
                     relpersistence: 'p',

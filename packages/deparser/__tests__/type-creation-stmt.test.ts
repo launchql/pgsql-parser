@@ -1,5 +1,6 @@
 import { Deparser } from '../src/deparser';
 import { DeparserContext } from '../src/visitors/base';
+import { DefElemAction } from '@pgsql/types';
 
 describe('Type Creation Statement Deparsers', () => {
   const deparser = new Deparser([]);
@@ -11,7 +12,7 @@ describe('Type Creation Statement Deparsers', () => {
         CompositeTypeStmt: {
           typevar: {
             RangeVar: {
-              schemaname: null as string | null,
+              schemaname: undefined as string | undefined,
               relname: 'address_type',
               inh: true,
               relpersistence: 'p',
@@ -137,7 +138,7 @@ describe('Type Creation Statement Deparsers', () => {
           params: [
             {
               DefElem: {
-                defnamespace: null as string | null,
+                defnamespace: undefined,
                 defname: 'subtype',
                 arg: { String: { sval: 'int4' } },
                 defaction: 'DEFELEM_UNSPEC',
@@ -146,7 +147,7 @@ describe('Type Creation Statement Deparsers', () => {
             },
             {
               DefElem: {
-                defnamespace: null as string | null,
+                defnamespace: undefined,
                 defname: 'subtype_opclass',
                 arg: { String: { sval: 'int4_ops' } },
                 defaction: 'DEFELEM_UNSPEC',
@@ -170,7 +171,7 @@ describe('Type Creation Statement Deparsers', () => {
           params: [
             {
               DefElem: {
-                defnamespace: null as string | null,
+                defnamespace: undefined,
                 defname: 'subtype',
                 arg: { String: { sval: 'date' } },
                 defaction: 'DEFELEM_UNSPEC',
@@ -192,9 +193,9 @@ describe('Type Creation Statement Deparsers', () => {
           typeName: [
             { String: { sval: 'status_enum' } }
           ],
-          oldVal: null as string | null,
+          oldVal: undefined,
           newVal: 'pending',
-          newValNeighbor: null as string | null,
+          newValNeighbor: undefined,
           newValIsAfter: false,
           skipIfNewValExists: false
         }
@@ -210,9 +211,9 @@ describe('Type Creation Statement Deparsers', () => {
             { String: { sval: 'public' } },
             { String: { sval: 'priority_enum' } }
           ],
-          oldVal: null as string | null,
+          oldVal: undefined,
           newVal: 'urgent',
-          newValNeighbor: null as string | null,
+          newValNeighbor: undefined,
           newValIsAfter: false,
           skipIfNewValExists: true
         }
@@ -227,7 +228,7 @@ describe('Type Creation Statement Deparsers', () => {
           typeName: [
             { String: { sval: 'status_enum' } }
           ],
-          oldVal: null as string | null,
+          oldVal: undefined,
           newVal: 'processing',
           newValNeighbor: 'pending',
           newValIsAfter: true,
@@ -244,7 +245,7 @@ describe('Type Creation Statement Deparsers', () => {
           typeName: [
             { String: { sval: 'status_enum' } }
           ],
-          oldVal: null as string | null,
+          oldVal: undefined,
           newVal: 'draft',
           newValNeighbor: 'pending',
           newValIsAfter: false,
@@ -263,7 +264,7 @@ describe('Type Creation Statement Deparsers', () => {
           ],
           oldVal: 'old_status',
           newVal: 'new_status',
-          newValNeighbor: null as string | null,
+          newValNeighbor: undefined,
           newValIsAfter: false,
           skipIfNewValExists: false
         }

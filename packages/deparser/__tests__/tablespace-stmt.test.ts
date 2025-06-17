@@ -1,5 +1,6 @@
 import { Deparser } from '../src/deparser';
 import { DeparserContext } from '../src/visitors/base';
+import { RoleSpecType, DefElemAction } from '@pgsql/types';
 
 describe('Tablespace Statement Deparsers', () => {
   const deparser = new Deparser([]);
@@ -26,7 +27,7 @@ describe('Tablespace Statement Deparsers', () => {
           owner: {
             RoleSpec: {
               rolename: 'postgres',
-              roletype: 'ROLESPEC_CSTRING',
+              roletype: "ROLESPEC_CSTRING",
               location: -1
             }
           },
@@ -49,7 +50,7 @@ describe('Tablespace Statement Deparsers', () => {
               DefElem: {
                 defname: 'seq_page_cost',
                 arg: { Float: { fval: '0.1' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }
@@ -65,7 +66,7 @@ describe('Tablespace Statement Deparsers', () => {
         CreateTableSpaceStmt: {
           tablespacename: 'simple_tablespace',
           owner: null as any,
-          location: null as string | null,
+          location: undefined,
           options: [] as any[]
         }
       };
@@ -108,7 +109,7 @@ describe('Tablespace Statement Deparsers', () => {
               DefElem: {
                 defname: 'seq_page_cost',
                 arg: { Float: { fval: '0.2' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }
@@ -129,7 +130,7 @@ describe('Tablespace Statement Deparsers', () => {
               DefElem: {
                 defname: 'seq_page_cost',
                 arg: null as any,
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }
@@ -150,7 +151,7 @@ describe('Tablespace Statement Deparsers', () => {
               DefElem: {
                 defname: 'seq_page_cost',
                 arg: { Float: { fval: '0.1' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             },
@@ -158,7 +159,7 @@ describe('Tablespace Statement Deparsers', () => {
               DefElem: {
                 defname: 'random_page_cost',
                 arg: { Float: { fval: '0.1' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }

@@ -12,7 +12,7 @@ describe('Notification Statement Deparsers', () => {
       const ast = {
         NotifyStmt: {
           conditionname: 'channel_name',
-          payload: null as string | null
+          payload: undefined
         }
       };
       
@@ -93,7 +93,7 @@ describe('Notification Statement Deparsers', () => {
     it('should deparse UNLISTEN statement for all channels', () => {
       const ast = {
         UnlistenStmt: {
-          conditionname: null as string | null
+          conditionname: undefined
         }
       };
       

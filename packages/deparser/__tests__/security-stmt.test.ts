@@ -1,5 +1,6 @@
 import { Deparser } from '../src/deparser';
 import { DeparserContext } from '../src/visitors/base';
+import { ObjectType, RoleSpecType, DropBehavior, CoercionForm } from '@pgsql/types';
 
 describe('Security Statement Deparsers', () => {
   const deparser = new Deparser([]);
@@ -15,7 +16,7 @@ describe('Security Statement Deparsers', () => {
           objects: [
             {
               RangeVar: {
-                schemaname: null as string | null,
+                schemaname: undefined as string | undefined,
                 relname: 'users',
                 inh: true,
                 relpersistence: 'p',
@@ -90,7 +91,7 @@ describe('Security Statement Deparsers', () => {
           objects: [
             {
               RangeVar: {
-                schemaname: null as string | null,
+                schemaname: undefined as string | undefined,
                 relname: 'sensitive_data',
                 inh: true,
                 relpersistence: 'p',
@@ -275,7 +276,7 @@ describe('Security Statement Deparsers', () => {
     it('should deparse SECURITY LABEL statement for table', () => {
       const ast = {
         SecLabelStmt: {
-          objtype: 'OBJECT_TABLE',
+          objtype: "OBJECT_TABLE",
           object: {
             RangeVar: {
               schemaname: null as string | null,
@@ -297,7 +298,7 @@ describe('Security Statement Deparsers', () => {
     it('should deparse SECURITY LABEL statement for function', () => {
       const ast = {
         SecLabelStmt: {
-          objtype: 'OBJECT_FUNCTION',
+          objtype: "OBJECT_FUNCTION",
           object: {
             FuncCall: {
               funcname: [{ String: { sval: 'sensitive_function' } }],
@@ -309,7 +310,7 @@ describe('Security Statement Deparsers', () => {
               agg_star: false,
               agg_distinct: false,
               func_variadic: false,
-              funcformat: 'COERCE_EXPLICIT_CALL',
+              funcformat: "COERCE_EXPLICIT_CALL",
               location: -1
             }
           },
@@ -324,10 +325,10 @@ describe('Security Statement Deparsers', () => {
     it('should deparse SECURITY LABEL statement with NULL label', () => {
       const ast = {
         SecLabelStmt: {
-          objtype: 'OBJECT_SCHEMA',
+          objtype: "OBJECT_SCHEMA",
           object: { String: { sval: 'public' } },
           provider: 'selinux',
-          label: null as string | null
+          label: undefined
         }
       };
       
@@ -337,7 +338,7 @@ describe('Security Statement Deparsers', () => {
     it('should deparse SECURITY LABEL statement without provider', () => {
       const ast = {
         SecLabelStmt: {
-          objtype: 'OBJECT_ROLE',
+          objtype: "OBJECT_ROLE",
           object: {
             RoleSpec: {
               roletype: 'ROLESPEC_CSTRING',
@@ -345,7 +346,7 @@ describe('Security Statement Deparsers', () => {
               location: -1
             }
           },
-          provider: null as string | null,
+          provider: undefined,
           label: 'trusted'
         }
       };

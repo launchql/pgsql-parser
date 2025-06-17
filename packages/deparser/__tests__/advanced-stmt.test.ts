@@ -2,6 +2,7 @@ import { Deparser } from '../src/deparser';
 import { DeparserContext } from '../src/visitors/base';
 import { parse } from '@pgsql/parser';
 import { cleanTree } from '../src/utils';
+import { ReturnStmt, PLAssignStmt, CopyStmt, AlterTableStmt, AlterObjectSchemaStmt, ObjectType, DropBehavior } from '@pgsql/types';
 
 describe('Advanced Statement Deparsers', () => {
   const deparser = new Deparser([]);
@@ -9,11 +10,11 @@ describe('Advanced Statement Deparsers', () => {
 
   describe('ReturnStmt', () => {
     it('should deparse RETURN statement with value', () => {
-      const ast = {
+      const ast: { ReturnStmt: ReturnStmt } = {
         ReturnStmt: {
           returnval: {
             A_Const: {
-              ival: { Integer: { ival: 42 } },
+              ival: { ival: 42 },
               isnull: false,
               location: -1
             }
@@ -25,7 +26,7 @@ describe('Advanced Statement Deparsers', () => {
     });
 
     it('should deparse RETURN statement without value', () => {
-      const ast = {
+      const ast: { ReturnStmt: ReturnStmt } = {
         ReturnStmt: {
           returnval: null as any
         }
@@ -35,7 +36,7 @@ describe('Advanced Statement Deparsers', () => {
     });
 
     it('should deparse RETURN statement with expression', () => {
-      const ast = {
+      const ast: { ReturnStmt: ReturnStmt } = {
         ReturnStmt: {
           returnval: {
             ColumnRef: {
@@ -52,32 +53,30 @@ describe('Advanced Statement Deparsers', () => {
 
   describe('PLAssignStmt', () => {
     it('should deparse simple assignment statement', () => {
-      const ast = {
+      const ast: { PLAssignStmt: PLAssignStmt } = {
         PLAssignStmt: {
           name: 'my_var',
-          indirection: null as any[] | null,
+          indirection: undefined,
           nnames: 1,
           val: {
-            SelectStmt: {
-              targetList: [
-                {
-                  ResTarget: {
-                    val: {
-                      A_Const: {
-                        ival: { Integer: { ival: 100 } },
-                        isnull: false,
-                        location: -1
-                      }
-                    },
-                    location: -1
-                  }
+            targetList: [
+              {
+                ResTarget: {
+                  val: {
+                    A_Const: {
+                      ival: { ival: 100 },
+                      isnull: false,
+                      location: -1
+                    }
+                  },
+                  location: -1
                 }
-              ],
-              op: null as any,
-              all: false,
-              larg: null as any,
-              rarg: null as any
-            }
+              }
+            ],
+            op: null as any,
+            all: false,
+            larg: null as any,
+            rarg: null as any
           },
           location: -1
         }
@@ -87,7 +86,7 @@ describe('Advanced Statement Deparsers', () => {
     });
 
     it('should deparse assignment with array indirection', () => {
-      const ast = {
+      const ast: { PLAssignStmt: PLAssignStmt } = {
         PLAssignStmt: {
           name: 'my_array',
           indirection: [
@@ -97,7 +96,7 @@ describe('Advanced Statement Deparsers', () => {
                 lidx: null as any,
                 uidx: {
                   A_Const: {
-                    ival: { Integer: { ival: 1 } },
+                    ival: { ival: 1 },
                     isnull: false,
                     location: -1
                   }
@@ -107,26 +106,24 @@ describe('Advanced Statement Deparsers', () => {
           ],
           nnames: 1,
           val: {
-            SelectStmt: {
-              targetList: [
-                {
-                  ResTarget: {
-                    val: {
-                      A_Const: {
-                        sval: { String: { sval: 'value' } },
-                        isnull: false,
-                        location: -1
-                      }
-                    },
-                    location: -1
-                  }
+            targetList: [
+              {
+                ResTarget: {
+                  val: {
+                    A_Const: {
+                      sval: { sval: 'value' },
+                      isnull: false,
+                      location: -1
+                    }
+                  },
+                  location: -1
                 }
-              ],
-              op: null as any,
-              all: false,
-              larg: null as any,
-              rarg: null as any
-            }
+              }
+            ],
+            op: null as any,
+            all: false,
+            larg: null as any,
+            rarg: null as any
           },
           location: -1
         }
@@ -138,24 +135,22 @@ describe('Advanced Statement Deparsers', () => {
 
   describe('CopyStmt', () => {
     it('should deparse COPY table TO file', () => {
-      const ast = {
+      const ast: { CopyStmt: CopyStmt } = {
         CopyStmt: {
           relation: {
-            RangeVar: {
-              schemaname: null as string | null,
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'users',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           query: null as any,
-          attlist: null as any[] | null,
+          attlist: undefined,
           is_from: false,
           is_program: false,
           filename: '/tmp/users.csv',
-          options: null as any[] | null,
+          options: undefined,
           whereClause: null as any
         }
       };
@@ -164,24 +159,22 @@ describe('Advanced Statement Deparsers', () => {
     });
 
     it('should deparse COPY table FROM file', () => {
-      const ast = {
+      const ast: { CopyStmt: CopyStmt } = {
         CopyStmt: {
           relation: {
-            RangeVar: {
-              schemaname: null as string | null,
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'users',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           query: null as any,
-          attlist: null as any[] | null,
+          attlist: undefined,
           is_from: true,
           is_program: false,
           filename: '/tmp/users.csv',
-          options: null as any[] | null,
+          options: undefined,
           whereClause: null as any
         }
       };
@@ -190,17 +183,15 @@ describe('Advanced Statement Deparsers', () => {
     });
 
     it('should deparse COPY with column list', () => {
-      const ast = {
+      const ast: { CopyStmt: CopyStmt } = {
         CopyStmt: {
           relation: {
-            RangeVar: {
-              schemaname: null as string | null,
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'users',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           query: null as any,
           attlist: [
@@ -211,7 +202,7 @@ describe('Advanced Statement Deparsers', () => {
           is_from: false,
           is_program: false,
           filename: '/tmp/users.csv',
-          options: null as any[] | null,
+          options: undefined,
           whereClause: null as any
         }
       };
@@ -220,7 +211,7 @@ describe('Advanced Statement Deparsers', () => {
     });
 
     it('should deparse COPY from query', () => {
-      const ast = {
+      const ast: { CopyStmt: CopyStmt } = {
         CopyStmt: {
           relation: null as any,
           query: {
@@ -236,7 +227,7 @@ describe('Advanced Statement Deparsers', () => {
               fromClause: [
                 {
                   RangeVar: {
-                    schemaname: null as string | null,
+                    schemaname: undefined as string | undefined,
                     relname: 'users',
                     inh: true,
                     relpersistence: 'p',
@@ -251,11 +242,11 @@ describe('Advanced Statement Deparsers', () => {
               rarg: null as any
             }
           },
-          attlist: null as any[] | null,
+          attlist: undefined,
           is_from: false,
           is_program: false,
           filename: '/tmp/query_result.csv',
-          options: null as any[] | null,
+          options: undefined,
           whereClause: null as any
         }
       };
@@ -264,24 +255,22 @@ describe('Advanced Statement Deparsers', () => {
     });
 
     it('should deparse COPY with PROGRAM', () => {
-      const ast = {
+      const ast: { CopyStmt: CopyStmt } = {
         CopyStmt: {
           relation: {
-            RangeVar: {
-              schemaname: null as string | null,
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'users',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           query: null as any,
-          attlist: null as any[] | null,
+          attlist: undefined,
           is_from: false,
           is_program: true,
           filename: 'gzip > /tmp/users.csv.gz',
-          options: null as any[] | null,
+          options: undefined,
           whereClause: null as any
         }
       };
@@ -290,24 +279,22 @@ describe('Advanced Statement Deparsers', () => {
     });
 
     it('should deparse COPY to STDIN', () => {
-      const ast = {
+      const ast: { CopyStmt: CopyStmt } = {
         CopyStmt: {
           relation: {
-            RangeVar: {
-              schemaname: null as string | null,
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'users',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           query: null as any,
-          attlist: null as any[] | null,
+          attlist: undefined,
           is_from: true,
           is_program: false,
-          filename: null as string | null,
-          options: null as any[] | null,
+          filename: undefined,
+          options: undefined,
           whereClause: null as any
         }
       };
@@ -318,17 +305,15 @@ describe('Advanced Statement Deparsers', () => {
 
   describe('AlterTableStmt', () => {
     it('should deparse ALTER TABLE statement', () => {
-      const ast = {
+      const ast: { AlterTableStmt: AlterTableStmt } = {
         AlterTableStmt: {
           relation: {
-            RangeVar: {
-              schemaname: null as string | null,
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'users',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           cmds: [
             {
@@ -341,32 +326,32 @@ describe('Advanced Statement Deparsers', () => {
                     typeName: {
                       names: [{ String: { sval: 'text' } }],
                       typemod: -1,
-                      arrayBounds: null as any[] | null,
+                      arrayBounds: undefined,
                       location: -1
                     },
                     inhcount: 0,
                     is_local: true,
                     is_not_null: false,
                     is_from_type: false,
-                    storage: null as string | null,
+                    storage: undefined,
                     raw_default: null as any,
                     cooked_default: null as any,
-                    identity: null as string | null,
+                    identity: undefined,
                     identitySequence: null as any,
-                    generated: null as string | null,
+                    generated: undefined,
                     collClause: null as any,
                     collOid: 0,
-                    constraints: null as any[] | null,
-                    fdwoptions: null as any[] | null,
+                    constraints: undefined,
+                    fdwoptions: undefined,
                     location: -1
                   }
                 },
-                behavior: null as string | null,
+                behavior: undefined,
                 missing_ok: false
               }
             }
           ],
-          objtype: 'OBJECT_TABLE',
+          objtype: "OBJECT_TABLE",
           missing_ok: false
         }
       };
@@ -375,17 +360,15 @@ describe('Advanced Statement Deparsers', () => {
     });
 
     it('should deparse ALTER TABLE IF EXISTS statement', () => {
-      const ast = {
+      const ast: { AlterTableStmt: AlterTableStmt } = {
         AlterTableStmt: {
           relation: {
-            RangeVar: {
-              schemaname: null as string | null,
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'users',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           cmds: [
             {
@@ -398,7 +381,7 @@ describe('Advanced Statement Deparsers', () => {
               }
             }
           ],
-          objtype: 'OBJECT_TABLE',
+          objtype: "OBJECT_TABLE",
           missing_ok: true
         }
       };
@@ -407,17 +390,15 @@ describe('Advanced Statement Deparsers', () => {
     });
 
     it('should deparse ALTER INDEX statement', () => {
-      const ast = {
+      const ast: { AlterTableStmt: AlterTableStmt } = {
         AlterTableStmt: {
           relation: {
-            RangeVar: {
-              schemaname: null as string | null,
-              relname: 'idx_users_email',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'idx_users_email',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           cmds: [
             {
@@ -425,12 +406,12 @@ describe('Advanced Statement Deparsers', () => {
                 subtype: 'AT_SetTableSpace',
                 name: 'new_tablespace',
                 def: null as any,
-                behavior: null as string | null,
+                behavior: undefined,
                 missing_ok: false
               }
             }
           ],
-          objtype: 'OBJECT_INDEX',
+          objtype: "OBJECT_INDEX",
           missing_ok: false
         }
       };
