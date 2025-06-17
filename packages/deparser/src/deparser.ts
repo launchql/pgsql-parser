@@ -3229,7 +3229,18 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.object) {
-      output.push(this.visit(node.object, context));
+      // Handle object names specially for CommentStmt - they should be dot-separated, not comma-separated
+      if (node.object && typeof node.object === 'object' && 'List' in node.object) {
+        const list = node.object.List as t.List;
+        if (list.items && list.items.length > 0) {
+          const objectName = ListUtils.unwrapList(list.items)
+            .map(item => this.visit(item, context))
+            .join('.');
+          output.push(objectName);
+        }
+      } else {
+        output.push(this.visit(node.object, context));
+      }
     }
     
     output.push('IS');
