@@ -618,7 +618,25 @@ export class Deparser implements DeparserVisitor {
     }
 
     if (node.over) {
-      result += ` OVER ${this.WindowDef(node.over, context)}`;
+      const windowParts: string[] = [];
+      
+      if (node.over.partitionClause) {
+        const partitions = ListUtils.unwrapList(node.over.partitionClause);
+        const partitionStrs = partitions.map(p => this.visit(p, context));
+        windowParts.push(`PARTITION BY ${partitionStrs.join(', ')}`);
+      }
+      
+      if (node.over.orderClause) {
+        const orders = ListUtils.unwrapList(node.over.orderClause);
+        const orderStrs = orders.map(o => this.visit(o, context));
+        windowParts.push(`ORDER BY ${orderStrs.join(', ')}`);
+      }
+      
+      if (windowParts.length > 0) {
+        result += ` OVER (${windowParts.join(' ')})`;
+      } else {
+        result += ` OVER ()`;
+      }
     }
 
     return result;
