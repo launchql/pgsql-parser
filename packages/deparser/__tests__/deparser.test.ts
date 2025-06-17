@@ -1,4 +1,5 @@
 import { Deparser } from '../src/deparser';
+import { A_Expr_Kind } from '@pgsql/types';
 
 describe('Deparser', () => {
   describe('basic SQL statements', () => {
@@ -197,7 +198,7 @@ describe('Deparser', () => {
                   name: [
                     {
                       String: {
-                        str: '='
+                        sval: '='
                       }
                     }
                   ],
@@ -206,7 +207,7 @@ describe('Deparser', () => {
                       fields: [
                         {
                           String: {
-                            str: 'id'
+                            sval: 'id'
                           }
                         }
                       ]
@@ -247,7 +248,7 @@ describe('Deparser', () => {
                   name: [
                     {
                       String: {
-                        str: '='
+                        sval: '='
                       }
                     }
                   ],
@@ -256,7 +257,7 @@ describe('Deparser', () => {
                       fields: [
                         {
                           String: {
-                            str: 'expired'
+                            sval: 'expired'
                           }
                         }
                       ]
