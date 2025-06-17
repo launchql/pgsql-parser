@@ -35,16 +35,22 @@ export class TestUtils {
     }
   }
 
-  expectAstMatch(sql: string) {
-    const tree = this.tryParse(sql);
-    if (tree.stmts) {
-      tree.stmts.forEach((stmt) => {
-        if (stmt.stmt) {
-          const outSql = deparse(stmt.stmt);
-          const reparsed = parse(outSql);
-          expect(cleanTree(reparsed.stmts || [])).toEqual(cleanTree([stmt]));
-        }
-      });
+  expectAstMatch(relativePath: string, sql: string) {
+    let tree: any;
+    try {
+      tree = this.tryParse(sql);
+      if (tree.stmts) {
+        tree.stmts.forEach((stmt: any) => {
+          if (stmt.stmt) {
+            const outSql = deparse(stmt.stmt);
+            const reparsed = parse(outSql);
+            expect(cleanTree(reparsed.stmts || [])).toEqual(cleanTree([stmt]));
+          }
+        });
+      }
+    } catch (err) {
+      console.error(`\n❌ BROKEN FIXTURE: ${relativePath}\n❌ FIXTURE SQL: ${sql}${tree ? `\n❌ FIXTURE AST: ${JSON.stringify(cleanTree(tree), null, 2)}` : ''}`);
+      throw err;
     }
   }
 }
@@ -71,11 +77,8 @@ export class FixtureTestUtils extends TestUtils {
   runFixtureTests(filters: string[]) {
     this.getTestEntries(filters).forEach(([relativePath, sql]) => {
       try {
-        this.expectAstMatch(sql);
+        this.expectAstMatch(relativePath, sql);
       } catch (err) {
-        console.error('\n❌ BROKEN FIXTURE:', relativePath);
-        console.error('\n❌ FIXTURE SQL:', sql);
-        console.error('----------------------------------------');
         throw err;
       }
     });
