@@ -27,7 +27,7 @@ describe('Tablespace Statement Deparsers', () => {
           owner: {
             RoleSpec: {
               rolename: 'postgres',
-              roletype: "ROLESPEC_CSTRING",
+              roletype: "ROLESPEC_CSTRING" as RoleSpecType,
               location: -1
             }
           },
@@ -50,7 +50,7 @@ describe('Tablespace Statement Deparsers', () => {
               DefElem: {
                 defname: 'seq_page_cost',
                 arg: { Float: { fval: '0.1' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }
@@ -109,7 +109,7 @@ describe('Tablespace Statement Deparsers', () => {
               DefElem: {
                 defname: 'seq_page_cost',
                 arg: { Float: { fval: '0.2' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }
@@ -130,7 +130,7 @@ describe('Tablespace Statement Deparsers', () => {
               DefElem: {
                 defname: 'seq_page_cost',
                 arg: null as any,
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }
@@ -151,7 +151,7 @@ describe('Tablespace Statement Deparsers', () => {
               DefElem: {
                 defname: 'seq_page_cost',
                 arg: { Float: { fval: '0.1' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             },
@@ -159,7 +159,7 @@ describe('Tablespace Statement Deparsers', () => {
               DefElem: {
                 defname: 'random_page_cost',
                 arg: { Float: { fval: '0.1' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }

@@ -40,7 +40,7 @@ describe('DDL Statement Deparsers', () => {
         CreateSchemaStmt: {
           schemaname: 'test_schema',
           authrole: {
-            roletype: "ROLESPEC_CSTRING",
+            roletype: "ROLESPEC_CSTRING" as RoleSpecType,
             rolename: 'test_user',
             location: 40
           }
@@ -54,7 +54,7 @@ describe('DDL Statement Deparsers', () => {
       const ast = {
         CreateSchemaStmt: {
           authrole: {
-            roletype: "ROLESPEC_CSTRING",
+            roletype: "ROLESPEC_CSTRING" as RoleSpecType,
             rolename: 'test_user',
             location: 28
           }
@@ -78,7 +78,7 @@ describe('DDL Statement Deparsers', () => {
               }
             }
           ],
-          removeType: "OBJECT_TABLE",
+          removeType: "OBJECT_TABLE" as ObjectType,
           behavior: 'DROP_RESTRICT'
         }
       };
@@ -101,7 +101,7 @@ describe('DDL Statement Deparsers', () => {
               }
             }
           ],
-          removeType: "OBJECT_TABLE",
+          removeType: "OBJECT_TABLE" as ObjectType,
           behavior: 'DROP_RESTRICT',
           missing_ok: true
         }
@@ -125,7 +125,7 @@ describe('DDL Statement Deparsers', () => {
               }
             }
           ],
-          removeType: "OBJECT_TABLE",
+          removeType: "OBJECT_TABLE" as ObjectType,
           behavior: 'DROP_CASCADE'
         }
       };
@@ -148,7 +148,7 @@ describe('DDL Statement Deparsers', () => {
               }
             }
           ],
-          removeType: "OBJECT_INDEX",
+          removeType: "OBJECT_INDEX" as ObjectType,
           behavior: 'DROP_RESTRICT',
           concurrent: true
         }
@@ -163,7 +163,7 @@ describe('DDL Statement Deparsers', () => {
           objects: [
             { String: { sval: 'test_schema' } }
           ],
-          removeType: "OBJECT_SCHEMA",
+          removeType: "OBJECT_SCHEMA" as ObjectType,
           behavior: 'DROP_RESTRICT'
         }
       };
@@ -193,7 +193,7 @@ describe('DDL Statement Deparsers', () => {
               }
             }
           ],
-          removeType: "OBJECT_TABLE",
+          removeType: "OBJECT_TABLE" as ObjectType,
           behavior: 'DROP_RESTRICT'
         }
       };

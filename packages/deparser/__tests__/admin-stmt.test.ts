@@ -85,7 +85,7 @@ describe('Administrative Statement Deparsers', () => {
               DefElem: {
                 defname: 'owner',
                 arg: { String: { sval: 'postgres' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             },
@@ -93,7 +93,7 @@ describe('Administrative Statement Deparsers', () => {
               DefElem: {
                 defname: 'encoding',
                 arg: { String: { sval: 'UTF8' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }
@@ -158,7 +158,7 @@ describe('Administrative Statement Deparsers', () => {
                 defnamespace: undefined,
                 defname: 'force',
                 arg: { String: { sval: 'true' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }

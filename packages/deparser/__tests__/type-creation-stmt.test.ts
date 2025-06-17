@@ -141,7 +141,7 @@ describe('Type Creation Statement Deparsers', () => {
                 defnamespace: undefined,
                 defname: 'subtype',
                 arg: { String: { sval: 'int4' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             },
@@ -150,7 +150,7 @@ describe('Type Creation Statement Deparsers', () => {
                 defnamespace: undefined,
                 defname: 'subtype_opclass',
                 arg: { String: { sval: 'int4_ops' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }
@@ -174,7 +174,7 @@ describe('Type Creation Statement Deparsers', () => {
                 defnamespace: undefined,
                 defname: 'subtype',
                 arg: { String: { sval: 'date' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }

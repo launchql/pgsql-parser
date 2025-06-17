@@ -152,7 +152,7 @@ describe('Type Statement Deparsers', () => {
               DefElem: {
                 defname: 'login',
                 arg: { Boolean: { boolval: true } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             },
@@ -160,7 +160,7 @@ describe('Type Statement Deparsers', () => {
               DefElem: {
                 defname: 'superuser',
                 arg: { Boolean: { boolval: true } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }

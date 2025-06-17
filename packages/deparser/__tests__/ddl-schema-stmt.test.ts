@@ -39,7 +39,7 @@ describe('DDL Schema Statement Deparsers', () => {
           schemaname: 'test_schema',
           authrole: {
             RoleSpec: {
-              roletype: "ROLESPEC_CSTRING",
+              roletype: "ROLESPEC_CSTRING" as RoleSpecType,
               rolename: 'test_user',
               location: -1
             }
@@ -58,7 +58,7 @@ describe('DDL Schema Statement Deparsers', () => {
           schemaname: undefined as string | undefined,
           authrole: {
             RoleSpec: {
-              roletype: "ROLESPEC_CSTRING",
+              roletype: "ROLESPEC_CSTRING" as RoleSpecType,
               rolename: 'test_user',
               location: -1
             }
@@ -88,7 +88,7 @@ describe('DDL Schema Statement Deparsers', () => {
               }
             }
           ],
-          removeType: "OBJECT_TABLE",
+          removeType: "OBJECT_TABLE" as ObjectType,
           behavior: null as any,
           missing_ok: false,
           concurrent: false
@@ -113,7 +113,7 @@ describe('DDL Schema Statement Deparsers', () => {
               }
             }
           ],
-          removeType: "OBJECT_TABLE",
+          removeType: "OBJECT_TABLE" as ObjectType,
           behavior: 'DROP_CASCADE' ,
           missing_ok: false,
           concurrent: false
@@ -138,7 +138,7 @@ describe('DDL Schema Statement Deparsers', () => {
               }
             }
           ],
-          removeType: "OBJECT_TABLE",
+          removeType: "OBJECT_TABLE" as ObjectType,
           behavior: 'DROP_RESTRICT' ,
           missing_ok: false,
           concurrent: false
@@ -163,7 +163,7 @@ describe('DDL Schema Statement Deparsers', () => {
               }
             }
           ],
-          removeType: "OBJECT_VIEW",
+          removeType: "OBJECT_VIEW" as ObjectType,
           behavior: null as any,
           missing_ok: false,
           concurrent: false
@@ -188,7 +188,7 @@ describe('DDL Schema Statement Deparsers', () => {
               }
             }
           ],
-          removeType: "OBJECT_INDEX",
+          removeType: "OBJECT_INDEX" as ObjectType,
           behavior: null as any,
           missing_ok: false,
           concurrent: false
@@ -206,7 +206,7 @@ describe('DDL Schema Statement Deparsers', () => {
               String: { sval: 'test_schema' }
             }
           ],
-          removeType: "OBJECT_SCHEMA",
+          removeType: "OBJECT_SCHEMA" as ObjectType,
           behavior: null as any,
           missing_ok: false,
           concurrent: false
@@ -224,7 +224,7 @@ describe('DDL Schema Statement Deparsers', () => {
               String: { sval: 'test_db' }
             }
           ],
-          removeType: "OBJECT_DATABASE",
+          removeType: "OBJECT_DATABASE" as ObjectType,
           behavior: null as any,
           missing_ok: false,
           concurrent: false
@@ -254,7 +254,7 @@ describe('DDL Schema Statement Deparsers', () => {
               }
             }
           ],
-          removeType: "OBJECT_FUNCTION",
+          removeType: "OBJECT_FUNCTION" as ObjectType,
           behavior: null as any,
           missing_ok: false,
           concurrent: false
@@ -289,7 +289,7 @@ describe('DDL Schema Statement Deparsers', () => {
               }
             }
           ],
-          removeType: "OBJECT_TABLE",
+          removeType: "OBJECT_TABLE" as ObjectType,
           behavior: null as any,
           missing_ok: false,
           concurrent: false
@@ -353,7 +353,7 @@ describe('DDL Schema Statement Deparsers', () => {
               }
             }
           ],
-          objtype: "OBJECT_TABLE"
+          objtype: "OBJECT_TABLE" as ObjectType
         }
       };
       
@@ -385,7 +385,7 @@ describe('DDL Schema Statement Deparsers', () => {
               }
             }
           ],
-          objtype: "OBJECT_VIEW"
+          objtype: "OBJECT_VIEW" as ObjectType
         }
       };
       
@@ -406,7 +406,7 @@ describe('DDL Schema Statement Deparsers', () => {
             }
           },
           cmds: [] as any[],
-          objtype: "OBJECT_MATVIEW"
+          objtype: "OBJECT_MATVIEW" as ObjectType
         }
       };
       
@@ -475,7 +475,7 @@ describe('DDL Schema Statement Deparsers', () => {
               }
             }
           ],
-          objtype: "OBJECT_TABLE"
+          objtype: "OBJECT_TABLE" as ObjectType
         }
       };
       

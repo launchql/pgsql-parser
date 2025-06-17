@@ -42,7 +42,7 @@ describe('Schema Statement Deparsers', () => {
           authrole: {
             RoleSpec: {
               rolename: 'test_user',
-              roletype: "ROLESPEC_CSTRING",
+              roletype: "ROLESPEC_CSTRING" as RoleSpecType,
               location: -1
             }
           },
@@ -62,7 +62,7 @@ describe('Schema Statement Deparsers', () => {
           authrole: {
             RoleSpec: {
               rolename: 'test_user',
-              roletype: "ROLESPEC_CSTRING",
+              roletype: "ROLESPEC_CSTRING" as RoleSpecType,
               location: -1
             }
           },
@@ -83,7 +83,7 @@ describe('Schema Statement Deparsers', () => {
           objects: [
             [{ String: { sval: 'users' } }]
           ],
-          removeType: "OBJECT_TABLE",
+          removeType: "OBJECT_TABLE" as ObjectType,
           behavior: null as any,
           missing_ok: false,
           concurrent: false,
@@ -100,7 +100,7 @@ describe('Schema Statement Deparsers', () => {
           objects: [
             [{ String: { sval: 'users' } }]
           ],
-          removeType: "OBJECT_TABLE",
+          removeType: "OBJECT_TABLE" as ObjectType,
           behavior: null as any,
           missing_ok: true,
           concurrent: false,
@@ -117,7 +117,7 @@ describe('Schema Statement Deparsers', () => {
           objects: [
             [{ String: { sval: 'users' } }]
           ],
-          removeType: "OBJECT_TABLE",
+          removeType: "OBJECT_TABLE" as ObjectType,
           behavior: 'DROP_CASCADE',
           missing_ok: false,
           concurrent: false,
@@ -134,7 +134,7 @@ describe('Schema Statement Deparsers', () => {
           objects: [
             [{ String: { sval: 'idx_users_email' } }]
           ],
-          removeType: "OBJECT_INDEX",
+          removeType: "OBJECT_INDEX" as ObjectType,
           behavior: null as any,
           missing_ok: false,
           concurrent: true,
@@ -151,7 +151,7 @@ describe('Schema Statement Deparsers', () => {
           objects: [
             [{ String: { sval: 'user_view' } }]
           ],
-          removeType: "OBJECT_VIEW",
+          removeType: "OBJECT_VIEW" as ObjectType,
           behavior: null as any,
           missing_ok: false,
           concurrent: false,
@@ -168,7 +168,7 @@ describe('Schema Statement Deparsers', () => {
           objects: [
             [{ String: { sval: 'calculate_total' } }]
           ],
-          removeType: "OBJECT_FUNCTION",
+          removeType: "OBJECT_FUNCTION" as ObjectType,
           behavior: null as any,
           missing_ok: false,
           concurrent: false,
@@ -186,7 +186,7 @@ describe('Schema Statement Deparsers', () => {
             [{ String: { sval: 'table1' } }],
             [{ String: { sval: 'table2' } }]
           ],
-          removeType: "OBJECT_TABLE",
+          removeType: "OBJECT_TABLE" as ObjectType,
           behavior: null as any,
           missing_ok: false,
           concurrent: false,
@@ -206,7 +206,7 @@ describe('Schema Statement Deparsers', () => {
               { String: { sval: 'users' } }
             ]
           ],
-          removeType: 'OBJECT_TABLE',
+          removeType: 'OBJECT_TABLE' as ObjectType,
           behavior: null as any,
           missing_ok: false,
           concurrent: false,

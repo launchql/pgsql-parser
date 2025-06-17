@@ -25,7 +25,7 @@ describe('Advanced Policy Statement Deparsers', () => {
           roles: [
             {
               RoleSpec: {
-                roletype: "ROLESPEC_CSTRING",
+                roletype: "ROLESPEC_CSTRING" as RoleSpecType,
                 rolename: 'app_user',
                 location: -1
               }
@@ -84,7 +84,7 @@ describe('Advanced Policy Statement Deparsers', () => {
           roles: [
             {
               RoleSpec: {
-                roletype: "ROLESPEC_CSTRING",
+                roletype: "ROLESPEC_CSTRING" as RoleSpecType,
                 rolename: 'editor',
                 location: -1
               }
@@ -145,7 +145,7 @@ describe('Advanced Policy Statement Deparsers', () => {
                 defnamespace: undefined,
                 defname: 'user',
                 arg: { String: { sval: 'remote_user' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             },
@@ -154,7 +154,7 @@ describe('Advanced Policy Statement Deparsers', () => {
                 defnamespace: undefined,
                 defname: 'password',
                 arg: { String: { sval: 'secret123' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }
@@ -293,7 +293,7 @@ describe('Advanced Policy Statement Deparsers', () => {
                 defnamespace: undefined,
                 defname: 'publish',
                 arg: { String: { sval: 'insert,update,delete' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }
@@ -334,7 +334,7 @@ describe('Advanced Policy Statement Deparsers', () => {
                 defnamespace: undefined,
                 defname: 'copy_data',
                 arg: { String: { sval: 'false' } },
-                defaction: 'DEFELEM_UNSPEC',
+                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
                 location: -1
               }
             }
