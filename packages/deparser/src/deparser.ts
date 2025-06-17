@@ -2232,6 +2232,236 @@ export class Deparser implements DeparserVisitor {
             output.push('()');
           }
           break;
+        case 'AT_ResetRelOptions':
+          output.push('RESET');
+          if (node.def && Array.isArray(node.def)) {
+            const options = ListUtils.unwrapList(node.def)
+              .map(option => this.visit(option, context))
+              .join(', ');
+            output.push(`(${options})`);
+          } else {
+            output.push('()');
+          }
+          break;
+        case 'AT_ColumnDefault':
+          output.push('ALTER COLUMN');
+          if (node.name) {
+            output.push(QuoteUtils.quote(node.name));
+          }
+          if (node.def) {
+            output.push('SET DEFAULT');
+            output.push(this.visit(node.def, context));
+          } else {
+            output.push('DROP DEFAULT');
+          }
+          break;
+        case 'AT_SetStorage':
+          output.push('ALTER COLUMN');
+          if (node.name) {
+            output.push(QuoteUtils.quote(node.name));
+          }
+          output.push('SET STORAGE');
+          if (node.def) {
+            const storageType = this.visit(node.def, context);
+            output.push(storageType);
+          }
+          break;
+        case 'AT_ClusterOn':
+          output.push('CLUSTER ON');
+          if (node.name) {
+            output.push(QuoteUtils.quote(node.name));
+          }
+          break;
+        case 'AT_DropCluster':
+          output.push('SET WITHOUT CLUSTER');
+          break;
+        case 'AT_ChangeOwner':
+          output.push('OWNER TO');
+          if (node.newowner) {
+            output.push(this.RoleSpec(node.newowner, context));
+          }
+          break;
+        case 'AT_AddInherit':
+          output.push('INHERIT');
+          if (node.def) {
+            output.push(this.visit(node.def, context));
+          }
+          break;
+        case 'AT_DropInherit':
+          output.push('NO INHERIT');
+          if (node.def) {
+            output.push(this.visit(node.def, context));
+          }
+          break;
+        case 'AT_SetNotNull':
+          output.push('ALTER COLUMN');
+          if (node.name) {
+            output.push(QuoteUtils.quote(node.name));
+          }
+          output.push('SET NOT NULL');
+          break;
+        case 'AT_DropNotNull':
+          output.push('ALTER COLUMN');
+          if (node.name) {
+            output.push(QuoteUtils.quote(node.name));
+          }
+          output.push('DROP NOT NULL');
+          break;
+        case 'AT_SetStatistics':
+          output.push('ALTER COLUMN');
+          if (node.name) {
+            output.push(QuoteUtils.quote(node.name));
+          }
+          output.push('SET STATISTICS');
+          if (node.def) {
+            output.push(this.visit(node.def, context));
+          }
+          break;
+        case 'AT_SetOptions':
+          output.push('ALTER COLUMN');
+          if (node.name) {
+            output.push(QuoteUtils.quote(node.name));
+          }
+          output.push('SET');
+          if (node.def && Array.isArray(node.def)) {
+            const options = ListUtils.unwrapList(node.def)
+              .map(option => this.visit(option, context))
+              .join(', ');
+            output.push(`(${options})`);
+          }
+          break;
+        case 'AT_ResetOptions':
+          output.push('ALTER COLUMN');
+          if (node.name) {
+            output.push(QuoteUtils.quote(node.name));
+          }
+          output.push('RESET');
+          if (node.def && Array.isArray(node.def)) {
+            const options = ListUtils.unwrapList(node.def)
+              .map(option => this.visit(option, context))
+              .join(', ');
+            output.push(`(${options})`);
+          }
+          break;
+        case 'AT_SetCompression':
+          output.push('ALTER COLUMN');
+          if (node.name) {
+            output.push(QuoteUtils.quote(node.name));
+          }
+          output.push('SET COMPRESSION');
+          if (node.def) {
+            output.push(this.visit(node.def, context));
+          }
+          break;
+        case 'AT_ValidateConstraint':
+          output.push('VALIDATE CONSTRAINT');
+          if (node.name) {
+            output.push(QuoteUtils.quote(node.name));
+          }
+          break;
+        case 'AT_EnableTrig':
+          output.push('ENABLE TRIGGER');
+          if (node.name) {
+            output.push(QuoteUtils.quote(node.name));
+          }
+          break;
+        case 'AT_EnableAlwaysTrig':
+          output.push('ENABLE ALWAYS TRIGGER');
+          if (node.name) {
+            output.push(QuoteUtils.quote(node.name));
+          }
+          break;
+        case 'AT_EnableReplicaTrig':
+          output.push('ENABLE REPLICA TRIGGER');
+          if (node.name) {
+            output.push(QuoteUtils.quote(node.name));
+          }
+          break;
+        case 'AT_DisableTrig':
+          output.push('DISABLE TRIGGER');
+          if (node.name) {
+            output.push(QuoteUtils.quote(node.name));
+          }
+          break;
+        case 'AT_EnableTrigAll':
+          output.push('ENABLE TRIGGER ALL');
+          break;
+        case 'AT_DisableTrigAll':
+          output.push('DISABLE TRIGGER ALL');
+          break;
+        case 'AT_EnableTrigUser':
+          output.push('ENABLE TRIGGER USER');
+          break;
+        case 'AT_DisableTrigUser':
+          output.push('DISABLE TRIGGER USER');
+          break;
+        case 'AT_EnableRule':
+          output.push('ENABLE RULE');
+          if (node.name) {
+            output.push(QuoteUtils.quote(node.name));
+          }
+          break;
+        case 'AT_EnableAlwaysRule':
+          output.push('ENABLE ALWAYS RULE');
+          if (node.name) {
+            output.push(QuoteUtils.quote(node.name));
+          }
+          break;
+        case 'AT_EnableReplicaRule':
+          output.push('ENABLE REPLICA RULE');
+          if (node.name) {
+            output.push(QuoteUtils.quote(node.name));
+          }
+          break;
+        case 'AT_DisableRule':
+          output.push('DISABLE RULE');
+          if (node.name) {
+            output.push(QuoteUtils.quote(node.name));
+          }
+          break;
+        case 'AT_SetAccessMethod':
+          output.push('SET ACCESS METHOD');
+          if (node.name) {
+            output.push(QuoteUtils.quote(node.name));
+          }
+          break;
+        case 'AT_EnableRowSecurity':
+          output.push('ENABLE ROW LEVEL SECURITY');
+          break;
+        case 'AT_DisableRowSecurity':
+          output.push('DISABLE ROW LEVEL SECURITY');
+          break;
+        case 'AT_ForceRowSecurity':
+          output.push('FORCE ROW LEVEL SECURITY');
+          break;
+        case 'AT_NoForceRowSecurity':
+          output.push('NO FORCE ROW LEVEL SECURITY');
+          break;
+        case 'AT_AttachPartition':
+          output.push('ATTACH PARTITION');
+          if (node.def) {
+            output.push(this.visit(node.def, context));
+          }
+          break;
+        case 'AT_DetachPartition':
+          output.push('DETACH PARTITION');
+          if (node.def) {
+            output.push(this.visit(node.def, context));
+          }
+          break;
+        case 'AT_DetachPartitionFinalize':
+          output.push('DETACH PARTITION');
+          if (node.def) {
+            output.push(this.visit(node.def, context));
+          }
+          output.push('FINALIZE');
+          break;
+        case 'AT_SetLogged':
+          output.push('SET LOGGED');
+          break;
+        case 'AT_SetUnLogged':
+          output.push('SET UNLOGGED');
+          break;
         default:
           throw new Error(`Unsupported AlterTableCmd subtype: ${node.subtype}`);
       }
