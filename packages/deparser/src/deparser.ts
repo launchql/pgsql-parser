@@ -2159,6 +2159,51 @@ export class Deparser implements DeparserVisitor {
         case 'OBJECT_EVENT_TRIGGER':
           output.push('EVENT TRIGGER');
           break;
+        case 'OBJECT_AMOP':
+          output.push('OPERATOR CLASS');
+          break;
+        case 'OBJECT_AMPROC':
+          output.push('OPERATOR CLASS');
+          break;
+        case 'OBJECT_ATTRIBUTE':
+          output.push('ATTRIBUTE');
+          break;
+        case 'OBJECT_DEFAULT':
+          output.push('DEFAULT');
+          break;
+        case 'OBJECT_DEFACL':
+          output.push('DEFAULT PRIVILEGES');
+          break;
+        case 'OBJECT_PARAMETER_ACL':
+          output.push('PARAMETER');
+          break;
+        case 'OBJECT_PUBLICATION_NAMESPACE':
+          output.push('PUBLICATION');
+          break;
+        case 'OBJECT_PUBLICATION_REL':
+          output.push('PUBLICATION');
+          break;
+        case 'OBJECT_ROUTINE':
+          output.push('ROUTINE');
+          break;
+        case 'OBJECT_TABCONSTRAINT':
+          output.push('CONSTRAINT');
+          break;
+        case 'OBJECT_TSCONFIGURATION':
+          output.push('TEXT SEARCH CONFIGURATION');
+          break;
+        case 'OBJECT_TSDICTIONARY':
+          output.push('TEXT SEARCH DICTIONARY');
+          break;
+        case 'OBJECT_TSPARSER':
+          output.push('TEXT SEARCH PARSER');
+          break;
+        case 'OBJECT_TSTEMPLATE':
+          output.push('TEXT SEARCH TEMPLATE');
+          break;
+        case 'OBJECT_USER_MAPPING':
+          output.push('USER MAPPING');
+          break;
         default:
           throw new Error(`Unsupported DROP object type: ${node.removeType}`);
       }
@@ -4433,6 +4478,72 @@ export class Deparser implements DeparserVisitor {
         break;
       case 'OBJECT_DOMCONSTRAINT':
         output.push('DOMAIN');
+        break;
+      case 'OBJECT_AGGREGATE':
+        output.push('AGGREGATE');
+        break;
+      case 'OBJECT_COLLATION':
+        output.push('COLLATION');
+        break;
+      case 'OBJECT_CONVERSION':
+        output.push('CONVERSION');
+        break;
+      case 'OBJECT_EXTENSION':
+        output.push('EXTENSION');
+        break;
+      case 'OBJECT_FOREIGN_SERVER':
+        output.push('SERVER');
+        break;
+      case 'OBJECT_FOREIGN_TABLE':
+        output.push('FOREIGN TABLE');
+        break;
+      case 'OBJECT_LANGUAGE':
+        output.push('LANGUAGE');
+        break;
+      case 'OBJECT_MATVIEW':
+        output.push('MATERIALIZED VIEW');
+        break;
+      case 'OBJECT_OPCLASS':
+        output.push('OPERATOR CLASS');
+        break;
+      case 'OBJECT_OPERATOR':
+        output.push('OPERATOR');
+        break;
+      case 'OBJECT_OPFAMILY':
+        output.push('OPERATOR FAMILY');
+        break;
+      case 'OBJECT_POLICY':
+        output.push('POLICY');
+        break;
+      case 'OBJECT_PUBLICATION':
+        output.push('PUBLICATION');
+        break;
+      case 'OBJECT_ROLE':
+        output.push('ROLE');
+        break;
+      case 'OBJECT_RULE':
+        output.push('RULE');
+        break;
+      case 'OBJECT_SUBSCRIPTION':
+        output.push('SUBSCRIPTION');
+        break;
+      case 'OBJECT_TABLESPACE':
+        output.push('TABLESPACE');
+        break;
+      case 'OBJECT_TRIGGER':
+        output.push('TRIGGER');
+        break;
+      case 'OBJECT_TSCONFIGURATION':
+        output.push('TEXT SEARCH CONFIGURATION');
+        break;
+      case 'OBJECT_TSDICTIONARY':
+        output.push('TEXT SEARCH DICTIONARY');
+        break;
+      case 'OBJECT_TSPARSER':
+        output.push('TEXT SEARCH PARSER');
+        break;
+      case 'OBJECT_TSTEMPLATE':
+        output.push('TEXT SEARCH TEMPLATE');
         break;
       default:
         throw new Error(`Unsupported RenameStmt renameType: ${node.renameType}`);
