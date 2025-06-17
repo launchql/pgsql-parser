@@ -79,7 +79,7 @@ describe('DDL Statement Deparsers', () => {
             }
           ],
           removeType: "OBJECT_TABLE" as ObjectType,
-          behavior: 'DROP_RESTRICT'
+          behavior: 'DROP_RESTRICT' as DropBehavior
         }
       };
       
@@ -102,7 +102,7 @@ describe('DDL Statement Deparsers', () => {
             }
           ],
           removeType: "OBJECT_TABLE" as ObjectType,
-          behavior: 'DROP_RESTRICT',
+          behavior: 'DROP_RESTRICT' as DropBehavior,
           missing_ok: true
         }
       };
@@ -126,7 +126,7 @@ describe('DDL Statement Deparsers', () => {
             }
           ],
           removeType: "OBJECT_TABLE" as ObjectType,
-          behavior: 'DROP_CASCADE'
+          behavior: 'DROP_CASCADE' as DropBehavior
         }
       };
       
@@ -149,7 +149,7 @@ describe('DDL Statement Deparsers', () => {
             }
           ],
           removeType: "OBJECT_INDEX" as ObjectType,
-          behavior: 'DROP_RESTRICT',
+          behavior: 'DROP_RESTRICT' as DropBehavior,
           concurrent: true
         }
       };
@@ -164,7 +164,7 @@ describe('DDL Statement Deparsers', () => {
             { String: { sval: 'test_schema' } }
           ],
           removeType: "OBJECT_SCHEMA" as ObjectType,
-          behavior: 'DROP_RESTRICT'
+          behavior: 'DROP_RESTRICT' as DropBehavior
         }
       };
       
@@ -194,7 +194,7 @@ describe('DDL Statement Deparsers', () => {
             }
           ],
           removeType: "OBJECT_TABLE" as ObjectType,
-          behavior: 'DROP_RESTRICT'
+          behavior: 'DROP_RESTRICT' as DropBehavior
         }
       };
       
@@ -232,7 +232,7 @@ describe('DDL Statement Deparsers', () => {
               }
             }
           ],
-          behavior: 'DROP_RESTRICT'
+          behavior: 'DROP_RESTRICT' as DropBehavior
         }
       };
       
@@ -256,7 +256,7 @@ describe('DDL Statement Deparsers', () => {
             }
           ],
           restart_seqs: true,
-          behavior: 'DROP_RESTRICT'
+          behavior: 'DROP_RESTRICT' as DropBehavior
         }
       };
       
@@ -279,7 +279,7 @@ describe('DDL Statement Deparsers', () => {
               }
             }
           ],
-          behavior: 'DROP_CASCADE'
+          behavior: 'DROP_CASCADE' as DropBehavior
         }
       };
       
@@ -310,7 +310,7 @@ describe('DDL Statement Deparsers', () => {
               }
             }
           ],
-          behavior: 'DROP_RESTRICT'
+          behavior: 'DROP_RESTRICT' as DropBehavior
         }
       };
       

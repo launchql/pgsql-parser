@@ -118,7 +118,7 @@ describe('Schema Statement Deparsers', () => {
             [{ String: { sval: 'users' } }]
           ],
           removeType: "OBJECT_TABLE" as ObjectType,
-          behavior: 'DROP_CASCADE',
+          behavior: 'DROP_CASCADE' as DropBehavior,
           missing_ok: false,
           concurrent: false,
           location: -1
@@ -283,7 +283,7 @@ describe('Schema Statement Deparsers', () => {
             }
           ],
           restart_seqs: false,
-          behavior: 'DROP_CASCADE',
+          behavior: 'DROP_CASCADE' as DropBehavior,
           location: -1
         }
       };

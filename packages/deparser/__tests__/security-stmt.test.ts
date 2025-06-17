@@ -110,7 +110,7 @@ describe('Security Statement Deparsers', () => {
             }
           ],
           grant_option: false,
-          behavior: 'DROP_CASCADE'
+          behavior: 'DROP_CASCADE' as DropBehavior
         }
       };
       
@@ -233,7 +233,7 @@ describe('Security Statement Deparsers', () => {
           ],
           opt: [] as any[],
           grantor: null as any,
-          behavior: 'DROP_RESTRICT'
+          behavior: 'DROP_RESTRICT' as DropBehavior
         }
       };
       

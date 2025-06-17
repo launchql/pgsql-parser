@@ -523,7 +523,7 @@ describe('View and Index Statement Deparsers', () => {
           options: undefined,
           whereClause: {
             A_Expr: {
-              kind: "AEXPR_OP",
+              kind: "AEXPR_OP" as A_Expr_Kind,
               name: [{ String: { sval: '=' } }],
               lexpr: {
                 ColumnRef: {

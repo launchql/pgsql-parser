@@ -376,7 +376,7 @@ describe('Advanced Statement Deparsers', () => {
                 subtype: 'AT_DropColumn',
                 name: 'old_column',
                 def: null as any,
-                behavior: 'DROP_CASCADE',
+                behavior: 'DROP_CASCADE' as DropBehavior,
                 missing_ok: false
               }
             }

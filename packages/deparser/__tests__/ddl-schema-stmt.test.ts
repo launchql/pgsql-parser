@@ -114,7 +114,7 @@ describe('DDL Schema Statement Deparsers', () => {
             }
           ],
           removeType: "OBJECT_TABLE" as ObjectType,
-          behavior: 'DROP_CASCADE' ,
+          behavior: 'DROP_CASCADE' as DropBehavior,
           missing_ok: false,
           concurrent: false
         }
@@ -139,7 +139,7 @@ describe('DDL Schema Statement Deparsers', () => {
             }
           ],
           removeType: "OBJECT_TABLE" as ObjectType,
-          behavior: 'DROP_RESTRICT' ,
+          behavior: 'DROP_RESTRICT' as DropBehavior,
           missing_ok: false,
           concurrent: false
         }
@@ -348,7 +348,7 @@ describe('DDL Schema Statement Deparsers', () => {
                   }
                 },
                 newowner: null as any,
-                behavior: 'DROP_RESTRICT' ,
+                behavior: 'DROP_RESTRICT' as DropBehavior,
                 missing_ok: false
               }
             }
@@ -380,7 +380,7 @@ describe('DDL Schema Statement Deparsers', () => {
                 name: undefined,
                 def: null as any,
                 newowner: null as any,
-                behavior: 'DROP_RESTRICT' ,
+                behavior: 'DROP_RESTRICT' as DropBehavior,
                 missing_ok: false
               }
             }
@@ -460,7 +460,7 @@ describe('DDL Schema Statement Deparsers', () => {
                   }
                 },
                 newowner: null as any,
-                behavior: 'DROP_RESTRICT' ,
+                behavior: 'DROP_RESTRICT' as DropBehavior,
                 missing_ok: false
               }
             },
@@ -470,7 +470,7 @@ describe('DDL Schema Statement Deparsers', () => {
                 name: 'old_column',
                 def: null as any,
                 newowner: null as any,
-                behavior: 'DROP_CASCADE',
+                behavior: 'DROP_CASCADE' as DropBehavior,
                 missing_ok: false
               }
             }

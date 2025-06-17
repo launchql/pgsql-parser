@@ -33,7 +33,7 @@ describe('Advanced Policy Statement Deparsers', () => {
           ],
           qual: {
             A_Expr: {
-              kind: "AEXPR_OP",
+              kind: "AEXPR_OP" as A_Expr_Kind,
               name: [{ String: { sval: '=' } }],
               lexpr: {
                 ColumnRef: {
@@ -93,7 +93,7 @@ describe('Advanced Policy Statement Deparsers', () => {
           qual: null as any,
           with_check: {
             A_Expr: {
-              kind: "AEXPR_OP",
+              kind: "AEXPR_OP" as A_Expr_Kind,
               name: [{ String: { sval: '=' } }],
               lexpr: {
                 ColumnRef: {

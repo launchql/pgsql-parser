@@ -68,7 +68,7 @@ describe('Deparser', () => {
               ],
               whereClause: {
                 A_Expr: {
-                  kind: "AEXPR_OP",
+                  kind: "AEXPR_OP" as A_Expr_Kind,
                   name: [
                     {
                       String: {
@@ -199,7 +199,7 @@ describe('Deparser', () => {
               ],
               whereClause: {
                 A_Expr: {
-                  kind: "AEXPR_OP",
+                  kind: "AEXPR_OP" as A_Expr_Kind,
                   name: [
                     {
                       String: {
@@ -251,7 +251,7 @@ describe('Deparser', () => {
               },
               whereClause: {
                 A_Expr: {
-                  kind: "AEXPR_OP",
+                  kind: "AEXPR_OP" as A_Expr_Kind,
                   name: [
                     {
                       String: {

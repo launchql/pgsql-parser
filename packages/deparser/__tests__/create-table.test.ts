@@ -243,7 +243,7 @@ describe('CREATE TABLE statements', () => {
                           contype: "CONSTR_CHECK" as ConstrType,
                           raw_expr: {
                             A_Expr: {
-                              kind: "AEXPR_OP",
+                              kind: "AEXPR_OP" as A_Expr_Kind,
                               name: [{ String: { sval: '>' } }],
                               lexpr: {
                                 ColumnRef: {
@@ -587,7 +587,7 @@ describe('CREATE TABLE statements', () => {
                     contype: "CONSTR_CHECK" as ConstrType,
                     raw_expr: {
                       A_Expr: {
-                        kind: "AEXPR_OP",
+                        kind: "AEXPR_OP" as A_Expr_Kind,
                         name: [{ String: { sval: '>' } }],
                         lexpr: {
                           ColumnRef: {
