@@ -598,12 +598,18 @@ export class Deparser implements DeparserVisitor {
     if (nodeAny.ival !== undefined) {
       if (typeof nodeAny.ival === 'object' && nodeAny.ival.ival !== undefined) {
         return nodeAny.ival.ival.toString();
+      } else if (typeof nodeAny.ival === 'object' && Object.keys(nodeAny.ival).length === 0) {
+        // Handle empty ival object - this represents integer 0
+        return '0';
       } else {
         return nodeAny.ival.toString();
       }
     } else if (nodeAny.fval !== undefined) {
       if (typeof nodeAny.fval === 'object' && nodeAny.fval.fval !== undefined) {
         return nodeAny.fval.fval;
+      } else if (typeof nodeAny.fval === 'object' && Object.keys(nodeAny.fval).length === 0) {
+        // Handle empty fval object - this represents float 0.0
+        return '0.0';
       } else {
         return nodeAny.fval;
       }
@@ -612,18 +618,27 @@ export class Deparser implements DeparserVisitor {
         return QuoteUtils.escape(nodeAny.sval.sval);
       } else if (typeof nodeAny.sval === 'object' && nodeAny.sval.String && nodeAny.sval.String.sval !== undefined) {
         return QuoteUtils.escape(nodeAny.sval.String.sval);
+      } else if (typeof nodeAny.sval === 'object' && Object.keys(nodeAny.sval).length === 0) {
+        // Handle empty sval object - this represents empty string
+        return "''";
       } else {
         return QuoteUtils.escape(nodeAny.sval);
       }
-    }else if (nodeAny.boolval !== undefined) {
+    } else if (nodeAny.boolval !== undefined) {
       if (typeof nodeAny.boolval === 'object' && nodeAny.boolval.boolval !== undefined) {
         return nodeAny.boolval.boolval ? 'true' : 'false';
+      } else if (typeof nodeAny.boolval === 'object' && Object.keys(nodeAny.boolval).length === 0) {
+        // Handle empty boolval object - this represents boolean false
+        return 'false';
       } else {
         return nodeAny.boolval ? 'true' : 'false';
       }
     } else if (nodeAny.bsval !== undefined) {
       if (typeof nodeAny.bsval === 'object' && nodeAny.bsval.bsval !== undefined) {
         return nodeAny.bsval.bsval;
+      } else if (typeof nodeAny.bsval === 'object' && Object.keys(nodeAny.bsval).length === 0) {
+        // Handle empty bsval object
+        return "''";
       } else {
         return nodeAny.bsval;
       }
@@ -641,6 +656,29 @@ export class Deparser implements DeparserVisitor {
       } else if (nodeAny.val.BitString?.bsval !== undefined) {
         return nodeAny.val.BitString.bsval;
       }
+    }
+    
+    // Handle NULL values explicitly
+    if (nodeAny.isnull === true) {
+      return 'NULL';
+    }
+    
+    // Handle cases where the object structure is unexpected
+    if (typeof nodeAny === 'object' && nodeAny !== null) {
+      if (nodeAny.Boolean !== undefined) {
+        return nodeAny.Boolean ? 'true' : 'false';
+      }
+      if (nodeAny.Integer !== undefined) {
+        return nodeAny.Integer.toString();
+      }
+      if (nodeAny.Float !== undefined) {
+        return nodeAny.Float.toString();
+      }
+      if (nodeAny.String !== undefined) {
+        return QuoteUtils.escape(nodeAny.String);
+      }
+      
+      console.warn('A_Const: Unhandled object structure:', JSON.stringify(nodeAny, null, 2));
     }
     
     return 'NULL';
