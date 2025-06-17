@@ -1192,6 +1192,12 @@ export class Deparser implements DeparserVisitor {
   Constraint(node: t.Constraint, context: DeparserContext): string {
     const output: string[] = [];
 
+    // Handle constraint name if present - only for table-level constraints, not domain constraints
+    if (node.conname && !context.isDomainConstraint && (node.contype === 'CONSTR_CHECK' || node.contype === 'CONSTR_UNIQUE' || node.contype === 'CONSTR_PRIMARY' || node.contype === 'CONSTR_FOREIGN')) {
+      output.push('CONSTRAINT');
+      output.push(QuoteUtils.quote(node.conname));
+    }
+
     switch (node.contype) {
       case 'CONSTR_NULL':
         output.push('NULL');
@@ -1210,6 +1216,23 @@ export class Deparser implements DeparserVisitor {
         if (node.raw_expr) {
           output.push(this.formatter.parens(this.visit(node.raw_expr, context)));
         }
+        // Handle NOT VALID for check constraints - only for table constraints, not domain constraints
+        if (node.skip_validation && !context.isDomainConstraint) {
+          output.push('NOT VALID');
+        }
+        break;
+      case 'CONSTR_GENERATED':
+        output.push('GENERATED');
+        if (node.generated_when === 'a') {
+          output.push('ALWAYS');
+        } else if (node.generated_when === 's') {
+          output.push('BY DEFAULT');
+        }
+        output.push('AS');
+        if (node.raw_expr) {
+          output.push(this.formatter.parens(this.visit(node.raw_expr, context)));
+        }
+        output.push('STORED');
         break;
       case 'CONSTR_PRIMARY':
         output.push('PRIMARY KEY');
@@ -1230,10 +1253,6 @@ export class Deparser implements DeparserVisitor {
         }
         break;
       case 'CONSTR_FOREIGN':
-        if (node.conname) {
-          output.push('CONSTRAINT');
-          output.push(QuoteUtils.quote(node.conname));
-        }
         output.push('FOREIGN KEY');
         if (node.fk_attrs && node.fk_attrs.length > 0) {
           const fkAttrs = ListUtils.unwrapList(node.fk_attrs)
@@ -1294,6 +1313,10 @@ export class Deparser implements DeparserVisitor {
               output.push('SET DEFAULT');
               break;
           }
+        }
+        // Handle NOT VALID for foreign key constraints - only for table constraints, not domain constraints
+        if (node.skip_validation && !context.isDomainConstraint) {
+          output.push('NOT VALID');
         }
         break;
     }
@@ -3155,7 +3178,9 @@ export class Deparser implements DeparserVisitor {
         case 'AT_AddConstraint':
           output.push('ADD');
           if (node.def) {
-            output.push(this.visit(node.def, context));
+            // Pass domain context to avoid adding constraint names for domain constraints
+            const domainContext = { ...context, isDomainConstraint: true };
+            output.push(this.visit(node.def, domainContext));
           }
           break;
         case 'AT_DropConstraint':
@@ -3178,7 +3203,9 @@ export class Deparser implements DeparserVisitor {
         case 'C':
           output.push('ADD');
           if (node.def) {
-            output.push(this.visit(node.def, context));
+            // Pass domain context to avoid adding constraint names for domain constraints
+            const domainContext = { ...context, isDomainConstraint: true };
+            output.push(this.visit(node.def, domainContext));
           }
           break;
         case 'X':
