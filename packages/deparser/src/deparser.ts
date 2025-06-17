@@ -425,7 +425,7 @@ export class Deparser implements DeparserVisitor {
     if (node.fromClause) {
       output.push('FROM');
       const fromList = ListUtils.unwrapList(node.fromClause);
-      const fromItems = fromList.map(item => this.deparse(item, context));
+      const fromItems = fromList.map(item => this.visit(item, context));
       output.push(fromItems.join(', '));
     }
 
@@ -456,7 +456,7 @@ export class Deparser implements DeparserVisitor {
     if (node.usingClause) {
       output.push('USING');
       const usingList = ListUtils.unwrapList(node.usingClause);
-      const usingItems = usingList.map(item => this.deparse(item, context));
+      const usingItems = usingList.map(item => this.visit(item, context));
       output.push(usingItems.join(', '));
     }
 
@@ -918,7 +918,7 @@ export class Deparser implements DeparserVisitor {
     return this.formatter.format([
       this.visit(node.arg, context),
       '::',
-      this.TypeCast(node.typeName, context)
+      this.TypeName(node.typeName, context)
     ]);
   }
 
@@ -1860,6 +1860,73 @@ export class Deparser implements DeparserVisitor {
         case 'OBJECT_RULE':
           output.push('RULE');
           break;
+        case 'OBJECT_POLICY':
+          output.push('POLICY');
+          break;
+        case 'OBJECT_ROLE':
+          output.push('ROLE');
+          break;
+
+        case 'OBJECT_TABLESPACE':
+          output.push('TABLESPACE');
+          break;
+        case 'OBJECT_FOREIGN_SERVER':
+          output.push('SERVER');
+          break;
+        case 'OBJECT_FDW':
+          output.push('FOREIGN DATA WRAPPER');
+          break;
+        case 'OBJECT_PUBLICATION':
+          output.push('PUBLICATION');
+          break;
+        case 'OBJECT_SUBSCRIPTION':
+          output.push('SUBSCRIPTION');
+          break;
+        case 'OBJECT_CAST':
+          output.push('CAST');
+          break;
+        case 'OBJECT_TRANSFORM':
+          output.push('TRANSFORM');
+          break;
+        case 'OBJECT_ACCESS_METHOD':
+          output.push('ACCESS METHOD');
+          break;
+        case 'OBJECT_OPERATOR':
+          output.push('OPERATOR');
+          break;
+        case 'OBJECT_FOREIGN_TABLE':
+          output.push('FOREIGN TABLE');
+          break;
+        case 'OBJECT_MATVIEW':
+          output.push('MATERIALIZED VIEW');
+          break;
+        case 'OBJECT_OPCLASS':
+          output.push('OPERATOR CLASS');
+          break;
+        case 'OBJECT_OPFAMILY':
+          output.push('OPERATOR FAMILY');
+          break;
+        case 'OBJECT_COLLATION':
+          output.push('COLLATION');
+          break;
+        case 'OBJECT_CONVERSION':
+          output.push('CONVERSION');
+          break;
+        case 'OBJECT_LANGUAGE':
+          output.push('LANGUAGE');
+          break;
+        case 'OBJECT_LARGEOBJECT':
+          output.push('LARGE OBJECT');
+          break;
+        case 'OBJECT_AGGREGATE':
+          output.push('AGGREGATE');
+          break;
+        case 'OBJECT_STATISTIC_EXT':
+          output.push('STATISTICS');
+          break;
+        case 'OBJECT_EVENT_TRIGGER':
+          output.push('EVENT TRIGGER');
+          break;
         default:
           throw new Error(`Unsupported DROP object type: ${node.removeType}`);
       }
@@ -1876,13 +1943,15 @@ export class Deparser implements DeparserVisitor {
     if (node.objects && node.objects.length > 0) {
       const objects = node.objects.map((objList: any) => {
         if (Array.isArray(objList)) {
-          const objName = objList.map(obj => this.visit(obj, context)).join('.');
+          const objName = objList.map(obj => this.visit(obj, context)).filter(name => name && name.trim()).join('.');
           return objName;
         }
         const objName = this.visit(objList, context);
         return objName;
-      }).join(', ');
-      output.push(objects);
+      }).filter(name => name && name.trim()).join(', ');
+      if (objects) {
+        output.push(objects);
+      }
     }
 
     if (node.behavior === 'DROP_CASCADE') {
@@ -2650,6 +2719,29 @@ export class Deparser implements DeparserVisitor {
             output.push(QuoteUtils.quote(node.name));
           }
           break;
+        case 'C':
+          output.push('ADD');
+          if (node.def) {
+            output.push(this.visit(node.def, context));
+          }
+          break;
+        case 'X':
+          output.push('DROP', 'CONSTRAINT');
+          if (node.name) {
+            output.push(QuoteUtils.quote(node.name));
+          }
+          if (node.behavior === 'DROP_CASCADE') {
+            output.push('CASCADE');
+          } else if (node.behavior === 'DROP_RESTRICT') {
+            output.push('RESTRICT');
+          }
+          break;
+        case 'V':
+          output.push('VALIDATE', 'CONSTRAINT');
+          if (node.name) {
+            output.push(QuoteUtils.quote(node.name));
+          }
+          break;
         default:
           throw new Error(`Unsupported AlterDomainStmt subtype: ${node.subtype}`);
       }
@@ -2889,6 +2981,37 @@ export class Deparser implements DeparserVisitor {
     return output.join(' ');
   }
 
+  AlterPolicyStmt(node: t.AlterPolicyStmt, context: DeparserContext): string {
+    const output: string[] = ['ALTER', 'POLICY'];
+    
+    if (node.policy_name) {
+      output.push(`"${node.policy_name}"`);
+    }
+    
+    if (node.table) {
+      output.push('ON');
+      output.push(this.RangeVar(node.table, context));
+    }
+    
+    if (node.roles && node.roles.length > 0) {
+      output.push('TO');
+      const roles = ListUtils.unwrapList(node.roles).map(role => this.visit(role, context));
+      output.push(roles.join(', '));
+    }
+    
+    if (node.qual) {
+      output.push('USING');
+      output.push(`(${this.visit(node.qual, context)})`);
+    }
+    
+    if (node.with_check) {
+      output.push('WITH CHECK');
+      output.push(`(${this.visit(node.with_check, context)})`);
+    }
+    
+    return output.join(' ');
+  }
+
   CreateUserMappingStmt(node: t.CreateUserMappingStmt, context: DeparserContext): string {
     const output: string[] = ['CREATE'];
     
@@ -3004,6 +3127,583 @@ export class Deparser implements DeparserVisitor {
       output.push('WITH');
       const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, context));
       output.push(`(${options.join(', ')})`);
+    }
+    
+    return output.join(' ');
+  }
+
+  AlterPublicationStmt(node: t.AlterPublicationStmt, context: DeparserContext): string {
+    const output: string[] = ['ALTER', 'PUBLICATION'];
+    
+    if (node.pubname) {
+      output.push(`"${node.pubname}"`);
+    }
+    
+    if (node.action) {
+      switch (node.action) {
+        case 'AP_AddObjects':
+          output.push('ADD');
+          break;
+        case 'AP_DropObjects':
+          output.push('DROP');
+          break;
+        case 'AP_SetObjects':
+          output.push('SET');
+          break;
+        default:
+          throw new Error(`Unsupported AlterPublicationStmt action: ${node.action}`);
+      }
+    }
+    
+    if (node.for_all_tables) {
+      output.push('FOR ALL TABLES');
+    } else if (node.pubobjects && node.pubobjects.length > 0) {
+      output.push('FOR TABLE');
+      const objects = ListUtils.unwrapList(node.pubobjects).map(obj => this.visit(obj, context));
+      output.push(objects.join(', '));
+    }
+    
+    if (node.options && node.options.length > 0) {
+      output.push('WITH');
+      const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, context));
+      output.push(`(${options.join(', ')})`);
+    }
+    
+    return output.join(' ');
+  }
+
+  AlterSubscriptionStmt(node: t.AlterSubscriptionStmt, context: DeparserContext): string {
+    const output: string[] = ['ALTER', 'SUBSCRIPTION'];
+    
+    if (node.subname) {
+      output.push(`"${node.subname}"`);
+    }
+    
+    if (node.kind) {
+      switch (node.kind) {
+        case 'ALTER_SUBSCRIPTION_OPTIONS':
+          output.push('SET');
+          break;
+        case 'ALTER_SUBSCRIPTION_CONNECTION':
+          output.push('CONNECTION');
+          if (node.conninfo) {
+            output.push(`'${node.conninfo}'`);
+          }
+          break;
+        case 'ALTER_SUBSCRIPTION_SET_PUBLICATION':
+          output.push('SET PUBLICATION');
+          if (node.publication && node.publication.length > 0) {
+            const publications = ListUtils.unwrapList(node.publication).map(pub => this.visit(pub, context));
+            output.push(publications.join(', '));
+          }
+          break;
+        case 'ALTER_SUBSCRIPTION_REFRESH':
+          output.push('REFRESH PUBLICATION');
+          break;
+        case 'ALTER_SUBSCRIPTION_ENABLED':
+          output.push('ENABLE');
+          break;
+        case 'ALTER_SUBSCRIPTION_SKIP':
+          output.push('SKIP');
+          break;
+        default:
+          throw new Error(`Unsupported AlterSubscriptionStmt kind: ${node.kind}`);
+      }
+    }
+    
+    if (node.options && node.options.length > 0) {
+      output.push('WITH');
+      const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, context));
+      output.push(`(${options.join(', ')})`);
+    }
+    
+    return output.join(' ');
+  }
+
+  DropSubscriptionStmt(node: t.DropSubscriptionStmt, context: DeparserContext): string {
+    const output: string[] = ['DROP', 'SUBSCRIPTION'];
+    
+    if (node.missing_ok) {
+      output.push('IF EXISTS');
+    }
+    
+    if (node.subname) {
+      output.push(`"${node.subname}"`);
+    }
+    
+    if (node.behavior) {
+      switch (node.behavior) {
+        case 'DROP_CASCADE':
+          output.push('CASCADE');
+          break;
+        case 'DROP_RESTRICT':
+          output.push('RESTRICT');
+          break;
+      }
+    }
+    
+    return output.join(' ');
+  }
+
+  DoStmt(node: t.DoStmt, context: DeparserContext): string {
+    const output: string[] = ['DO'];
+    
+    if (node.args && node.args.length > 0) {
+      const args = ListUtils.unwrapList(node.args).map(arg => this.visit(arg, context));
+      output.push(args.join(' '));
+    }
+    
+    return output.join(' ');
+  }
+
+  InlineCodeBlock(node: t.InlineCodeBlock, context: DeparserContext): string {
+    if (node.source_text) {
+      return `$$${node.source_text}$$`;
+    }
+    return '$$$$';
+  }
+
+  CallContext(node: t.CallContext, context: DeparserContext): string {
+    if (node.atomic !== undefined) {
+      return node.atomic ? 'ATOMIC' : 'NOT ATOMIC';
+    }
+    return '';
+  }
+
+  ConstraintsSetStmt(node: t.ConstraintsSetStmt, context: DeparserContext): string {
+    const output: string[] = ['SET', 'CONSTRAINTS'];
+    
+    if (node.constraints && node.constraints.length > 0) {
+      const constraints = ListUtils.unwrapList(node.constraints).map(constraint => this.visit(constraint, context));
+      output.push(constraints.join(', '));
+    } else {
+      output.push('ALL');
+    }
+    
+    if (node.deferred !== undefined) {
+      output.push(node.deferred ? 'DEFERRED' : 'IMMEDIATE');
+    }
+    
+    return output.join(' ');
+  }
+
+  AlterSystemStmt(node: t.AlterSystemStmt, context: DeparserContext): string {
+    const output: string[] = ['ALTER', 'SYSTEM'];
+    
+    if (node.setstmt) {
+      const setStmt = this.VariableSetStmt(node.setstmt, context);
+      const setStmtWithoutPrefix = setStmt.replace(/^SET\s+/, '');
+      output.push('SET', setStmtWithoutPrefix);
+    }
+    
+    return output.join(' ');
+  }
+
+  VacuumRelation(node: t.VacuumRelation, context: DeparserContext): string {
+    const output: string[] = [];
+    
+    if (node.relation) {
+      output.push(this.RangeVar(node.relation, context));
+    }
+    
+    if (node.va_cols && node.va_cols.length > 0) {
+      output.push('(');
+      const columns = ListUtils.unwrapList(node.va_cols).map(col => this.visit(col, context));
+      output.push(columns.join(', '));
+      output.push(')');
+    }
+    
+    return output.join(' ');
+  }
+
+  DropOwnedStmt(node: t.DropOwnedStmt, context: DeparserContext): string {
+    const output: string[] = ['DROP', 'OWNED', 'BY'];
+    
+    if (node.roles && node.roles.length > 0) {
+      const roles = ListUtils.unwrapList(node.roles).map(role => this.visit(role, context));
+      output.push(roles.join(', '));
+    }
+    
+    if (node.behavior) {
+      switch (node.behavior) {
+        case 'DROP_CASCADE':
+          output.push('CASCADE');
+          break;
+        case 'DROP_RESTRICT':
+          output.push('RESTRICT');
+          break;
+      }
+    }
+    
+    return output.join(' ');
+  }
+
+  ReassignOwnedStmt(node: t.ReassignOwnedStmt, context: DeparserContext): string {
+    const output: string[] = ['REASSIGN', 'OWNED', 'BY'];
+    
+    if (node.roles && node.roles.length > 0) {
+      const roles = ListUtils.unwrapList(node.roles).map(role => this.visit(role, context));
+      output.push(roles.join(', '));
+    }
+    
+    output.push('TO');
+    
+    if (node.newrole) {
+      output.push(this.RoleSpec(node.newrole, context));
+    }
+    
+    return output.join(' ');
+  }
+
+  AlterTSDictionaryStmt(node: t.AlterTSDictionaryStmt, context: DeparserContext): string {
+    const output: string[] = ['ALTER', 'TEXT', 'SEARCH', 'DICTIONARY'];
+    
+    if (node.dictname && node.dictname.length > 0) {
+      const dictName = ListUtils.unwrapList(node.dictname).map(name => this.visit(name, context));
+      output.push(dictName.join('.'));
+    }
+    
+    if (node.options && node.options.length > 0) {
+      output.push('(');
+      const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, context));
+      output.push(options.join(', '));
+      output.push(')');
+    }
+    
+    return output.join(' ');
+  }
+
+  AlterTSConfigurationStmt(node: t.AlterTSConfigurationStmt, context: DeparserContext): string {
+    const output: string[] = ['ALTER', 'TEXT', 'SEARCH', 'CONFIGURATION'];
+    
+    if (node.cfgname && node.cfgname.length > 0) {
+      const cfgName = ListUtils.unwrapList(node.cfgname).map(name => this.visit(name, context));
+      output.push(cfgName.join('.'));
+    }
+    
+    if (node.kind) {
+      switch (node.kind) {
+        case 'ALTER_TSCONFIG_ADD_MAPPING':
+          output.push('ADD', 'MAPPING', 'FOR');
+          break;
+        case 'ALTER_TSCONFIG_ALTER_MAPPING_FOR_TOKEN':
+          output.push('ALTER', 'MAPPING', 'FOR');
+          break;
+        case 'ALTER_TSCONFIG_REPLACE_DICT':
+          output.push('ALTER', 'MAPPING', 'REPLACE');
+          break;
+        case 'ALTER_TSCONFIG_REPLACE_DICT_FOR_TOKEN':
+          output.push('ALTER', 'MAPPING', 'FOR');
+          break;
+        case 'ALTER_TSCONFIG_DROP_MAPPING':
+          output.push('DROP', 'MAPPING', 'FOR');
+          break;
+        default:
+          throw new Error(`Unsupported AlterTSConfigurationStmt kind: ${node.kind}`);
+      }
+    }
+    
+    if (node.tokentype && node.tokentype.length > 0) {
+      const tokenTypes = ListUtils.unwrapList(node.tokentype).map(token => this.visit(token, context));
+      output.push(tokenTypes.join(', '));
+    }
+    
+    return output.join(' ');
+  }
+
+  ClosePortalStmt(node: t.ClosePortalStmt, context: DeparserContext): string {
+    const output: string[] = ['CLOSE'];
+    
+    if (node.portalname) {
+      output.push(QuoteUtils.quote(node.portalname));
+    } else {
+      output.push('ALL');
+    }
+    
+    return output.join(' ');
+  }
+
+  FetchStmt(node: t.FetchStmt, context: DeparserContext): string {
+    const output: string[] = ['FETCH'];
+    
+    if (node.direction) {
+      switch (node.direction) {
+        case 'FETCH_FORWARD':
+          if (node.howMany !== undefined && node.howMany !== null) {
+            output.push('FORWARD', node.howMany.toString());
+          } else {
+            output.push('FORWARD');
+          }
+          break;
+        case 'FETCH_BACKWARD':
+          if (node.howMany !== undefined && node.howMany !== null) {
+            output.push('BACKWARD', node.howMany.toString());
+          } else {
+            output.push('BACKWARD');
+          }
+          break;
+        case 'FETCH_ABSOLUTE':
+          if (node.howMany !== undefined && node.howMany !== null) {
+            output.push('ABSOLUTE', node.howMany.toString());
+          }
+          break;
+        case 'FETCH_RELATIVE':
+          if (node.howMany !== undefined && node.howMany !== null) {
+            output.push('RELATIVE', node.howMany.toString());
+          }
+          break;
+        default:
+          throw new Error(`Unsupported FetchStmt direction: ${node.direction}`);
+      }
+    }
+    
+    if (node.portalname) {
+      output.push('FROM', QuoteUtils.quote(node.portalname));
+    }
+    
+    return output.join(' ');
+  }
+
+  AlterStatsStmt(node: t.AlterStatsStmt, context: DeparserContext): string {
+    const output: string[] = ['ALTER', 'STATISTICS'];
+    
+    if (node.defnames && node.defnames.length > 0) {
+      const names = ListUtils.unwrapList(node.defnames).map(name => this.visit(name, context));
+      output.push(names.join('.'));
+    }
+    
+    output.push('SET', 'STATISTICS');
+    
+    if (node.stxstattarget) {
+      output.push(this.visit(node.stxstattarget, context));
+    }
+    
+    return output.join(' ');
+  }
+
+  ObjectWithArgs(node: t.ObjectWithArgs, context: DeparserContext): string {
+    const output: string[] = [];
+    
+    if (node.objname && node.objname.length > 0) {
+      const names = ListUtils.unwrapList(node.objname).map(name => this.visit(name, context));
+      output.push(names.join('.'));
+    }
+    
+    if (node.objargs && node.objargs.length > 0) {
+      output.push('(');
+      const args = ListUtils.unwrapList(node.objargs).map(arg => this.visit(arg, context));
+      output.push(args.join(', '));
+      output.push(')');
+    } else if (node.objfuncargs && node.objfuncargs.length > 0) {
+      output.push('(');
+      const funcArgs = ListUtils.unwrapList(node.objfuncargs).map(arg => this.visit(arg, context));
+      output.push(funcArgs.join(', '));
+      output.push(')');
+    }
+    
+    return output.join(' ');
+  }
+
+  AlterOperatorStmt(node: t.AlterOperatorStmt, context: DeparserContext): string {
+    const output: string[] = ['ALTER', 'OPERATOR'];
+    
+    if (node.opername) {
+      output.push(this.ObjectWithArgs(node.opername, context));
+    }
+    
+    output.push('SET');
+    
+    if (node.options && node.options.length > 0) {
+      output.push('(');
+      const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, context));
+      output.push(options.join(', '));
+      output.push(')');
+    }
+    
+    return output.join(' ');
+  }
+
+  AlterFdwStmt(node: t.AlterFdwStmt, context: DeparserContext): string {
+    const output: string[] = ['ALTER', 'FOREIGN', 'DATA', 'WRAPPER'];
+    
+    if (node.fdwname) {
+      output.push(QuoteUtils.quote(node.fdwname));
+    }
+    
+    if (node.func_options && node.func_options.length > 0) {
+      const funcOptions = ListUtils.unwrapList(node.func_options).map(opt => this.visit(opt, context));
+      output.push(funcOptions.join(' '));
+    }
+    
+    if (node.options && node.options.length > 0) {
+      output.push('OPTIONS');
+      output.push('(');
+      const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, context));
+      output.push(options.join(', '));
+      output.push(')');
+    }
+    
+    return output.join(' ');
+  }
+
+  CreateForeignServerStmt(node: t.CreateForeignServerStmt, context: DeparserContext): string {
+    const output: string[] = ['CREATE', 'SERVER'];
+    
+    if (node.if_not_exists) {
+      output.push('IF', 'NOT', 'EXISTS');
+    }
+    
+    if (node.servername) {
+      output.push(QuoteUtils.quote(node.servername));
+    }
+    
+    if (node.servertype) {
+      output.push('TYPE', QuoteUtils.quote(node.servertype));
+    }
+    
+    if (node.version) {
+      output.push('VERSION', QuoteUtils.quote(node.version));
+    }
+    
+    if (node.fdwname) {
+      output.push('FOREIGN', 'DATA', 'WRAPPER', QuoteUtils.quote(node.fdwname));
+    }
+    
+    if (node.options && node.options.length > 0) {
+      output.push('OPTIONS');
+      output.push('(');
+      const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, context));
+      output.push(options.join(', '));
+      output.push(')');
+    }
+    
+    return output.join(' ');
+  }
+
+  AlterForeignServerStmt(node: t.AlterForeignServerStmt, context: DeparserContext): string {
+    const output: string[] = ['ALTER', 'SERVER'];
+    
+    if (node.servername) {
+      output.push(QuoteUtils.quote(node.servername));
+    }
+    
+    if (node.version) {
+      output.push('VERSION', QuoteUtils.quote(node.version));
+    }
+    
+    if (node.options && node.options.length > 0) {
+      output.push('OPTIONS');
+      output.push('(');
+      const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, context));
+      output.push(options.join(', '));
+      output.push(')');
+    }
+    
+    return output.join(' ');
+  }
+
+  AlterUserMappingStmt(node: t.AlterUserMappingStmt, context: DeparserContext): string {
+    const output: string[] = ['ALTER', 'USER', 'MAPPING', 'FOR'];
+    
+    if (node.user) {
+      output.push(this.RoleSpec(node.user, context));
+    } else {
+      output.push('CURRENT_USER');
+    }
+    
+    output.push('SERVER');
+    
+    if (node.servername) {
+      output.push(QuoteUtils.quote(node.servername));
+    }
+    
+    if (node.options && node.options.length > 0) {
+      output.push('OPTIONS');
+      output.push('(');
+      const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, context));
+      output.push(options.join(', '));
+      output.push(')');
+    }
+    
+    return output.join(' ');
+  }
+
+  DropUserMappingStmt(node: t.DropUserMappingStmt, context: DeparserContext): string {
+    const output: string[] = ['DROP', 'USER', 'MAPPING'];
+    
+    if (node.missing_ok) {
+      output.push('IF', 'EXISTS');
+    }
+    
+    output.push('FOR');
+    
+    if (node.user) {
+      output.push(this.RoleSpec(node.user, context));
+    } else {
+      output.push('CURRENT_USER');
+    }
+    
+    output.push('SERVER');
+    
+    if (node.servername) {
+      output.push(QuoteUtils.quote(node.servername));
+    }
+    
+    return output.join(' ');
+  }
+
+  ImportForeignSchemaStmt(node: t.ImportForeignSchemaStmt, context: DeparserContext): string {
+    const output: string[] = ['IMPORT', 'FOREIGN', 'SCHEMA'];
+    
+    if (node.remote_schema) {
+      output.push(QuoteUtils.quote(node.remote_schema));
+    }
+    
+    if (node.list_type) {
+      switch (node.list_type) {
+        case 'FDW_IMPORT_SCHEMA_ALL':
+          break;
+        case 'FDW_IMPORT_SCHEMA_LIMIT_TO':
+          output.push('LIMIT', 'TO');
+          if (node.table_list && node.table_list.length > 0) {
+            output.push('(');
+            const tables = ListUtils.unwrapList(node.table_list).map(table => this.visit(table, context));
+            output.push(tables.join(', '));
+            output.push(')');
+          }
+          break;
+        case 'FDW_IMPORT_SCHEMA_EXCEPT':
+          output.push('EXCEPT');
+          if (node.table_list && node.table_list.length > 0) {
+            output.push('(');
+            const tables = ListUtils.unwrapList(node.table_list).map(table => this.visit(table, context));
+            output.push(tables.join(', '));
+            output.push(')');
+          }
+          break;
+        default:
+          throw new Error(`Unsupported ImportForeignSchemaStmt list_type: ${node.list_type}`);
+      }
+    }
+    
+    output.push('FROM', 'SERVER');
+    
+    if (node.server_name) {
+      output.push(QuoteUtils.quote(node.server_name));
+    }
+    
+    output.push('INTO');
+    
+    if (node.local_schema) {
+      output.push(QuoteUtils.quote(node.local_schema));
+    }
+    
+    if (node.options && node.options.length > 0) {
+      output.push('OPTIONS');
+      output.push('(');
+      const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, context));
+      output.push(options.join(', '));
+      output.push(')');
     }
     
     return output.join(' ');
@@ -3224,6 +3924,15 @@ export class Deparser implements DeparserVisitor {
       case 'OBJECT_COLUMN':
         output.push('TABLE');
         break;
+      case 'OBJECT_DOMAIN':
+        output.push('DOMAIN');
+        break;
+      case 'OBJECT_TYPE':
+        output.push('TYPE');
+        break;
+      case 'OBJECT_DOMCONSTRAINT':
+        output.push('DOMAIN');
+        break;
       default:
         throw new Error(`Unsupported RenameStmt renameType: ${node.renameType}`);
     }
@@ -3240,6 +3949,8 @@ export class Deparser implements DeparserVisitor {
     
     if (node.renameType === 'OBJECT_COLUMN' && node.subname) {
       output.push('RENAME COLUMN', `"${node.subname}"`, 'TO');
+    } else if (node.renameType === 'OBJECT_DOMCONSTRAINT' && node.subname) {
+      output.push('RENAME CONSTRAINT', `"${node.subname}"`, 'TO');
     } else {
       output.push('RENAME TO');
     }
@@ -4343,22 +5054,7 @@ export class Deparser implements DeparserVisitor {
     return output.join(' ');
   }
 
-  RangeSubselect(node: t.RangeSubselect, context: DeparserContext): string {
-    const output: string[] = [];
-    
-    output.push('(');
-    if (node.subquery) {
-      output.push(this.visit(node.subquery, context));
-    }
-    output.push(')');
-    
-    if (node.alias) {
-      output.push('AS');
-      output.push(this.visit(node.alias as any, context));
-    }
-    
-    return output.join(' ');
-  }
+
 
   AccessPriv(node: t.AccessPriv, context: DeparserContext): string {
     const output: string[] = [];
@@ -4446,10 +5142,956 @@ export class Deparser implements DeparserVisitor {
         }
         break;
         
+      case 'OBJECT_AGGREGATE':
+        output.push('CREATE AGGREGATE');
+        
+        if (node.defnames && node.defnames.length > 0) {
+          const nameStrs = ListUtils.unwrapList(node.defnames).map(name => this.visit(name, context));
+          output.push(nameStrs.join('.'));
+        }
+        
+        if (node.args && node.args.length > 0) {
+          const argStrs = ListUtils.unwrapList(node.args).map(arg => this.visit(arg, context));
+          output.push(`(${argStrs.join(', ')})`);
+        }
+        
+        if (node.definition && node.definition.length > 0) {
+          output.push('(');
+          const definitions = ListUtils.unwrapList(node.definition).map(def => {
+            if (def.DefElem) {
+              const defElem = def.DefElem;
+              const defName = defElem.defname;
+              const defValue = defElem.arg;
+              
+              if (defName && defValue) {
+                return `${defName.toUpperCase()} = ${this.visit(defValue, context)}`;
+              }
+            }
+            return this.visit(def, context);
+          });
+          output.push(definitions.join(', '));
+          output.push(')');
+        }
+        break;
+        
       default:
         throw new Error(`Unsupported DefineStmt kind: ${node.kind}`);
     }
     
     return output.join(' ');
   }
+
+  AlterDatabaseStmt(node: t.AlterDatabaseStmt, context: DeparserContext): string {
+    const output: string[] = ['ALTER', 'DATABASE'];
+    
+    if (node.dbname) {
+      output.push(QuoteUtils.quote(node.dbname));
+    }
+    
+    if (node.options && node.options.length > 0) {
+      const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, context));
+      output.push(options.join(' '));
+    }
+    
+    return output.join(' ');
+  }
+
+  AlterDatabaseRefreshCollStmt(node: t.AlterDatabaseRefreshCollStmt, context: DeparserContext): string {
+    const output: string[] = ['ALTER', 'DATABASE'];
+    
+    if (node.dbname) {
+      output.push(QuoteUtils.quote(node.dbname));
+    }
+    
+    output.push('REFRESH', 'COLLATION', 'VERSION');
+    
+    return output.join(' ');
+  }
+
+  AlterDatabaseSetStmt(node: t.AlterDatabaseSetStmt, context: DeparserContext): string {
+    const output: string[] = ['ALTER', 'DATABASE'];
+    
+    if (node.dbname) {
+      output.push(QuoteUtils.quote(node.dbname));
+    }
+    
+    if (node.setstmt) {
+      const setClause = this.VariableSetStmt(node.setstmt, context);
+      output.push(setClause);
+    }
+    
+    return output.join(' ');
+  }
+
+  DeclareCursorStmt(node: t.DeclareCursorStmt, context: DeparserContext): string {
+    const output: string[] = ['DECLARE'];
+    
+    if (node.portalname) {
+      output.push(QuoteUtils.quote(node.portalname));
+    }
+    
+    output.push('CURSOR');
+    
+    if (node.options) {
+      // Handle cursor options like SCROLL, NO SCROLL, etc.
+      if (node.options & 1) output.push('SCROLL');
+      if (node.options & 2) output.push('NO SCROLL');
+      if (node.options & 4) output.push('BINARY');
+      if (node.options & 8) output.push('INSENSITIVE');
+    }
+    
+    output.push('FOR');
+    
+    if (node.query) {
+      output.push(this.visit(node.query, context));
+    }
+    
+    return output.join(' ');
+  }
+
+  PublicationObjSpec(node: t.PublicationObjSpec, context: DeparserContext): string {
+    const output: string[] = [];
+    
+    if (node.pubobjtype === 'PUBLICATIONOBJ_TABLE') {
+      output.push('TABLE');
+      if (node.pubtable) {
+        output.push(this.PublicationTable(node.pubtable, context));
+      }
+    } else if (node.pubobjtype === 'PUBLICATIONOBJ_TABLES_IN_SCHEMA') {
+      output.push('TABLES IN SCHEMA');
+      if (node.name) {
+        output.push(QuoteUtils.quote(node.name));
+      }
+    } else if (node.pubobjtype === 'PUBLICATIONOBJ_TABLES_IN_CUR_SCHEMA') {
+      output.push('TABLES IN SCHEMA CURRENT_SCHEMA');
+    }
+    
+    return output.join(' ');
+  }
+
+  PublicationTable(node: t.PublicationTable, context: DeparserContext): string {
+    const output: string[] = [];
+    
+    if (node.relation) {
+      output.push(this.RangeVar(node.relation, context));
+    }
+    
+    if (node.columns && node.columns.length > 0) {
+      const columns = ListUtils.unwrapList(node.columns).map(col => this.visit(col, context));
+      output.push(`(${columns.join(', ')})`);
+    }
+    
+    if (node.whereClause) {
+      output.push('WHERE');
+      output.push(this.visit(node.whereClause, context));
+    }
+    
+    return output.join(' ');
+  }
+
+  CreateAmStmt(node: t.CreateAmStmt, context: DeparserContext): string {
+    const output: string[] = ['CREATE', 'ACCESS', 'METHOD'];
+    
+    if (node.amname) {
+      output.push(QuoteUtils.quote(node.amname));
+    }
+    
+    if (node.amtype) {
+      output.push('TYPE', node.amtype.toUpperCase());
+    }
+    
+    if (node.handler_name && node.handler_name.length > 0) {
+      output.push('HANDLER');
+      const handlerName = ListUtils.unwrapList(node.handler_name)
+        .map(name => this.visit(name, context))
+        .join('.');
+      output.push(handlerName);
+    }
+    
+    return output.join(' ');
+  }
+
+  IntoClause(node: t.IntoClause, context: DeparserContext): string {
+    const output: string[] = ['INTO'];
+    
+    if (node.rel) {
+      output.push(this.RangeVar(node.rel, context));
+    }
+    
+    if (node.colNames && node.colNames.length > 0) {
+      const columns = ListUtils.unwrapList(node.colNames)
+        .map(col => this.visit(col, context))
+        .join(', ');
+      output.push(`(${columns})`);
+    }
+    
+    if (node.accessMethod) {
+      output.push('USING', node.accessMethod);
+    }
+    
+    if (node.options && node.options.length > 0) {
+      output.push('WITH');
+      const options = ListUtils.unwrapList(node.options)
+        .map(opt => this.visit(opt, context))
+        .join(', ');
+      output.push(`(${options})`);
+    }
+    
+    if (node.onCommit && node.onCommit !== 'ONCOMMIT_NOOP') {
+      output.push('ON COMMIT');
+      switch (node.onCommit) {
+        case 'ONCOMMIT_PRESERVE_ROWS':
+          output.push('PRESERVE ROWS');
+          break;
+        case 'ONCOMMIT_DELETE_ROWS':
+          output.push('DELETE ROWS');
+          break;
+        case 'ONCOMMIT_DROP':
+          output.push('DROP');
+          break;
+      }
+    }
+    
+    if (node.tableSpaceName) {
+      output.push('TABLESPACE', QuoteUtils.quote(node.tableSpaceName));
+    }
+    
+    return output.join(' ');
+  }
+
+  OnConflictExpr(node: t.OnConflictExpr, context: DeparserContext): string {
+    const output: string[] = ['ON CONFLICT'];
+    
+    if (node.arbiterElems && node.arbiterElems.length > 0) {
+      const arbiters = ListUtils.unwrapList(node.arbiterElems)
+        .map(elem => this.visit(elem, context))
+        .join(', ');
+      output.push(`(${arbiters})`);
+    }
+    
+    if (node.arbiterWhere) {
+      output.push('WHERE');
+      output.push(this.visit(node.arbiterWhere, context));
+    }
+    
+    if (node.action === 'ONCONFLICT_NOTHING') {
+      output.push('DO NOTHING');
+    } else if (node.action === 'ONCONFLICT_UPDATE') {
+      output.push('DO UPDATE SET');
+      if (node.onConflictSet && node.onConflictSet.length > 0) {
+        const updates = ListUtils.unwrapList(node.onConflictSet)
+          .map(set => this.visit(set, context))
+          .join(', ');
+        output.push(updates);
+      }
+      
+      if (node.onConflictWhere) {
+        output.push('WHERE');
+        output.push(this.visit(node.onConflictWhere, context));
+      }
+    }
+    
+    return output.join(' ');
+  }
+
+  ScanToken(node: t.ScanToken, context: DeparserContext): string {
+    return '';
+  }
+
+  CreateOpClassItem(node: t.CreateOpClassItem, context: DeparserContext): string {
+    const output: string[] = [];
+    
+    if (node.itemtype === 1) {
+      output.push('OPERATOR');
+      if (node.number) {
+        output.push(node.number.toString());
+      }
+      if (node.name) {
+        output.push(this.ObjectWithArgs(node.name, context));
+      }
+    } else if (node.itemtype === 2) {
+      output.push('FUNCTION');
+      if (node.number) {
+        output.push(node.number.toString());
+      }
+      if (node.name) {
+        output.push(this.ObjectWithArgs(node.name, context));
+      }
+    } else if (node.itemtype === 3) {
+      output.push('STORAGE');
+      if (node.storedtype) {
+        output.push(this.TypeName(node.storedtype, context));
+      }
+    }
+    
+    if (node.order_family && node.order_family.length > 0) {
+      output.push('FOR ORDER BY');
+      const orderFamily = ListUtils.unwrapList(node.order_family)
+        .map(family => this.visit(family, context))
+        .join('.');
+      output.push(orderFamily);
+    }
+    
+    if (node.class_args && node.class_args.length > 0) {
+      const classArgs = ListUtils.unwrapList(node.class_args)
+        .map(arg => this.visit(arg, context))
+        .join(', ');
+      output.push(`(${classArgs})`);
+    }
+    
+    return output.join(' ');
+  }
+
+  Var(node: t.Var, context: DeparserContext): string {
+    if (node.varno && node.varattno) {
+      return `$${node.varno}.${node.varattno}`;
+    }
+    return '$var';
+  }
+
+  TableFunc(node: t.TableFunc, context: DeparserContext): string {
+    const output: string[] = [];
+    
+    if (node.functype === 'TFT_XMLTABLE') {
+      output.push('XMLTABLE');
+      
+      if (node.ns_names && node.ns_names.length > 0) {
+        output.push('XMLNAMESPACES');
+        const namespaces = ListUtils.unwrapList(node.ns_names)
+          .map(ns => this.visit(ns, context))
+          .join(', ');
+        output.push(`(${namespaces})`);
+      }
+      
+      if (node.rowexpr) {
+        output.push(`(${this.visit(node.rowexpr, context)})`);
+      }
+      
+      if (node.docexpr) {
+        output.push('PASSING');
+        output.push(this.visit(node.docexpr, context));
+      }
+      
+      if (node.colexprs && node.colexprs.length > 0) {
+        output.push('COLUMNS');
+        const columns = ListUtils.unwrapList(node.colexprs)
+          .map(col => this.visit(col, context))
+          .join(', ');
+        output.push(columns);
+      }
+    } else if (node.functype === 'TFT_JSON_TABLE') {
+      output.push('JSON_TABLE');
+      
+      if (node.docexpr) {
+        output.push(`(${this.visit(node.docexpr, context)})`);
+      }
+      
+      if (node.rowexpr) {
+        output.push(',');
+        output.push(`'${this.visit(node.rowexpr, context)}'`);
+      }
+      
+      if (node.colexprs && node.colexprs.length > 0) {
+        output.push('COLUMNS');
+        const columns = ListUtils.unwrapList(node.colexprs)
+          .map(col => this.visit(col, context))
+          .join(', ');
+        output.push(`(${columns})`);
+      }
+    }
+    
+    return output.join(' ');
+  }
+
+  RangeTableFunc(node: t.RangeTableFunc, context: DeparserContext): string {
+    const output: string[] = [];
+    
+    if (node.lateral) {
+      output.push('LATERAL');
+    }
+    
+    if (node.docexpr) {
+      output.push(this.visit(node.docexpr, context));
+    }
+    
+    if (node.rowexpr) {
+      output.push('PASSING');
+      output.push(this.visit(node.rowexpr, context));
+    }
+    
+    if (node.columns && node.columns.length > 0) {
+      output.push('COLUMNS');
+      const columns = ListUtils.unwrapList(node.columns)
+        .map(col => this.visit(col, context))
+        .join(', ');
+      output.push(`(${columns})`);
+    }
+    
+    if (node.alias) {
+      output.push(this.Alias(node.alias, context));
+    }
+    
+    return output.join(' ');
+  }
+
+  RangeTableFuncCol(node: t.RangeTableFuncCol, context: DeparserContext): string {
+    const output: string[] = [];
+    
+    if (node.colname) {
+      output.push(QuoteUtils.quote(node.colname));
+    }
+    
+    if (node.for_ordinality) {
+      output.push('FOR ORDINALITY');
+    } else if (node.typeName) {
+      output.push(this.TypeName(node.typeName, context));
+    }
+    
+    if (node.colexpr) {
+      output.push('PATH');
+      output.push(`'${this.visit(node.colexpr, context)}'`);
+    }
+    
+    if (node.coldefexpr) {
+      output.push('DEFAULT');
+      output.push(this.visit(node.coldefexpr, context));
+    }
+    
+    return output.join(' ');
+  }
+
+  JsonArrayQueryConstructor(node: t.JsonArrayQueryConstructor, context: DeparserContext): string {
+    const output: string[] = ['JSON_ARRAYAGG'];
+    
+    if (node.query) {
+      output.push(`(${this.visit(node.query, context)})`);
+    }
+    
+    if (node.format) {
+      output.push('FORMAT JSON');
+    }
+    
+    if (node.output) {
+      output.push('RETURNING TEXT');
+    }
+    
+    if (node.absent_on_null) {
+      output.push('ABSENT ON NULL');
+    } else {
+      output.push('NULL ON NULL');
+    }
+    
+    return output.join(' ');
+  }
+
+  RangeFunction(node: t.RangeFunction, context: DeparserContext): string {
+    const output: string[] = [];
+    
+    if (node.lateral) {
+      output.push('LATERAL');
+    }
+    
+    if (node.functions && node.functions.length > 0) {
+      const functionStrs = ListUtils.unwrapList(node.functions)
+        .filter(func => func != null && this.getNodeType(func) !== 'undefined')
+        .map(func => {
+          try {
+            return this.visit(func, context);
+          } catch (error) {
+            console.warn(`Error processing function in RangeFunction: ${error instanceof Error ? error.message : String(error)}`);
+            return '';
+          }
+        })
+        .filter(str => str !== '');
+      if (functionStrs.length > 0) {
+        output.push(functionStrs.join(', '));
+      }
+    }
+    
+    if (node.ordinality) {
+      output.push('WITH ORDINALITY');
+    }
+    
+    if (node.alias) {
+      output.push(this.Alias(node.alias, context));
+    }
+    
+    if (node.coldeflist && node.coldeflist.length > 0) {
+      const coldefStrs = ListUtils.unwrapList(node.coldeflist)
+        .filter(coldef => coldef != null && this.getNodeType(coldef) !== 'undefined')
+        .map(coldef => {
+          try {
+            return this.visit(coldef, context);
+          } catch (error) {
+            console.warn(`Error processing coldef in RangeFunction: ${error instanceof Error ? error.message : String(error)}`);
+            return '';
+          }
+        })
+        .filter(str => str !== '');
+      if (coldefStrs.length > 0) {
+        output.push(`(${coldefStrs.join(', ')})`);
+      }
+    }
+    
+    return output.join(' ');
+  }
+
+  XmlExpr(node: t.XmlExpr, context: DeparserContext): string {
+    const output: string[] = [];
+    
+    switch (node.op) {
+      case 'IS_XMLCONCAT':
+        output.push('XMLCONCAT');
+        break;
+      case 'IS_XMLELEMENT':
+        output.push('XMLELEMENT');
+        break;
+      case 'IS_XMLFOREST':
+        output.push('XMLFOREST');
+        break;
+      case 'IS_XMLPARSE':
+        output.push('XMLPARSE');
+        break;
+      case 'IS_XMLPI':
+        output.push('XMLPI');
+        break;
+      case 'IS_XMLROOT':
+        output.push('XMLROOT');
+        break;
+      case 'IS_XMLSERIALIZE':
+        output.push('XMLSERIALIZE');
+        break;
+      case 'IS_DOCUMENT':
+        output.push('DOCUMENT');
+        break;
+      default:
+        throw new Error(`Unsupported XmlExpr op: ${node.op}`);
+    }
+    
+    if (node.name) {
+      output.push(`NAME ${QuoteUtils.quote(node.name)}`);
+    }
+    
+    if (node.args && node.args.length > 0) {
+      const argStrs = ListUtils.unwrapList(node.args).map(arg => this.visit(arg, context));
+      output.push(`(${argStrs.join(', ')})`);
+    }
+    
+    if (node.named_args && node.named_args.length > 0) {
+      const namedArgStrs = ListUtils.unwrapList(node.named_args).map(arg => this.visit(arg, context));
+      output.push(`XMLATTRIBUTES(${namedArgStrs.join(', ')})`);
+    }
+    
+    return output.join(' ');
+  }
+
+  schemaname(node: any, context: DeparserContext): string {
+    if (typeof node === 'string') {
+      return QuoteUtils.quote(node);
+    }
+    if (node && node.String && node.String.sval) {
+      return QuoteUtils.quote(node.String.sval);
+    }
+    return this.visit(node, context);
+  }
+
+  RangeTableSample(node: t.RangeTableSample, context: DeparserContext): string {
+    const output: string[] = [];
+    
+    if (node.relation) {
+      output.push(this.visit(node.relation as any, context));
+    }
+    
+    output.push('TABLESAMPLE');
+    
+    if (node.method && node.method.length > 0) {
+      const methodParts = node.method.map(m => this.visit(m, context));
+      output.push(methodParts.join('.'));
+    }
+    
+    if (node.args && node.args.length > 0) {
+      const argStrs = node.args.map(arg => this.visit(arg, context));
+      output.push(`(${argStrs.join(', ')})`);
+    }
+    
+    if (node.repeatable) {
+      output.push('REPEATABLE');
+      output.push(`(${this.visit(node.repeatable as any, context)})`);
+    }
+    
+    return output.join(' ');
+  }
+
+  XmlSerialize(node: t.XmlSerialize, context: DeparserContext): string {
+    const output: string[] = ['XMLSERIALIZE'];
+    
+    output.push('(');
+    
+    if (node.typeName) {
+      output.push('CONTENT');
+      output.push(this.visit(node.expr as any, context));
+      output.push('AS');
+      output.push(this.TypeName(node.typeName, context));
+    }
+    
+    output.push(')');
+    
+    return output.join(' ');
+  }
+
+  ctes(node: any, context: DeparserContext): string {
+    if (!node || !Array.isArray(node)) {
+      return '';
+    }
+    
+    const cteStrs = node.map(cte => this.visit(cte, context));
+    return cteStrs.join(', ');
+  }
+
+  RuleStmt(node: t.RuleStmt, context: DeparserContext): string {
+    const output: string[] = ['CREATE'];
+    
+    if (node.replace) {
+      output.push('OR REPLACE');
+    }
+    
+    output.push('RULE');
+    
+    if (node.rulename) {
+      output.push(QuoteUtils.quote(node.rulename));
+    }
+    
+    output.push('AS ON');
+    
+    if (node.event) {
+      switch (node.event) {
+        case 'CMD_SELECT':
+          output.push('SELECT');
+          break;
+        case 'CMD_INSERT':
+          output.push('INSERT');
+          break;
+        case 'CMD_UPDATE':
+          output.push('UPDATE');
+          break;
+        case 'CMD_DELETE':
+          output.push('DELETE');
+          break;
+        default:
+          output.push(node.event.toString());
+      }
+    }
+    
+    output.push('TO');
+    
+    if (node.relation) {
+      output.push(this.visit(node.relation as any, context));
+    }
+    
+    if (node.whereClause) {
+      output.push('WHERE');
+      output.push(this.visit(node.whereClause, context));
+    }
+    
+    output.push('DO');
+    
+    if (node.instead) {
+      output.push('INSTEAD');
+    }
+    
+    if (node.actions && node.actions.length > 0) {
+      if (node.actions.length === 1) {
+        output.push(this.visit(node.actions[0], context));
+      } else {
+        output.push('(');
+        const actionStrs = ListUtils.unwrapList(node.actions).map(action => this.visit(action, context));
+        output.push(actionStrs.join('; '));
+        output.push(')');
+      }
+    } else {
+      output.push('NOTHING');
+    }
+    
+    return output.join(' ');
+  }
+
+  RangeSubselect(node: t.RangeSubselect, context: DeparserContext): string {
+    const output: string[] = [];
+    
+    if (node.lateral) {
+      output.push('LATERAL');
+    }
+    
+    if (node.subquery) {
+      output.push('(');
+      output.push(this.visit(node.subquery, context));
+      output.push(')');
+    }
+    
+    if (node.alias) {
+      output.push(this.Alias(node.alias, context));
+    }
+    
+    return output.join(' ');
+  }
+
+  relname(node: any, context: DeparserContext): string {
+    if (typeof node === 'string') {
+      return QuoteUtils.quote(node);
+    }
+    if (node && node.String && node.String.sval) {
+      return QuoteUtils.quote(node.String.sval);
+    }
+    if (node && typeof node === 'object' && node.relname) {
+      return QuoteUtils.quote(node.relname);
+    }
+    return this.visit(node, context);
+  }
+
+  rel(node: any, context: DeparserContext): string {
+    if (typeof node === 'string') {
+      return QuoteUtils.quote(node);
+    }
+    if (node && node.String && node.String.sval) {
+      return QuoteUtils.quote(node.String.sval);
+    }
+    if (node && node.RangeVar) {
+      return this.RangeVar(node.RangeVar, context);
+    }
+    if (node && typeof node === 'object' && node.relname) {
+      return QuoteUtils.quote(node.relname);
+    }
+    return this.visit(node, context);
+  }
+
+  objname(node: any, context: DeparserContext): string {
+    if (typeof node === 'string') {
+      return QuoteUtils.quote(node);
+    }
+    if (node && node.String && node.String.sval) {
+      return QuoteUtils.quote(node.String.sval);
+    }
+    if (Array.isArray(node)) {
+      const parts = node.map(part => {
+        if (part && part.String && part.String.sval) {
+          return QuoteUtils.quote(part.String.sval);
+        }
+        return this.visit(part, context);
+      });
+      return parts.join('.');
+    }
+    return this.visit(node, context);
+  }
+
+  SQLValueFunction(node: t.SQLValueFunction, context: DeparserContext): string {
+    switch (node.op) {
+      case 'SVFOP_CURRENT_DATE':
+        return 'CURRENT_DATE';
+      case 'SVFOP_CURRENT_TIME':
+        return 'CURRENT_TIME';
+      case 'SVFOP_CURRENT_TIME_N':
+        return `CURRENT_TIME(${node.typmod || 0})`;
+      case 'SVFOP_CURRENT_TIMESTAMP':
+        return 'CURRENT_TIMESTAMP';
+      case 'SVFOP_CURRENT_TIMESTAMP_N':
+        return `CURRENT_TIMESTAMP(${node.typmod || 0})`;
+      case 'SVFOP_LOCALTIME':
+        return 'LOCALTIME';
+      case 'SVFOP_LOCALTIME_N':
+        return `LOCALTIME(${node.typmod || 0})`;
+      case 'SVFOP_LOCALTIMESTAMP':
+        return 'LOCALTIMESTAMP';
+      case 'SVFOP_LOCALTIMESTAMP_N':
+        return `LOCALTIMESTAMP(${node.typmod || 0})`;
+      case 'SVFOP_CURRENT_ROLE':
+        return 'CURRENT_ROLE';
+      case 'SVFOP_CURRENT_USER':
+        return 'CURRENT_USER';
+      case 'SVFOP_USER':
+        return 'USER';
+      case 'SVFOP_SESSION_USER':
+        return 'SESSION_USER';
+      case 'SVFOP_CURRENT_CATALOG':
+        return 'CURRENT_CATALOG';
+      case 'SVFOP_CURRENT_SCHEMA':
+        return 'CURRENT_SCHEMA';
+      default:
+        throw new Error(`Unsupported SQLValueFunction op: ${node.op}`);
+    }
+  }
+
+  GroupingFunc(node: t.GroupingFunc, context: DeparserContext): string {
+    const output: string[] = ['GROUPING'];
+    
+    if (node.args && node.args.length > 0) {
+      const argStrs = ListUtils.unwrapList(node.args).map(arg => this.visit(arg, context));
+      output.push(`(${argStrs.join(', ')})`);
+    } else {
+      output.push('()');
+    }
+    
+    return output.join('');
+  }
+
+  MultiAssignRef(node: t.MultiAssignRef, context: DeparserContext): string {
+    const output: string[] = [];
+    
+    if (node.source) {
+      output.push(this.visit(node.source, context));
+    }
+    
+    if (node.colno > 0) {
+      output.push(`[${node.colno}]`);
+    }
+    
+    return output.join('');
+  }
+
+  SetToDefault(node: t.SetToDefault, context: DeparserContext): string {
+    return 'DEFAULT';
+  }
+
+  CurrentOfExpr(node: t.CurrentOfExpr, context: DeparserContext): string {
+    const output: string[] = ['CURRENT OF'];
+    
+    if (node.cursor_name) {
+      output.push(QuoteUtils.quote(node.cursor_name));
+    }
+    
+    if (node.cursor_param > 0) {
+      output.push(`$${node.cursor_param}`);
+    }
+    
+    return output.join(' ');
+  }
+
+  TableLikeClause(node: t.TableLikeClause, context: DeparserContext): string {
+    const output: string[] = ['LIKE'];
+    
+    if (node.relation) {
+      output.push(this.visit(node.relation as any, context));
+    }
+    
+    if (node.options && typeof node.options === 'number') {
+      const optionStrs: string[] = [];
+      
+      // Handle bitfield options for CREATE TABLE LIKE
+      if (node.options & 0x01) optionStrs.push('INCLUDING COMMENTS');
+      if (node.options & 0x02) optionStrs.push('INCLUDING CONSTRAINTS');
+      if (node.options & 0x04) optionStrs.push('INCLUDING DEFAULTS');
+      if (node.options & 0x08) optionStrs.push('INCLUDING GENERATED');
+      if (node.options & 0x10) optionStrs.push('INCLUDING IDENTITY');
+      if (node.options & 0x20) optionStrs.push('INCLUDING INDEXES');
+      if (node.options & 0x40) optionStrs.push('INCLUDING STATISTICS');
+      if (node.options & 0x80) optionStrs.push('INCLUDING STORAGE');
+      
+      if (optionStrs.length > 0) {
+        output.push(optionStrs.join(' '));
+      }
+    }
+    
+    return output.join(' ');
+  }
+
+  AlterFunctionStmt(node: t.AlterFunctionStmt, context: DeparserContext): string {
+    const output: string[] = ['ALTER FUNCTION'];
+    
+    if (node.func) {
+      output.push(this.visit(node.func as any, context));
+    }
+    
+    if (node.actions && node.actions.length > 0) {
+      const actionStrs = ListUtils.unwrapList(node.actions).map(action => this.visit(action, context));
+      output.push(actionStrs.join(' '));
+    }
+    
+    return output.join(' ');
+  }
+
+  AlterObjectSchemaStmt(node: t.AlterObjectSchemaStmt, context: DeparserContext): string {
+    const output: string[] = ['ALTER'];
+    
+    switch (node.objectType) {
+      case 'OBJECT_TABLE':
+        output.push('TABLE');
+        break;
+      case 'OBJECT_VIEW':
+        output.push('VIEW');
+        break;
+      case 'OBJECT_FUNCTION':
+        output.push('FUNCTION');
+        break;
+      case 'OBJECT_TYPE':
+        output.push('TYPE');
+        break;
+      case 'OBJECT_DOMAIN':
+        output.push('DOMAIN');
+        break;
+      case 'OBJECT_SEQUENCE':
+        output.push('SEQUENCE');
+        break;
+      default:
+        output.push(node.objectType.toString());
+    }
+    
+    if (node.object) {
+      output.push(this.visit(node.object as any, context));
+    }
+    
+    output.push('SET SCHEMA');
+    
+    if (node.newschema) {
+      output.push(QuoteUtils.quote(node.newschema));
+    }
+    
+    return output.join(' ');
+  }
+
+  AlterRoleSetStmt(node: t.AlterRoleSetStmt, context: DeparserContext): string {
+    const output: string[] = ['ALTER'];
+    
+    if (node.role) {
+      output.push('ROLE');
+      output.push(this.visit(node.role as any, context));
+    } else {
+      output.push('USER');
+    }
+    
+    if (node.database) {
+      output.push('IN DATABASE');
+      output.push(QuoteUtils.quote(node.database));
+    }
+    
+    if (node.setstmt) {
+      output.push(this.visit(node.setstmt as any, context));
+    }
+    
+    return output.join(' ');
+  }
+
+  CreateForeignTableStmt(node: t.CreateForeignTableStmt, context: DeparserContext): string {
+    const output: string[] = ['CREATE FOREIGN TABLE'];
+    
+    if (node.base && node.base.relation) {
+      output.push(this.visit(node.base.relation as any, context));
+    }
+    
+    if (node.base && node.base.tableElts && node.base.tableElts.length > 0) {
+      const elementStrs = ListUtils.unwrapList(node.base.tableElts).map(el => this.visit(el, context));
+      output.push(`(${elementStrs.join(', ')})`);
+    }
+    
+    if (node.servername) {
+      output.push('SERVER');
+      output.push(QuoteUtils.quote(node.servername));
+    }
+    
+    if (node.options && node.options.length > 0) {
+      const optionStrs = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, context));
+      output.push(`OPTIONS (${optionStrs.join(', ')})`);
+    }
+    
+    return output.join(' ');
+  }
+
 }
