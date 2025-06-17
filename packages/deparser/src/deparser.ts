@@ -1325,7 +1325,7 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (windowParts.length > 0) {
-      output.push(windowParts.join(' '));
+      output.push(`(${windowParts.join(' ')})`);
     }
     
     return output.join(' ');
@@ -1511,14 +1511,14 @@ export class Deparser implements DeparserVisitor {
       result += argStrs.join(', ');
     }
 
-    result += ') OVER ';
+    result += ') OVER';
 
     if (node.winref && typeof node.winref === 'object') {
-      result += '(' + this.visit(node.winref as any, context) + ')';
+      result += ' (' + this.visit(node.winref as any, context) + ')';
     } else if (node.winref) {
-      result += '(ORDER BY created_at ASC)';
+      result += ' (ORDER BY created_at ASC)';
     } else {
-      result += '()';
+      result += ' ()';
     }
 
     return result;
@@ -2124,16 +2124,39 @@ export class Deparser implements DeparserVisitor {
     }
 
     if (node.objects && node.objects.length > 0) {
-      const objects = node.objects.map((objList: any) => {
-        if (Array.isArray(objList)) {
-          const objName = objList.map(obj => this.visit(obj, context)).filter(name => name && name.trim()).join('.');
-          return objName;
+      if (node.removeType === 'OBJECT_POLICY') {
+        const objList = node.objects[0];
+        if (objList && (objList as any).List && (objList as any).List.items) {
+          const items = (objList as any).List.items.map((item: any) => {
+            if (item.String && item.String.sval) {
+              return item.String.sval;
+            }
+            return this.visit(item, context);
+          });
+          
+          if (items.length === 3) {
+            const [schemaName, tableName, policyName] = items;
+            output.push(`${policyName} ON ${schemaName}.${tableName}`);
+          } else if (items.length === 2) {
+            const [tableName, policyName] = items;
+            output.push(`${policyName} ON ${tableName}`);
+          } else {
+            // Fallback to comma-separated
+            output.push(items.join(', '));
+          }
         }
-        const objName = this.visit(objList, context);
-        return objName;
-      }).filter(name => name && name.trim()).join(', ');
-      if (objects) {
-        output.push(objects);
+      } else {
+        const objects = node.objects.map((objList: any) => {
+          if (Array.isArray(objList)) {
+            const objName = objList.map(obj => this.visit(obj, context)).filter(name => name && name.trim()).join('.');
+            return objName;
+          }
+          const objName = this.visit(objList, context);
+          return objName;
+        }).filter(name => name && name.trim()).join(', ');
+        if (objects) {
+          output.push(objects);
+        }
       }
     }
 
