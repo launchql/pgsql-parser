@@ -1231,7 +1231,7 @@
     node-addon-api "^3.2.1"
     node-gyp-build "^4.3.0"
 
-"@pgsql/types@^13.9.0":
+"@pgsql/types@^13.6.0":
   version "13.9.0"
   resolved "https://registry.yarnpkg.com/@pgsql/types/-/types-13.9.0.tgz#54d51447611fe146db13ea91e32d1a98133102c2"
   integrity sha512-R26mn0zMkwfR8imEQ1Q4NedHwG9gTUfgVnLJUBqPn33JyhOUi2H6iEVTcC9kHAm7gQGpwSBKfuCItWgenAlm9g==
@@ -5955,15 +5955,15 @@ path-type@^4.0.0:
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
 pgsql-deparser@^17.0.0:
-  version "13.15.0"
-  resolved "https://registry.yarnpkg.com/pgsql-deparser/-/pgsql-deparser-13.15.0.tgz#ad0d21caaf700dfb45feef626f21f16d17e1e53e"
-  integrity sha512-6d4YeDE/y+AZ/C4tlzTrFwbOqDW4ma/jvYlXRgXYVdPU2WF5IQISksIQ8uhNMXW7QxL/4gw0bzLhRNwckf3t/Q==
+  version "13.11.0"
+  resolved "https://registry.yarnpkg.com/pgsql-deparser/-/pgsql-deparser-13.11.0.tgz#e4d69427f46e46b1ff3f7a9c7bc93f613e588afc"
+  integrity sha512-3BoqD418RrDwSf0Nffkq+3c4r+3saloNyAjaJwl25Ubyb/beNGp0LKz6xuVvc/jjZT/NVcyIbsxmbZfxBiyMuw==
   dependencies:
-    "@pgsql/types" "^13.9.0"
+    "@pgsql/types" "^13.6.0"
     dotty "^0.1.0"
-    pgsql-enums "^13.10.0"
+    pgsql-enums "^13.7.0"
 
-pgsql-enums@^13.10.0:
+pgsql-enums@^13.7.0:
   version "13.10.0"
   resolved "https://registry.yarnpkg.com/pgsql-enums/-/pgsql-enums-13.10.0.tgz#e99a15177c92a3c50904d74adb050549a0d964a1"
   integrity sha512-L0vO9RwwPENvB07YlIVTnRu3JMnmjHQhxWR2NQbHOUPIpfF6khhfv+OC51By2ATts3jfZRSi8TLjNf9O6rP9iA==
