@@ -1,0 +1,30 @@
+name: Run Tests
+
+on:
+  push:
+  pull_request:
+    types: [opened, synchronized, reopened]
+  workflow_dispatch:
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository 🛎️
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Build Project
+        run: yarn build
+
+      - name: Run Parser Tests
+        run: yarn workspace pg-proto-parser test
+        working-directory: packages/parser
