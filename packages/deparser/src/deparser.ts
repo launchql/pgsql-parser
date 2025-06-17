@@ -5296,9 +5296,20 @@ export class Deparser implements DeparserVisitor {
     if (node.options && node.options.length > 0) {
       const seqContext = { ...context, parentNodeType: 'AlterSeqStmt' };
       const optionStrs = ListUtils.unwrapList(node.options)
-        .map(option => this.visit(option, seqContext))
+        .filter(option => option && option !== undefined)
+        .map(option => {
+          try {
+            return this.visit(option, seqContext);
+          } catch (error) {
+            console.warn(`Error processing function in RangeFunction: ${error instanceof Error ? error.message : String(error)}`);
+            return '';
+          }
+        })
+        .filter(str => str && str.trim().length > 0)
         .join(' ');
-      output.push(optionStrs);
+      if (optionStrs) {
+        output.push(optionStrs);
+      }
     }
     
     if (node.for_identity) {
