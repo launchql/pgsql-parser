@@ -4370,8 +4370,8 @@ export class Deparser implements DeparserVisitor {
 
     output.push('ON');
 
-    // Handle object type specification for ALTER DEFAULT PRIVILEGES
-    if (node.objtype) {
+    // Handle object type specification only for ALTER DEFAULT PRIVILEGES context
+    if (node.objtype && node.targtype === 'ACL_TARGET_DEFAULTS') {
       switch (node.objtype) {
         case 'OBJECT_TABLE':
           output.push('TABLES');
