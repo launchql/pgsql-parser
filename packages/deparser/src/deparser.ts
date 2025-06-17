@@ -3226,7 +3226,8 @@ export class Deparser implements DeparserVisitor {
     if (node.comment === null || node.comment === undefined) {
       output.push('NULL');
     } else if (node.comment) {
-      output.push(`'${node.comment}'`);
+      const escapedComment = node.comment.replace(/'/g, "''");
+      output.push(`'${escapedComment}'`);
     }
     
     return output.join(' ');
