@@ -38,9 +38,10 @@ Analysis of test files reveals inconsistent String node representations:
 **Objective**: Establish working build environment and fix critical infrastructure issues
 
 #### 1.1 Dependency Resolution
-- Fix @pgsql/types import issues in deparser package
-- Resolve yarn install failures with pgsql-deparser dependency
-- Ensure proper Lerna workspace linking
+- Run `yarn` in the root directory to install all dependencies
+- Run `yarn build` in the root to build all packages and make them available to each other
+- This should resolve @pgsql/types import issues in deparser package (Lerna/Yarn workspace setup)
+- Ensure proper Lerna workspace linking is established
 - Install missing Jest dependencies for testing
 
 #### 1.2 Type System Fixes
