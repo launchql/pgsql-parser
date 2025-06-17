@@ -2727,6 +2727,184 @@ export class Deparser implements DeparserVisitor {
         case 'AT_SetUnLogged':
           output.push('SET UNLOGGED');
           break;
+        case 'AT_AddColumnToView':
+          output.push('ADD COLUMN');
+          if (node.def) {
+            const columnDef = this.visit(node.def, context);
+            output.push(columnDef);
+          }
+          break;
+        case 'AT_CookedColumnDefault':
+          output.push('ALTER COLUMN');
+          if (node.name) {
+            output.push(QuoteUtils.quote(node.name));
+          }
+          if (node.def) {
+            output.push('SET DEFAULT');
+            output.push(this.visit(node.def, context));
+          } else {
+            output.push('DROP DEFAULT');
+          }
+          break;
+        case 'AT_SetExpression':
+          output.push('ALTER COLUMN');
+          if (node.name) {
+            output.push(QuoteUtils.quote(node.name));
+          }
+          output.push('SET EXPRESSION');
+          if (node.def) {
+            output.push(this.visit(node.def, context));
+          }
+          break;
+        case 'AT_DropExpression':
+          output.push('ALTER COLUMN');
+          if (node.name) {
+            output.push(QuoteUtils.quote(node.name));
+          }
+          output.push('DROP EXPRESSION');
+          break;
+        case 'AT_CheckNotNull':
+          output.push('ALTER COLUMN');
+          if (node.name) {
+            output.push(QuoteUtils.quote(node.name));
+          }
+          output.push('SET NOT NULL');
+          break;
+        case 'AT_AddIndex':
+          output.push('ADD');
+          if (node.def) {
+            output.push(this.visit(node.def, context));
+          }
+          break;
+        case 'AT_ReAddIndex':
+          output.push('ADD');
+          if (node.def) {
+            output.push(this.visit(node.def, context));
+          }
+          break;
+        case 'AT_ReAddConstraint':
+          output.push('ADD');
+          if (node.def) {
+            output.push(this.visit(node.def, context));
+          }
+          break;
+        case 'AT_ReAddDomainConstraint':
+          output.push('ADD');
+          if (node.def) {
+            output.push(this.visit(node.def, context));
+          }
+          break;
+        case 'AT_AlterConstraint':
+          output.push('ALTER CONSTRAINT');
+          if (node.name) {
+            output.push(QuoteUtils.quote(node.name));
+          }
+          if (node.def) {
+            output.push(this.visit(node.def, context));
+          }
+          break;
+        case 'AT_AddIndexConstraint':
+          output.push('ADD');
+          if (node.def) {
+            output.push(this.visit(node.def, context));
+          }
+          break;
+        case 'AT_ReAddComment':
+          output.push('COMMENT');
+          if (node.def) {
+            output.push(this.visit(node.def, context));
+          }
+          break;
+        case 'AT_AlterColumnGenericOptions':
+          output.push('ALTER COLUMN');
+          if (node.name) {
+            output.push(QuoteUtils.quote(node.name));
+          }
+          output.push('OPTIONS');
+          if (node.def && Array.isArray(node.def)) {
+            const options = ListUtils.unwrapList(node.def)
+              .map(option => this.visit(option, context))
+              .join(', ');
+            output.push(`(${options})`);
+          }
+          break;
+        case 'AT_DropOids':
+          output.push('SET WITHOUT OIDS');
+          break;
+        case 'AT_ReplaceRelOptions':
+          output.push('REPLACE');
+          if (node.def && Array.isArray(node.def)) {
+            const options = ListUtils.unwrapList(node.def)
+              .map(option => this.visit(option, context))
+              .join(', ');
+            output.push(`(${options})`);
+          } else {
+            output.push('()');
+          }
+          break;
+        case 'AT_AddOf':
+          output.push('OF');
+          if (node.def) {
+            output.push(this.visit(node.def, context));
+          }
+          break;
+        case 'AT_DropOf':
+          output.push('NOT OF');
+          break;
+        case 'AT_ReplicaIdentity':
+          output.push('REPLICA IDENTITY');
+          if (node.def) {
+            output.push(this.visit(node.def, context));
+          }
+          break;
+        case 'AT_GenericOptions':
+          output.push('OPTIONS');
+          if (node.def && Array.isArray(node.def)) {
+            const options = ListUtils.unwrapList(node.def)
+              .map(option => this.visit(option, context))
+              .join(', ');
+            output.push(`(${options})`);
+          }
+          break;
+        case 'AT_AddIdentity':
+          output.push('ALTER COLUMN');
+          if (node.name) {
+            output.push(QuoteUtils.quote(node.name));
+          }
+          output.push('ADD GENERATED');
+          if (node.def) {
+            output.push(this.visit(node.def, context));
+          }
+          output.push('AS IDENTITY');
+          break;
+        case 'AT_SetIdentity':
+          output.push('ALTER COLUMN');
+          if (node.name) {
+            output.push(QuoteUtils.quote(node.name));
+          }
+          output.push('SET');
+          if (node.def) {
+            output.push(this.visit(node.def, context));
+          }
+          break;
+        case 'AT_DropIdentity':
+          output.push('ALTER COLUMN');
+          if (node.name) {
+            output.push(QuoteUtils.quote(node.name));
+          }
+          output.push('DROP IDENTITY');
+          if (node.behavior === 'DROP_CASCADE') {
+            output.push('CASCADE');
+          } else if (node.behavior === 'DROP_RESTRICT') {
+            output.push('RESTRICT');
+          }
+          break;
+        case 'AT_ReAddStatistics':
+          output.push('ADD');
+          if (node.def) {
+            output.push(this.visit(node.def, context));
+          }
+          break;
         default:
           throw new Error(`Unsupported AlterTableCmd subtype: ${node.subtype}`);
       }
