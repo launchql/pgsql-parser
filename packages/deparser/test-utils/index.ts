@@ -3,6 +3,63 @@ import { deparse } from '../src';
 import { cleanTree, cleanLines } from '../src/utils';
 import { readFileSync } from 'fs';
 import * as path from 'path';
+import { expect } from '@jest/globals';
+import {diff} from 'jest-diff'
+
+type ParseErrorType = 
+  | 'PARSE_FAILED'
+  | 'INVALID_STATEMENT'
+  | 'REPARSE_FAILED'
+  | 'AST_MISMATCH'
+  | 'UNEXPECTED_ERROR'
+  | 'INVALID_DEPARSED_SQL';
+
+interface ParseError extends Error {
+  type: ParseErrorType;
+  relativePath: string;
+  sql: string;
+  deparsedSql?: string;
+  originalAst?: any;
+  reparsedAst?: any;
+  parseError?: string;
+}
+
+function createParseError(
+  type: ParseErrorType,
+  relativePath: string,
+  sql: string,
+  deparsedSql?: string,
+  originalAst?: any,
+  reparsedAst?: any,
+  parseError?: string
+): ParseError {
+  const error = new Error(getErrorMessage(type)) as ParseError;
+  error.type = type;
+  error.relativePath = relativePath;
+  error.sql = sql;
+  error.deparsedSql = deparsedSql;
+  error.originalAst = originalAst;
+  error.reparsedAst = reparsedAst;
+  error.parseError = parseError;
+  return error;
+}
+
+function getErrorMessage(type: ParseErrorType): string {
+  switch (type) {
+    case 'PARSE_FAILED':
+      return 'Parse failed - no statements returned';
+    case 'INVALID_STATEMENT':
+      return 'Invalid statement structure';
+    case 'REPARSE_FAILED':
+      return 'Reparse failed - no statements returned';
+    case 'AST_MISMATCH':
+      return 'AST mismatch after parse/deparse cycle';
+    case 'UNEXPECTED_ERROR':
+      return 'Unexpected error during parse/deparse cycle';
+    case 'INVALID_DEPARSED_SQL':
+      return 'Invalid deparsed SQL';
+  }
+}
 
 export class TestUtils {
   protected printErrorMessage(sql: string, position: number) {
@@ -43,13 +100,88 @@ export class TestUtils {
         tree.stmts.forEach((stmt: any) => {
           if (stmt.stmt) {
             const outSql = deparse(stmt.stmt);
-            const reparsed = parse(outSql);
-            expect(cleanTree(reparsed.stmts || [])).toEqual(cleanTree([stmt]));
+            let reparsed;
+            try {
+              reparsed = parse(outSql);
+            } catch (parseErr) {
+              throw createParseError(
+                'INVALID_DEPARSED_SQL',
+                relativePath,
+                sql,
+                outSql,
+                cleanTree([stmt]),
+                undefined,
+                parseErr instanceof Error ? parseErr.message : String(parseErr)
+              );
+            }
+            const originalClean = cleanTree([stmt]);
+            const reparsedClean = cleanTree(reparsed.stmts || []);
+            
+            if (!tree.stmts) {
+              throw createParseError('PARSE_FAILED', relativePath, sql);
+            }
+            
+            if (!stmt.stmt) {
+              throw createParseError('INVALID_STATEMENT', relativePath, sql, undefined, cleanTree(tree));
+            }
+            
+            if (!reparsed.stmts) {
+              throw createParseError('REPARSE_FAILED', relativePath, sql, outSql, originalClean);
+            }
+            
+            try {
+              expect(reparsedClean).toEqual(originalClean);
+            } catch (err) {
+              throw createParseError('AST_MISMATCH', relativePath, sql, outSql, originalClean, reparsedClean);
+            }
           }
         });
       }
     } catch (err) {
-      console.error(`\n❌ BROKEN FIXTURE: ${relativePath}\n❌ FIXTURE SQL: ${sql}${tree ? `\n❌ FIXTURE AST: ${JSON.stringify(cleanTree(tree), null, 2)}` : ''}`);
+      const errorMessages: string[] = [];
+      
+      if (err instanceof Error && 'type' in err) {
+        const parseError = err as ParseError;
+        errorMessages.push(`\n❌ ${parseError.type}: ${parseError.relativePath}`);
+        errorMessages.push(`❌ INPUT SQL: ${parseError.sql}`);
+        
+        if (parseError.deparsedSql) {
+          errorMessages.push(`❌ DEPARSED SQL: ${parseError.deparsedSql}`);
+        }
+        
+        if (parseError.type === 'INVALID_DEPARSED_SQL') {
+          errorMessages.push(
+            `\n❌ DEPARSER GENERATED INVALID SQL:`,
+            `ORIGINAL AST:`,
+            JSON.stringify(parseError.originalAst, null, 2),
+            `\nPARSE ERROR: ${parseError.parseError}`
+          );
+        } else if (parseError.type === 'AST_MISMATCH') {
+          errorMessages.push(
+            `\n❌ AST COMPARISON:`,
+            `EXPECTED AST:`,
+            JSON.stringify(parseError.originalAst, null, 2),
+            `\nACTUAL AST:`,
+            JSON.stringify(parseError.reparsedAst, null, 2),
+            `\nDIFF (what's missing from actual vs expected):`,
+            diff(parseError.originalAst, parseError.reparsedAst)
+          );
+        } else if (parseError.originalAst) {
+          errorMessages.push(`❌ AST: ${JSON.stringify(parseError.originalAst, null, 2)}`);
+        }
+      } else {
+        // Handle unexpected errors
+        errorMessages.push(
+          `\n❌ UNEXPECTED ERROR: ${relativePath}`,
+          `❌ INPUT SQL: ${sql}`,
+          `❌ ERROR: ${err instanceof Error ? err.message : String(err)}`
+        );
+        if (tree) {
+          errorMessages.push(`❌ PARSED AST: ${JSON.stringify(cleanTree(tree), null, 2)}`);
+        }
+      }
+      
+      console.log(errorMessages.join('\n'));
       throw err;
     }
   }

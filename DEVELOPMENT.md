@@ -32,6 +32,8 @@ cd packages/deparser
 yarn test:watch
 ```
 
+you can also run `yarn test` if you don't need to watch.
+
 This will start Jest in watch mode, which will automatically re-run tests when files change.
 
 ### Available Packages

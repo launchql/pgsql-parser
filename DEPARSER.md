@@ -118,60 +118,330 @@ These are the types you should use to navigate the deparse, study them well!
 
 ## Test Requirements Analysis
 
-### Current Test Structure (`create-table.test.ts`)
+- ONLY focus on deparser/kitchen-sink tests for now
+- after kitchen-sink is passing, you can do deparser/ast-driven/
 
-The tests define expected behavior for CREATE TABLE statements:
+If a test fails, the stderr will give meaningful info to solve the issue:
 
-```typescript
-describe('CREATE TABLE statements', () => {
-  it('should deparse simple CREATE TABLE', () => {
-    const ast = {
-      RawStmt: {
-        stmt: {
-          CreateStmt: {
-            relation: {
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p'
-            },
-            tableElts: [
-              {
-                ColumnDef: {
-                  colname: 'id',
-                  typeName: {
-                    names: [{ String: { sval: 'int4' } }],
-                    typemod: -1
+      ❌ AST_MISMATCH: simple-5.sql
+      ❌ INPUT SQL: SELECT * FROM table_name WHERE last_name SIMILAR TO '%(b|d)%'
+      ❌ DEPARSED SQL: SELECT * FROM table_name WHERE last_name SIMILAR TO pg_catalog.similar_to_escape('%(b|d)%')
+
+      ❌ AST COMPARISON:
+      EXPECTED AST:
+      [
+        {
+          "stmt": {
+            "SelectStmt": {
+              "targetList": [
+                {
+                  "ResTarget": {
+                    "val": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "A_Star": {}
+                          }
+                        ]
+                      }
+                    }
                   }
                 }
-              }
-            ]
+              ],
+              "fromClause": [
+                {
+                  "RangeVar": {
+                    "relname": "table_name",
+                    "inh": true,
+                    "relpersistence": "p"
+                  }
+                }
+              ],
+              "whereClause": {
+                "A_Expr": {
+                  "kind": "AEXPR_SIMILAR",
+                  "name": [
+                    {
+                      "String": {
+                        "sval": "~"
+                      }
+                    }
+                  ],
+                  "lexpr": {
+                    "ColumnRef": {
+                      "fields": [
+                        {
+                          "String": {
+                            "sval": "last_name"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  "rexpr": {
+                    "FuncCall": {
+                      "funcname": [
+                        {
+                          "String": {
+                            "sval": "pg_catalog"
+                          }
+                        },
+                        {
+                          "String": {
+                            "sval": "similar_to_escape"
+                          }
+                        }
+                      ],
+                      "args": [
+                        {
+                          "A_Const": {
+                            "sval": {
+                              "sval": "%(b|d)%"
+                            }
+                          }
+                        }
+                      ],
+                      "funcformat": "COERCE_EXPLICIT_CALL"
+                    }
+                  }
+                }
+              },
+              "limitOption": "LIMIT_OPTION_DEFAULT",
+              "op": "SETOP_NONE"
+            }
           }
         }
-      }
-    };
-    
-    const result = Deparser.deparse(ast);
-    expect(result).toBe('CREATE TABLE users (id int4)');
-  });
-});
-```
+      ]
 
-This test confirms that TypeName nodes are passed as direct objects with `names` and `typemod` properties, not wrapped in a `TypeName` property.
+      ACTUAL AST:
+      [
+        {
+          "stmt": {
+            "SelectStmt": {
+              "targetList": [
+                {
+                  "ResTarget": {
+                    "val": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "A_Star": {}
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              ],
+              "fromClause": [
+                {
+                  "RangeVar": {
+                    "relname": "table_name",
+                    "inh": true,
+                    "relpersistence": "p"
+                  }
+                }
+              ],
+              "whereClause": {
+                "A_Expr": {
+                  "kind": "AEXPR_SIMILAR",
+                  "name": [
+                    {
+                      "String": {
+                        "sval": "~"
+                      }
+                    }
+                  ],
+                  "lexpr": {
+                    "ColumnRef": {
+                      "fields": [
+                        {
+                          "String": {
+                            "sval": "last_name"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  "rexpr": {
+                    "FuncCall": {
+                      "funcname": [
+                        {
+                          "String": {
+                            "sval": "pg_catalog"
+                          }
+                        },
+                        {
+                          "String": {
+                            "sval": "similar_to_escape"
+                          }
+                        }
+                      ],
+                      "args": [
+                        {
+                          "FuncCall": {
+                            "funcname": [
+                              {
+                                "String": {
+                                  "sval": "pg_catalog"
+                                }
+                              },
+                              {
+                                "String": {
+                                  "sval": "similar_to_escape"
+                                }
+                              }
+                            ],
+                            "args": [
+                              {
+                                "A_Const": {
+                                  "sval": {
+                                    "sval": "%(b|d)%"
+                                  }
+                                }
+                              }
+                            ],
+                            "funcformat": "COERCE_EXPLICIT_CALL"
+                          }
+                        }
+                      ],
+                      "funcformat": "COERCE_EXPLICIT_CALL"
+                    }
+                  }
+                }
+              },
+              "limitOption": "LIMIT_OPTION_DEFAULT",
+              "op": "SETOP_NONE"
+            }
+          }
+        }
+      ]
 
-### Test Coverage Areas
+      DIFF (what's missing from actual vs expected):
+      - Expected
+      + Received
 
-1. **Basic CREATE TABLE**: Simple table creation
-2. **IF NOT EXISTS**: Conditional creation
-3. **TEMPORARY TABLE**: Temporary table handling
-4. **Schema-qualified names**: Schema.table syntax
-5. **Constraints**: PRIMARY KEY, NOT NULL, CHECK, UNIQUE
-6. **DEFAULT values**: Integer, string, boolean defaults
-7. **Data types**: Various PostgreSQL data types with modifiers
-8. **Table-level constraints**: Composite keys, table checks
+        Array [
+          Object {
+            "stmt": Object {
+              "SelectStmt": Object {
+                "fromClause": Array [
+                  Object {
+                    "RangeVar": Object {
+                      "inh": true,
+                      "location": undefined,
+                      "relname": "table_name",
+                      "relpersistence": "p",
+                    },
+                  },
+                ],
+                "limitOption": "LIMIT_OPTION_DEFAULT",
+                "op": "SETOP_NONE",
+                "targetList": Array [
+                  Object {
+                    "ResTarget": Object {
+                      "location": undefined,
+                      "val": Object {
+                        "ColumnRef": Object {
+                          "fields": Array [
+                            Object {
+                              "A_Star": Object {},
+                            },
+                          ],
+                          "location": undefined,
+                        },
+                      },
+                    },
+                  },
+                ],
+                "whereClause": Object {
+                  "A_Expr": Object {
+                    "kind": "AEXPR_SIMILAR",
+                    "lexpr": Object {
+                      "ColumnRef": Object {
+                        "fields": Array [
+                          Object {
+                            "String": Object {
+                              "sval": "last_name",
+                            },
+                          },
+                        ],
+                        "location": undefined,
+                      },
+                    },
+                    "location": undefined,
+                    "name": Array [
+                      Object {
+                        "String": Object {
+                          "sval": "~",
+                        },
+                      },
+                    ],
+                    "rexpr": Object {
+                      "FuncCall": Object {
+                        "args": Array [
+                          Object {
+      +                     "FuncCall": Object {
+      +                       "args": Array [
+      +                         Object {
+                                  "A_Const": Object {
+                                    "location": undefined,
+                                    "sval": Object {
+                                      "sval": "%(b|d)%",
+      +                             },
+      +                           },
+      +                         },
+      +                       ],
+      +                       "funcformat": "COERCE_EXPLICIT_CALL",
+      +                       "funcname": Array [
+      +                         Object {
+      +                           "String": Object {
+      +                             "sval": "pg_catalog",
+      +                           },
+                                },
+      +                         Object {
+      +                           "String": Object {
+      +                             "sval": "similar_to_escape",
+      +                           },
+      +                         },
+      +                       ],
+      +                       "location": undefined,
+                            },
+                          },
+                        ],
+                        "funcformat": "COERCE_EXPLICIT_CALL",
+                        "funcname": Array [
+                          Object {
+                            "String": Object {
+                              "sval": "pg_catalog",
+                            },
+                          },
+                          Object {
+                            "String": Object {
+                              "sval": "similar_to_escape",
+                            },
+                          },
+                        ],
+                        "location": undefined,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        ]
+
+The simple-5.sql in this case comes from __fixtures__/generated/generated.json, but you may need even need to look there, since the error messgage gives you the expected AST and Expected SQL. 
+
+Essentially, pay attention to the kitchen sink errors, and work on each test, one by one. The AST is the most important part to pay attention to, as is shows what the difference between the deparsed SQL's AST and the expected SQL's AST is.
+  
 
 ## Proposed Architecture
 
 ### 1. Context Enhancement
+
+If we have special cases, we can augement and levearage a deparserContext:
 
 **Expanded Context System**:
 ```typescript
@@ -244,125 +514,3 @@ export class ListUtils {
   }
 }
 ```
-
-## Implementation Roadmap
-
-### Phase 1: Critical Fixes 
-
-1. **Fix TypeName and RangeVar usage in tests**
-   - Update TypeName and RangeVar method to use correct unwrapped signature
-   - Test with existing CREATE TABLE tests
-
-2. **Node Type Pattern Audit**
-   - Review all visitor methods for correct wrapped/unwrapped patterns
-   - Identify other methods with similar signature issues
-   - Implement consistent pattern recognition
-
-3. **Basic Test Validation**
-   - Ensure all existing tests pass
-   - Fix any regression issues
-   - Validate CREATE TABLE functionality
-
-### Phase 2: PostgreSQL 17 Compatibility 
-
-1. **AST Structure Updates**
-   - Compare PG13 vs PG17 AST differences
-   - Update node type definitions
-   - Handle new node types
-
-2. **Expression Handling Enhancement**
-   - Update A_Expr processing
-   - Enhance operator handling
-   - Improve function call processing
-
-3. **Constraint System Updates**
-   - Update constraint processing
-   - Handle new constraint types
-   - Improve constraint validation
-
-### Phase 3: Testing and Documentation
-
-1. **Comprehensive Test Suite**
-   - Add tests for all statement types
-   - Include edge case testing
-   - Performance benchmarking
-
-2. **Documentation Updates**
-   - API documentation
-   - Usage examples
-   - Migration guide
-
-3. **Integration Testing**
-   - End-to-end testing
-   - Compatibility validation
-   - Regression testing
-
-## Testing Strategy
-
-### 1. Unit Testing Approach
-
-**Test Structure**:
-```typescript
-describe('Deparser', () => {
-  describe('TypeName handling', () => {
-    it('should handle simple type names', () => {
-      const ast = {
-        TypeName: {
-          names: [{ String: { sval: 'int4' } }],
-          typemod: -1
-        }
-      };
-      
-      const deparser = new Deparser([]);
-      const result = deparser.TypeName(ast, {});
-      expect(result).toBe('int4');
-    });
-    
-    it('should handle type modifiers', () => {
-      const ast = {
-        TypeName: {
-          names: [{ String: { sval: 'varchar' } }],
-          typemod: 104 // varchar(100)
-        }
-      };
-      
-      const deparser = new Deparser([]);
-      const result = deparser.TypeName(ast, {});
-      expect(result).toBe('varchar(100)');
-    });
-  });
-});
-```
-
-### 2. Integration Testing
-
-**Round-trip Testing**:
-
-Since the strings may differ slightly (whitespace, etc.) use the ASTs to check equality:
-
-```typescript
-describe('Round-trip testing', () => {
-  it('should parse and deparse identically', () => {
-    const sql = 'CREATE TABLE users (id int4, name text)';
-    const ast = parse(sql);
-    const deparsed = Deparser.deparse(ast);
-    const parsedDeparse = parse(deparsed);
-    expect(deparsed).toBe(parsedDeparse);
-  });
-});
-```
-
-Although, this should all be made into a test utilties inside of packages/deparser/test-utils/
-
-## Verification Strategy
-
-### Code Quality Checks
-1. **TypeScript Compilation**: Ensure all type errors are resolved
-2. **Linting**: Follow project coding standards
-3. **Test Coverage**: Maintain >90% test coverage
-
-### Functional Validation
-1. **Test Suite**: All tests must pass
-2. **Round-trip Testing**: Parse → Deparse → Parse consistency
-3. **PostgreSQL Compatibility**: Validate against actual PostgreSQL 17
-4. **Regression Testing**: Ensure no functionality loss
