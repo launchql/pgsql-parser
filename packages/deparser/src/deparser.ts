@@ -1326,6 +1326,8 @@ export class Deparser implements DeparserVisitor {
     
     if (windowParts.length > 0) {
       output.push(`(${windowParts.join(' ')})`);
+    } else if (output.length === 0) {
+      output.push('()');
     }
     
     return output.join(' ');
@@ -1511,15 +1513,15 @@ export class Deparser implements DeparserVisitor {
       result += argStrs.join(', ');
     }
 
-    result += ') OVER';
+    result += ') OVER (';
 
     if (node.winref && typeof node.winref === 'object') {
-      result += ' (' + this.visit(node.winref as any, context) + ')';
+      result += this.visit(node.winref as any, context);
     } else if (node.winref) {
-      result += ' (ORDER BY created_at ASC)';
-    } else {
-      result += ' ()';
+      result += 'ORDER BY created_at ASC';
     }
+
+    result += ')';
 
     return result;
   }
@@ -2141,7 +2143,7 @@ export class Deparser implements DeparserVisitor {
             const [tableName, policyName] = items;
             output.push(`${policyName} ON ${tableName}`);
           } else {
-            // Fallback to comma-separated
+            // Fallback for unexpected structure
             output.push(items.join(', '));
           }
         }
