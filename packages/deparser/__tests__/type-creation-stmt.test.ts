@@ -11,14 +11,12 @@ describe('Type Creation Statement Deparsers', () => {
       const ast = {
         CompositeTypeStmt: {
           typevar: {
-            RangeVar: {
-              schemaname: undefined as string | undefined,
-              relname: 'address_type',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'address_type',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           coldeflist: [
             {
@@ -84,14 +82,12 @@ describe('Type Creation Statement Deparsers', () => {
       const ast = {
         CompositeTypeStmt: {
           typevar: {
-            RangeVar: {
-              schemaname: 'public',
-              relname: 'person_type',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: 'public',
+            relname: 'person_type',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           coldeflist: [
             {

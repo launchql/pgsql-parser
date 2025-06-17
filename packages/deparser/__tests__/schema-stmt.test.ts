@@ -220,14 +220,12 @@ describe('Schema Statement Deparsers', () => {
         TruncateStmt: {
           relations: [
             {
-              RangeVar: {
-                schemaname: undefined as string | undefined,
-                relname: 'users',
-                inh: true,
-                relpersistence: 'p',
-                alias: null as any,
-                location: -1
-              }
+              schemaname: undefined as string | undefined,
+              relname: 'users',
+              inh: true,
+              relpersistence: 'p',
+              alias: null as any,
+              location: -1
             }
           ],
           restart_seqs: false,
@@ -244,14 +242,12 @@ describe('Schema Statement Deparsers', () => {
         TruncateStmt: {
           relations: [
             {
-              RangeVar: {
-                schemaname: undefined as string | undefined,
-                relname: 'users',
-                inh: true,
-                relpersistence: 'p',
-                alias: null as any,
-                location: -1
-              }
+              schemaname: undefined as string | undefined,
+              relname: 'users',
+              inh: true,
+              relpersistence: 'p',
+              alias: null as any,
+              location: -1
             }
           ],
           restart_seqs: true,
@@ -268,14 +264,12 @@ describe('Schema Statement Deparsers', () => {
         TruncateStmt: {
           relations: [
             {
-              RangeVar: {
-                schemaname: undefined as string | undefined,
-                relname: 'users',
-                inh: true,
-                relpersistence: 'p',
-                alias: null as any,
-                location: -1
-              }
+              schemaname: undefined as string | undefined,
+              relname: 'users',
+              inh: true,
+              relpersistence: 'p',
+              alias: null as any,
+              location: -1
             }
           ],
           restart_seqs: false,
@@ -292,24 +286,20 @@ describe('Schema Statement Deparsers', () => {
         TruncateStmt: {
           relations: [
             {
-              RangeVar: {
-                schemaname: undefined as string | undefined,
-                relname: 'users',
-                inh: true,
-                relpersistence: 'p',
-                alias: null as any,
-                location: -1
-              }
+              schemaname: undefined as string | undefined,
+              relname: 'users',
+              inh: true,
+              relpersistence: 'p',
+              alias: null as any,
+              location: -1
             },
             {
-              RangeVar: {
-                schemaname: undefined as string | undefined,
-                relname: 'orders',
-                inh: true,
-                relpersistence: 'p',
-                alias: null as any,
-                location: -1
-              }
+              schemaname: undefined as string | undefined,
+              relname: 'orders',
+              inh: true,
+              relpersistence: 'p',
+              alias: null as any,
+              location: -1
             }
           ],
           restart_seqs: false,

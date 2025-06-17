@@ -197,14 +197,12 @@ describe('Advanced Policy Statement Deparsers', () => {
           ],
           relations: [
             {
-              RangeVar: {
-                schemaname: undefined as string | undefined,
-                relname: 'test_table',
-                inh: true,
-                relpersistence: 'p',
-                alias: null as any,
-                location: -1
-              }
+              schemaname: undefined as string | undefined,
+              relname: 'test_table',
+              inh: true,
+              relpersistence: 'p',
+              alias: null as any,
+              location: -1
             }
           ]
         }
@@ -232,14 +230,12 @@ describe('Advanced Policy Statement Deparsers', () => {
           ],
           relations: [
             {
-              RangeVar: {
-                schemaname: 'public',
-                relname: 'users',
-                inh: true,
-                relpersistence: 'p',
-                alias: null as any,
-                location: -1
-              }
+              schemaname: 'public',
+              relname: 'users',
+              inh: true,
+              relpersistence: 'p',
+              alias: null as any,
+              location: -1
             }
           ]
         }
@@ -256,24 +252,20 @@ describe('Advanced Policy Statement Deparsers', () => {
           pubname: 'my_publication',
           pubobjects: [
             {
-              RangeVar: {
-                schemaname: undefined as string | undefined,
-                relname: 'users',
-                inh: true,
-                relpersistence: 'p',
-                alias: null as any,
-                location: -1
-              }
+              schemaname: undefined as string | undefined,
+              relname: 'users',
+              inh: true,
+              relpersistence: 'p',
+              alias: null as any,
+              location: -1
             },
             {
-              RangeVar: {
-                schemaname: undefined as string | undefined,
-                relname: 'orders',
-                inh: true,
-                relpersistence: 'p',
-                alias: null as any,
-                location: -1
-              }
+              schemaname: undefined as string | undefined,
+              relname: 'orders',
+              inh: true,
+              relpersistence: 'p',
+              alias: null as any,
+              location: -1
             }
           ],
           for_all_tables: false,

@@ -26,14 +26,12 @@ describe('Set Operation Statement Deparsers', () => {
               ],
               fromClause: [
                 {
-                  RangeVar: {
-                    schemaname: undefined as string | undefined,
-                    relname: 'table1',
-                    inh: true,
-                    relpersistence: 'p',
-                    alias: null as any,
-                    location: -1
-                  }
+                  schemaname: undefined as string | undefined,
+                  relname: 'table1',
+                  inh: true,
+                  relpersistence: 'p',
+                  alias: null as any,
+                  location: -1
                 }
               ]
             }
@@ -52,14 +50,12 @@ describe('Set Operation Statement Deparsers', () => {
               ],
               fromClause: [
                 {
-                  RangeVar: {
-                    schemaname: undefined as string | undefined,
-                    relname: 'table2',
-                    inh: true,
-                    relpersistence: 'p',
-                    alias: null as any,
-                    location: -1
-                  }
+                  schemaname: undefined as string | undefined,
+                  relname: 'table2',
+                  inh: true,
+                  relpersistence: 'p',
+                  alias: null as any,
+                  location: -1
                 }
               ]
             }
@@ -93,14 +89,12 @@ describe('Set Operation Statement Deparsers', () => {
               ],
               fromClause: [
                 {
-                  RangeVar: {
-                    schemaname: undefined as string | undefined,
-                    relname: 'users',
-                    inh: true,
-                    relpersistence: 'p',
-                    alias: null as any,
-                    location: -1
-                  }
+                  schemaname: undefined as string | undefined,
+                  relname: 'users',
+                  inh: true,
+                  relpersistence: 'p',
+                  alias: null as any,
+                  location: -1
                 }
               ]
             }
@@ -119,14 +113,12 @@ describe('Set Operation Statement Deparsers', () => {
               ],
               fromClause: [
                 {
-                  RangeVar: {
-                    schemaname: undefined as string | undefined,
-                    relname: 'customers',
-                    inh: true,
-                    relpersistence: 'p',
-                    alias: null as any,
-                    location: -1
-                  }
+                  schemaname: undefined as string | undefined,
+                  relname: 'customers',
+                  inh: true,
+                  relpersistence: 'p',
+                  alias: null as any,
+                  location: -1
                 }
               ]
             }
@@ -160,14 +152,12 @@ describe('Set Operation Statement Deparsers', () => {
               ],
               fromClause: [
                 {
-                  RangeVar: {
-                    schemaname: undefined as string | undefined,
-                    relname: 'active_users',
-                    inh: true,
-                    relpersistence: 'p',
-                    alias: null as any,
-                    location: -1
-                  }
+                  schemaname: undefined as string | undefined,
+                  relname: 'active_users',
+                  inh: true,
+                  relpersistence: 'p',
+                  alias: null as any,
+                  location: -1
                 }
               ]
             }
@@ -186,14 +176,12 @@ describe('Set Operation Statement Deparsers', () => {
               ],
               fromClause: [
                 {
-                  RangeVar: {
-                    schemaname: undefined as string | undefined,
-                    relname: 'premium_users',
-                    inh: true,
-                    relpersistence: 'p',
-                    alias: null as any,
-                    location: -1
-                  }
+                  schemaname: undefined as string | undefined,
+                  relname: 'premium_users',
+                  inh: true,
+                  relpersistence: 'p',
+                  alias: null as any,
+                  location: -1
                 }
               ]
             }
@@ -227,14 +215,12 @@ describe('Set Operation Statement Deparsers', () => {
               ],
               fromClause: [
                 {
-                  RangeVar: {
-                    schemaname: undefined as string | undefined,
-                    relname: 'all_users',
-                    inh: true,
-                    relpersistence: 'p',
-                    alias: null as any,
-                    location: -1
-                  }
+                  schemaname: undefined as string | undefined,
+                  relname: 'all_users',
+                  inh: true,
+                  relpersistence: 'p',
+                  alias: null as any,
+                  location: -1
                 }
               ]
             }
@@ -253,14 +239,12 @@ describe('Set Operation Statement Deparsers', () => {
               ],
               fromClause: [
                 {
-                  RangeVar: {
-                    schemaname: undefined as string | undefined,
-                    relname: 'banned_users',
-                    inh: true,
-                    relpersistence: 'p',
-                    alias: null as any,
-                    location: -1
-                  }
+                  schemaname: undefined as string | undefined,
+                  relname: 'banned_users',
+                  inh: true,
+                  relpersistence: 'p',
+                  alias: null as any,
+                  location: -1
                 }
               ]
             }
@@ -294,14 +278,12 @@ describe('Set Operation Statement Deparsers', () => {
               ],
               fromClause: [
                 {
-                  RangeVar: {
-                    schemaname: undefined as string | undefined,
-                    relname: 'inventory',
-                    inh: true,
-                    relpersistence: 'p',
-                    alias: null as any,
-                    location: -1
-                  }
+                  schemaname: undefined as string | undefined,
+                  relname: 'inventory',
+                  inh: true,
+                  relpersistence: 'p',
+                  alias: null as any,
+                  location: -1
                 }
               ]
             }
@@ -320,14 +302,12 @@ describe('Set Operation Statement Deparsers', () => {
               ],
               fromClause: [
                 {
-                  RangeVar: {
-                    schemaname: undefined as string | undefined,
-                    relname: 'sold_items',
-                    inh: true,
-                    relpersistence: 'p',
-                    alias: null as any,
-                    location: -1
-                  }
+                  schemaname: undefined as string | undefined,
+                  relname: 'sold_items',
+                  inh: true,
+                  relpersistence: 'p',
+                  alias: null as any,
+                  location: -1
                 }
               ]
             }
@@ -475,14 +455,12 @@ describe('Set Operation Statement Deparsers', () => {
               ],
               fromClause: [
                 {
-                  RangeVar: {
-                    schemaname: undefined as string | undefined,
-                    relname: 'users',
-                    inh: true,
-                    relpersistence: 'p',
-                    alias: null as any,
-                    location: -1
-                  }
+                  schemaname: undefined as string | undefined,
+                  relname: 'users',
+                  inh: true,
+                  relpersistence: 'p',
+                  alias: null as any,
+                  location: -1
                 }
               ]
             }

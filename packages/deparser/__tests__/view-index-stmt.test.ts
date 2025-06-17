@@ -63,14 +63,12 @@ describe('View and Index Statement Deparsers', () => {
       const ast = {
         ViewStmt: {
           view: {
-            RangeVar: {
-              schemaname: undefined as string | undefined,
-              relname: 'test_view',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'test_view',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           aliases: undefined,
           query: {
@@ -87,14 +85,12 @@ describe('View and Index Statement Deparsers', () => {
               ],
               fromClause: [
                 {
-                  RangeVar: {
-                    schemaname: undefined as string | undefined,
-                    relname: 'users',
-                    inh: true,
-                    relpersistence: 'p',
-                    alias: null as any,
-                    location: -1
-                  }
+                  schemaname: undefined as string | undefined,
+                  relname: 'users',
+                  inh: true,
+                  relpersistence: 'p',
+                  alias: null as any,
+                  location: -1
                 }
               ],
               whereClause: null as any,
@@ -128,14 +124,12 @@ describe('View and Index Statement Deparsers', () => {
       const ast = {
         ViewStmt: {
           view: {
-            RangeVar: {
-              schemaname: undefined as string | undefined,
-              relname: 'test_view',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'test_view',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           aliases: undefined,
           query: {
@@ -152,14 +146,12 @@ describe('View and Index Statement Deparsers', () => {
               ],
               fromClause: [
                 {
-                  RangeVar: {
-                    schemaname: undefined as string | undefined,
-                    relname: 'users',
-                    inh: true,
-                    relpersistence: 'p',
-                    alias: null as any,
-                    location: -1
-                  }
+                  schemaname: undefined as string | undefined,
+                  relname: 'users',
+                  inh: true,
+                  relpersistence: 'p',
+                  alias: null as any,
+                  location: -1
                 }
               ],
               whereClause: null as any,
@@ -193,14 +185,12 @@ describe('View and Index Statement Deparsers', () => {
       const ast = {
         ViewStmt: {
           view: {
-            RangeVar: {
-              schemaname: undefined as string | undefined,
-              relname: 'test_view',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'test_view',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           aliases: [
             { String: { sval: 'col1' } },
@@ -220,14 +210,12 @@ describe('View and Index Statement Deparsers', () => {
               ],
               fromClause: [
                 {
-                  RangeVar: {
-                    schemaname: undefined as string | undefined,
-                    relname: 'users',
-                    inh: true,
-                    relpersistence: 'p',
-                    alias: null as any,
-                    location: -1
-                  }
+                  schemaname: undefined as string | undefined,
+                  relname: 'users',
+                  inh: true,
+                  relpersistence: 'p',
+                  alias: null as any,
+                  location: -1
                 }
               ],
               whereClause: null as any,
@@ -261,14 +249,12 @@ describe('View and Index Statement Deparsers', () => {
       const ast = {
         ViewStmt: {
           view: {
-            RangeVar: {
-              schemaname: undefined as string | undefined,
-              relname: 'test_view',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'test_view',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           aliases: undefined,
           query: {
@@ -285,14 +271,12 @@ describe('View and Index Statement Deparsers', () => {
               ],
               fromClause: [
                 {
-                  RangeVar: {
-                    schemaname: undefined as string | undefined,
-                    relname: 'users',
-                    inh: true,
-                    relpersistence: 'p',
-                    alias: null as any,
-                    location: -1
-                  }
+                  schemaname: undefined as string | undefined,
+                  relname: 'users',
+                  inh: true,
+                  relpersistence: 'p',
+                  alias: null as any,
+                  location: -1
                 }
               ],
               whereClause: null as any,
@@ -329,14 +313,12 @@ describe('View and Index Statement Deparsers', () => {
         IndexStmt: {
           idxname: 'idx_users_email',
           relation: {
-            RangeVar: {
-              schemaname: undefined as string | undefined,
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'users',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           accessMethod: 'btree',
           tableSpace: undefined,
@@ -384,14 +366,12 @@ describe('View and Index Statement Deparsers', () => {
         IndexStmt: {
           idxname: 'idx_users_email_unique',
           relation: {
-            RangeVar: {
-              schemaname: undefined as string | undefined,
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'users',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           accessMethod: 'btree',
           tableSpace: undefined,
@@ -439,14 +419,12 @@ describe('View and Index Statement Deparsers', () => {
         IndexStmt: {
           idxname: 'idx_users_name',
           relation: {
-            RangeVar: {
-              schemaname: undefined as string | undefined,
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'users',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           accessMethod: 'btree',
           tableSpace: undefined,
@@ -494,14 +472,12 @@ describe('View and Index Statement Deparsers', () => {
         IndexStmt: {
           idxname: 'idx_users_active',
           relation: {
-            RangeVar: {
-              schemaname: undefined as string | undefined,
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'users',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           accessMethod: 'btree',
           tableSpace: undefined,

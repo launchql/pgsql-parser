@@ -15,14 +15,12 @@ describe('Security Statement Deparsers', () => {
           privileges: [] as any[],
           objects: [
             {
-              RangeVar: {
-                schemaname: undefined as string | undefined,
-                relname: 'users',
-                inh: true,
-                relpersistence: 'p',
-                alias: null as any,
-                location: -1
-              }
+              schemaname: undefined as string | undefined,
+              relname: 'users',
+              inh: true,
+              relpersistence: 'p',
+              alias: null as any,
+              location: -1
             }
           ],
           grantees: [
@@ -51,14 +49,12 @@ describe('Security Statement Deparsers', () => {
           ],
           objects: [
             {
-              RangeVar: {
-                schemaname: 'public',
-                relname: 'orders',
-                inh: true,
-                relpersistence: 'p',
-                alias: null as any,
-                location: -1
-              }
+              schemaname: 'public',
+              relname: 'orders',
+              inh: true,
+              relpersistence: 'p',
+              alias: null as any,
+              location: -1
             }
           ],
           grantees: [
@@ -86,14 +82,12 @@ describe('Security Statement Deparsers', () => {
           ],
           objects: [
             {
-              RangeVar: {
-                schemaname: undefined as string | undefined,
-                relname: 'sensitive_data',
-                inh: true,
-                relpersistence: 'p',
-                alias: null as any,
-                location: -1
-              }
+              schemaname: undefined as string | undefined,
+              relname: 'sensitive_data',
+              inh: true,
+              relpersistence: 'p',
+              alias: null as any,
+              location: -1
             }
           ],
           grantees: [
@@ -254,14 +248,12 @@ describe('Security Statement Deparsers', () => {
         SecLabelStmt: {
           objtype: "OBJECT_TABLE",
           object: {
-            RangeVar: {
-              schemaname: null as string | null,
-              relname: 'classified_data',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: null as string | null,
+            relname: 'classified_data',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           provider: 'selinux',
           label: 'system_u:object_r:sepgsql_table_t:s0'

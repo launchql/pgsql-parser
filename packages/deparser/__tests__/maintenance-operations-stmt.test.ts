@@ -22,14 +22,12 @@ describe('Maintenance Operations Statement Deparsers', () => {
       const ast = {
         ClusterStmt: {
           relation: {
-            RangeVar: {
-              schemaname: undefined as string | undefined,
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'users',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           indexname: undefined,
           params: [] as any[]
@@ -43,14 +41,12 @@ describe('Maintenance Operations Statement Deparsers', () => {
       const ast = {
         ClusterStmt: {
           relation: {
-            RangeVar: {
-              schemaname: undefined as string | undefined,
-              relname: 'orders',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'orders',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           indexname: 'idx_orders_date',
           params: [] as any[]
@@ -64,14 +60,12 @@ describe('Maintenance Operations Statement Deparsers', () => {
       const ast = {
         ClusterStmt: {
           relation: {
-            RangeVar: {
-              schemaname: 'public',
-              relname: 'products',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: 'public',
+            relname: 'products',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           indexname: undefined,
           params: [
@@ -144,14 +138,12 @@ describe('Maintenance Operations Statement Deparsers', () => {
             {
               VacuumRelation: {
                 relation: {
-                  RangeVar: {
-                    schemaname: undefined as string | undefined,
-                    relname: 'users',
-                    inh: true,
-                    relpersistence: 'p',
-                    alias: null as any,
-                    location: -1
-                  }
+                  schemaname: undefined as string | undefined,
+                  relname: 'users',
+                  inh: true,
+                  relpersistence: 'p',
+                  alias: null as any,
+                  location: -1
                 },
                 oid: 0,
                 va_cols: [] as any[]
@@ -160,14 +152,12 @@ describe('Maintenance Operations Statement Deparsers', () => {
             {
               VacuumRelation: {
                 relation: {
-                  RangeVar: {
-                    schemaname: undefined as string | undefined,
-                    relname: 'orders',
-                    inh: true,
-                    relpersistence: 'p',
-                    alias: null as any,
-                    location: -1
-                  }
+                  schemaname: undefined as string | undefined,
+                  relname: 'orders',
+                  inh: true,
+                  relpersistence: 'p',
+                  alias: null as any,
+                  location: -1
                 },
                 oid: 0,
                 va_cols: [] as any[]
@@ -189,14 +179,12 @@ describe('Maintenance Operations Statement Deparsers', () => {
             {
               VacuumRelation: {
                 relation: {
-                  RangeVar: {
-                    schemaname: undefined as string | undefined,
-                    relname: 'products',
-                    inh: true,
-                    relpersistence: 'p',
-                    alias: null as any,
-                    location: -1
-                  }
+                  schemaname: undefined as string | undefined,
+                  relname: 'products',
+                  inh: true,
+                  relpersistence: 'p',
+                  alias: null as any,
+                  location: -1
                 },
                 oid: 0,
                 va_cols: [
@@ -229,14 +217,12 @@ describe('Maintenance Operations Statement Deparsers', () => {
           ],
           rels: [
             {
-              RangeVar: {
-                schemaname: 'public',
-                relname: 'inventory',
-                inh: true,
-                relpersistence: 'p',
-                alias: null as any,
-                location: -1
-              }
+              schemaname: 'public',
+              relname: 'inventory',
+              inh: true,
+              relpersistence: 'p',
+              alias: null as any,
+              location: -1
             }
           ],
           is_vacuumcmd: true
@@ -265,14 +251,12 @@ describe('Maintenance Operations Statement Deparsers', () => {
               ],
               fromClause: [
                 {
-                  RangeVar: {
-                    schemaname: undefined as string | undefined,
-                    relname: 'users',
-                    inh: true,
-                    relpersistence: 'p',
-                    alias: null as any,
-                    location: -1
-                  }
+                  schemaname: undefined as string | undefined,
+                  relname: 'users',
+                  inh: true,
+                  relpersistence: 'p',
+                  alias: null as any,
+                  location: -1
                 }
               ],
               whereClause: null as any,
@@ -320,14 +304,12 @@ describe('Maintenance Operations Statement Deparsers', () => {
               ],
               fromClause: [
                 {
-                  RangeVar: {
-                    schemaname: undefined as string | undefined,
-                    relname: 'orders',
-                    inh: true,
-                    relpersistence: 'p',
-                    alias: null as any,
-                    location: -1
-                  }
+                  schemaname: undefined as string | undefined,
+                  relname: 'orders',
+                  inh: true,
+                  relpersistence: 'p',
+                  alias: null as any,
+                  location: -1
                 }
               ],
               whereClause: null as any,
@@ -379,14 +361,12 @@ describe('Maintenance Operations Statement Deparsers', () => {
         ReindexStmt: {
           kind: 'REINDEX_OBJECT_INDEX',
           relation: {
-            RangeVar: {
-              schemaname: undefined as string | undefined,
-              relname: 'idx_users_email',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'idx_users_email',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           name: undefined,
           params: [] as any[]
@@ -401,14 +381,12 @@ describe('Maintenance Operations Statement Deparsers', () => {
         ReindexStmt: {
           kind: 'REINDEX_OBJECT_TABLE',
           relation: {
-            RangeVar: {
-              schemaname: 'public',
-              relname: 'products',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: 'public',
+            relname: 'products',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           name: undefined,
           params: [] as any[]
@@ -462,14 +440,12 @@ describe('Maintenance Operations Statement Deparsers', () => {
         ReindexStmt: {
           kind: 'REINDEX_OBJECT_INDEX',
           relation: {
-            RangeVar: {
-              schemaname: undefined as string | undefined,
-              relname: 'idx_orders_date',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'idx_orders_date',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           name: undefined,
           params: [

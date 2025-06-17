@@ -224,12 +224,10 @@ describe('DDL Statement Deparsers', () => {
         TruncateStmt: {
           relations: [
             {
-              RangeVar: {
-                relname: 'users',
-                inh: true,
-                relpersistence: 'p',
-                location: 9
-              }
+              relname: 'users',
+              inh: true,
+              relpersistence: 'p',
+              location: 9
             }
           ],
           behavior: 'DROP_RESTRICT' as DropBehavior
@@ -247,12 +245,10 @@ describe('DDL Statement Deparsers', () => {
         TruncateStmt: {
           relations: [
             {
-              RangeVar: {
-                relname: 'users',
-                inh: true,
-                relpersistence: 'p',
-                location: 9
-              }
+              relname: 'users',
+              inh: true,
+              relpersistence: 'p',
+              location: 9
             }
           ],
           restart_seqs: true,
@@ -271,12 +267,10 @@ describe('DDL Statement Deparsers', () => {
         TruncateStmt: {
           relations: [
             {
-              RangeVar: {
-                relname: 'users',
-                inh: true,
-                relpersistence: 'p',
-                location: 9
-              }
+              relname: 'users',
+              inh: true,
+              relpersistence: 'p',
+              location: 9
             }
           ],
           behavior: 'DROP_CASCADE' as DropBehavior
@@ -294,20 +288,16 @@ describe('DDL Statement Deparsers', () => {
         TruncateStmt: {
           relations: [
             {
-              RangeVar: {
-                relname: 'users',
-                inh: true,
-                relpersistence: 'p',
-                location: 9
-              }
+              relname: 'users',
+              inh: true,
+              relpersistence: 'p',
+              location: 9
             },
             {
-              RangeVar: {
-                relname: 'orders',
-                inh: true,
-                relpersistence: 'p',
-                location: 16
-              }
+              relname: 'orders',
+              inh: true,
+              relpersistence: 'p',
+              location: 16
             }
           ],
           behavior: 'DROP_RESTRICT' as DropBehavior

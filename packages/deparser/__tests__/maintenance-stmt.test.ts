@@ -106,14 +106,12 @@ describe('Maintenance Statement Deparsers', () => {
         CommentStmt: {
           objtype: "OBJECT_TABLE",
           object: {
-            RangeVar: {
-              schemaname: undefined as string | undefined,
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'users',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           comment: 'User information table'
         }
@@ -147,14 +145,12 @@ describe('Maintenance Statement Deparsers', () => {
         CommentStmt: {
           objtype: "OBJECT_INDEX",
           object: {
-            RangeVar: {
-              schemaname: undefined as string | undefined,
-              relname: 'idx_users_email',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'idx_users_email',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           comment: 'Index on user email for fast lookups'
         }
@@ -194,14 +190,12 @@ describe('Maintenance Statement Deparsers', () => {
         CommentStmt: {
           objtype: "OBJECT_VIEW",
           object: {
-            RangeVar: {
-              schemaname: undefined as string | undefined,
-              relname: 'active_users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'active_users',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           comment: 'View showing only active users'
         }
@@ -243,14 +237,12 @@ describe('Maintenance Statement Deparsers', () => {
         CommentStmt: {
           objtype: "OBJECT_TABLE",
           object: {
-            RangeVar: {
-              schemaname: undefined as string | undefined,
-              relname: 'temp_table',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'temp_table',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           comment: undefined
         }
@@ -266,14 +258,12 @@ describe('Maintenance Statement Deparsers', () => {
         LockStmt: {
           relations: [
             {
-              RangeVar: {
-                schemaname: undefined as string | undefined,
-                relname: 'users',
-                inh: true,
-                relpersistence: 'p',
-                alias: null as any,
-                location: -1
-              }
+              schemaname: undefined as string | undefined,
+              relname: 'users',
+              inh: true,
+              relpersistence: 'p',
+              alias: null as any,
+              location: -1
             }
           ],
           mode: 4, // SHARE mode
@@ -289,24 +279,20 @@ describe('Maintenance Statement Deparsers', () => {
         LockStmt: {
           relations: [
             {
-              RangeVar: {
-                schemaname: undefined as string | undefined,
-                relname: 'users',
-                inh: true,
-                relpersistence: 'p',
-                alias: null as any,
-                location: -1
-              }
+              schemaname: undefined as string | undefined,
+              relname: 'users',
+              inh: true,
+              relpersistence: 'p',
+              alias: null as any,
+              location: -1
             },
             {
-              RangeVar: {
-                schemaname: undefined as string | undefined,
-                relname: 'orders',
-                inh: true,
-                relpersistence: 'p',
-                alias: null as any,
-                location: -1
-              }
+              schemaname: undefined as string | undefined,
+              relname: 'orders',
+              inh: true,
+              relpersistence: 'p',
+              alias: null as any,
+              location: -1
             }
           ],
           mode: 6, // EXCLUSIVE mode

@@ -74,14 +74,12 @@ describe('DDL Schema Statement Deparsers', () => {
         DropStmt: {
           objects: [
             {
-              RangeVar: {
-                schemaname: undefined as string | undefined,
-                relname: 'users',
-                inh: true,
-                relpersistence: 'p',
-                alias: null as any,
-                location: -1
-              }
+              schemaname: undefined as string | undefined,
+              relname: 'users',
+              inh: true,
+              relpersistence: 'p',
+              alias: null as any,
+              location: -1
             }
           ],
           removeType: "OBJECT_TABLE" as ObjectType,
@@ -99,14 +97,12 @@ describe('DDL Schema Statement Deparsers', () => {
         DropStmt: {
           objects: [
             {
-              RangeVar: {
-                schemaname: undefined as string | undefined,
-                relname: 'users',
-                inh: true,
-                relpersistence: 'p',
-                alias: null as any,
-                location: -1
-              }
+              schemaname: undefined as string | undefined,
+              relname: 'users',
+              inh: true,
+              relpersistence: 'p',
+              alias: null as any,
+              location: -1
             }
           ],
           removeType: "OBJECT_TABLE" as ObjectType,
@@ -124,14 +120,12 @@ describe('DDL Schema Statement Deparsers', () => {
         DropStmt: {
           objects: [
             {
-              RangeVar: {
-                schemaname: undefined as string | undefined,
-                relname: 'users',
-                inh: true,
-                relpersistence: 'p',
-                alias: null as any,
-                location: -1
-              }
+              schemaname: undefined as string | undefined,
+              relname: 'users',
+              inh: true,
+              relpersistence: 'p',
+              alias: null as any,
+              location: -1
             }
           ],
           removeType: "OBJECT_TABLE" as ObjectType,
@@ -149,14 +143,12 @@ describe('DDL Schema Statement Deparsers', () => {
         DropStmt: {
           objects: [
             {
-              RangeVar: {
-                schemaname: undefined as string | undefined,
-                relname: 'user_view',
-                inh: true,
-                relpersistence: 'p',
-                alias: null as any,
-                location: -1
-              }
+              schemaname: undefined as string | undefined,
+              relname: 'user_view',
+              inh: true,
+              relpersistence: 'p',
+              alias: null as any,
+              location: -1
             }
           ],
           removeType: "OBJECT_VIEW" as ObjectType,
@@ -174,14 +166,12 @@ describe('DDL Schema Statement Deparsers', () => {
         DropStmt: {
           objects: [
             {
-              RangeVar: {
-                schemaname: undefined as string | undefined,
-                relname: 'idx_users_email',
-                inh: true,
-                relpersistence: 'p',
-                alias: null as any,
-                location: -1
-              }
+              schemaname: undefined as string | undefined,
+              relname: 'idx_users_email',
+              inh: true,
+              relpersistence: 'p',
+              alias: null as any,
+              location: -1
             }
           ],
           removeType: "OBJECT_INDEX" as ObjectType,
@@ -265,24 +255,20 @@ describe('DDL Schema Statement Deparsers', () => {
         DropStmt: {
           objects: [
             {
-              RangeVar: {
-                schemaname: undefined as string | undefined,
-                relname: 'users',
-                inh: true,
-                relpersistence: 'p',
-                alias: null as any,
-                location: -1
-              }
+              schemaname: undefined as string | undefined,
+              relname: 'users',
+              inh: true,
+              relpersistence: 'p',
+              alias: null as any,
+              location: -1
             },
             {
-              RangeVar: {
-                schemaname: undefined as string | undefined,
-                relname: 'orders',
-                inh: true,
-                relpersistence: 'p',
-                alias: null as any,
-                location: -1
-              }
+              schemaname: undefined as string | undefined,
+              relname: 'orders',
+              inh: true,
+              relpersistence: 'p',
+              alias: null as any,
+              location: -1
             }
           ],
           removeType: "OBJECT_TABLE" as ObjectType,
@@ -301,14 +287,12 @@ describe('DDL Schema Statement Deparsers', () => {
       const ast = {
         AlterTableStmt: {
           relation: {
-            RangeVar: {
-              schemaname: undefined as string | undefined,
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'users',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           cmds: [
             {
@@ -360,14 +344,12 @@ describe('DDL Schema Statement Deparsers', () => {
       const ast = {
         AlterTableStmt: {
           relation: {
-            RangeVar: {
-              schemaname: undefined as string | undefined,
-              relname: 'user_view',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'user_view',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           cmds: [
             {
@@ -392,14 +374,12 @@ describe('DDL Schema Statement Deparsers', () => {
       const ast = {
         AlterTableStmt: {
           relation: {
-            RangeVar: {
-              schemaname: undefined as string | undefined,
-              relname: 'mat_view',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'mat_view',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           cmds: [] as any[],
           objtype: "OBJECT_MATVIEW" as ObjectType
@@ -413,14 +393,12 @@ describe('DDL Schema Statement Deparsers', () => {
       const ast = {
         AlterTableStmt: {
           relation: {
-            RangeVar: {
-              schemaname: undefined as string | undefined,
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'users',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           cmds: [
             {

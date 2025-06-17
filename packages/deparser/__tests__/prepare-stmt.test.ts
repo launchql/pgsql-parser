@@ -28,14 +28,12 @@ describe('Prepare Statement Deparsers', () => {
               ],
               fromClause: [
                 {
-                  RangeVar: {
-                    schemaname: undefined as string | undefined,
-                    relname: 'users',
-                    inh: true,
-                    relpersistence: 'p',
-                    alias: null as any,
-                    location: -1
-                  }
+                  schemaname: undefined as string | undefined,
+                  relname: 'users',
+                  inh: true,
+                  relpersistence: 'p',
+                  alias: null as any,
+                  location: -1
                 }
               ],
               whereClause: null as any,
@@ -96,14 +94,12 @@ describe('Prepare Statement Deparsers', () => {
               ],
               fromClause: [
                 {
-                  RangeVar: {
-                    schemaname: undefined as string | undefined,
-                    relname: 'users',
-                    inh: true,
-                    relpersistence: 'p',
-                    alias: null as any,
-                    location: -1
-                  }
+                  schemaname: undefined as string | undefined,
+                  relname: 'users',
+                  inh: true,
+                  relpersistence: 'p',
+                  alias: null as any,
+                  location: -1
                 }
               ],
               whereClause: {

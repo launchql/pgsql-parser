@@ -58,12 +58,10 @@ describe('Deparser', () => {
               ],
               fromClause: [
                 {
-                  RangeVar: {
-                    relname: "users",
-                    inh: true,
-                    relpersistence: "p",
-                    location: 14
-                  }
+                  relname: "users",
+                  inh: true,
+                  relpersistence: "p",
+                  location: 14
                 }
               ],
               whereClause: {
@@ -119,9 +117,7 @@ describe('Deparser', () => {
           stmt: {
             InsertStmt: {
               relation: {
-                RangeVar: {
-                  relname: 'items'
-                }
+                relname: 'items'
               },
               cols: [
                 {
@@ -177,9 +173,7 @@ describe('Deparser', () => {
           stmt: {
             UpdateStmt: {
               relation: {
-                RangeVar: {
-                  relname: 'orders'
-                }
+                relname: 'orders'
               },
               targetList: [
                 {
@@ -245,9 +239,7 @@ describe('Deparser', () => {
           stmt: {
             DeleteStmt: {
               relation: {
-                RangeVar: {
-                  relname: 'sessions'
-                }
+                relname: 'sessions'
               },
               whereClause: {
                 A_Expr: {
@@ -319,9 +311,7 @@ describe('Deparser', () => {
               ],
               fromClause: [
                 {
-                  RangeVar: {
-                    relname: 'books'
-                  }
+                  relname: 'books'
                 }
               ]
             }
