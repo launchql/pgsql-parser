@@ -12,14 +12,12 @@ describe('Advanced Policy Statement Deparsers', () => {
         CreatePolicyStmt: {
           policy_name: 'user_policy',
           table: {
-            RangeVar: {
-              schemaname: undefined as string | undefined,
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'users',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           cmd_name: 'SELECT',
           roles: [
@@ -71,14 +69,12 @@ describe('Advanced Policy Statement Deparsers', () => {
         CreatePolicyStmt: {
           policy_name: 'insert_policy',
           table: {
-            RangeVar: {
-              schemaname: undefined as string | undefined,
-              relname: 'documents',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            schemaname: undefined as string | undefined,
+            relname: 'documents',
+            inh: true,
+            relpersistence: 'p',
+            alias: null as any,
+            location: -1
           },
           cmd_name: 'INSERT',
           roles: [
@@ -132,11 +128,9 @@ describe('Advanced Policy Statement Deparsers', () => {
         CreateUserMappingStmt: {
           if_not_exists: false,
           user: {
-            RoleSpec: {
-              roletype: 'ROLESPEC_CSTRING',
-              rolename: 'local_user',
-              location: -1
-            }
+            roletype: 'ROLESPEC_CSTRING',
+            rolename: 'local_user',
+            location: -1
           },
           servername: 'foreign_server',
           options: [
