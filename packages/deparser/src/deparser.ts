@@ -4866,7 +4866,30 @@ export class Deparser implements DeparserVisitor {
         }
         break;
       case 'ACL_TARGET_ALL_IN_SCHEMA':
-        output.push('ALL TABLES IN SCHEMA');
+        // Handle different object types for ALL ... IN SCHEMA syntax
+        switch (node.objtype) {
+          case 'OBJECT_TABLE':
+            output.push('ALL TABLES IN SCHEMA');
+            break;
+          case 'OBJECT_SEQUENCE':
+            output.push('ALL SEQUENCES IN SCHEMA');
+            break;
+          case 'OBJECT_FUNCTION':
+            output.push('ALL FUNCTIONS IN SCHEMA');
+            break;
+          case 'OBJECT_PROCEDURE':
+            output.push('ALL PROCEDURES IN SCHEMA');
+            break;
+          case 'OBJECT_ROUTINE':
+            output.push('ALL ROUTINES IN SCHEMA');
+            break;
+          case 'OBJECT_TYPE':
+            output.push('ALL TYPES IN SCHEMA');
+            break;
+          default:
+            output.push('ALL TABLES IN SCHEMA'); // Default fallback
+            break;
+        }
         if (node.objects && node.objects.length > 0) {
           const schemas = ListUtils.unwrapList(node.objects)
             .map(schema => this.visit(schema, context))
