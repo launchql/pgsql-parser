@@ -652,49 +652,74 @@ export class Deparser implements DeparserVisitor {
     const nodeAny = node as any;
     
     if (nodeAny.ival !== undefined) {
-      if (typeof nodeAny.ival === 'object' && nodeAny.ival.ival !== undefined) {
-        return nodeAny.ival.ival.toString();
-      } else if (typeof nodeAny.ival === 'object' && Object.keys(nodeAny.ival).length === 0) {
-        // Handle empty ival object - this represents integer 0
-        return '0';
+      if (typeof nodeAny.ival === 'object' && nodeAny.ival !== null) {
+        if (nodeAny.ival.ival !== undefined) {
+          return nodeAny.ival.ival.toString();
+        } else if (Object.keys(nodeAny.ival).length === 0) {
+          return '0';
+        } else {
+          return nodeAny.ival.toString();
+        }
+      } else if (nodeAny.ival === null) {
+        return 'NULL';
       } else {
         return nodeAny.ival.toString();
       }
     } else if (nodeAny.fval !== undefined) {
-      if (typeof nodeAny.fval === 'object' && nodeAny.fval.fval !== undefined) {
-        return nodeAny.fval.fval;
-      } else if (typeof nodeAny.fval === 'object' && Object.keys(nodeAny.fval).length === 0) {
-        // Handle empty fval object - this represents float 0.0
-        return '0.0';
+      if (typeof nodeAny.fval === 'object' && nodeAny.fval !== null) {
+        if (nodeAny.fval.fval !== undefined) {
+          return nodeAny.fval.fval.toString();
+        } else if (Object.keys(nodeAny.fval).length === 0) {
+          return '0.0';
+        } else {
+          return nodeAny.fval.toString();
+        }
+      } else if (nodeAny.fval === null) {
+        return 'NULL';
       } else {
-        return nodeAny.fval;
+        return nodeAny.fval.toString();
       }
     } else if (nodeAny.sval !== undefined) {
-      if (typeof nodeAny.sval === 'object' && nodeAny.sval.sval !== undefined) {
-        return QuoteUtils.escape(nodeAny.sval.sval);
-      } else if (typeof nodeAny.sval === 'object' && nodeAny.sval.String && nodeAny.sval.String.sval !== undefined) {
-        return QuoteUtils.escape(nodeAny.sval.String.sval);
-      } else if (typeof nodeAny.sval === 'object' && Object.keys(nodeAny.sval).length === 0) {
-        // Handle empty sval object - this represents empty string
-        return "''";
+      if (typeof nodeAny.sval === 'object' && nodeAny.sval !== null) {
+        if (nodeAny.sval.sval !== undefined) {
+          return QuoteUtils.escape(nodeAny.sval.sval);
+        } else if (nodeAny.sval.String && nodeAny.sval.String.sval !== undefined) {
+          return QuoteUtils.escape(nodeAny.sval.String.sval);
+        } else if (Object.keys(nodeAny.sval).length === 0) {
+          return "''";
+        } else {
+          return QuoteUtils.escape(nodeAny.sval.toString());
+        }
+      } else if (nodeAny.sval === null) {
+        return 'NULL';
       } else {
         return QuoteUtils.escape(nodeAny.sval);
       }
     } else if (nodeAny.boolval !== undefined) {
-      if (typeof nodeAny.boolval === 'object' && nodeAny.boolval.boolval !== undefined) {
-        return nodeAny.boolval.boolval ? 'true' : 'false';
-      } else if (typeof nodeAny.boolval === 'object' && Object.keys(nodeAny.boolval).length === 0) {
-        // Handle empty boolval object - this represents boolean false
-        return 'false';
+      if (typeof nodeAny.boolval === 'object' && nodeAny.boolval !== null) {
+        if (nodeAny.boolval.boolval !== undefined) {
+          return nodeAny.boolval.boolval ? 'true' : 'false';
+        } else if (Object.keys(nodeAny.boolval).length === 0) {
+          return 'false';
+        } else {
+          return nodeAny.boolval ? 'true' : 'false';
+        }
+      } else if (nodeAny.boolval === null) {
+        return 'NULL';
       } else {
         return nodeAny.boolval ? 'true' : 'false';
       }
     } else if (nodeAny.bsval !== undefined) {
-      if (typeof nodeAny.bsval === 'object' && nodeAny.bsval.bsval !== undefined) {
-        return nodeAny.bsval.bsval;
-      } else if (typeof nodeAny.bsval === 'object' && Object.keys(nodeAny.bsval).length === 0) {
-        // Handle empty bsval object
-        return "''";
+      if (typeof nodeAny.bsval === 'object' && nodeAny.bsval !== null) {
+        if (nodeAny.bsval.bsval !== undefined) {
+          return nodeAny.bsval.bsval;
+        } else if (Object.keys(nodeAny.bsval).length === 0) {
+          return "''";
+        } else {
+          return nodeAny.bsval.toString();
+        }
+      } else if (nodeAny.bsval === null) {
+        return 'NULL';
       } else {
         return nodeAny.bsval;
       }
@@ -704,7 +729,7 @@ export class Deparser implements DeparserVisitor {
       if (nodeAny.val.Integer?.ival !== undefined) {
         return nodeAny.val.Integer.ival.toString();
       } else if (nodeAny.val.Float?.fval !== undefined) {
-        return nodeAny.val.Float.fval;
+        return nodeAny.val.Float.fval.toString();
       } else if (nodeAny.val.String?.sval !== undefined) {
         return QuoteUtils.escape(nodeAny.val.String.sval);
       } else if (nodeAny.val.Boolean?.boolval !== undefined) {
@@ -714,27 +739,39 @@ export class Deparser implements DeparserVisitor {
       }
     }
     
-    // Handle NULL values explicitly
     if (nodeAny.isnull === true) {
       return 'NULL';
     }
     
-    // Handle cases where the object structure is unexpected
     if (typeof nodeAny === 'object' && nodeAny !== null) {
       if (nodeAny.Boolean !== undefined) {
         return nodeAny.Boolean ? 'true' : 'false';
       }
       if (nodeAny.Integer !== undefined) {
+        if (typeof nodeAny.Integer === 'object' && nodeAny.Integer.ival !== undefined) {
+          return nodeAny.Integer.ival.toString();
+        }
         return nodeAny.Integer.toString();
       }
       if (nodeAny.Float !== undefined) {
+        if (typeof nodeAny.Float === 'object' && nodeAny.Float.fval !== undefined) {
+          return nodeAny.Float.fval.toString();
+        }
         return nodeAny.Float.toString();
       }
       if (nodeAny.String !== undefined) {
+        if (typeof nodeAny.String === 'object' && nodeAny.String.sval !== undefined) {
+          return QuoteUtils.escape(nodeAny.String.sval);
+        }
         return QuoteUtils.escape(nodeAny.String);
       }
       
+      if (Object.keys(nodeAny).length === 0) {
+        return 'NULL';
+      }
+      
       console.warn('A_Const: Unhandled object structure:', JSON.stringify(nodeAny, null, 2));
+      return 'NULL';
     }
     
     return 'NULL';
