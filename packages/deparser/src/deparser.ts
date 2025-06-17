@@ -1817,7 +1817,12 @@ export class Deparser implements DeparserVisitor {
       output.push(this.visit(node.rarg, context));
     }
     
-    if (node.quals) {
+    if (node.usingClause && node.usingClause.length > 0) {
+      output.push('USING');
+      const usingList = ListUtils.unwrapList(node.usingClause);
+      const columnNames = usingList.map(col => this.visit(col, context));
+      output.push(`(${columnNames.join(', ')})`);
+    } else if (node.quals) {
       output.push('ON');
       output.push(this.visit(node.quals, context));
     }
