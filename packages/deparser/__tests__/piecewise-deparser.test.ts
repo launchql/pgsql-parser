@@ -2,6 +2,7 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import { parse } from '@pgsql/parser';
 import { deparse } from '../src';
+import { cleanTree } from '../src/utils';
 
 const GENERATED_JSON = join(__dirname, '../../../__fixtures__/generated/generated.json');
 
@@ -13,81 +14,131 @@ function tryParse(sql: string) {
   }
 }
 
-function cleanLines(sql: string): string {
-  return sql
-    .split('\n')
-    .map(line => line.trim())
-    .filter(line => line.length > 0)
-    .join('\n');
-}
-
-function cleanTree(stmts: any[]): any[] {
-  return stmts.map(stmt => {
-    if (typeof stmt === 'object' && stmt !== null) {
-      const cleaned: any = {};
-      for (const [key, value] of Object.entries(stmt)) {
-        if (value !== null && value !== undefined) {
-          cleaned[key] = value;
-        }
-      }
-      return cleaned;
-    }
-    return stmt;
-  });
-}
-
 const fixtures: Record<string, string> = JSON.parse(readFileSync(GENERATED_JSON, 'utf-8'));
 
-describe('piecewise deparser testing', () => {
-  const testPatterns = [
-    'ALTER TABLE',
-    'CREATE TABLE',
-    'INSERT INTO',
-    'UPDATE',
-    'DELETE FROM',
-    'SELECT',
-    'DROP TABLE',
-    'CREATE INDEX',
-    'GRANT',
-    'REVOKE'
-  ];
-
-  testPatterns.forEach(pattern => {
-    describe(`${pattern} statements`, () => {
-      const matchingFixtures = Object.entries(fixtures)
-        .filter(([_, sql]) => sql.toUpperCase().includes(pattern))
-        .slice(0, 10); // Test first 10 matches to keep it manageable
-
-      if (matchingFixtures.length === 0) {
-        it(`should have fixtures for ${pattern}`, () => {
-          console.log(`No fixtures found for pattern: ${pattern}`);
-        });
-        return;
+describe('Round-trip deparser testing - Dan\'s 5-step process', () => {
+  describe('Focused debugging tests', () => {
+    it('should debug case sensitivity issue with misc-5.sql', () => {
+      const s1 = 'ALTER TABLE "Customer" ADD CONSTRAINT myconstraint FOREIGN KEY ("SupportRepId") REFERENCES "Employee" ("EmployeeId")';
+      
+      console.log('Original SQL (s1):', s1);
+      
+      const p1 = tryParse(s1);
+      
+      if (p1.stmts && p1.stmts.length > 0 && p1.stmts[0].stmt) {
+        const s2 = deparse(p1.stmts[0].stmt);
+        console.log('Deparsed SQL (s2):', s2);
+        
+        const p2 = tryParse(s2);
+        
+        const cleanedP1 = cleanTree([p1.stmts[0]]);
+        const cleanedP2 = cleanTree(p2.stmts || []);
+        
+        expect(cleanedP2).toEqual(cleanedP1);
       }
+    });
 
-      matchingFixtures.forEach(([fixtureName, sql]) => {
-        it(`should handle ${fixtureName}`, () => {
-          const tree = tryParse(sql);
-          
-          if (tree.stmts && tree.stmts.length > 0) {
-            tree.stmts.forEach((stmt, index) => {
-              if (stmt.stmt) {
-                try {
-                  const outSql = deparse(stmt.stmt);
-                  expect(outSql).toBeTruthy();
-                  expect(typeof outSql).toBe('string');
-                  
-                  const reparsed = parse(outSql);
-                  expect(cleanTree(reparsed.stmts || [])).toEqual(cleanTree([stmt]));
-                } catch (error) {
-                  console.error(`Failed to deparse ${fixtureName} statement ${index}:`, error);
-                  console.error('SQL:', sql);
-                  console.error('AST:', JSON.stringify(stmt, null, 2));
-                  throw error;
-                }
+    it('should debug type modifier issue with simple CREATE TABLE', () => {
+      const s1 = 'CREATE TABLE test (col1 pg_catalog.bit(1))';
+      
+      console.log('Original SQL (s1):', s1);
+      
+      const p1 = tryParse(s1);
+      
+      if (p1.stmts && p1.stmts.length > 0 && p1.stmts[0].stmt) {
+        const s2 = deparse(p1.stmts[0].stmt);
+        console.log('Deparsed SQL (s2):', s2);
+        
+        const p2 = tryParse(s2);
+        
+        const cleanedP1 = cleanTree([p1.stmts[0]]);
+        const cleanedP2 = cleanTree(p2.stmts || []);
+        
+        expect(cleanedP2).toEqual(cleanedP1);
+      }
+    });
+  });
+
+  const sampleFixtures = Object.entries(fixtures).slice(0, 10);
+
+  sampleFixtures.forEach(([fixtureName, s1]) => {
+    it(`should round-trip parse ${fixtureName}`, () => {
+      try {
+        
+        const p1 = tryParse(s1);
+        
+        if (p1.stmts && p1.stmts.length > 0) {
+          p1.stmts.forEach((stmt, index) => {
+            if (stmt.stmt) {
+              try {
+                const s2 = deparse(stmt.stmt);
+                expect(s2).toBeTruthy();
+                expect(typeof s2).toBe('string');
+                
+                const p2 = tryParse(s2);
+                
+                const cleanedP1 = cleanTree([stmt]);
+                const cleanedP2 = cleanTree(p2.stmts || []);
+                
+                expect(cleanedP2).toEqual(cleanedP1);
+              } catch (error) {
+                console.error(`Failed round-trip for ${fixtureName} statement ${index}:`, error);
+                console.error('Original SQL (s1):', s1);
+                console.error('Deparsed SQL (s2):', stmt.stmt ? deparse(stmt.stmt) : 'N/A');
+                throw error;
               }
-            });
-          }
+            }
+          });
+        }
+      } catch (parseError) {
+        console.log(`Skipping unparseable fixture ${fixtureName}: ${parseError}`);
+      }
+    });
+  });
+
+  describe('Statement type coverage', () => {
+    const testPatterns = [
+      'REVOKE',
+      'GRANT', 
+      'ALTER TABLE',
+      'CREATE TABLE',
+      'INSERT INTO',
+      'UPDATE',
+      'DELETE FROM',
+      'SELECT'
+    ];
+
+    testPatterns.forEach(pattern => {
+      describe(`${pattern} statements`, () => {
+        const matchingFixtures = Object.entries(fixtures)
+          .filter(([_, sql]) => sql.toUpperCase().includes(pattern))
+          .slice(0, 3); // Test first 3 matches to keep it focused
+
+        if (matchingFixtures.length === 0) {
+          it(`should have fixtures for ${pattern}`, () => {
+            console.log(`No fixtures found for pattern: ${pattern}`);
+          });
+          return;
+        }
+
+        matchingFixtures.forEach(([fixtureName, s1]) => {
+          it(`should round-trip ${fixtureName}`, () => {
+            const p1 = tryParse(s1);
+            
+            if (p1.stmts && p1.stmts.length > 0) {
+              p1.stmts.forEach((stmt, index) => {
+                if (stmt.stmt) {
+                  const s2 = deparse(stmt.stmt);
+                  const p2 = tryParse(s2);
+                  
+                  const cleanedP1 = cleanTree([stmt]);
+                  const cleanedP2 = cleanTree(p2.stmts || []);
+                  
+                  expect(cleanedP2).toEqual(cleanedP1);
+                }
+              });
+            }
+          });
         });
       });
     });

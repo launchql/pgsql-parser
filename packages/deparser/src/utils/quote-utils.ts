@@ -30,6 +30,10 @@ export class QuoteUtils {
       return true;
     }
 
+    if (value !== value.toLowerCase()) {
+      return true;
+    }
+
     return false;
   }
 

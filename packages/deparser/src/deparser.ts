@@ -1132,7 +1132,7 @@ export class Deparser implements DeparserVisitor {
     if (context.isStringLiteral) {
       return `'${node.sval || ''}'`;
     }
-    return node.sval || ''; 
+    return QuoteUtils.quote(node.sval || ''); 
   }
   
   Integer(node: t.Integer, context: DeparserContext): string { 
