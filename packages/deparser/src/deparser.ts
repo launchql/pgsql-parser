@@ -5299,9 +5299,12 @@ export class Deparser implements DeparserVisitor {
         .filter(option => option && option !== undefined)
         .map(option => {
           try {
+            if (!option || this.getNodeType(option) === 'undefined') {
+              return '';
+            }
             return this.visit(option, seqContext);
           } catch (error) {
-            console.warn(`Error processing function in RangeFunction: ${error instanceof Error ? error.message : String(error)}`);
+            console.warn(`Error processing option in AlterSeqStmt: ${error instanceof Error ? error.message : String(error)}`);
             return '';
           }
         })
