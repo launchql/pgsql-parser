@@ -6,16 +6,12 @@
 import { OverridingKind, QuerySource, SortByDir, SortByNulls, SetQuantifier, A_Expr_Kind, RoleSpecType, TableLikeOption, DefElemAction, PartitionStrategy, PartitionRangeDatumKind, RTEKind, WCOKind, GroupingSetKind, CTEMaterialize, SetOperation, ObjectType, DropBehavior, AlterTableType, GrantTargetType, VariableSetKind, ConstrType, ImportForeignSchemaType, RoleStmtType, FetchDirection, FunctionParameterMode, TransactionStmtKind, ViewCheckOption, DiscardMode, ReindexObjectType, AlterTSConfigType, PublicationObjSpecType, AlterPublicationAction, AlterSubscriptionType, OnCommitAction, ParamKind, CoercionContext, CoercionForm, BoolExprType, SubLinkType, RowCompareType, MinMaxOp, SQLValueFunctionOp, XmlExprOp, XmlOptionType, JsonEncoding, JsonFormatType, JsonConstructorType, JsonValueType, NullTestType, BoolTestType, CmdType, JoinType, AggStrategy, AggSplit, SetOpCmd, SetOpStrategy, OnConflictAction, LimitOption, LockClauseStrength, LockWaitPolicy, LockTupleMode, KeywordKind, Token } from "./enums";
 export type Node = ParseResult | ScanResult | Integer | Float | Boolean | String | BitString | List | OidList | IntList | A_Const | Alias | RangeVar | TableFunc | IntoClause | Var | Param | Aggref | GroupingFunc | WindowFunc | SubscriptingRef | FuncExpr | NamedArgExpr | OpExpr | DistinctExpr | NullIfExpr | ScalarArrayOpExpr | BoolExpr | SubLink | SubPlan | AlternativeSubPlan | FieldSelect | FieldStore | RelabelType | CoerceViaIO | ArrayCoerceExpr | ConvertRowtypeExpr | CollateExpr | CaseExpr | CaseWhen | CaseTestExpr | ArrayExpr | RowExpr | RowCompareExpr | CoalesceExpr | MinMaxExpr | SQLValueFunction | XmlExpr | JsonFormat | JsonReturning | JsonValueExpr | JsonConstructorExpr | JsonIsPredicate | NullTest | BooleanTest | CoerceToDomain | CoerceToDomainValue | SetToDefault | CurrentOfExpr | NextValueExpr | InferenceElem | TargetEntry | RangeTblRef | JoinExpr | FromExpr | OnConflictExpr | Query | TypeName | ColumnRef | ParamRef | A_Expr | TypeCast | CollateClause | RoleSpec | FuncCall | A_Star | A_Indices | A_Indirection | A_ArrayExpr | ResTarget | MultiAssignRef | SortBy | WindowDef | RangeSubselect | RangeFunction | RangeTableFunc | RangeTableFuncCol | RangeTableSample | ColumnDef | TableLikeClause | IndexElem | DefElem | LockingClause | XmlSerialize | PartitionElem | PartitionSpec | PartitionBoundSpec | PartitionRangeDatum | PartitionCmd | RangeTblEntry | RTEPermissionInfo | RangeTblFunction | TableSampleClause | WithCheckOption | SortGroupClause | GroupingSet | WindowClause | RowMarkClause | WithClause | InferClause | OnConflictClause | CTESearchClause | CTECycleClause | CommonTableExpr | MergeWhenClause | MergeAction | TriggerTransition | JsonOutput | JsonKeyValue | JsonObjectConstructor | JsonArrayConstructor | JsonArrayQueryConstructor | JsonAggConstructor | JsonObjectAgg | JsonArrayAgg | RawStmt | InsertStmt | DeleteStmt | UpdateStmt | MergeStmt | SelectStmt | SetOperationStmt | ReturnStmt | PLAssignStmt | CreateSchemaStmt | AlterTableStmt | ReplicaIdentityStmt | AlterTableCmd | AlterCollationStmt | AlterDomainStmt | GrantStmt | ObjectWithArgs | AccessPriv | GrantRoleStmt | AlterDefaultPrivilegesStmt | CopyStmt | VariableSetStmt | VariableShowStmt | CreateStmt | Constraint | CreateTableSpaceStmt | DropTableSpaceStmt | AlterTableSpaceOptionsStmt | AlterTableMoveAllStmt | CreateExtensionStmt | AlterExtensionStmt | AlterExtensionContentsStmt | CreateFdwStmt | AlterFdwStmt | CreateForeignServerStmt | AlterForeignServerStmt | CreateForeignTableStmt | CreateUserMappingStmt | AlterUserMappingStmt | DropUserMappingStmt | ImportForeignSchemaStmt | CreatePolicyStmt | AlterPolicyStmt | CreateAmStmt | CreateTrigStmt | CreateEventTrigStmt | AlterEventTrigStmt | CreatePLangStmt | CreateRoleStmt | AlterRoleStmt | AlterRoleSetStmt | DropRoleStmt | CreateSeqStmt | AlterSeqStmt | DefineStmt | CreateDomainStmt | CreateOpClassStmt | CreateOpClassItem | CreateOpFamilyStmt | AlterOpFamilyStmt | DropStmt | TruncateStmt | CommentStmt | SecLabelStmt | DeclareCursorStmt | ClosePortalStmt | FetchStmt | IndexStmt | CreateStatsStmt | StatsElem | AlterStatsStmt | CreateFunctionStmt | FunctionParameter | AlterFunctionStmt | DoStmt | InlineCodeBlock | CallStmt | CallContext | RenameStmt | AlterObjectDependsStmt | AlterObjectSchemaStmt | AlterOwnerStmt | AlterOperatorStmt | AlterTypeStmt | RuleStmt | NotifyStmt | ListenStmt | UnlistenStmt | TransactionStmt | CompositeTypeStmt | CreateEnumStmt | CreateRangeStmt | AlterEnumStmt | ViewStmt | LoadStmt | CreatedbStmt | AlterDatabaseStmt | AlterDatabaseRefreshCollStmt | AlterDatabaseSetStmt | DropdbStmt | AlterSystemStmt | ClusterStmt | VacuumStmt | VacuumRelation | ExplainStmt | CreateTableAsStmt | RefreshMatViewStmt | CheckPointStmt | DiscardStmt | LockStmt | ConstraintsSetStmt | ReindexStmt | CreateConversionStmt | CreateCastStmt | CreateTransformStmt | PrepareStmt | ExecuteStmt | DeallocateStmt | DropOwnedStmt | ReassignOwnedStmt | AlterTSDictionaryStmt | AlterTSConfigurationStmt | PublicationTable | PublicationObjSpec | CreatePublicationStmt | AlterPublicationStmt | CreateSubscriptionStmt | AlterSubscriptionStmt | DropSubscriptionStmt | ScanToken;
 export interface ParseResult {
-  ParseResult: {
-    version?: number;
-    stmts?: RawStmt[];
-  };
+  version?: number;
+  stmts?: RawStmt[];
 }
 export interface ScanResult {
-  ScanResult: {
-    version?: number;
-    tokens?: ScanToken[];
-  };
+  version?: number;
+  tokens?: ScanToken[];
 }
 export interface Integer {
   ival?: number;
@@ -1813,10 +1809,8 @@ export interface DropSubscriptionStmt {
   behavior?: DropBehavior;
 }
 export interface ScanToken {
-  ScanToken: {
-    start?: number;
-    end?: number;
-    token?: Token;
-    keywordKind?: KeywordKind;
-  };
+  start?: number;
+  end?: number;
+  token?: Token;
+  keywordKind?: KeywordKind;
 }

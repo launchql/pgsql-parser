@@ -31,7 +31,7 @@
     "test:watch": "jest --watch"
   },
   "devDependencies": {
-    "pg-proto-parser": "^1.20.0",
+    "pg-proto-parser": "^1.24.0",
     "pgsql-deparser": "^17.0.0"
   },
   "dependencies": {

@@ -7,59 +7,59 @@ import _o from "nested-obj";
 import { ParseResult, ScanResult, Integer, Float, Boolean, String, BitString, List, OidList, IntList, A_Const, Alias, RangeVar, TableFunc, IntoClause, Var, Param, Aggref, GroupingFunc, WindowFunc, SubscriptingRef, FuncExpr, NamedArgExpr, OpExpr, DistinctExpr, NullIfExpr, ScalarArrayOpExpr, BoolExpr, SubLink, SubPlan, AlternativeSubPlan, FieldSelect, FieldStore, RelabelType, CoerceViaIO, ArrayCoerceExpr, ConvertRowtypeExpr, CollateExpr, CaseExpr, CaseWhen, CaseTestExpr, ArrayExpr, RowExpr, RowCompareExpr, CoalesceExpr, MinMaxExpr, SQLValueFunction, XmlExpr, JsonFormat, JsonReturning, JsonValueExpr, JsonConstructorExpr, JsonIsPredicate, NullTest, BooleanTest, CoerceToDomain, CoerceToDomainValue, SetToDefault, CurrentOfExpr, NextValueExpr, InferenceElem, TargetEntry, RangeTblRef, JoinExpr, FromExpr, OnConflictExpr, Query, TypeName, ColumnRef, ParamRef, A_Expr, TypeCast, CollateClause, RoleSpec, FuncCall, A_Star, A_Indices, A_Indirection, A_ArrayExpr, ResTarget, MultiAssignRef, SortBy, WindowDef, RangeSubselect, RangeFunction, RangeTableFunc, RangeTableFuncCol, RangeTableSample, ColumnDef, TableLikeClause, IndexElem, DefElem, LockingClause, XmlSerialize, PartitionElem, PartitionSpec, PartitionBoundSpec, PartitionRangeDatum, PartitionCmd, RangeTblEntry, RTEPermissionInfo, RangeTblFunction, TableSampleClause, WithCheckOption, SortGroupClause, GroupingSet, WindowClause, RowMarkClause, WithClause, InferClause, OnConflictClause, CTESearchClause, CTECycleClause, CommonTableExpr, MergeWhenClause, MergeAction, TriggerTransition, JsonOutput, JsonKeyValue, JsonObjectConstructor, JsonArrayConstructor, JsonArrayQueryConstructor, JsonAggConstructor, JsonObjectAgg, JsonArrayAgg, RawStmt, InsertStmt, DeleteStmt, UpdateStmt, MergeStmt, SelectStmt, SetOperationStmt, ReturnStmt, PLAssignStmt, CreateSchemaStmt, AlterTableStmt, ReplicaIdentityStmt, AlterTableCmd, AlterCollationStmt, AlterDomainStmt, GrantStmt, ObjectWithArgs, AccessPriv, GrantRoleStmt, AlterDefaultPrivilegesStmt, CopyStmt, VariableSetStmt, VariableShowStmt, CreateStmt, Constraint, CreateTableSpaceStmt, DropTableSpaceStmt, AlterTableSpaceOptionsStmt, AlterTableMoveAllStmt, CreateExtensionStmt, AlterExtensionStmt, AlterExtensionContentsStmt, CreateFdwStmt, AlterFdwStmt, CreateForeignServerStmt, AlterForeignServerStmt, CreateForeignTableStmt, CreateUserMappingStmt, AlterUserMappingStmt, DropUserMappingStmt, ImportForeignSchemaStmt, CreatePolicyStmt, AlterPolicyStmt, CreateAmStmt, CreateTrigStmt, CreateEventTrigStmt, AlterEventTrigStmt, CreatePLangStmt, CreateRoleStmt, AlterRoleStmt, AlterRoleSetStmt, DropRoleStmt, CreateSeqStmt, AlterSeqStmt, DefineStmt, CreateDomainStmt, CreateOpClassStmt, CreateOpClassItem, CreateOpFamilyStmt, AlterOpFamilyStmt, DropStmt, TruncateStmt, CommentStmt, SecLabelStmt, DeclareCursorStmt, ClosePortalStmt, FetchStmt, IndexStmt, CreateStatsStmt, StatsElem, AlterStatsStmt, CreateFunctionStmt, FunctionParameter, AlterFunctionStmt, DoStmt, InlineCodeBlock, CallStmt, CallContext, RenameStmt, AlterObjectDependsStmt, AlterObjectSchemaStmt, AlterOwnerStmt, AlterOperatorStmt, AlterTypeStmt, RuleStmt, NotifyStmt, ListenStmt, UnlistenStmt, TransactionStmt, CompositeTypeStmt, CreateEnumStmt, CreateRangeStmt, AlterEnumStmt, ViewStmt, LoadStmt, CreatedbStmt, AlterDatabaseStmt, AlterDatabaseRefreshCollStmt, AlterDatabaseSetStmt, DropdbStmt, AlterSystemStmt, ClusterStmt, VacuumStmt, VacuumRelation, ExplainStmt, CreateTableAsStmt, RefreshMatViewStmt, CheckPointStmt, DiscardStmt, LockStmt, ConstraintsSetStmt, ReindexStmt, CreateConversionStmt, CreateCastStmt, CreateTransformStmt, PrepareStmt, ExecuteStmt, DeallocateStmt, DropOwnedStmt, ReassignOwnedStmt, AlterTSDictionaryStmt, AlterTSConfigurationStmt, PublicationTable, PublicationObjSpec, CreatePublicationStmt, AlterPublicationStmt, CreateSubscriptionStmt, AlterSubscriptionStmt, DropSubscriptionStmt, ScanToken } from "./wrapped";
 export default {
   parseResult(_p?: ParseResult): ParseResult {
-    const _j = ({} as ParseResult);
+    const _j = {} as ParseResult;
     _o.set(_j, "version", _p?.version);
     _o.set(_j, "stmts", _p?.stmts);
     return _j;
   },
   scanResult(_p?: ScanResult): ScanResult {
-    const _j = ({} as ScanResult);
+    const _j = {} as ScanResult;
     _o.set(_j, "version", _p?.version);
     _o.set(_j, "tokens", _p?.tokens);
     return _j;
   },
   integer(_p?: Integer): Integer {
-    const _j = ({} as Integer);
+    const _j = {} as Integer;
     _o.set(_j, "ival", _p?.ival);
     return _j;
   },
   float(_p?: Float): Float {
-    const _j = ({} as Float);
+    const _j = {} as Float;
     _o.set(_j, "fval", _p?.fval);
     return _j;
   },
   boolean(_p?: Boolean): Boolean {
-    const _j = ({} as Boolean);
+    const _j = {} as Boolean;
     _o.set(_j, "boolval", _p?.boolval);
     return _j;
   },
   string(_p?: String): String {
-    const _j = ({} as String);
+    const _j = {} as String;
     _o.set(_j, "sval", _p?.sval);
     return _j;
   },
   bitString(_p?: BitString): BitString {
-    const _j = ({} as BitString);
+    const _j = {} as BitString;
     _o.set(_j, "bsval", _p?.bsval);
     return _j;
   },
   list(_p?: List): List {
-    const _j = ({} as List);
+    const _j = {} as List;
     _o.set(_j, "items", _p?.items);
     return _j;
   },
   oidList(_p?: OidList): OidList {
-    const _j = ({} as OidList);
+    const _j = {} as OidList;
     _o.set(_j, "items", _p?.items);
     return _j;
   },
   intList(_p?: IntList): IntList {
-    const _j = ({} as IntList);
+    const _j = {} as IntList;
     _o.set(_j, "items", _p?.items);
     return _j;
   },
   aConst(_p?: A_Const): A_Const {
-    const _j = ({} as A_Const);
+    const _j = {} as A_Const;
     _o.set(_j, "ival", _p?.ival);
     _o.set(_j, "fval", _p?.fval);
     _o.set(_j, "boolval", _p?.boolval);
@@ -70,13 +70,13 @@ export default {
     return _j;
   },
   alias(_p?: Alias): Alias {
-    const _j = ({} as Alias);
+    const _j = {} as Alias;
     _o.set(_j, "aliasname", _p?.aliasname);
     _o.set(_j, "colnames", _p?.colnames);
     return _j;
   },
   rangeVar(_p?: RangeVar): RangeVar {
-    const _j = ({} as RangeVar);
+    const _j = {} as RangeVar;
     _o.set(_j, "catalogname", _p?.catalogname);
     _o.set(_j, "schemaname", _p?.schemaname);
     _o.set(_j, "relname", _p?.relname);
@@ -87,7 +87,7 @@ export default {
     return _j;
   },
   tableFunc(_p?: TableFunc): TableFunc {
-    const _j = ({} as TableFunc);
+    const _j = {} as TableFunc;
     _o.set(_j, "ns_uris", _p?.ns_uris);
     _o.set(_j, "ns_names", _p?.ns_names);
     _o.set(_j, "docexpr", _p?.docexpr);
@@ -104,7 +104,7 @@ export default {
     return _j;
   },
   intoClause(_p?: IntoClause): IntoClause {
-    const _j = ({} as IntoClause);
+    const _j = {} as IntoClause;
     _o.set(_j, "rel", _p?.rel);
     _o.set(_j, "colNames", _p?.colNames);
     _o.set(_j, "accessMethod", _p?.accessMethod);
@@ -116,7 +116,7 @@ export default {
     return _j;
   },
   var(_p?: Var): Var {
-    const _j = ({} as Var);
+    const _j = {} as Var;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "varno", _p?.varno);
     _o.set(_j, "varattno", _p?.varattno);
@@ -129,7 +129,7 @@ export default {
     return _j;
   },
   param(_p?: Param): Param {
-    const _j = ({} as Param);
+    const _j = {} as Param;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "paramkind", _p?.paramkind);
     _o.set(_j, "paramid", _p?.paramid);
@@ -140,7 +140,7 @@ export default {
     return _j;
   },
   aggref(_p?: Aggref): Aggref {
-    const _j = ({} as Aggref);
+    const _j = {} as Aggref;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "aggfnoid", _p?.aggfnoid);
     _o.set(_j, "aggtype", _p?.aggtype);
@@ -163,7 +163,7 @@ export default {
     return _j;
   },
   groupingFunc(_p?: GroupingFunc): GroupingFunc {
-    const _j = ({} as GroupingFunc);
+    const _j = {} as GroupingFunc;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "args", _p?.args);
     _o.set(_j, "refs", _p?.refs);
@@ -172,7 +172,7 @@ export default {
     return _j;
   },
   windowFunc(_p?: WindowFunc): WindowFunc {
-    const _j = ({} as WindowFunc);
+    const _j = {} as WindowFunc;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "winfnoid", _p?.winfnoid);
     _o.set(_j, "wintype", _p?.wintype);
@@ -187,7 +187,7 @@ export default {
     return _j;
   },
   subscriptingRef(_p?: SubscriptingRef): SubscriptingRef {
-    const _j = ({} as SubscriptingRef);
+    const _j = {} as SubscriptingRef;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "refcontainertype", _p?.refcontainertype);
     _o.set(_j, "refelemtype", _p?.refelemtype);
@@ -201,7 +201,7 @@ export default {
     return _j;
   },
   funcExpr(_p?: FuncExpr): FuncExpr {
-    const _j = ({} as FuncExpr);
+    const _j = {} as FuncExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "funcid", _p?.funcid);
     _o.set(_j, "funcresulttype", _p?.funcresulttype);
@@ -215,7 +215,7 @@ export default {
     return _j;
   },
   namedArgExpr(_p?: NamedArgExpr): NamedArgExpr {
-    const _j = ({} as NamedArgExpr);
+    const _j = {} as NamedArgExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "arg", _p?.arg);
     _o.set(_j, "name", _p?.name);
@@ -224,7 +224,7 @@ export default {
     return _j;
   },
   opExpr(_p?: OpExpr): OpExpr {
-    const _j = ({} as OpExpr);
+    const _j = {} as OpExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "opno", _p?.opno);
     _o.set(_j, "opresulttype", _p?.opresulttype);
@@ -236,7 +236,7 @@ export default {
     return _j;
   },
   distinctExpr(_p?: DistinctExpr): DistinctExpr {
-    const _j = ({} as DistinctExpr);
+    const _j = {} as DistinctExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "opno", _p?.opno);
     _o.set(_j, "opresulttype", _p?.opresulttype);
@@ -248,7 +248,7 @@ export default {
     return _j;
   },
   nullIfExpr(_p?: NullIfExpr): NullIfExpr {
-    const _j = ({} as NullIfExpr);
+    const _j = {} as NullIfExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "opno", _p?.opno);
     _o.set(_j, "opresulttype", _p?.opresulttype);
@@ -260,7 +260,7 @@ export default {
     return _j;
   },
   scalarArrayOpExpr(_p?: ScalarArrayOpExpr): ScalarArrayOpExpr {
-    const _j = ({} as ScalarArrayOpExpr);
+    const _j = {} as ScalarArrayOpExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "opno", _p?.opno);
     _o.set(_j, "useOr", _p?.useOr);
@@ -270,7 +270,7 @@ export default {
     return _j;
   },
   boolExpr(_p?: BoolExpr): BoolExpr {
-    const _j = ({} as BoolExpr);
+    const _j = {} as BoolExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "boolop", _p?.boolop);
     _o.set(_j, "args", _p?.args);
@@ -278,7 +278,7 @@ export default {
     return _j;
   },
   subLink(_p?: SubLink): SubLink {
-    const _j = ({} as SubLink);
+    const _j = {} as SubLink;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "subLinkType", _p?.subLinkType);
     _o.set(_j, "subLinkId", _p?.subLinkId);
@@ -289,7 +289,7 @@ export default {
     return _j;
   },
   subPlan(_p?: SubPlan): SubPlan {
-    const _j = ({} as SubPlan);
+    const _j = {} as SubPlan;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "subLinkType", _p?.subLinkType);
     _o.set(_j, "testexpr", _p?.testexpr);
@@ -310,13 +310,13 @@ export default {
     return _j;
   },
   alternativeSubPlan(_p?: AlternativeSubPlan): AlternativeSubPlan {
-    const _j = ({} as AlternativeSubPlan);
+    const _j = {} as AlternativeSubPlan;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "subplans", _p?.subplans);
     return _j;
   },
   fieldSelect(_p?: FieldSelect): FieldSelect {
-    const _j = ({} as FieldSelect);
+    const _j = {} as FieldSelect;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "arg", _p?.arg);
     _o.set(_j, "fieldnum", _p?.fieldnum);
@@ -326,7 +326,7 @@ export default {
     return _j;
   },
   fieldStore(_p?: FieldStore): FieldStore {
-    const _j = ({} as FieldStore);
+    const _j = {} as FieldStore;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "arg", _p?.arg);
     _o.set(_j, "newvals", _p?.newvals);
@@ -335,7 +335,7 @@ export default {
     return _j;
   },
   relabelType(_p?: RelabelType): RelabelType {
-    const _j = ({} as RelabelType);
+    const _j = {} as RelabelType;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "arg", _p?.arg);
     _o.set(_j, "resulttype", _p?.resulttype);
@@ -346,7 +346,7 @@ export default {
     return _j;
   },
   coerceViaio(_p?: CoerceViaIO): CoerceViaIO {
-    const _j = ({} as CoerceViaIO);
+    const _j = {} as CoerceViaIO;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "arg", _p?.arg);
     _o.set(_j, "resulttype", _p?.resulttype);
@@ -356,7 +356,7 @@ export default {
     return _j;
   },
   arrayCoerceExpr(_p?: ArrayCoerceExpr): ArrayCoerceExpr {
-    const _j = ({} as ArrayCoerceExpr);
+    const _j = {} as ArrayCoerceExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "arg", _p?.arg);
     _o.set(_j, "elemexpr", _p?.elemexpr);
@@ -368,7 +368,7 @@ export default {
     return _j;
   },
   convertRowtypeExpr(_p?: ConvertRowtypeExpr): ConvertRowtypeExpr {
-    const _j = ({} as ConvertRowtypeExpr);
+    const _j = {} as ConvertRowtypeExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "arg", _p?.arg);
     _o.set(_j, "resulttype", _p?.resulttype);
@@ -377,7 +377,7 @@ export default {
     return _j;
   },
   collateExpr(_p?: CollateExpr): CollateExpr {
-    const _j = ({} as CollateExpr);
+    const _j = {} as CollateExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "arg", _p?.arg);
     _o.set(_j, "collOid", _p?.collOid);
@@ -385,7 +385,7 @@ export default {
     return _j;
   },
   caseExpr(_p?: CaseExpr): CaseExpr {
-    const _j = ({} as CaseExpr);
+    const _j = {} as CaseExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "casetype", _p?.casetype);
     _o.set(_j, "casecollid", _p?.casecollid);
@@ -396,7 +396,7 @@ export default {
     return _j;
   },
   caseWhen(_p?: CaseWhen): CaseWhen {
-    const _j = ({} as CaseWhen);
+    const _j = {} as CaseWhen;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "expr", _p?.expr);
     _o.set(_j, "result", _p?.result);
@@ -404,7 +404,7 @@ export default {
     return _j;
   },
   caseTestExpr(_p?: CaseTestExpr): CaseTestExpr {
-    const _j = ({} as CaseTestExpr);
+    const _j = {} as CaseTestExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "typeId", _p?.typeId);
     _o.set(_j, "typeMod", _p?.typeMod);
@@ -412,7 +412,7 @@ export default {
     return _j;
   },
   arrayExpr(_p?: ArrayExpr): ArrayExpr {
-    const _j = ({} as ArrayExpr);
+    const _j = {} as ArrayExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "array_typeid", _p?.array_typeid);
     _o.set(_j, "array_collid", _p?.array_collid);
@@ -423,7 +423,7 @@ export default {
     return _j;
   },
   rowExpr(_p?: RowExpr): RowExpr {
-    const _j = ({} as RowExpr);
+    const _j = {} as RowExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "args", _p?.args);
     _o.set(_j, "row_typeid", _p?.row_typeid);
@@ -433,7 +433,7 @@ export default {
     return _j;
   },
   rowCompareExpr(_p?: RowCompareExpr): RowCompareExpr {
-    const _j = ({} as RowCompareExpr);
+    const _j = {} as RowCompareExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "rctype", _p?.rctype);
     _o.set(_j, "opnos", _p?.opnos);
@@ -444,7 +444,7 @@ export default {
     return _j;
   },
   coalesceExpr(_p?: CoalesceExpr): CoalesceExpr {
-    const _j = ({} as CoalesceExpr);
+    const _j = {} as CoalesceExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "coalescetype", _p?.coalescetype);
     _o.set(_j, "coalescecollid", _p?.coalescecollid);
@@ -453,7 +453,7 @@ export default {
     return _j;
   },
   minMaxExpr(_p?: MinMaxExpr): MinMaxExpr {
-    const _j = ({} as MinMaxExpr);
+    const _j = {} as MinMaxExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "minmaxtype", _p?.minmaxtype);
     _o.set(_j, "minmaxcollid", _p?.minmaxcollid);
@@ -464,7 +464,7 @@ export default {
     return _j;
   },
   sqlValueFunction(_p?: SQLValueFunction): SQLValueFunction {
-    const _j = ({} as SQLValueFunction);
+    const _j = {} as SQLValueFunction;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "op", _p?.op);
     _o.set(_j, "type", _p?.type);
@@ -473,7 +473,7 @@ export default {
     return _j;
   },
   xmlExpr(_p?: XmlExpr): XmlExpr {
-    const _j = ({} as XmlExpr);
+    const _j = {} as XmlExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "op", _p?.op);
     _o.set(_j, "name", _p?.name);
@@ -488,28 +488,28 @@ export default {
     return _j;
   },
   jsonFormat(_p?: JsonFormat): JsonFormat {
-    const _j = ({} as JsonFormat);
+    const _j = {} as JsonFormat;
     _o.set(_j, "format_type", _p?.format_type);
     _o.set(_j, "encoding", _p?.encoding);
     _o.set(_j, "location", _p?.location);
     return _j;
   },
   jsonReturning(_p?: JsonReturning): JsonReturning {
-    const _j = ({} as JsonReturning);
+    const _j = {} as JsonReturning;
     _o.set(_j, "format", _p?.format);
     _o.set(_j, "typid", _p?.typid);
     _o.set(_j, "typmod", _p?.typmod);
     return _j;
   },
   jsonValueExpr(_p?: JsonValueExpr): JsonValueExpr {
-    const _j = ({} as JsonValueExpr);
+    const _j = {} as JsonValueExpr;
     _o.set(_j, "raw_expr", _p?.raw_expr);
     _o.set(_j, "formatted_expr", _p?.formatted_expr);
     _o.set(_j, "format", _p?.format);
     return _j;
   },
   jsonConstructorExpr(_p?: JsonConstructorExpr): JsonConstructorExpr {
-    const _j = ({} as JsonConstructorExpr);
+    const _j = {} as JsonConstructorExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "type", _p?.type);
     _o.set(_j, "args", _p?.args);
@@ -522,7 +522,7 @@ export default {
     return _j;
   },
   jsonIsPredicate(_p?: JsonIsPredicate): JsonIsPredicate {
-    const _j = ({} as JsonIsPredicate);
+    const _j = {} as JsonIsPredicate;
     _o.set(_j, "expr", _p?.expr);
     _o.set(_j, "format", _p?.format);
     _o.set(_j, "item_type", _p?.item_type);
@@ -531,7 +531,7 @@ export default {
     return _j;
   },
   nullTest(_p?: NullTest): NullTest {
-    const _j = ({} as NullTest);
+    const _j = {} as NullTest;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "arg", _p?.arg);
     _o.set(_j, "nulltesttype", _p?.nulltesttype);
@@ -540,7 +540,7 @@ export default {
     return _j;
   },
   booleanTest(_p?: BooleanTest): BooleanTest {
-    const _j = ({} as BooleanTest);
+    const _j = {} as BooleanTest;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "arg", _p?.arg);
     _o.set(_j, "booltesttype", _p?.booltesttype);
@@ -548,7 +548,7 @@ export default {
     return _j;
   },
   coerceToDomain(_p?: CoerceToDomain): CoerceToDomain {
-    const _j = ({} as CoerceToDomain);
+    const _j = {} as CoerceToDomain;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "arg", _p?.arg);
     _o.set(_j, "resulttype", _p?.resulttype);
@@ -559,7 +559,7 @@ export default {
     return _j;
   },
   coerceToDomainValue(_p?: CoerceToDomainValue): CoerceToDomainValue {
-    const _j = ({} as CoerceToDomainValue);
+    const _j = {} as CoerceToDomainValue;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "typeId", _p?.typeId);
     _o.set(_j, "typeMod", _p?.typeMod);
@@ -568,7 +568,7 @@ export default {
     return _j;
   },
   setToDefault(_p?: SetToDefault): SetToDefault {
-    const _j = ({} as SetToDefault);
+    const _j = {} as SetToDefault;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "typeId", _p?.typeId);
     _o.set(_j, "typeMod", _p?.typeMod);
@@ -577,7 +577,7 @@ export default {
     return _j;
   },
   currentOfExpr(_p?: CurrentOfExpr): CurrentOfExpr {
-    const _j = ({} as CurrentOfExpr);
+    const _j = {} as CurrentOfExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "cvarno", _p?.cvarno);
     _o.set(_j, "cursor_name", _p?.cursor_name);
@@ -585,14 +585,14 @@ export default {
     return _j;
   },
   nextValueExpr(_p?: NextValueExpr): NextValueExpr {
-    const _j = ({} as NextValueExpr);
+    const _j = {} as NextValueExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "seqid", _p?.seqid);
     _o.set(_j, "typeId", _p?.typeId);
     return _j;
   },
   inferenceElem(_p?: InferenceElem): InferenceElem {
-    const _j = ({} as InferenceElem);
+    const _j = {} as InferenceElem;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "expr", _p?.expr);
     _o.set(_j, "infercollid", _p?.infercollid);
@@ -600,7 +600,7 @@ export default {
     return _j;
   },
   targetEntry(_p?: TargetEntry): TargetEntry {
-    const _j = ({} as TargetEntry);
+    const _j = {} as TargetEntry;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "expr", _p?.expr);
     _o.set(_j, "resno", _p?.resno);
@@ -612,12 +612,12 @@ export default {
     return _j;
   },
   rangeTblRef(_p?: RangeTblRef): RangeTblRef {
-    const _j = ({} as RangeTblRef);
+    const _j = {} as RangeTblRef;
     _o.set(_j, "rtindex", _p?.rtindex);
     return _j;
   },
   joinExpr(_p?: JoinExpr): JoinExpr {
-    const _j = ({} as JoinExpr);
+    const _j = {} as JoinExpr;
     _o.set(_j, "jointype", _p?.jointype);
     _o.set(_j, "isNatural", _p?.isNatural);
     _o.set(_j, "larg", _p?.larg);
@@ -630,13 +630,13 @@ export default {
     return _j;
   },
   fromExpr(_p?: FromExpr): FromExpr {
-    const _j = ({} as FromExpr);
+    const _j = {} as FromExpr;
     _o.set(_j, "fromlist", _p?.fromlist);
     _o.set(_j, "quals", _p?.quals);
     return _j;
   },
   onConflictExpr(_p?: OnConflictExpr): OnConflictExpr {
-    const _j = ({} as OnConflictExpr);
+    const _j = {} as OnConflictExpr;
     _o.set(_j, "action", _p?.action);
     _o.set(_j, "arbiterElems", _p?.arbiterElems);
     _o.set(_j, "arbiterWhere", _p?.arbiterWhere);
@@ -648,7 +648,7 @@ export default {
     return _j;
   },
   query(_p?: Query): Query {
-    const _j = ({} as Query);
+    const _j = {} as Query;
     _o.set(_j, "commandType", _p?.commandType);
     _o.set(_j, "querySource", _p?.querySource);
     _o.set(_j, "canSetTag", _p?.canSetTag);
@@ -693,7 +693,7 @@ export default {
     return _j;
   },
   typeName(_p?: TypeName): TypeName {
-    const _j = ({} as TypeName);
+    const _j = {} as TypeName;
     _o.set(_j, "names", _p?.names);
     _o.set(_j, "typeOid", _p?.typeOid);
     _o.set(_j, "setof", _p?.setof);
@@ -705,19 +705,19 @@ export default {
     return _j;
   },
   columnRef(_p?: ColumnRef): ColumnRef {
-    const _j = ({} as ColumnRef);
+    const _j = {} as ColumnRef;
     _o.set(_j, "fields", _p?.fields);
     _o.set(_j, "location", _p?.location);
     return _j;
   },
   paramRef(_p?: ParamRef): ParamRef {
-    const _j = ({} as ParamRef);
+    const _j = {} as ParamRef;
     _o.set(_j, "number", _p?.number);
     _o.set(_j, "location", _p?.location);
     return _j;
   },
   aExpr(_p?: A_Expr): A_Expr {
-    const _j = ({} as A_Expr);
+    const _j = {} as A_Expr;
     _o.set(_j, "kind", _p?.kind);
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "lexpr", _p?.lexpr);
@@ -726,28 +726,28 @@ export default {
     return _j;
   },
   typeCast(_p?: TypeCast): TypeCast {
-    const _j = ({} as TypeCast);
+    const _j = {} as TypeCast;
     _o.set(_j, "arg", _p?.arg);
     _o.set(_j, "typeName", _p?.typeName);
     _o.set(_j, "location", _p?.location);
     return _j;
   },
   collateClause(_p?: CollateClause): CollateClause {
-    const _j = ({} as CollateClause);
+    const _j = {} as CollateClause;
     _o.set(_j, "arg", _p?.arg);
     _o.set(_j, "collname", _p?.collname);
     _o.set(_j, "location", _p?.location);
     return _j;
   },
   roleSpec(_p?: RoleSpec): RoleSpec {
-    const _j = ({} as RoleSpec);
+    const _j = {} as RoleSpec;
     _o.set(_j, "roletype", _p?.roletype);
     _o.set(_j, "rolename", _p?.rolename);
     _o.set(_j, "location", _p?.location);
     return _j;
   },
   funcCall(_p?: FuncCall): FuncCall {
-    const _j = ({} as FuncCall);
+    const _j = {} as FuncCall;
     _o.set(_j, "funcname", _p?.funcname);
     _o.set(_j, "args", _p?.args);
     _o.set(_j, "agg_order", _p?.agg_order);
@@ -762,30 +762,30 @@ export default {
     return _j;
   },
   aStar(_p?: A_Star): A_Star {
-    const _j = ({} as A_Star);
+    const _j = {} as A_Star;
     return _j;
   },
   aIndices(_p?: A_Indices): A_Indices {
-    const _j = ({} as A_Indices);
+    const _j = {} as A_Indices;
     _o.set(_j, "is_slice", _p?.is_slice);
     _o.set(_j, "lidx", _p?.lidx);
     _o.set(_j, "uidx", _p?.uidx);
     return _j;
   },
   aIndirection(_p?: A_Indirection): A_Indirection {
-    const _j = ({} as A_Indirection);
+    const _j = {} as A_Indirection;
     _o.set(_j, "arg", _p?.arg);
     _o.set(_j, "indirection", _p?.indirection);
     return _j;
   },
   aArrayExpr(_p?: A_ArrayExpr): A_ArrayExpr {
-    const _j = ({} as A_ArrayExpr);
+    const _j = {} as A_ArrayExpr;
     _o.set(_j, "elements", _p?.elements);
     _o.set(_j, "location", _p?.location);
     return _j;
   },
   resTarget(_p?: ResTarget): ResTarget {
-    const _j = ({} as ResTarget);
+    const _j = {} as ResTarget;
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "indirection", _p?.indirection);
     _o.set(_j, "val", _p?.val);
@@ -793,14 +793,14 @@ export default {
     return _j;
   },
   multiAssignRef(_p?: MultiAssignRef): MultiAssignRef {
-    const _j = ({} as MultiAssignRef);
+    const _j = {} as MultiAssignRef;
     _o.set(_j, "source", _p?.source);
     _o.set(_j, "colno", _p?.colno);
     _o.set(_j, "ncolumns", _p?.ncolumns);
     return _j;
   },
   sortBy(_p?: SortBy): SortBy {
-    const _j = ({} as SortBy);
+    const _j = {} as SortBy;
     _o.set(_j, "node", _p?.node);
     _o.set(_j, "sortby_dir", _p?.sortby_dir);
     _o.set(_j, "sortby_nulls", _p?.sortby_nulls);
@@ -809,7 +809,7 @@ export default {
     return _j;
   },
   windowDef(_p?: WindowDef): WindowDef {
-    const _j = ({} as WindowDef);
+    const _j = {} as WindowDef;
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "refname", _p?.refname);
     _o.set(_j, "partitionClause", _p?.partitionClause);
@@ -821,14 +821,14 @@ export default {
     return _j;
   },
   rangeSubselect(_p?: RangeSubselect): RangeSubselect {
-    const _j = ({} as RangeSubselect);
+    const _j = {} as RangeSubselect;
     _o.set(_j, "lateral", _p?.lateral);
     _o.set(_j, "subquery", _p?.subquery);
     _o.set(_j, "alias", _p?.alias);
     return _j;
   },
   rangeFunction(_p?: RangeFunction): RangeFunction {
-    const _j = ({} as RangeFunction);
+    const _j = {} as RangeFunction;
     _o.set(_j, "lateral", _p?.lateral);
     _o.set(_j, "ordinality", _p?.ordinality);
     _o.set(_j, "is_rowsfrom", _p?.is_rowsfrom);
@@ -838,7 +838,7 @@ export default {
     return _j;
   },
   rangeTableFunc(_p?: RangeTableFunc): RangeTableFunc {
-    const _j = ({} as RangeTableFunc);
+    const _j = {} as RangeTableFunc;
     _o.set(_j, "lateral", _p?.lateral);
     _o.set(_j, "docexpr", _p?.docexpr);
     _o.set(_j, "rowexpr", _p?.rowexpr);
@@ -849,7 +849,7 @@ export default {
     return _j;
   },
   rangeTableFuncCol(_p?: RangeTableFuncCol): RangeTableFuncCol {
-    const _j = ({} as RangeTableFuncCol);
+    const _j = {} as RangeTableFuncCol;
     _o.set(_j, "colname", _p?.colname);
     _o.set(_j, "typeName", _p?.typeName);
     _o.set(_j, "for_ordinality", _p?.for_ordinality);
@@ -860,7 +860,7 @@ export default {
     return _j;
   },
   rangeTableSample(_p?: RangeTableSample): RangeTableSample {
-    const _j = ({} as RangeTableSample);
+    const _j = {} as RangeTableSample;
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "method", _p?.method);
     _o.set(_j, "args", _p?.args);
@@ -869,7 +869,7 @@ export default {
     return _j;
   },
   columnDef(_p?: ColumnDef): ColumnDef {
-    const _j = ({} as ColumnDef);
+    const _j = {} as ColumnDef;
     _o.set(_j, "colname", _p?.colname);
     _o.set(_j, "typeName", _p?.typeName);
     _o.set(_j, "compression", _p?.compression);
@@ -892,14 +892,14 @@ export default {
     return _j;
   },
   tableLikeClause(_p?: TableLikeClause): TableLikeClause {
-    const _j = ({} as TableLikeClause);
+    const _j = {} as TableLikeClause;
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "options", _p?.options);
     _o.set(_j, "relationOid", _p?.relationOid);
     return _j;
   },
   indexElem(_p?: IndexElem): IndexElem {
-    const _j = ({} as IndexElem);
+    const _j = {} as IndexElem;
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "expr", _p?.expr);
     _o.set(_j, "indexcolname", _p?.indexcolname);
@@ -911,7 +911,7 @@ export default {
     return _j;
   },
   defElem(_p?: DefElem): DefElem {
-    const _j = ({} as DefElem);
+    const _j = {} as DefElem;
     _o.set(_j, "defnamespace", _p?.defnamespace);
     _o.set(_j, "defname", _p?.defname);
     _o.set(_j, "arg", _p?.arg);
@@ -920,14 +920,14 @@ export default {
     return _j;
   },
   lockingClause(_p?: LockingClause): LockingClause {
-    const _j = ({} as LockingClause);
+    const _j = {} as LockingClause;
     _o.set(_j, "lockedRels", _p?.lockedRels);
     _o.set(_j, "strength", _p?.strength);
     _o.set(_j, "waitPolicy", _p?.waitPolicy);
     return _j;
   },
   xmlSerialize(_p?: XmlSerialize): XmlSerialize {
-    const _j = ({} as XmlSerialize);
+    const _j = {} as XmlSerialize;
     _o.set(_j, "xmloption", _p?.xmloption);
     _o.set(_j, "expr", _p?.expr);
     _o.set(_j, "typeName", _p?.typeName);
@@ -936,7 +936,7 @@ export default {
     return _j;
   },
   partitionElem(_p?: PartitionElem): PartitionElem {
-    const _j = ({} as PartitionElem);
+    const _j = {} as PartitionElem;
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "expr", _p?.expr);
     _o.set(_j, "collation", _p?.collation);
@@ -945,14 +945,14 @@ export default {
     return _j;
   },
   partitionSpec(_p?: PartitionSpec): PartitionSpec {
-    const _j = ({} as PartitionSpec);
+    const _j = {} as PartitionSpec;
     _o.set(_j, "strategy", _p?.strategy);
     _o.set(_j, "partParams", _p?.partParams);
     _o.set(_j, "location", _p?.location);
     return _j;
   },
   partitionBoundSpec(_p?: PartitionBoundSpec): PartitionBoundSpec {
-    const _j = ({} as PartitionBoundSpec);
+    const _j = {} as PartitionBoundSpec;
     _o.set(_j, "strategy", _p?.strategy);
     _o.set(_j, "is_default", _p?.is_default);
     _o.set(_j, "modulus", _p?.modulus);
@@ -964,21 +964,21 @@ export default {
     return _j;
   },
   partitionRangeDatum(_p?: PartitionRangeDatum): PartitionRangeDatum {
-    const _j = ({} as PartitionRangeDatum);
+    const _j = {} as PartitionRangeDatum;
     _o.set(_j, "kind", _p?.kind);
     _o.set(_j, "value", _p?.value);
     _o.set(_j, "location", _p?.location);
     return _j;
   },
   partitionCmd(_p?: PartitionCmd): PartitionCmd {
-    const _j = ({} as PartitionCmd);
+    const _j = {} as PartitionCmd;
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "bound", _p?.bound);
     _o.set(_j, "concurrent", _p?.concurrent);
     return _j;
   },
   rangeTblEntry(_p?: RangeTblEntry): RangeTblEntry {
-    const _j = ({} as RangeTblEntry);
+    const _j = {} as RangeTblEntry;
     _o.set(_j, "rtekind", _p?.rtekind);
     _o.set(_j, "relid", _p?.relid);
     _o.set(_j, "relkind", _p?.relkind);
@@ -1014,7 +1014,7 @@ export default {
     return _j;
   },
   rtePermissionInfo(_p?: RTEPermissionInfo): RTEPermissionInfo {
-    const _j = ({} as RTEPermissionInfo);
+    const _j = {} as RTEPermissionInfo;
     _o.set(_j, "relid", _p?.relid);
     _o.set(_j, "inh", _p?.inh);
     _o.set(_j, "requiredPerms", _p?.requiredPerms);
@@ -1025,7 +1025,7 @@ export default {
     return _j;
   },
   rangeTblFunction(_p?: RangeTblFunction): RangeTblFunction {
-    const _j = ({} as RangeTblFunction);
+    const _j = {} as RangeTblFunction;
     _o.set(_j, "funcexpr", _p?.funcexpr);
     _o.set(_j, "funccolcount", _p?.funccolcount);
     _o.set(_j, "funccolnames", _p?.funccolnames);
@@ -1036,14 +1036,14 @@ export default {
     return _j;
   },
   tableSampleClause(_p?: TableSampleClause): TableSampleClause {
-    const _j = ({} as TableSampleClause);
+    const _j = {} as TableSampleClause;
     _o.set(_j, "tsmhandler", _p?.tsmhandler);
     _o.set(_j, "args", _p?.args);
     _o.set(_j, "repeatable", _p?.repeatable);
     return _j;
   },
   withCheckOption(_p?: WithCheckOption): WithCheckOption {
-    const _j = ({} as WithCheckOption);
+    const _j = {} as WithCheckOption;
     _o.set(_j, "kind", _p?.kind);
     _o.set(_j, "relname", _p?.relname);
     _o.set(_j, "polname", _p?.polname);
@@ -1052,7 +1052,7 @@ export default {
     return _j;
   },
   sortGroupClause(_p?: SortGroupClause): SortGroupClause {
-    const _j = ({} as SortGroupClause);
+    const _j = {} as SortGroupClause;
     _o.set(_j, "tleSortGroupRef", _p?.tleSortGroupRef);
     _o.set(_j, "eqop", _p?.eqop);
     _o.set(_j, "sortop", _p?.sortop);
@@ -1061,14 +1061,14 @@ export default {
     return _j;
   },
   groupingSet(_p?: GroupingSet): GroupingSet {
-    const _j = ({} as GroupingSet);
+    const _j = {} as GroupingSet;
     _o.set(_j, "kind", _p?.kind);
     _o.set(_j, "content", _p?.content);
     _o.set(_j, "location", _p?.location);
     return _j;
   },
   windowClause(_p?: WindowClause): WindowClause {
-    const _j = ({} as WindowClause);
+    const _j = {} as WindowClause;
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "refname", _p?.refname);
     _o.set(_j, "partitionClause", _p?.partitionClause);
@@ -1087,7 +1087,7 @@ export default {
     return _j;
   },
   rowMarkClause(_p?: RowMarkClause): RowMarkClause {
-    const _j = ({} as RowMarkClause);
+    const _j = {} as RowMarkClause;
     _o.set(_j, "rti", _p?.rti);
     _o.set(_j, "strength", _p?.strength);
     _o.set(_j, "waitPolicy", _p?.waitPolicy);
@@ -1095,14 +1095,14 @@ export default {
     return _j;
   },
   withClause(_p?: WithClause): WithClause {
-    const _j = ({} as WithClause);
+    const _j = {} as WithClause;
     _o.set(_j, "ctes", _p?.ctes);
     _o.set(_j, "recursive", _p?.recursive);
     _o.set(_j, "location", _p?.location);
     return _j;
   },
   inferClause(_p?: InferClause): InferClause {
-    const _j = ({} as InferClause);
+    const _j = {} as InferClause;
     _o.set(_j, "indexElems", _p?.indexElems);
     _o.set(_j, "whereClause", _p?.whereClause);
     _o.set(_j, "conname", _p?.conname);
@@ -1110,7 +1110,7 @@ export default {
     return _j;
   },
   onConflictClause(_p?: OnConflictClause): OnConflictClause {
-    const _j = ({} as OnConflictClause);
+    const _j = {} as OnConflictClause;
     _o.set(_j, "action", _p?.action);
     _o.set(_j, "infer", _p?.infer);
     _o.set(_j, "targetList", _p?.targetList);
@@ -1119,7 +1119,7 @@ export default {
     return _j;
   },
   cteSearchClause(_p?: CTESearchClause): CTESearchClause {
-    const _j = ({} as CTESearchClause);
+    const _j = {} as CTESearchClause;
     _o.set(_j, "search_col_list", _p?.search_col_list);
     _o.set(_j, "search_breadth_first", _p?.search_breadth_first);
     _o.set(_j, "search_seq_column", _p?.search_seq_column);
@@ -1127,7 +1127,7 @@ export default {
     return _j;
   },
   cteCycleClause(_p?: CTECycleClause): CTECycleClause {
-    const _j = ({} as CTECycleClause);
+    const _j = {} as CTECycleClause;
     _o.set(_j, "cycle_col_list", _p?.cycle_col_list);
     _o.set(_j, "cycle_mark_column", _p?.cycle_mark_column);
     _o.set(_j, "cycle_mark_value", _p?.cycle_mark_value);
@@ -1141,7 +1141,7 @@ export default {
     return _j;
   },
   commonTableExpr(_p?: CommonTableExpr): CommonTableExpr {
-    const _j = ({} as CommonTableExpr);
+    const _j = {} as CommonTableExpr;
     _o.set(_j, "ctename", _p?.ctename);
     _o.set(_j, "aliascolnames", _p?.aliascolnames);
     _o.set(_j, "ctematerialized", _p?.ctematerialized);
@@ -1158,7 +1158,7 @@ export default {
     return _j;
   },
   mergeWhenClause(_p?: MergeWhenClause): MergeWhenClause {
-    const _j = ({} as MergeWhenClause);
+    const _j = {} as MergeWhenClause;
     _o.set(_j, "matched", _p?.matched);
     _o.set(_j, "commandType", _p?.commandType);
     _o.set(_j, "override", _p?.override);
@@ -1168,7 +1168,7 @@ export default {
     return _j;
   },
   mergeAction(_p?: MergeAction): MergeAction {
-    const _j = ({} as MergeAction);
+    const _j = {} as MergeAction;
     _o.set(_j, "matched", _p?.matched);
     _o.set(_j, "commandType", _p?.commandType);
     _o.set(_j, "override", _p?.override);
@@ -1178,26 +1178,26 @@ export default {
     return _j;
   },
   triggerTransition(_p?: TriggerTransition): TriggerTransition {
-    const _j = ({} as TriggerTransition);
+    const _j = {} as TriggerTransition;
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "isNew", _p?.isNew);
     _o.set(_j, "isTable", _p?.isTable);
     return _j;
   },
   jsonOutput(_p?: JsonOutput): JsonOutput {
-    const _j = ({} as JsonOutput);
+    const _j = {} as JsonOutput;
     _o.set(_j, "typeName", _p?.typeName);
     _o.set(_j, "returning", _p?.returning);
     return _j;
   },
   jsonKeyValue(_p?: JsonKeyValue): JsonKeyValue {
-    const _j = ({} as JsonKeyValue);
+    const _j = {} as JsonKeyValue;
     _o.set(_j, "key", _p?.key);
     _o.set(_j, "value", _p?.value);
     return _j;
   },
   jsonObjectConstructor(_p?: JsonObjectConstructor): JsonObjectConstructor {
-    const _j = ({} as JsonObjectConstructor);
+    const _j = {} as JsonObjectConstructor;
     _o.set(_j, "exprs", _p?.exprs);
     _o.set(_j, "output", _p?.output);
     _o.set(_j, "absent_on_null", _p?.absent_on_null);
@@ -1206,7 +1206,7 @@ export default {
     return _j;
   },
   jsonArrayConstructor(_p?: JsonArrayConstructor): JsonArrayConstructor {
-    const _j = ({} as JsonArrayConstructor);
+    const _j = {} as JsonArrayConstructor;
     _o.set(_j, "exprs", _p?.exprs);
     _o.set(_j, "output", _p?.output);
     _o.set(_j, "absent_on_null", _p?.absent_on_null);
@@ -1214,7 +1214,7 @@ export default {
     return _j;
   },
   jsonArrayQueryConstructor(_p?: JsonArrayQueryConstructor): JsonArrayQueryConstructor {
-    const _j = ({} as JsonArrayQueryConstructor);
+    const _j = {} as JsonArrayQueryConstructor;
     _o.set(_j, "query", _p?.query);
     _o.set(_j, "output", _p?.output);
     _o.set(_j, "format", _p?.format);
@@ -1223,7 +1223,7 @@ export default {
     return _j;
   },
   jsonAggConstructor(_p?: JsonAggConstructor): JsonAggConstructor {
-    const _j = ({} as JsonAggConstructor);
+    const _j = {} as JsonAggConstructor;
     _o.set(_j, "output", _p?.output);
     _o.set(_j, "agg_filter", _p?.agg_filter);
     _o.set(_j, "agg_order", _p?.agg_order);
@@ -1232,7 +1232,7 @@ export default {
     return _j;
   },
   jsonObjectAgg(_p?: JsonObjectAgg): JsonObjectAgg {
-    const _j = ({} as JsonObjectAgg);
+    const _j = {} as JsonObjectAgg;
     _o.set(_j, "constructor", _p?.constructor);
     _o.set(_j, "arg", _p?.arg);
     _o.set(_j, "absent_on_null", _p?.absent_on_null);
@@ -1240,21 +1240,21 @@ export default {
     return _j;
   },
   jsonArrayAgg(_p?: JsonArrayAgg): JsonArrayAgg {
-    const _j = ({} as JsonArrayAgg);
+    const _j = {} as JsonArrayAgg;
     _o.set(_j, "constructor", _p?.constructor);
     _o.set(_j, "arg", _p?.arg);
     _o.set(_j, "absent_on_null", _p?.absent_on_null);
     return _j;
   },
   rawStmt(_p?: RawStmt): RawStmt {
-    const _j = ({} as RawStmt);
+    const _j = {} as RawStmt;
     _o.set(_j, "stmt", _p?.stmt);
     _o.set(_j, "stmt_location", _p?.stmt_location);
     _o.set(_j, "stmt_len", _p?.stmt_len);
     return _j;
   },
   insertStmt(_p?: InsertStmt): InsertStmt {
-    const _j = ({} as InsertStmt);
+    const _j = {} as InsertStmt;
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "cols", _p?.cols);
     _o.set(_j, "selectStmt", _p?.selectStmt);
@@ -1265,7 +1265,7 @@ export default {
     return _j;
   },
   deleteStmt(_p?: DeleteStmt): DeleteStmt {
-    const _j = ({} as DeleteStmt);
+    const _j = {} as DeleteStmt;
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "usingClause", _p?.usingClause);
     _o.set(_j, "whereClause", _p?.whereClause);
@@ -1274,7 +1274,7 @@ export default {
     return _j;
   },
   updateStmt(_p?: UpdateStmt): UpdateStmt {
-    const _j = ({} as UpdateStmt);
+    const _j = {} as UpdateStmt;
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "targetList", _p?.targetList);
     _o.set(_j, "whereClause", _p?.whereClause);
@@ -1284,7 +1284,7 @@ export default {
     return _j;
   },
   mergeStmt(_p?: MergeStmt): MergeStmt {
-    const _j = ({} as MergeStmt);
+    const _j = {} as MergeStmt;
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "sourceRelation", _p?.sourceRelation);
     _o.set(_j, "joinCondition", _p?.joinCondition);
@@ -1293,7 +1293,7 @@ export default {
     return _j;
   },
   selectStmt(_p?: SelectStmt): SelectStmt {
-    const _j = ({} as SelectStmt);
+    const _j = {} as SelectStmt;
     _o.set(_j, "distinctClause", _p?.distinctClause);
     _o.set(_j, "intoClause", _p?.intoClause);
     _o.set(_j, "targetList", _p?.targetList);
@@ -1317,7 +1317,7 @@ export default {
     return _j;
   },
   setOperationStmt(_p?: SetOperationStmt): SetOperationStmt {
-    const _j = ({} as SetOperationStmt);
+    const _j = {} as SetOperationStmt;
     _o.set(_j, "op", _p?.op);
     _o.set(_j, "all", _p?.all);
     _o.set(_j, "larg", _p?.larg);
@@ -1329,12 +1329,12 @@ export default {
     return _j;
   },
   returnStmt(_p?: ReturnStmt): ReturnStmt {
-    const _j = ({} as ReturnStmt);
+    const _j = {} as ReturnStmt;
     _o.set(_j, "returnval", _p?.returnval);
     return _j;
   },
   plAssignStmt(_p?: PLAssignStmt): PLAssignStmt {
-    const _j = ({} as PLAssignStmt);
+    const _j = {} as PLAssignStmt;
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "indirection", _p?.indirection);
     _o.set(_j, "nnames", _p?.nnames);
@@ -1343,7 +1343,7 @@ export default {
     return _j;
   },
   createSchemaStmt(_p?: CreateSchemaStmt): CreateSchemaStmt {
-    const _j = ({} as CreateSchemaStmt);
+    const _j = {} as CreateSchemaStmt;
     _o.set(_j, "schemaname", _p?.schemaname);
     _o.set(_j, "authrole", _p?.authrole);
     _o.set(_j, "schemaElts", _p?.schemaElts);
@@ -1351,7 +1351,7 @@ export default {
     return _j;
   },
   alterTableStmt(_p?: AlterTableStmt): AlterTableStmt {
-    const _j = ({} as AlterTableStmt);
+    const _j = {} as AlterTableStmt;
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "cmds", _p?.cmds);
     _o.set(_j, "objtype", _p?.objtype);
@@ -1359,13 +1359,13 @@ export default {
     return _j;
   },
   replicaIdentityStmt(_p?: ReplicaIdentityStmt): ReplicaIdentityStmt {
-    const _j = ({} as ReplicaIdentityStmt);
+    const _j = {} as ReplicaIdentityStmt;
     _o.set(_j, "identity_type", _p?.identity_type);
     _o.set(_j, "name", _p?.name);
     return _j;
   },
   alterTableCmd(_p?: AlterTableCmd): AlterTableCmd {
-    const _j = ({} as AlterTableCmd);
+    const _j = {} as AlterTableCmd;
     _o.set(_j, "subtype", _p?.subtype);
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "num", _p?.num);
@@ -1377,12 +1377,12 @@ export default {
     return _j;
   },
   alterCollationStmt(_p?: AlterCollationStmt): AlterCollationStmt {
-    const _j = ({} as AlterCollationStmt);
+    const _j = {} as AlterCollationStmt;
     _o.set(_j, "collname", _p?.collname);
     return _j;
   },
   alterDomainStmt(_p?: AlterDomainStmt): AlterDomainStmt {
-    const _j = ({} as AlterDomainStmt);
+    const _j = {} as AlterDomainStmt;
     _o.set(_j, "subtype", _p?.subtype);
     _o.set(_j, "typeName", _p?.typeName);
     _o.set(_j, "name", _p?.name);
@@ -1392,7 +1392,7 @@ export default {
     return _j;
   },
   grantStmt(_p?: GrantStmt): GrantStmt {
-    const _j = ({} as GrantStmt);
+    const _j = {} as GrantStmt;
     _o.set(_j, "is_grant", _p?.is_grant);
     _o.set(_j, "targtype", _p?.targtype);
     _o.set(_j, "objtype", _p?.objtype);
@@ -1405,7 +1405,7 @@ export default {
     return _j;
   },
   objectWithArgs(_p?: ObjectWithArgs): ObjectWithArgs {
-    const _j = ({} as ObjectWithArgs);
+    const _j = {} as ObjectWithArgs;
     _o.set(_j, "objname", _p?.objname);
     _o.set(_j, "objargs", _p?.objargs);
     _o.set(_j, "objfuncargs", _p?.objfuncargs);
@@ -1413,13 +1413,13 @@ export default {
     return _j;
   },
   accessPriv(_p?: AccessPriv): AccessPriv {
-    const _j = ({} as AccessPriv);
+    const _j = {} as AccessPriv;
     _o.set(_j, "priv_name", _p?.priv_name);
     _o.set(_j, "cols", _p?.cols);
     return _j;
   },
   grantRoleStmt(_p?: GrantRoleStmt): GrantRoleStmt {
-    const _j = ({} as GrantRoleStmt);
+    const _j = {} as GrantRoleStmt;
     _o.set(_j, "granted_roles", _p?.granted_roles);
     _o.set(_j, "grantee_roles", _p?.grantee_roles);
     _o.set(_j, "is_grant", _p?.is_grant);
@@ -1429,13 +1429,13 @@ export default {
     return _j;
   },
   alterDefaultPrivilegesStmt(_p?: AlterDefaultPrivilegesStmt): AlterDefaultPrivilegesStmt {
-    const _j = ({} as AlterDefaultPrivilegesStmt);
+    const _j = {} as AlterDefaultPrivilegesStmt;
     _o.set(_j, "options", _p?.options);
     _o.set(_j, "action", _p?.action);
     return _j;
   },
   copyStmt(_p?: CopyStmt): CopyStmt {
-    const _j = ({} as CopyStmt);
+    const _j = {} as CopyStmt;
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "query", _p?.query);
     _o.set(_j, "attlist", _p?.attlist);
@@ -1447,7 +1447,7 @@ export default {
     return _j;
   },
   variableSetStmt(_p?: VariableSetStmt): VariableSetStmt {
-    const _j = ({} as VariableSetStmt);
+    const _j = {} as VariableSetStmt;
     _o.set(_j, "kind", _p?.kind);
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "args", _p?.args);
@@ -1455,12 +1455,12 @@ export default {
     return _j;
   },
   variableShowStmt(_p?: VariableShowStmt): VariableShowStmt {
-    const _j = ({} as VariableShowStmt);
+    const _j = {} as VariableShowStmt;
     _o.set(_j, "name", _p?.name);
     return _j;
   },
   createStmt(_p?: CreateStmt): CreateStmt {
-    const _j = ({} as CreateStmt);
+    const _j = {} as CreateStmt;
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "tableElts", _p?.tableElts);
     _o.set(_j, "inhRelations", _p?.inhRelations);
@@ -1476,7 +1476,7 @@ export default {
     return _j;
   },
   constraint(_p?: Constraint): Constraint {
-    const _j = ({} as Constraint);
+    const _j = {} as Constraint;
     _o.set(_j, "contype", _p?.contype);
     _o.set(_j, "conname", _p?.conname);
     _o.set(_j, "deferrable", _p?.deferrable);
@@ -1510,7 +1510,7 @@ export default {
     return _j;
   },
   createTableSpaceStmt(_p?: CreateTableSpaceStmt): CreateTableSpaceStmt {
-    const _j = ({} as CreateTableSpaceStmt);
+    const _j = {} as CreateTableSpaceStmt;
     _o.set(_j, "tablespacename", _p?.tablespacename);
     _o.set(_j, "owner", _p?.owner);
     _o.set(_j, "location", _p?.location);
@@ -1518,20 +1518,20 @@ export default {
     return _j;
   },
   dropTableSpaceStmt(_p?: DropTableSpaceStmt): DropTableSpaceStmt {
-    const _j = ({} as DropTableSpaceStmt);
+    const _j = {} as DropTableSpaceStmt;
     _o.set(_j, "tablespacename", _p?.tablespacename);
     _o.set(_j, "missing_ok", _p?.missing_ok);
     return _j;
   },
   alterTableSpaceOptionsStmt(_p?: AlterTableSpaceOptionsStmt): AlterTableSpaceOptionsStmt {
-    const _j = ({} as AlterTableSpaceOptionsStmt);
+    const _j = {} as AlterTableSpaceOptionsStmt;
     _o.set(_j, "tablespacename", _p?.tablespacename);
     _o.set(_j, "options", _p?.options);
     _o.set(_j, "isReset", _p?.isReset);
     return _j;
   },
   alterTableMoveAllStmt(_p?: AlterTableMoveAllStmt): AlterTableMoveAllStmt {
-    const _j = ({} as AlterTableMoveAllStmt);
+    const _j = {} as AlterTableMoveAllStmt;
     _o.set(_j, "orig_tablespacename", _p?.orig_tablespacename);
     _o.set(_j, "objtype", _p?.objtype);
     _o.set(_j, "roles", _p?.roles);
@@ -1540,20 +1540,20 @@ export default {
     return _j;
   },
   createExtensionStmt(_p?: CreateExtensionStmt): CreateExtensionStmt {
-    const _j = ({} as CreateExtensionStmt);
+    const _j = {} as CreateExtensionStmt;
     _o.set(_j, "extname", _p?.extname);
     _o.set(_j, "if_not_exists", _p?.if_not_exists);
     _o.set(_j, "options", _p?.options);
     return _j;
   },
   alterExtensionStmt(_p?: AlterExtensionStmt): AlterExtensionStmt {
-    const _j = ({} as AlterExtensionStmt);
+    const _j = {} as AlterExtensionStmt;
     _o.set(_j, "extname", _p?.extname);
     _o.set(_j, "options", _p?.options);
     return _j;
   },
   alterExtensionContentsStmt(_p?: AlterExtensionContentsStmt): AlterExtensionContentsStmt {
-    const _j = ({} as AlterExtensionContentsStmt);
+    const _j = {} as AlterExtensionContentsStmt;
     _o.set(_j, "extname", _p?.extname);
     _o.set(_j, "action", _p?.action);
     _o.set(_j, "objtype", _p?.objtype);
@@ -1561,21 +1561,21 @@ export default {
     return _j;
   },
   createFdwStmt(_p?: CreateFdwStmt): CreateFdwStmt {
-    const _j = ({} as CreateFdwStmt);
+    const _j = {} as CreateFdwStmt;
     _o.set(_j, "fdwname", _p?.fdwname);
     _o.set(_j, "func_options", _p?.func_options);
     _o.set(_j, "options", _p?.options);
     return _j;
   },
   alterFdwStmt(_p?: AlterFdwStmt): AlterFdwStmt {
-    const _j = ({} as AlterFdwStmt);
+    const _j = {} as AlterFdwStmt;
     _o.set(_j, "fdwname", _p?.fdwname);
     _o.set(_j, "func_options", _p?.func_options);
     _o.set(_j, "options", _p?.options);
     return _j;
   },
   createForeignServerStmt(_p?: CreateForeignServerStmt): CreateForeignServerStmt {
-    const _j = ({} as CreateForeignServerStmt);
+    const _j = {} as CreateForeignServerStmt;
     _o.set(_j, "servername", _p?.servername);
     _o.set(_j, "servertype", _p?.servertype);
     _o.set(_j, "version", _p?.version);
@@ -1585,7 +1585,7 @@ export default {
     return _j;
   },
   alterForeignServerStmt(_p?: AlterForeignServerStmt): AlterForeignServerStmt {
-    const _j = ({} as AlterForeignServerStmt);
+    const _j = {} as AlterForeignServerStmt;
     _o.set(_j, "servername", _p?.servername);
     _o.set(_j, "version", _p?.version);
     _o.set(_j, "options", _p?.options);
@@ -1593,14 +1593,14 @@ export default {
     return _j;
   },
   createForeignTableStmt(_p?: CreateForeignTableStmt): CreateForeignTableStmt {
-    const _j = ({} as CreateForeignTableStmt);
+    const _j = {} as CreateForeignTableStmt;
     _o.set(_j, "base", _p?.base);
     _o.set(_j, "servername", _p?.servername);
     _o.set(_j, "options", _p?.options);
     return _j;
   },
   createUserMappingStmt(_p?: CreateUserMappingStmt): CreateUserMappingStmt {
-    const _j = ({} as CreateUserMappingStmt);
+    const _j = {} as CreateUserMappingStmt;
     _o.set(_j, "user", _p?.user);
     _o.set(_j, "servername", _p?.servername);
     _o.set(_j, "if_not_exists", _p?.if_not_exists);
@@ -1608,21 +1608,21 @@ export default {
     return _j;
   },
   alterUserMappingStmt(_p?: AlterUserMappingStmt): AlterUserMappingStmt {
-    const _j = ({} as AlterUserMappingStmt);
+    const _j = {} as AlterUserMappingStmt;
     _o.set(_j, "user", _p?.user);
     _o.set(_j, "servername", _p?.servername);
     _o.set(_j, "options", _p?.options);
     return _j;
   },
   dropUserMappingStmt(_p?: DropUserMappingStmt): DropUserMappingStmt {
-    const _j = ({} as DropUserMappingStmt);
+    const _j = {} as DropUserMappingStmt;
     _o.set(_j, "user", _p?.user);
     _o.set(_j, "servername", _p?.servername);
     _o.set(_j, "missing_ok", _p?.missing_ok);
     return _j;
   },
   importForeignSchemaStmt(_p?: ImportForeignSchemaStmt): ImportForeignSchemaStmt {
-    const _j = ({} as ImportForeignSchemaStmt);
+    const _j = {} as ImportForeignSchemaStmt;
     _o.set(_j, "server_name", _p?.server_name);
     _o.set(_j, "remote_schema", _p?.remote_schema);
     _o.set(_j, "local_schema", _p?.local_schema);
@@ -1632,7 +1632,7 @@ export default {
     return _j;
   },
   createPolicyStmt(_p?: CreatePolicyStmt): CreatePolicyStmt {
-    const _j = ({} as CreatePolicyStmt);
+    const _j = {} as CreatePolicyStmt;
     _o.set(_j, "policy_name", _p?.policy_name);
     _o.set(_j, "table", _p?.table);
     _o.set(_j, "cmd_name", _p?.cmd_name);
@@ -1643,7 +1643,7 @@ export default {
     return _j;
   },
   alterPolicyStmt(_p?: AlterPolicyStmt): AlterPolicyStmt {
-    const _j = ({} as AlterPolicyStmt);
+    const _j = {} as AlterPolicyStmt;
     _o.set(_j, "policy_name", _p?.policy_name);
     _o.set(_j, "table", _p?.table);
     _o.set(_j, "roles", _p?.roles);
@@ -1652,14 +1652,14 @@ export default {
     return _j;
   },
   createAmStmt(_p?: CreateAmStmt): CreateAmStmt {
-    const _j = ({} as CreateAmStmt);
+    const _j = {} as CreateAmStmt;
     _o.set(_j, "amname", _p?.amname);
     _o.set(_j, "handler_name", _p?.handler_name);
     _o.set(_j, "amtype", _p?.amtype);
     return _j;
   },
   createTrigStmt(_p?: CreateTrigStmt): CreateTrigStmt {
-    const _j = ({} as CreateTrigStmt);
+    const _j = {} as CreateTrigStmt;
     _o.set(_j, "replace", _p?.replace);
     _o.set(_j, "isconstraint", _p?.isconstraint);
     _o.set(_j, "trigname", _p?.trigname);
@@ -1678,7 +1678,7 @@ export default {
     return _j;
   },
   createEventTrigStmt(_p?: CreateEventTrigStmt): CreateEventTrigStmt {
-    const _j = ({} as CreateEventTrigStmt);
+    const _j = {} as CreateEventTrigStmt;
     _o.set(_j, "trigname", _p?.trigname);
     _o.set(_j, "eventname", _p?.eventname);
     _o.set(_j, "whenclause", _p?.whenclause);
@@ -1686,13 +1686,13 @@ export default {
     return _j;
   },
   alterEventTrigStmt(_p?: AlterEventTrigStmt): AlterEventTrigStmt {
-    const _j = ({} as AlterEventTrigStmt);
+    const _j = {} as AlterEventTrigStmt;
     _o.set(_j, "trigname", _p?.trigname);
     _o.set(_j, "tgenabled", _p?.tgenabled);
     return _j;
   },
   createpLangStmt(_p?: CreatePLangStmt): CreatePLangStmt {
-    const _j = ({} as CreatePLangStmt);
+    const _j = {} as CreatePLangStmt;
     _o.set(_j, "replace", _p?.replace);
     _o.set(_j, "plname", _p?.plname);
     _o.set(_j, "plhandler", _p?.plhandler);
@@ -1702,34 +1702,34 @@ export default {
     return _j;
   },
   createRoleStmt(_p?: CreateRoleStmt): CreateRoleStmt {
-    const _j = ({} as CreateRoleStmt);
+    const _j = {} as CreateRoleStmt;
     _o.set(_j, "stmt_type", _p?.stmt_type);
     _o.set(_j, "role", _p?.role);
     _o.set(_j, "options", _p?.options);
     return _j;
   },
   alterRoleStmt(_p?: AlterRoleStmt): AlterRoleStmt {
-    const _j = ({} as AlterRoleStmt);
+    const _j = {} as AlterRoleStmt;
     _o.set(_j, "role", _p?.role);
     _o.set(_j, "options", _p?.options);
     _o.set(_j, "action", _p?.action);
     return _j;
   },
   alterRoleSetStmt(_p?: AlterRoleSetStmt): AlterRoleSetStmt {
-    const _j = ({} as AlterRoleSetStmt);
+    const _j = {} as AlterRoleSetStmt;
     _o.set(_j, "role", _p?.role);
     _o.set(_j, "database", _p?.database);
     _o.set(_j, "setstmt", _p?.setstmt);
     return _j;
   },
   dropRoleStmt(_p?: DropRoleStmt): DropRoleStmt {
-    const _j = ({} as DropRoleStmt);
+    const _j = {} as DropRoleStmt;
     _o.set(_j, "roles", _p?.roles);
     _o.set(_j, "missing_ok", _p?.missing_ok);
     return _j;
   },
   createSeqStmt(_p?: CreateSeqStmt): CreateSeqStmt {
-    const _j = ({} as CreateSeqStmt);
+    const _j = {} as CreateSeqStmt;
     _o.set(_j, "sequence", _p?.sequence);
     _o.set(_j, "options", _p?.options);
     _o.set(_j, "ownerId", _p?.ownerId);
@@ -1738,7 +1738,7 @@ export default {
     return _j;
   },
   alterSeqStmt(_p?: AlterSeqStmt): AlterSeqStmt {
-    const _j = ({} as AlterSeqStmt);
+    const _j = {} as AlterSeqStmt;
     _o.set(_j, "sequence", _p?.sequence);
     _o.set(_j, "options", _p?.options);
     _o.set(_j, "for_identity", _p?.for_identity);
@@ -1746,7 +1746,7 @@ export default {
     return _j;
   },
   defineStmt(_p?: DefineStmt): DefineStmt {
-    const _j = ({} as DefineStmt);
+    const _j = {} as DefineStmt;
     _o.set(_j, "kind", _p?.kind);
     _o.set(_j, "oldstyle", _p?.oldstyle);
     _o.set(_j, "defnames", _p?.defnames);
@@ -1757,7 +1757,7 @@ export default {
     return _j;
   },
   createDomainStmt(_p?: CreateDomainStmt): CreateDomainStmt {
-    const _j = ({} as CreateDomainStmt);
+    const _j = {} as CreateDomainStmt;
     _o.set(_j, "domainname", _p?.domainname);
     _o.set(_j, "typeName", _p?.typeName);
     _o.set(_j, "collClause", _p?.collClause);
@@ -1765,7 +1765,7 @@ export default {
     return _j;
   },
   createOpClassStmt(_p?: CreateOpClassStmt): CreateOpClassStmt {
-    const _j = ({} as CreateOpClassStmt);
+    const _j = {} as CreateOpClassStmt;
     _o.set(_j, "opclassname", _p?.opclassname);
     _o.set(_j, "opfamilyname", _p?.opfamilyname);
     _o.set(_j, "amname", _p?.amname);
@@ -1775,7 +1775,7 @@ export default {
     return _j;
   },
   createOpClassItem(_p?: CreateOpClassItem): CreateOpClassItem {
-    const _j = ({} as CreateOpClassItem);
+    const _j = {} as CreateOpClassItem;
     _o.set(_j, "itemtype", _p?.itemtype);
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "number", _p?.number);
@@ -1785,13 +1785,13 @@ export default {
     return _j;
   },
   createOpFamilyStmt(_p?: CreateOpFamilyStmt): CreateOpFamilyStmt {
-    const _j = ({} as CreateOpFamilyStmt);
+    const _j = {} as CreateOpFamilyStmt;
     _o.set(_j, "opfamilyname", _p?.opfamilyname);
     _o.set(_j, "amname", _p?.amname);
     return _j;
   },
   alterOpFamilyStmt(_p?: AlterOpFamilyStmt): AlterOpFamilyStmt {
-    const _j = ({} as AlterOpFamilyStmt);
+    const _j = {} as AlterOpFamilyStmt;
     _o.set(_j, "opfamilyname", _p?.opfamilyname);
     _o.set(_j, "amname", _p?.amname);
     _o.set(_j, "isDrop", _p?.isDrop);
@@ -1799,7 +1799,7 @@ export default {
     return _j;
   },
   dropStmt(_p?: DropStmt): DropStmt {
-    const _j = ({} as DropStmt);
+    const _j = {} as DropStmt;
     _o.set(_j, "objects", _p?.objects);
     _o.set(_j, "removeType", _p?.removeType);
     _o.set(_j, "behavior", _p?.behavior);
@@ -1808,21 +1808,21 @@ export default {
     return _j;
   },
   truncateStmt(_p?: TruncateStmt): TruncateStmt {
-    const _j = ({} as TruncateStmt);
+    const _j = {} as TruncateStmt;
     _o.set(_j, "relations", _p?.relations);
     _o.set(_j, "restart_seqs", _p?.restart_seqs);
     _o.set(_j, "behavior", _p?.behavior);
     return _j;
   },
   commentStmt(_p?: CommentStmt): CommentStmt {
-    const _j = ({} as CommentStmt);
+    const _j = {} as CommentStmt;
     _o.set(_j, "objtype", _p?.objtype);
     _o.set(_j, "object", _p?.object);
     _o.set(_j, "comment", _p?.comment);
     return _j;
   },
   secLabelStmt(_p?: SecLabelStmt): SecLabelStmt {
-    const _j = ({} as SecLabelStmt);
+    const _j = {} as SecLabelStmt;
     _o.set(_j, "objtype", _p?.objtype);
     _o.set(_j, "object", _p?.object);
     _o.set(_j, "provider", _p?.provider);
@@ -1830,19 +1830,19 @@ export default {
     return _j;
   },
   declareCursorStmt(_p?: DeclareCursorStmt): DeclareCursorStmt {
-    const _j = ({} as DeclareCursorStmt);
+    const _j = {} as DeclareCursorStmt;
     _o.set(_j, "portalname", _p?.portalname);
     _o.set(_j, "options", _p?.options);
     _o.set(_j, "query", _p?.query);
     return _j;
   },
   closePortalStmt(_p?: ClosePortalStmt): ClosePortalStmt {
-    const _j = ({} as ClosePortalStmt);
+    const _j = {} as ClosePortalStmt;
     _o.set(_j, "portalname", _p?.portalname);
     return _j;
   },
   fetchStmt(_p?: FetchStmt): FetchStmt {
-    const _j = ({} as FetchStmt);
+    const _j = {} as FetchStmt;
     _o.set(_j, "direction", _p?.direction);
     _o.set(_j, "howMany", _p?.howMany);
     _o.set(_j, "portalname", _p?.portalname);
@@ -1850,7 +1850,7 @@ export default {
     return _j;
   },
   indexStmt(_p?: IndexStmt): IndexStmt {
-    const _j = ({} as IndexStmt);
+    const _j = {} as IndexStmt;
     _o.set(_j, "idxname", _p?.idxname);
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "accessMethod", _p?.accessMethod);
@@ -1878,7 +1878,7 @@ export default {
     return _j;
   },
   createStatsStmt(_p?: CreateStatsStmt): CreateStatsStmt {
-    const _j = ({} as CreateStatsStmt);
+    const _j = {} as CreateStatsStmt;
     _o.set(_j, "defnames", _p?.defnames);
     _o.set(_j, "stat_types", _p?.stat_types);
     _o.set(_j, "exprs", _p?.exprs);
@@ -1889,20 +1889,20 @@ export default {
     return _j;
   },
   statsElem(_p?: StatsElem): StatsElem {
-    const _j = ({} as StatsElem);
+    const _j = {} as StatsElem;
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "expr", _p?.expr);
     return _j;
   },
   alterStatsStmt(_p?: AlterStatsStmt): AlterStatsStmt {
-    const _j = ({} as AlterStatsStmt);
+    const _j = {} as AlterStatsStmt;
     _o.set(_j, "defnames", _p?.defnames);
     _o.set(_j, "stxstattarget", _p?.stxstattarget);
     _o.set(_j, "missing_ok", _p?.missing_ok);
     return _j;
   },
   createFunctionStmt(_p?: CreateFunctionStmt): CreateFunctionStmt {
-    const _j = ({} as CreateFunctionStmt);
+    const _j = {} as CreateFunctionStmt;
     _o.set(_j, "is_procedure", _p?.is_procedure);
     _o.set(_j, "replace", _p?.replace);
     _o.set(_j, "funcname", _p?.funcname);
@@ -1913,7 +1913,7 @@ export default {
     return _j;
   },
   functionParameter(_p?: FunctionParameter): FunctionParameter {
-    const _j = ({} as FunctionParameter);
+    const _j = {} as FunctionParameter;
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "argType", _p?.argType);
     _o.set(_j, "mode", _p?.mode);
@@ -1921,19 +1921,19 @@ export default {
     return _j;
   },
   alterFunctionStmt(_p?: AlterFunctionStmt): AlterFunctionStmt {
-    const _j = ({} as AlterFunctionStmt);
+    const _j = {} as AlterFunctionStmt;
     _o.set(_j, "objtype", _p?.objtype);
     _o.set(_j, "func", _p?.func);
     _o.set(_j, "actions", _p?.actions);
     return _j;
   },
   doStmt(_p?: DoStmt): DoStmt {
-    const _j = ({} as DoStmt);
+    const _j = {} as DoStmt;
     _o.set(_j, "args", _p?.args);
     return _j;
   },
   inlineCodeBlock(_p?: InlineCodeBlock): InlineCodeBlock {
-    const _j = ({} as InlineCodeBlock);
+    const _j = {} as InlineCodeBlock;
     _o.set(_j, "source_text", _p?.source_text);
     _o.set(_j, "langOid", _p?.langOid);
     _o.set(_j, "langIsTrusted", _p?.langIsTrusted);
@@ -1941,19 +1941,19 @@ export default {
     return _j;
   },
   callStmt(_p?: CallStmt): CallStmt {
-    const _j = ({} as CallStmt);
+    const _j = {} as CallStmt;
     _o.set(_j, "funccall", _p?.funccall);
     _o.set(_j, "funcexpr", _p?.funcexpr);
     _o.set(_j, "outargs", _p?.outargs);
     return _j;
   },
   callContext(_p?: CallContext): CallContext {
-    const _j = ({} as CallContext);
+    const _j = {} as CallContext;
     _o.set(_j, "atomic", _p?.atomic);
     return _j;
   },
   renameStmt(_p?: RenameStmt): RenameStmt {
-    const _j = ({} as RenameStmt);
+    const _j = {} as RenameStmt;
     _o.set(_j, "renameType", _p?.renameType);
     _o.set(_j, "relationType", _p?.relationType);
     _o.set(_j, "relation", _p?.relation);
@@ -1965,7 +1965,7 @@ export default {
     return _j;
   },
   alterObjectDependsStmt(_p?: AlterObjectDependsStmt): AlterObjectDependsStmt {
-    const _j = ({} as AlterObjectDependsStmt);
+    const _j = {} as AlterObjectDependsStmt;
     _o.set(_j, "objectType", _p?.objectType);
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "object", _p?.object);
@@ -1974,7 +1974,7 @@ export default {
     return _j;
   },
   alterObjectSchemaStmt(_p?: AlterObjectSchemaStmt): AlterObjectSchemaStmt {
-    const _j = ({} as AlterObjectSchemaStmt);
+    const _j = {} as AlterObjectSchemaStmt;
     _o.set(_j, "objectType", _p?.objectType);
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "object", _p?.object);
@@ -1983,7 +1983,7 @@ export default {
     return _j;
   },
   alterOwnerStmt(_p?: AlterOwnerStmt): AlterOwnerStmt {
-    const _j = ({} as AlterOwnerStmt);
+    const _j = {} as AlterOwnerStmt;
     _o.set(_j, "objectType", _p?.objectType);
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "object", _p?.object);
@@ -1991,19 +1991,19 @@ export default {
     return _j;
   },
   alterOperatorStmt(_p?: AlterOperatorStmt): AlterOperatorStmt {
-    const _j = ({} as AlterOperatorStmt);
+    const _j = {} as AlterOperatorStmt;
     _o.set(_j, "opername", _p?.opername);
     _o.set(_j, "options", _p?.options);
     return _j;
   },
   alterTypeStmt(_p?: AlterTypeStmt): AlterTypeStmt {
-    const _j = ({} as AlterTypeStmt);
+    const _j = {} as AlterTypeStmt;
     _o.set(_j, "typeName", _p?.typeName);
     _o.set(_j, "options", _p?.options);
     return _j;
   },
   ruleStmt(_p?: RuleStmt): RuleStmt {
-    const _j = ({} as RuleStmt);
+    const _j = {} as RuleStmt;
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "rulename", _p?.rulename);
     _o.set(_j, "whereClause", _p?.whereClause);
@@ -2014,23 +2014,23 @@ export default {
     return _j;
   },
   notifyStmt(_p?: NotifyStmt): NotifyStmt {
-    const _j = ({} as NotifyStmt);
+    const _j = {} as NotifyStmt;
     _o.set(_j, "conditionname", _p?.conditionname);
     _o.set(_j, "payload", _p?.payload);
     return _j;
   },
   listenStmt(_p?: ListenStmt): ListenStmt {
-    const _j = ({} as ListenStmt);
+    const _j = {} as ListenStmt;
     _o.set(_j, "conditionname", _p?.conditionname);
     return _j;
   },
   unlistenStmt(_p?: UnlistenStmt): UnlistenStmt {
-    const _j = ({} as UnlistenStmt);
+    const _j = {} as UnlistenStmt;
     _o.set(_j, "conditionname", _p?.conditionname);
     return _j;
   },
   transactionStmt(_p?: TransactionStmt): TransactionStmt {
-    const _j = ({} as TransactionStmt);
+    const _j = {} as TransactionStmt;
     _o.set(_j, "kind", _p?.kind);
     _o.set(_j, "options", _p?.options);
     _o.set(_j, "savepoint_name", _p?.savepoint_name);
@@ -2039,25 +2039,25 @@ export default {
     return _j;
   },
   compositeTypeStmt(_p?: CompositeTypeStmt): CompositeTypeStmt {
-    const _j = ({} as CompositeTypeStmt);
+    const _j = {} as CompositeTypeStmt;
     _o.set(_j, "typevar", _p?.typevar);
     _o.set(_j, "coldeflist", _p?.coldeflist);
     return _j;
   },
   createEnumStmt(_p?: CreateEnumStmt): CreateEnumStmt {
-    const _j = ({} as CreateEnumStmt);
+    const _j = {} as CreateEnumStmt;
     _o.set(_j, "typeName", _p?.typeName);
     _o.set(_j, "vals", _p?.vals);
     return _j;
   },
   createRangeStmt(_p?: CreateRangeStmt): CreateRangeStmt {
-    const _j = ({} as CreateRangeStmt);
+    const _j = {} as CreateRangeStmt;
     _o.set(_j, "typeName", _p?.typeName);
     _o.set(_j, "params", _p?.params);
     return _j;
   },
   alterEnumStmt(_p?: AlterEnumStmt): AlterEnumStmt {
-    const _j = ({} as AlterEnumStmt);
+    const _j = {} as AlterEnumStmt;
     _o.set(_j, "typeName", _p?.typeName);
     _o.set(_j, "oldVal", _p?.oldVal);
     _o.set(_j, "newVal", _p?.newVal);
@@ -2067,7 +2067,7 @@ export default {
     return _j;
   },
   viewStmt(_p?: ViewStmt): ViewStmt {
-    const _j = ({} as ViewStmt);
+    const _j = {} as ViewStmt;
     _o.set(_j, "view", _p?.view);
     _o.set(_j, "aliases", _p?.aliases);
     _o.set(_j, "query", _p?.query);
@@ -2077,74 +2077,74 @@ export default {
     return _j;
   },
   loadStmt(_p?: LoadStmt): LoadStmt {
-    const _j = ({} as LoadStmt);
+    const _j = {} as LoadStmt;
     _o.set(_j, "filename", _p?.filename);
     return _j;
   },
   createdbStmt(_p?: CreatedbStmt): CreatedbStmt {
-    const _j = ({} as CreatedbStmt);
+    const _j = {} as CreatedbStmt;
     _o.set(_j, "dbname", _p?.dbname);
     _o.set(_j, "options", _p?.options);
     return _j;
   },
   alterDatabaseStmt(_p?: AlterDatabaseStmt): AlterDatabaseStmt {
-    const _j = ({} as AlterDatabaseStmt);
+    const _j = {} as AlterDatabaseStmt;
     _o.set(_j, "dbname", _p?.dbname);
     _o.set(_j, "options", _p?.options);
     return _j;
   },
   alterDatabaseRefreshCollStmt(_p?: AlterDatabaseRefreshCollStmt): AlterDatabaseRefreshCollStmt {
-    const _j = ({} as AlterDatabaseRefreshCollStmt);
+    const _j = {} as AlterDatabaseRefreshCollStmt;
     _o.set(_j, "dbname", _p?.dbname);
     return _j;
   },
   alterDatabaseSetStmt(_p?: AlterDatabaseSetStmt): AlterDatabaseSetStmt {
-    const _j = ({} as AlterDatabaseSetStmt);
+    const _j = {} as AlterDatabaseSetStmt;
     _o.set(_j, "dbname", _p?.dbname);
     _o.set(_j, "setstmt", _p?.setstmt);
     return _j;
   },
   dropdbStmt(_p?: DropdbStmt): DropdbStmt {
-    const _j = ({} as DropdbStmt);
+    const _j = {} as DropdbStmt;
     _o.set(_j, "dbname", _p?.dbname);
     _o.set(_j, "missing_ok", _p?.missing_ok);
     _o.set(_j, "options", _p?.options);
     return _j;
   },
   alterSystemStmt(_p?: AlterSystemStmt): AlterSystemStmt {
-    const _j = ({} as AlterSystemStmt);
+    const _j = {} as AlterSystemStmt;
     _o.set(_j, "setstmt", _p?.setstmt);
     return _j;
   },
   clusterStmt(_p?: ClusterStmt): ClusterStmt {
-    const _j = ({} as ClusterStmt);
+    const _j = {} as ClusterStmt;
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "indexname", _p?.indexname);
     _o.set(_j, "params", _p?.params);
     return _j;
   },
   vacuumStmt(_p?: VacuumStmt): VacuumStmt {
-    const _j = ({} as VacuumStmt);
+    const _j = {} as VacuumStmt;
     _o.set(_j, "options", _p?.options);
     _o.set(_j, "rels", _p?.rels);
     _o.set(_j, "is_vacuumcmd", _p?.is_vacuumcmd);
     return _j;
   },
   vacuumRelation(_p?: VacuumRelation): VacuumRelation {
-    const _j = ({} as VacuumRelation);
+    const _j = {} as VacuumRelation;
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "oid", _p?.oid);
     _o.set(_j, "va_cols", _p?.va_cols);
     return _j;
   },
   explainStmt(_p?: ExplainStmt): ExplainStmt {
-    const _j = ({} as ExplainStmt);
+    const _j = {} as ExplainStmt;
     _o.set(_j, "query", _p?.query);
     _o.set(_j, "options", _p?.options);
     return _j;
   },
   createTableAsStmt(_p?: CreateTableAsStmt): CreateTableAsStmt {
-    const _j = ({} as CreateTableAsStmt);
+    const _j = {} as CreateTableAsStmt;
     _o.set(_j, "query", _p?.query);
     _o.set(_j, "into", _p?.into);
     _o.set(_j, "objtype", _p?.objtype);
@@ -2153,36 +2153,36 @@ export default {
     return _j;
   },
   refreshMatViewStmt(_p?: RefreshMatViewStmt): RefreshMatViewStmt {
-    const _j = ({} as RefreshMatViewStmt);
+    const _j = {} as RefreshMatViewStmt;
     _o.set(_j, "concurrent", _p?.concurrent);
     _o.set(_j, "skipData", _p?.skipData);
     _o.set(_j, "relation", _p?.relation);
     return _j;
   },
   checkPointStmt(_p?: CheckPointStmt): CheckPointStmt {
-    const _j = ({} as CheckPointStmt);
+    const _j = {} as CheckPointStmt;
     return _j;
   },
   discardStmt(_p?: DiscardStmt): DiscardStmt {
-    const _j = ({} as DiscardStmt);
+    const _j = {} as DiscardStmt;
     _o.set(_j, "target", _p?.target);
     return _j;
   },
   lockStmt(_p?: LockStmt): LockStmt {
-    const _j = ({} as LockStmt);
+    const _j = {} as LockStmt;
     _o.set(_j, "relations", _p?.relations);
     _o.set(_j, "mode", _p?.mode);
     _o.set(_j, "nowait", _p?.nowait);
     return _j;
   },
   constraintsSetStmt(_p?: ConstraintsSetStmt): ConstraintsSetStmt {
-    const _j = ({} as ConstraintsSetStmt);
+    const _j = {} as ConstraintsSetStmt;
     _o.set(_j, "constraints", _p?.constraints);
     _o.set(_j, "deferred", _p?.deferred);
     return _j;
   },
   reindexStmt(_p?: ReindexStmt): ReindexStmt {
-    const _j = ({} as ReindexStmt);
+    const _j = {} as ReindexStmt;
     _o.set(_j, "kind", _p?.kind);
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "name", _p?.name);
@@ -2190,7 +2190,7 @@ export default {
     return _j;
   },
   createConversionStmt(_p?: CreateConversionStmt): CreateConversionStmt {
-    const _j = ({} as CreateConversionStmt);
+    const _j = {} as CreateConversionStmt;
     _o.set(_j, "conversion_name", _p?.conversion_name);
     _o.set(_j, "for_encoding_name", _p?.for_encoding_name);
     _o.set(_j, "to_encoding_name", _p?.to_encoding_name);
@@ -2199,7 +2199,7 @@ export default {
     return _j;
   },
   createCastStmt(_p?: CreateCastStmt): CreateCastStmt {
-    const _j = ({} as CreateCastStmt);
+    const _j = {} as CreateCastStmt;
     _o.set(_j, "sourcetype", _p?.sourcetype);
     _o.set(_j, "targettype", _p?.targettype);
     _o.set(_j, "func", _p?.func);
@@ -2208,7 +2208,7 @@ export default {
     return _j;
   },
   createTransformStmt(_p?: CreateTransformStmt): CreateTransformStmt {
-    const _j = ({} as CreateTransformStmt);
+    const _j = {} as CreateTransformStmt;
     _o.set(_j, "replace", _p?.replace);
     _o.set(_j, "type_name", _p?.type_name);
     _o.set(_j, "lang", _p?.lang);
@@ -2217,43 +2217,43 @@ export default {
     return _j;
   },
   prepareStmt(_p?: PrepareStmt): PrepareStmt {
-    const _j = ({} as PrepareStmt);
+    const _j = {} as PrepareStmt;
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "argtypes", _p?.argtypes);
     _o.set(_j, "query", _p?.query);
     return _j;
   },
   executeStmt(_p?: ExecuteStmt): ExecuteStmt {
-    const _j = ({} as ExecuteStmt);
+    const _j = {} as ExecuteStmt;
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "params", _p?.params);
     return _j;
   },
   deallocateStmt(_p?: DeallocateStmt): DeallocateStmt {
-    const _j = ({} as DeallocateStmt);
+    const _j = {} as DeallocateStmt;
     _o.set(_j, "name", _p?.name);
     return _j;
   },
   dropOwnedStmt(_p?: DropOwnedStmt): DropOwnedStmt {
-    const _j = ({} as DropOwnedStmt);
+    const _j = {} as DropOwnedStmt;
     _o.set(_j, "roles", _p?.roles);
     _o.set(_j, "behavior", _p?.behavior);
     return _j;
   },
   reassignOwnedStmt(_p?: ReassignOwnedStmt): ReassignOwnedStmt {
-    const _j = ({} as ReassignOwnedStmt);
+    const _j = {} as ReassignOwnedStmt;
     _o.set(_j, "roles", _p?.roles);
     _o.set(_j, "newrole", _p?.newrole);
     return _j;
   },
   altertsDictionaryStmt(_p?: AlterTSDictionaryStmt): AlterTSDictionaryStmt {
-    const _j = ({} as AlterTSDictionaryStmt);
+    const _j = {} as AlterTSDictionaryStmt;
     _o.set(_j, "dictname", _p?.dictname);
     _o.set(_j, "options", _p?.options);
     return _j;
   },
   altertsConfigurationStmt(_p?: AlterTSConfigurationStmt): AlterTSConfigurationStmt {
-    const _j = ({} as AlterTSConfigurationStmt);
+    const _j = {} as AlterTSConfigurationStmt;
     _o.set(_j, "kind", _p?.kind);
     _o.set(_j, "cfgname", _p?.cfgname);
     _o.set(_j, "tokentype", _p?.tokentype);
@@ -2264,14 +2264,14 @@ export default {
     return _j;
   },
   publicationTable(_p?: PublicationTable): PublicationTable {
-    const _j = ({} as PublicationTable);
+    const _j = {} as PublicationTable;
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "whereClause", _p?.whereClause);
     _o.set(_j, "columns", _p?.columns);
     return _j;
   },
   publicationObjSpec(_p?: PublicationObjSpec): PublicationObjSpec {
-    const _j = ({} as PublicationObjSpec);
+    const _j = {} as PublicationObjSpec;
     _o.set(_j, "pubobjtype", _p?.pubobjtype);
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "pubtable", _p?.pubtable);
@@ -2279,7 +2279,7 @@ export default {
     return _j;
   },
   createPublicationStmt(_p?: CreatePublicationStmt): CreatePublicationStmt {
-    const _j = ({} as CreatePublicationStmt);
+    const _j = {} as CreatePublicationStmt;
     _o.set(_j, "pubname", _p?.pubname);
     _o.set(_j, "options", _p?.options);
     _o.set(_j, "pubobjects", _p?.pubobjects);
@@ -2287,7 +2287,7 @@ export default {
     return _j;
   },
   alterPublicationStmt(_p?: AlterPublicationStmt): AlterPublicationStmt {
-    const _j = ({} as AlterPublicationStmt);
+    const _j = {} as AlterPublicationStmt;
     _o.set(_j, "pubname", _p?.pubname);
     _o.set(_j, "options", _p?.options);
     _o.set(_j, "pubobjects", _p?.pubobjects);
@@ -2296,7 +2296,7 @@ export default {
     return _j;
   },
   createSubscriptionStmt(_p?: CreateSubscriptionStmt): CreateSubscriptionStmt {
-    const _j = ({} as CreateSubscriptionStmt);
+    const _j = {} as CreateSubscriptionStmt;
     _o.set(_j, "subname", _p?.subname);
     _o.set(_j, "conninfo", _p?.conninfo);
     _o.set(_j, "publication", _p?.publication);
@@ -2304,7 +2304,7 @@ export default {
     return _j;
   },
   alterSubscriptionStmt(_p?: AlterSubscriptionStmt): AlterSubscriptionStmt {
-    const _j = ({} as AlterSubscriptionStmt);
+    const _j = {} as AlterSubscriptionStmt;
     _o.set(_j, "kind", _p?.kind);
     _o.set(_j, "subname", _p?.subname);
     _o.set(_j, "conninfo", _p?.conninfo);
@@ -2313,14 +2313,14 @@ export default {
     return _j;
   },
   dropSubscriptionStmt(_p?: DropSubscriptionStmt): DropSubscriptionStmt {
-    const _j = ({} as DropSubscriptionStmt);
+    const _j = {} as DropSubscriptionStmt;
     _o.set(_j, "subname", _p?.subname);
     _o.set(_j, "missing_ok", _p?.missing_ok);
     _o.set(_j, "behavior", _p?.behavior);
     return _j;
   },
   scanToken(_p?: ScanToken): ScanToken {
-    const _j = ({} as ScanToken);
+    const _j = {} as ScanToken;
     _o.set(_j, "start", _p?.start);
     _o.set(_j, "end", _p?.end);
     _o.set(_j, "token", _p?.token);

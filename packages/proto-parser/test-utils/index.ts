@@ -28,7 +28,7 @@ export const expectAstsCodeToEqual = (testAst: any, expectAst: any) => {
     expect(expectCode).toEqual(testCode);
 }
 
-export const readFilesFromDir = (outDir) => 
+export const readFilesFromDir = (outDir: string) => 
     glob(outDir + '**/*').map(file => ({ file: basename(file), code: readFileSync(file, 'utf-8') }));
    
 export const FIXTURES_DIR = resolve(join(__dirname, '../../../__fixtures__/'));

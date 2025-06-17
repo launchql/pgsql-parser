@@ -35,13 +35,13 @@ const dependenciesResolve = (types: Type[], enums: Enum[], symbolName: string, r
 }
 
 export const getDependencies = (name: string, types: Type[], enums: Enum[]) => {
-    const resolved = [];
-    const unresolved = [];
+    const resolved: string[] = [];
+    const unresolved: string[] = [];
     dependenciesResolve(types, enums, name, resolved, unresolved);
     return resolved;
 }
 
-const dependentsResolve = (types, enums, symbolName, resolved, unresolved) => {
+const dependentsResolve = (types: Type[], enums: Enum[], symbolName: string, resolved: string[], unresolved: string[]) => {
     if (symbolName === NODE_TYPE) return;
 
     unresolved.push(symbolName);
@@ -78,9 +78,9 @@ const dependentsResolve = (types, enums, symbolName, resolved, unresolved) => {
     }
 };
 
-export const getDependents = (symbolName, types, enums) => {
-    const resolved = [];
-    const unresolved = [];
+export const getDependents = (symbolName: string, types: Type[], enums: Enum[]) => {
+    const resolved: string[] = [];
+    const unresolved: string[] = [];
     dependentsResolve(types, enums, symbolName, resolved, unresolved);
     return resolved.filter(name => name !== symbolName); // Exclude the symbol itself from its dependents
 };

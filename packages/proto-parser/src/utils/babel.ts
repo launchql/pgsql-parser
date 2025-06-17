@@ -3,6 +3,7 @@ import * as t from '@babel/types';
 
 export const convertAstToCode = (body: any[]) => {
   const ast = t.file(t.program(body));
+  // @ts-ignore
   const { code } = generate(ast);
   return code;
 };

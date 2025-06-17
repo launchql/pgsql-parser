@@ -173,25 +173,28 @@ export const convertTypeToWrappedTsInterface = (
   isWrappedTypeFn: (typeName: string) => boolean
 ) => {
   const typeName = type.name;
-  if (isWrappedTypeFn(typeName)) return convertTypeToTsInterface(type, options);
+  // if (!isWrappedTypeFn(typeName)) return convertTypeToTsInterface(type, options);
+  return convertTypeToTsInterface(type, options);
 
-  const properties = extractTypeFieldsAsTsProperties(type, options);
+  // TODO bring this back to life...
 
-  const nestedInterfaceBody = t.tsInterfaceBody([
-    t.tsPropertySignature(
-      t.identifier(typeName),
-      t.tsTypeAnnotation(t.tsTypeLiteral(properties))
-    )
-  ]);
+  // const properties = extractTypeFieldsAsTsProperties(type, options);
 
-  const interfaceDecl = t.tsInterfaceDeclaration(
-    t.identifier(typeName),
-    null,
-    [],
-    nestedInterfaceBody
-  );
+  // const nestedInterfaceBody = t.tsInterfaceBody([
+  //   t.tsPropertySignature(
+  //     t.identifier(typeName),
+  //     t.tsTypeAnnotation(t.tsTypeLiteral(properties))
+  //   )
+  // ]);
 
-  return t.exportNamedDeclaration(interfaceDecl, []);
+  // const interfaceDecl = t.tsInterfaceDeclaration(
+  //   t.identifier(typeName),
+  //   null,
+  //   [],
+  //   nestedInterfaceBody
+  // );
+
+  // return t.exportNamedDeclaration(interfaceDecl, []);
 };
 
 export const generateTypeImportSpecifiers = (types: Type[], options: PgProtoParserOptions) => {

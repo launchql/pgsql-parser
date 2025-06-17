@@ -5,11 +5,10 @@
 </p>
 
 <p align="center" width="100%">
-  <a href="https://github.com/launchql/pg-proto-parser/actions/workflows/run-tests.yaml">
-    <img height="20" src="https://github.com/launchql/pg-proto-parser/actions/workflows/run-tests.yaml/badge.svg" />
+  <a href="https://github.com/launchql/pgsql-parser/actions/workflows/run-tests.yaml">
+    <img height="20" src="https://github.com/launchql/pgsql-parser/actions/workflows/run-tests.yaml/badge.svg" />
   </a>
-   <a href="https://github.com/launchql/pg-proto-parser/blob/main/LICENSE-MIT"><img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
-   <a href="https://github.com/launchql/pg-proto-parser/blob/main/LICENSE-Apache"><img height="20" src="https://img.shields.io/badge/license-Apache-blue.svg"></a>
+   <a href="https://github.com/launchql/pgsql-parser/blob/main/LICENSE"><img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
 </p>
 
 `@launchql/proto-cli` is a command-line interface to facilitate the parsing of [pganalyze/libpg_query](https://github.com/pganalyze/libpg_query) PostgreSQL query protobufs into structured TypeScript definitions and utilities. Designed to work with [launchql/pgsql-parser](https://github.com/launchql/pgsql-parser) for maintainable upgrades.

@@ -5,11 +5,10 @@
 </p>
 
 <p align="center" width="100%">
-  <a href="https://github.com/launchql/pg-proto-parser/actions/workflows/run-tests.yaml">
-    <img height="20" src="https://github.com/launchql/pg-proto-parser/actions/workflows/run-tests.yaml/badge.svg" />
+  <a href="https://github.com/launchql/pgsql-parser/actions/workflows/run-tests.yaml">
+    <img height="20" src="https://github.com/launchql/pgsql-parser/actions/workflows/run-tests.yaml/badge.svg" />
   </a>
-   <a href="https://github.com/launchql/pg-proto-parser/blob/main/LICENSE-MIT"><img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
-   <a href="https://github.com/launchql/pg-proto-parser/blob/main/LICENSE-Apache"><img height="20" src="https://img.shields.io/badge/license-Apache-blue.svg"></a>
+   <a href="https://github.com/launchql/pgsql-parser/blob/main/LICENSE"><img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
 </p>
 
 
@@ -38,12 +37,12 @@ await parser.write();
 
 `pg-proto-parser` will generate the following files in the specified `outDir`:
 
-- [`types.ts`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/types/optionalFields/types.ts): TypeScript file containing interfaces for protobuf messages.
-- [`enums.ts`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/enums/pure/removeUndef/enums.ts): TypeScript file containing enums for protobuf messages.
-- [`asts.ts`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/utils/astHelpers/inlineNestedObj/asts.ts): TypeScript file containing helpers to create PostgreSQL ASTs.
-- [`utils.ts`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/utils/astHelpers/inlineNestedObj/utils.ts): TypeScript file containing utility functions for enums.
-- [`enums2int.json`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/enums/json/enabled/enums2int.json): JSON mapping of enum names to integer values.
-- [`enums2str.json`](https://raw.githubusercontent.com/launchql/pg-proto-parser/main/__fixtures__/output/enums/json/enabled/enums2str.json): JSON mapping of integer values to enum names.
+- [`types.ts`](https://raw.githubusercontent.com/launchql/pgsql-parser/main/__fixtures__/output/types/optionalFields/types.ts): TypeScript file containing interfaces for protobuf messages.
+- [`enums.ts`](https://raw.githubusercontent.com/launchql/pgsql-parser/main/__fixtures__/output/enums/pure/removeUndef/enums.ts): TypeScript file containing enums for protobuf messages.
+- [`asts.ts`](https://raw.githubusercontent.com/launchql/pgsql-parser/main/__fixtures__/output/utils/astHelpers/inlineNestedObj/asts.ts): TypeScript file containing helpers to create PostgreSQL ASTs.
+- [`utils.ts`](https://raw.githubusercontent.com/launchql/pgsql-parser/main/__fixtures__/output/utils/astHelpers/inlineNestedObj/utils.ts): TypeScript file containing utility functions for enums.
+- [`enums2int.json`](https://raw.githubusercontent.com/launchql/pgsql-parser/main/__fixtures__/output/enums/json/enabled/enums2int.json): JSON mapping of enum names to integer values.
+- [`enums2str.json`](https://raw.githubusercontent.com/launchql/pgsql-parser/main/__fixtures__/output/enums/json/enabled/enums2str.json): JSON mapping of integer values to enum names.
 
 ## Configuration
 

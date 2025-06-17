@@ -4,7 +4,7 @@ import { PgProtoParserOptions } from '../options';
 import { writeFileSync } from 'fs';
 import { extname, basename } from 'path';
 
-export const getUndefinedKey = (enumName) => {
+export const getUndefinedKey = (enumName: string) => {
   // Split the name into parts where a lowercase letter is followed by an uppercase letter
   const parts = enumName.split(/(?<=[a-z])(?=[A-Z])/);
 
@@ -21,13 +21,13 @@ export const getUndefinedKey = (enumName) => {
   return `${upperSnakeCase}_UNDEFINED`;
 }
 
-export const toSpecialCamelCase = (s) => {
+export const toSpecialCamelCase = (s: string) => {
   return s
       .replace(/_+/g, '') // Remove all underscores
-      .replace(/([A-Z]+)([A-Z][a-z]|$)/g, (match, p1, p2) => 
+      .replace(/([A-Z]+)([A-Z][a-z]|$)/g, (match: string, p1: string, p2: string) => 
           p1.toLowerCase() + p2 // Lowercase all but the last letter of consecutive caps
       )
-      .replace(/^./, match => match.toLowerCase()); // Ensure the first character is lowercase
+      .replace(/^./, (match: string) => match.toLowerCase()); // Ensure the first character is lowercase
 }
 
 export const hasUndefinedInitialValue = (enumData: Enum) => {
@@ -66,7 +66,7 @@ export const writeFileToDisk = (path: string, contents: string, options: PgProto
   writeFileSync(path, c);
 }
 
-export const stripExtension = (filename) => {
+export const stripExtension = (filename: string) => {
   const extension = extname(filename);
   return basename(filename, extension);
 }

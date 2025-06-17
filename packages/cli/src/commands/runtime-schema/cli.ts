@@ -20,7 +20,7 @@ export const help = (): void => {
   `);
 }
 
-export default async (argv) => {
+export default async (argv: any) => {
 
   if (argv.help || argv.h) {
     help();

@@ -14,7 +14,7 @@ import * as t from '@babel/types';
 
 export function generateTsAstCodeFromPgAst(ast: any): any {
     function createAstNode(functionName: string, properties: any) {
-      const args = properties.map(([propKey, propValue]) => {
+      const args = properties.map(([propKey, propValue]: [string, any]) => {
         return t.objectProperty(t.identifier(propKey), getValueNode(propValue));
       });
       return t.callExpression(
@@ -23,7 +23,7 @@ export function generateTsAstCodeFromPgAst(ast: any): any {
       );
     }
   
-    function getValueNode(value: any) {
+    function getValueNode(value: any): t.Expression {
       if (typeof value === 'object') {
         return value === null ? t.nullLiteral() : traverse(value);
       }
@@ -39,7 +39,7 @@ export function generateTsAstCodeFromPgAst(ast: any): any {
       }
     }
   
-    function traverse(node: any) {
+    function traverse(node: any): t.Expression {
       if (Array.isArray(node)) {
         return t.arrayExpression(node.map(traverse));
       } else if (node && typeof node === 'object') {
