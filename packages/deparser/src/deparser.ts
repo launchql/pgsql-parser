@@ -907,7 +907,25 @@ export class Deparser implements DeparserVisitor {
     }
 
     const mods = ListUtils.unwrapList(typmods);
-    return mods.map(mod => {
+    const filteredMods = mods.filter(mod => {
+      if (mod && typeof mod === 'object') {
+        const aConst = (mod as any).A_Const;
+        if (aConst && aConst.ival) {
+          // Handle both direct number and nested object structures
+          const ivalValue = typeof aConst.ival === 'object' ? aConst.ival.ival : aConst.ival;
+          if (ivalValue === 32767) {
+            return false;
+          }
+        }
+      }
+      return true;
+    });
+    
+    if (filteredMods.length === 0) {
+      return null;
+    }
+    
+    return filteredMods.map(mod => {
       return this.deparse(mod, context);
     }).join(', ');
   }
