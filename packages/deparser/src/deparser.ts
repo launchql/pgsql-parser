@@ -451,13 +451,24 @@ export class Deparser implements DeparserVisitor {
 
     output.push('DELETE');
     output.push('FROM');
+    
+    if (!node.relation) {
+      throw new Error('DeleteStmt requires a relation');
+    }
     output.push(this.RangeVar(node.relation, context));
 
     if (node.usingClause) {
       output.push('USING');
       const usingList = ListUtils.unwrapList(node.usingClause);
-      const usingItems = usingList.map(item => this.visit(item, context));
-      output.push(usingItems.join(', '));
+      const usingItems = usingList.map(item => {
+        if (!item) {
+          throw new Error('DeleteStmt usingClause contains null item');
+        }
+        return this.visit(item, context);
+      }).filter(item => item && item.trim());
+      if (usingItems.length > 0) {
+        output.push(usingItems.join(', '));
+      }
     }
 
     if (node.whereClause) {
