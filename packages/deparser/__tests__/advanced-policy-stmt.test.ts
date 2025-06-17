@@ -22,11 +22,9 @@ describe('Advanced Policy Statement Deparsers', () => {
           cmd_name: 'SELECT',
           roles: [
             {
-              RoleSpec: {
-                roletype: "ROLESPEC_CSTRING" as RoleSpecType,
-                rolename: 'app_user',
-                location: -1
-              }
+              roletype: "ROLESPEC_CSTRING" as RoleSpecType,
+              rolename: 'app_user',
+              location: -1
             }
           ],
           qual: {
@@ -79,11 +77,9 @@ describe('Advanced Policy Statement Deparsers', () => {
           cmd_name: 'INSERT',
           roles: [
             {
-              RoleSpec: {
-                roletype: "ROLESPEC_CSTRING" as RoleSpecType,
-                rolename: 'editor',
-                location: -1
-              }
+              roletype: "ROLESPEC_CSTRING" as RoleSpecType,
+              rolename: 'editor',
+              location: -1
             }
           ],
           qual: null as any,

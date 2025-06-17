@@ -40,11 +40,9 @@ describe('Schema Statement Deparsers', () => {
         CreateSchemaStmt: {
           schemaname: 'test_schema',
           authrole: {
-            RoleSpec: {
-              rolename: 'test_user',
-              roletype: "ROLESPEC_CSTRING" as RoleSpecType,
-              location: -1
-            }
+            rolename: 'test_user',
+            roletype: "ROLESPEC_CSTRING" as RoleSpecType,
+            location: -1
           },
           schemaElts: [] as any[],
           if_not_exists: false,
@@ -60,11 +58,9 @@ describe('Schema Statement Deparsers', () => {
         CreateSchemaStmt: {
           schemaname: undefined as string | undefined,
           authrole: {
-            RoleSpec: {
-              rolename: 'test_user',
-              roletype: "ROLESPEC_CSTRING" as RoleSpecType,
-              location: -1
-            }
+            rolename: 'test_user',
+            roletype: "ROLESPEC_CSTRING" as RoleSpecType,
+            location: -1
           },
           schemaElts: [] as any[],
           if_not_exists: false,

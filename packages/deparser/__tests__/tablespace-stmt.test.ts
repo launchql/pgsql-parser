@@ -25,11 +25,9 @@ describe('Tablespace Statement Deparsers', () => {
         CreateTableSpaceStmt: {
           tablespacename: 'user_tablespace',
           owner: {
-            RoleSpec: {
-              rolename: 'postgres',
-              roletype: "ROLESPEC_CSTRING" as RoleSpecType,
-              location: -1
-            }
+            rolename: 'postgres',
+            roletype: "ROLESPEC_CSTRING" as RoleSpecType,
+            location: -1
           },
           location: '/var/lib/postgresql/tablespaces/user_tablespace',
           options: [] as any[]

@@ -27,11 +27,9 @@ describe('Security Statement Deparsers', () => {
           ],
           grantees: [
             {
-              RoleSpec: {
-                roletype: 'ROLESPEC_CSTRING',
-                rolename: 'app_user',
-                location: -1
-              }
+              roletype: 'ROLESPEC_CSTRING',
+              rolename: 'app_user',
+              location: -1
             }
           ],
           grant_option: false,
@@ -65,11 +63,9 @@ describe('Security Statement Deparsers', () => {
           ],
           grantees: [
             {
-              RoleSpec: {
-                roletype: 'ROLESPEC_CSTRING',
-                rolename: 'read_user',
-                location: -1
-              }
+              roletype: 'ROLESPEC_CSTRING',
+              rolename: 'read_user',
+              location: -1
             }
           ],
           grant_option: true,
@@ -102,11 +98,9 @@ describe('Security Statement Deparsers', () => {
           ],
           grantees: [
             {
-              RoleSpec: {
-                roletype: 'ROLESPEC_CSTRING',
-                rolename: 'temp_user',
-                location: -1
-              }
+              roletype: 'ROLESPEC_CSTRING',
+              rolename: 'temp_user',
+              location: -1
             }
           ],
           grant_option: false,
@@ -130,11 +124,9 @@ describe('Security Statement Deparsers', () => {
           ],
           grantees: [
             {
-              RoleSpec: {
-                roletype: 'ROLESPEC_CSTRING',
-                rolename: 'readonly_user',
-                location: -1
-              }
+              roletype: 'ROLESPEC_CSTRING',
+              rolename: 'readonly_user',
+              location: -1
             }
           ],
           grant_option: false,
@@ -153,20 +145,16 @@ describe('Security Statement Deparsers', () => {
           is_grant: true,
           granted_roles: [
             {
-              RoleSpec: {
-                roletype: 'ROLESPEC_CSTRING',
-                rolename: 'admin_role',
-                location: -1
-              }
+              roletype: 'ROLESPEC_CSTRING',
+              rolename: 'admin_role',
+              location: -1
             }
           ],
           grantee_roles: [
             {
-              RoleSpec: {
-                roletype: 'ROLESPEC_CSTRING',
-                rolename: 'user1',
-                location: -1
-              }
+              roletype: 'ROLESPEC_CSTRING',
+              rolename: 'user1',
+              location: -1
             }
           ],
           opt: [] as any[],
@@ -184,20 +172,16 @@ describe('Security Statement Deparsers', () => {
           is_grant: true,
           granted_roles: [
             {
-              RoleSpec: {
-                roletype: 'ROLESPEC_CSTRING',
-                rolename: 'manager_role',
-                location: -1
-              }
+              roletype: 'ROLESPEC_CSTRING',
+              rolename: 'manager_role',
+              location: -1
             }
           ],
           grantee_roles: [
             {
-              RoleSpec: {
-                roletype: 'ROLESPEC_CSTRING',
-                rolename: 'supervisor',
-                location: -1
-              }
+              roletype: 'ROLESPEC_CSTRING',
+              rolename: 'supervisor',
+              location: -1
             }
           ],
           opt: [{ String: { sval: 'admin' } }],
@@ -215,20 +199,16 @@ describe('Security Statement Deparsers', () => {
           is_grant: false,
           granted_roles: [
             {
-              RoleSpec: {
-                roletype: 'ROLESPEC_CSTRING',
-                rolename: 'temp_role',
-                location: -1
-              }
+              roletype: 'ROLESPEC_CSTRING',
+              rolename: 'temp_role',
+              location: -1
             }
           ],
           grantee_roles: [
             {
-              RoleSpec: {
-                roletype: 'ROLESPEC_CSTRING',
-                rolename: 'former_employee',
-                location: -1
-              }
+              roletype: 'ROLESPEC_CSTRING',
+              rolename: 'former_employee',
+              location: -1
             }
           ],
           opt: [] as any[],
@@ -246,20 +226,16 @@ describe('Security Statement Deparsers', () => {
           is_grant: false,
           granted_roles: [
             {
-              RoleSpec: {
-                roletype: 'ROLESPEC_CSTRING',
-                rolename: 'admin_role',
-                location: -1
-              }
+              roletype: 'ROLESPEC_CSTRING',
+              rolename: 'admin_role',
+              location: -1
             }
           ],
           grantee_roles: [
             {
-              RoleSpec: {
-                roletype: 'ROLESPEC_CSTRING',
-                rolename: 'demoted_user',
-                location: -1
-              }
+              roletype: 'ROLESPEC_CSTRING',
+              rolename: 'demoted_user',
+              location: -1
             }
           ],
           opt: [{ String: { sval: 'admin' } }],
@@ -340,11 +316,9 @@ describe('Security Statement Deparsers', () => {
         SecLabelStmt: {
           objtype: "OBJECT_ROLE",
           object: {
-            RoleSpec: {
-              roletype: 'ROLESPEC_CSTRING',
-              rolename: 'test_user',
-              location: -1
-            }
+            roletype: 'ROLESPEC_CSTRING',
+            rolename: 'test_user',
+            location: -1
           },
           provider: undefined,
           label: 'trusted'
