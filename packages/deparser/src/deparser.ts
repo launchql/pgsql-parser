@@ -5075,9 +5075,20 @@ export class Deparser implements DeparserVisitor {
     if (node.options && node.options.length > 0) {
       const seqContext = { ...context, parentNodeType: 'CreateSeqStmt' };
       const optionStrs = ListUtils.unwrapList(node.options)
-        .map(option => this.visit(option, seqContext))
+        .filter(option => option != null && this.getNodeType(option) !== 'undefined')
+        .map(option => {
+          try {
+            return this.visit(option, seqContext);
+          } catch (error) {
+            console.warn(`Error processing option in CreateSeqStmt: ${error instanceof Error ? error.message : String(error)}`);
+            return '';
+          }
+        })
+        .filter(str => str !== '')
         .join(' ');
-      output.push(optionStrs);
+      if (optionStrs) {
+        output.push(optionStrs);
+      }
     }
     
     return output.join(' ');
