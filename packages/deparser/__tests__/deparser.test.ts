@@ -1,5 +1,5 @@
 import { Deparser } from '../src/deparser';
-import { A_Expr_Kind } from '@pgsql/types';
+import { A_Expr_Kind, LimitOption, SetOperation, CoercionForm } from '@pgsql/types';
 
 describe('Deparser', () => {
   describe('basic SQL statements', () => {
@@ -23,8 +23,8 @@ describe('Deparser', () => {
                   }
                 }
               ],
-              limitOption: "LIMIT_OPTION_DEFAULT",
-              op: "SETOP_NONE"
+              limitOption: "LIMIT_OPTION_DEFAULT" as LimitOption,
+              op: "SETOP_NONE" as SetOperation
             }
           },
           stmt_location: 0
@@ -59,10 +59,12 @@ describe('Deparser', () => {
               ],
               fromClause: [
                 {
-                  relname: "users",
-                  inh: true,
-                  relpersistence: "p",
-                  location: 14
+                  RangeVar: {
+                    relname: "users",
+                    inh: true,
+                    relpersistence: "p",
+                    location: 14
+                  }
                 }
               ],
               whereClause: {
@@ -98,8 +100,8 @@ describe('Deparser', () => {
                   location: 31
                 }
               },
-              limitOption: "LIMIT_OPTION_DEFAULT",
-              op: "SETOP_NONE"
+              limitOption: "LIMIT_OPTION_DEFAULT" as LimitOption,
+              op: "SETOP_NONE" as SetOperation
             }
           },
           stmt_location: 0
@@ -118,7 +120,10 @@ describe('Deparser', () => {
           stmt: {
             InsertStmt: {
               relation: {
-                relname: 'items'
+                relname: 'items',
+                inh: true,
+                relpersistence: 'p',
+                location: -1
               },
               cols: [
                 {
@@ -137,24 +142,28 @@ describe('Deparser', () => {
               selectStmt: {
                 SelectStmt: {
                   valuesLists: [
-                    [
-                      {
-                        A_Const: {
-                          ival: {
-                            ival: 1
+                    {
+                      List: {
+                        items: [
+                          {
+                            A_Const: {
+                              ival: {
+                                ival: 1
+                              },
+                              location: 35
+                            }
                           },
-                          location: 35
-                        }
-                      },
-                      {
-                        A_Const: {
-                          sval: {
-                            sval: 'thing'
-                          },
-                          location: 38
-                        }
+                          {
+                            A_Const: {
+                              sval: {
+                                sval: 'thing'
+                              },
+                              location: 38
+                            }
+                          }
+                        ]
                       }
-                    ]
+                    }
                   ]
                 }
               }
@@ -174,7 +183,10 @@ describe('Deparser', () => {
           stmt: {
             UpdateStmt: {
               relation: {
-                relname: 'orders'
+                relname: 'orders',
+                inh: true,
+                relpersistence: 'p',
+                location: -1
               },
               targetList: [
                 {
@@ -240,7 +252,10 @@ describe('Deparser', () => {
           stmt: {
             DeleteStmt: {
               relation: {
-                relname: 'sessions'
+                relname: 'sessions',
+                inh: true,
+                relpersistence: 'p',
+                location: -1
               },
               whereClause: {
                 A_Expr: {
@@ -312,7 +327,9 @@ describe('Deparser', () => {
               ],
               fromClause: [
                 {
-                  relname: 'books'
+                  RangeVar: {
+                    relname: 'books'
+                  }
                 }
               ]
             }

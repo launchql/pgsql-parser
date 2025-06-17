@@ -1,6 +1,6 @@
 import { Deparser } from '../src/deparser';
 import { DeparserContext } from '../src/visitors/base';
-import { ObjectType, RoleSpecType, DropBehavior, CoercionForm } from '@pgsql/types';
+import { ObjectType, RoleSpecType, DropBehavior, CoercionForm, GrantTargetType } from '@pgsql/types';
 
 describe('Security Statement Deparsers', () => {
   const deparser = new Deparser([]);
@@ -11,23 +11,27 @@ describe('Security Statement Deparsers', () => {
       const ast = {
         GrantStmt: {
           is_grant: true,
-          targtype: 'ACL_TARGET_OBJECT',
+          targtype: 'ACL_TARGET_OBJECT' as GrantTargetType,
           privileges: [] as any[],
           objects: [
             {
-              schemaname: undefined as string | undefined,
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
+              RangeVar: {
+                schemaname: undefined as any,
+                relname: 'users',
+                inh: true,
+                relpersistence: 'p',
+                alias: null as any,
+                location: -1
+              }
             }
           ],
           grantees: [
             {
-              roletype: 'ROLESPEC_CSTRING',
-              rolename: 'app_user',
-              location: -1
+              RoleSpec: {
+                roletype: 'ROLESPEC_CSTRING' as RoleSpecType,
+                rolename: 'app_user',
+                location: -1
+              }
             }
           ],
           grant_option: false,
@@ -42,26 +46,30 @@ describe('Security Statement Deparsers', () => {
       const ast = {
         GrantStmt: {
           is_grant: true,
-          targtype: 'ACL_TARGET_OBJECT',
+          targtype: 'ACL_TARGET_OBJECT' as GrantTargetType,
           privileges: [
             { String: { sval: 'SELECT' } },
             { String: { sval: 'INSERT' } }
           ],
           objects: [
             {
-              schemaname: 'public',
-              relname: 'orders',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
+              RangeVar: {
+                schemaname: 'public',
+                relname: 'orders',
+                inh: true,
+                relpersistence: 'p',
+                alias: null as any,
+                location: -1
+              }
             }
           ],
           grantees: [
             {
-              roletype: 'ROLESPEC_CSTRING',
-              rolename: 'read_user',
-              location: -1
+              RoleSpec: {
+                roletype: 'ROLESPEC_CSTRING' as RoleSpecType,
+                rolename: 'read_user',
+                location: -1
+              }
             }
           ],
           grant_option: true,
@@ -76,25 +84,29 @@ describe('Security Statement Deparsers', () => {
       const ast = {
         GrantStmt: {
           is_grant: false,
-          targtype: 'ACL_TARGET_OBJECT',
+          targtype: 'ACL_TARGET_OBJECT' as GrantTargetType,
           privileges: [
             { String: { sval: 'DELETE' } }
           ],
           objects: [
             {
-              schemaname: undefined as string | undefined,
-              relname: 'sensitive_data',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
+              RangeVar: {
+                schemaname: undefined as any,
+                relname: 'sensitive_data',
+                inh: true,
+                relpersistence: 'p',
+                alias: null as any,
+                location: -1
+              }
             }
           ],
           grantees: [
             {
-              roletype: 'ROLESPEC_CSTRING',
-              rolename: 'temp_user',
-              location: -1
+              RoleSpec: {
+                roletype: 'ROLESPEC_CSTRING' as RoleSpecType,
+                rolename: 'temp_user',
+                location: -1
+              }
             }
           ],
           grant_option: false,
@@ -109,7 +121,7 @@ describe('Security Statement Deparsers', () => {
       const ast = {
         GrantStmt: {
           is_grant: true,
-          targtype: 'ACL_TARGET_ALL_IN_SCHEMA',
+          targtype: 'ACL_TARGET_ALL_IN_SCHEMA' as GrantTargetType,
           privileges: [
             { String: { sval: 'SELECT' } }
           ],
@@ -118,9 +130,11 @@ describe('Security Statement Deparsers', () => {
           ],
           grantees: [
             {
-              roletype: 'ROLESPEC_CSTRING',
-              rolename: 'readonly_user',
-              location: -1
+              RoleSpec: {
+                roletype: 'ROLESPEC_CSTRING' as RoleSpecType,
+                rolename: 'readonly_user',
+                location: -1
+              }
             }
           ],
           grant_option: false,
@@ -139,16 +153,20 @@ describe('Security Statement Deparsers', () => {
           is_grant: true,
           granted_roles: [
             {
-              roletype: 'ROLESPEC_CSTRING',
-              rolename: 'admin_role',
-              location: -1
+              RoleSpec: {
+                roletype: 'ROLESPEC_CSTRING' as RoleSpecType,
+                rolename: 'admin_role',
+                location: -1
+              }
             }
           ],
           grantee_roles: [
             {
-              roletype: 'ROLESPEC_CSTRING',
-              rolename: 'user1',
-              location: -1
+              RoleSpec: {
+                roletype: 'ROLESPEC_CSTRING' as RoleSpecType,
+                rolename: 'user1',
+                location: -1
+              }
             }
           ],
           opt: [] as any[],
@@ -166,16 +184,20 @@ describe('Security Statement Deparsers', () => {
           is_grant: true,
           granted_roles: [
             {
-              roletype: 'ROLESPEC_CSTRING',
-              rolename: 'manager_role',
-              location: -1
+              RoleSpec: {
+                roletype: 'ROLESPEC_CSTRING' as RoleSpecType,
+                rolename: 'manager_role',
+                location: -1
+              }
             }
           ],
           grantee_roles: [
             {
-              roletype: 'ROLESPEC_CSTRING',
-              rolename: 'supervisor',
-              location: -1
+              RoleSpec: {
+                roletype: 'ROLESPEC_CSTRING' as RoleSpecType,
+                rolename: 'supervisor',
+                location: -1
+              }
             }
           ],
           opt: [{ String: { sval: 'admin' } }],
@@ -193,16 +215,20 @@ describe('Security Statement Deparsers', () => {
           is_grant: false,
           granted_roles: [
             {
-              roletype: 'ROLESPEC_CSTRING',
-              rolename: 'temp_role',
-              location: -1
+              RoleSpec: {
+                roletype: 'ROLESPEC_CSTRING' as RoleSpecType,
+                rolename: 'temp_role',
+                location: -1
+              }
             }
           ],
           grantee_roles: [
             {
-              roletype: 'ROLESPEC_CSTRING',
-              rolename: 'former_employee',
-              location: -1
+              RoleSpec: {
+                roletype: 'ROLESPEC_CSTRING' as RoleSpecType,
+                rolename: 'former_employee',
+                location: -1
+              }
             }
           ],
           opt: [] as any[],
@@ -220,16 +246,20 @@ describe('Security Statement Deparsers', () => {
           is_grant: false,
           granted_roles: [
             {
-              roletype: 'ROLESPEC_CSTRING',
-              rolename: 'admin_role',
-              location: -1
+              RoleSpec: {
+                roletype: 'ROLESPEC_CSTRING' as RoleSpecType,
+                rolename: 'admin_role',
+                location: -1
+              }
             }
           ],
           grantee_roles: [
             {
-              roletype: 'ROLESPEC_CSTRING',
-              rolename: 'demoted_user',
-              location: -1
+              RoleSpec: {
+                roletype: 'ROLESPEC_CSTRING' as RoleSpecType,
+                rolename: 'demoted_user',
+                location: -1
+              }
             }
           ],
           opt: [{ String: { sval: 'admin' } }],
@@ -246,14 +276,16 @@ describe('Security Statement Deparsers', () => {
     it('should deparse SECURITY LABEL statement for table', () => {
       const ast = {
         SecLabelStmt: {
-          objtype: "OBJECT_TABLE",
+          objtype: "OBJECT_TABLE" as ObjectType,
           object: {
-            schemaname: null as string | null,
-            relname: 'classified_data',
-            inh: true,
-            relpersistence: 'p',
-            alias: null as any,
-            location: -1
+            RangeVar: {
+              schemaname: null as any,
+              relname: 'classified_data',
+              inh: true,
+              relpersistence: 'p',
+              alias: null as any,
+              location: -1
+            }
           },
           provider: 'selinux',
           label: 'system_u:object_r:sepgsql_table_t:s0'
@@ -266,7 +298,7 @@ describe('Security Statement Deparsers', () => {
     it('should deparse SECURITY LABEL statement for function', () => {
       const ast = {
         SecLabelStmt: {
-          objtype: "OBJECT_FUNCTION",
+          objtype: "OBJECT_FUNCTION" as ObjectType,
           object: {
             FuncCall: {
               funcname: [{ String: { sval: 'sensitive_function' } }],
@@ -278,7 +310,7 @@ describe('Security Statement Deparsers', () => {
               agg_star: false,
               agg_distinct: false,
               func_variadic: false,
-              funcformat: "COERCE_EXPLICIT_CALL",
+              funcformat: "COERCE_EXPLICIT_CALL" as CoercionForm,
               location: -1
             }
           },
@@ -293,10 +325,10 @@ describe('Security Statement Deparsers', () => {
     it('should deparse SECURITY LABEL statement with NULL label', () => {
       const ast = {
         SecLabelStmt: {
-          objtype: "OBJECT_SCHEMA",
+          objtype: "OBJECT_SCHEMA" as ObjectType,
           object: { String: { sval: 'public' } },
           provider: 'selinux',
-          label: undefined
+          label: undefined as any
         }
       };
       
@@ -306,13 +338,15 @@ describe('Security Statement Deparsers', () => {
     it('should deparse SECURITY LABEL statement without provider', () => {
       const ast = {
         SecLabelStmt: {
-          objtype: "OBJECT_ROLE",
+          objtype: "OBJECT_ROLE" as ObjectType,
           object: {
-            roletype: 'ROLESPEC_CSTRING',
-            rolename: 'test_user',
-            location: -1
+            RoleSpec: {
+              roletype: 'ROLESPEC_CSTRING' as RoleSpecType,
+              rolename: 'test_user',
+              location: -1
+            }
           },
-          provider: undefined,
+          provider: undefined as any,
           label: 'trusted'
         }
       };

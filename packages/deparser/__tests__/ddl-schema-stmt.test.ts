@@ -1,6 +1,6 @@
 import { Deparser } from '../src/deparser';
 import { DeparserContext } from '../src/visitors/base';
-import { ObjectType, RoleSpecType, DropBehavior, CoercionForm } from '@pgsql/types';
+import { ObjectType, RoleSpecType, DropBehavior, CoercionForm, AlterTableType } from '@pgsql/types';
 
 describe('DDL Schema Statement Deparsers', () => {
   const deparser = new Deparser([]);
@@ -73,14 +73,7 @@ describe('DDL Schema Statement Deparsers', () => {
       const ast = {
         DropStmt: {
           objects: [
-            {
-              schemaname: undefined as string | undefined,
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            [{ String: { sval: 'users' } }] as any
           ],
           removeType: "OBJECT_TABLE" as ObjectType,
           behavior: null as any,
@@ -96,14 +89,7 @@ describe('DDL Schema Statement Deparsers', () => {
       const ast = {
         DropStmt: {
           objects: [
-            {
-              schemaname: undefined as string | undefined,
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            [{ String: { sval: 'users' } }] as any
           ],
           removeType: "OBJECT_TABLE" as ObjectType,
           behavior: 'DROP_CASCADE' as DropBehavior,
@@ -119,14 +105,7 @@ describe('DDL Schema Statement Deparsers', () => {
       const ast = {
         DropStmt: {
           objects: [
-            {
-              schemaname: undefined as string | undefined,
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            [{ String: { sval: 'users' } }] as any
           ],
           removeType: "OBJECT_TABLE" as ObjectType,
           behavior: 'DROP_RESTRICT' as DropBehavior,
@@ -142,14 +121,7 @@ describe('DDL Schema Statement Deparsers', () => {
       const ast = {
         DropStmt: {
           objects: [
-            {
-              schemaname: undefined as string | undefined,
-              relname: 'user_view',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            [{ String: { sval: 'user_view' } }] as any
           ],
           removeType: "OBJECT_VIEW" as ObjectType,
           behavior: null as any,
@@ -165,14 +137,7 @@ describe('DDL Schema Statement Deparsers', () => {
       const ast = {
         DropStmt: {
           objects: [
-            {
-              schemaname: undefined as string | undefined,
-              relname: 'idx_users_email',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            [{ String: { sval: 'idx_users_email' } }] as any
           ],
           removeType: "OBJECT_INDEX" as ObjectType,
           behavior: null as any,
@@ -224,21 +189,7 @@ describe('DDL Schema Statement Deparsers', () => {
       const ast = {
         DropStmt: {
           objects: [
-            {
-              FuncCall: {
-                funcname: [{ String: { sval: 'calculate_age' } }],
-                args: [] as any[],
-                agg_order: null as any,
-                agg_filter: null as any,
-                over: null as any,
-                agg_within_group: false,
-                agg_star: false,
-                agg_distinct: false,
-                func_variadic: false,
-                funcformat: "COERCE_EXPLICIT_CALL",
-                location: -1
-              }
-            }
+            [{ String: { sval: 'calculate_age' } }] as any
           ],
           removeType: "OBJECT_FUNCTION" as ObjectType,
           behavior: null as any,
@@ -247,29 +198,15 @@ describe('DDL Schema Statement Deparsers', () => {
         }
       };
       
-      expect(deparser.visit(ast, context)).toBe('DROP FUNCTION calculate_age()');
+      expect(deparser.visit(ast, context)).toBe('DROP FUNCTION calculate_age');
     });
 
     it('should deparse DROP multiple tables statement', () => {
       const ast = {
         DropStmt: {
           objects: [
-            {
-              schemaname: undefined as string | undefined,
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            },
-            {
-              schemaname: undefined as string | undefined,
-              relname: 'orders',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
-            }
+            [{ String: { sval: 'users' } }] as any,
+            [{ String: { sval: 'orders' } }] as any
           ],
           removeType: "OBJECT_TABLE" as ObjectType,
           behavior: null as any,
@@ -287,7 +224,7 @@ describe('DDL Schema Statement Deparsers', () => {
       const ast = {
         AlterTableStmt: {
           relation: {
-            schemaname: undefined as string | undefined,
+            schemaname: undefined as any,
             relname: 'users',
             inh: true,
             relpersistence: 'p',
@@ -297,18 +234,16 @@ describe('DDL Schema Statement Deparsers', () => {
           cmds: [
             {
               AlterTableCmd: {
-                subtype: 'AT_AddColumn',
+                subtype: 'AT_AddColumn' as AlterTableType,
                 name: 'email',
                 def: {
                   ColumnDef: {
                     colname: 'email',
                     typeName: {
-                      TypeName: {
-                        names: [{ String: { sval: 'varchar' } }],
-                        typemod: -1,
-                        arrayBounds: null as any,
-                        location: -1
-                      }
+                      names: [{ String: { sval: 'varchar' } }],
+                      typemod: -1,
+                      arrayBounds: null as any,
+                      location: -1
                     },
                     inhcount: 0,
                     is_local: true,
@@ -344,7 +279,7 @@ describe('DDL Schema Statement Deparsers', () => {
       const ast = {
         AlterTableStmt: {
           relation: {
-            schemaname: undefined as string | undefined,
+            schemaname: undefined as any,
             relname: 'user_view',
             inh: true,
             relpersistence: 'p',
@@ -354,8 +289,8 @@ describe('DDL Schema Statement Deparsers', () => {
           cmds: [
             {
               AlterTableCmd: {
-                subtype: 'AT_SetRelOptions',
-                name: undefined,
+                subtype: 'AT_SetRelOptions' as AlterTableType,
+                name: undefined as any,
                 def: null as any,
                 newowner: null as any,
                 behavior: 'DROP_RESTRICT' as DropBehavior,
@@ -374,7 +309,7 @@ describe('DDL Schema Statement Deparsers', () => {
       const ast = {
         AlterTableStmt: {
           relation: {
-            schemaname: undefined as string | undefined,
+            schemaname: undefined as any,
             relname: 'mat_view',
             inh: true,
             relpersistence: 'p',
@@ -393,7 +328,7 @@ describe('DDL Schema Statement Deparsers', () => {
       const ast = {
         AlterTableStmt: {
           relation: {
-            schemaname: undefined as string | undefined,
+            schemaname: undefined as any,
             relname: 'users',
             inh: true,
             relpersistence: 'p',
@@ -403,18 +338,16 @@ describe('DDL Schema Statement Deparsers', () => {
           cmds: [
             {
               AlterTableCmd: {
-                subtype: 'AT_AddColumn',
+                subtype: 'AT_AddColumn' as AlterTableType,
                 name: 'email',
                 def: {
                   ColumnDef: {
                     colname: 'email',
                     typeName: {
-                      TypeName: {
-                        names: [{ String: { sval: 'varchar' } }],
-                        typemod: -1,
-                        arrayBounds: null as any,
-                        location: -1
-                      }
+                      names: [{ String: { sval: 'varchar' } }],
+                      typemod: -1,
+                      arrayBounds: null as any,
+                      location: -1
                     },
                     inhcount: 0,
                     is_local: true,
@@ -440,7 +373,7 @@ describe('DDL Schema Statement Deparsers', () => {
             },
             {
               AlterTableCmd: {
-                subtype: 'AT_DropColumn',
+                subtype: 'AT_DropColumn' as AlterTableType,
                 name: 'old_column',
                 def: null as any,
                 newowner: null as any,

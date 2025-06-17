@@ -11,7 +11,7 @@ describe('Tablespace Operations Statement Deparsers', () => {
       const ast = {
         AlterTableMoveAllStmt: {
           orig_tablespacename: 'old_tablespace',
-          objtype: "OBJECT_TABLE",
+          objtype: "OBJECT_TABLE" as ObjectType,
           roles: [] as any[],
           new_tablespacename: 'new_tablespace',
           nowait: false
@@ -25,7 +25,7 @@ describe('Tablespace Operations Statement Deparsers', () => {
       const ast = {
         AlterTableMoveAllStmt: {
           orig_tablespacename: 'old_space',
-          objtype: "OBJECT_INDEX",
+          objtype: "OBJECT_INDEX" as ObjectType,
           roles: [] as any[],
           new_tablespacename: 'new_space',
           nowait: false
@@ -39,7 +39,7 @@ describe('Tablespace Operations Statement Deparsers', () => {
       const ast = {
         AlterTableMoveAllStmt: {
           orig_tablespacename: 'source_space',
-          objtype: "OBJECT_TABLE",
+          objtype: "OBJECT_TABLE" as ObjectType,
           roles: [] as any[],
           new_tablespacename: 'target_space',
           nowait: true

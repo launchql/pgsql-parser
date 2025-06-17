@@ -20,7 +20,7 @@ describe('Prepare Statement Deparsers', () => {
                 {
                   ResTarget: {
                     val: { A_Star: {} },
-                    name: undefined,
+                    name: undefined as any,
                     indirection: null as any,
                     location: -1
                   }
@@ -28,12 +28,14 @@ describe('Prepare Statement Deparsers', () => {
               ],
               fromClause: [
                 {
-                  schemaname: undefined as string | undefined,
-                  relname: 'users',
-                  inh: true,
-                  relpersistence: 'p',
-                  alias: null as any,
-                  location: -1
+                  RangeVar: {
+                    schemaname: undefined as string | undefined,
+                    relname: 'users',
+                    inh: true,
+                    relpersistence: 'p',
+                    alias: null as any,
+                    location: -1
+                  }
                 }
               ],
               whereClause: null as any,
@@ -46,7 +48,7 @@ describe('Prepare Statement Deparsers', () => {
               limitCount: null as any,
               lockingClause: null as any,
               withClause: null as any,
-              op: 'SETOP_NONE',
+              op: 'SETOP_NONE' as any,
               all: false,
               larg: null as any,
               rarg: null as any
@@ -86,7 +88,7 @@ describe('Prepare Statement Deparsers', () => {
                 {
                   ResTarget: {
                     val: { A_Star: {} },
-                    name: undefined,
+                    name: undefined as any,
                     indirection: null as any,
                     location: -1
                   }
@@ -94,12 +96,14 @@ describe('Prepare Statement Deparsers', () => {
               ],
               fromClause: [
                 {
-                  schemaname: undefined as string | undefined,
-                  relname: 'users',
-                  inh: true,
-                  relpersistence: 'p',
-                  alias: null as any,
-                  location: -1
+                  RangeVar: {
+                    schemaname: undefined as string | undefined,
+                    relname: 'users',
+                    inh: true,
+                    relpersistence: 'p',
+                    alias: null as any,
+                    location: -1
+                  }
                 }
               ],
               whereClause: {
@@ -130,7 +134,7 @@ describe('Prepare Statement Deparsers', () => {
               limitCount: null as any,
               lockingClause: null as any,
               withClause: null as any,
-              op: 'SETOP_NONE',
+              op: 'SETOP_NONE' as any,
               all: false,
               larg: null as any,
               rarg: null as any
@@ -186,7 +190,7 @@ describe('Prepare Statement Deparsers', () => {
     it('should deparse DEALLOCATE ALL statement', () => {
       const ast = {
         DeallocateStmt: {
-          name: undefined,
+          name: undefined as any,
           isall: true,
           location: -1
         }

@@ -134,7 +134,7 @@ describe('Type Creation Statement Deparsers', () => {
           params: [
             {
               DefElem: {
-                defnamespace: undefined,
+                defnamespace: undefined as any,
                 defname: 'subtype',
                 arg: { String: { sval: 'int4' } },
                 defaction: 'DEFELEM_UNSPEC' as DefElemAction,
@@ -143,7 +143,7 @@ describe('Type Creation Statement Deparsers', () => {
             },
             {
               DefElem: {
-                defnamespace: undefined,
+                defnamespace: undefined as any,
                 defname: 'subtype_opclass',
                 arg: { String: { sval: 'int4_ops' } },
                 defaction: 'DEFELEM_UNSPEC' as DefElemAction,
@@ -167,7 +167,7 @@ describe('Type Creation Statement Deparsers', () => {
           params: [
             {
               DefElem: {
-                defnamespace: undefined,
+                defnamespace: undefined as any,
                 defname: 'subtype',
                 arg: { String: { sval: 'date' } },
                 defaction: 'DEFELEM_UNSPEC' as DefElemAction,
@@ -189,9 +189,9 @@ describe('Type Creation Statement Deparsers', () => {
           typeName: [
             { String: { sval: 'status_enum' } }
           ],
-          oldVal: undefined,
+          oldVal: undefined as any,
           newVal: 'pending',
-          newValNeighbor: undefined,
+          newValNeighbor: undefined as any,
           newValIsAfter: false,
           skipIfNewValExists: false
         }
@@ -207,9 +207,9 @@ describe('Type Creation Statement Deparsers', () => {
             { String: { sval: 'public' } },
             { String: { sval: 'priority_enum' } }
           ],
-          oldVal: undefined,
+          oldVal: undefined as any,
           newVal: 'urgent',
-          newValNeighbor: undefined,
+          newValNeighbor: undefined as any,
           newValIsAfter: false,
           skipIfNewValExists: true
         }
@@ -224,7 +224,7 @@ describe('Type Creation Statement Deparsers', () => {
           typeName: [
             { String: { sval: 'status_enum' } }
           ],
-          oldVal: undefined,
+          oldVal: undefined as any,
           newVal: 'processing',
           newValNeighbor: 'pending',
           newValIsAfter: true,
@@ -241,7 +241,7 @@ describe('Type Creation Statement Deparsers', () => {
           typeName: [
             { String: { sval: 'status_enum' } }
           ],
-          oldVal: undefined,
+          oldVal: undefined as any,
           newVal: 'draft',
           newValNeighbor: 'pending',
           newValIsAfter: false,
@@ -260,7 +260,7 @@ describe('Type Creation Statement Deparsers', () => {
           ],
           oldVal: 'old_status',
           newVal: 'new_status',
-          newValNeighbor: undefined,
+          newValNeighbor: undefined as any,
           newValIsAfter: false,
           skipIfNewValExists: false
         }

@@ -22,7 +22,7 @@ describe('Function Statement Deparsers', () => {
                   names: [{ String: { sval: 'numeric' } }],
                   typemod: -1
                 },
-                mode: 'FUNC_PARAM_IN',
+                mode: 'FUNC_PARAM_IN' as any,
                 defexpr: null as any
               }
             }
@@ -55,7 +55,7 @@ describe('Function Statement Deparsers', () => {
                   names: [{ String: { sval: 'integer' } }],
                   typemod: -1
                 },
-                mode: 'FUNC_PARAM_IN',
+                mode: 'FUNC_PARAM_IN' as any,
                 defexpr: null as any
               }
             }
@@ -88,7 +88,7 @@ describe('Function Statement Deparsers', () => {
                   names: [{ String: { sval: 'integer' } }],
                   typemod: -1
                 },
-                mode: 'FUNC_PARAM_IN',
+                mode: 'FUNC_PARAM_IN' as any,
                 defexpr: null as any
               }
             },
@@ -99,7 +99,7 @@ describe('Function Statement Deparsers', () => {
                   names: [{ String: { sval: 'text' } }],
                   typemod: -1
                 },
-                mode: 'FUNC_PARAM_IN',
+                mode: 'FUNC_PARAM_IN' as any,
                 defexpr: null as any
               }
             }
@@ -130,7 +130,7 @@ describe('Function Statement Deparsers', () => {
                   names: [{ String: { sval: 'numeric' } }],
                   typemod: -1
                 },
-                mode: 'FUNC_PARAM_IN',
+                mode: 'FUNC_PARAM_IN' as any,
                 defexpr: null as any
               }
             }
@@ -163,7 +163,7 @@ describe('Function Statement Deparsers', () => {
                   names: [{ String: { sval: 'integer' } }],
                   typemod: -1
                 },
-                mode: 'FUNC_PARAM_IN',
+                mode: 'FUNC_PARAM_IN' as any,
                 defexpr: null as any
               }
             },
@@ -174,7 +174,7 @@ describe('Function Statement Deparsers', () => {
                   names: [{ String: { sval: 'text' } }],
                   typemod: -1
                 },
-                mode: 'FUNC_PARAM_OUT',
+                mode: 'FUNC_PARAM_OUT' as any,
                 defexpr: null as any
               }
             },
@@ -185,7 +185,7 @@ describe('Function Statement Deparsers', () => {
                   names: [{ String: { sval: 'text' } }],
                   typemod: -1
                 },
-                mode: 'FUNC_PARAM_OUT',
+                mode: 'FUNC_PARAM_OUT' as any,
                 defexpr: null as any
               }
             }
@@ -217,7 +217,7 @@ describe('Function Statement Deparsers', () => {
                   arrayBounds: [{}] as any[],
                   location: -1
                 },
-                mode: 'FUNC_PARAM_VARIADIC',
+                mode: 'FUNC_PARAM_VARIADIC' as any,
                 defexpr: null as any
               }
             }
@@ -250,7 +250,7 @@ describe('Function Statement Deparsers', () => {
                   names: [{ String: { sval: 'numeric' } }],
                   typemod: -1
                 },
-                mode: 'FUNC_PARAM_IN',
+                mode: 'FUNC_PARAM_IN' as any,
                 defexpr: null as any
               }
             },
@@ -261,7 +261,7 @@ describe('Function Statement Deparsers', () => {
                   names: [{ String: { sval: 'numeric' } }],
                   typemod: -1
                 },
-                mode: 'FUNC_PARAM_IN',
+                mode: 'FUNC_PARAM_IN' as any,
                 defexpr: {
                   A_Const: {
                     isnull: false,
@@ -324,7 +324,7 @@ describe('Function Statement Deparsers', () => {
         }
       };
       
-      expect(deparser.visit(ast, context)).toBe('IN user_id integer');
+      expect(deparser.visit(ast as any, context)).toBe('IN user_id integer');
     });
 
     it('should deparse OUT parameter', () => {
@@ -342,7 +342,7 @@ describe('Function Statement Deparsers', () => {
         }
       };
       
-      expect(deparser.visit(ast, context)).toBe('OUT result text');
+      expect(deparser.visit(ast as any, context)).toBe('OUT result text');
     });
 
     it('should deparse INOUT parameter', () => {
@@ -360,7 +360,7 @@ describe('Function Statement Deparsers', () => {
         }
       };
       
-      expect(deparser.visit(ast, context)).toBe('INOUT counter integer');
+      expect(deparser.visit(ast as any, context)).toBe('INOUT counter integer');
     });
 
     it('should deparse VARIADIC parameter', () => {
@@ -378,7 +378,7 @@ describe('Function Statement Deparsers', () => {
         }
       };
       
-      expect(deparser.visit(ast, context)).toBe('VARIADIC values text[]');
+      expect(deparser.visit(ast as any, context)).toBe('VARIADIC values text[]');
     });
 
     it('should deparse parameter with default value', () => {
@@ -404,7 +404,7 @@ describe('Function Statement Deparsers', () => {
         }
       };
       
-      expect(deparser.visit(ast, context)).toBe('IN limit_count integer DEFAULT 10');
+      expect(deparser.visit(ast as any, context)).toBe('IN limit_count integer DEFAULT 10');
     });
   });
 });

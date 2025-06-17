@@ -22,9 +22,11 @@ describe('Advanced Policy Statement Deparsers', () => {
           cmd_name: 'SELECT',
           roles: [
             {
-              roletype: "ROLESPEC_CSTRING" as RoleSpecType,
-              rolename: 'app_user',
-              location: -1
+              RoleSpec: {
+                roletype: "ROLESPEC_CSTRING" as RoleSpecType,
+                rolename: 'app_user',
+                location: -1
+              }
             }
           ],
           qual: {
@@ -48,7 +50,7 @@ describe('Advanced Policy Statement Deparsers', () => {
                   agg_star: false,
                   agg_distinct: false,
                   func_variadic: false,
-                  funcformat: "COERCE_EXPLICIT_CALL",
+                  funcformat: "COERCE_EXPLICIT_CALL" as CoercionForm,
                   location: -1
                 }
               },
@@ -77,9 +79,11 @@ describe('Advanced Policy Statement Deparsers', () => {
           cmd_name: 'INSERT',
           roles: [
             {
-              roletype: "ROLESPEC_CSTRING" as RoleSpecType,
-              rolename: 'editor',
-              location: -1
+              RoleSpec: {
+                roletype: "ROLESPEC_CSTRING" as RoleSpecType,
+                rolename: 'editor',
+                location: -1
+              }
             }
           ],
           qual: null as any,
@@ -104,7 +108,7 @@ describe('Advanced Policy Statement Deparsers', () => {
                   agg_star: false,
                   agg_distinct: false,
                   func_variadic: false,
-                  funcformat: "COERCE_EXPLICIT_CALL",
+                  funcformat: "COERCE_EXPLICIT_CALL" as CoercionForm,
                   location: -1
                 }
               },
@@ -124,7 +128,7 @@ describe('Advanced Policy Statement Deparsers', () => {
         CreateUserMappingStmt: {
           if_not_exists: false,
           user: {
-            roletype: 'ROLESPEC_CSTRING',
+            roletype: 'ROLESPEC_CSTRING' as RoleSpecType,
             rolename: 'local_user',
             location: -1
           },
@@ -132,7 +136,7 @@ describe('Advanced Policy Statement Deparsers', () => {
           options: [
             {
               DefElem: {
-                defnamespace: undefined,
+                defnamespace: undefined as any,
                 defname: 'user',
                 arg: { String: { sval: 'remote_user' } },
                 defaction: 'DEFELEM_UNSPEC' as DefElemAction,
@@ -141,7 +145,7 @@ describe('Advanced Policy Statement Deparsers', () => {
             },
             {
               DefElem: {
-                defnamespace: undefined,
+                defnamespace: undefined as any,
                 defname: 'password',
                 arg: { String: { sval: 'secret123' } },
                 defaction: 'DEFELEM_UNSPEC' as DefElemAction,
@@ -197,12 +201,14 @@ describe('Advanced Policy Statement Deparsers', () => {
           ],
           relations: [
             {
-              schemaname: undefined as string | undefined,
-              relname: 'test_table',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
+              RangeVar: {
+                schemaname: undefined as string | undefined,
+                relname: 'test_table',
+                inh: true,
+                relpersistence: 'p',
+                alias: null as any,
+                location: -1
+              }
             }
           ]
         }
@@ -230,12 +236,14 @@ describe('Advanced Policy Statement Deparsers', () => {
           ],
           relations: [
             {
-              schemaname: 'public',
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
+              RangeVar: {
+                schemaname: 'public',
+                relname: 'users',
+                inh: true,
+                relpersistence: 'p',
+                alias: null as any,
+                location: -1
+              }
             }
           ]
         }
@@ -252,27 +260,31 @@ describe('Advanced Policy Statement Deparsers', () => {
           pubname: 'my_publication',
           pubobjects: [
             {
-              schemaname: undefined as string | undefined,
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
+              RangeVar: {
+                schemaname: undefined as string | undefined,
+                relname: 'users',
+                inh: true,
+                relpersistence: 'p',
+                alias: null as any,
+                location: -1
+              }
             },
             {
-              schemaname: undefined as string | undefined,
-              relname: 'orders',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
+              RangeVar: {
+                schemaname: undefined as string | undefined,
+                relname: 'orders',
+                inh: true,
+                relpersistence: 'p',
+                alias: null as any,
+                location: -1
+              }
             }
           ],
           for_all_tables: false,
           options: [
             {
               DefElem: {
-                defnamespace: undefined,
+                defnamespace: undefined as any,
                 defname: 'publish',
                 arg: { String: { sval: 'insert,update,delete' } },
                 defaction: 'DEFELEM_UNSPEC' as DefElemAction,
@@ -313,7 +325,7 @@ describe('Advanced Policy Statement Deparsers', () => {
           options: [
             {
               DefElem: {
-                defnamespace: undefined,
+                defnamespace: undefined as any,
                 defname: 'copy_data',
                 arg: { String: { sval: 'false' } },
                 defaction: 'DEFELEM_UNSPEC' as DefElemAction,

@@ -77,13 +77,12 @@ describe('Schema Statement Deparsers', () => {
       const ast: { DropStmt: DropStmt } = {
         DropStmt: {
           objects: [
-            [{ String: { sval: 'users' } }]
+            [{ String: { sval: 'users' } }] as any
           ],
           removeType: "OBJECT_TABLE" as ObjectType,
           behavior: null as any,
           missing_ok: false,
-          concurrent: false,
-          location: -1
+          concurrent: false
         }
       };
       
@@ -94,13 +93,12 @@ describe('Schema Statement Deparsers', () => {
       const ast: { DropStmt: DropStmt } = {
         DropStmt: {
           objects: [
-            [{ String: { sval: 'users' } }]
+            [{ String: { sval: 'users' } }] as any
           ],
           removeType: "OBJECT_TABLE" as ObjectType,
           behavior: null as any,
           missing_ok: true,
-          concurrent: false,
-          location: -1
+          concurrent: false
         }
       };
       
@@ -111,13 +109,12 @@ describe('Schema Statement Deparsers', () => {
       const ast: { DropStmt: DropStmt } = {
         DropStmt: {
           objects: [
-            [{ String: { sval: 'users' } }]
+            [{ String: { sval: 'users' } }] as any
           ],
           removeType: "OBJECT_TABLE" as ObjectType,
           behavior: 'DROP_CASCADE' as DropBehavior,
           missing_ok: false,
-          concurrent: false,
-          location: -1
+          concurrent: false
         }
       };
       
@@ -128,13 +125,12 @@ describe('Schema Statement Deparsers', () => {
       const ast = {
         DropStmt: {
           objects: [
-            [{ String: { sval: 'idx_users_email' } }]
+            [{ String: { sval: 'idx_users_email' } }] as any
           ],
           removeType: "OBJECT_INDEX" as ObjectType,
           behavior: null as any,
           missing_ok: false,
-          concurrent: true,
-          location: -1
+          concurrent: true
         }
       };
       
@@ -145,13 +141,12 @@ describe('Schema Statement Deparsers', () => {
       const ast = {
         DropStmt: {
           objects: [
-            [{ String: { sval: 'user_view' } }]
+            [{ String: { sval: 'user_view' } }] as any
           ],
           removeType: "OBJECT_VIEW" as ObjectType,
           behavior: null as any,
           missing_ok: false,
-          concurrent: false,
-          location: -1
+          concurrent: false
         }
       };
       
@@ -162,13 +157,12 @@ describe('Schema Statement Deparsers', () => {
       const ast = {
         DropStmt: {
           objects: [
-            [{ String: { sval: 'calculate_total' } }]
+            [{ String: { sval: 'calculate_total' } }] as any
           ],
           removeType: "OBJECT_FUNCTION" as ObjectType,
           behavior: null as any,
           missing_ok: false,
-          concurrent: false,
-          location: -1
+          concurrent: false
         }
       };
       
@@ -179,14 +173,13 @@ describe('Schema Statement Deparsers', () => {
       const ast: { DropStmt: DropStmt } = {
         DropStmt: {
           objects: [
-            [{ String: { sval: 'table1' } }],
-            [{ String: { sval: 'table2' } }]
+            [{ String: { sval: 'table1' } }] as any,
+            [{ String: { sval: 'table2' } }] as any
           ],
           removeType: "OBJECT_TABLE" as ObjectType,
           behavior: null as any,
           missing_ok: false,
-          concurrent: false,
-          location: -1
+          concurrent: false
         }
       };
       
@@ -200,13 +193,12 @@ describe('Schema Statement Deparsers', () => {
             [
               { String: { sval: 'public' } },
               { String: { sval: 'users' } }
-            ]
+            ] as any
           ],
           removeType: 'OBJECT_TABLE' as ObjectType,
           behavior: null as any,
           missing_ok: false,
-          concurrent: false,
-          location: -1
+          concurrent: false
         }
       };
       
@@ -220,12 +212,14 @@ describe('Schema Statement Deparsers', () => {
         TruncateStmt: {
           relations: [
             {
-              schemaname: undefined as string | undefined,
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
+              RangeVar: {
+                schemaname: undefined as any,
+                relname: 'users',
+                inh: true,
+                relpersistence: 'p',
+                alias: null as any,
+                location: -1
+              }
             }
           ],
           restart_seqs: false,
@@ -242,12 +236,14 @@ describe('Schema Statement Deparsers', () => {
         TruncateStmt: {
           relations: [
             {
-              schemaname: undefined as string | undefined,
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
+              RangeVar: {
+                schemaname: undefined as any,
+                relname: 'users',
+                inh: true,
+                relpersistence: 'p',
+                alias: null as any,
+                location: -1
+              }
             }
           ],
           restart_seqs: true,
@@ -264,12 +260,14 @@ describe('Schema Statement Deparsers', () => {
         TruncateStmt: {
           relations: [
             {
-              schemaname: undefined as string | undefined,
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
+              RangeVar: {
+                schemaname: undefined as any,
+                relname: 'users',
+                inh: true,
+                relpersistence: 'p',
+                alias: null as any,
+                location: -1
+              }
             }
           ],
           restart_seqs: false,
@@ -286,20 +284,24 @@ describe('Schema Statement Deparsers', () => {
         TruncateStmt: {
           relations: [
             {
-              schemaname: undefined as string | undefined,
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
+              RangeVar: {
+                schemaname: undefined as any,
+                relname: 'users',
+                inh: true,
+                relpersistence: 'p',
+                alias: null as any,
+                location: -1
+              }
             },
             {
-              schemaname: undefined as string | undefined,
-              relname: 'orders',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
+              RangeVar: {
+                schemaname: undefined as any,
+                relname: 'orders',
+                inh: true,
+                relpersistence: 'p',
+                alias: null as any,
+                location: -1
+              }
             }
           ],
           restart_seqs: false,

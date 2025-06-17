@@ -40,7 +40,7 @@ describe('Maintenance Statement Deparsers', () => {
     it('should throw error for LOAD statement without filename', () => {
       const ast = {
         LoadStmt: {
-          filename: undefined
+          filename: undefined as any
         }
       };
       
@@ -104,14 +104,16 @@ describe('Maintenance Statement Deparsers', () => {
     it('should deparse COMMENT ON TABLE statement', () => {
       const ast: { CommentStmt: CommentStmt } = {
         CommentStmt: {
-          objtype: "OBJECT_TABLE",
+          objtype: "OBJECT_TABLE" as ObjectType,
           object: {
-            schemaname: undefined as string | undefined,
-            relname: 'users',
-            inh: true,
-            relpersistence: 'p',
-            alias: null as any,
-            location: -1
+            RangeVar: {
+              schemaname: undefined as string | undefined,
+              relname: 'users',
+              inh: true,
+              relpersistence: 'p',
+              alias: null as any,
+              location: -1
+            }
           },
           comment: 'User information table'
         }
@@ -123,7 +125,7 @@ describe('Maintenance Statement Deparsers', () => {
     it('should deparse COMMENT ON COLUMN statement', () => {
       const ast = {
         CommentStmt: {
-          objtype: "OBJECT_COLUMN",
+          objtype: "OBJECT_COLUMN" as ObjectType,
           object: {
             ColumnRef: {
               fields: [
@@ -143,14 +145,16 @@ describe('Maintenance Statement Deparsers', () => {
     it('should deparse COMMENT ON INDEX statement', () => {
       const ast = {
         CommentStmt: {
-          objtype: "OBJECT_INDEX",
+          objtype: "OBJECT_INDEX" as ObjectType,
           object: {
-            schemaname: undefined as string | undefined,
-            relname: 'idx_users_email',
-            inh: true,
-            relpersistence: 'p',
-            alias: null as any,
-            location: -1
+            RangeVar: {
+              schemaname: undefined as string | undefined,
+              relname: 'idx_users_email',
+              inh: true,
+              relpersistence: 'p',
+              alias: null as any,
+              location: -1
+            }
           },
           comment: 'Index on user email for fast lookups'
         }
@@ -162,7 +166,7 @@ describe('Maintenance Statement Deparsers', () => {
     it('should deparse COMMENT ON FUNCTION statement', () => {
       const ast = {
         CommentStmt: {
-          objtype: "OBJECT_FUNCTION",
+          objtype: "OBJECT_FUNCTION" as ObjectType,
           object: {
             FuncCall: {
               funcname: [{ String: { sval: 'calculate_age' } }],
@@ -174,7 +178,7 @@ describe('Maintenance Statement Deparsers', () => {
               agg_star: false,
               agg_distinct: false,
               func_variadic: false,
-              funcformat: "COERCE_EXPLICIT_CALL",
+              funcformat: "COERCE_EXPLICIT_CALL" as CoercionForm,
               location: -1
             }
           },
@@ -188,14 +192,16 @@ describe('Maintenance Statement Deparsers', () => {
     it('should deparse COMMENT ON VIEW statement', () => {
       const ast = {
         CommentStmt: {
-          objtype: "OBJECT_VIEW",
+          objtype: "OBJECT_VIEW" as ObjectType,
           object: {
-            schemaname: undefined as string | undefined,
-            relname: 'active_users',
-            inh: true,
-            relpersistence: 'p',
-            alias: null as any,
-            location: -1
+            RangeVar: {
+              schemaname: undefined as string | undefined,
+              relname: 'active_users',
+              inh: true,
+              relpersistence: 'p',
+              alias: null as any,
+              location: -1
+            }
           },
           comment: 'View showing only active users'
         }
@@ -207,7 +213,7 @@ describe('Maintenance Statement Deparsers', () => {
     it('should deparse COMMENT ON SCHEMA statement', () => {
       const ast = {
         CommentStmt: {
-          objtype: "OBJECT_SCHEMA",
+          objtype: "OBJECT_SCHEMA" as ObjectType,
           object: {
             String: { sval: 'public' }
           },
@@ -221,7 +227,7 @@ describe('Maintenance Statement Deparsers', () => {
     it('should deparse COMMENT ON DATABASE statement', () => {
       const ast = {
         CommentStmt: {
-          objtype: "OBJECT_DATABASE",
+          objtype: "OBJECT_DATABASE" as ObjectType,
           object: {
             String: { sval: 'myapp' }
           },
@@ -235,14 +241,16 @@ describe('Maintenance Statement Deparsers', () => {
     it('should deparse COMMENT statement with NULL comment', () => {
       const ast: { CommentStmt: CommentStmt } = {
         CommentStmt: {
-          objtype: "OBJECT_TABLE",
+          objtype: "OBJECT_TABLE" as ObjectType,
           object: {
-            schemaname: undefined as string | undefined,
-            relname: 'temp_table',
-            inh: true,
-            relpersistence: 'p',
-            alias: null as any,
-            location: -1
+            RangeVar: {
+              schemaname: undefined as string | undefined,
+              relname: 'temp_table',
+              inh: true,
+              relpersistence: 'p',
+              alias: null as any,
+              location: -1
+            }
           },
           comment: undefined
         }
@@ -258,12 +266,14 @@ describe('Maintenance Statement Deparsers', () => {
         LockStmt: {
           relations: [
             {
-              schemaname: undefined as string | undefined,
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
+              RangeVar: {
+                schemaname: undefined as string | undefined,
+                relname: 'users',
+                inh: true,
+                relpersistence: 'p',
+                alias: null as any,
+                location: -1
+              }
             }
           ],
           mode: 4, // SHARE mode
@@ -279,20 +289,24 @@ describe('Maintenance Statement Deparsers', () => {
         LockStmt: {
           relations: [
             {
-              schemaname: undefined as string | undefined,
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
+              RangeVar: {
+                schemaname: undefined as string | undefined,
+                relname: 'users',
+                inh: true,
+                relpersistence: 'p',
+                alias: null as any,
+                location: -1
+              }
             },
             {
-              schemaname: undefined as string | undefined,
-              relname: 'orders',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
+              RangeVar: {
+                schemaname: undefined as string | undefined,
+                relname: 'orders',
+                inh: true,
+                relpersistence: 'p',
+                alias: null as any,
+                location: -1
+              }
             }
           ],
           mode: 6, // EXCLUSIVE mode

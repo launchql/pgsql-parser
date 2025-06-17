@@ -64,7 +64,7 @@ describe('Tablespace Statement Deparsers', () => {
         CreateTableSpaceStmt: {
           tablespacename: 'simple_tablespace',
           owner: null as any,
-          location: undefined,
+          location: undefined as any,
           options: [] as any[]
         }
       };

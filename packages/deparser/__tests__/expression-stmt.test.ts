@@ -2,6 +2,7 @@ import { Deparser } from '../src/deparser';
 import { DeparserContext } from '../src/visitors/base';
 import { parse } from '@pgsql/parser';
 import { cleanTree } from '../src/utils';
+import { CoercionForm } from '@pgsql/types';
 
 describe('Expression Statement Deparsers', () => {
   const deparser = new Deparser([]);
@@ -156,7 +157,7 @@ describe('Expression Statement Deparsers', () => {
           aggcollid: 0,
           inputcollid: 0,
           aggtranstype: 20,
-          aggargtypes: [] as number[],
+          aggargtypes: [] as any[],
           aggdirectargs: null as any,
           args: null as any,
           aggorder: null as any,
@@ -171,7 +172,7 @@ describe('Expression Statement Deparsers', () => {
           aggtransno: -1,
           location: -1
         }
-      };
+      } as any;
       
       expect(deparser.visit(ast, context)).toBe('count(*)');
     });
@@ -184,7 +185,7 @@ describe('Expression Statement Deparsers', () => {
           aggcollid: 0,
           inputcollid: 0,
           aggtranstype: 17,
-          aggargtypes: [23] as number[],
+          aggargtypes: [23] as any[],
           aggdirectargs: null as any,
           args: [
             {
@@ -206,7 +207,7 @@ describe('Expression Statement Deparsers', () => {
           aggtransno: -1,
           location: -1
         }
-      };
+      } as any;
       
       expect(deparser.visit(ast, context)).toBe('sum(amount)');
     });
@@ -219,7 +220,7 @@ describe('Expression Statement Deparsers', () => {
           aggcollid: 0,
           inputcollid: 0,
           aggtranstype: 20,
-          aggargtypes: [25] as number[],
+          aggargtypes: [25] as any[],
           aggdirectargs: null as any,
           args: [
             {
@@ -248,7 +249,7 @@ describe('Expression Statement Deparsers', () => {
           aggtransno: -1,
           location: -1
         }
-      };
+      } as any;
       
       expect(deparser.visit(ast, context)).toBe('count(DISTINCT user_id)');
     });
@@ -283,33 +284,7 @@ describe('Expression Statement Deparsers', () => {
           inputcollid: 0,
           args: null as any,
           aggfilter: null as any,
-          winref: {
-            WindowDef: {
-              name: undefined,
-              refname: undefined,
-              partitionClause: null as any,
-              orderClause: [
-                {
-                  SortBy: {
-                    node: {
-                      ColumnRef: {
-                        fields: [{ String: { sval: 'created_at' } }],
-                        location: -1
-                      }
-                    },
-                    sortby_dir: 'SORTBY_ASC',
-                    sortby_nulls: 'SORTBY_NULLS_DEFAULT',
-                    useOp: null as any,
-                    location: -1
-                  }
-                }
-              ],
-              frameOptions: 0,
-              startOffset: null as any,
-              endOffset: null as any,
-              location: -1
-            }
-          },
+          winref: 1 as any,
           winstar: false,
           winagg: false,
           location: -1
@@ -330,7 +305,7 @@ describe('Expression Statement Deparsers', () => {
           resulttype: 25,
           resulttypmod: -1,
           resultcollid: 0,
-          relabelformat: 'COERCE_IMPLICIT_CAST',
+          relabelformat: 'COERCE_IMPLICIT_CAST' as CoercionForm,
           location: -1
         }
       };
@@ -344,7 +319,7 @@ describe('Expression Statement Deparsers', () => {
           arg: { Integer: { ival: 42 } },
           resulttype: 25,
           resultcollid: 0,
-          coerceformat: 'COERCE_EXPLICIT_CAST',
+          coerceformat: 'COERCE_EXPLICIT_CAST' as CoercionForm,
           location: -1
         }
       };
@@ -365,7 +340,7 @@ describe('Expression Statement Deparsers', () => {
           resulttype: 1007,
           resulttypmod: -1,
           resultcollid: 0,
-          coerceformat: 'COERCE_EXPLICIT_CAST',
+          coerceformat: 'COERCE_EXPLICIT_CAST' as CoercionForm,
           location: -1
         }
       };
@@ -380,13 +355,13 @@ describe('Expression Statement Deparsers', () => {
             RowExpr: {
               args: [{ Integer: { ival: 1 } }, { String: { sval: 'test' } }],
               row_typeid: 2249,
-              row_format: 'COERCE_EXPLICIT_CALL',
+              row_format: 'COERCE_EXPLICIT_CALL' as CoercionForm,
               colnames: null as any,
               location: -1
             }
           },
           resulttype: 2249,
-          convertformat: 'COERCE_EXPLICIT_CAST',
+          convertformat: 'COERCE_EXPLICIT_CAST' as CoercionForm,
           location: -1
         }
       };

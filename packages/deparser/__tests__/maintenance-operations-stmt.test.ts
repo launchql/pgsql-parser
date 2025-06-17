@@ -1,5 +1,6 @@
 import { Deparser } from '../src/deparser';
 import { DeparserContext } from '../src/visitors/base';
+import { DefElemAction, ReindexObjectType } from '@pgsql/types';
 
 describe('Maintenance Operations Statement Deparsers', () => {
   const deparser = new Deparser([]);
@@ -10,12 +11,12 @@ describe('Maintenance Operations Statement Deparsers', () => {
       const ast = {
         ClusterStmt: {
           relation: null as any,
-          indexname: undefined,
+          indexname: undefined as string | undefined,
           params: [] as any[]
         }
       };
       
-      expect(deparser.visit(ast, context)).toBe('CLUSTER');
+      expect(deparser.visit(ast as any, context)).toBe('CLUSTER');
     });
 
     it('should deparse CLUSTER statement with table only', () => {
@@ -29,12 +30,12 @@ describe('Maintenance Operations Statement Deparsers', () => {
             alias: null as any,
             location: -1
           },
-          indexname: undefined,
+          indexname: undefined as string | undefined,
           params: [] as any[]
         }
       };
       
-      expect(deparser.visit(ast, context)).toBe('CLUSTER users');
+      expect(deparser.visit(ast as any, context)).toBe('CLUSTER users');
     });
 
     it('should deparse CLUSTER statement with table and index', () => {
@@ -53,7 +54,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
         }
       };
       
-      expect(deparser.visit(ast, context)).toBe('CLUSTER orders USING "idx_orders_date"');
+      expect(deparser.visit(ast as any, context)).toBe('CLUSTER orders USING "idx_orders_date"');
     });
 
     it('should deparse CLUSTER statement with parameters', () => {
@@ -67,11 +68,11 @@ describe('Maintenance Operations Statement Deparsers', () => {
             alias: null as any,
             location: -1
           },
-          indexname: undefined,
+          indexname: undefined as string | undefined,
           params: [
             {
               DefElem: {
-                defnamespace: undefined,
+                defnamespace: undefined as string | undefined,
                 defname: 'verbose',
                 arg: { String: { sval: 'true' } },
                 defaction: 'DEFELEM_UNSPEC' as DefElemAction,
@@ -82,7 +83,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
         }
       };
       
-      expect(deparser.visit(ast, context)).toBe('CLUSTER public.products (verbose = \'true\')');
+      expect(deparser.visit(ast as any, context)).toBe('CLUSTER public.products (verbose = \'true\')');
     });
   });
 
@@ -96,7 +97,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
         }
       };
       
-      expect(deparser.visit(ast, context)).toBe('VACUUM');
+      expect(deparser.visit(ast as any, context)).toBe('VACUUM');
     });
 
     it('should deparse VACUUM statement with options', () => {
@@ -105,7 +106,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
           options: [
             {
               DefElem: {
-                defnamespace: undefined,
+                defnamespace: undefined as string | undefined,
                 defname: 'analyze',
                 arg: { String: { sval: 'true' } },
                 defaction: 'DEFELEM_UNSPEC' as DefElemAction,
@@ -114,7 +115,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
             },
             {
               DefElem: {
-                defnamespace: undefined,
+                defnamespace: undefined as string | undefined,
                 defname: 'verbose',
                 arg: { String: { sval: 'true' } },
                 defaction: 'DEFELEM_UNSPEC' as DefElemAction,
@@ -127,7 +128,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
         }
       };
       
-      expect(deparser.visit(ast, context)).toBe('VACUUM (analyze = \'true\', verbose = \'true\')');
+      expect(deparser.visit(ast as any, context)).toBe('VACUUM (analyze = \'true\', verbose = \'true\')');
     });
 
     it('should deparse VACUUM statement with specific tables', () => {
@@ -138,12 +139,14 @@ describe('Maintenance Operations Statement Deparsers', () => {
             {
               VacuumRelation: {
                 relation: {
-                  schemaname: undefined as string | undefined,
-                  relname: 'users',
-                  inh: true,
-                  relpersistence: 'p',
-                  alias: null as any,
-                  location: -1
+                  RangeVar: {
+                    schemaname: undefined as string | undefined,
+                    relname: 'users',
+                    inh: true,
+                    relpersistence: 'p',
+                    alias: null as any,
+                    location: -1
+                  }
                 },
                 oid: 0,
                 va_cols: [] as any[]
@@ -152,12 +155,14 @@ describe('Maintenance Operations Statement Deparsers', () => {
             {
               VacuumRelation: {
                 relation: {
-                  schemaname: undefined as string | undefined,
-                  relname: 'orders',
-                  inh: true,
-                  relpersistence: 'p',
-                  alias: null as any,
-                  location: -1
+                  RangeVar: {
+                    schemaname: undefined as string | undefined,
+                    relname: 'orders',
+                    inh: true,
+                    relpersistence: 'p',
+                    alias: null as any,
+                    location: -1
+                  }
                 },
                 oid: 0,
                 va_cols: [] as any[]
@@ -168,7 +173,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
         }
       };
       
-      expect(deparser.visit(ast, context)).toBe('VACUUM users, orders');
+      expect(deparser.visit(ast as any, context)).toBe('VACUUM users, orders');
     });
 
     it('should deparse VACUUM statement with table and specific columns', () => {
@@ -179,12 +184,14 @@ describe('Maintenance Operations Statement Deparsers', () => {
             {
               VacuumRelation: {
                 relation: {
-                  schemaname: undefined as string | undefined,
-                  relname: 'products',
-                  inh: true,
-                  relpersistence: 'p',
-                  alias: null as any,
-                  location: -1
+                  RangeVar: {
+                    schemaname: undefined as string | undefined,
+                    relname: 'products',
+                    inh: true,
+                    relpersistence: 'p',
+                    alias: null as any,
+                    location: -1
+                  }
                 },
                 oid: 0,
                 va_cols: [
@@ -198,7 +205,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
         }
       };
       
-      expect(deparser.visit(ast, context)).toBe('VACUUM products (name, price)');
+      expect(deparser.visit(ast as any, context)).toBe('VACUUM products (name, price)');
     });
 
     it('should deparse VACUUM statement with options and relations', () => {
@@ -207,7 +214,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
           options: [
             {
               DefElem: {
-                defnamespace: undefined,
+                defnamespace: undefined as string | undefined,
                 defname: 'full',
                 arg: { String: { sval: 'true' } },
                 defaction: 'DEFELEM_UNSPEC' as DefElemAction,
@@ -217,19 +224,27 @@ describe('Maintenance Operations Statement Deparsers', () => {
           ],
           rels: [
             {
-              schemaname: 'public',
-              relname: 'inventory',
-              inh: true,
-              relpersistence: 'p',
-              alias: null as any,
-              location: -1
+              VacuumRelation: {
+                relation: {
+                  RangeVar: {
+                    schemaname: 'public',
+                    relname: 'inventory',
+                    inh: true,
+                    relpersistence: 'p',
+                    alias: null as any,
+                    location: -1
+                  }
+                },
+                oid: 0,
+                va_cols: [] as any[]
+              }
             }
           ],
           is_vacuumcmd: true
         }
       };
       
-      expect(deparser.visit(ast, context)).toBe('VACUUM (full = \'true\') public.inventory');
+      expect(deparser.visit(ast as any, context)).toBe('VACUUM (full = \'true\') public.inventory');
     });
   });
 
@@ -243,7 +258,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
                 {
                   ResTarget: {
                     val: { A_Star: {} },
-                    name: undefined,
+                    name: undefined as string | undefined,
                     indirection: null as any,
                     location: -1
                   }
@@ -251,12 +266,14 @@ describe('Maintenance Operations Statement Deparsers', () => {
               ],
               fromClause: [
                 {
-                  schemaname: undefined as string | undefined,
-                  relname: 'users',
-                  inh: true,
-                  relpersistence: 'p',
-                  alias: null as any,
-                  location: -1
+                  RangeVar: {
+                    schemaname: undefined as string | undefined,
+                    relname: 'users',
+                    inh: true,
+                    relpersistence: 'p',
+                    alias: null as any,
+                    location: -1
+                  }
                 }
               ],
               whereClause: null as any,
@@ -279,7 +296,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
         }
       };
       
-      expect(deparser.visit(ast, context)).toBe('EXPLAIN SELECT * FROM users');
+      expect(deparser.visit(ast as any, context)).toBe('EXPLAIN SELECT * FROM users');
     });
 
     it('should deparse EXPLAIN statement with options', () => {
@@ -296,7 +313,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
                         location: -1
                       }
                     },
-                    name: undefined,
+                    name: undefined as string | undefined,
                     indirection: null as any,
                     location: -1
                   }
@@ -304,12 +321,14 @@ describe('Maintenance Operations Statement Deparsers', () => {
               ],
               fromClause: [
                 {
-                  schemaname: undefined as string | undefined,
-                  relname: 'orders',
-                  inh: true,
-                  relpersistence: 'p',
-                  alias: null as any,
-                  location: -1
+                  RangeVar: {
+                    schemaname: undefined as string | undefined,
+                    relname: 'orders',
+                    inh: true,
+                    relpersistence: 'p',
+                    alias: null as any,
+                    location: -1
+                  }
                 }
               ],
               whereClause: null as any,
@@ -331,7 +350,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
           options: [
             {
               DefElem: {
-                defnamespace: undefined,
+                defnamespace: undefined as string | undefined,
                 defname: 'analyze',
                 arg: { String: { sval: 'true' } },
                 defaction: 'DEFELEM_UNSPEC' as DefElemAction,
@@ -340,7 +359,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
             },
             {
               DefElem: {
-                defnamespace: undefined,
+                defnamespace: undefined as string | undefined,
                 defname: 'verbose',
                 arg: { String: { sval: 'true' } },
                 defaction: 'DEFELEM_UNSPEC' as DefElemAction,
@@ -351,7 +370,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
         }
       };
       
-      expect(deparser.visit(ast, context)).toBe('EXPLAIN (analyze = \'true\', verbose = \'true\') SELECT id FROM orders');
+      expect(deparser.visit(ast as any, context)).toBe('EXPLAIN (analyze = \'true\', verbose = \'true\') SELECT id FROM orders');
     });
   });
 
@@ -368,12 +387,12 @@ describe('Maintenance Operations Statement Deparsers', () => {
             alias: null as any,
             location: -1
           },
-          name: undefined,
+          name: undefined as string | undefined,
           params: [] as any[]
         }
       };
       
-      expect(deparser.visit(ast, context)).toBe('REINDEX INDEX idx_users_email');
+      expect(deparser.visit(ast as any, context)).toBe('REINDEX INDEX idx_users_email');
     });
 
     it('should deparse REINDEX TABLE statement', () => {
@@ -388,12 +407,12 @@ describe('Maintenance Operations Statement Deparsers', () => {
             alias: null as any,
             location: -1
           },
-          name: undefined,
+          name: undefined as string | undefined,
           params: [] as any[]
         }
       };
       
-      expect(deparser.visit(ast, context)).toBe('REINDEX TABLE public.products');
+      expect(deparser.visit(ast as any, context)).toBe('REINDEX TABLE public.products');
     });
 
     it('should deparse REINDEX SCHEMA statement', () => {
@@ -406,7 +425,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
         }
       };
       
-      expect(deparser.visit(ast, context)).toBe('REINDEX SCHEMA "public"');
+      expect(deparser.visit(ast as any, context)).toBe('REINDEX SCHEMA "public"');
     });
 
     it('should deparse REINDEX DATABASE statement', () => {
@@ -419,7 +438,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
         }
       };
       
-      expect(deparser.visit(ast, context)).toBe('REINDEX DATABASE "myapp"');
+      expect(deparser.visit(ast as any, context)).toBe('REINDEX DATABASE "myapp"');
     });
 
     it('should deparse REINDEX SYSTEM statement', () => {
@@ -432,7 +451,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
         }
       };
       
-      expect(deparser.visit(ast, context)).toBe('REINDEX SYSTEM "myapp"');
+      expect(deparser.visit(ast as any, context)).toBe('REINDEX SYSTEM "myapp"');
     });
 
     it('should deparse REINDEX statement with parameters', () => {
@@ -447,11 +466,11 @@ describe('Maintenance Operations Statement Deparsers', () => {
             alias: null as any,
             location: -1
           },
-          name: undefined,
+          name: undefined as string | undefined,
           params: [
             {
               DefElem: {
-                defnamespace: undefined,
+                defnamespace: undefined as string | undefined,
                 defname: 'verbose',
                 arg: { String: { sval: 'true' } },
                 defaction: 'DEFELEM_UNSPEC' as DefElemAction,
@@ -462,7 +481,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
         }
       };
       
-      expect(deparser.visit(ast, context)).toBe('REINDEX INDEX idx_orders_date (verbose = \'true\')');
+      expect(deparser.visit(ast as any, context)).toBe('REINDEX INDEX idx_orders_date (verbose = \'true\')');
     });
 
     it('should throw error for unsupported REINDEX kind', () => {
@@ -470,12 +489,12 @@ describe('Maintenance Operations Statement Deparsers', () => {
         ReindexStmt: {
           kind: 'REINDEX_OBJECT_UNKNOWN' as any,
           relation: null as any,
-          name: undefined,
+          name: undefined as string | undefined,
           params: [] as any[]
         }
       };
       
-      expect(() => deparser.visit(ast, context)).toThrow('Unsupported ReindexStmt kind: REINDEX_OBJECT_UNKNOWN');
+      expect(() => deparser.visit(ast as any, context)).toThrow('Unsupported ReindexStmt kind: REINDEX_OBJECT_UNKNOWN');
     });
   });
 });

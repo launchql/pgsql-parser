@@ -100,7 +100,7 @@ describe('Variable Statement Deparsers', () => {
         VariableSetStmt: {
           kind: 'INVALID_KIND' as any,
           name: 'test',
-          args: undefined,
+          args: undefined as any,
           is_local: false
         }
       };

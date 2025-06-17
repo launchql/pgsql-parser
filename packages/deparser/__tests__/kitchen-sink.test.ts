@@ -45,7 +45,7 @@ function tryParse(sql: string) {
 // Read aggregated fixtures from JSON
 const fixtures: Record<string, string> = JSON.parse(readFileSync(GENERATED_JSON, 'utf-8'));
 
-xdescribe('kitchen sink', () => {
+describe('kitchen sink', () => {
   // Determine which entries to test: if SINGLE_TEST is set, filter to match; otherwise test all
   const entries = SINGLE_TEST
     ? Object.entries(fixtures).filter(([relPath]) => relPath === SINGLE_TEST)
@@ -54,13 +54,18 @@ xdescribe('kitchen sink', () => {
   entries.forEach(([relativePath, sql]) => {
     it(relativePath, () => {
       const tree = tryParse(sql);
-      tree.stmts.forEach((stmt) => {
-        expect(stmt).toMatchSnapshot();
-        const outSql = deparse(stmt);
+      if (tree.stmts) {
+        tree.stmts.forEach((stmt) => {
+          expect(stmt).toMatchSnapshot();
+          if (stmt.stmt) {
+            const outSql = deparse(stmt.stmt);
 
-        expect(cleanLines(outSql)).toMatchSnapshot();
-        expect(cleanTree(parse(outSql))).toEqual(cleanTree([stmt]));
-      });
+            expect(cleanLines(outSql)).toMatchSnapshot();
+            const reparsed = parse(outSql);
+            expect(cleanTree(reparsed.stmts || [])).toEqual(cleanTree([stmt]));
+          }
+        });
+      }
     });
   });
 });

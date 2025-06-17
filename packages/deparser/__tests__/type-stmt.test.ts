@@ -1,6 +1,6 @@
 import { Deparser } from '../src/deparser';
 import { DeparserContext } from '../src/visitors/base';
-import { DefElemAction } from '@pgsql/types';
+import { DefElemAction, RoleStmtType } from '@pgsql/types';
 
 describe('Type Statement Deparsers', () => {
   const deparser = new Deparser([]);
@@ -109,7 +109,7 @@ describe('Type Statement Deparsers', () => {
     it('should deparse CREATE ROLE statement', () => {
       const ast = {
         CreateRoleStmt: {
-          stmt_type: 'ROLESTMT_ROLE',
+          stmt_type: 'ROLESTMT_ROLE' as RoleStmtType,
           role: 'test_role',
           options: [] as any[]
         }
@@ -121,7 +121,7 @@ describe('Type Statement Deparsers', () => {
     it('should deparse CREATE USER statement', () => {
       const ast = {
         CreateRoleStmt: {
-          stmt_type: 'ROLESTMT_USER',
+          stmt_type: 'ROLESTMT_USER' as RoleStmtType,
           role: 'test_user',
           options: [] as any[]
         }
@@ -133,7 +133,7 @@ describe('Type Statement Deparsers', () => {
     it('should deparse CREATE GROUP statement', () => {
       const ast = {
         CreateRoleStmt: {
-          stmt_type: 'ROLESTMT_GROUP',
+          stmt_type: 'ROLESTMT_GROUP' as RoleStmtType,
           role: 'test_group',
           options: [] as any[]
         }
@@ -145,7 +145,7 @@ describe('Type Statement Deparsers', () => {
     it('should deparse CREATE ROLE with options', () => {
       const ast = {
         CreateRoleStmt: {
-          stmt_type: 'ROLESTMT_ROLE',
+          stmt_type: 'ROLESTMT_ROLE' as RoleStmtType,
           role: 'admin_role',
           options: [
             {

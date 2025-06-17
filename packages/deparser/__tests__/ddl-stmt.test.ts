@@ -1,7 +1,7 @@
 import { Deparser } from '../src/deparser';
 import { parse } from '@pgsql/parser';
 import { cleanTree } from '../src/utils';
-import { CreateSchemaStmt, DropStmt, TruncateStmt, DropBehavior, ObjectType } from '@pgsql/types';
+import { CreateSchemaStmt, DropStmt, TruncateStmt, DropBehavior, ObjectType, RoleSpecType } from '@pgsql/types';
 
 describe('DDL Statement Deparsers', () => {
   const deparser = new Deparser([]);
@@ -205,9 +205,9 @@ describe('DDL Statement Deparsers', () => {
       const ast = {
         DropStmt: {
           objects: [
-            [{ String: { sval: 'test' } }]
+            { String: { sval: 'test' } }
           ],
-          removeType: 'INVALID_TYPE',
+          removeType: 'INVALID_TYPE' as any,
           behavior: null as any,
           missing_ok: false,
           concurrent: false
@@ -224,10 +224,12 @@ describe('DDL Statement Deparsers', () => {
         TruncateStmt: {
           relations: [
             {
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              location: 9
+              RangeVar: {
+                relname: 'users',
+                inh: true,
+                relpersistence: 'p',
+                location: 9
+              }
             }
           ],
           behavior: 'DROP_RESTRICT' as DropBehavior
@@ -245,10 +247,12 @@ describe('DDL Statement Deparsers', () => {
         TruncateStmt: {
           relations: [
             {
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              location: 9
+              RangeVar: {
+                relname: 'users',
+                inh: true,
+                relpersistence: 'p',
+                location: 9
+              }
             }
           ],
           restart_seqs: true,
@@ -267,10 +271,12 @@ describe('DDL Statement Deparsers', () => {
         TruncateStmt: {
           relations: [
             {
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              location: 9
+              RangeVar: {
+                relname: 'users',
+                inh: true,
+                relpersistence: 'p',
+                location: 9
+              }
             }
           ],
           behavior: 'DROP_CASCADE' as DropBehavior
@@ -288,16 +294,20 @@ describe('DDL Statement Deparsers', () => {
         TruncateStmt: {
           relations: [
             {
-              relname: 'users',
-              inh: true,
-              relpersistence: 'p',
-              location: 9
+              RangeVar: {
+                relname: 'users',
+                inh: true,
+                relpersistence: 'p',
+                location: 9
+              }
             },
             {
-              relname: 'orders',
-              inh: true,
-              relpersistence: 'p',
-              location: 16
+              RangeVar: {
+                relname: 'orders',
+                inh: true,
+                relpersistence: 'p',
+                location: 16
+              }
             }
           ],
           behavior: 'DROP_RESTRICT' as DropBehavior

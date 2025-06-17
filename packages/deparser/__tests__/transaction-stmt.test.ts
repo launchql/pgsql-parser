@@ -159,8 +159,8 @@ describe('TransactionStmt Deparser', () => {
       TransactionStmt: {
         kind: 'INVALID_KIND' as any,
         options: [] as any[],
-        savepoint_name: undefined,
-        gid: undefined,
+        savepoint_name: undefined as string | undefined,
+        gid: undefined as string | undefined,
         chain: false,
         location: -1
       }
