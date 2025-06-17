@@ -1,0 +1,50 @@
+
+import { FixtureTestUtils } from '../../test-utils';
+const fixtures = new FixtureTestUtils();
+
+it('a_expr', () => {
+  fixtures.runFixtureTests([
+  "a_expr-1.sql",
+  "a_expr-2.sql",
+  "a_expr-3.sql",
+  "a_expr-4.sql",
+  "a_expr-5.sql",
+  "a_expr-6.sql",
+  "a_expr-7.sql",
+  "a_expr-8.sql",
+  "a_expr-9.sql",
+  "a_expr-10.sql",
+  "a_expr-11.sql",
+  "a_expr-12.sql",
+  "a_expr-13.sql",
+  "a_expr-14.sql",
+  "a_expr-15.sql",
+  "a_expr-16.sql",
+  "a_expr-17.sql",
+  "a_expr-18.sql",
+  "a_expr-19.sql",
+  "a_expr-20.sql",
+  "a_expr-21.sql",
+  "a_expr-22.sql",
+  "a_expr-23.sql",
+  "a_expr-24.sql",
+  "a_expr-25.sql",
+  "a_expr-26.sql",
+  "a_expr-27.sql",
+  "a_expr-28.sql",
+  "a_expr-29.sql",
+  "a_expr-30.sql",
+  "a_expr-31.sql",
+  "a_expr-32.sql",
+  "a_expr-33.sql",
+  "a_expr-34.sql",
+  "a_expr-35.sql",
+  "a_expr-36.sql",
+  "a_expr-37.sql",
+  "a_expr-38.sql",
+  "a_expr-39.sql",
+  "a_expr-40.sql",
+  "a_expr-41.sql",
+  "a_expr-42.sql"
+]);
+});

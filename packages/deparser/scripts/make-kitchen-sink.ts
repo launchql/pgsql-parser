@@ -17,6 +17,17 @@ function ensureDir(dir: string) {
 
 ensureDir(OUT_DIR);
 
+const generateTestFile = (name: string, tests: string[]) => {
+  return `
+import { FixtureTestUtils } from '../../test-utils';
+const fixtures = new FixtureTestUtils();
+
+it('${name}', () => {
+  fixtures.runFixtureTests(${JSON.stringify(tests, null, 2)});
+});
+`
+};
+
 const fixtures = globSync(`${FIXTURE_DIR}/**/*.sql`);
 fixtures.forEach((fixturePath) => {
   const relPath = path.relative(FIXTURE_DIR, fixturePath);
@@ -30,25 +41,12 @@ fixtures.forEach((fixturePath) => {
   }
 
   const names = statements.stmts.map((stmt: RawStmt, idx: number) => {
-    const outDir = path.join(OUT_DIR, path.dirname(relPath));
-    ensureDir(outDir);
     const base = path.basename(relPath, '.sql');
     const outName = `${base}-${idx + 1}.sql`;
     return outName;
   });
 
-  const testFile = generateTestFile(path.basename(relPath, '.sql'), names);
-  fs.writeFileSync(path.join(OUT_DIR, `${path.basename(relPath, '.sql')}.test.ts`), testFile);
+  const testFileName = path.basename(relPath, '.sql').replace(/\//g, '-');
+  const testFile = generateTestFile(testFileName, names);
+  fs.writeFileSync(path.join(OUT_DIR, `${testFileName}.test.ts`), testFile);
 });
-
-
-const generateTestFile = (name: string, tests: string[]) => {
-return `
-import { FixtureTestUtils } from '../../test-utils';
-const fixtures = new FixtureTestUtils();
-
-it('${name}', () => {
-  fixtures.runFixtureTests(${JSON.stringify(tests, null, 2)});
-});
-`    
-};

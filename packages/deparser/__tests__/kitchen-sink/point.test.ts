@@ -1,0 +1,53 @@
+
+import { FixtureTestUtils } from '../../test-utils';
+const fixtures = new FixtureTestUtils();
+
+it('point', () => {
+  fixtures.runFixtureTests([
+  "point-1.sql",
+  "point-2.sql",
+  "point-3.sql",
+  "point-4.sql",
+  "point-5.sql",
+  "point-6.sql",
+  "point-7.sql",
+  "point-8.sql",
+  "point-9.sql",
+  "point-10.sql",
+  "point-11.sql",
+  "point-12.sql",
+  "point-13.sql",
+  "point-14.sql",
+  "point-15.sql",
+  "point-16.sql",
+  "point-17.sql",
+  "point-18.sql",
+  "point-19.sql",
+  "point-20.sql",
+  "point-21.sql",
+  "point-22.sql",
+  "point-23.sql",
+  "point-24.sql",
+  "point-25.sql",
+  "point-26.sql",
+  "point-27.sql",
+  "point-28.sql",
+  "point-29.sql",
+  "point-30.sql",
+  "point-31.sql",
+  "point-32.sql",
+  "point-33.sql",
+  "point-34.sql",
+  "point-35.sql",
+  "point-36.sql",
+  "point-37.sql",
+  "point-38.sql",
+  "point-39.sql",
+  "point-40.sql",
+  "point-41.sql",
+  "point-42.sql",
+  "point-43.sql",
+  "point-44.sql",
+  "point-45.sql"
+]);
+});
