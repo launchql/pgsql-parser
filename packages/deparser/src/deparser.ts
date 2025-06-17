@@ -1125,14 +1125,70 @@ export class Deparser implements DeparserVisitor {
         }
         break;
       case 'CONSTR_FOREIGN':
+        if (node.conname) {
+          output.push('CONSTRAINT');
+          output.push(QuoteUtils.quote(node.conname));
+        }
+        output.push('FOREIGN KEY');
+        if (node.fk_attrs && node.fk_attrs.length > 0) {
+          const fkAttrs = ListUtils.unwrapList(node.fk_attrs)
+            .map(attr => this.visit(attr, context))
+            .join(', ');
+          output.push(`(${fkAttrs})`);
+        }
         output.push('REFERENCES');
         if (node.pktable) {
           output.push(this.RangeVar(node.pktable, context));
         }
-        if (node.fk_attrs) {
-          const attrs = ListUtils.unwrapList(node.fk_attrs);
-          const attrStrs = attrs.map(attr => this.visit(attr, context));
-          output.push(this.formatter.parens(attrStrs.join(', ')));
+        if (node.pk_attrs && node.pk_attrs.length > 0) {
+          const pkAttrs = ListUtils.unwrapList(node.pk_attrs)
+            .map(attr => this.visit(attr, context))
+            .join(', ');
+          output.push(`(${pkAttrs})`);
+        }
+        if (node.fk_matchtype && node.fk_matchtype !== 's') {
+          switch (node.fk_matchtype) {
+            case 'f':
+              output.push('MATCH FULL');
+              break;
+            case 'p':
+              output.push('MATCH PARTIAL');
+              break;
+          }
+        }
+        if (node.fk_upd_action && node.fk_upd_action !== 'a') {
+          output.push('ON UPDATE');
+          switch (node.fk_upd_action) {
+            case 'r':
+              output.push('RESTRICT');
+              break;
+            case 'c':
+              output.push('CASCADE');
+              break;
+            case 'n':
+              output.push('SET NULL');
+              break;
+            case 'd':
+              output.push('SET DEFAULT');
+              break;
+          }
+        }
+        if (node.fk_del_action && node.fk_del_action !== 'a') {
+          output.push('ON DELETE');
+          switch (node.fk_del_action) {
+            case 'r':
+              output.push('RESTRICT');
+              break;
+            case 'c':
+              output.push('CASCADE');
+              break;
+            case 'n':
+              output.push('SET NULL');
+              break;
+            case 'd':
+              output.push('SET DEFAULT');
+              break;
+          }
         }
         break;
     }
