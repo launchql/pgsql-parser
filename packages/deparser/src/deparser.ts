@@ -1132,7 +1132,16 @@ export class Deparser implements DeparserVisitor {
     if (context.isStringLiteral) {
       return `'${node.sval || ''}'`;
     }
-    return QuoteUtils.quote(node.sval || ''); 
+    
+    const value = node.sval || '';
+    
+    if (context.parentNodeType === 'DefElem' || 
+        context.parentNodeType === 'GrantStmt' ||
+        context.parentNodeType === 'AccessPriv') {
+      return value;
+    }
+    
+    return QuoteUtils.quote(value); 
   }
   
   Integer(node: t.Integer, context: DeparserContext): string { 
@@ -3162,7 +3171,8 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.arg) {
-      const argValue = this.visit(node.arg, context);
+      const defElemContext = { ...context, parentNodeType: 'DefElem' };
+      const argValue = this.visit(node.arg, defElemContext);
       
       const parentContext = context.parentNodeType;
       
@@ -4868,8 +4878,9 @@ export class Deparser implements DeparserVisitor {
     }
 
     if (node.privileges && node.privileges.length > 0) {
+      const privilegeContext = { ...context, parentNodeType: 'GrantStmt' };
       const privileges = ListUtils.unwrapList(node.privileges)
-        .map(priv => this.visit(priv, context))
+        .map(priv => this.visit(priv, privilegeContext))
         .join(', ');
       output.push(privileges);
     } else {
