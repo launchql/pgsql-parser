@@ -80,7 +80,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
                 defnamespace: undefined,
                 defname: 'verbose',
                 arg: { String: { sval: 'true' } },
-                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
+                defaction: 'DEFELEM_UNSPEC',
                 location: -1
               }
             }
@@ -114,7 +114,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
                 defnamespace: undefined,
                 defname: 'analyze',
                 arg: { String: { sval: 'true' } },
-                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
+                defaction: 'DEFELEM_UNSPEC',
                 location: -1
               }
             },
@@ -123,7 +123,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
                 defnamespace: undefined,
                 defname: 'verbose',
                 arg: { String: { sval: 'true' } },
-                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
+                defaction: 'DEFELEM_UNSPEC',
                 location: -1
               }
             }
@@ -222,7 +222,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
                 defnamespace: undefined,
                 defname: 'full',
                 arg: { String: { sval: 'true' } },
-                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
+                defaction: 'DEFELEM_UNSPEC',
                 location: -1
               }
             }
@@ -352,7 +352,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
                 defnamespace: undefined,
                 defname: 'analyze',
                 arg: { String: { sval: 'true' } },
-                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
+                defaction: 'DEFELEM_UNSPEC',
                 location: -1
               }
             },
@@ -361,7 +361,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
                 defnamespace: undefined,
                 defname: 'verbose',
                 arg: { String: { sval: 'true' } },
-                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
+                defaction: 'DEFELEM_UNSPEC',
                 location: -1
               }
             }
@@ -478,7 +478,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
                 defnamespace: undefined,
                 defname: 'verbose',
                 arg: { String: { sval: 'true' } },
-                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
+                defaction: 'DEFELEM_UNSPEC',
                 location: -1
               }
             }

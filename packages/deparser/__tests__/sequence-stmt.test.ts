@@ -61,7 +61,7 @@ describe('Sequence Statement Deparsers', () => {
               DefElem: {
                 defname: 'start',
                 arg: { Integer: { ival: 100 } },
-                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
+                defaction: 'DEFELEM_UNSPEC',
                 location: -1
               }
             },
@@ -69,7 +69,7 @@ describe('Sequence Statement Deparsers', () => {
               DefElem: {
                 defname: 'increment',
                 arg: { Integer: { ival: 5 } },
-                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
+                defaction: 'DEFELEM_UNSPEC',
                 location: -1
               }
             }
@@ -99,7 +99,7 @@ describe('Sequence Statement Deparsers', () => {
               DefElem: {
                 defname: 'restart',
                 arg: { Integer: { ival: 1 } },
-                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
+                defaction: 'DEFELEM_UNSPEC',
                 location: -1
               }
             }
@@ -128,7 +128,7 @@ describe('Sequence Statement Deparsers', () => {
               DefElem: {
                 defname: 'restart',
                 arg: { Integer: { ival: 1 } },
-                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
+                defaction: 'DEFELEM_UNSPEC',
                 location: -1
               }
             }
@@ -156,7 +156,7 @@ describe('Sequence Statement Deparsers', () => {
               DefElem: {
                 defname: 'maxvalue',
                 arg: { Integer: { ival: 1000 } },
-                defaction: 'DEFELEM_UNSPEC' as DefElemAction,
+                defaction: 'DEFELEM_UNSPEC',
                 location: -1
               }
             }
