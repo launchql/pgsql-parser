@@ -1,6 +1,6 @@
 import { Deparser } from '../src/deparser';
 import { DeparserContext } from '../src/visitors/base';
-import { RoleSpecType, A_Expr_Kind, DefElemAction, CoercionForm } from '@pgsql/types';
+import { RoleSpecType, A_Expr_Kind, DefElemAction, CoercionForm, CreatePolicyStmt, CreateUserMappingStmt, CreateStatsStmt, CreatePublicationStmt, CreateSubscriptionStmt } from '@pgsql/types';
 
 describe('Advanced Policy Statement Deparsers', () => {
   const deparser = new Deparser([]);
@@ -8,7 +8,7 @@ describe('Advanced Policy Statement Deparsers', () => {
 
   describe('CreatePolicyStmt', () => {
     it('should deparse CREATE POLICY statement with basic structure', () => {
-      const ast = {
+      const ast: { CreatePolicyStmt: CreatePolicyStmt } = {
         CreatePolicyStmt: {
           policy_name: 'user_policy',
           table: {
@@ -65,7 +65,7 @@ describe('Advanced Policy Statement Deparsers', () => {
     });
 
     it('should deparse CREATE POLICY statement with WITH CHECK clause', () => {
-      const ast = {
+      const ast: { CreatePolicyStmt: CreatePolicyStmt } = {
         CreatePolicyStmt: {
           policy_name: 'insert_policy',
           table: {
@@ -124,7 +124,7 @@ describe('Advanced Policy Statement Deparsers', () => {
 
   describe('CreateUserMappingStmt', () => {
     it('should deparse CREATE USER MAPPING statement', () => {
-      const ast = {
+      const ast: { CreateUserMappingStmt: CreateUserMappingStmt } = {
         CreateUserMappingStmt: {
           if_not_exists: false,
           user: {
@@ -160,7 +160,7 @@ describe('Advanced Policy Statement Deparsers', () => {
     });
 
     it('should deparse CREATE USER MAPPING IF NOT EXISTS statement', () => {
-      const ast = {
+      const ast: { CreateUserMappingStmt: CreateUserMappingStmt } = {
         CreateUserMappingStmt: {
           if_not_exists: true,
           user: null as any,
@@ -175,7 +175,7 @@ describe('Advanced Policy Statement Deparsers', () => {
 
   describe('CreateStatsStmt', () => {
     it('should deparse CREATE STATISTICS statement', () => {
-      const ast = {
+      const ast: { CreateStatsStmt: CreateStatsStmt } = {
         CreateStatsStmt: {
           if_not_exists: false,
           defnames: [
@@ -218,7 +218,7 @@ describe('Advanced Policy Statement Deparsers', () => {
     });
 
     it('should deparse CREATE STATISTICS IF NOT EXISTS statement', () => {
-      const ast = {
+      const ast: { CreateStatsStmt: CreateStatsStmt } = {
         CreateStatsStmt: {
           if_not_exists: true,
           defnames: [
@@ -255,7 +255,7 @@ describe('Advanced Policy Statement Deparsers', () => {
 
   describe('CreatePublicationStmt', () => {
     it('should deparse CREATE PUBLICATION statement with specific tables', () => {
-      const ast = {
+      const ast: { CreatePublicationStmt: CreatePublicationStmt } = {
         CreatePublicationStmt: {
           pubname: 'my_publication',
           pubobjects: [
@@ -299,7 +299,7 @@ describe('Advanced Policy Statement Deparsers', () => {
     });
 
     it('should deparse CREATE PUBLICATION FOR ALL TABLES statement', () => {
-      const ast = {
+      const ast: { CreatePublicationStmt: CreatePublicationStmt } = {
         CreatePublicationStmt: {
           pubname: 'all_tables_pub',
           pubobjects: [] as any[],
@@ -314,7 +314,7 @@ describe('Advanced Policy Statement Deparsers', () => {
 
   describe('CreateSubscriptionStmt', () => {
     it('should deparse CREATE SUBSCRIPTION statement', () => {
-      const ast = {
+      const ast: { CreateSubscriptionStmt: CreateSubscriptionStmt } = {
         CreateSubscriptionStmt: {
           subname: 'my_subscription',
           conninfo: 'host=publisher.example.com port=5432 user=repuser dbname=testdb',
@@ -340,7 +340,7 @@ describe('Advanced Policy Statement Deparsers', () => {
     });
 
     it('should deparse CREATE SUBSCRIPTION statement without options', () => {
-      const ast = {
+      const ast: { CreateSubscriptionStmt: CreateSubscriptionStmt } = {
         CreateSubscriptionStmt: {
           subname: 'simple_sub',
           conninfo: 'host=localhost port=5432',

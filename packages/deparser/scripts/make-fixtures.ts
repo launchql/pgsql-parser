@@ -6,7 +6,7 @@ import { parse, deparse as deparseSync } from '@pgsql/parser';
 import { ParseResult, RawStmt } from '@pgsql/types';
 
 const FIXTURE_DIR = path.join(__dirname, '../../../__fixtures__/legacy');
-const OUT_DIR = path.join(__dirname, '../../../__fixtures__/generated');
+const OUT_DIR = path.join(__dirname, '../../../__fixtures__/generated/sql');
 
 function ensureDir(dir: string) {
   if (!fs.existsSync(dir)) {

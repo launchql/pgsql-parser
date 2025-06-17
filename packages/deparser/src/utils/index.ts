@@ -68,13 +68,13 @@ export const cleanTree = (tree: any) => {
       if (obj.defname === 'as') {
         if (Array.isArray(obj.arg) && obj.arg.length) {
           // function
-          obj.arg[0].String.str = obj.arg[0].String.str.trim();
+          obj.arg[0].String.sval = obj.arg[0].String.sval.trim();
         } else if (obj.arg.List && obj.arg.List.items) {
           // function
-          obj.arg.List.items[0].String.str = obj.arg.List.items[0].String.str.trim();
+          obj.arg.List.items[0].String.sval = obj.arg.List.items[0].String.sval.trim();
         } else {
           // do stmt
-          obj.arg.String.str = obj.arg.String.str.trim();
+          obj.arg.String.sval = obj.arg.String.sval.trim();
         }
         return cleanTree(obj);
       } else {
