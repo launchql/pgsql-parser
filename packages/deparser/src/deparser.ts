@@ -78,7 +78,7 @@ export class Deparser implements DeparserVisitor {
     const output: string[] = [];
 
     if (node.withClause) {
-      output.push(this.visit(node.withClause as Node, context));
+      output.push(this.WithClause(node.withClause, context));
     }
 
     if (!node.op || node.op === 'SETOP_NONE') {
