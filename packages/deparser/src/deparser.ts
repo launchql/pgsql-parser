@@ -2483,6 +2483,9 @@ export class Deparser implements DeparserVisitor {
       switch (node.subtype) {
         case 'AT_AddColumn':
           output.push('ADD COLUMN');
+          if (node.missing_ok) {
+            output.push('IF NOT EXISTS');
+          }
           if (node.def) {
             const columnDef = this.visit(node.def, context);
             output.push(columnDef);
