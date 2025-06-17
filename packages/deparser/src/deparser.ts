@@ -6568,7 +6568,7 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.setstmt) {
-      output.push(this.visit(node.setstmt as any, context));
+      output.push(this.VariableSetStmt(node.setstmt, context));
     }
     
     return output.join(' ');
