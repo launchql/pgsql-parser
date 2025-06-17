@@ -1,0 +1,24 @@
+{
+  "lerna": "3.4.2",
+  "conventionalCommits": true,
+  "npmClient": "yarn",
+  "npmClientArgs": [
+    "--no-lockfile"
+  ],
+  "packages": [
+    "packages/*"
+  ],
+  "version": "independent",
+  "registry": "https://registry.npmjs.org",
+  "command": {
+    "create": {
+      "homepage": "https://github.com/launchql/pg-proto-parser",
+      "license": "SEE LICENSE IN LICENSE",
+      "access": "restricted"
+    },
+    "publish": {
+      "allowBranch": "main",
+      "message": "chore(release): publish"
+    }
+  }
+}
