@@ -4965,8 +4965,8 @@ export class Deparser implements DeparserVisitor {
         'ACCESS SHARE',
         'ROW SHARE', 
         'ROW EXCLUSIVE',
-        'SHARE UPDATE EXCLUSIVE',
         'SHARE',
+        'SHARE UPDATE EXCLUSIVE',
         'SHARE ROW EXCLUSIVE',
         'EXCLUSIVE',
         'ACCESS EXCLUSIVE'
