@@ -3243,6 +3243,11 @@ export class Deparser implements DeparserVisitor {
             
             output.push(parts.join(' '));
           }
+          if (node.behavior === 'DROP_CASCADE') {
+            output.push('CASCADE');
+          } else if (node.behavior === 'DROP_RESTRICT') {
+            output.push('RESTRICT');
+          }
           break;
         case 'AT_DropColumn':
           if (node.missing_ok) {
