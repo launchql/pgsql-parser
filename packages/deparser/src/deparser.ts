@@ -1818,10 +1818,33 @@ export class Deparser implements DeparserVisitor {
               break;
           }
         }
+        // Handle deferrable constraints
+        if (node.deferrable) {
+          output.push('DEFERRABLE');
+          if (node.initdeferred) {
+            output.push('INITIALLY DEFERRED');
+          } else {
+            output.push('INITIALLY IMMEDIATE');
+          }
+        } else if (node.deferrable === false) {
+          output.push('NOT DEFERRABLE');
+        }
         // Handle NOT VALID for foreign key constraints - only for table constraints, not domain constraints
         if (node.skip_validation && !context.isDomainConstraint) {
           output.push('NOT VALID');
         }
+        break;
+      case 'CONSTR_ATTR_DEFERRABLE':
+        output.push('DEFERRABLE');
+        break;
+      case 'CONSTR_ATTR_NOT_DEFERRABLE':
+        output.push('NOT DEFERRABLE');
+        break;
+      case 'CONSTR_ATTR_DEFERRED':
+        output.push('INITIALLY DEFERRED');
+        break;
+      case 'CONSTR_ATTR_IMMEDIATE':
+        output.push('INITIALLY IMMEDIATE');
         break;
     }
 
@@ -3668,11 +3691,22 @@ export class Deparser implements DeparserVisitor {
           break;
         case 'AT_AlterConstraint':
           output.push('ALTER CONSTRAINT');
-          if (node.name) {
+          if (node.def && this.getNodeType(node.def) === 'Constraint') {
+            const constraintData = this.getNodeData(node.def) as any;
+            if (constraintData.conname) {
+              output.push(QuoteUtils.quote(constraintData.conname));
+              if (constraintData.deferrable !== undefined) {
+                output.push(constraintData.deferrable ? 'DEFERRABLE' : 'NOT DEFERRABLE');
+              }
+              if (constraintData.initdeferred !== undefined) {
+                output.push(constraintData.initdeferred ? 'INITIALLY DEFERRED' : 'INITIALLY IMMEDIATE');
+              }
+            }
+          } else if (node.name) {
             output.push(QuoteUtils.quote(node.name));
-          }
-          if (node.def) {
-            output.push(this.visit(node.def, context));
+            if (node.def) {
+              output.push(this.visit(node.def, context));
+            }
           }
           break;
         case 'AT_AddIndexConstraint':
@@ -5016,9 +5050,7 @@ export class Deparser implements DeparserVisitor {
       output.push('ALL');
     }
     
-    if (node.deferred !== undefined) {
-      output.push(node.deferred ? 'DEFERRED' : 'IMMEDIATE');
-    }
+    output.push(node.deferred ? 'DEFERRED' : 'IMMEDIATE');
     
     return output.join(' ');
   }
