@@ -8189,7 +8189,19 @@ export class Deparser implements DeparserVisitor {
     if (node.relation && node.objectType === 'OBJECT_TABLE') {
       output.push(this.RangeVar(node.relation, context));
     } else if (node.object) {
-      output.push(this.visit(node.object as any, context));
+      // Handle domain objects specially to format schema.domain correctly
+      if (node.objectType === 'OBJECT_DOMAIN' && (node.object as any).List) {
+        const items = ListUtils.unwrapList(node.object as any);
+        if (items.length === 2) {
+          const schemaName = items[0].String?.sval || '';
+          const domainName = items[1].String?.sval || '';
+          output.push(`${QuoteUtils.quote(schemaName)}.${QuoteUtils.quote(domainName)}`);
+        } else {
+          output.push(this.visit(node.object as any, context));
+        }
+      } else {
+        output.push(this.visit(node.object as any, context));
+      }
     }
     
     output.push('SET SCHEMA');
