@@ -8188,6 +8188,9 @@ export class Deparser implements DeparserVisitor {
       case 'OBJECT_OPFAMILY':
         output.push('OPERATOR FAMILY');
         break;
+      case 'OBJECT_OPERATOR':
+        output.push('OPERATOR');
+        break;
       default:
         output.push(node.objectType.toString());
     }
