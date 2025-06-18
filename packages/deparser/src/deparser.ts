@@ -7662,8 +7662,19 @@ export class Deparser implements DeparserVisitor {
       output.push(QuoteUtils.quote(node.amname));
     }
     
-    if (node.amtype) {
-      output.push('TYPE', node.amtype.toUpperCase());
+    output.push('TYPE');
+    
+    switch (node.amtype) {
+      case 'i':
+        output.push('INDEX');
+        break;
+      case 't':
+        output.push('TABLE');
+        break;
+      default:
+        // Fallback to the raw value if unknown
+        output.push(node.amtype || '');
+        break;
     }
     
     if (node.handler_name && node.handler_name.length > 0) {
