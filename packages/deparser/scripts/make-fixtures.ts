@@ -5,7 +5,7 @@ import { sync as globSync } from 'glob';
 import { parse, deparse as deparseSync } from '@pgsql/parser';
 import { ParseResult, RawStmt } from '@pgsql/types';
 
-const FIXTURE_DIR = path.join(__dirname, '../../../__fixtures__/legacy');
+const FIXTURE_DIR = path.join(__dirname, '../../../__fixtures__/kitchen-sink');
 const OUT_DIR = path.join(__dirname, '../../../__fixtures__/generated');
 
 function ensureDir(dir: string) {

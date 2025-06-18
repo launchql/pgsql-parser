@@ -6,7 +6,7 @@ import { parse, deparse as deparseSync } from '@pgsql/parser';
 import { ParseResult, RawStmt } from '@pgsql/types';
 import { cleanTree } from '../src/utils';
 
-const FIXTURE_DIR = path.join(__dirname, '../../../__fixtures__/legacy');
+const FIXTURE_DIR = path.join(__dirname, '../../../__fixtures__/kitchen-sink');
 const OUT_DIR = path.join(__dirname, '../__tests__/kitchen-sink');
 
 function ensureDir(dir: string) {
