@@ -4736,6 +4736,9 @@ export class Deparser implements DeparserVisitor {
         case 'OBJECT_TRIGGER':
           output.push('TRIGGER');
           break;
+        case 'OBJECT_FDW':
+          output.push('FOREIGN DATA WRAPPER');
+          break;
         default:
           output.push(node.objtype.replace('OBJECT_', ''));
       }
