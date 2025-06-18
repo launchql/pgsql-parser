@@ -6232,6 +6232,9 @@ export class Deparser implements DeparserVisitor {
       case 'OBJECT_FOREIGN_SERVER':
         output.push('SERVER');
         break;
+      case 'OBJECT_TYPE':
+        output.push('TYPE');
+        break;
       default:
         throw new Error(`Unsupported AlterOwnerStmt objectType: ${node.objectType}`);
     }
