@@ -1863,6 +1863,27 @@ export class Deparser implements DeparserVisitor {
       case 'CONSTR_ATTR_IMMEDIATE':
         output.push('INITIALLY IMMEDIATE');
         break;
+      case 'CONSTR_EXCLUSION':
+        output.push('EXCLUDE');
+        if (node.access_method) {
+          output.push('USING');
+          output.push(node.access_method);
+        }
+        if (node.exclusions && node.exclusions.length > 0) {
+          const exclusionElements = ListUtils.unwrapList(node.exclusions).map(elem => {
+            if (this.getNodeType(elem) === 'List') {
+              const elemList = ListUtils.unwrapList(elem);
+              if (elemList.length >= 2) {
+                const column = this.visit(elemList[0], context);
+                const operator = this.visit(elemList[1], context);
+                return `${column} WITH ${operator}`;
+              }
+            }
+            return this.visit(elem, context);
+          });
+          output.push(`(${exclusionElements.join(', ')})`);
+        }
+        break;
     }
 
     // Handle deferrable constraints for all constraint types that support it

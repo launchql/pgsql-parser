@@ -12,12 +12,13 @@
 
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
-## Current Status (Baseline - feat/17-deparser branch)
-- **Test Suites**: 95 failed, 280 passed, 375 total
-- **Tests**: 111 failed, 539 passed, 650 total
-- **Pass Rate**: 74.7% test suites, 82.9% individual tests
+## Current Status (After EXCLUDE Constraint Fix)
+- **Test Suites**: 93 failed, 282 passed, 375 total
+- **Tests**: 110 failed, 540 passed, 650 total
+- **Pass Rate**: 75.2% test suites, 83.1% individual tests
 
-**Note**: This represents the current baseline state of the feat/17-deparser branch, not regressions from recent changes.
+**Progress**: ✅ Improved from 95→93 failed test suites after adding CONSTR_EXCLUSION support
+**Recent Fix**: Added EXCLUDE USING constraint handling to resolve rangetypes test failures
 
 ## Known Regressions Introduced
 Based on `yarn test` output, recent changes broke several previously passing tests:
