@@ -3219,7 +3219,11 @@ export class Deparser implements DeparserVisitor {
           }
           break;
         case 'AT_DropColumn':
-          output.push('DROP COLUMN');
+          if (node.missing_ok) {
+            output.push('DROP IF EXISTS');
+          } else {
+            output.push('DROP COLUMN');
+          }
           if (node.name) {
             output.push(QuoteUtils.quote(node.name));
           }
@@ -3265,7 +3269,11 @@ export class Deparser implements DeparserVisitor {
           }
           break;
         case 'AT_DropConstraint':
-          output.push('DROP CONSTRAINT');
+          if (node.missing_ok) {
+            output.push('DROP CONSTRAINT IF EXISTS');
+          } else {
+            output.push('DROP CONSTRAINT');
+          }
           if (node.name) {
             output.push(QuoteUtils.quote(node.name));
           }
