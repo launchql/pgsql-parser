@@ -874,7 +874,8 @@ export class Deparser implements DeparserVisitor {
     } else {
       const argStrs = args.map(arg => this.visit(arg, context));
       if (node.func_variadic && argStrs.length > 0) {
-        argStrs[0] = `VARIADIC ${argStrs[0]}`;
+        const lastIndex = argStrs.length - 1;
+        argStrs[lastIndex] = `VARIADIC ${argStrs[lastIndex]}`;
       }
       
       if (node.agg_distinct && argStrs.length > 0) {
