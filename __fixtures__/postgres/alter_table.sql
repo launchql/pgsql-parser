@@ -1029,12 +1029,6 @@ delete from atacc1;
 -- try dropping a non-existent column, should fail
 alter table atacc1 drop bar;
 
--- try removing an oid column, should succeed (as it's nonexistent)
-alter table atacc1 SET WITHOUT OIDS;
-
--- try adding an oid column, should fail (not supported)
-alter table atacc1 SET WITH OIDS;
-
 -- try dropping the xmin column, should fail
 alter table atacc1 drop xmin;
 

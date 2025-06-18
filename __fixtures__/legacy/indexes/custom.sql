@@ -11,3 +11,17 @@ CREATE UNIQUE INDEX uniq_service_when_not_null
   WHERE svc IS NOT NULL;
 
 CREATE UNIQUE INDEX new_unique_idx ON new_example(a, b) INCLUDE (c);
+
+CREATE INDEX idx_users_email_hash ON users USING hash (email);
+
+CREATE INDEX idx_users_email_btree ON users USING btree (email);
+
+CREATE INDEX idx_users_email_gin ON users USING gin (email gin_trgm_ops);
+
+CREATE INDEX idx_products_metadata_gin ON products USING gin (metadata);
+
+SELECT * FROM products WHERE metadata @> '{"color": "blue"}';
+
+CREATE INDEX idx_products_metadata_gin ON products USING gin (metadata);
+
+

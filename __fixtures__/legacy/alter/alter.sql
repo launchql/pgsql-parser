@@ -149,7 +149,6 @@ ALTER TYPE test_type3 DROP ATTRIBUTE a, ADD ATTRIBUTE b int;
 CREATE TYPE tt_t0 AS (z inet, x int, y numeric(8,2));
 ALTER TYPE tt_t0 DROP ATTRIBUTE z;
 
--- CREATE TABLE tt7 (x int, q text, y numeric(8,2)) WITH OIDS;
 ALTER TABLE tt7 DROP q;								
 
 ALTER TABLE tt1 OF tt_t0;

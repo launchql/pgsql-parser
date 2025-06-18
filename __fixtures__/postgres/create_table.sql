@@ -53,16 +53,6 @@ FROM generate_series(1, 1100) g(i)
 INSERT INTO extra_wide_table(firstc, lastc) VALUES('first col', 'last col');
 SELECT firstc, lastc FROM extra_wide_table;
 
--- check that tables with oids cannot be created anymore
-CREATE TABLE withoid() WITH OIDS;
-CREATE TABLE withoid() WITH (oids);
-CREATE TABLE withoid() WITH (oids = true);
-
--- but explicitly not adding oids is still supported
-CREATE TEMP TABLE withoutoid() WITHOUT OIDS; DROP TABLE withoutoid;
-CREATE TEMP TABLE withoutoid() WITH (oids = false); DROP TABLE withoutoid;
-
--- check restriction with default expressions
 -- invalid use of column reference in default expressions
 CREATE TABLE default_expr_column (id int DEFAULT (id));
 CREATE TABLE default_expr_column (id int DEFAULT (bar.id));

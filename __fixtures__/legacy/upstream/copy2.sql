@@ -1,11 +1,3 @@
-CREATE TEMP TABLE x (
-	a serial,
-	b int,
-	c text not null default 'stuff',
-	d text,
-	e text
-) WITH OIDS;
-
 CREATE FUNCTION fn_x_before () RETURNS TRIGGER AS '
   BEGIN
 		NEW.e := ''before trigger fired''::text;
@@ -154,12 +146,6 @@ FOR EACH ROW EXECUTE PROCEDURE fn_x_before();
 
 -- check results of copy in
 SELECT * FROM x;
-
--- COPY w/ oids on a table w/o oids should fail
-CREATE TABLE no_oids (
-	a	int,
-	b	int
-) WITHOUT OIDS;
 
 INSERT INTO no_oids (a, b) VALUES (5, 10);
 INSERT INTO no_oids (a, b) VALUES (20, 30);

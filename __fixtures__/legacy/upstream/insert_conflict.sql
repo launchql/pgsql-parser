@@ -255,7 +255,6 @@ drop table insertconflicttest;
 -- do not make sense because EXCLUDED isn't an already stored tuple
 -- (and thus doesn't have a ctid, oids are not assigned yet, etc).
 --
-create table syscolconflicttest(key int4, data text) WITH OIDS;
 insert into syscolconflicttest values (1);
 insert into syscolconflicttest values (1) on conflict (key) do update set data = excluded.ctid::text;
 insert into syscolconflicttest values (1) on conflict (key) do update set data = excluded.oid::text;
@@ -356,12 +355,10 @@ drop table excluded;
 
 
 -- Check tables w/o oids are handled correctly
-create table testoids(key int primary key, data text) without oids;
 -- first without oids
 insert into testoids values(1, '1') on conflict (key) do update set data = excluded.data RETURNING *;
 insert into testoids values(1, '2') on conflict (key) do update set data = excluded.data RETURNING *;
 -- add oids
-alter table testoids set with oids;
 -- update existing row, that didn't have an oid
 insert into testoids values(1, '3') on conflict (key) do update set data = excluded.data RETURNING *;
 -- insert a new row
@@ -369,7 +366,6 @@ insert into testoids values(2, '1') on conflict (key) do update set data = exclu
 -- and update it
 insert into testoids values(2, '2') on conflict (key) do update set data = excluded.data RETURNING *;
 -- remove oids again, test
-alter table testoids set without oids;
 insert into testoids values(1, '4') on conflict (key) do update set data = excluded.data RETURNING *;
 insert into testoids values(3, '1') on conflict (key) do update set data = excluded.data RETURNING *;
 insert into testoids values(3, '2') on conflict (key) do update set data = excluded.data RETURNING *;

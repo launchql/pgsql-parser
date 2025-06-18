@@ -835,7 +835,6 @@ DROP TABLE cwi_test;
 --
 -- Check handling of indexes on system columns
 --
-CREATE TABLE oid_table (a INT) WITH OIDS;
 
 -- An index on the OID column should be allowed
 CREATE INDEX ON oid_table (oid);

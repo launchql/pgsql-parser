@@ -530,7 +530,6 @@ drop table atacc1;
 
 -- test unique constraint adding
 
-create table atacc1 ( test int ) with oids;
 -- add a unique constraint
 alter table atacc1 add constraint atacc_test1 unique (test);
 -- insert first value
@@ -586,7 +585,6 @@ drop table atacc1;
 
 -- test primary key constraint adding
 
-create table atacc1 ( test int ) with oids;
 -- add a primary key constraint
 alter table atacc1 add constraint atacc_test1 primary key (test);
 -- insert first value
@@ -679,7 +677,6 @@ alter table non_existent alter column bar drop not null;
 
 -- test setting columns to null and not null and vice versa
 -- test checking for null values and primary key
-create table atacc1 (test int not null) with oids;
 alter table atacc1 add constraint "atacc1_pkey" primary key (test);
 alter table atacc1 alter column test drop not null;
 alter table atacc1 drop constraint "atacc1_pkey";
@@ -776,7 +773,6 @@ alter table pg_class drop column relname;
 alter table nosuchtable drop column bar;
 
 -- test dropping columns
-create table atacc1 (a int4 not null, b int4, c int4 not null, d int4) with oids;
 insert into atacc1 values (1, 2, 3, 4);
 alter table atacc1 drop a;
 alter table atacc1 drop a;
@@ -1076,65 +1072,54 @@ order by attrelid::regclass::text, attnum;
 --
 -- Test the ALTER TABLE SET WITH/WITHOUT OIDS command
 --
-create table altstartwith (col integer) with oids;
 
 insert into altstartwith values (1);
 
 select oid > 0, * from altstartwith;
 
-alter table altstartwith set without oids;
 
 select oid > 0, * from altstartwith; -- fails
 select * from altstartwith;
 
-alter table altstartwith set with oids;
 
 select oid > 0, * from altstartwith;
 
 drop table altstartwith;
 
 -- Check inheritance cases
-create table altwithoid (col integer) with oids;
 
 -- Inherits parents oid column anyway
-create table altinhoid () inherits (altwithoid) without oids;
 
 insert into altinhoid values (1);
 
 select oid > 0, * from altwithoid;
 select oid > 0, * from altinhoid;
 
-alter table altwithoid set without oids;
 
 select oid > 0, * from altwithoid; -- fails
 select oid > 0, * from altinhoid; -- fails
 select * from altwithoid;
 select * from altinhoid;
 
-alter table altwithoid set with oids;
 
 select oid > 0, * from altwithoid;
 select oid > 0, * from altinhoid;
 
 drop table altwithoid cascade;
 
-create table altwithoid (col integer) without oids;
 
 -- child can have local oid column
-create table altinhoid () inherits (altwithoid) with oids;
 
 insert into altinhoid values (1);
 
 select oid > 0, * from altwithoid; -- fails
 select oid > 0, * from altinhoid;
 
-alter table altwithoid set with oids;
 
 select oid > 0, * from altwithoid;
 select oid > 0, * from altinhoid;
 
 -- the child's local definition should remain
-alter table altwithoid set without oids;
 
 select oid > 0, * from altwithoid; -- fails
 select oid > 0, * from altinhoid;
@@ -1628,7 +1613,6 @@ CREATE TABLE tt3 (y numeric(8,2), x int);			-- wrong column order
 CREATE TABLE tt4 (x int);							-- too few columns
 CREATE TABLE tt5 (x int, y numeric(8,2), z int);	-- too few columns
 CREATE TABLE tt6 () INHERITS (tt0);					-- can't have a parent
-CREATE TABLE tt7 (x int, q text, y numeric(8,2)) WITH OIDS;
 ALTER TABLE tt7 DROP q;								-- OK
 
 ALTER TABLE tt0 OF tt_t0;

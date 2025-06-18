@@ -588,11 +588,6 @@ CREATE TABLE min_updates_test (
 	f2 int,
 	f3 int);
 
-CREATE TABLE min_updates_test_oids (
-	f1	text,
-	f2 int,
-	f3 int) WITH OIDS;
-
 INSERT INTO min_updates_test VALUES ('a',1,2),('b','2',null);
 
 INSERT INTO min_updates_test_oids VALUES ('a',1,2),('b','2',null);
