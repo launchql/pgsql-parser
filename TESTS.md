@@ -12,16 +12,16 @@
 
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
-## Current Status (After A_Indirection & ResTarget Field Access Fix)
+## Current Status (After CollateClause & DefineStmt OBJECT_COLLATION Fixes)
 - **Test Suites**: 69 failed, 306 passed, 375 total
 - **Tests**: 86 failed, 564 passed, 650 total  
 - **Pass Rate**: 81.6% test suites, 86.8% individual tests
 
-**Progress**: ✅ Continued improvement - reduced from 70→69 failed test suites after A_Indirection/ResTarget fixes
-**Recent Fix**: Fixed A_Indirection parentheses handling for ColumnRef/RowExpr and ResTarget indirection for UPDATE/INSERT
-**Test Status**: ✅ 1 test suite improvement achieved - field access expressions now properly handle parentheses and dots
-**Impact**: Good impact fix since field access expressions appear across many SQL statement types
-**Status**: Steady progress - now at 81.6% pass rate, ready to tackle remaining 69 failed test suites
+**Progress**: ✅ Maintained stability - no regressions after CollateClause/DefineStmt fixes (69 failed test suites maintained)
+**Recent Fix**: Added CollateClause parentheses handling and DefineStmt OBJECT_COLLATION support for CREATE COLLATION statements
+**Test Status**: ✅ No regressions - fixes addressed specific syntax issues but collate tests still have other problems
+**Impact**: Stability fix - resolved specific CREATE COLLATION and COLLATE clause syntax issues without breaking existing functionality
+**Status**: Stable progress - maintained 81.6% pass rate, ready to tackle remaining 69 failed test suites systematically
 
 ## Current High-Impact Issues to Fix
 Based on latest `yarn test` output, key patterns causing multiple test failures:

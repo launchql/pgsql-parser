@@ -1517,7 +1517,14 @@ export class Deparser implements DeparserVisitor {
     const output: string[] = [];
     
     if (node.arg) {
-      output.push(this.visit(node.arg, context));
+      let argStr = this.visit(node.arg, context);
+      
+      const argType = this.getNodeType(node.arg);
+      if (argType === 'A_Expr' || argType === 'FuncCall' || argType === 'SubLink') {
+        argStr = `(${argStr})`;
+      }
+      
+      output.push(argStr);
     }
     
     output.push('COLLATE');
@@ -7777,6 +7784,42 @@ export class Deparser implements DeparserVisitor {
           });
           output.push(definitions.join(', '));
           output.push(')');
+        }
+        break;
+        
+      case 'OBJECT_COLLATION':
+        output.push('CREATE COLLATION');
+        
+        if (node.defnames && node.defnames.length > 0) {
+          output.push(ListUtils.unwrapList(node.defnames).map(name => this.visit(name, context)).join('.'));
+        }
+        
+        if (node.definition && node.definition.length > 0) {
+          const definitions = ListUtils.unwrapList(node.definition).map(def => {
+            if (def.DefElem) {
+              const defElem = def.DefElem;
+              const defName = defElem.defname;
+              const defValue = defElem.arg;
+              
+              if (defName && defValue) {
+                // Handle FROM clause for collation definitions
+                if (defName === 'from') {
+                  return `FROM ${this.visit(defValue, context)}`;
+                }
+                return `${defName} = ${this.visit(defValue, context)}`;
+              }
+            }
+            return this.visit(def, context);
+          });
+          
+          // Check if we have FROM clause or parameter definitions
+          const hasFromClause = definitions.some(def => def.startsWith('FROM '));
+          if (hasFromClause) {
+            output.push(definitions.join(' '));
+          } else {
+            // Wrap parameter definitions in parentheses
+            output.push(`(${definitions.join(', ')})`);
+          }
         }
         break;
         
