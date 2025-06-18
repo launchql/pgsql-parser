@@ -6123,7 +6123,20 @@ export class Deparser implements DeparserVisitor {
     
     if (node.coldeflist && node.coldeflist.length > 0) {
       const colDefs = ListUtils.unwrapList(node.coldeflist)
-        .map(colDef => this.visit(colDef, context))
+        .map(colDef => {
+          const colDefData = this.getNodeData(colDef);
+          const parts: string[] = [];
+          
+          if (colDefData.colname) {
+            parts.push(QuoteUtils.quote(colDefData.colname));
+          }
+          
+          if (colDefData.typeName) {
+            parts.push(this.TypeName(colDefData.typeName, context));
+          }
+          
+          return parts.join(' ');
+        })
         .join(', ');
       output.push(`(${colDefs})`);
     }
