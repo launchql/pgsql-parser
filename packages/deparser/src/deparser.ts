@@ -6411,7 +6411,17 @@ export class Deparser implements DeparserVisitor {
   }
 
   CreateSeqStmt(node: t.CreateSeqStmt, context: DeparserContext): string {
-    const output: string[] = ['CREATE', 'SEQUENCE'];
+    const output: string[] = ['CREATE'];
+    
+    // Check if this is a temporary sequence
+    if (node.sequence) {
+      const seq = node.sequence as any;
+      if (seq.relpersistence === 't') {
+        output.push('TEMPORARY');
+      }
+    }
+    
+    output.push('SEQUENCE');
     
     if (node.if_not_exists) {
       output.push('IF NOT EXISTS');
