@@ -5730,6 +5730,13 @@ export class Deparser implements DeparserVisitor {
     
     output.push(`"${node.newname}"`);
     
+    // Handle CASCADE/RESTRICT behavior for RENAME operations
+    if (node.behavior === 'DROP_CASCADE') {
+      output.push('CASCADE');
+    } else if (node.behavior === 'DROP_RESTRICT') {
+      output.push('RESTRICT');
+    }
+    
     return output.join(' ');
   }
 
