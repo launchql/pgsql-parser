@@ -1494,7 +1494,7 @@ export class Deparser implements DeparserVisitor {
   }
 
   TypeCast(node: t.TypeCast, context: DeparserContext): string {
-    return `${this.visit(node.arg, context)}::${this.TypeName(node.typeName, context)}`;
+    return `CAST(${this.visit(node.arg, context)} AS ${this.TypeName(node.typeName, context)})`;
   }
 
   CollateClause(node: t.CollateClause, context: DeparserContext): string {
