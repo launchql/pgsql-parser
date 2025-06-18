@@ -1101,7 +1101,17 @@ export class Deparser implements DeparserVisitor {
 
     let args: string | null = null;
     if (node.typmods) {
-      args = this.formatTypeMods(node.typmods, context);
+      const isInterval = names.some(name => {
+        const nameStr = typeof name === 'string' ? name : (name.String?.sval || name.String?.str);
+        return nameStr === 'interval';
+      });
+      
+      if (isInterval) {
+        args = this.formatIntervalTypeMods(node.typmods, context);
+        // For interval types, we'll handle the formatting differently to avoid parentheses
+      } else {
+        args = this.formatTypeMods(node.typmods, context);
+      }
     } else if (node.typemod && node.typemod !== -1) {
       args = this.formatSingleTypeMod(node.typemod, names[0]);
     }
@@ -1208,6 +1218,42 @@ export class Deparser implements DeparserVisitor {
     const result = output.join(' ');
     
     return result;
+  }
+
+  formatIntervalTypeMods(typmods: t.Node[], context: DeparserContext): string | null {
+    if (!typmods || typmods.length === 0) {
+      return null;
+    }
+
+    const mods = ListUtils.unwrapList(typmods);
+    const intervalFields: { [key: number]: string } = {
+      1: 'year',
+      2: 'month', 
+      4: 'day',
+      8: 'hour',
+      16: 'minute',
+      32: 'second',
+      64: 'year to month',
+      128: 'day to hour',
+      256: 'day to minute',
+      512: 'day to second',
+      1024: 'hour to minute',
+      2048: 'hour to second',
+      4096: 'second'
+    };
+
+    const fieldSpecs = mods.map(mod => {
+      if (mod && typeof mod === 'object') {
+        const aConst = (mod as any).A_Const;
+        if (aConst && aConst.ival) {
+          const ivalValue = typeof aConst.ival === 'object' ? aConst.ival.ival : aConst.ival;
+          return intervalFields[ivalValue] || ivalValue.toString();
+        }
+      }
+      return this.deparse(mod, context);
+    }).filter(Boolean);
+
+    return fieldSpecs.length > 0 ? fieldSpecs.join(' ') : null;
   }
 
   formatTypeMods(typmods: t.Node[], context: DeparserContext): string | null {
