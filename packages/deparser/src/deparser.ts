@@ -759,7 +759,12 @@ export class Deparser implements DeparserVisitor {
       
       // Handle indirection (array indexing, field access, etc.)
       if (node.indirection && node.indirection.length > 0) {
-        const indirectionStrs = ListUtils.unwrapList(node.indirection).map(item => this.visit(item, context));
+        const indirectionStrs = ListUtils.unwrapList(node.indirection).map(item => {
+          if (item.String) {
+            return `.${QuoteUtils.quote(item.String.sval || item.String.str)}`;
+          }
+          return this.visit(item, context);
+        });
         output.push(indirectionStrs.join(''));
       }
       
@@ -769,6 +774,17 @@ export class Deparser implements DeparserVisitor {
       }
     } else if (context.insertColumns && node.name) {
       output.push(QuoteUtils.quote(node.name));
+      
+      // Handle indirection for INSERT column lists (e.g., q.c1.r)
+      if (node.indirection && node.indirection.length > 0) {
+        const indirectionStrs = ListUtils.unwrapList(node.indirection).map(item => {
+          if (item.String) {
+            return `.${QuoteUtils.quote(item.String.sval || item.String.str)}`;
+          }
+          return this.visit(item, context);
+        });
+        output.push(indirectionStrs.join(''));
+      }
     } else {
       if (node.val) {
         output.push(this.deparse(node.val, context));
@@ -1443,7 +1459,7 @@ export class Deparser implements DeparserVisitor {
     let argStr = this.visit(node.arg, context);
     
     const argType = this.getNodeType(node.arg);
-    if (argType === 'TypeCast' || argType === 'SubLink' || argType === 'A_Expr' || argType === 'FuncCall' || argType === 'A_Indirection') {
+    if (argType === 'TypeCast' || argType === 'SubLink' || argType === 'A_Expr' || argType === 'FuncCall' || argType === 'A_Indirection' || argType === 'ColumnRef' || argType === 'RowExpr') {
       argStr = `(${argStr})`;
     }
     

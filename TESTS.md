@@ -12,16 +12,16 @@
 
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
-## Current Status (After TypeCast CAST() Syntax Fix)
-- **Test Suites**: 70 failed, 305 passed, 375 total
-- **Tests**: 87 failed, 563 passed, 650 total  
-- **Pass Rate**: 81.3% test suites, 86.6% individual tests
+## Current Status (After A_Indirection & ResTarget Field Access Fix)
+- **Test Suites**: 69 failed, 306 passed, 375 total
+- **Tests**: 86 failed, 564 passed, 650 total  
+- **Pass Rate**: 81.6% test suites, 86.8% individual tests
 
-**Progress**: 🎉 MAJOR BREAKTHROUGH - reduced from 84→70 failed test suites after TypeCast fix (14 test suite improvement!)
-**Recent Fix**: Fixed TypeCast method to use standard SQL `CAST(expr AS type)` syntax instead of PostgreSQL `expr::type`
-**Test Status**: ✅ 14 test suite improvement achieved - TypeCast now fully compatible with standard SQL syntax
-**Impact**: High-impact fix since CAST expressions appear across many SQL statement types
-**Status**: Excellent progress - now at 81.3% pass rate, ready to tackle remaining 70 failed test suites
+**Progress**: ✅ Continued improvement - reduced from 70→69 failed test suites after A_Indirection/ResTarget fixes
+**Recent Fix**: Fixed A_Indirection parentheses handling for ColumnRef/RowExpr and ResTarget indirection for UPDATE/INSERT
+**Test Status**: ✅ 1 test suite improvement achieved - field access expressions now properly handle parentheses and dots
+**Impact**: Good impact fix since field access expressions appear across many SQL statement types
+**Status**: Steady progress - now at 81.6% pass rate, ready to tackle remaining 69 failed test suites
 
 ## Current High-Impact Issues to Fix
 Based on latest `yarn test` output, key patterns causing multiple test failures:
