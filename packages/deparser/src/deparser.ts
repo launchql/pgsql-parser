@@ -6673,6 +6673,9 @@ export class Deparser implements DeparserVisitor {
         })
         .join(', ');
       output.push(`(${colDefs})`);
+    } else {
+      // Handle empty composite types - still need parentheses
+      output.push('()');
     }
     
     return output.join(' ');
