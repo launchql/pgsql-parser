@@ -6313,7 +6313,11 @@ export class Deparser implements DeparserVisitor {
     if (node.objtype === 'OBJECT_MATVIEW') {
       output.push('MATERIALIZED VIEW');
     } else {
-      output.push('TABLE');
+      if (node.into && node.into.rel && node.into.rel.relpersistence === 't') {
+        output.push('TEMPORARY TABLE');
+      } else {
+        output.push('TABLE');
+      }
     }
     
     if (node.if_not_exists) {
