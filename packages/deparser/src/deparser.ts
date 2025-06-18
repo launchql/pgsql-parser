@@ -1343,7 +1343,7 @@ export class Deparser implements DeparserVisitor {
     let argStr = this.visit(node.arg, context);
     
     const argType = this.getNodeType(node.arg);
-    if (argType === 'TypeCast' || argType === 'SubLink' || argType === 'A_Expr') {
+    if (argType === 'TypeCast' || argType === 'SubLink' || argType === 'A_Expr' || argType === 'FuncCall') {
       argStr = `(${argStr})`;
     }
     

@@ -19,41 +19,59 @@ Working on implementing missing deparser functionality for PostgreSQL 13→17 up
 6. **TypeName Method**: Added SETOF support and nested type handling
 7. **Window Frame Options**: Complex bit-based and hardcoded mapping logic for frame specifications
 
-### 🔧 Currently Debugging: Parentheses Issue in A_Expr
+### ✅ Fixed: Parentheses Issue in A_Expr
 
-**Problem**: The SQL expression `(t.typanalyze = 'range_typanalyze'::regproc) <> (r.rngtypid IS NOT NULL)` is being deparsed as `t.typanalyze = CAST ( 'range_typanalyze' AS regproc ) <> (r.rngtypid IS NOT NULL)` - missing parentheses around the left side.
+**Problem**: The SQL expression `(t.typanalyze = 'range_typanalyze'::regproc) <> (r.rngtypid IS NOT NULL)` was being deparsed as `t.typanalyze = CAST ( 'range_typanalyze' AS regproc ) <> (r.rngtypid IS NOT NULL)` - missing parentheses around the left side.
 
 **Root Cause**: The A_Expr method's parentheses logic was using `if/else if` structure, preventing complex expressions from getting parentheses when they were also A_Expr nodes.
 
-**Attempted Solutions**:
+**Solution Implemented**:
 1. Added `isComplexExpression()` helper method to identify expressions needing parentheses
 2. Modified A_Expr parentheses logic from `if/else if` to separate boolean flags
 3. Enhanced precedence checking for nested expressions
 
-**Current Implementation**:
+**Status**: ✅ RESOLVED - Tests now pass the original `type_sanity-40.sql` case
+
+### ✅ Fixed: A_Indirection Parentheses Issue
+
+**Problem**: The SQL expression `(ts_token_type(cfgparser)).tokid` was being deparsed as `ts_token_type(cfgparser).tokid` - missing parentheses around function calls when accessing fields.
+
+**Root Cause**: The A_Indirection method didn't include FuncCall in the list of node types requiring parentheses.
+
+**Solution Implemented**: Added FuncCall to the parentheses condition in A_Indirection method:
 ```typescript
-// Check if left expression needs parentheses
-let leftNeedsParens = false;
-if (lexpr && 'A_Expr' in lexpr && lexpr.A_Expr?.kind === 'AEXPR_OP') {
-  const leftOp = this.deparseOperatorName(ListUtils.unwrapList(lexpr.A_Expr.name));
-  if (this.needsParentheses(leftOp, operator, 'left')) {
-    leftNeedsParens = true;
-  }
-}
-if (lexpr && this.isComplexExpression(lexpr)) {
-  leftNeedsParens = true;
-}
-if (leftNeedsParens) {
-  leftExpr = this.formatter.parens(leftExpr);
+if (argType === 'TypeCast' || argType === 'SubLink' || argType === 'A_Expr' || argType === 'FuncCall') {
+  argStr = `(${argStr})`;
 }
 ```
 
+**Status**: ✅ RESOLVED - Tests now pass the `upstream/tsearch-6.sql` case
+
+### 🔧 Currently Debugging: DefineStmt OBJECT_TSDICTIONARY Support
+
+**Problem**: CREATE TEXT SEARCH DICTIONARY statements are not supported in the deparser.
+
+**Failing Test**: `upstream/tsdicts-1.sql`
+**Error**: "Unsupported DefineStmt kind: OBJECT_TSDICTIONARY"
+**SQL**: `CREATE TEXT SEARCH DICTIONARY ispell (template = ispell, dictfile = ispell_sample, afffile = ispell_sample)`
+
+**Root Cause**: The DefineStmt method doesn't handle OBJECT_TSDICTIONARY kind.
+
+**Next Steps**:
+1. Examine DefineStmt method implementation
+2. Add support for OBJECT_TSDICTIONARY kind
+3. Implement proper text search dictionary syntax generation
+
 ## Failing Tests Analysis
 
-### Primary Failing Test: `alter-table-column.test.ts`
-- **Specific Case**: `upstream/type_sanity-40.sql`
-- **Error**: "syntax error at or near '<>'"
-- **Issue**: Missing parentheses in complex boolean expressions
+### Current Failing Test: `alter-table-column.test.ts`
+- **Specific Case**: `upstream/tsdicts-1.sql`
+- **Error**: "Unsupported DefineStmt kind: OBJECT_TSDICTIONARY"
+- **Issue**: Missing DefineStmt support for CREATE TEXT SEARCH DICTIONARY
+
+### Previously Fixed: 
+- ✅ `upstream/type_sanity-40.sql` - A_Expr parentheses issue resolved
+- ✅ `upstream/tsearch-6.sql` - A_Indirection parentheses issue resolved
 
 ### Test Pattern
 All kitchen-sink tests follow the pattern:
@@ -121,7 +139,7 @@ Based on previous runs, these test files likely need attention:
 - **Context Awareness**: Different behavior based on statement context
 
 ## Confidence Level
-**Medium-High** 🟡 - The parentheses fix approach is sound and the debugging methodology is systematic. The main challenge is ensuring all edge cases are covered in the complex expression logic.
+**High** 🟢 - Successfully resolved the A_Expr parentheses issue and identified the next problem (A_Indirection). The systematic debugging approach is working well, moving through different node types that need parentheses fixes.
 
 ---
-*Last Updated: Current session - working on A_Expr parentheses fix*
+*Last Updated: Current session - successfully fixed A_Expr and A_Indirection parentheses, now working on DefineStmt OBJECT_TSDICTIONARY support*
