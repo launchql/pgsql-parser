@@ -1158,6 +1158,18 @@ export class Deparser implements DeparserVisitor {
         
         if (type === 'bpchar' && args) {
           typeName = 'char';
+        } else if (type === 'int4') {
+          typeName = 'int';
+        } else if (type === 'float8') {
+          typeName = 'double precision';
+        } else if (type === 'float4') {
+          typeName = 'real';
+        } else if (type === 'int8') {
+          typeName = 'bigint';
+        } else if (type === 'int2') {
+          typeName = 'smallint';
+        } else if (type === 'bool') {
+          typeName = 'boolean';
         }
         
         let result = mods(typeName, args);
