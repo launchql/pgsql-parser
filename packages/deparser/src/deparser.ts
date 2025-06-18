@@ -1134,7 +1134,7 @@ export class Deparser implements DeparserVisitor {
       let result = mods(typeName, args);
       
       if (node.arrayBounds && node.arrayBounds.length > 0) {
-        result += '[]';
+        result += '[]'.repeat(node.arrayBounds.length);
       }
       
       output.push(result);
@@ -1151,14 +1151,19 @@ export class Deparser implements DeparserVisitor {
       
       if (catalog === 'pg_catalog') {
         const builtinTypes = ['int2', 'int4', 'int8', 'float4', 'float8', 'numeric', 'decimal', 
-                             'varchar', 'char', 'text', 'bool', 'date', 'time', 'timestamp', 
+                             'varchar', 'char', 'bpchar', 'text', 'bool', 'date', 'time', 'timestamp', 
                              'timestamptz', 'interval', 'bytea', 'uuid', 'json', 'jsonb'];
         
-        const typeName = builtinTypes.includes(type) ? type : `${catalog}.${type}`;
+        let typeName = builtinTypes.includes(type) ? type : `${catalog}.${type}`;
+        
+        if (type === 'bpchar' && args) {
+          typeName = 'char';
+        }
+        
         let result = mods(typeName, args);
         
         if (node.arrayBounds && node.arrayBounds.length > 0) {
-          result += '[]';
+          result += '[]'.repeat(node.arrayBounds.length);
         }
         
         output.push(result);
@@ -1170,7 +1175,7 @@ export class Deparser implements DeparserVisitor {
     let result = mods(quotedNames.join('.'), args);
     
     if (node.arrayBounds && node.arrayBounds.length > 0) {
-      result += '[]';
+      result += '[]'.repeat(node.arrayBounds.length);
     }
     
     output.push(result);
