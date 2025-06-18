@@ -1150,6 +1150,15 @@ export class Deparser implements DeparserVisitor {
       return name;
     };
 
+    const formatArrayBounds = (arrayBounds: any[]): string => {
+      return arrayBounds.map(bound => {
+        if (bound.Integer && bound.Integer.ival !== undefined && bound.Integer.ival !== -1) {
+          return `[${bound.Integer.ival}]`;
+        }
+        return '[]';
+      }).join('');
+    };
+
     if (names.length === 1) {
       const typeName = names[0];
       
@@ -1162,7 +1171,7 @@ export class Deparser implements DeparserVisitor {
       let result = mods(quotedTypeName, args);
       
       if (node.arrayBounds && node.arrayBounds.length > 0) {
-        result += '[]'.repeat(node.arrayBounds.length);
+        result += formatArrayBounds(node.arrayBounds);
       }
       
       output.push(result);
@@ -1203,7 +1212,7 @@ export class Deparser implements DeparserVisitor {
         let result = mods(typeName, args);
         
         if (node.arrayBounds && node.arrayBounds.length > 0) {
-          result += '[]'.repeat(node.arrayBounds.length);
+          result += formatArrayBounds(node.arrayBounds);
         }
         
         output.push(result);
@@ -1215,7 +1224,7 @@ export class Deparser implements DeparserVisitor {
     let result = mods(quotedNames.join('.'), args);
     
     if (node.arrayBounds && node.arrayBounds.length > 0) {
-      result += '[]'.repeat(node.arrayBounds.length);
+      result += formatArrayBounds(node.arrayBounds);
     }
     
     output.push(result);
@@ -5905,6 +5914,9 @@ export class Deparser implements DeparserVisitor {
         break;
       case 'OBJECT_DATABASE':
         output.push('DATABASE');
+        break;
+      case 'OBJECT_DOMAIN':
+        output.push('DOMAIN');
         break;
       default:
         throw new Error(`Unsupported AlterOwnerStmt objectType: ${node.objectType}`);
