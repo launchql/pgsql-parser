@@ -1219,8 +1219,10 @@ export class Deparser implements DeparserVisitor {
 
   RangeVar(node: t.RangeVar, context: DeparserContext): string {
     const output: string[] = [];
-    // Handle ONLY keyword for inheritance control (but not for type definitions)
-    if ((!('inh' in node) || node.inh === undefined) && context.parentContext !== 'CompositeTypeStmt') {
+    // Handle ONLY keyword for inheritance control (but not for type definitions or ALTER TYPE)
+    if ((!('inh' in node) || node.inh === undefined) && 
+        context.parentContext !== 'CompositeTypeStmt' && 
+        context.parentContext !== 'AlterTypeStmt') {
       output.push('ONLY');
     }
     
@@ -3197,7 +3199,11 @@ export class Deparser implements DeparserVisitor {
     if (node.subtype) {
       switch (node.subtype) {
         case 'AT_AddColumn':
-          output.push('ADD COLUMN');
+          if (context.parentContext === 'AlterTypeStmt') {
+            output.push('ADD ATTRIBUTE');
+          } else {
+            output.push('ADD COLUMN');
+          }
           if (node.missing_ok) {
             output.push('IF NOT EXISTS');
           }
