@@ -3084,6 +3084,31 @@ export class Deparser implements DeparserVisitor {
         if (objects) {
           output.push(objects);
         }
+      } else if (node.removeType === 'OBJECT_OPFAMILY' || node.removeType === 'OBJECT_OPCLASS') {
+        // Handle operator family and operator class objects specially to format name USING access_method correctly
+        const objects = node.objects.map((objList: any) => {
+          if (objList && objList.List && objList.List.items) {
+            const items = objList.List.items.map((item: any) => {
+              if (item.String && item.String.sval) {
+                return item.String.sval;
+              }
+              return this.visit(item, context);
+            }).filter((name: string) => name && name.trim());
+            
+            if (items.length === 2) {
+              const accessMethod = items[0];
+              const objectName = items[1];
+              return `${QuoteUtils.quote(objectName)} USING ${accessMethod}`;
+            }
+            return items.join('.');
+          }
+          
+          const objName = this.visit(objList, context);
+          return objName;
+        }).filter((name: string) => name && name.trim()).join(', ');
+        if (objects) {
+          output.push(objects);
+        }
       } else {
         const objects = node.objects.map((objList: any) => {
           if (Array.isArray(objList)) {
@@ -4094,6 +4119,15 @@ export class Deparser implements DeparserVisitor {
               // AlterRoleStmt - use ADD USER syntax
               return `ADD USER ${roleNames.join(', ')}`;
             }
+          }
+        }
+        if (node.defname === 'addroleto') {
+          // Handle List of RoleSpec nodes for IN ROLE statements
+          if (node.arg && this.getNodeType(node.arg) === 'List') {
+            const listData = this.getNodeData(node.arg);
+            const listItems = ListUtils.unwrapList(listData.items);
+            const roleNames = listItems.map(item => this.visit(item, context));
+            return `WITH IN ROLE ${roleNames.join(', ')}`;
           }
         }
         if (argValue === 'true') {
@@ -5351,6 +5385,8 @@ export class Deparser implements DeparserVisitor {
       if (context.parentNodeType === 'CommentStmt' && 
           context.objtype === 'OBJECT_AGGREGATE') {
         result += '(*)';
+      } else if (context.parentNodeType === 'CreateOpClassItem') {
+        // For operator class items, don't add empty parentheses for operators without arguments
       } else {
         result += '()';
       }
@@ -5845,6 +5881,9 @@ export class Deparser implements DeparserVisitor {
       case 'OBJECT_TSTEMPLATE':
         output.push('TEXT SEARCH TEMPLATE');
         break;
+      case 'OBJECT_FDW':
+        output.push('FOREIGN DATA WRAPPER');
+        break;
       case 'OBJECT_ATTRIBUTE':
         if (node.relationType === 'OBJECT_TYPE') {
           output.push('TYPE');
@@ -5866,7 +5905,19 @@ export class Deparser implements DeparserVisitor {
         : context;
       output.push(this.RangeVar(node.relation, rangeVarContext));
     } else if (node.object) {
-      output.push(this.visit(node.object, context));
+      // Handle operator family and operator class objects specially to format name USING access_method correctly
+      if ((node.renameType === 'OBJECT_OPFAMILY' || node.renameType === 'OBJECT_OPCLASS') && (node.object as any).List) {
+        const items = ListUtils.unwrapList(node.object as any);
+        if (items.length === 2) {
+          const accessMethod = items[0].String?.sval || '';
+          const objectName = items[1].String?.sval || '';
+          output.push(`${QuoteUtils.quote(objectName)} USING ${accessMethod}`);
+        } else {
+          output.push(this.visit(node.object, context));
+        }
+      } else {
+        output.push(this.visit(node.object, context));
+      }
     }
     
     if (node.renameType === 'OBJECT_COLUMN' && node.subname) {
@@ -5932,6 +5983,30 @@ export class Deparser implements DeparserVisitor {
       case 'OBJECT_DOMAIN':
         output.push('DOMAIN');
         break;
+      case 'OBJECT_AGGREGATE':
+        output.push('AGGREGATE');
+        break;
+      case 'OBJECT_CONVERSION':
+        output.push('CONVERSION');
+        break;
+      case 'OBJECT_LANGUAGE':
+        output.push('LANGUAGE');
+        break;
+      case 'OBJECT_OPERATOR':
+        output.push('OPERATOR');
+        break;
+      case 'OBJECT_OPFAMILY':
+        output.push('OPERATOR FAMILY');
+        break;
+      case 'OBJECT_OPCLASS':
+        output.push('OPERATOR CLASS');
+        break;
+      case 'OBJECT_TSDICTIONARY':
+        output.push('TEXT SEARCH DICTIONARY');
+        break;
+      case 'OBJECT_TSCONFIGURATION':
+        output.push('TEXT SEARCH CONFIGURATION');
+        break;
       default:
         throw new Error(`Unsupported AlterOwnerStmt objectType: ${node.objectType}`);
     }
@@ -5939,7 +6014,19 @@ export class Deparser implements DeparserVisitor {
     if (node.relation) {
       output.push(this.RangeVar(node.relation, context));
     } else if (node.object) {
-      output.push(this.visit(node.object, context));
+      // Handle operator family and operator class objects specially to format name USING access_method correctly
+      if ((node.objectType === 'OBJECT_OPFAMILY' || node.objectType === 'OBJECT_OPCLASS') && (node.object as any).List) {
+        const items = ListUtils.unwrapList(node.object as any);
+        if (items.length === 2) {
+          const accessMethod = items[0].String?.sval || '';
+          const objectName = items[1].String?.sval || '';
+          output.push(`${QuoteUtils.quote(objectName)} USING ${accessMethod}`);
+        } else {
+          output.push(this.visit(node.object, context));
+        }
+      } else {
+        output.push(this.visit(node.object, context));
+      }
     }
     
     output.push('OWNER TO');
@@ -7646,18 +7733,18 @@ export class Deparser implements DeparserVisitor {
     
     if (node.itemtype === 1) {
       output.push('OPERATOR');
-      if (node.number) {
-        output.push(node.number.toString());
-      }
+      // For operators, always include the number (default to 0 if undefined)
+      const operatorNumber = node.number !== undefined ? node.number : 0;
+      output.push(operatorNumber.toString());
       if (node.name) {
         const opClassContext = { ...context, parentNodeType: 'CreateOpClassItem' };
         output.push(this.ObjectWithArgs(node.name, opClassContext));
       }
     } else if (node.itemtype === 2) {
       output.push('FUNCTION');
-      if (node.number) {
-        output.push(node.number.toString());
-      }
+      // For functions, always include the number (default to 0 if undefined)
+      const functionNumber = node.number !== undefined ? node.number : 0;
+      output.push(functionNumber.toString());
       if (node.name) {
         const opClassContext = { ...context, parentNodeType: 'CreateOpClassItem' };
         output.push(this.ObjectWithArgs(node.name, opClassContext));
@@ -8483,6 +8570,9 @@ export class Deparser implements DeparserVisitor {
       case 'OBJECT_TSDICTIONARY':
         output.push('TEXT SEARCH DICTIONARY');
         break;
+      case 'OBJECT_AGGREGATE':
+        output.push('AGGREGATE');
+        break;
       default:
         output.push(node.objectType.toString());
     }
@@ -8564,10 +8654,14 @@ export class Deparser implements DeparserVisitor {
         } else {
           output.push(this.visit(node.object as any, context));
         }
-      }else if (node.objectType === 'OBJECT_OPCLASS' && (node.object as any).List) {
-        // Handle operator class objects: ALTER OPERATOR CLASS schema.name USING access_method
+      } else if (node.objectType === 'OBJECT_OPCLASS' && (node.object as any).List) {
+        // Handle operator class objects: ALTER OPERATOR CLASS name USING access_method
         const items = ListUtils.unwrapList(node.object as any);
-        if (items.length === 3) {
+        if (items.length === 2) {
+          const accessMethod = items[0].String?.sval || '';
+          const opClassName = items[1].String?.sval || '';
+          output.push(`${QuoteUtils.quote(opClassName)} USING ${accessMethod}`);
+        } else if (items.length === 3) {
           const accessMethod = items[0].String?.sval || '';
           const schemaName = items[1].String?.sval || '';
           const opClassName = items[2].String?.sval || '';
@@ -8576,9 +8670,13 @@ export class Deparser implements DeparserVisitor {
           output.push(this.visit(node.object as any, context));
         }
       } else if (node.objectType === 'OBJECT_OPFAMILY' && (node.object as any).List) {
-        // Handle operator family objects: ALTER OPERATOR FAMILY schema.name USING access_method
+        // Handle operator family objects: ALTER OPERATOR FAMILY name USING access_method
         const items = ListUtils.unwrapList(node.object as any);
-        if (items.length === 3) {
+        if (items.length === 2) {
+          const accessMethod = items[0].String?.sval || '';
+          const opFamilyName = items[1].String?.sval || '';
+          output.push(`${QuoteUtils.quote(opFamilyName)} USING ${accessMethod}`);
+        } else if (items.length === 3) {
           const accessMethod = items[0].String?.sval || '';
           const schemaName = items[1].String?.sval || '';
           const opFamilyName = items[2].String?.sval || '';
@@ -8586,7 +8684,7 @@ export class Deparser implements DeparserVisitor {
         } else {
           output.push(this.visit(node.object as any, context));
         }
-      } else {
+      }else {
         output.push(this.visit(node.object as any, context));
       }
     }
