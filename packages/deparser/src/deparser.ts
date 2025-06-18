@@ -6861,7 +6861,16 @@ export class Deparser implements DeparserVisitor {
         output.push('CREATE OPERATOR');
         
         if (node.defnames && node.defnames.length > 0) {
-          output.push(ListUtils.unwrapList(node.defnames).map(name => this.visit(name, context)).join('.'));
+          const names = ListUtils.unwrapList(node.defnames).map((name, index) => {
+            if (index === node.defnames.length - 1) {
+              const nodeData = this.getNodeData(name);
+              if (nodeData && nodeData.sval) {
+                return nodeData.sval; // Return operator symbol unquoted
+              }
+            }
+            return this.visit(name, context); // Quote schema/namespace names normally
+          });
+          output.push(names.join('.'));
         }
         
         if (node.definition && node.definition.length > 0) {
