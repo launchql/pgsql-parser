@@ -5112,28 +5112,24 @@ export class Deparser implements DeparserVisitor {
   }
 
   ObjectWithArgs(node: t.ObjectWithArgs, context: DeparserContext): string {
-    const output: string[] = [];
+    let result = '';
     
     if (node.objname && node.objname.length > 0) {
       const names = ListUtils.unwrapList(node.objname).map(name => this.visit(name, context));
-      output.push(names.join('.'));
+      result = names.join('.');
     }
     
     if (node.objfuncargs && node.objfuncargs.length > 0) {
-      output.push('(');
       const funcArgs = ListUtils.unwrapList(node.objfuncargs).map(arg => this.visit(arg, context));
-      output.push(funcArgs.join(', '));
-      output.push(')');
+      result += `(${funcArgs.join(', ')})`;
     } else if (node.objargs && node.objargs.length > 0) {
-      output.push('(');
       const args = ListUtils.unwrapList(node.objargs).map(arg => this.visit(arg, context));
-      output.push(args.join(', '));
-      output.push(')');
+      result += `(${args.join(', ')})`;
     } else if (!node.args_unspecified) {
-      output.push('()');
+      result += '()';
     }
     
-    return output.join(' ');
+    return result;
   }
 
   AlterOperatorStmt(node: t.AlterOperatorStmt, context: DeparserContext): string {
