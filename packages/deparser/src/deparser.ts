@@ -2403,7 +2403,7 @@ export class Deparser implements DeparserVisitor {
     const output: string[] = [];
     
     if (node.name) {
-      output.push(node.name);
+      output.push(QuoteUtils.quote(node.name));
     } else if (node.expr) {
       output.push(this.formatter.parens(this.visit(node.expr, context)));
     }
