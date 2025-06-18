@@ -8004,7 +8004,7 @@ export class Deparser implements DeparserVisitor {
     const output: string[] = ['ALTER FUNCTION'];
     
     if (node.func) {
-      output.push(this.visit(node.func as any, context));
+      output.push(this.ObjectWithArgs(node.func, context));
     }
     
     if (node.actions && node.actions.length > 0) {
