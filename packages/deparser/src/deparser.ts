@@ -430,11 +430,13 @@ export class Deparser implements DeparserVisitor {
         
         if (targetList && targetList.length) {
           const firstTarget = targetList[0];
-          if (firstTarget.val?.MultiAssignRef) {
-            const names = targetList.map(target => target.name);
-            output.push(this.formatter.parens(names.join(',')));
+          
+          if (firstTarget.ResTarget?.val?.MultiAssignRef && targetList.every(target => target.ResTarget?.val?.MultiAssignRef)) {
+            const sortedTargets = targetList.sort((a, b) => a.ResTarget.val.MultiAssignRef.colno - b.ResTarget.val.MultiAssignRef.colno);
+            const names = sortedTargets.map(target => target.ResTarget.name);
+            output.push(this.formatter.parens(names.join(', ')));
             output.push('=');
-            output.push(this.visit(firstTarget.val, context));
+            output.push(this.visit(firstTarget.ResTarget.val.MultiAssignRef.source, context));
           } else {
             const updateContext = { ...context, update: true };
             const targets = targetList.map(target => this.visit(target as Node, updateContext));
