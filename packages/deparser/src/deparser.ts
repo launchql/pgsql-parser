@@ -3931,6 +3931,21 @@ export class Deparser implements DeparserVisitor {
       }
       
       if (parentContext === 'CreateRoleStmt' || parentContext === 'AlterRoleStmt') {
+        if (node.defname === 'rolemembers') {
+          // Handle List of RoleSpec nodes for GROUP statements
+          if (node.arg && this.getNodeType(node.arg) === 'List') {
+            const listData = this.getNodeData(node.arg);
+            const listItems = ListUtils.unwrapList(listData.items);
+            const roleNames = listItems.map(item => this.visit(item, context));
+            
+            if (parentContext === 'CreateRoleStmt') {
+              return `WITH ROLE ${roleNames.join(', ')}`;
+            } else {
+              // AlterRoleStmt - use ADD USER syntax
+              return `ADD USER ${roleNames.join(', ')}`;
+            }
+          }
+        }
         if (argValue === 'true') {
           return node.defname.toUpperCase();
         } else if (argValue === 'false') {
@@ -5867,16 +5882,29 @@ export class Deparser implements DeparserVisitor {
       output.push(grantees);
     }
 
-    if (node.opt && node.opt.length > 0 && node.is_grant) {
-      output.push('WITH ADMIN OPTION');
-    } else if (node.opt && node.opt.length > 0 && !node.is_grant) {
-      output.push('ADMIN OPTION FOR');
+    // Handle admin options properly based on boolean value
+    if (node.opt && node.opt.length > 0) {
+      const adminOption = ListUtils.unwrapList(node.opt).find(opt => 
+        opt.DefElem && opt.DefElem.defname === 'admin'
+      );
+      
+      if (adminOption && adminOption.DefElem && adminOption.DefElem.arg) {
+        const adminValue = adminOption.DefElem.arg.Boolean?.boolval;
+        if (node.is_grant && adminValue === true) {
+          output.push('WITH ADMIN OPTION');
+        } else if (!node.is_grant) {
+          output.push('ADMIN OPTION FOR');
+        }
+      }
     }
 
-    if (node.behavior === 'DROP_CASCADE') {
-      output.push('CASCADE');
-    } else if (node.behavior === 'DROP_RESTRICT') {
-      output.push('RESTRICT');
+    // Only add behavior for REVOKE operations, not GRANT
+    if (!node.is_grant) {
+      if (node.behavior === 'DROP_CASCADE') {
+        output.push('CASCADE');
+      } else if (node.behavior === 'DROP_RESTRICT') {
+        output.push('RESTRICT');
+      }
     }
 
     return output.join(' ');
@@ -6636,19 +6664,45 @@ export class Deparser implements DeparserVisitor {
   }
 
   AlterRoleStmt(node: t.AlterRoleStmt, context: DeparserContext): string {
-    const output: string[] = ['ALTER', 'ROLE'];
+    // Check if this is an ALTER GROUP statement by looking for rolemembers DefElem
+    const isGroupStatement = node.options && 
+      ListUtils.unwrapList(node.options).some(option => 
+        option.DefElem && option.DefElem.defname === 'rolemembers'
+      );
+    
+    const output: string[] = ['ALTER', isGroupStatement ? 'GROUP' : 'ROLE'];
     
     if (node.role) {
-      output.push(this.visit(node.role as any, context));
+      output.push(this.RoleSpec(node.role, context));
     }
     
     if (node.options) {
       const roleContext = { ...context, parentNodeType: 'AlterRoleStmt' };
-      const options = ListUtils.unwrapList(node.options)
-        .map(option => this.visit(option, roleContext))
-        .join(' ');
-      if (options) {
-        output.push(options);
+      
+      // Handle GROUP operations specially based on action value
+      if (isGroupStatement) {
+        const roleMembersOption = ListUtils.unwrapList(node.options).find(option => 
+          option.DefElem && option.DefElem.defname === 'rolemembers'
+        );
+        
+        if (roleMembersOption && roleMembersOption.DefElem) {
+          const operation = node.action === 1 ? 'ADD' : 'DROP';
+          output.push(operation, 'USER');
+          
+          if (roleMembersOption.DefElem.arg && roleMembersOption.DefElem.arg.List) {
+            const users = ListUtils.unwrapList(roleMembersOption.DefElem.arg.List.items)
+              .map(user => this.visit(user, roleContext))
+              .join(', ');
+            output.push(users);
+          }
+        }
+      } else {
+        const options = ListUtils.unwrapList(node.options)
+          .map(option => this.visit(option, roleContext))
+          .join(' ');
+        if (options) {
+          output.push(options);
+        }
       }
     }
     
@@ -6827,7 +6881,7 @@ export class Deparser implements DeparserVisitor {
     const output: string[] = [];
     
     if (node.priv_name) {
-      output.push(node.priv_name.toUpperCase());
+      output.push(node.priv_name);
     } else {
       output.push('ALL');
     }
