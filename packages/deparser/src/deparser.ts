@@ -1173,15 +1173,6 @@ export class Deparser implements DeparserVisitor {
 
   RangeVar(node: t.RangeVar, context: DeparserContext): string {
     const output: string[] = [];
-
-    if (node.schemaname === 'collaboration_public' || node.relname === 'collaboration_public') {
-      console.log('DEBUG RangeVar INPUT:', {
-        schemaname: node.schemaname,
-        relname: node.relname,
-        fullNode: JSON.stringify(node, null, 2)
-      });
-    }
-
     // Handle ONLY keyword for inheritance control (but not for type definitions)
     if ((!('inh' in node) || node.inh === undefined) && context.parentContext !== 'CompositeTypeStmt') {
       output.push('ONLY');
@@ -1202,14 +1193,6 @@ export class Deparser implements DeparserVisitor {
 
     const result = output.join(' ');
     
-    if (node.schemaname === 'collaboration_public' || node.relname === 'collaboration_public') {
-      console.log('DEBUG RangeVar OUTPUT:', {
-        tableName,
-        result,
-        outputArray: output
-      });
-    }
-
     return result;
   }
 
@@ -1469,14 +1452,6 @@ export class Deparser implements DeparserVisitor {
   }
 
   String(node: t.String, context: DeparserContext): string { 
-    if ((node.sval || '').includes('collaboration_public')) {
-      console.log('DEBUG String method called:', {
-        sval: node.sval,
-        context: JSON.stringify(context, null, 2),
-        fullNode: JSON.stringify(node, null, 2)
-      });
-    }
-    
     if (context.isStringLiteral) {
       return `'${node.sval || ''}'`;
     }
@@ -1490,13 +1465,6 @@ export class Deparser implements DeparserVisitor {
     }
     
     const result = QuoteUtils.quote(value);
-    
-    if ((node.sval || '').includes('collaboration_public')) {
-      console.log('DEBUG String method result:', {
-        value,
-        result
-      });
-    }
     
     return result; 
   }
@@ -1851,8 +1819,6 @@ export class Deparser implements DeparserVisitor {
     const frameOptions = node.frameOptions;
     const frameParts: string[] = [];
     
-    console.log(`DEBUG formatWindowFrame: frameOptions=${frameOptions}`);
-    
     if (frameOptions & 0x01) { // FRAMEOPTION_NONDEFAULT
       if (frameOptions & 0x02) { // FRAMEOPTION_RANGE
         frameParts.push('RANGE');
@@ -1869,25 +1835,20 @@ export class Deparser implements DeparserVisitor {
     
     // Handle specific frameOptions values that have known mappings
     if (frameOptions === 789) {
-      console.log('DEBUG: Using hardcoded mapping for frameOptions 789');
       boundsParts.push('CURRENT ROW');
       boundsParts.push('AND UNBOUNDED FOLLOWING');
     } else if (frameOptions === 1077) {
-      console.log('DEBUG: Using hardcoded mapping for frameOptions 1077');
       boundsParts.push('UNBOUNDED PRECEDING');
       boundsParts.push('AND CURRENT ROW');
     } else if (frameOptions === 18453) {
-      console.log('DEBUG: Using hardcoded mapping for frameOptions 18453');
       if (node.startOffset && node.endOffset) {
         boundsParts.push(`${this.visit(node.startOffset, {})} PRECEDING`);
         boundsParts.push(`AND ${this.visit(node.endOffset, {})} FOLLOWING`);
       }
     } else if (frameOptions === 1557) {
-      console.log('DEBUG: Using hardcoded mapping for frameOptions 1557');
       boundsParts.push('CURRENT ROW');
       boundsParts.push('AND CURRENT ROW');
     } else if (frameOptions === 16917) {
-      console.log('DEBUG: Using hardcoded mapping for frameOptions 16917');
       boundsParts.push('CURRENT ROW');
       if (node.endOffset) {
         boundsParts.push(`AND ${this.visit(node.endOffset, {})} FOLLOWING`);
@@ -1895,8 +1856,6 @@ export class Deparser implements DeparserVisitor {
     } else if (frameOptions === 1058) {
       return null;
     } else {
-      console.log('DEBUG: Using bit-based logic for frameOptions', frameOptions);
-      
       // Handle start bound - prioritize explicit offset values over bit flags
       if (node.startOffset) {
         if (frameOptions & 0x400) { // FRAMEOPTION_START_VALUE_PRECEDING
@@ -6676,13 +6635,7 @@ export class Deparser implements DeparserVisitor {
       output.push(`(${options})`);
     }
     
-    const finalResult = output.join(' ');
-    console.log('DEBUG CreateTableAsStmt final:', {
-      outputArray: output,
-      finalResult
-    });
-    
-    return finalResult;
+    return output.join(' ');
   }
 
   RefreshMatViewStmt(node: t.RefreshMatViewStmt, context: DeparserContext): string {
@@ -7539,7 +7492,6 @@ export class Deparser implements DeparserVisitor {
     if (node.op !== 'IS_XMLELEMENT' && node.op !== 'IS_XMLPARSE' && node.op !== 'IS_XMLROOT' && node.op !== 'IS_DOCUMENT') {
       if (node.name) {
         const quotedName = QuoteUtils.quote(node.name);
-        console.log(`DEBUG XmlExpr name processing: original="${node.name}", quoted="${quotedName}", op="${node.op}"`);
         output.push(`NAME ${quotedName}`);
       }
       
