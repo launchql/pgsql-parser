@@ -5708,6 +5708,8 @@ export class Deparser implements DeparserVisitor {
       output.push('RENAME CONSTRAINT', `"${node.subname}"`, 'TO');
     } else if (node.renameType === 'OBJECT_TABCONSTRAINT' && node.subname) {
       output.push('RENAME CONSTRAINT', `"${node.subname}"`, 'TO');
+    } else if (node.renameType === 'OBJECT_ATTRIBUTE' && node.subname) {
+      output.push('RENAME ATTRIBUTE', `"${node.subname}"`, 'TO');
     } else {
       output.push('RENAME TO');
     }
