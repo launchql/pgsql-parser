@@ -176,6 +176,15 @@ export class Deparser implements DeparserVisitor {
       output.push(this.visit(node.havingClause as Node, context));
     }
 
+    if (node.windowClause) {
+      output.push('WINDOW');
+      const windowList = ListUtils.unwrapList(node.windowClause);
+      const windowClauses = windowList
+        .map(e => this.visit(e as Node, context))
+        .join(', ');
+      output.push(windowClauses);
+    }
+
     if (node.sortClause) {
       output.push('ORDER BY');
       const sortList = ListUtils.unwrapList(node.sortClause);
@@ -709,66 +718,71 @@ export class Deparser implements DeparserVisitor {
     }
 
     if (node.over) {
-      const windowParts: string[] = [];
-      
-      if (node.over.partitionClause) {
-        const partitions = ListUtils.unwrapList(node.over.partitionClause);
-        const partitionStrs = partitions.map(p => this.visit(p, context));
-        windowParts.push(`PARTITION BY ${partitionStrs.join(', ')}`);
-      }
-      
-      if (node.over.orderClause) {
-        const orders = ListUtils.unwrapList(node.over.orderClause);
-        const orderStrs = orders.map(o => this.visit(o, context));
-        windowParts.push(`ORDER BY ${orderStrs.join(', ')}`);
-      }
-      
-      // Handle window frame specifications - only add explicit frame clause if not default
-      if (node.over.frameOptions !== undefined && node.over.frameOptions !== 0 && node.over.frameOptions !== 1058) {
-        const frameOptions = node.over.frameOptions;
-        let frameClause = '';
-        
-        if (frameOptions & 0x01) { // FRAMEOPTION_RANGE
-          frameClause = 'RANGE';
-        } else if (frameOptions & 0x02) { // FRAMEOPTION_ROWS
-          frameClause = 'ROWS';
-        } else if (frameOptions & 0x04) { // FRAMEOPTION_GROUPS
-          frameClause = 'GROUPS';
-        }
-        
-        if (frameClause) {
-          frameClause += ' BETWEEN';
-          
-          // Handle start bound
-          if (node.over.startOffset) {
-            frameClause += ` ${this.visit(node.over.startOffset, context)} PRECEDING`;
-          } else if (frameOptions & 0x10) { // FRAMEOPTION_START_UNBOUNDED_PRECEDING
-            frameClause += ' UNBOUNDED PRECEDING';
-          } else if (frameOptions & 0x20) { // FRAMEOPTION_START_CURRENT_ROW
-            frameClause += ' CURRENT ROW';
-          }
-          
-          frameClause += ' AND';
-          
-          // Handle end bound
-          if (node.over.endOffset) {
-            frameClause += ` ${this.visit(node.over.endOffset, context)} FOLLOWING`;
-          } else if (frameOptions & 0x40) { // FRAMEOPTION_END_UNBOUNDED_FOLLOWING
-            frameClause += ' UNBOUNDED FOLLOWING';
-          } else if (frameOptions & 0x80) { // FRAMEOPTION_END_CURRENT_ROW
-            frameClause += ' CURRENT ROW';
-          } else {
-            frameClause += ' CURRENT ROW';
-          }
-          
-          windowParts.push(frameClause);
-        }
-      }
-      
-      if (windowParts.length > 0) {
-        result += ` OVER (${windowParts.join(' ')})`;
+      // Handle named window references first
+      if (node.over.name) {
+        result += ` OVER ${node.over.name}`;
       } else {
-        result += ` OVER ()`;
+        const windowParts: string[] = [];
+        
+        if (node.over.partitionClause) {
+          const partitions = ListUtils.unwrapList(node.over.partitionClause);
+          const partitionStrs = partitions.map(p => this.visit(p, context));
+          windowParts.push(`PARTITION BY ${partitionStrs.join(', ')}`);
+        }
+        
+        if (node.over.orderClause) {
+          const orders = ListUtils.unwrapList(node.over.orderClause);
+          const orderStrs = orders.map(o => this.visit(o, context));
+          windowParts.push(`ORDER BY ${orderStrs.join(', ')}`);
+        }
+        
+        // Handle window frame specifications - only add explicit frame clause if not default
+        if (node.over.frameOptions !== undefined && node.over.frameOptions !== 0 && node.over.frameOptions !== 1058) {
+          const frameOptions = node.over.frameOptions;
+          let frameClause = '';
+          
+          if (frameOptions & 0x01) { // FRAMEOPTION_RANGE
+            frameClause = 'RANGE';
+          } else if (frameOptions & 0x02) { // FRAMEOPTION_ROWS
+            frameClause = 'ROWS';
+          } else if (frameOptions & 0x04) { // FRAMEOPTION_GROUPS
+            frameClause = 'GROUPS';
+          }
+          
+          if (frameClause) {
+            frameClause += ' BETWEEN';
+            
+            // Handle start bound
+            if (node.over.startOffset) {
+              frameClause += ` ${this.visit(node.over.startOffset, context)} PRECEDING`;
+            } else if (frameOptions & 0x10) { // FRAMEOPTION_START_UNBOUNDED_PRECEDING
+              frameClause += ' UNBOUNDED PRECEDING';
+            } else if (frameOptions & 0x20) { // FRAMEOPTION_START_CURRENT_ROW
+              frameClause += ' CURRENT ROW';
+            }
+            
+            frameClause += ' AND';
+            
+            // Handle end bound
+            if (node.over.endOffset) {
+              frameClause += ` ${this.visit(node.over.endOffset, context)} FOLLOWING`;
+            } else if (frameOptions & 0x40) { // FRAMEOPTION_END_UNBOUNDED_FOLLOWING
+              frameClause += ' UNBOUNDED FOLLOWING';
+            } else if (frameOptions & 0x80) { // FRAMEOPTION_END_CURRENT_ROW
+              frameClause += ' CURRENT ROW';
+            } else {
+              frameClause += ' CURRENT ROW';
+            }
+            
+            windowParts.push(frameClause);
+          }
+        }
+        
+        if (windowParts.length > 0) {
+          result += ` OVER (${windowParts.join(' ')})`;
+        } else {
+          result += ` OVER ()`;
+        }
       }
     }
 
@@ -1656,7 +1670,13 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (windowParts.length > 0) {
+      if (node.name) {
+        output.push('AS');
+      }
       output.push(`(${windowParts.join(' ')})`);
+    } else if (node.name) {
+      output.push('AS');
+      output.push('()');
     } else if (output.length === 0) {
       output.push('()');
     }
@@ -3610,6 +3630,14 @@ export class Deparser implements DeparserVisitor {
         return `${node.defname.toUpperCase()} ${argValue}`;
       }
       
+      if (parentContext === 'ExplainStmt') {
+        if (argValue) {
+          return `${node.defname.toUpperCase()} ${argValue.toUpperCase()}`;
+        } else {
+          return node.defname.toUpperCase();
+        }
+      }
+      
       if (parentContext === 'CreateFunctionStmt') {
         if (node.defname === 'as') {
           if (Array.isArray(argValue)) {
@@ -5009,7 +5037,8 @@ export class Deparser implements DeparserVisitor {
     const output: string[] = ['EXPLAIN'];
     
     if (node.options && node.options.length > 0) {
-      const options = ListUtils.unwrapList(node.options).map(option => this.visit(option, context));
+      const explainContext = { ...context, parentNodeType: 'ExplainStmt' };
+      const options = ListUtils.unwrapList(node.options).map(option => this.visit(option, explainContext));
       output.push(`(${options.join(', ')})`);
     }
     
@@ -5776,14 +5805,14 @@ export class Deparser implements DeparserVisitor {
 
     const timing: string[] = [];
     if (node.timing & 2) timing.push('BEFORE');
-    if (node.timing & 4) timing.push('AFTER');
-    if (node.timing & 8) timing.push('INSTEAD OF');
+    else if (node.timing & 64) timing.push('INSTEAD OF');
+    else timing.push('AFTER'); // Default timing when no specific timing is set
     output.push(timing.join(' '));
 
     const events: string[] = [];
-    if (node.events & 16) events.push('INSERT');
+    if (node.events & 4) events.push('INSERT');
     if (node.events & 8) events.push('DELETE');
-    if (node.events & 4) events.push('UPDATE');
+    if (node.events & 16) events.push('UPDATE');
     if (node.events & 32) events.push('TRUNCATE');
     output.push(events.join(' OR '));
 
