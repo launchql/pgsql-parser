@@ -1983,7 +1983,7 @@ export class Deparser implements DeparserVisitor {
     
     if (node.name) {
       output.push(node.name);
-      output.push(':=');
+      output.push('=>');
     }
     
     if (node.arg) {
@@ -2676,6 +2676,8 @@ export class Deparser implements DeparserVisitor {
 
     if (node.behavior === 'DROP_CASCADE') {
       output.push('CASCADE');
+    } else if (node.behavior === 'DROP_RESTRICT') {
+      output.push('RESTRICT');
     }
 
     return output.join(' ');
