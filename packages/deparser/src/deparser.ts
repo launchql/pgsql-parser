@@ -8267,6 +8267,10 @@ export class Deparser implements DeparserVisitor {
         output.push(node.objectType.toString());
     }
     
+    if (node.missing_ok) {
+      output.push('IF EXISTS');
+    }
+    
     if (node.relation && node.objectType === 'OBJECT_TABLE') {
       output.push(this.RangeVar(node.relation, context));
     } else if (node.object) {
