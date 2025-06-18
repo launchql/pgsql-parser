@@ -12,13 +12,14 @@
 
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
-## Current Status (After EXCLUDE Constraint Fix)
-- **Test Suites**: 93 failed, 282 passed, 375 total
-- **Tests**: 110 failed, 540 passed, 650 total
-- **Pass Rate**: 75.2% test suites, 83.1% individual tests
+## Current Status (After EXCLUDE Constraint Operator Fix)
+- **Test Suites**: 89 failed, 286 passed, 375 total
+- **Tests**: 106 failed, 544 passed, 650 total  
+- **Pass Rate**: 76.3% test suites, 83.7% individual tests
 
-**Progress**: ✅ Improved from 95→93 failed test suites after adding CONSTR_EXCLUSION support
-**Recent Fix**: Added EXCLUDE USING constraint handling to resolve rangetypes test failures
+**Progress**: ✅ Improved from 93→89 failed test suites after fixing EXCLUDE operator quoting
+**Recent Fix**: Fixed EXCLUDE constraint operator quoting (= and && were incorrectly quoted as "=" and "&&")
+**Test Fixed**: ✅ original-upstream-rangetypes.test.ts now PASSES
 
 ## Known Regressions Introduced
 Based on `yarn test` output, recent changes broke several previously passing tests:
