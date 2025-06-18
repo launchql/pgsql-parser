@@ -4040,10 +4040,11 @@ export class Deparser implements DeparserVisitor {
       
       // Handle AT_SetRelOptions context - don't quote values that should be type names
       if (parentContext === 'AlterTableCmd' || parentContext === 'AlterTableStmt' || context.parentContext === 'AlterTableCmd') {
+        const optionName = node.defnamespace ? `${node.defnamespace}.${node.defname}` : node.defname;
         if (node.arg && this.getNodeType(node.arg) === 'TypeName') {
-          return `${node.defname} = ${argValue}`;
+          return `${optionName} = ${argValue}`;
         }
-        return `${node.defname} = ${argValue}`;
+        return `${optionName} = ${argValue}`;
       }
       
       const quotedValue = typeof argValue === 'string' 
