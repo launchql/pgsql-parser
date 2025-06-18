@@ -889,10 +889,22 @@ export class Deparser implements DeparserVisitor {
     if (node.agg_order && node.agg_order.length > 0) {
       const orderItems = ListUtils.unwrapList(node.agg_order);
       const orderStrs = orderItems.map(item => this.visit(item, context));
-      orderByClause = ` ORDER BY ${orderStrs.join(', ')}`;
+      if (node.agg_within_group) {
+        // For WITHIN GROUP aggregates, ORDER BY goes outside the parentheses
+        orderByClause = ` WITHIN GROUP (ORDER BY ${orderStrs.join(', ')})`;
+      } else {
+        // For regular aggregates, ORDER BY goes inside the parentheses
+        orderByClause = ` ORDER BY ${orderStrs.join(', ')}`;
+      }
     }
 
-    let result = `${name}(${params.join(', ')}${orderByClause})`;
+    let result;
+    if (node.agg_within_group && orderByClause) {
+      result = `${name}(${params.join(', ')})${orderByClause}`;
+    } else {
+      // For regular functions, ORDER BY goes inside the parentheses
+      result = `${name}(${params.join(', ')}${orderByClause})`;
+    }
 
     if (node.agg_filter) {
       result += ` FILTER (WHERE ${this.visit(node.agg_filter, context)})`;
