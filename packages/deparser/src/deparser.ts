@@ -3232,8 +3232,19 @@ export class Deparser implements DeparserVisitor {
           }
           output.push('TYPE');
           if (node.def) {
-            const typeDef = this.visit(node.def, context);
-            output.push(typeDef);
+            const nodeData = this.getNodeData(node.def);
+            if (nodeData && nodeData.typeName) {
+              output.push(this.TypeName(nodeData.typeName, context));
+              // Handle USING clause (stored in raw_default for ALTER COLUMN TYPE)
+              if (nodeData.raw_default) {
+                output.push('USING');
+                output.push(this.visit(nodeData.raw_default, context));
+              }
+            } else {
+              // Fallback to original behavior
+              const typeDef = this.visit(node.def, context);
+              output.push(typeDef);
+            }
           }
           break;
         case 'AT_SetTableSpace':
