@@ -1527,7 +1527,7 @@ export class Deparser implements DeparserVisitor {
   }
 
   String(node: t.String, context: DeparserContext): string { 
-    if (context.isStringLiteral) {
+    if (context.isStringLiteral || context.isEnumValue) {
       return `'${node.sval || ''}'`;
     }
     
@@ -3833,8 +3833,9 @@ export class Deparser implements DeparserVisitor {
     output.push('AS', 'ENUM');
     
     if (node.vals && node.vals.length > 0) {
+      const enumContext = { ...context, isEnumValue: true };
       const values = ListUtils.unwrapList(node.vals)
-        .map(val => `'${this.visit(val, context)}'`)
+        .map(val => this.visit(val, enumContext))
         .join(', ');
       output.push(`(${values})`);
     } else {
