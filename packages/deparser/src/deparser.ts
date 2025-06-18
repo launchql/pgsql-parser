@@ -1536,7 +1536,8 @@ export class Deparser implements DeparserVisitor {
     if (context.parentNodeType === 'DefElem' || 
         context.parentNodeType === 'GrantStmt' ||
         context.parentNodeType === 'AccessPriv' ||
-        context.parentNodeType === 'CreateOpClassItem') {
+        context.parentNodeType === 'CreateOpClassItem' ||
+        context.parentNodeType === 'ObjectWithArgs') {
       return value;
     }
     
@@ -5151,7 +5152,8 @@ export class Deparser implements DeparserVisitor {
     let result = '';
     
     if (node.objname && node.objname.length > 0) {
-      const names = ListUtils.unwrapList(node.objname).map(name => this.visit(name, context));
+      const objContext = { ...context, parentNodeType: 'ObjectWithArgs' };
+      const names = ListUtils.unwrapList(node.objname).map(name => this.visit(name, objContext));
       result = names.join('.');
     }
     
