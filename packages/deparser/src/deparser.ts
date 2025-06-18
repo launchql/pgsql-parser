@@ -3178,14 +3178,18 @@ export class Deparser implements DeparserVisitor {
       output.push('IF EXISTS');
     }
 
+    const alterContext = node.objtype === 'OBJECT_TYPE' 
+      ? { ...context, parentContext: 'AlterTypeStmt' }
+      : context;
+
     if (node.relation) {
-      const relationStr = this.RangeVar(node.relation, context);
+      const relationStr = this.RangeVar(node.relation, alterContext);
       output.push(relationStr);
     }
 
     if (node.cmds && node.cmds.length > 0) {
       const commandsStr = ListUtils.unwrapList(node.cmds)
-        .map(cmd => this.visit(cmd, context))
+        .map(cmd => this.visit(cmd, alterContext))
         .join(', ');
       output.push(commandsStr);
     }
