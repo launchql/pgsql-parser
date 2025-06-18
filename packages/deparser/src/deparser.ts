@@ -3295,6 +3295,12 @@ export class Deparser implements DeparserVisitor {
               output.push(typeDef);
             }
           }
+          // Handle CASCADE/RESTRICT behavior for ALTER COLUMN TYPE operations
+          if (node.behavior === 'DROP_CASCADE') {
+            output.push('CASCADE');
+          } else if (node.behavior === 'DROP_RESTRICT') {
+            output.push('RESTRICT');
+          }
           break;
         case 'AT_SetTableSpace':
           output.push('SET TABLESPACE');
