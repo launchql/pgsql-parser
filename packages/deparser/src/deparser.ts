@@ -1672,6 +1672,13 @@ export class Deparser implements DeparserVisitor {
       output.push(this.TypeName(node.typeName, context));
     }
 
+    if (node.fdwoptions && node.fdwoptions.length > 0) {
+      output.push('OPTIONS');
+      const columnContext = { ...context, parentNodeType: 'ColumnDef' };
+      const options = ListUtils.unwrapList(node.fdwoptions).map(opt => this.visit(opt, columnContext));
+      output.push(`(${options.join(', ')})`);
+    }
+
     if (node.collClause) {
       output.push(this.CollateClause(node.collClause, context));
     }
@@ -3346,6 +3353,13 @@ export class Deparser implements DeparserVisitor {
               parts.push(this.TypeName(colDefData.typeName, context));
             }
             
+            if (colDefData.fdwoptions && colDefData.fdwoptions.length > 0) {
+              parts.push('OPTIONS');
+              const columnContext = { ...context, parentNodeType: 'ColumnDef' };
+              const options = ListUtils.unwrapList(colDefData.fdwoptions).map(opt => this.visit(opt, columnContext));
+              parts.push(`(${options.join(', ')})`);
+            }
+            
             if (colDefData.constraints) {
               const constraints = ListUtils.unwrapList(colDefData.constraints);
               const constraintStrs = constraints.map(constraint => {
@@ -3805,9 +3819,10 @@ export class Deparser implements DeparserVisitor {
             output.push(QuoteUtils.quote(node.name));
           }
           output.push('OPTIONS');
-          if (node.def && Array.isArray(node.def)) {
+          if (node.def) {
+            const alterColumnContext = { ...context, alterColumnOptions: true };
             const options = ListUtils.unwrapList(node.def)
-              .map(option => this.visit(option, context))
+              .map(option => this.visit(option, alterColumnContext))
               .join(', ');
             output.push(`(${options})`);
           }
@@ -3843,9 +3858,10 @@ export class Deparser implements DeparserVisitor {
           break;
         case 'AT_GenericOptions':
           output.push('OPTIONS');
-          if (node.def && Array.isArray(node.def)) {
+          if (node.def) {
+            const alterTableContext = { ...context, alterTableOptions: true };
             const options = ListUtils.unwrapList(node.def)
-              .map(option => this.visit(option, context))
+              .map(option => this.visit(option, alterTableContext))
               .join(', ');
             output.push(`(${options})`);
           }
@@ -4096,9 +4112,9 @@ export class Deparser implements DeparserVisitor {
       return '';
     }
     
-    // Handle AlterFdwStmt special cases first (before checking node.arg)
+    // Handle FDW-related statements and ALTER OPTIONS that use space format for options
     const parentContext = context.parentNodeType;
-    if (parentContext === 'AlterFdwStmt') {
+    if (parentContext === 'AlterFdwStmt' || parentContext === 'CreateFdwStmt' || parentContext === 'CreateForeignServerStmt' || parentContext === 'AlterForeignServerStmt' || parentContext === 'CreateUserMappingStmt' || parentContext === 'AlterUserMappingStmt' || parentContext === 'ColumnDef' || parentContext === 'CreateForeignTableStmt' || parentContext === 'ImportForeignSchemaStmt' || context.alterColumnOptions || context.alterTableOptions) {
       if (['handler', 'validator'].includes(node.defname)) {
         if (!node.arg) {
           return `NO ${node.defname.toUpperCase()}`;
@@ -4114,7 +4130,22 @@ export class Deparser implements DeparserVisitor {
         const quotedValue = typeof argValue === 'string' && !argValue.startsWith("'") 
           ? `'${argValue}'` 
           : argValue;
-        return `${node.defname} ${quotedValue}`;
+        
+        if (node.defaction === 'DEFELEM_ADD') {
+          return `ADD ${node.defname} ${quotedValue}`;
+        } else if (node.defaction === 'DEFELEM_DROP') {
+          return `DROP ${node.defname}`;
+        } else if (node.defaction === 'DEFELEM_SET') {
+          return `SET ${node.defname} ${quotedValue}`;
+        }
+        
+        const quotedDefname = node.defname.includes(' ') || node.defname.includes('-') 
+          ? `"${node.defname}"` 
+          : node.defname;
+        return `${quotedDefname} ${quotedValue}`;
+      } else if (node.defaction === 'DEFELEM_DROP') {
+        // Handle DROP without argument
+        return `DROP ${node.defname}`;
       }
     }
     
@@ -4129,6 +4160,17 @@ export class Deparser implements DeparserVisitor {
           ? QuoteUtils.escape(argValue) 
           : argValue;
         return `${node.defname} = ${quotedValue}`;
+      }
+      
+      // CreateForeignServerStmt and AlterForeignServerStmt use space format like CreateFdwStmt
+      if (parentContext === 'CreateForeignServerStmt' || parentContext === 'AlterForeignServerStmt') {
+        const quotedValue = typeof argValue === 'string' 
+          ? QuoteUtils.escape(argValue) 
+          : argValue;
+        const quotedDefname = node.defname.includes(' ') || node.defname.includes('-') 
+          ? `"${node.defname}"` 
+          : node.defname;
+        return `${quotedDefname} ${quotedValue}`;
       }
       
       if (parentContext === 'CreateRoleStmt' || parentContext === 'AlterRoleStmt') {
@@ -4282,6 +4324,8 @@ export class Deparser implements DeparserVisitor {
             : argValue;
           return `${node.defname} ${quotedValue}`;
         }
+
+
         
 
         
@@ -4797,6 +4841,12 @@ export class Deparser implements DeparserVisitor {
         case 'OBJECT_EVENT_TRIGGER':
           output.push('EVENT TRIGGER');
           break;
+        case 'OBJECT_FOREIGN_SERVER':
+          output.push('SERVER');
+          break;
+        case 'OBJECT_FOREIGN_TABLE':
+          output.push('FOREIGN TABLE');
+          break;
         default:
           output.push(node.objtype.replace('OBJECT_', ''));
       }
@@ -4977,12 +5027,13 @@ export class Deparser implements DeparserVisitor {
     output.push('SERVER');
     
     if (node.servername) {
-      output.push(`"${node.servername}"`);
+      output.push(node.servername);
     }
     
     if (node.options && node.options.length > 0) {
       output.push('OPTIONS');
-      const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, context));
+      const userMappingContext = { ...context, parentNodeType: 'CreateUserMappingStmt' };
+      const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, userMappingContext));
       output.push(`(${options.join(', ')})`);
     }
     
@@ -5582,11 +5633,11 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.servertype) {
-      output.push('TYPE', QuoteUtils.quote(node.servertype));
+      output.push('TYPE', QuoteUtils.escape(node.servertype));
     }
     
     if (node.version) {
-      output.push('VERSION', QuoteUtils.quote(node.version));
+      output.push('VERSION', QuoteUtils.escape(node.version));
     }
     
     if (node.fdwname) {
@@ -5596,7 +5647,8 @@ export class Deparser implements DeparserVisitor {
     if (node.options && node.options.length > 0) {
       output.push('OPTIONS');
       output.push('(');
-      const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, context));
+      const optionsContext = { ...context, parentNodeType: 'CreateForeignServerStmt' };
+      const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, optionsContext));
       output.push(options.join(', '));
       output.push(')');
     }
@@ -5612,13 +5664,14 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.version) {
-      output.push('VERSION', QuoteUtils.quote(node.version));
+      output.push('VERSION', QuoteUtils.escape(node.version));
     }
     
     if (node.options && node.options.length > 0) {
       output.push('OPTIONS');
       output.push('(');
-      const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, context));
+      const optionsContext = { ...context, parentNodeType: 'AlterForeignServerStmt' };
+      const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, optionsContext));
       output.push(options.join(', '));
       output.push(')');
     }
@@ -5643,10 +5696,9 @@ export class Deparser implements DeparserVisitor {
     
     if (node.options && node.options.length > 0) {
       output.push('OPTIONS');
-      output.push('(');
-      const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, context));
-      output.push(options.join(', '));
-      output.push(')');
+      const userMappingContext = { ...context, parentNodeType: 'AlterUserMappingStmt' };
+      const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, userMappingContext));
+      output.push(`(${options.join(', ')})`);
     }
     
     return output.join(' ');
@@ -5690,19 +5742,15 @@ export class Deparser implements DeparserVisitor {
         case 'FDW_IMPORT_SCHEMA_LIMIT_TO':
           output.push('LIMIT', 'TO');
           if (node.table_list && node.table_list.length > 0) {
-            output.push('(');
             const tables = ListUtils.unwrapList(node.table_list).map(table => this.visit(table, context));
-            output.push(tables.join(', '));
-            output.push(')');
+            output.push(`(${tables.join(', ')})`);
           }
           break;
         case 'FDW_IMPORT_SCHEMA_EXCEPT':
           output.push('EXCEPT');
           if (node.table_list && node.table_list.length > 0) {
-            output.push('(');
             const tables = ListUtils.unwrapList(node.table_list).map(table => this.visit(table, context));
-            output.push(tables.join(', '));
-            output.push(')');
+            output.push(`(${tables.join(', ')})`);
           }
           break;
         default:
@@ -5723,11 +5771,9 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.options && node.options.length > 0) {
-      output.push('OPTIONS');
-      output.push('(');
-      const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, context));
-      output.push(options.join(', '));
-      output.push(')');
+      const importSchemaContext = { ...context, parentNodeType: 'ImportForeignSchemaStmt' };
+      const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, importSchemaContext));
+      output.push(`OPTIONS (${options.join(', ')})`);
     }
     
     return output.join(' ');
@@ -5934,7 +5980,11 @@ export class Deparser implements DeparserVisitor {
         output.push('DATABASE');
         break;
       case 'OBJECT_COLUMN':
-        output.push('TABLE');
+        if (node.relationType === 'OBJECT_FOREIGN_TABLE') {
+          output.push('FOREIGN TABLE');
+        } else {
+          output.push('TABLE');
+        }
         break;
       case 'OBJECT_DOMAIN':
         output.push('DOMAIN');
@@ -6155,6 +6205,12 @@ export class Deparser implements DeparserVisitor {
       case 'OBJECT_EVENT_TRIGGER':
         output.push('EVENT TRIGGER');
         break;
+      case 'OBJECT_FDW':
+        output.push('FOREIGN DATA WRAPPER');
+        break;
+      case 'OBJECT_FOREIGN_SERVER':
+        output.push('SERVER');
+        break;
       default:
         throw new Error(`Unsupported AlterOwnerStmt objectType: ${node.objectType}`);
     }
@@ -6255,6 +6311,10 @@ export class Deparser implements DeparserVisitor {
           output.push('DOMAIN');
         } else if (node.objtype === 'OBJECT_LARGEOBJECT') {
           output.push('LARGE OBJECT');
+        } else if (node.objtype === 'OBJECT_FDW') {
+          output.push('FOREIGN', 'DATA', 'WRAPPER');
+        } else if (node.objtype === 'OBJECT_FOREIGN_SERVER') {
+          output.push('FOREIGN', 'SERVER');
         }
         if (node.objects && node.objects.length > 0) {
           const objects = ListUtils.unwrapList(node.objects)
@@ -8719,6 +8779,9 @@ export class Deparser implements DeparserVisitor {
       case 'OBJECT_AGGREGATE':
         output.push('AGGREGATE');
         break;
+      case 'OBJECT_FOREIGN_TABLE':
+        output.push('FOREIGN TABLE');
+        break;
       default:
         output.push(node.objectType.toString());
     }
@@ -8727,7 +8790,7 @@ export class Deparser implements DeparserVisitor {
       output.push('IF EXISTS');
     }
     
-    if (node.relation && node.objectType === 'OBJECT_TABLE') {
+    if (node.relation && (node.objectType === 'OBJECT_TABLE' || node.objectType === 'OBJECT_FOREIGN_TABLE')) {
       output.push(this.RangeVar(node.relation, context));
     } else if (node.object) {
       // Handle domain objects specially to format schema.domain correctly
@@ -8884,9 +8947,16 @@ export class Deparser implements DeparserVisitor {
       output.push(this.visit(node.base.relation as any, context));
     }
     
-    if (node.base && node.base.tableElts && node.base.tableElts.length > 0) {
+    if (node.base && node.base.tableElts) {
       const elementStrs = ListUtils.unwrapList(node.base.tableElts).map(el => this.visit(el, context));
       output.push(`(${elementStrs.join(', ')})`);
+    } else {
+      output.push('()');
+    }
+    
+    if (node.base && node.base.inhRelations && node.base.inhRelations.length > 0) {
+      const inheritStrs = ListUtils.unwrapList(node.base.inhRelations).map(rel => this.visit(rel, context));
+      output.push(`INHERITS (${inheritStrs.join(', ')})`);
     }
     
     if (node.servername) {
@@ -8895,7 +8965,8 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.options && node.options.length > 0) {
-      const optionStrs = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, context));
+      const foreignTableContext = { ...context, parentNodeType: 'CreateForeignTableStmt' };
+      const optionStrs = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, foreignTableContext));
       output.push(`OPTIONS (${optionStrs.join(', ')})`);
     }
     
