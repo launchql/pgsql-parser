@@ -4607,7 +4607,8 @@ export class Deparser implements DeparserVisitor {
           }
         }
       } else {
-        output.push(this.visit(node.object, context));
+        const objContext = { ...context, parentNodeType: 'CommentStmt', objtype: node.objtype };
+        output.push(this.visit(node.object, objContext));
       }
     }
     
@@ -5209,8 +5210,15 @@ export class Deparser implements DeparserVisitor {
     } else if (node.objargs && node.objargs.length > 0) {
       const args = ListUtils.unwrapList(node.objargs).map(arg => this.visit(arg, context));
       result += `(${args.join(', ')})`;
-    } else if (!node.args_unspecified) {
-      result += '()';
+    } else if (node.args_unspecified) {
+      // For functions with unspecified args, don't add parentheses
+    } else {
+      if (context.parentNodeType === 'CommentStmt' && 
+          context.objtype === 'OBJECT_AGGREGATE') {
+        result += '(*)';
+      } else {
+        result += '()';
+      }
     }
     
     return result;
