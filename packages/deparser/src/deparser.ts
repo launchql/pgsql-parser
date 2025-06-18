@@ -5874,6 +5874,10 @@ export class Deparser implements DeparserVisitor {
       case 'ACL_TARGET_OBJECT':
         if (node.objtype === 'OBJECT_SCHEMA') {
           output.push('SCHEMA');
+        } else if (node.objtype === 'OBJECT_LANGUAGE') {
+          output.push('LANGUAGE');
+        } else if (node.objtype === 'OBJECT_FUNCTION') {
+          output.push('FUNCTION');
         }
         if (node.objects && node.objects.length > 0) {
           const objects = ListUtils.unwrapList(node.objects)
