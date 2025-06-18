@@ -6129,7 +6129,7 @@ export class Deparser implements DeparserVisitor {
 
     if (node.func) {
       output.push('WITH FUNCTION');
-      output.push(this.visit(node.func as any, context));
+      output.push(this.ObjectWithArgs(node.func, context));
     } else if (node.inout) {
       output.push('WITH INOUT');
     } else {
@@ -6149,11 +6149,7 @@ export class Deparser implements DeparserVisitor {
         default:
           throw new Error(`Unsupported CreateCastStmt context: ${node.context}`);
       }
-    }
-
-    if (node.context === 'COERCION_IMPLICIT') {
-      output.push('AS IMPLICIT');
-    } else if (node.context === 'COERCION_ASSIGNMENT') {
+    }else if (node.context === 'COERCION_ASSIGNMENT') {
       output.push('AS ASSIGNMENT');
     }
 
