@@ -1408,7 +1408,7 @@ export class Deparser implements DeparserVisitor {
     let argStr = this.visit(node.arg, context);
     
     const argType = this.getNodeType(node.arg);
-    if (argType === 'TypeCast' || argType === 'SubLink' || argType === 'A_Expr' || argType === 'FuncCall') {
+    if (argType === 'TypeCast' || argType === 'SubLink' || argType === 'A_Expr' || argType === 'FuncCall' || argType === 'A_Indirection') {
       argStr = `(${argStr})`;
     }
     
@@ -1719,6 +1719,10 @@ export class Deparser implements DeparserVisitor {
             .map(key => this.visit(key, context))
             .join(', ');
           output.push(`(${keyList})`);
+        }
+        if (node.indexname) {
+          output.push('USING INDEX');
+          output.push(node.indexname);
         }
         break;
       case 'CONSTR_UNIQUE':
@@ -2393,6 +2397,13 @@ export class Deparser implements DeparserVisitor {
     if (node.whereClause) {
       output.push('WHERE');
       output.push(this.visit(node.whereClause, context));
+    }
+    
+    if (node.options && node.options.length > 0) {
+      const indexContext = { ...context, parentNodeType: 'IndexStmt' };
+      const optionStrs = ListUtils.unwrapList(node.options).map(option => this.visit(option, indexContext));
+      output.push('WITH');
+      output.push(this.formatter.parens(optionStrs.join(', ')));
     }
     
     if (node.tableSpace) {
@@ -3949,6 +3960,10 @@ export class Deparser implements DeparserVisitor {
         if (argValue === 'true') {
           return node.defname.toUpperCase();
         } else if (argValue === 'false') {
+          // Handle special cases where the negative form has a different name
+          if (node.defname === 'canlogin') {
+            return 'NOLOGIN';
+          }
           return `NO${node.defname.toUpperCase()}`;
         }
       }
@@ -4057,6 +4072,11 @@ export class Deparser implements DeparserVisitor {
         
         // CreateExtensionStmt cases (schema, version, etc.)
         return `${node.defname.toUpperCase()} ${argValue}`;
+      }
+      
+      // Handle IndexStmt WITH clause options - no quotes, compact formatting
+      if (parentContext === 'IndexStmt') {
+        return `${node.defname}=${argValue}`;
       }
       
       // Handle AT_SetRelOptions context - don't quote values that should be type names
@@ -5406,6 +5426,11 @@ export class Deparser implements DeparserVisitor {
   ReindexStmt(node: t.ReindexStmt, context: DeparserContext): string {
     const output: string[] = ['REINDEX'];
     
+    if (node.params && node.params.length > 0) {
+      const params = ListUtils.unwrapList(node.params).map(param => this.visit(param, context));
+      output.push(`(${params.join(', ')})`);
+    }
+    
     if (node.kind) {
       switch (node.kind) {
         case 'REINDEX_OBJECT_INDEX':
@@ -5434,11 +5459,6 @@ export class Deparser implements DeparserVisitor {
     
     if (node.name) {
       output.push(`"${node.name}"`);
-    }
-    
-    if (node.params && node.params.length > 0) {
-      const params = ListUtils.unwrapList(node.params).map(param => this.visit(param, context));
-      output.push(`(${params.join(', ')})`);
     }
     
     return output.join(' ');
