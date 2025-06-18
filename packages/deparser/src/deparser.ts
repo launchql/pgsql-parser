@@ -1818,17 +1818,6 @@ export class Deparser implements DeparserVisitor {
               break;
           }
         }
-        // Handle deferrable constraints
-        if (node.deferrable) {
-          output.push('DEFERRABLE');
-          if (node.initdeferred) {
-            output.push('INITIALLY DEFERRED');
-          } else {
-            output.push('INITIALLY IMMEDIATE');
-          }
-        } else if (node.deferrable === false) {
-          output.push('NOT DEFERRABLE');
-        }
         // Handle NOT VALID for foreign key constraints - only for table constraints, not domain constraints
         if (node.skip_validation && !context.isDomainConstraint) {
           output.push('NOT VALID');
@@ -1846,6 +1835,20 @@ export class Deparser implements DeparserVisitor {
       case 'CONSTR_ATTR_IMMEDIATE':
         output.push('INITIALLY IMMEDIATE');
         break;
+    }
+
+    // Handle deferrable constraints for all constraint types that support it
+    if (node.contype === 'CONSTR_PRIMARY' || node.contype === 'CONSTR_UNIQUE' || node.contype === 'CONSTR_FOREIGN') {
+      if (node.deferrable) {
+        output.push('DEFERRABLE');
+        if (node.initdeferred === true) {
+          output.push('INITIALLY DEFERRED');
+        } else if (node.initdeferred === false) {
+          output.push('INITIALLY IMMEDIATE');
+        }
+      } else if (node.deferrable === false) {
+        output.push('NOT DEFERRABLE');
+      }
     }
 
     return output.join(' ');
