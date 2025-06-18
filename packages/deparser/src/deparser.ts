@@ -7075,21 +7075,48 @@ export class Deparser implements DeparserVisitor {
         
         if (node.args && node.args.length > 0) {
           const args = ListUtils.unwrapList(node.args);
+          
+          // Check if this is an ordered-set aggregate (indicated by Integer(1))
+          const hasOrderedSetIndicator = args.some(arg => arg.Integer && arg.Integer.ival === 1);
+          
           const filteredArgs = args.filter(arg => {
-            if (arg.Integer && arg.Integer.ival === -1) {
+            if (arg.Integer && (arg.Integer.ival === -1 || arg.Integer.ival === 1)) {
               return false;
             }
             return true;
           });
-          const argStrs = filteredArgs.map(arg => {
-            // Handle empty object representing * wildcard
-            if (Object.keys(arg).length === 0) {
-              return '*';
+          
+          if (filteredArgs.length > 0) {
+            if (hasOrderedSetIndicator && filteredArgs.length === 1 && filteredArgs[0].List) {
+              // Handle ordered-set aggregate with ORDER BY syntax
+              const listArg = filteredArgs[0].List;
+              if (listArg.items && listArg.items.length >= 2) {
+                const items = ListUtils.unwrapList(listArg.items);
+                const firstItem = this.visit(items[0], context);
+                const remainingItems = items.slice(1).map(item => this.visit(item, context));
+                
+                output.push(`(${firstItem} ORDER BY ${remainingItems.join(', ')})`);
+              } else {
+                // Fallback to regular processing if structure is unexpected
+                const argStrs = filteredArgs.map(arg => {
+                  if (Object.keys(arg).length === 0) {
+                    return '*';
+                  }
+                  return this.visit(arg, context);
+                });
+                output.push(`(${argStrs.join(', ')})`);
+              }
+            } else {
+              // Handle regular aggregate arguments
+              const argStrs = filteredArgs.map(arg => {
+                // Handle empty object representing * wildcard
+                if (Object.keys(arg).length === 0) {
+                  return '*';
+                }
+                return this.visit(arg, context);
+              });
+              output.push(`(${argStrs.join(', ')})`);
             }
-            return this.visit(arg, context);
-          });
-          if (argStrs.length > 0) {
-            output.push(`(${argStrs.join(', ')})`);
           }
         }
         
