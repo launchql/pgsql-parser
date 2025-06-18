@@ -1706,8 +1706,8 @@ export class Deparser implements DeparserVisitor {
   Constraint(node: t.Constraint, context: DeparserContext): string {
     const output: string[] = [];
 
-    // Handle constraint name if present - only for table-level constraints, not domain constraints
-    if (node.conname && !context.isDomainConstraint && (node.contype === 'CONSTR_CHECK' || node.contype === 'CONSTR_UNIQUE' || node.contype === 'CONSTR_PRIMARY' || node.contype === 'CONSTR_FOREIGN')) {
+    // Handle constraint name if present
+    if (node.conname && (node.contype === 'CONSTR_CHECK' || node.contype === 'CONSTR_UNIQUE' || node.contype === 'CONSTR_PRIMARY' || node.contype === 'CONSTR_FOREIGN')) {
       output.push('CONSTRAINT');
       output.push(QuoteUtils.quote(node.conname));
     }
@@ -1730,8 +1730,8 @@ export class Deparser implements DeparserVisitor {
         if (node.raw_expr) {
           output.push(this.formatter.parens(this.visit(node.raw_expr, context)));
         }
-        // Handle NOT VALID for check constraints - only for table constraints, not domain constraints
-        if (node.skip_validation && !context.isDomainConstraint) {
+        // Handle NOT VALID for check constraints
+        if (node.skip_validation) {
           output.push('NOT VALID');
         }
         // Handle NO INHERIT for check constraints - only for table constraints, not domain constraints
@@ -4518,13 +4518,14 @@ export class Deparser implements DeparserVisitor {
           break;
         case 'AT_DropConstraint':
           output.push('DROP', 'CONSTRAINT');
+          if (node.missing_ok) {
+            output.push('IF', 'EXISTS');
+          }
           if (node.name) {
             output.push(QuoteUtils.quote(node.name));
           }
           if (node.behavior === 'DROP_CASCADE') {
             output.push('CASCADE');
-          } else if (node.behavior === 'DROP_RESTRICT') {
-            output.push('RESTRICT');
           }
           break;
         case 'AT_ValidateConstraint':
@@ -4543,13 +4544,14 @@ export class Deparser implements DeparserVisitor {
           break;
         case 'X':
           output.push('DROP', 'CONSTRAINT');
+          if (node.missing_ok) {
+            output.push('IF', 'EXISTS');
+          }
           if (node.name) {
             output.push(QuoteUtils.quote(node.name));
           }
           if (node.behavior === 'DROP_CASCADE') {
             output.push('CASCADE');
-          } else if (node.behavior === 'DROP_RESTRICT') {
-            output.push('RESTRICT');
           }
           break;
         case 'V':
