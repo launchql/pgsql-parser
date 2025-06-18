@@ -47,31 +47,41 @@ if (argType === 'TypeCast' || argType === 'SubLink' || argType === 'A_Expr' || a
 
 **Status**: ✅ RESOLVED - Tests now pass the `upstream/tsearch-6.sql` case
 
-### 🔧 Currently Debugging: DefineStmt OBJECT_TSDICTIONARY Support
+### ✅ Fixed: DefineStmt OBJECT_TSDICTIONARY Support
 
-**Problem**: CREATE TEXT SEARCH DICTIONARY statements are not supported in the deparser.
+**Problem**: CREATE TEXT SEARCH DICTIONARY statements were not supported in the deparser.
 
-**Failing Test**: `upstream/tsdicts-1.sql`
-**Error**: "Unsupported DefineStmt kind: OBJECT_TSDICTIONARY"
-**SQL**: `CREATE TEXT SEARCH DICTIONARY ispell (template = ispell, dictfile = ispell_sample, afffile = ispell_sample)`
+**Root Cause**: The DefineStmt method didn't handle OBJECT_TSDICTIONARY kind.
 
-**Root Cause**: The DefineStmt method doesn't handle OBJECT_TSDICTIONARY kind.
+**Solution Implemented**: Added OBJECT_TSDICTIONARY case to DefineStmt switch statement following the same pattern as other DefineStmt kinds.
+
+**Status**: ✅ RESOLVED - Tests now pass the `upstream/tsdicts-1.sql` case
+
+### 🔧 Currently Debugging: DefineStmt OBJECT_TSCONFIGURATION Support
+
+**Problem**: CREATE TEXT SEARCH CONFIGURATION statements are not supported in the deparser.
+
+**Failing Test**: `upstream/tsdicts-71.sql`
+**Error**: "Unsupported DefineStmt kind: OBJECT_TSCONFIGURATION"
+**SQL**: `CREATE TEXT SEARCH CONFIGURATION ispell_tst (copy = english)`
+
+**Root Cause**: The DefineStmt method doesn't handle OBJECT_TSCONFIGURATION kind.
 
 **Next Steps**:
-1. Examine DefineStmt method implementation
-2. Add support for OBJECT_TSDICTIONARY kind
-3. Implement proper text search dictionary syntax generation
+1. Add support for OBJECT_TSCONFIGURATION kind
+2. Test the fix against the failing case
 
 ## Failing Tests Analysis
 
 ### Current Failing Test: `alter-table-column.test.ts`
-- **Specific Case**: `upstream/tsdicts-1.sql`
-- **Error**: "Unsupported DefineStmt kind: OBJECT_TSDICTIONARY"
-- **Issue**: Missing DefineStmt support for CREATE TEXT SEARCH DICTIONARY
+- **Specific Case**: `upstream/tsdicts-71.sql`
+- **Error**: "Unsupported DefineStmt kind: OBJECT_TSCONFIGURATION"
+- **Issue**: Missing DefineStmt support for CREATE TEXT SEARCH CONFIGURATION
 
 ### Previously Fixed: 
 - ✅ `upstream/type_sanity-40.sql` - A_Expr parentheses issue resolved
 - ✅ `upstream/tsearch-6.sql` - A_Indirection parentheses issue resolved
+- ✅ `upstream/tsdicts-1.sql` - DefineStmt OBJECT_TSDICTIONARY support resolved
 
 ### Test Pattern
 All kitchen-sink tests follow the pattern:

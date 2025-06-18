@@ -6835,6 +6835,58 @@ export class Deparser implements DeparserVisitor {
         }
         break;
         
+      case 'OBJECT_TSDICTIONARY':
+        output.push('CREATE TEXT SEARCH DICTIONARY');
+        
+        if (node.defnames && node.defnames.length > 0) {
+          output.push(ListUtils.unwrapList(node.defnames).map(name => this.visit(name, context)).join('.'));
+        }
+        
+        if (node.definition && node.definition.length > 0) {
+          output.push('(');
+          const definitions = ListUtils.unwrapList(node.definition).map(def => {
+            if (def.DefElem) {
+              const defElem = def.DefElem;
+              const defName = defElem.defname;
+              const defValue = defElem.arg;
+              
+              if (defName && defValue) {
+                return `${defName} = ${this.visit(defValue, context)}`;
+              }
+            }
+            return this.visit(def, context);
+          });
+          output.push(definitions.join(', '));
+          output.push(')');
+        }
+        break;
+        
+      case 'OBJECT_TSCONFIGURATION':
+        output.push('CREATE TEXT SEARCH CONFIGURATION');
+        
+        if (node.defnames && node.defnames.length > 0) {
+          output.push(ListUtils.unwrapList(node.defnames).map(name => this.visit(name, context)).join('.'));
+        }
+        
+        if (node.definition && node.definition.length > 0) {
+          output.push('(');
+          const definitions = ListUtils.unwrapList(node.definition).map(def => {
+            if (def.DefElem) {
+              const defElem = def.DefElem;
+              const defName = defElem.defname;
+              const defValue = defElem.arg;
+              
+              if (defName && defValue) {
+                return `${defName} = ${this.visit(defValue, context)}`;
+              }
+            }
+            return this.visit(def, context);
+          });
+          output.push(definitions.join(', '));
+          output.push(')');
+        }
+        break;
+        
       default:
         throw new Error(`Unsupported DefineStmt kind: ${node.kind}`);
     }
