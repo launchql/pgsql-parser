@@ -427,8 +427,25 @@ export class Deparser implements DeparserVisitor {
       if (node.onConflictClause.action === 'ONCONFLICT_UPDATE') {
         output.push('DO UPDATE SET');
         const targetList = ListUtils.unwrapList(node.onConflictClause.targetList);
-        const targets = targetList.map(target => this.visit(target as Node, context));
-        output.push(targets.join(', '));
+        
+        if (targetList && targetList.length) {
+          const firstTarget = targetList[0];
+          if (firstTarget.val?.MultiAssignRef) {
+            const names = targetList.map(target => target.name);
+            output.push(this.formatter.parens(names.join(',')));
+            output.push('=');
+            output.push(this.visit(firstTarget.val, context));
+          } else {
+            const updateContext = { ...context, update: true };
+            const targets = targetList.map(target => this.visit(target as Node, updateContext));
+            output.push(targets.join(', '));
+          }
+        }
+        
+        if (node.onConflictClause.whereClause) {
+          output.push('WHERE');
+          output.push(this.visit(node.onConflictClause.whereClause as Node, context));
+        }
       } else if (node.onConflictClause.action === 'ONCONFLICT_NOTHING') {
         output.push('DO NOTHING');
       }
