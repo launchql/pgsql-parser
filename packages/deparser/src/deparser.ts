@@ -248,22 +248,38 @@ export class Deparser implements DeparserVisitor {
           let leftExpr = this.visit(lexpr, context);
           let rightExpr = this.visit(rexpr, context);
           
+          // Check if left expression needs parentheses
+          let leftNeedsParens = false;
           if (lexpr && 'A_Expr' in lexpr && lexpr.A_Expr?.kind === 'AEXPR_OP') {
             const leftOp = this.deparseOperatorName(ListUtils.unwrapList(lexpr.A_Expr.name));
             if (this.needsParentheses(leftOp, operator, 'left')) {
-              leftExpr = this.formatter.parens(leftExpr);
+              leftNeedsParens = true;
             }
           }
+          if (lexpr && this.isComplexExpression(lexpr)) {
+            leftNeedsParens = true;
+          }
+          if (leftNeedsParens) {
+            leftExpr = this.formatter.parens(leftExpr);
+          }
           
+          // Check if right expression needs parentheses
+          let rightNeedsParens = false;
           if (rexpr && 'A_Expr' in rexpr && rexpr.A_Expr?.kind === 'AEXPR_OP') {
             const rightOp = this.deparseOperatorName(ListUtils.unwrapList(rexpr.A_Expr.name));
             if (this.needsParentheses(rightOp, operator, 'right')) {
-              rightExpr = this.formatter.parens(rightExpr);
+              rightNeedsParens = true;
             }
+          }
+          if (rexpr && this.isComplexExpression(rexpr)) {
+            rightNeedsParens = true;
+          }
+          if (rightNeedsParens) {
+            rightExpr = this.formatter.parens(rightExpr);
           }
           
           return this.formatter.format([leftExpr, operator, rightExpr]);
-        } else if (rexpr) {
+        }else if (rexpr) {
           return this.formatter.format([
             this.deparseOperatorName(name),
             this.visit(rexpr, context)
@@ -478,6 +494,18 @@ export class Deparser implements DeparserVisitor {
     }
     
     return false;
+  }
+
+  private isComplexExpression(node: any): boolean {
+    return !!(
+      node.NullTest ||
+      node.BooleanTest ||
+      node.BoolExpr ||
+      node.CaseExpr ||
+      node.CoalesceExpr ||
+      node.SubLink ||
+      node.A_Expr
+    );
   }
 
   visitBetweenRange(rexpr: any, context: DeparserContext): string {
@@ -813,6 +841,18 @@ export class Deparser implements DeparserVisitor {
       const source = this.visit(args[1], context);
       return `EXTRACT(${field} FROM ${source})`;
     }
+    
+    // Handle TRIM function with SQL syntax (TRIM TRAILING/LEADING/BOTH)
+    if (node.funcformat === 'COERCE_SQL_SYNTAX' && (name === 'pg_catalog.rtrim' || name === 'pg_catalog.ltrim' || name === 'pg_catalog.btrim') && args.length >= 1) {
+      const source = this.visit(args[0], context);
+      if (name === 'pg_catalog.rtrim') {
+        return `TRIM(TRAILING FROM ${source})`;
+      } else if (name === 'pg_catalog.ltrim') {
+        return `TRIM(LEADING FROM ${source})`;
+      } else if (name === 'pg_catalog.btrim') {
+        return `TRIM(BOTH FROM ${source})`;
+      }
+    }
 
     const params: string[] = [];
     
@@ -1032,6 +1072,13 @@ export class Deparser implements DeparserVisitor {
       return '';
     }
 
+    const output: string[] = [];
+    
+    // Handle SETOF keyword
+    if (node.setof) {
+      output.push('SETOF');
+    }
+
     const names = node.names.map((name: any) => {
       if (name.String) {
         return name.String.sval || name.String.str;
@@ -1061,7 +1108,8 @@ export class Deparser implements DeparserVisitor {
       const typeName = names[0];
       
       if (typeName === 'char') {
-        return mods('"char"', args);
+        output.push(mods('"char"', args));
+        return output.join(' ');
       }
       
       let result = mods(typeName, args);
@@ -1070,14 +1118,16 @@ export class Deparser implements DeparserVisitor {
         result += '[]';
       }
       
-      return result;
+      output.push(result);
+      return output.join(' ');
     }
 
     if (names.length === 2) {
       const [catalog, type] = names;
       
       if (catalog === 'pg_catalog' && type === 'char') {
-        return mods('pg_catalog."char"', args);
+        output.push(mods('pg_catalog."char"', args));
+        return output.join(' ');
       }
       
       if (catalog === 'pg_catalog') {
@@ -1087,7 +1137,8 @@ export class Deparser implements DeparserVisitor {
           result += '[]';
         }
         
-        return result;
+        output.push(result);
+        return output.join(' ');
       }
     }
 
@@ -1098,7 +1149,8 @@ export class Deparser implements DeparserVisitor {
       result += '[]';
     }
     
-    return result;
+    output.push(result);
+    return output.join(' ');
   }
 
   Alias(node: t.Alias, context: DeparserContext): string {
@@ -1130,8 +1182,8 @@ export class Deparser implements DeparserVisitor {
       });
     }
 
-    // Handle ONLY keyword for inheritance control
-    if (!('inh' in node) || node.inh === undefined) {
+    // Handle ONLY keyword for inheritance control (but not for type definitions)
+    if ((!('inh' in node) || node.inh === undefined) && context.parentContext !== 'CompositeTypeStmt') {
       output.push('ONLY');
     }
     
@@ -1493,7 +1545,20 @@ export class Deparser implements DeparserVisitor {
 
     output.push(this.RangeVar(node.relation, context));
 
-    if (node.tableElts) {
+    // Handle typed tables (CREATE TABLE ... OF typename)
+    if (node.ofTypename) {
+      output.push('OF');
+      output.push(this.TypeName(node.ofTypename, context));
+      
+      // Handle additional constraints for typed tables
+      if (node.tableElts) {
+        const elements = ListUtils.unwrapList(node.tableElts);
+        const elementStrs = elements.map(el => {
+          return this.deparse(el, context);
+        });
+        output.push(this.formatter.parens(elementStrs.join(', ')));
+      }
+    } else if (node.tableElts) {
       const elements = ListUtils.unwrapList(node.tableElts);
       const elementStrs = elements.map(el => {
         return this.deparse(el, context);
@@ -2202,6 +2267,13 @@ export class Deparser implements DeparserVisitor {
     if (node.aliases && node.aliases.length > 0) {
       const aliasStrs = ListUtils.unwrapList(node.aliases).map(alias => this.visit(alias, context));
       output.push(this.formatter.parens(aliasStrs.join(', ')));
+    }
+    
+    if (node.options && node.options.length > 0) {
+      const viewContext = { ...context, parentContext: 'ViewStmt' };
+      const optionStrs = ListUtils.unwrapList(node.options)
+        .map(option => this.visit(option, viewContext));
+      output.push(`WITH (${optionStrs.join(', ')})`);
     }
     
     output.push('AS');
@@ -3138,9 +3210,10 @@ export class Deparser implements DeparserVisitor {
           break;
         case 'AT_ResetRelOptions':
           output.push('RESET');
-          if (node.def && Array.isArray(node.def)) {
+          if (node.def) {
+            const alterTableContext = { ...context, parentContext: 'AlterTableCmd', subtype: 'AT_ResetRelOptions' };
             const options = ListUtils.unwrapList(node.def)
-              .map(option => this.visit(option, context))
+              .map(option => this.visit(option, alterTableContext))
               .join(', ');
             output.push(`(${options})`);
           } else {
@@ -3851,7 +3924,10 @@ export class Deparser implements DeparserVisitor {
       }
       
       // Handle AT_SetRelOptions context - don't quote values that should be type names
-      if (parentContext === 'AlterTableCmd') {
+      if (parentContext === 'AlterTableCmd' || parentContext === 'AlterTableStmt' || context.parentContext === 'AlterTableCmd') {
+        if (node.arg && this.getNodeType(node.arg) === 'TypeName') {
+          return `${node.defname} = ${argValue}`;
+        }
         return `${node.defname} = ${argValue}`;
       }
       
@@ -6349,7 +6425,8 @@ export class Deparser implements DeparserVisitor {
     const output: string[] = ['CREATE', 'TYPE'];
     
     if (node.typevar) {
-      output.push(this.RangeVar(node.typevar, context));
+      const typeContext = { ...context, parentContext: 'CompositeTypeStmt' };
+      output.push(this.RangeVar(node.typevar, typeContext));
     }
     
     output.push('AS');
