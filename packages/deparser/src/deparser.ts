@@ -2570,7 +2570,14 @@ export class Deparser implements DeparserVisitor {
       output.push(this.visit(node.quals, context));
     }
     
-    return output.join(' ');
+    let result = output.join(' ');
+    
+    // Handle JOIN alias - wrap in parentheses and add alias
+    if (node.alias && node.alias.aliasname) {
+      result = `(${result}) ${node.alias.aliasname}`;
+    }
+    
+    return result;
   }
 
   FromExpr(node: t.FromExpr, context: DeparserContext): string {
