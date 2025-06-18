@@ -5518,6 +5518,9 @@ export class Deparser implements DeparserVisitor {
       case 'OBJECT_DOMCONSTRAINT':
         output.push('DOMAIN');
         break;
+      case 'OBJECT_TABCONSTRAINT':
+        output.push('TABLE');
+        break;
       case 'OBJECT_AGGREGATE':
         output.push('AGGREGATE');
         break;
@@ -5601,6 +5604,8 @@ export class Deparser implements DeparserVisitor {
     if (node.renameType === 'OBJECT_COLUMN' && node.subname) {
       output.push('RENAME COLUMN', `"${node.subname}"`, 'TO');
     } else if (node.renameType === 'OBJECT_DOMCONSTRAINT' && node.subname) {
+      output.push('RENAME CONSTRAINT', `"${node.subname}"`, 'TO');
+    } else if (node.renameType === 'OBJECT_TABCONSTRAINT' && node.subname) {
       output.push('RENAME CONSTRAINT', `"${node.subname}"`, 'TO');
     } else {
       output.push('RENAME TO');
