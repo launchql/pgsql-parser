@@ -4645,6 +4645,9 @@ export class Deparser implements DeparserVisitor {
         case 'OBJECT_TABCONSTRAINT':
           output.push('CONSTRAINT');
           break;
+        case 'OBJECT_TRIGGER':
+          output.push('TRIGGER');
+          break;
         default:
           output.push(node.objtype.replace('OBJECT_', ''));
       }
@@ -4667,6 +4670,15 @@ export class Deparser implements DeparserVisitor {
             } else if (objectParts.length === 2) {
               const [table, constraint] = objectParts;
               output.push(constraint);
+              output.push('ON');
+              output.push(table);
+            } else {
+              output.push(objectParts.join('.'));
+            }
+          } else if (node.objtype === 'OBJECT_TRIGGER') {
+            if (objectParts.length === 2) {
+              const [table, trigger] = objectParts;
+              output.push(trigger);
               output.push('ON');
               output.push(table);
             } else {
