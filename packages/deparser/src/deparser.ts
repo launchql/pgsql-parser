@@ -3981,7 +3981,7 @@ export class Deparser implements DeparserVisitor {
         return '';
       }
       
-      if (parentContext === 'CreateFunctionStmt') {
+      if (parentContext === 'CreateFunctionStmt' || parentContext === 'AlterFunctionStmt') {
         if (node.defname === 'as') {
           if (Array.isArray(argValue)) {
             const bodyParts = argValue;
@@ -8012,7 +8012,8 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.actions && node.actions.length > 0) {
-      const actionStrs = ListUtils.unwrapList(node.actions).map(action => this.visit(action, context));
+      const alterFunctionContext = { ...context, parentNodeType: 'AlterFunctionStmt' };
+      const actionStrs = ListUtils.unwrapList(node.actions).map(action => this.visit(action, alterFunctionContext));
       output.push(actionStrs.join(' '));
     }
     
