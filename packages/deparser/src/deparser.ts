@@ -3387,11 +3387,14 @@ export class Deparser implements DeparserVisitor {
             output.push(QuoteUtils.quote(node.name));
           }
           output.push('SET');
-          if (node.def && Array.isArray(node.def)) {
+          if (node.def) {
+            const alterTableContext = { ...context, parentContext: 'AlterTableCmd', subtype: 'AT_SetOptions' };
             const options = ListUtils.unwrapList(node.def)
-              .map(option => this.visit(option, context))
+              .map(option => this.visit(option, alterTableContext))
               .join(', ');
             output.push(`(${options})`);
+          } else {
+            output.push('()');
           }
           break;
         case 'AT_ResetOptions':
@@ -3400,11 +3403,14 @@ export class Deparser implements DeparserVisitor {
             output.push(QuoteUtils.quote(node.name));
           }
           output.push('RESET');
-          if (node.def && Array.isArray(node.def)) {
+          if (node.def) {
+            const alterTableContext = { ...context, parentContext: 'AlterTableCmd', subtype: 'AT_ResetOptions' };
             const options = ListUtils.unwrapList(node.def)
-              .map(option => this.visit(option, context))
+              .map(option => this.visit(option, alterTableContext))
               .join(', ');
             output.push(`(${options})`);
+          } else {
+            output.push('()');
           }
           break;
         case 'AT_SetCompression':
