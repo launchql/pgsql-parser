@@ -5984,8 +5984,12 @@ export class Deparser implements DeparserVisitor {
       
       if (adminOption && adminOption.DefElem && adminOption.DefElem.arg) {
         const adminValue = adminOption.DefElem.arg.Boolean?.boolval;
-        if (node.is_grant && adminValue === true) {
-          output.push('WITH ADMIN OPTION');
+        if (node.is_grant) {
+          if (adminValue === true) {
+            output.push('WITH ADMIN OPTION');
+          } else if (adminValue === false) {
+            output.push('WITH ADMIN FALSE');
+          }
         } else if (!node.is_grant) {
           output.push('ADMIN OPTION FOR');
         }
