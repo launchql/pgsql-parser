@@ -4215,12 +4215,23 @@ export class Deparser implements DeparserVisitor {
           if (Array.isArray(argValue)) {
             const bodyParts = argValue;
             if (bodyParts.length === 1) {
-              return `AS $$${bodyParts[0]}$$`;
+              const body = bodyParts[0];
+              // Check if body contains $$ to avoid conflicts
+              if (body.includes('$$')) {
+                return `AS '${body.replace(/'/g, "''")}'`;
+              } else {
+                return `AS $$${body}$$`;
+              }
             } else {
-              return `AS ${bodyParts.map(part => `'${part}'`).join(', ')}`;
+              return `AS ${bodyParts.map(part => `'${part.replace(/'/g, "''")}'`).join(', ')}`;
             }
           } else {
-            return `AS $$${argValue}$$`;
+            // Check if argValue contains $$ to avoid conflicts
+            if (argValue.includes('$$')) {
+              return `AS '${argValue.replace(/'/g, "''")}'`;
+            } else {
+              return `AS $$${argValue}$$`;
+            }
           }
         }
         if (node.defname === 'language') {
@@ -5184,11 +5195,68 @@ export class Deparser implements DeparserVisitor {
     
     if (node.args && node.args.length > 0) {
       const doContext = { ...context, parentNodeType: 'DoStmt' };
-      const args = ListUtils.unwrapList(node.args).map(arg => this.visit(arg, doContext));
-      output.push(args.join(' '));
+      const args = ListUtils.unwrapList(node.args);
+      
+      let languageArg = '';
+      let codeArg = '';
+      
+      for (const arg of args) {
+        const nodeType = this.getNodeType(arg);
+        if (nodeType === 'DefElem') {
+          const defElem = this.getNodeData(arg) as any;
+          if (defElem.defname === 'language') {
+            const langValue = this.visit(defElem.arg, doContext);
+            languageArg = `LANGUAGE ${langValue}`;
+          } else if (defElem.defname === 'as') {
+            // Handle code block with dollar quoting
+            const argNodeType = this.getNodeType(defElem.arg);
+            if (argNodeType === 'String') {
+              const stringNode = this.getNodeData(defElem.arg) as any;
+              const dollarTag = this.generateUniqueDollarTag(stringNode.sval);
+              codeArg = `${dollarTag}${stringNode.sval}${dollarTag}`;
+            } else {
+              codeArg = this.visit(defElem.arg, doContext);
+            }
+          }
+        }
+      }
+      
+      if (languageArg) {
+        output.push(languageArg);
+      }
+      if (codeArg) {
+        output.push(codeArg);
+      }
     }
     
     return output.join(' ');
+  }
+
+  private generateUniqueDollarTag(content: string): string {
+    // Check if content contains nested dollar quotes
+    const dollarQuotePattern = /\$[a-zA-Z0-9_]*\$/g;
+    const matches = content.match(dollarQuotePattern) || [];
+    
+    if (matches.length === 0) {
+      return '$$';
+    }
+    
+    const existingTags = new Set(matches);
+    
+    // Check if $$ is already used
+    if (existingTags.has('$$')) {
+      let counter = 1;
+      let tag = `$do${counter}$`;
+      
+      while (existingTags.has(tag)) {
+        counter++;
+        tag = `$do${counter}$`;
+      }
+      
+      return tag;
+    }
+    
+    return '$$';
   }
 
   InlineCodeBlock(node: t.InlineCodeBlock, context: DeparserContext): string {
@@ -8099,7 +8167,7 @@ export class Deparser implements DeparserVisitor {
       const coldefs = ListUtils.unwrapList(node.coldeflist)
         .map(coldef => this.visit(coldef, context))
         .filter(str => str && str.trim());
-      output.push(`(${coldefs.join(', ')})`);
+      output.push(`AS (${coldefs.join(', ')})`);
     }
     
     return output.join(' ');
