@@ -8193,6 +8193,9 @@ export class Deparser implements DeparserVisitor {
       case 'OBJECT_OPERATOR':
         output.push('OPERATOR');
         break;
+      case 'OBJECT_TYPE':
+        output.push('TYPE');
+        break;
       default:
         output.push(node.objectType.toString());
     }
@@ -8210,7 +8213,17 @@ export class Deparser implements DeparserVisitor {
         } else {
           output.push(this.visit(node.object as any, context));
         }
-      } else if (node.objectType === 'OBJECT_OPCLASS' && (node.object as any).List) {
+      } else if (node.objectType === 'OBJECT_TYPE' && (node.object as any).List) {
+        // Handle type objects specially to format schema.type correctly
+        const items = ListUtils.unwrapList(node.object as any);
+        if (items.length === 2) {
+          const schemaName = items[0].String?.sval || '';
+          const typeName = items[1].String?.sval || '';
+          output.push(`${QuoteUtils.quote(schemaName)}.${QuoteUtils.quote(typeName)}`);
+        } else {
+          output.push(this.visit(node.object as any, context));
+        }
+      }else if (node.objectType === 'OBJECT_OPCLASS' && (node.object as any).List) {
         // Handle operator class objects: ALTER OPERATOR CLASS schema.name USING access_method
         const items = ListUtils.unwrapList(node.object as any);
         if (items.length === 3) {
