@@ -1,0 +1,50 @@
+
+import { FixtureTestUtils } from '../../test-utils';
+const fixtures = new FixtureTestUtils();
+
+it('latest-postgres-predicate', () => {
+  fixtures.runFixtureTests([
+  "predicate-1.sql",
+  "predicate-2.sql",
+  "predicate-3.sql",
+  "predicate-4.sql",
+  "predicate-5.sql",
+  "predicate-6.sql",
+  "predicate-7.sql",
+  "predicate-8.sql",
+  "predicate-9.sql",
+  "predicate-10.sql",
+  "predicate-11.sql",
+  "predicate-12.sql",
+  "predicate-13.sql",
+  "predicate-14.sql",
+  "predicate-15.sql",
+  "predicate-16.sql",
+  "predicate-17.sql",
+  "predicate-18.sql",
+  "predicate-19.sql",
+  "predicate-20.sql",
+  "predicate-21.sql",
+  "predicate-22.sql",
+  "predicate-23.sql",
+  "predicate-24.sql",
+  "predicate-25.sql",
+  "predicate-26.sql",
+  "predicate-27.sql",
+  "predicate-28.sql",
+  "predicate-29.sql",
+  "predicate-30.sql",
+  "predicate-31.sql",
+  "predicate-32.sql",
+  "predicate-33.sql",
+  "predicate-34.sql",
+  "predicate-35.sql",
+  "predicate-36.sql",
+  "predicate-37.sql",
+  "predicate-38.sql",
+  "predicate-39.sql",
+  "predicate-40.sql",
+  "predicate-41.sql",
+  "predicate-42.sql"
+]);
+});

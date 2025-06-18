@@ -200,13 +200,16 @@ export class FixtureTestUtils extends TestUtils {
     if (filters.length === 0) {
       return Object.entries(this.fixtures);
     }
-    
     return Object.entries(this.fixtures).filter(([relPath]) => 
       filters.includes(relPath)
     );
   }
 
   runFixtureTests(filters: string[]) {
+    if (filters.length === 0) {
+      console.log('no filters provided, skipping tests.');
+      return;
+    }
     this.getTestEntries(filters).forEach(([relativePath, sql]) => {
       try {
         this.expectAstMatch(relativePath, sql);

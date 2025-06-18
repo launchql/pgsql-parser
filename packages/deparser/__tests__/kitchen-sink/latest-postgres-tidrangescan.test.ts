@@ -1,0 +1,53 @@
+
+import { FixtureTestUtils } from '../../test-utils';
+const fixtures = new FixtureTestUtils();
+
+it('latest-postgres-tidrangescan', () => {
+  fixtures.runFixtureTests([
+  "tidrangescan-1.sql",
+  "tidrangescan-2.sql",
+  "tidrangescan-3.sql",
+  "tidrangescan-4.sql",
+  "tidrangescan-5.sql",
+  "tidrangescan-6.sql",
+  "tidrangescan-7.sql",
+  "tidrangescan-8.sql",
+  "tidrangescan-9.sql",
+  "tidrangescan-10.sql",
+  "tidrangescan-11.sql",
+  "tidrangescan-12.sql",
+  "tidrangescan-13.sql",
+  "tidrangescan-14.sql",
+  "tidrangescan-15.sql",
+  "tidrangescan-16.sql",
+  "tidrangescan-17.sql",
+  "tidrangescan-18.sql",
+  "tidrangescan-19.sql",
+  "tidrangescan-20.sql",
+  "tidrangescan-21.sql",
+  "tidrangescan-22.sql",
+  "tidrangescan-23.sql",
+  "tidrangescan-24.sql",
+  "tidrangescan-25.sql",
+  "tidrangescan-26.sql",
+  "tidrangescan-27.sql",
+  "tidrangescan-28.sql",
+  "tidrangescan-29.sql",
+  "tidrangescan-30.sql",
+  "tidrangescan-31.sql",
+  "tidrangescan-32.sql",
+  "tidrangescan-33.sql",
+  "tidrangescan-34.sql",
+  "tidrangescan-35.sql",
+  "tidrangescan-36.sql",
+  "tidrangescan-37.sql",
+  "tidrangescan-38.sql",
+  "tidrangescan-39.sql",
+  "tidrangescan-40.sql",
+  "tidrangescan-41.sql",
+  "tidrangescan-42.sql",
+  "tidrangescan-43.sql",
+  "tidrangescan-44.sql",
+  "tidrangescan-45.sql"
+]);
+});

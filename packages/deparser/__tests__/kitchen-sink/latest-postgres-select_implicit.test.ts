@@ -1,0 +1,52 @@
+
+import { FixtureTestUtils } from '../../test-utils';
+const fixtures = new FixtureTestUtils();
+
+it('latest-postgres-select_implicit', () => {
+  fixtures.runFixtureTests([
+  "select_implicit-1.sql",
+  "select_implicit-2.sql",
+  "select_implicit-3.sql",
+  "select_implicit-4.sql",
+  "select_implicit-5.sql",
+  "select_implicit-6.sql",
+  "select_implicit-7.sql",
+  "select_implicit-8.sql",
+  "select_implicit-9.sql",
+  "select_implicit-10.sql",
+  "select_implicit-11.sql",
+  "select_implicit-12.sql",
+  "select_implicit-13.sql",
+  "select_implicit-14.sql",
+  "select_implicit-15.sql",
+  "select_implicit-16.sql",
+  "select_implicit-17.sql",
+  "select_implicit-18.sql",
+  "select_implicit-19.sql",
+  "select_implicit-20.sql",
+  "select_implicit-21.sql",
+  "select_implicit-22.sql",
+  "select_implicit-23.sql",
+  "select_implicit-24.sql",
+  "select_implicit-25.sql",
+  "select_implicit-26.sql",
+  "select_implicit-27.sql",
+  "select_implicit-28.sql",
+  "select_implicit-29.sql",
+  "select_implicit-30.sql",
+  "select_implicit-31.sql",
+  "select_implicit-32.sql",
+  "select_implicit-33.sql",
+  "select_implicit-34.sql",
+  "select_implicit-35.sql",
+  "select_implicit-36.sql",
+  "select_implicit-37.sql",
+  "select_implicit-38.sql",
+  "select_implicit-39.sql",
+  "select_implicit-40.sql",
+  "select_implicit-41.sql",
+  "select_implicit-42.sql",
+  "select_implicit-43.sql",
+  "select_implicit-44.sql"
+]);
+});

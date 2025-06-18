@@ -41,12 +41,11 @@ fixtures.forEach((fixturePath) => {
   }
 
   const names = statements.stmts.map((stmt: RawStmt, idx: number) => {
-    const base = path.basename(relPath, '.sql');
-    const outName = `${base}-${idx + 1}.sql`;
+    const outName = `${relPath.replace(/\.sql$/, '')}-${idx + 1}.sql`;
     return outName;
   });
 
-  const testFileName = path.basename(relPath, '.sql').replace(/\//g, '-');
+  const testFileName = relPath.replace(/\//g, '-').replace(/\.sql$/, '');
   const testFile = generateTestFile(testFileName, names);
   fs.writeFileSync(path.join(OUT_DIR, `${testFileName}.test.ts`), testFile);
 });

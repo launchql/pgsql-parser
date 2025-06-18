@@ -3,86 +3,6 @@
 ## Current Status
 Working on implementing missing deparser functionality for PostgreSQL 13→17 upgrade compatibility in the kitchen-sink test suite. The goal is to achieve pixel-perfect AST matching through the parse → deparse → reparse cycle.
 
-## Last Working Session Summary
-- **Branch**: `devin/1750203087-fix-sublink-deparser`
-- **PR**: #15 - "feat: comprehensive deparser improvements for PostgreSQL 13→17 upgrade"
-- **Current Focus**: Fixing parentheses handling in A_Expr for complex expressions
-
-## Recent Progress Made
-
-### ✅ Completed Fixes
-1. **Window Function Handling**: Fixed clause ordering, named window references, empty window definitions
-2. **SubLink Support**: EXISTS, IN, NOT IN, ANY, ALL subquery types  
-3. **Multi-column Assignments**: MultiAssignRef detection and handling
-4. **DDL Improvements**: AlterTableCmd, CompositeTypeStmt, CreateTableAsStmt enhancements
-5. **Expression Handling**: NamedArgExpr, DropStmt, and other node type fixes
-6. **TypeName Method**: Added SETOF support and nested type handling
-7. **Window Frame Options**: Complex bit-based and hardcoded mapping logic for frame specifications
-
-### ✅ Fixed: Parentheses Issue in A_Expr
-
-**Problem**: The SQL expression `(t.typanalyze = 'range_typanalyze'::regproc) <> (r.rngtypid IS NOT NULL)` was being deparsed as `t.typanalyze = CAST ( 'range_typanalyze' AS regproc ) <> (r.rngtypid IS NOT NULL)` - missing parentheses around the left side.
-
-**Root Cause**: The A_Expr method's parentheses logic was using `if/else if` structure, preventing complex expressions from getting parentheses when they were also A_Expr nodes.
-
-**Solution Implemented**:
-1. Added `isComplexExpression()` helper method to identify expressions needing parentheses
-2. Modified A_Expr parentheses logic from `if/else if` to separate boolean flags
-3. Enhanced precedence checking for nested expressions
-
-**Status**: ✅ RESOLVED - Tests now pass the original `type_sanity-40.sql` case
-
-### ✅ Fixed: A_Indirection Parentheses Issue
-
-**Problem**: The SQL expression `(ts_token_type(cfgparser)).tokid` was being deparsed as `ts_token_type(cfgparser).tokid` - missing parentheses around function calls when accessing fields.
-
-**Root Cause**: The A_Indirection method didn't include FuncCall in the list of node types requiring parentheses.
-
-**Solution Implemented**: Added FuncCall to the parentheses condition in A_Indirection method:
-```typescript
-if (argType === 'TypeCast' || argType === 'SubLink' || argType === 'A_Expr' || argType === 'FuncCall') {
-  argStr = `(${argStr})`;
-}
-```
-
-**Status**: ✅ RESOLVED - Tests now pass the `upstream/tsearch-6.sql` case
-
-### ✅ Fixed: DefineStmt OBJECT_TSDICTIONARY Support
-
-**Problem**: CREATE TEXT SEARCH DICTIONARY statements were not supported in the deparser.
-
-**Root Cause**: The DefineStmt method didn't handle OBJECT_TSDICTIONARY kind.
-
-**Solution Implemented**: Added OBJECT_TSDICTIONARY case to DefineStmt switch statement following the same pattern as other DefineStmt kinds.
-
-**Status**: ✅ RESOLVED - Tests now pass the `upstream/tsdicts-1.sql` case
-
-### 🔧 Currently Debugging: DefineStmt OBJECT_TSCONFIGURATION Support
-
-**Problem**: CREATE TEXT SEARCH CONFIGURATION statements are not supported in the deparser.
-
-**Failing Test**: `upstream/tsdicts-71.sql`
-**Error**: "Unsupported DefineStmt kind: OBJECT_TSCONFIGURATION"
-**SQL**: `CREATE TEXT SEARCH CONFIGURATION ispell_tst (copy = english)`
-
-**Root Cause**: The DefineStmt method doesn't handle OBJECT_TSCONFIGURATION kind.
-
-**Next Steps**:
-1. Add support for OBJECT_TSCONFIGURATION kind
-2. Test the fix against the failing case
-
-## Failing Tests Analysis
-
-### Current Failing Test: `alter-table-column.test.ts`
-- **Specific Case**: `upstream/tsdicts-71.sql`
-- **Error**: "Unsupported DefineStmt kind: OBJECT_TSCONFIGURATION"
-- **Issue**: Missing DefineStmt support for CREATE TEXT SEARCH CONFIGURATION
-
-### Previously Fixed: 
-- ✅ `upstream/type_sanity-40.sql` - A_Expr parentheses issue resolved
-- ✅ `upstream/tsearch-6.sql` - A_Indirection parentheses issue resolved
-- ✅ `upstream/tsdicts-1.sql` - DefineStmt OBJECT_TSDICTIONARY support resolved
-
 ### Test Pattern
 All kitchen-sink tests follow the pattern:
 1. Parse original SQL → AST1
@@ -100,12 +20,6 @@ When step 3 fails with syntax error, it indicates the deparser generated invalid
 3. **AST Comparison**: Use FixtureTestUtils for precise AST matching
 4. **Tight Feedback Loop**: Test individual cases before running full suite
 
-### Debug Scripts Created
-- `debug_parentheses_issue.js`: Tests complex expression parentheses
-- `debug_frame_options.js`: Window frame specification debugging
-- `debug_multiassign_detection.js`: Multi-column assignment testing
-- Various frame option specific debuggers
-
 ## Next Steps
 
 ### Immediate Priority
@@ -113,21 +27,13 @@ When step 3 fails with syntax error, it indicates the deparser generated invalid
 2. **Test Validation**: Verify the fix resolves the type_sanity-40.sql case
 3. **Build & Test**: Rebuild deparser and run kitchen-sink tests
 
-### Remaining Kitchen-Sink Tests
-Based on previous runs, these test files likely need attention:
-- `alter-table-column.test.ts` (current focus)
-- `basic.test.ts`
-- `select.test.ts` 
-- `plpgsql.test.ts`
-- `foreign_key.test.ts`
-- `jsonb.test.ts`
-- `numeric.test.ts`
-
 ### Known Issues to Address
-1. **SIMILAR TO Expression**: May need AEXPR_SIMILAR handling fixes
-2. **RangeFunction Handling**: Complex function call parsing
-3. **XML Expression Parsing**: Specialized XML syntax support
-4. **TypeName Method Signatures**: Critical signature compatibility issues
+1.  Strings sometimes render with quotes when they should not, and likely can be solved using the DeparserContext, e.g. this is the current, bad, inccorrect output for a deparse: 
+  CREATE OPERATOR "##" ( LEFTARG = path, RIGHTARG = path, PROCEDURE = path_inter, COMMUTATOR = "##" )
+The hashes should not be in quotes... but they are because the AST represents them as strings.
+2. other places (maybe also solved with context, I'm not sure) but you use comma instead of period to join:
+      ❌ INPUT SQL: ALTER SEQUENCE public."User_id_seq" OWNED BY public."User".id
+      ❌ DEPARSED SQL: ALTER SEQUENCE public."User_id_seq" OWNED_BY public, User, id
 
 ## Technical Architecture Notes
 
@@ -147,9 +53,3 @@ Based on previous runs, these test files likely need attention:
 - **PostgreSQL Version Compatibility**: Support 13→17 upgrade path
 - **Complex Expression Handling**: Nested structures with proper precedence
 - **Context Awareness**: Different behavior based on statement context
-
-## Confidence Level
-**High** 🟢 - Successfully resolved the A_Expr parentheses issue and identified the next problem (A_Indirection). The systematic debugging approach is working well, moving through different node types that need parentheses fixes.
-
----
-*Last Updated: Current session - successfully fixed A_Expr and A_Indirection parentheses, now working on DefineStmt OBJECT_TSDICTIONARY support*

@@ -1,0 +1,52 @@
+
+import { FixtureTestUtils } from '../../test-utils';
+const fixtures = new FixtureTestUtils();
+
+it('latest-postgres-time', () => {
+  fixtures.runFixtureTests([
+  "time-1.sql",
+  "time-2.sql",
+  "time-3.sql",
+  "time-4.sql",
+  "time-5.sql",
+  "time-6.sql",
+  "time-7.sql",
+  "time-8.sql",
+  "time-9.sql",
+  "time-10.sql",
+  "time-11.sql",
+  "time-12.sql",
+  "time-13.sql",
+  "time-14.sql",
+  "time-15.sql",
+  "time-16.sql",
+  "time-17.sql",
+  "time-18.sql",
+  "time-19.sql",
+  "time-20.sql",
+  "time-21.sql",
+  "time-22.sql",
+  "time-23.sql",
+  "time-24.sql",
+  "time-25.sql",
+  "time-26.sql",
+  "time-27.sql",
+  "time-28.sql",
+  "time-29.sql",
+  "time-30.sql",
+  "time-31.sql",
+  "time-32.sql",
+  "time-33.sql",
+  "time-34.sql",
+  "time-35.sql",
+  "time-36.sql",
+  "time-37.sql",
+  "time-38.sql",
+  "time-39.sql",
+  "time-40.sql",
+  "time-41.sql",
+  "time-42.sql",
+  "time-43.sql",
+  "time-44.sql"
+]);
+});

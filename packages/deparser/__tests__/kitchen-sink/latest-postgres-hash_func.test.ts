@@ -1,0 +1,51 @@
+
+import { FixtureTestUtils } from '../../test-utils';
+const fixtures = new FixtureTestUtils();
+
+it('latest-postgres-hash_func', () => {
+  fixtures.runFixtureTests([
+  "hash_func-1.sql",
+  "hash_func-2.sql",
+  "hash_func-3.sql",
+  "hash_func-4.sql",
+  "hash_func-5.sql",
+  "hash_func-6.sql",
+  "hash_func-7.sql",
+  "hash_func-8.sql",
+  "hash_func-9.sql",
+  "hash_func-10.sql",
+  "hash_func-11.sql",
+  "hash_func-12.sql",
+  "hash_func-13.sql",
+  "hash_func-14.sql",
+  "hash_func-15.sql",
+  "hash_func-16.sql",
+  "hash_func-17.sql",
+  "hash_func-18.sql",
+  "hash_func-19.sql",
+  "hash_func-20.sql",
+  "hash_func-21.sql",
+  "hash_func-22.sql",
+  "hash_func-23.sql",
+  "hash_func-24.sql",
+  "hash_func-25.sql",
+  "hash_func-26.sql",
+  "hash_func-27.sql",
+  "hash_func-28.sql",
+  "hash_func-29.sql",
+  "hash_func-30.sql",
+  "hash_func-31.sql",
+  "hash_func-32.sql",
+  "hash_func-33.sql",
+  "hash_func-34.sql",
+  "hash_func-35.sql",
+  "hash_func-36.sql",
+  "hash_func-37.sql",
+  "hash_func-38.sql",
+  "hash_func-39.sql",
+  "hash_func-40.sql",
+  "hash_func-41.sql",
+  "hash_func-42.sql",
+  "hash_func-43.sql"
+]);
+});
