@@ -3099,6 +3099,11 @@ export class Deparser implements DeparserVisitor {
               const accessMethod = items[0];
               const objectName = items[1];
               return `${QuoteUtils.quote(objectName)} USING ${accessMethod}`;
+            } else if (items.length === 3) {
+              const accessMethod = items[0];
+              const schemaName = items[1];
+              const objectName = items[2];
+              return `${QuoteUtils.quote(schemaName)}.${QuoteUtils.quote(objectName)} USING ${accessMethod}`;
             }
             return items.join('.');
           }
