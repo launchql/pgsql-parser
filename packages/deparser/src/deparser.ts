@@ -2370,7 +2370,7 @@ export class Deparser implements DeparserVisitor {
       output.push(this.RangeVar(node.relation, context));
     }
     
-    if (node.accessMethod && node.accessMethod !== 'btree') {
+    if (node.accessMethod) {
       output.push('USING');
       output.push(node.accessMethod);
     }
