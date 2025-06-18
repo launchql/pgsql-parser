@@ -8196,6 +8196,9 @@ export class Deparser implements DeparserVisitor {
       case 'OBJECT_TYPE':
         output.push('TYPE');
         break;
+      case 'OBJECT_CONVERSION':
+        output.push('CONVERSION');
+        break;
       default:
         output.push(node.objectType.toString());
     }
@@ -8220,6 +8223,16 @@ export class Deparser implements DeparserVisitor {
           const schemaName = items[0].String?.sval || '';
           const typeName = items[1].String?.sval || '';
           output.push(`${QuoteUtils.quote(schemaName)}.${QuoteUtils.quote(typeName)}`);
+        } else {
+          output.push(this.visit(node.object as any, context));
+        }
+      } else if (node.objectType === 'OBJECT_CONVERSION' && (node.object as any).List) {
+        // Handle conversion objects specially to format schema.conversion correctly
+        const items = ListUtils.unwrapList(node.object as any);
+        if (items.length === 2) {
+          const schemaName = items[0].String?.sval || '';
+          const conversionName = items[1].String?.sval || '';
+          output.push(`${QuoteUtils.quote(schemaName)}.${QuoteUtils.quote(conversionName)}`);
         } else {
           output.push(this.visit(node.object as any, context));
         }
