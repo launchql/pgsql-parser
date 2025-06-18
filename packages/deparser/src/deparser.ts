@@ -7092,7 +7092,8 @@ export class Deparser implements DeparserVisitor {
               const defValue = defElem.arg;
               
               if (defName && defValue) {
-                if (['initcond', 'minitcond', 'initcond1'].includes(defName) && defValue.String) {
+                // Handle String arguments with single quotes for string literals
+                if (defValue.String) {
                   return `${defName} = '${defValue.String.sval}'`;
                 }
                 return `${defName} = ${this.visit(defValue, context)}`;
