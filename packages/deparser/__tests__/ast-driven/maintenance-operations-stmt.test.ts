@@ -1,6 +1,6 @@
 import { Deparser } from '../../src/deparser';
 import { DeparserContext } from '../../src/visitors/base';
-import { DefElemAction, ReindexObjectType } from '@pgsql/types';
+import { ClusterStmt, DefElemAction, ExplainStmt, ReindexObjectType, ReindexStmt, VacuumStmt } from '@pgsql/types';
 import { TestUtils } from '../../test-utils';
 
 const parser = new TestUtils();
@@ -10,7 +10,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
 
   describe('ClusterStmt', () => {
     it('should deparse CLUSTER statement without table', () => {
-      const ast = {
+      const ast: { ClusterStmt: ClusterStmt } = {
         ClusterStmt: {
           relation: null as any,
           indexname: undefined as string | undefined,
@@ -22,7 +22,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
     });
 
     it('should deparse CLUSTER statement with table only', () => {
-      const ast = {
+      const ast: { ClusterStmt: ClusterStmt } = {
         ClusterStmt: {
           relation: {
             schemaname: undefined as string | undefined,
@@ -41,7 +41,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
     });
 
     it('should deparse CLUSTER statement with table and index', () => {
-      const ast = {
+      const ast: { ClusterStmt: ClusterStmt } = {
         ClusterStmt: {
           relation: {
             schemaname: undefined as string | undefined,
@@ -60,7 +60,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
     });
 
     it('should deparse CLUSTER statement with parameters', () => {
-      const ast = {
+      const ast: { ClusterStmt: ClusterStmt } = {
         ClusterStmt: {
           relation: {
             schemaname: 'public',
@@ -91,7 +91,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
 
   describe('VacuumStmt', () => {
     it('should deparse VACUUM statement without options or relations', () => {
-      const ast = {
+      const ast: { VacuumStmt: VacuumStmt } = {
         VacuumStmt: {
           options: [] as any[],
           rels: [] as any[],
@@ -103,7 +103,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
     });
 
     it('should deparse VACUUM statement with options', () => {
-      const ast = {
+      const ast: { VacuumStmt: VacuumStmt } = {
         VacuumStmt: {
           options: [
             {
@@ -134,21 +134,19 @@ describe('Maintenance Operations Statement Deparsers', () => {
     });
 
     it('should deparse VACUUM statement with specific tables', () => {
-      const ast = {
+      const ast: { VacuumStmt: VacuumStmt } = {
         VacuumStmt: {
           options: [] as any[],
           rels: [
             {
               VacuumRelation: {
                 relation: {
-                  RangeVar: {
                     schemaname: undefined as string | undefined,
                     relname: 'users',
                     inh: true,
                     relpersistence: 'p',
                     alias: null as any,
                     location: -1
-                  }
                 },
                 oid: 0,
                 va_cols: [] as any[]
@@ -157,14 +155,12 @@ describe('Maintenance Operations Statement Deparsers', () => {
             {
               VacuumRelation: {
                 relation: {
-                  RangeVar: {
-                    schemaname: undefined as string | undefined,
-                    relname: 'orders',
-                    inh: true,
-                    relpersistence: 'p',
-                    alias: null as any,
-                    location: -1
-                  }
+                  schemaname: undefined as string | undefined,
+                  relname: 'orders',
+                  inh: true,
+                  relpersistence: 'p',
+                  alias: null as any,
+                  location: -1
                 },
                 oid: 0,
                 va_cols: [] as any[]
@@ -179,21 +175,19 @@ describe('Maintenance Operations Statement Deparsers', () => {
     });
 
     it('should deparse VACUUM statement with table and specific columns', () => {
-      const ast = {
+      const ast: { VacuumStmt: VacuumStmt } = {
         VacuumStmt: {
           options: [] as any[],
           rels: [
             {
               VacuumRelation: {
                 relation: {
-                  RangeVar: {
-                    schemaname: undefined as string | undefined,
-                    relname: 'products',
-                    inh: true,
-                    relpersistence: 'p',
-                    alias: null as any,
-                    location: -1
-                  }
+                  schemaname: undefined as string | undefined,
+                  relname: 'products',
+                  inh: true,
+                  relpersistence: 'p',
+                  alias: null as any,
+                  location: -1
                 },
                 oid: 0,
                 va_cols: [
@@ -207,11 +201,11 @@ describe('Maintenance Operations Statement Deparsers', () => {
         }
       };
       
-      expect(deparser.visit(ast as any, context)).toBe('VACUUM products (name, price)');
+      expect(deparser.visit(ast as any, context)).toBe('VACUUM products ( name, price )');
     });
 
     it('should deparse VACUUM statement with options and relations', () => {
-      const ast = {
+      const ast: { VacuumStmt: VacuumStmt } = {
         VacuumStmt: {
           options: [
             {
@@ -228,14 +222,12 @@ describe('Maintenance Operations Statement Deparsers', () => {
             {
               VacuumRelation: {
                 relation: {
-                  RangeVar: {
-                    schemaname: 'public',
-                    relname: 'inventory',
-                    inh: true,
-                    relpersistence: 'p',
-                    alias: null as any,
-                    location: -1
-                  }
+                  schemaname: 'public',
+                  relname: 'inventory',
+                  inh: true,
+                  relpersistence: 'p',
+                  alias: null as any,
+                  location: -1
                 },
                 oid: 0,
                 va_cols: [] as any[]
@@ -252,7 +244,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
 
   describe('ExplainStmt', () => {
     it('should deparse EXPLAIN statement with simple query', () => {
-      const ast = {
+      const ast: { ExplainStmt: ExplainStmt } = {
         ExplainStmt: {
           query: {
             SelectStmt: {
@@ -302,7 +294,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
     });
 
     it('should deparse EXPLAIN statement with options', () => {
-      const ast = {
+      const ast: { ExplainStmt: ExplainStmt } = {
         ExplainStmt: {
           query: {
             SelectStmt: {
@@ -378,7 +370,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
 
   describe('ReindexStmt', () => {
     it('should deparse REINDEX INDEX statement', () => {
-      const ast = {
+      const ast: { ReindexStmt: ReindexStmt } = {
         ReindexStmt: {
           kind: 'REINDEX_OBJECT_INDEX',
           relation: {
@@ -398,7 +390,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
     });
 
     it('should deparse REINDEX TABLE statement', () => {
-      const ast = {
+      const ast: { ReindexStmt: ReindexStmt } = {
         ReindexStmt: {
           kind: 'REINDEX_OBJECT_TABLE',
           relation: {
@@ -418,7 +410,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
     });
 
     it('should deparse REINDEX SCHEMA statement', () => {
-      const ast = {
+      const ast: { ReindexStmt: ReindexStmt } = {
         ReindexStmt: {
           kind: 'REINDEX_OBJECT_SCHEMA',
           relation: null as any,
@@ -431,7 +423,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
     });
 
     it('should deparse REINDEX DATABASE statement', () => {
-      const ast = {
+      const ast: { ReindexStmt: ReindexStmt } = {
         ReindexStmt: {
           kind: 'REINDEX_OBJECT_DATABASE',
           relation: null as any,
@@ -444,7 +436,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
     });
 
     it('should deparse REINDEX SYSTEM statement', () => {
-      const ast = {
+      const ast: { ReindexStmt: ReindexStmt } = {
         ReindexStmt: {
           kind: 'REINDEX_OBJECT_SYSTEM',
           relation: null as any,
@@ -457,7 +449,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
     });
 
     it('should deparse REINDEX statement with parameters', () => {
-      const ast = {
+      const ast: { ReindexStmt: ReindexStmt } = {
         ReindexStmt: {
           kind: 'REINDEX_OBJECT_INDEX',
           relation: {
@@ -487,7 +479,7 @@ describe('Maintenance Operations Statement Deparsers', () => {
     });
 
     it('should throw error for unsupported REINDEX kind', () => {
-      const ast = {
+      const ast: { ReindexStmt: ReindexStmt } = {
         ReindexStmt: {
           kind: 'REINDEX_OBJECT_UNKNOWN' as any,
           relation: null as any,

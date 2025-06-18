@@ -5205,20 +5205,7 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.rels && node.rels.length > 0) {
-      const relations = ListUtils.unwrapList(node.rels).map(rel => {
-        if (rel.VacuumRelation) {
-          const vacRel = rel.VacuumRelation;
-          let relOutput = this.visit(vacRel.relation, context);
-          
-          if (vacRel.va_cols && vacRel.va_cols.length > 0) {
-            const cols = ListUtils.unwrapList(vacRel.va_cols).map(col => this.visit(col, context));
-            relOutput += ` (${cols.join(', ')})`;
-          }
-          
-          return relOutput;
-        }
-        return this.visit(rel, context);
-      });
+      const relations = ListUtils.unwrapList(node.rels).map(rel => this.visit(rel, context));
       output.push(relations.join(', '));
     }
     
