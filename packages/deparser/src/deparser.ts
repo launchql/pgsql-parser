@@ -1140,7 +1140,12 @@ export class Deparser implements DeparserVisitor {
       }
       
       if (catalog === 'pg_catalog') {
-        let result = mods(`${catalog}.${type}`, args);
+        const builtinTypes = ['int2', 'int4', 'int8', 'float4', 'float8', 'numeric', 'decimal', 
+                             'varchar', 'char', 'text', 'bool', 'date', 'time', 'timestamp', 
+                             'timestamptz', 'interval', 'bytea', 'uuid', 'json', 'jsonb'];
+        
+        const typeName = builtinTypes.includes(type) ? type : `${catalog}.${type}`;
+        let result = mods(typeName, args);
         
         if (node.arrayBounds && node.arrayBounds.length > 0) {
           result += '[]';
@@ -1386,14 +1391,7 @@ export class Deparser implements DeparserVisitor {
   }
 
   TypeCast(node: t.TypeCast, context: DeparserContext): string {
-    return this.formatter.format([
-      'CAST',
-      '(',
-      this.visit(node.arg, context),
-      'AS',
-      this.TypeName(node.typeName, context),
-      ')'
-    ]);
+    return `${this.visit(node.arg, context)}::${this.TypeName(node.typeName, context)}`;
   }
 
   CollateClause(node: t.CollateClause, context: DeparserContext): string {
