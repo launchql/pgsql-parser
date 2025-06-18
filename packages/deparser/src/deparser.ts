@@ -8242,13 +8242,13 @@ export class Deparser implements DeparserVisitor {
       
       // Handle bitfield options for CREATE TABLE LIKE
       if (node.options & 0x01) optionStrs.push('INCLUDING COMMENTS');
-      if (node.options & 0x02) optionStrs.push('INCLUDING CONSTRAINTS');
-      if (node.options & 0x04) optionStrs.push('INCLUDING DEFAULTS');
-      if (node.options & 0x08) optionStrs.push('INCLUDING GENERATED');
-      if (node.options & 0x10) optionStrs.push('INCLUDING IDENTITY');
-      if (node.options & 0x20) optionStrs.push('INCLUDING INDEXES');
-      if (node.options & 0x40) optionStrs.push('INCLUDING STATISTICS');
-      if (node.options & 0x80) optionStrs.push('INCLUDING STORAGE');
+      if (node.options & 0x04) optionStrs.push('INCLUDING CONSTRAINTS');
+      if (node.options & 0x08) optionStrs.push('INCLUDING DEFAULTS');
+      if (node.options & 0x10) optionStrs.push('INCLUDING GENERATED');
+      if (node.options & 0x20) optionStrs.push('INCLUDING IDENTITY');
+      if (node.options & 0x40) optionStrs.push('INCLUDING INDEXES');
+      if (node.options & 0x80) optionStrs.push('INCLUDING STATISTICS');
+      if (node.options & 0x100) optionStrs.push('INCLUDING STORAGE');
       
       if (optionStrs.length > 0) {
         output.push(optionStrs.join(' '));
