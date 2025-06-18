@@ -4096,6 +4096,28 @@ export class Deparser implements DeparserVisitor {
       return '';
     }
     
+    // Handle AlterFdwStmt special cases first (before checking node.arg)
+    const parentContext = context.parentNodeType;
+    if (parentContext === 'AlterFdwStmt') {
+      if (['handler', 'validator'].includes(node.defname)) {
+        if (!node.arg) {
+          return `NO ${node.defname.toUpperCase()}`;
+        }
+        const defElemContext = { ...context, parentNodeType: 'DefElem' };
+        const argValue = this.visit(node.arg, defElemContext);
+        return `${node.defname.toUpperCase()} ${argValue}`;
+      }
+      // Handle OPTIONS clause - use space format, not equals format
+      if (node.arg) {
+        const defElemContext = { ...context, parentNodeType: 'DefElem' };
+        const argValue = this.visit(node.arg, defElemContext);
+        const quotedValue = typeof argValue === 'string' && !argValue.startsWith("'") 
+          ? `'${argValue}'` 
+          : argValue;
+        return `${node.defname} ${quotedValue}`;
+      }
+    }
+    
     if (node.arg) {
       const defElemContext = { ...context, parentNodeType: 'DefElem' };
       const argValue = this.visit(node.arg, defElemContext);
@@ -4228,7 +4250,7 @@ export class Deparser implements DeparserVisitor {
         return `${node.defname.toUpperCase()} ${argValue}`;
       }
       
-      if (parentContext === 'CreateExtensionStmt' || parentContext === 'AlterExtensionStmt' || parentContext === 'CreateFdwStmt') {
+      if (parentContext === 'CreateExtensionStmt' || parentContext === 'AlterExtensionStmt' || parentContext === 'CreateFdwStmt' || parentContext === 'AlterFdwStmt') {
         // AlterExtensionStmt specific cases
         if (parentContext === 'AlterExtensionStmt') {
           if (node.defname === 'to') {
@@ -4244,8 +4266,13 @@ export class Deparser implements DeparserVisitor {
           if (['handler', 'validator'].includes(node.defname)) {
             return `${node.defname.toUpperCase()} ${argValue}`;
           }
-          return `${node.defname.toUpperCase()} ${argValue}`;
+          const quotedValue = typeof argValue === 'string' 
+            ? QuoteUtils.escape(argValue) 
+            : argValue;
+          return `${node.defname} ${quotedValue}`;
         }
+        
+
         
         // CreateExtensionStmt cases (schema, version, etc.)
         return `${node.defname.toUpperCase()} ${argValue}`;
@@ -5431,16 +5458,16 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.func_options && node.func_options.length > 0) {
-      const funcOptions = ListUtils.unwrapList(node.func_options).map(opt => this.visit(opt, context));
+      const fdwContext = { ...context, parentNodeType: 'AlterFdwStmt' };
+      const funcOptions = ListUtils.unwrapList(node.func_options).map(opt => this.visit(opt, fdwContext));
       output.push(funcOptions.join(' '));
     }
     
     if (node.options && node.options.length > 0) {
       output.push('OPTIONS');
-      output.push('(');
-      const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, context));
-      output.push(options.join(', '));
-      output.push(')');
+      const fdwContext = { ...context, parentNodeType: 'AlterFdwStmt' };
+      const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, fdwContext));
+      output.push(`(${options.join(', ')})`);
     }
     
     return output.join(' ');
