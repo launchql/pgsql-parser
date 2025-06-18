@@ -5878,6 +5878,10 @@ export class Deparser implements DeparserVisitor {
           output.push('LANGUAGE');
         } else if (node.objtype === 'OBJECT_FUNCTION') {
           output.push('FUNCTION');
+        } else if (node.objtype === 'OBJECT_TYPE') {
+          output.push('TYPE');
+        } else if (node.objtype === 'OBJECT_DOMAIN') {
+          output.push('DOMAIN');
         }
         if (node.objects && node.objects.length > 0) {
           const objects = ListUtils.unwrapList(node.objects)
