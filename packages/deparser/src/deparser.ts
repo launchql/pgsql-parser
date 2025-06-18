@@ -5681,6 +5681,13 @@ export class Deparser implements DeparserVisitor {
       case 'OBJECT_TSTEMPLATE':
         output.push('TEXT SEARCH TEMPLATE');
         break;
+      case 'OBJECT_ATTRIBUTE':
+        if (node.relationType === 'OBJECT_TYPE') {
+          output.push('TYPE');
+        } else {
+          output.push('TABLE'); // fallback for other relation types
+        }
+        break;
       default:
         throw new Error(`Unsupported RenameStmt renameType: ${node.renameType}`);
     }
