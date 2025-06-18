@@ -5339,7 +5339,16 @@ export class Deparser implements DeparserVisitor {
   FetchStmt(node: t.FetchStmt, context: DeparserContext): string {
     const output: string[] = [node.ismove ? 'MOVE' : 'FETCH'];
     
-    if (node.direction) {
+    // Check if howMany represents "ALL" (PostgreSQL uses LONG_MAX as sentinel)
+    const isAll = (node.howMany as any) === 9223372036854776000;
+    
+    if (isAll) {
+      output.push('ALL');
+      if (node.portalname) {
+        output.push(QuoteUtils.quote(node.portalname));
+      }
+      return output.join(' ');
+    } else if (node.direction) {
       switch (node.direction) {
         case 'FETCH_FORWARD':
           if (node.howMany !== undefined && node.howMany !== null) {
