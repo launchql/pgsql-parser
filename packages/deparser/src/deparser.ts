@@ -8208,6 +8208,9 @@ export class Deparser implements DeparserVisitor {
       case 'OBJECT_TSTEMPLATE':
         output.push('TEXT SEARCH TEMPLATE');
         break;
+      case 'OBJECT_TSDICTIONARY':
+        output.push('TEXT SEARCH DICTIONARY');
+        break;
       default:
         output.push(node.objectType.toString());
     }
@@ -8272,6 +8275,16 @@ export class Deparser implements DeparserVisitor {
           const schemaName = items[0].String?.sval || '';
           const templateName = items[1].String?.sval || '';
           output.push(`${QuoteUtils.quote(schemaName)}.${QuoteUtils.quote(templateName)}`);
+        } else {
+          output.push(this.visit(node.object as any, context));
+        }
+      } else if (node.objectType === 'OBJECT_TSDICTIONARY' && (node.object as any).List) {
+        // Handle text search dictionary objects specially to format schema.dictionary correctly
+        const items = ListUtils.unwrapList(node.object as any);
+        if (items.length === 2) {
+          const schemaName = items[0].String?.sval || '';
+          const dictionaryName = items[1].String?.sval || '';
+          output.push(`${QuoteUtils.quote(schemaName)}.${QuoteUtils.quote(dictionaryName)}`);
         } else {
           output.push(this.visit(node.object as any, context));
         }
