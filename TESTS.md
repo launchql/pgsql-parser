@@ -12,16 +12,16 @@
 
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
-## Current Status (After CollateClause & DefineStmt OBJECT_COLLATION Fixes)
-- **Test Suites**: 69 failed, 306 passed, 375 total
-- **Tests**: 86 failed, 564 passed, 650 total  
-- **Pass Rate**: 81.6% test suites, 86.8% individual tests
+## Current Status (After JoinExpr & ViewStmt Fixes)
+- **Test Suites**: 68 failed, 307 passed, 375 total
+- **Tests**: 85 failed, 565 passed, 650 total  
+- **Pass Rate**: 81.9% test suites, 86.9% individual tests
 
-**Progress**: ✅ Maintained stability - no regressions after CollateClause/DefineStmt fixes (69 failed test suites maintained)
-**Recent Fix**: Added CollateClause parentheses handling and DefineStmt OBJECT_COLLATION support for CREATE COLLATION statements
-**Test Status**: ✅ No regressions - fixes addressed specific syntax issues but collate tests still have other problems
-**Impact**: Stability fix - resolved specific CREATE COLLATION and COLLATE clause syntax issues without breaking existing functionality
-**Status**: Stable progress - maintained 81.6% pass rate, ready to tackle remaining 69 failed test suites systematically
+**Progress**: ✅ Significant improvement - reduced failed test suites from 69→68 (1 test suite improvement)
+**Recent Fix**: Fixed JoinExpr NATURAL/CROSS JOIN handling, JOIN column aliases, and ViewStmt numeric option quoting
+**Test Status**: ✅ CREATE VIEW test suite now PASSING - resolved NATURAL JOIN, CROSS JOIN, and alias column syntax
+**Impact**: Major functionality fix - complete CREATE VIEW support with proper JOIN handling and numeric options
+**Status**: Strong progress - improved to 81.9% pass rate, systematic fixes showing measurable impact
 
 ## Current High-Impact Issues to Fix
 Based on latest `yarn test` output, key patterns causing multiple test failures:

@@ -2664,7 +2664,16 @@ export class Deparser implements DeparserVisitor {
     
     switch (node.jointype) {
       case 'JOIN_INNER':
-        joinStr += node.isNatural ? 'JOIN' : 'INNER JOIN';
+        // Handle NATURAL JOIN first - it has isNatural=true (NATURAL already added above)
+        if (node.isNatural) {
+          joinStr += 'JOIN';
+        }
+        // Handle CROSS JOIN case - when there's no quals, no usingClause, and not natural
+        else if (!node.quals && (!node.usingClause || node.usingClause.length === 0)) {
+          joinStr += 'CROSS JOIN';
+        } else {
+          joinStr += 'INNER JOIN';
+        }
         break;
       case 'JOIN_LEFT':
         joinStr += 'LEFT JOIN';
@@ -2699,7 +2708,13 @@ export class Deparser implements DeparserVisitor {
     
     // Handle JOIN alias - wrap in parentheses and add alias
     if (node.alias && node.alias.aliasname) {
-      result = `(${result}) ${node.alias.aliasname}`;
+      let aliasStr = node.alias.aliasname;
+      if (node.alias.colnames && node.alias.colnames.length > 0) {
+        const colNames = ListUtils.unwrapList(node.alias.colnames);
+        const columnList = colNames.map(col => this.visit(col, context)).join(', ');
+        aliasStr += `(${columnList})`;
+      }
+      result = `(${result}) ${aliasStr}`;
     }
     
     return result;
@@ -4429,6 +4444,17 @@ export class Deparser implements DeparserVisitor {
           return `${optionName} = ${argValue}`;
         }
         return `${optionName} = ${argValue}`;
+      }
+      
+      // Handle ViewStmt WITH options - don't quote numeric values
+      if (parentContext === 'ViewStmt' || context.parentContext === 'ViewStmt') {
+        if (typeof argValue === 'string' && /^\d+$/.test(argValue)) {
+          return `${node.defname}=${argValue}`;
+        }
+        const quotedValue = typeof argValue === 'string' 
+          ? QuoteUtils.escape(argValue) 
+          : argValue;
+        return `${node.defname} = ${quotedValue}`;
       }
       
       const quotedValue = typeof argValue === 'string' 
