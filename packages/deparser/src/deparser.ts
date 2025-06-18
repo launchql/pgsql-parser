@@ -2859,8 +2859,36 @@ export class Deparser implements DeparserVisitor {
             output.push('IF NOT EXISTS');
           }
           if (node.def) {
-            const columnDef = this.visit(node.def, context);
-            output.push(columnDef);
+            const colDefData = this.getNodeData(node.def);
+            const parts: string[] = [];
+            
+            if (colDefData.colname) {
+              parts.push(QuoteUtils.quote(colDefData.colname));
+            }
+            
+            if (colDefData.typeName) {
+              parts.push(this.TypeName(colDefData.typeName, context));
+            }
+            
+            if (colDefData.constraints) {
+              const constraints = ListUtils.unwrapList(colDefData.constraints);
+              const constraintStrs = constraints.map(constraint => {
+                const columnConstraintContext = { ...context, isColumnConstraint: true };
+                return this.visit(constraint, columnConstraintContext);
+              });
+              parts.push(...constraintStrs);
+            }
+            
+            if (colDefData.raw_default) {
+              parts.push('DEFAULT');
+              parts.push(this.visit(colDefData.raw_default, context));
+            }
+            
+            if (colDefData.is_not_null) {
+              parts.push('NOT NULL');
+            }
+            
+            output.push(parts.join(' '));
           }
           break;
         case 'AT_DropColumn':
