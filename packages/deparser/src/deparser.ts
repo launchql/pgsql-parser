@@ -1690,6 +1690,10 @@ export class Deparser implements DeparserVisitor {
         if (node.skip_validation && !context.isDomainConstraint) {
           output.push('NOT VALID');
         }
+        // Handle NO INHERIT for check constraints - only for table constraints, not domain constraints
+        if (node.is_no_inherit && !context.isDomainConstraint) {
+          output.push('NO INHERIT');
+        }
         break;
       case 'CONSTR_GENERATED':
         output.push('GENERATED');
