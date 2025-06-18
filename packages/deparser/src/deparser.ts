@@ -1473,7 +1473,7 @@ export class Deparser implements DeparserVisitor {
     
     if (node.collname) {
       const collname = ListUtils.unwrapList(node.collname);
-      output.push(QuoteUtils.quote(collname.map(n => this.visit(n, context))));
+      output.push(collname.map(n => this.visit(n, context)).join('.'));
     }
     
     return output.join(' ');
@@ -1630,6 +1630,10 @@ export class Deparser implements DeparserVisitor {
 
     if (node.typeName) {
       output.push(this.TypeName(node.typeName, context));
+    }
+
+    if (node.collClause) {
+      output.push(this.CollateClause(node.collClause, context));
     }
 
     if (node.constraints) {
