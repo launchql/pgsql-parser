@@ -2650,7 +2650,7 @@ export class Deparser implements DeparserVisitor {
             return 'READ ONLY';
           } else if (defElem.defname === 'transaction_isolation') {
             if (defElem.arg && defElem.arg.A_Const && defElem.arg.A_Const.sval) {
-              return `ISOLATION LEVEL ${defElem.arg.A_Const.sval.String.sval.toUpperCase()}`;
+              return `ISOLATION LEVEL ${defElem.arg.A_Const.sval.sval.toUpperCase()}`;
             }
           } else if (defElem.defname === 'transaction_deferrable') {
             return 'DEFERRABLE';
