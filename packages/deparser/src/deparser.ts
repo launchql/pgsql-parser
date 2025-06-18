@@ -4457,6 +4457,37 @@ export class Deparser implements DeparserVisitor {
         return `${node.defname} = ${quotedValue}`;
       }
       
+      // Handle CREATE TYPE context - preserve string literals with single quotes, handle boolean strings
+      if (parentContext === 'DefineStmt') {
+        if (node.arg && this.getNodeType(node.arg) === 'String') {
+          const stringData = this.getNodeData(node.arg);
+          // Handle boolean string values without quotes
+          if (stringData.sval === 'true' || stringData.sval === 'false') {
+            return `${node.defname} = ${stringData.sval}`;
+          }
+          // Regular string literals get single quotes
+          return `${node.defname} = '${stringData.sval}'`;
+        }
+        if (node.arg && this.getNodeType(node.arg) === 'Boolean') {
+          const boolData = this.getNodeData(node.arg);
+          return `${node.defname} = ${boolData.boolval ? 'true' : 'false'}`;
+        }
+        if (node.arg && this.getNodeType(node.arg) === 'Integer') {
+          const intData = this.getNodeData(node.arg);
+          return `${node.defname} = ${intData.ival}`;
+        }
+        if (node.arg && this.getNodeType(node.arg) === 'TypeName') {
+          const typeNameData = this.getNodeData(node.arg);
+          if (typeNameData.names) {
+            const names = ListUtils.unwrapList(typeNameData.names);
+            if (names.length === 1 && names[0].String) {
+              return `${node.defname} = ${names[0].String.sval}`;
+            }
+          }
+          return `${node.defname} = ${argValue}`;
+        }
+      }
+      
       const quotedValue = typeof argValue === 'string' 
         ? QuoteUtils.escape(argValue) 
         : argValue;
@@ -7600,17 +7631,9 @@ export class Deparser implements DeparserVisitor {
         
         if (node.definition && node.definition.length > 0) {
           output.push('(');
+          const defineStmtContext = { ...context, parentNodeType: 'DefineStmt' };
           const definitions = ListUtils.unwrapList(node.definition).map(def => {
-            if (def.DefElem) {
-              const defElem = def.DefElem;
-              const defName = defElem.defname;
-              const defValue = defElem.arg;
-              
-              if (defName && defValue) {
-                return `${defName} = ${this.visit(defValue, context)}`;
-              }
-            }
-            return this.visit(def, context);
+            return this.visit(def, defineStmtContext);
           });
           output.push(definitions.join(', '));
           output.push(')');
