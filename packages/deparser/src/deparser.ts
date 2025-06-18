@@ -2429,22 +2429,29 @@ export class Deparser implements DeparserVisitor {
       output.push(this.visit(node.larg, context));
     }
     
+    let joinStr = '';
+    if (node.isNatural) {
+      joinStr = 'NATURAL ';
+    }
+    
     switch (node.jointype) {
       case 'JOIN_INNER':
-        output.push('INNER JOIN');
+        joinStr += node.isNatural ? 'JOIN' : 'INNER JOIN';
         break;
       case 'JOIN_LEFT':
-        output.push('LEFT JOIN');
+        joinStr += 'LEFT JOIN';
         break;
       case 'JOIN_FULL':
-        output.push('FULL JOIN');
+        joinStr += 'FULL JOIN';
         break;
       case 'JOIN_RIGHT':
-        output.push('RIGHT JOIN');
+        joinStr += 'RIGHT JOIN';
         break;
       default:
-        output.push('JOIN');
+        joinStr += 'JOIN';
     }
+    
+    output.push(joinStr);
     
     if (node.rarg) {
       output.push(this.visit(node.rarg, context));
