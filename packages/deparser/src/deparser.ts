@@ -4583,11 +4583,20 @@ export class Deparser implements DeparserVisitor {
           const objectParts = ListUtils.unwrapList(list.items)
             .map(item => this.visit(item, context));
           
-          if (node.objtype === 'OBJECT_TABCONSTRAINT' && objectParts.length === 3) {
-            const [schema, table, constraint] = objectParts;
-            output.push(constraint);
-            output.push('ON');
-            output.push(`${schema}.${table}`);
+          if (node.objtype === 'OBJECT_TABCONSTRAINT') {
+            if (objectParts.length === 3) {
+              const [schema, table, constraint] = objectParts;
+              output.push(constraint);
+              output.push('ON');
+              output.push(`${schema}.${table}`);
+            } else if (objectParts.length === 2) {
+              const [table, constraint] = objectParts;
+              output.push(constraint);
+              output.push('ON');
+              output.push(table);
+            } else {
+              output.push(objectParts.join('.'));
+            }
           } else {
             output.push(objectParts.join('.'));
           }
