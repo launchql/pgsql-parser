@@ -3162,6 +3162,9 @@ export class Deparser implements DeparserVisitor {
         case 'OBJECT_FOREIGN_TABLE':
           output.push('FOREIGN TABLE');
           break;
+        case 'OBJECT_TYPE':
+          output.push('TYPE');
+          break;
         default:
           output.push('TABLE');
       }
