@@ -1535,7 +1535,8 @@ export class Deparser implements DeparserVisitor {
     
     if (context.parentNodeType === 'DefElem' || 
         context.parentNodeType === 'GrantStmt' ||
-        context.parentNodeType === 'AccessPriv') {
+        context.parentNodeType === 'AccessPriv' ||
+        context.parentNodeType === 'CreateOpClassItem') {
       return value;
     }
     
@@ -6027,7 +6028,7 @@ export class Deparser implements DeparserVisitor {
       const conversionName = ListUtils.unwrapList(node.conversion_name)
         .map(name => this.visit(name, context))
         .join('.');
-      output.push(QuoteUtils.quote(conversionName));
+      output.push(conversionName);
     }
 
     if (node.for_encoding_name) {
@@ -7088,6 +7089,64 @@ export class Deparser implements DeparserVisitor {
         }
         break;
         
+      case 'OBJECT_TSPARSER':
+        output.push('CREATE TEXT SEARCH PARSER');
+        
+        if (node.defnames && node.defnames.length > 0) {
+          const names = ListUtils.unwrapList(node.defnames)
+            .map(name => this.visit(name, context))
+            .join('.');
+          output.push(names);
+        }
+        
+        if (node.definition && node.definition.length > 0) {
+          output.push('(');
+          const definitions = ListUtils.unwrapList(node.definition).map(def => {
+            if (def.DefElem) {
+              const defElem = def.DefElem;
+              const defName = defElem.defname;
+              const defValue = defElem.arg;
+              
+              if (defName && defValue) {
+                return `${defName} = ${this.visit(defValue, context)}`;
+              }
+            }
+            return this.visit(def, context);
+          });
+          output.push(definitions.join(', '));
+          output.push(')');
+        }
+        break;
+        
+      case 'OBJECT_TSTEMPLATE':
+        output.push('CREATE TEXT SEARCH TEMPLATE');
+        
+        if (node.defnames && node.defnames.length > 0) {
+          const names = ListUtils.unwrapList(node.defnames)
+            .map(name => this.visit(name, context))
+            .join('.');
+          output.push(names);
+        }
+        
+        if (node.definition && node.definition.length > 0) {
+          output.push('(');
+          const definitions = ListUtils.unwrapList(node.definition).map(def => {
+            if (def.DefElem) {
+              const defElem = def.DefElem;
+              const defName = defElem.defname;
+              const defValue = defElem.arg;
+              
+              if (defName && defValue) {
+                return `${defName} = ${this.visit(defValue, context)}`;
+              }
+            }
+            return this.visit(def, context);
+          });
+          output.push(definitions.join(', '));
+          output.push(')');
+        }
+        break;
+        
       default:
         throw new Error(`Unsupported DefineStmt kind: ${node.kind}`);
     }
@@ -7322,7 +7381,8 @@ export class Deparser implements DeparserVisitor {
         output.push(node.number.toString());
       }
       if (node.name) {
-        output.push(this.ObjectWithArgs(node.name, context));
+        const opClassContext = { ...context, parentNodeType: 'CreateOpClassItem' };
+        output.push(this.ObjectWithArgs(node.name, opClassContext));
       }
     } else if (node.itemtype === 2) {
       output.push('FUNCTION');
@@ -7330,9 +7390,10 @@ export class Deparser implements DeparserVisitor {
         output.push(node.number.toString());
       }
       if (node.name) {
-        output.push(this.ObjectWithArgs(node.name, context));
+        const opClassContext = { ...context, parentNodeType: 'CreateOpClassItem' };
+        output.push(this.ObjectWithArgs(node.name, opClassContext));
       }
-    } else if (node.itemtype === 3) {
+    }else if (node.itemtype === 3) {
       output.push('STORAGE');
       if (node.storedtype) {
         output.push(this.TypeName(node.storedtype, context));
@@ -8125,7 +8186,9 @@ export class Deparser implements DeparserVisitor {
         output.push(node.objectType.toString());
     }
     
-    if (node.object) {
+    if (node.relation && node.objectType === 'OBJECT_TABLE') {
+      output.push(this.RangeVar(node.relation, context));
+    } else if (node.object) {
       output.push(this.visit(node.object as any, context));
     }
     
