@@ -156,7 +156,7 @@ export class Deparser implements DeparserVisitor {
 
     if (node.intoClause) {
       output.push('INTO');
-      output.push(this.visit(node.intoClause as Node, context));
+      output.push(this.IntoClause(node.intoClause, context));
     }
 
     if (node.fromClause) {
@@ -536,6 +536,9 @@ export class Deparser implements DeparserVisitor {
 
     if (node.selectStmt) {
       output.push(this.visit(node.selectStmt as Node, context));
+    } else if (!node.cols || (node.cols && ListUtils.unwrapList(node.cols).length === 0)) {
+      // Handle DEFAULT VALUES case when no columns and no selectStmt
+      output.push('DEFAULT VALUES');
     }
 
     if (node.onConflictClause) {
@@ -2619,7 +2622,19 @@ export class Deparser implements DeparserVisitor {
     if (node.rolename) {
       return node.rolename;
     }
-    return '';
+    
+    switch (node.roletype) {
+      case 'ROLESPEC_PUBLIC':
+        return 'public';
+      case 'ROLESPEC_CURRENT_USER':
+        return 'CURRENT_USER';
+      case 'ROLESPEC_SESSION_USER':
+        return 'SESSION_USER';
+      case 'ROLESPEC_CURRENT_ROLE':
+        return 'CURRENT_ROLE';
+      default:
+        return 'public';
+    }
   }
 
   roletype(node: any, context: DeparserContext): string {
@@ -3804,6 +3819,17 @@ export class Deparser implements DeparserVisitor {
       }
       
       if (parentContext === 'CreateSeqStmt' || parentContext === 'AlterSeqStmt') {
+        if (node.defname === 'owned_by') {
+          // Handle List node for table.column reference
+          if (node.arg && this.getNodeType(node.arg) === 'List') {
+            const listData = this.getNodeData(node.arg);
+            const listItems = ListUtils.unwrapList(listData.items);
+            const parts = listItems.map(item => this.visit(item, context));
+            return `OWNED BY ${parts.join('.')}`;
+          } else {
+            return `OWNED BY ${argValue}`;
+          }
+        }
         return `${node.defname.toUpperCase()} ${argValue}`;
       }
       
@@ -3817,6 +3843,22 @@ export class Deparser implements DeparserVisitor {
         } else {
           return node.defname.toUpperCase();
         }
+      }
+      
+      if (parentContext === 'DoStmt') {
+        if (node.defname === 'as') {
+          if (Array.isArray(argValue)) {
+            const bodyParts = argValue;
+            if (bodyParts.length === 1) {
+              return `$$${bodyParts[0]}$$`;
+            } else {
+              return `$$${bodyParts.join('')}$$`;
+            }
+          } else {
+            return `$$${argValue}$$`;
+          }
+        }
+        return '';
       }
       
       if (parentContext === 'CreateFunctionStmt') {
@@ -4715,7 +4757,8 @@ export class Deparser implements DeparserVisitor {
     const output: string[] = ['DO'];
     
     if (node.args && node.args.length > 0) {
-      const args = ListUtils.unwrapList(node.args).map(arg => this.visit(arg, context));
+      const doContext = { ...context, parentNodeType: 'DoStmt' };
+      const args = ListUtils.unwrapList(node.args).map(arg => this.visit(arg, doContext));
       output.push(args.join(' '));
     }
     
@@ -5591,6 +5634,9 @@ export class Deparser implements DeparserVisitor {
 
     switch (node.targtype) {
       case 'ACL_TARGET_OBJECT':
+        if (node.objtype === 'OBJECT_SCHEMA') {
+          output.push('SCHEMA');
+        }
         if (node.objects && node.objects.length > 0) {
           const objects = ListUtils.unwrapList(node.objects)
             .map(obj => this.visit(obj, context))
@@ -6966,7 +7012,7 @@ export class Deparser implements DeparserVisitor {
   }
 
   IntoClause(node: t.IntoClause, context: DeparserContext): string {
-    const output: string[] = ['INTO'];
+    const output: string[] = [];
     
     if (node.rel) {
       output.push(this.RangeVar(node.rel, context));
