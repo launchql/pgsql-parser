@@ -12,52 +12,52 @@
 
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
-## Current Status (After JoinExpr & ViewStmt Fixes)
-- **Test Suites**: 68 failed, 307 passed, 375 total
-- **Tests**: 85 failed, 565 passed, 650 total  
-- **Pass Rate**: 81.9% test suites, 86.9% individual tests
+## Current Status (After CREATE TYPE DefElem Context Fixes)
+- **Test Suites**: 67 failed, 308 passed, 375 total
+- **Tests**: 84 failed, 566 passed, 650 total  
+- **Pass Rate**: 82.1% test suites, 87.1% individual tests
 
-**Progress**: ✅ Significant improvement - reduced failed test suites from 69→68 (1 test suite improvement)
-**Recent Fix**: Fixed JoinExpr NATURAL/CROSS JOIN handling, JOIN column aliases, and ViewStmt numeric option quoting
-**Test Status**: ✅ CREATE VIEW test suite now PASSING - resolved NATURAL JOIN, CROSS JOIN, and alias column syntax
-**Impact**: Major functionality fix - complete CREATE VIEW support with proper JOIN handling and numeric options
-**Status**: Strong progress - improved to 81.9% pass rate, systematic fixes showing measurable impact
+**Progress**: ✅ Continued improvement - reduced failed test suites from 68→67 (1 test suite improvement)
+**Recent Fix**: Fixed CREATE TYPE DefElem context handling for Integer and TypeName nodes, improved DefineStmt processing
+**Test Status**: ✅ CREATE TYPE parsing now working correctly - proper handling of numeric values, type names, and boolean literals
+**Impact**: Systematic deparser architecture improvement - better context passing and node-specific handling
+**Status**: Strong momentum - improved to 82.1% pass rate, consistent incremental progress
 
 ## Current High-Impact Issues to Fix
 Based on latest `yarn test` output, key patterns causing multiple test failures:
 
-### LockStmt - Incorrect Lock Mode Mapping
-- **Expected**: `LOCK users IN SHARE MODE`
-- **Actual**: `LOCK users IN SHARE UPDATE EXCLUSIVE MODE`
-- **Issue**: Lock mode enumeration values not correctly mapped to PostgreSQL lock mode names
-
-### RenameStmt - Missing Quotes on New Names
-- **Expected**: `ALTER TABLE old_table RENAME TO "new_table"`
-- **Actual**: `ALTER TABLE old_table RENAME TO new_table`
-- **Issue**: New names in RENAME TO statements should be quoted when necessary
-
 ### DROP TABLE - Missing RESTRICT/CASCADE
 - **Expected**: `DROP TABLE users RESTRICT`
 - **Actual**: `DROP TABLE users`
-- **Issue**: Missing RESTRICT/CASCADE keywords in DropStmt
-
-### CREATE INDEX - Unnecessary USING btree
-- **Expected**: `CREATE INDEX idx_users_email ON users (email)`
-- **Actual**: `CREATE INDEX idx_users_email ON users USING btree (email)`
-- **Issue**: Default btree access method should be omitted
+- **Issue**: Missing behavior handling in DropStmt method
 
 ### GRANT Role - Missing WITH ADMIN OPTION
 - **Expected**: `GRANT manager_role TO supervisor WITH ADMIN OPTION`
 - **Actual**: `GRANT manager_role TO supervisor`
-- **Issue**: Missing admin_opt handling in GrantRoleStmt
+- **Issue**: Missing admin_opt handling in GrantRoleStmt method
+
+### CREATE INDEX - Unnecessary USING btree
+- **Expected**: `CREATE INDEX idx_users_email ON users (email)`
+- **Actual**: `CREATE INDEX idx_users_email ON users USING btree (email)`
+- **Issue**: Default btree access method should be omitted in IndexStmt method
+
+### CREATE FOREIGN DATA WRAPPER - Options Format
+- **Expected**: `CREATE FOREIGN DATA WRAPPER custom_fdw OPTIONS (HOST localhost, PORT 5432)`
+- **Actual**: `CREATE FOREIGN DATA WRAPPER custom_fdw OPTIONS (host 'localhost', port '5432')`
+- **Issue**: DefElem context handling for FDW options should use uppercase names and no quotes
+
+### CREATE USER MAPPING - Server Name Quoting
+- **Expected**: `CREATE USER MAPPING FOR local_user SERVER "foreign_server"`
+- **Actual**: `CREATE USER MAPPING FOR local_user SERVER foreign_server`
+- **Issue**: Server names should be quoted when necessary in CreateUserMappingStmt
 
 ## Next Steps
-1. Fix LockStmt method to correctly map lock mode enumeration values to PostgreSQL lock mode names
-2. Fix RenameStmt method to properly quote new names in RENAME TO statements
-3. Add RESTRICT/CASCADE support to DropStmt method
-4. Fix CREATE INDEX to omit default "USING btree" in IndexStmt method
-5. Add WITH ADMIN OPTION support to GrantRoleStmt method
-6. Continue systematically through remaining 84 failed test suites
+1. Fix DropStmt method to add RESTRICT/CASCADE behavior support
+2. Fix GrantRoleStmt method to add WITH ADMIN OPTION support
+3. Fix IndexStmt method to omit default "USING btree" access method
+4. Fix CreateFdwStmt DefElem context to use uppercase option names without quotes
+5. Fix CreateUserMappingStmt to properly quote server names when necessary
+6. Continue systematically through remaining 67 failed test suites
 
 ## Workflow
 - Make changes → `yarn test --testNamePattern="specific-test"` → `yarn test` (check regressions) → update this file
