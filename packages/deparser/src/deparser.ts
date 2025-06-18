@@ -3126,7 +3126,8 @@ export class Deparser implements DeparserVisitor {
             return items.join('.');
           }
           
-          const objName = this.visit(objList, context);
+          const objContext = { ...context, parentNodeType: 'DropStmt', objtype: node.removeType };
+          const objName = this.visit(objList, objContext);
           return objName;
         }).filter((name: string) => name && name.trim()).join(', ');
         if (objects) {
@@ -3137,8 +3138,6 @@ export class Deparser implements DeparserVisitor {
 
     if (node.behavior === 'DROP_CASCADE') {
       output.push('CASCADE');
-    } else if (node.behavior === 'DROP_RESTRICT') {
-      output.push('RESTRICT');
     }
 
     return output.join(' ');
@@ -5384,7 +5383,7 @@ export class Deparser implements DeparserVisitor {
     } else if (node.args_unspecified) {
       // For functions with unspecified args, don't add parentheses
     } else {
-      if (context.parentNodeType === 'CommentStmt' && 
+      if ((context.parentNodeType === 'CommentStmt' || context.parentNodeType === 'DropStmt') && 
           context.objtype === 'OBJECT_AGGREGATE') {
         result += '(*)';
       } else if (context.parentNodeType === 'CreateOpClassItem') {
