@@ -4283,6 +4283,23 @@ export class Deparser implements DeparserVisitor {
         return `${node.defname}=${argValue}`;
       }
       
+      // Handle CreateEventTrigStmt WHEN clause - use IN syntax for List arguments
+      if (parentContext === 'CreateEventTrigStmt') {
+        if (node.arg && this.getNodeType(node.arg) === 'List') {
+          const listData = this.getNodeData(node.arg);
+          const listItems = ListUtils.unwrapList(listData.items);
+          const values = listItems.map(item => {
+            if (this.getNodeType(item) === 'String') {
+              const stringData = this.getNodeData(item);
+              return `'${stringData.sval || ''}'`;
+            }
+            return this.visit(item, context);
+          });
+          return `${node.defname} IN (${values.join(', ')})`;
+        }
+        return `${node.defname} = ${argValue}`;
+      }
+      
       // Handle AT_SetRelOptions context - don't quote values that should be type names
       if (parentContext === 'AlterTableCmd' || parentContext === 'AlterTableStmt' || context.parentContext === 'AlterTableCmd') {
         const optionName = node.defnamespace ? `${node.defnamespace}.${node.defname}` : node.defname;
@@ -4765,6 +4782,9 @@ export class Deparser implements DeparserVisitor {
           break;
         case 'OBJECT_FDW':
           output.push('FOREIGN DATA WRAPPER');
+          break;
+        case 'OBJECT_EVENT_TRIGGER':
+          output.push('EVENT TRIGGER');
           break;
         default:
           output.push(node.objtype.replace('OBJECT_', ''));
@@ -5929,6 +5949,9 @@ export class Deparser implements DeparserVisitor {
       case 'OBJECT_FDW':
         output.push('FOREIGN DATA WRAPPER');
         break;
+      case 'OBJECT_EVENT_TRIGGER':
+        output.push('EVENT TRIGGER');
+        break;
       case 'OBJECT_ATTRIBUTE':
         if (node.relationType === 'OBJECT_TYPE') {
           output.push('TYPE');
@@ -5983,7 +6006,7 @@ export class Deparser implements DeparserVisitor {
       throw new Error('RenameStmt requires newname');
     }
     
-    output.push(`"${node.newname}"`);
+    output.push(QuoteUtils.quote(node.newname));
     
     // Handle CASCADE/RESTRICT behavior for RENAME operations
     if (node.behavior === 'DROP_CASCADE') {
@@ -6051,6 +6074,9 @@ export class Deparser implements DeparserVisitor {
         break;
       case 'OBJECT_TSCONFIGURATION':
         output.push('TEXT SEARCH CONFIGURATION');
+        break;
+      case 'OBJECT_EVENT_TRIGGER':
+        output.push('EVENT TRIGGER');
         break;
       default:
         throw new Error(`Unsupported AlterOwnerStmt objectType: ${node.objectType}`);
@@ -6644,8 +6670,9 @@ export class Deparser implements DeparserVisitor {
 
     if (node.whenclause && node.whenclause.length > 0) {
       output.push('WHEN');
+      const eventTriggerContext = { ...context, parentNodeType: 'CreateEventTrigStmt' };
       const conditions = ListUtils.unwrapList(node.whenclause)
-        .map(condition => this.visit(condition, context))
+        .map(condition => this.visit(condition, eventTriggerContext))
         .join(' AND ');
       output.push(conditions);
     }
@@ -6656,7 +6683,7 @@ export class Deparser implements DeparserVisitor {
       const funcName = ListUtils.unwrapList(node.funcname)
         .map(name => this.visit(name, context))
         .join('.');
-      output.push('FUNCTION', funcName + '()');
+      output.push('PROCEDURE', funcName + '()');
     }
 
     return output.join(' ');
