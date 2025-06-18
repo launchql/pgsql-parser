@@ -3260,7 +3260,11 @@ export class Deparser implements DeparserVisitor {
           }
           break;
         case 'AT_AlterColumnType':
-          output.push('ALTER COLUMN');
+          if (context.parentContext === 'AlterTypeStmt') {
+            output.push('ALTER ATTRIBUTE');
+          } else {
+            output.push('ALTER COLUMN');
+          }
           if (node.name) {
             output.push(QuoteUtils.quote(node.name));
           }
