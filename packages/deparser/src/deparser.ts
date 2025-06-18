@@ -4296,21 +4296,25 @@ export class Deparser implements DeparserVisitor {
   }
 
   ReplicaIdentityStmt(node: t.ReplicaIdentityStmt, context: DeparserContext): string {
-    const output: string[] = ['ALTER', 'TABLE'];
+    const output: string[] = [];
     
     if (node.identity_type) {
       switch (node.identity_type) {
+        case 'd':
         case 'REPLICA_IDENTITY_DEFAULT':
-          output.push('REPLICA', 'IDENTITY', 'DEFAULT');
+          output.push('DEFAULT');
           break;
+        case 'f':
         case 'REPLICA_IDENTITY_FULL':
-          output.push('REPLICA', 'IDENTITY', 'FULL');
+          output.push('FULL');
           break;
+        case 'n':
         case 'REPLICA_IDENTITY_NOTHING':
-          output.push('REPLICA', 'IDENTITY', 'NOTHING');
+          output.push('NOTHING');
           break;
+        case 'i':
         case 'REPLICA_IDENTITY_INDEX':
-          output.push('REPLICA', 'IDENTITY', 'USING', 'INDEX');
+          output.push('USING', 'INDEX');
           if (node.name) {
             output.push(QuoteUtils.quote(node.name));
           }
