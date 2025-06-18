@@ -4189,6 +4189,16 @@ export class Deparser implements DeparserVisitor {
       
       const parentContext = context.parentNodeType;
       
+      if (parentContext === 'AlterOperatorStmt' && node.arg && this.getNodeType(node.arg) === 'TypeName') {
+        const typeNameData = this.getNodeData(node.arg);
+        if (typeNameData.names) {
+          const names = ListUtils.unwrapList(typeNameData.names);
+          if (names.length === 1 && names[0].String) {
+            return `${node.defname} = ${names[0].String.sval}`;
+          }
+        }
+      }
+      
       if (parentContext === 'CreatedbStmt' || parentContext === 'DropdbStmt') {
         const quotedValue = typeof argValue === 'string' 
           ? QuoteUtils.escape(argValue) 
@@ -5623,10 +5633,9 @@ export class Deparser implements DeparserVisitor {
     output.push('SET');
     
     if (node.options && node.options.length > 0) {
-      output.push('(');
-      const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, context));
-      output.push(options.join(', '));
-      output.push(')');
+      const alterOpContext = { ...context, parentNodeType: 'AlterOperatorStmt' };
+      const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, alterOpContext));
+      output.push(`(${options.join(', ')})`);
     }
     
     return output.join(' ');
