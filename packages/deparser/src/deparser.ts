@@ -7096,6 +7096,16 @@ export class Deparser implements DeparserVisitor {
                 const remainingItems = items.slice(1).map(item => this.visit(item, context));
                 
                 output.push(`(${firstItem} ORDER BY ${remainingItems.join(', ')})`);
+              } else if (listArg.items && listArg.items.length === 1) {
+                // Handle single VARIADIC parameter in ordered-set context
+                const item = listArg.items[0];
+                if (item.FunctionParameter && item.FunctionParameter.mode === 'FUNC_PARAM_VARIADIC') {
+                  const paramStr = this.visit(item, context);
+                  output.push(`(${paramStr} ORDER BY ${paramStr})`);
+                } else {
+                  const paramStr = this.visit(item, context);
+                  output.push(`(${paramStr})`);
+                }
               } else {
                 // Fallback to regular processing if structure is unexpected
                 const argStrs = filteredArgs.map(arg => {
@@ -7106,7 +7116,7 @@ export class Deparser implements DeparserVisitor {
                 });
                 output.push(`(${argStrs.join(', ')})`);
               }
-            } else {
+            }else {
               // Handle regular aggregate arguments
               const argStrs = filteredArgs.map(arg => {
                 // Handle empty object representing * wildcard
