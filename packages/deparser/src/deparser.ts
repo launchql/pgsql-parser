@@ -2738,13 +2738,38 @@ export class Deparser implements DeparserVisitor {
       case 'VAR_SET_CURRENT':
         return `SET ${node.name} FROM CURRENT`;
       case 'VAR_SET_MULTI':
-        const assignments = node.args ? ListUtils.unwrapList(node.args).map(arg => {
-          if (arg.VariableSetStmt) {
-            return this.VariableSetStmt(arg.VariableSetStmt, context);
+        if (node.name === 'TRANSACTION') {
+          // Handle SET TRANSACTION statements specially
+          const transactionOptions: string[] = [];
+          if (node.args) {
+            const args = ListUtils.unwrapList(node.args);
+            for (const arg of args) {
+              if (arg.DefElem) {
+                const defElem = arg.DefElem;
+                if (defElem.defname === 'transaction_isolation') {
+                  const value = defElem.arg ? this.visit(defElem.arg, context) : '';
+                  transactionOptions.push(`ISOLATION LEVEL ${value.replace(/'/g, '').toUpperCase()}`);
+                } else if (defElem.defname === 'transaction_read_only') {
+                  const value = defElem.arg ? this.visit(defElem.arg, context) : '';
+                  transactionOptions.push(value.replace(/'/g, '').toLowerCase() === 'true' ? 'READ ONLY' : 'READ WRITE');
+                } else if (defElem.defname === 'transaction_deferrable') {
+                  const value = defElem.arg ? this.visit(defElem.arg, context) : '';
+                  transactionOptions.push(value.replace(/'/g, '').toLowerCase() === 'true' ? 'DEFERRABLE' : 'NOT DEFERRABLE');
+                }
+              }
+            }
           }
-          return this.visit(arg, context);
-        }).join(', ') : '';
-        return `SET ${assignments}`;
+          return `SET TRANSACTION ${transactionOptions.join(' ')}`;
+        } else {
+          // Handle other multi-variable sets
+          const assignments = node.args ? ListUtils.unwrapList(node.args).map(arg => {
+            if (arg.VariableSetStmt) {
+              return this.VariableSetStmt(arg.VariableSetStmt, context);
+            }
+            return this.visit(arg, context);
+          }).join(', ') : '';
+          return `SET ${assignments}`;
+        }
       case 'VAR_RESET':
         return `RESET ${node.name}`;
       case 'VAR_RESET_ALL':
