@@ -2814,7 +2814,7 @@ export class Deparser implements DeparserVisitor {
     if (node.schemaElts && node.schemaElts.length > 0) {
       const elements = ListUtils.unwrapList(node.schemaElts)
         .map(element => this.visit(element, context))
-        .join('; ');
+        .join(' ');
       output.push(elements);
     }
 
@@ -5983,6 +5983,9 @@ export class Deparser implements DeparserVisitor {
         break;
       case 'OBJECT_POLICY':
         output.push('POLICY');
+        if (node.subname) {
+          output.push(QuoteUtils.quote(node.subname));
+        }
         break;
       case 'OBJECT_PUBLICATION':
         output.push('PUBLICATION');
@@ -6039,6 +6042,12 @@ export class Deparser implements DeparserVisitor {
       const rangeVarContext = node.relationType === 'OBJECT_TYPE' 
         ? { ...context, parentContext: 'AlterTypeStmt' }
         : context;
+      
+      // Add ON keyword for policy operations
+      if (node.renameType === 'OBJECT_POLICY') {
+        output.push('ON');
+      }
+      
       output.push(this.RangeVar(node.relation, rangeVarContext));
     } else if (node.object) {
       // Handle operator family and operator class objects specially to format name USING access_method correctly
