@@ -8605,7 +8605,7 @@ export class Deparser implements DeparserVisitor {
     
     if (node.role) {
       output.push('ROLE');
-      output.push(this.visit(node.role as any, context));
+      output.push(this.RoleSpec(node.role, context));
     } else {
       output.push('USER');
     }
@@ -8616,7 +8616,18 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.setstmt) {
-      output.push(this.VariableSetStmt(node.setstmt, context));
+      output.push('SET');
+      if (node.setstmt.name) {
+        output.push(node.setstmt.name);
+      }
+      
+      if (node.setstmt.args && node.setstmt.args.length > 0) {
+        output.push('TO');
+        const args = ListUtils.unwrapList(node.setstmt.args)
+          .map(arg => this.visit(arg, context))
+          .join(', ');
+        output.push(args);
+      }
     }
     
     return output.join(' ');
