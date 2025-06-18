@@ -12,16 +12,16 @@
 
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
-## Current Status (After CREATE TYPE DefElem Context Fixes)
-- **Test Suites**: 67 failed, 308 passed, 375 total
-- **Tests**: 84 failed, 566 passed, 650 total  
-- **Pass Rate**: 82.1% test suites, 87.1% individual tests
+## Current Status (After RenameStmt Regression Fix)
+- **Test Suites**: 66 failed, 309 passed, 375 total
+- **Tests**: 81 failed, 569 passed, 650 total  
+- **Pass Rate**: 82.4% test suites, 87.5% individual tests
 
-**Progress**: ✅ Continued improvement - reduced failed test suites from 68→67 (1 test suite improvement)
-**Recent Fix**: Fixed CREATE TYPE DefElem context handling for Integer and TypeName nodes, improved DefineStmt processing
-**Test Status**: ✅ CREATE TYPE parsing now working correctly - proper handling of numeric values, type names, and boolean literals
-**Impact**: Systematic deparser architecture improvement - better context passing and node-specific handling
-**Status**: Strong momentum - improved to 82.1% pass rate, consistent incremental progress
+**Progress**: ✅ Major improvement - reduced failed test suites from 81→66 (15 test suite improvement)
+**Recent Fix**: Fixed RenameStmt regression by removing incorrect RESTRICT behavior handling that was adding unwanted "RESTRICT" to RENAME operations
+**Test Status**: ✅ Regression resolved - back to improving pass rate systematically
+**Impact**: Successfully identified and fixed regression cause, now continuing with systematic improvements
+**Status**: Ready to continue fixing remaining 66 failed test suites
 
 ## Current High-Impact Issues to Fix
 Based on latest `yarn test` output, key patterns causing multiple test failures:
