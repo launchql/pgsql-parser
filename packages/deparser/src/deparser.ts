@@ -8182,6 +8182,9 @@ export class Deparser implements DeparserVisitor {
       case 'OBJECT_SEQUENCE':
         output.push('SEQUENCE');
         break;
+      case 'OBJECT_OPCLASS':
+        output.push('OPERATOR CLASS');
+        break;
       default:
         output.push(node.objectType.toString());
     }
@@ -8196,6 +8199,17 @@ export class Deparser implements DeparserVisitor {
           const schemaName = items[0].String?.sval || '';
           const domainName = items[1].String?.sval || '';
           output.push(`${QuoteUtils.quote(schemaName)}.${QuoteUtils.quote(domainName)}`);
+        } else {
+          output.push(this.visit(node.object as any, context));
+        }
+      } else if (node.objectType === 'OBJECT_OPCLASS' && (node.object as any).List) {
+        // Handle operator class objects: ALTER OPERATOR CLASS schema.name USING access_method
+        const items = ListUtils.unwrapList(node.object as any);
+        if (items.length === 3) {
+          const accessMethod = items[0].String?.sval || '';
+          const schemaName = items[1].String?.sval || '';
+          const opClassName = items[2].String?.sval || '';
+          output.push(`${QuoteUtils.quote(schemaName)}.${QuoteUtils.quote(opClassName)} USING ${accessMethod}`);
         } else {
           output.push(this.visit(node.object as any, context));
         }
