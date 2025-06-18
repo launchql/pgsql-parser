@@ -16,7 +16,7 @@ type ParseErrorType =
 
 interface ParseError extends Error {
   type: ParseErrorType;
-  relativePath: string;
+  testName: string;
   sql: string;
   deparsedSql?: string;
   originalAst?: any;
@@ -26,7 +26,7 @@ interface ParseError extends Error {
 
 function createParseError(
   type: ParseErrorType,
-  relativePath: string,
+  testName: string,
   sql: string,
   deparsedSql?: string,
   originalAst?: any,
@@ -35,7 +35,7 @@ function createParseError(
 ): ParseError {
   const error = new Error(getErrorMessage(type)) as ParseError;
   error.type = type;
-  error.relativePath = relativePath;
+  error.testName = testName;
   error.sql = sql;
   error.deparsedSql = deparsedSql;
   error.originalAst = originalAst;
@@ -92,7 +92,7 @@ export class TestUtils {
     }
   }
 
-  expectAstMatch(relativePath: string, sql: string) {
+  expectAstMatch(testName: string, sql: string) {
     let tree: any;
     try {
       tree = this.tryParse(sql);
@@ -106,7 +106,7 @@ export class TestUtils {
             } catch (parseErr) {
               throw createParseError(
                 'INVALID_DEPARSED_SQL',
-                relativePath,
+                testName,
                 sql,
                 outSql,
                 cleanTree([stmt]),
@@ -118,21 +118,21 @@ export class TestUtils {
             const reparsedClean = cleanTree(reparsed.stmts || []);
             
             if (!tree.stmts) {
-              throw createParseError('PARSE_FAILED', relativePath, sql);
+              throw createParseError('PARSE_FAILED', testName, sql);
             }
             
             if (!stmt.stmt) {
-              throw createParseError('INVALID_STATEMENT', relativePath, sql, undefined, cleanTree(tree));
+              throw createParseError('INVALID_STATEMENT', testName, sql, undefined, cleanTree(tree));
             }
             
             if (!reparsed.stmts) {
-              throw createParseError('REPARSE_FAILED', relativePath, sql, outSql, originalClean);
+              throw createParseError('REPARSE_FAILED', testName, sql, outSql, originalClean);
             }
             
             try {
               expect(reparsedClean).toEqual(originalClean);
             } catch (err) {
-              throw createParseError('AST_MISMATCH', relativePath, sql, outSql, originalClean, reparsedClean);
+              throw createParseError('AST_MISMATCH', testName, sql, outSql, originalClean, reparsedClean);
             }
           }
         });
@@ -142,7 +142,7 @@ export class TestUtils {
       
       if (err instanceof Error && 'type' in err) {
         const parseError = err as ParseError;
-        errorMessages.push(`\n❌ ${parseError.type}: ${parseError.relativePath}`);
+        errorMessages.push(`\n❌ ${parseError.type}: ${parseError.testName}`);
         errorMessages.push(`❌ INPUT SQL: ${parseError.sql}`);
         
         if (parseError.deparsedSql) {
@@ -172,7 +172,7 @@ export class TestUtils {
       } else {
         // Handle unexpected errors
         errorMessages.push(
-          `\n❌ UNEXPECTED ERROR: ${relativePath}`,
+          `\n❌ UNEXPECTED ERROR: ${testName}`,
           `❌ INPUT SQL: ${sql}`,
           `❌ ERROR: ${err instanceof Error ? err.message : String(err)}`
         );

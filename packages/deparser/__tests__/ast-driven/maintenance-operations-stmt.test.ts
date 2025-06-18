@@ -1,7 +1,9 @@
 import { Deparser } from '../../src/deparser';
 import { DeparserContext } from '../../src/visitors/base';
 import { DefElemAction, ReindexObjectType } from '@pgsql/types';
+import { TestUtils } from '../../test-utils';
 
+const parser = new TestUtils();
 describe('Maintenance Operations Statement Deparsers', () => {
   const deparser = new Deparser([]);
   const context: DeparserContext = {};
@@ -369,8 +371,8 @@ describe('Maintenance Operations Statement Deparsers', () => {
           ]
         }
       };
-      
-      expect(deparser.visit(ast as any, context)).toBe('EXPLAIN (analyze = \'true\', verbose = \'true\') SELECT id FROM orders');
+      parser.expectAstMatch('EXPLAIN_STMT_WITH_OPTIONS', 'EXPLAIN (analyze true, verbose true) SELECT id FROM orders');
+      expect(deparser.visit(ast as any, context)).toBe('EXPLAIN (ANALYZE TRUE, VERBOSE TRUE) SELECT id FROM orders');
     });
   });
 
