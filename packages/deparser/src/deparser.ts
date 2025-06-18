@@ -5071,7 +5071,7 @@ export class Deparser implements DeparserVisitor {
     output.push('SERVER');
     
     if (node.servername) {
-      output.push(node.servername);
+      output.push(QuoteUtils.quote(node.servername));
     }
     
     if (node.options && node.options.length > 0) {
