@@ -1136,7 +1136,8 @@ export class Deparser implements DeparserVisitor {
         return output.join(' ');
       }
       
-      let result = mods(typeName, args);
+      const quotedTypeName = QuoteUtils.quote(typeName);
+      let result = mods(quotedTypeName, args);
       
       if (node.arrayBounds && node.arrayBounds.length > 0) {
         result += '[]'.repeat(node.arrayBounds.length);
