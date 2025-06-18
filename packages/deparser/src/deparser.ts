@@ -1004,7 +1004,12 @@ export class Deparser implements DeparserVisitor {
     } else if (nodeAny.bsval !== undefined) {
       if (typeof nodeAny.bsval === 'object' && nodeAny.bsval !== null) {
         if (nodeAny.bsval.bsval !== undefined) {
-          return nodeAny.bsval.bsval;
+          const bsval = nodeAny.bsval.bsval;
+          // Check if this is a hexadecimal bit string (starts with x and contains only hex digits)
+          if (bsval.startsWith('x') && /^x[0-9A-Fa-f]+$/.test(bsval)) {
+            return `x'${bsval.substring(1)}'`;
+          }
+          return `B'${bsval}'`;
         } else if (Object.keys(nodeAny.bsval).length === 0) {
           return "''";
         } else {
@@ -1013,7 +1018,12 @@ export class Deparser implements DeparserVisitor {
       } else if (nodeAny.bsval === null) {
         return 'NULL';
       } else {
-        return nodeAny.bsval;
+        const bsval = nodeAny.bsval;
+        // Check if this is a hexadecimal bit string (starts with x and contains only hex digits)
+        if (bsval.startsWith('x') && /^x[0-9A-Fa-f]+$/.test(bsval)) {
+          return `x'${bsval.substring(1)}'`;
+        }
+        return `B'${bsval}'`;
       }
     }
     
@@ -1562,6 +1572,10 @@ export class Deparser implements DeparserVisitor {
   }
   
   BitString(node: t.BitString, context: DeparserContext): string { 
+    // Check if this is a hexadecimal bit string (contains only hex digits)
+    if (/^[0-9A-Fa-f]+$/.test(node.bsval)) {
+      return `x'${node.bsval}'`;
+    }
     return `B'${node.bsval}'`; 
   }
   
@@ -4643,6 +4657,7 @@ export class Deparser implements DeparserVisitor {
     
     if (node.mode !== undefined) {
       const lockModes = [
+        '', // mode 0 is unused
         'ACCESS SHARE',
         'ROW SHARE', 
         'ROW EXCLUSIVE',
@@ -4653,7 +4668,7 @@ export class Deparser implements DeparserVisitor {
         'ACCESS EXCLUSIVE'
       ];
       
-      if (node.mode >= 0 && node.mode < lockModes.length) {
+      if (node.mode >= 1 && node.mode < lockModes.length) {
         output.push('IN', lockModes[node.mode], 'MODE');
       }
     }
@@ -5215,7 +5230,13 @@ export class Deparser implements DeparserVisitor {
       const funcArgs = ListUtils.unwrapList(node.objfuncargs).map(arg => this.visit(arg, context));
       result += `(${funcArgs.join(', ')})`;
     } else if (node.objargs && node.objargs.length > 0) {
-      const args = ListUtils.unwrapList(node.objargs).map(arg => this.visit(arg, context));
+      const args = ListUtils.unwrapList(node.objargs).map(arg => {
+        // Handle empty objects that represent NONE in operator definitions
+        if (!arg || Object.keys(arg).length === 0) {
+          return 'NONE';
+        }
+        return this.visit(arg, context);
+      });
       result += `(${args.join(', ')})`;
     } else if (node.args_unspecified) {
       // For functions with unspecified args, don't add parentheses
@@ -5749,6 +5770,8 @@ export class Deparser implements DeparserVisitor {
       output.push('RENAME CONSTRAINT', `"${node.subname}"`, 'TO');
     } else if (node.renameType === 'OBJECT_ATTRIBUTE' && node.subname) {
       output.push('RENAME ATTRIBUTE', `"${node.subname}"`, 'TO');
+    } else if (node.renameType === 'OBJECT_ROLE' && node.subname) {
+      output.push(`"${node.subname}"`, 'RENAME TO');
     } else {
       output.push('RENAME TO');
     }
@@ -5827,6 +5850,9 @@ export class Deparser implements DeparserVisitor {
       output.push('GRANT');
     } else {
       output.push('REVOKE');
+      if (node.grant_option) {
+        output.push('GRANT OPTION FOR');
+      }
     }
 
     if (node.privileges && node.privileges.length > 0) {
@@ -5882,6 +5908,8 @@ export class Deparser implements DeparserVisitor {
           output.push('TYPE');
         } else if (node.objtype === 'OBJECT_DOMAIN') {
           output.push('DOMAIN');
+        } else if (node.objtype === 'OBJECT_LARGEOBJECT') {
+          output.push('LARGE OBJECT');
         }
         if (node.objects && node.objects.length > 0) {
           const objects = ListUtils.unwrapList(node.objects)
@@ -5946,8 +5974,6 @@ export class Deparser implements DeparserVisitor {
 
     if (node.grant_option && node.is_grant) {
       output.push('WITH GRANT OPTION');
-    } else if (node.grant_option && !node.is_grant) {
-      output.push('GRANT OPTION FOR');
     }
 
     // Only add behavior clauses for REVOKE statements, not for GRANT statements in ALTER DEFAULT PRIVILEGES
