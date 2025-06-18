@@ -7079,7 +7079,6 @@ export class Deparser implements DeparserVisitor {
         }
         
         if (node.definition && node.definition.length > 0) {
-          output.push('(');
           const definitions = ListUtils.unwrapList(node.definition).map(def => {
             if (def.DefElem) {
               const defElem = def.DefElem;
@@ -7087,16 +7086,15 @@ export class Deparser implements DeparserVisitor {
               const defValue = defElem.arg;
               
               if (defName && defValue) {
-                if (['initcond', 'minitcond'].includes(defName) && defValue.String) {
-                  return `${defName.toUpperCase()} = ${QuoteUtils.escape(defValue.String.sval)}`;
+                if (['initcond', 'minitcond', 'initcond1'].includes(defName) && defValue.String) {
+                  return `${defName} = '${defValue.String.sval}'`;
                 }
-                return `${defName.toUpperCase()} = ${this.visit(defValue, context)}`;
+                return `${defName} = ${this.visit(defValue, context)}`;
               }
             }
             return this.visit(def, context);
           });
-          output.push(definitions.join(', '));
-          output.push(')');
+          output.push(`(${definitions.join(', ')})`);
         }
         break;
         
