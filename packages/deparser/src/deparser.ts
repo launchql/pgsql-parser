@@ -7976,24 +7976,12 @@ export class Deparser implements DeparserVisitor {
             try {
               const nodeType = this.getNodeType(func);
               if (nodeType === 'List') {
-                // Handle List containing [FuncCall, List of ColumnDefs]
+                // Handle List containing [FuncCall, potentially empty second item]
                 const listData = this.getNodeData(func) as any;
                 if (listData && listData.items && Array.isArray(listData.items)) {
                   const items = listData.items;
                   if (items.length >= 1) {
-                    const funcCall = this.visit(items[0], context);
-                    if (items.length >= 2 && items[1] && typeof items[1] === 'object' && Object.keys(items[1]).length > 0) {
-                      const coldefList = this.getNodeData(items[1]) as any;
-                      if (coldefList && coldefList.items && Array.isArray(coldefList.items)) {
-                        const coldefs = coldefList.items
-                          .map((coldef: any) => this.visit(coldef, context))
-                          .filter((str: string) => str && str.trim());
-                        if (coldefs.length > 0) {
-                          return `${funcCall} AS (${coldefs.join(', ')})`;
-                        }
-                      }
-                    }
-                    return funcCall;
+                    return this.visit(items[0], context);
                   }
                 }
               }
@@ -8014,25 +8002,23 @@ export class Deparser implements DeparserVisitor {
       output.push('WITH ORDINALITY');
     }
     
+    // Handle alias and column definitions together for proper PostgreSQL syntax
     if (node.alias) {
-      output.push(this.Alias(node.alias, context));
-    }
-    
-    if (node.coldeflist && node.coldeflist.length > 0) {
-      const coldefStrs = ListUtils.unwrapList(node.coldeflist)
-        .filter(coldef => coldef != null && this.getNodeType(coldef) !== 'undefined')
-        .map(coldef => {
-          try {
-            return this.visit(coldef, context);
-          } catch (error) {
-            console.warn(`Error processing coldef in RangeFunction: ${error instanceof Error ? error.message : String(error)}`);
-            return '';
-          }
-        })
-        .filter(str => str !== '');
-      if (coldefStrs.length > 0) {
-        output.push(`AS (${coldefStrs.join(', ')})`);
+      if (node.coldeflist && node.coldeflist.length > 0) {
+        const aliasName = node.alias.aliasname;
+        const coldefs = ListUtils.unwrapList(node.coldeflist)
+          .map(coldef => this.visit(coldef, context))
+          .filter(str => str && str.trim());
+        output.push(`${aliasName} (${coldefs.join(', ')})`);
+      } else {
+        // Regular alias without column definitions
+        output.push(this.Alias(node.alias, context));
       }
+    } else if (node.coldeflist && node.coldeflist.length > 0) {
+      const coldefs = ListUtils.unwrapList(node.coldeflist)
+        .map(coldef => this.visit(coldef, context))
+        .filter(str => str && str.trim());
+      output.push(`(${coldefs.join(', ')})`);
     }
     
     return output.join(' ');
