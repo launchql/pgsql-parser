@@ -5697,7 +5697,10 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.relation) {
-      output.push(this.RangeVar(node.relation, context));
+      const rangeVarContext = node.relationType === 'OBJECT_TYPE' 
+        ? { ...context, parentContext: 'AlterTypeStmt' }
+        : context;
+      output.push(this.RangeVar(node.relation, rangeVarContext));
     } else if (node.object) {
       output.push(this.visit(node.object, context));
     }
