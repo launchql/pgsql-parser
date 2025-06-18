@@ -7072,7 +7072,13 @@ export class Deparser implements DeparserVisitor {
             }
             return true;
           });
-          const argStrs = filteredArgs.map(arg => this.visit(arg, context));
+          const argStrs = filteredArgs.map(arg => {
+            // Handle empty object representing * wildcard
+            if (Object.keys(arg).length === 0) {
+              return '*';
+            }
+            return this.visit(arg, context);
+          });
           if (argStrs.length > 0) {
             output.push(`(${argStrs.join(', ')})`);
           }
