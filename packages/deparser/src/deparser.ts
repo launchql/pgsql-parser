@@ -3246,7 +3246,11 @@ export class Deparser implements DeparserVisitor {
           break;
         case 'AT_DropColumn':
           if (node.missing_ok) {
-            output.push('DROP IF EXISTS');
+            if (context.parentContext === 'AlterTypeStmt') {
+              output.push('DROP ATTRIBUTE IF EXISTS');
+            } else {
+              output.push('DROP COLUMN IF EXISTS');
+            }
           } else {
             if (context.parentContext === 'AlterTypeStmt') {
               output.push('DROP ATTRIBUTE');
