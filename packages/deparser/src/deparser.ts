@@ -550,6 +550,12 @@ export class Deparser implements DeparserVisitor {
           const indexElems = elems.map(elem => this.visit(elem as Node, context));
           output.push(this.formatter.parens(indexElems.join(', ')));
         }
+        
+        // Handle WHERE clause for conflict detection
+        if (infer.whereClause) {
+          output.push('WHERE');
+          output.push(this.visit(infer.whereClause as Node, context));
+        }
       }
       
       if (node.onConflictClause.action === 'ONCONFLICT_UPDATE') {
