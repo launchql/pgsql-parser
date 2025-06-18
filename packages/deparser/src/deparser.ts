@@ -865,18 +865,23 @@ export class Deparser implements DeparserVisitor {
 
     const params: string[] = [];
     
-    if (node.agg_distinct) {
-      params.push('DISTINCT');
-    }
-    
     if (node.agg_star) {
-      params.push('*');
+      if (node.agg_distinct) {
+        params.push('DISTINCT *');
+      } else {
+        params.push('*');
+      }
     } else {
       const argStrs = args.map(arg => this.visit(arg, context));
       if (node.func_variadic && argStrs.length > 0) {
         argStrs[0] = `VARIADIC ${argStrs[0]}`;
       }
-      params.push(...argStrs);
+      
+      if (node.agg_distinct && argStrs.length > 0) {
+        params.push('DISTINCT ' + argStrs.join(', '));
+      } else {
+        params.push(...argStrs);
+      }
     }
 
     // Handle aggregate ORDER BY clause - it should be part of the function call without comma separation
@@ -2166,16 +2171,23 @@ export class Deparser implements DeparserVisitor {
     const funcName = this.getAggFunctionName(node.aggfnoid);
     let result = funcName + '(';
 
-    if (node.aggdistinct && node.aggdistinct.length > 0) {
-      result += 'DISTINCT ';
-    }
-
+    const hasDistinct = node.aggdistinct && node.aggdistinct.length > 0;
+    
     if (node.args && node.args.length > 0) {
       const args = ListUtils.unwrapList(node.args);
       const argStrs = args.map(arg => this.visit(arg, context));
-      result += argStrs.join(', ');
+      
+      if (hasDistinct) {
+        result += 'DISTINCT ' + argStrs.join(', ');
+      } else {
+        result += argStrs.join(', ');
+      }
     } else if (funcName.toUpperCase() === 'COUNT') {
-      result += '*';
+      if (hasDistinct) {
+        result += 'DISTINCT *';
+      } else {
+        result += '*';
+      }
     }
 
     result += ')';
