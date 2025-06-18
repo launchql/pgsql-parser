@@ -1875,7 +1875,19 @@ export class Deparser implements DeparserVisitor {
               const elemList = ListUtils.unwrapList(elem);
               if (elemList.length >= 2) {
                 const column = this.visit(elemList[0], context);
-                const operator = this.visit(elemList[1], context);
+                // Extract operator string from nested List structure
+                const operatorNode = elemList[1];
+                let operator = '';
+                if (this.getNodeType(operatorNode) === 'List') {
+                  const operatorList = ListUtils.unwrapList(operatorNode);
+                  if (operatorList.length > 0 && operatorList[0].String) {
+                    operator = operatorList[0].String.sval;
+                  }
+                } else if (operatorNode.String) {
+                  operator = operatorNode.String.sval;
+                } else {
+                  operator = this.visit(operatorNode, context);
+                }
                 return `${column} WITH ${operator}`;
               }
             }
