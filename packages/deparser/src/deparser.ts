@@ -4524,6 +4524,20 @@ export class Deparser implements DeparserVisitor {
             output.push(QuoteUtils.quote(node.name));
           }
           break;
+        case 'O':
+          output.push('SET', 'NOT', 'NULL');
+          break;
+        case 'N':
+          output.push('DROP', 'NOT', 'NULL');
+          break;
+        case 'T':
+          if (node.def) {
+            output.push('SET', 'DEFAULT');
+            output.push(this.visit(node.def, context));
+          } else {
+            output.push('DROP', 'DEFAULT');
+          }
+          break;
         default:
           throw new Error(`Unsupported AlterDomainStmt subtype: ${node.subtype}`);
       }
