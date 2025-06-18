@@ -3248,7 +3248,11 @@ export class Deparser implements DeparserVisitor {
           if (node.missing_ok) {
             output.push('DROP IF EXISTS');
           } else {
-            output.push('DROP COLUMN');
+            if (context.parentContext === 'AlterTypeStmt') {
+              output.push('DROP ATTRIBUTE');
+            } else {
+              output.push('DROP COLUMN');
+            }
           }
           if (node.name) {
             output.push(QuoteUtils.quote(node.name));
