@@ -8199,6 +8199,9 @@ export class Deparser implements DeparserVisitor {
       case 'OBJECT_CONVERSION':
         output.push('CONVERSION');
         break;
+      case 'OBJECT_TSPARSER':
+        output.push('TEXT SEARCH PARSER');
+        break;
       default:
         output.push(node.objectType.toString());
     }
@@ -8233,6 +8236,16 @@ export class Deparser implements DeparserVisitor {
           const schemaName = items[0].String?.sval || '';
           const conversionName = items[1].String?.sval || '';
           output.push(`${QuoteUtils.quote(schemaName)}.${QuoteUtils.quote(conversionName)}`);
+        } else {
+          output.push(this.visit(node.object as any, context));
+        }
+      } else if (node.objectType === 'OBJECT_TSPARSER' && (node.object as any).List) {
+        // Handle text search parser objects specially to format schema.parser correctly
+        const items = ListUtils.unwrapList(node.object as any);
+        if (items.length === 2) {
+          const schemaName = items[0].String?.sval || '';
+          const parserName = items[1].String?.sval || '';
+          output.push(`${QuoteUtils.quote(schemaName)}.${QuoteUtils.quote(parserName)}`);
         } else {
           output.push(this.visit(node.object as any, context));
         }
