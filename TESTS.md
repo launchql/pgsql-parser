@@ -12,15 +12,15 @@
 
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
-## Current Status (After EXCLUDE Constraint Operator Fix - Confirmed)
-- **Test Suites**: 89 failed, 286 passed, 375 total
-- **Tests**: 106 failed, 544 passed, 650 total  
-- **Pass Rate**: 76.3% test suites, 83.7% individual tests
+## Current Status (After VARIADIC Function Call Fix)
+- **Test Suites**: 87 failed, 288 passed, 375 total
+- **Tests**: 104 failed, 546 passed, 650 total  
+- **Pass Rate**: 76.8% test suites, 84.0% individual tests
 
-**Progress**: ✅ Improved from 93→89 failed test suites after fixing EXCLUDE operator quoting
-**Recent Fix**: Fixed EXCLUDE constraint operator quoting (= and && were incorrectly quoted as "=" and "&&")
-**Test Fixed**: ✅ original-upstream-rangetypes.test.ts now PASSES
-**Status**: No regressions detected - full test suite confirms stable improvement
+**Progress**: ✅ Improved from 89→87 failed test suites after fixing VARIADIC function call placement
+**Recent Fix**: Fixed VARIADIC function call placement - apply VARIADIC to last argument instead of first
+**Test Fixed**: ✅ original-upstream-polymorphism.test.ts now PASSES (plus 1 additional test suite)
+**Status**: Continued systematic improvement - no regressions detected
 
 ## Known Regressions Introduced
 Based on `yarn test` output, recent changes broke several previously passing tests:
