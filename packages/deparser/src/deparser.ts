@@ -1605,6 +1605,13 @@ export class Deparser implements DeparserVisitor {
     return needsQuotesRegex.test(value) || Deparser.RESERVED_WORDS.has(value.toLowerCase());
   }
 
+  quoteIfNeeded(value: string): string {
+    if (Deparser.needsQuotes(value)) {
+      return `"${value}"`;
+    }
+    return value;
+  }
+
   String(node: t.String, context: DeparserContext): string {
     if (context.isStringLiteral || context.isEnumValue) {
       return `'${node.sval || ''}'`;
@@ -2920,7 +2927,7 @@ export class Deparser implements DeparserVisitor {
 
   RoleSpec(node: t.RoleSpec, context: DeparserContext): string {
     if (node.rolename) {
-      return node.rolename;
+      return this.quoteIfNeeded(node.rolename);
     }
     
     switch (node.roletype) {
@@ -4183,7 +4190,8 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.role) {
-      output.push(node.role);
+      const roleName = Deparser.needsQuotes(node.role) ? `"${node.role}"` : node.role;
+      output.push(roleName);
     }
     
     if (node.options) {
@@ -4192,6 +4200,7 @@ export class Deparser implements DeparserVisitor {
         .map(option => this.visit(option, roleContext))
         .join(' ');
       if (options) {
+        output.push('WITH');
         output.push(options);
       }
     }
@@ -4206,7 +4215,7 @@ export class Deparser implements DeparserVisitor {
     
     // Handle FDW-related statements and ALTER OPTIONS that use space format for options
     const parentContext = context.parentNodeType;
-    if (parentContext === 'AlterFdwStmt' || parentContext === 'CreateFdwStmt' || parentContext === 'CreateForeignServerStmt' || parentContext === 'AlterForeignServerStmt' || parentContext === 'ColumnDef' || parentContext === 'CreateForeignTableStmt' || parentContext === 'ImportForeignSchemaStmt' || context.alterColumnOptions || context.alterTableOptions) {
+    if (parentContext === 'AlterFdwStmt' || parentContext === 'CreateFdwStmt' || parentContext === 'CreateForeignServerStmt' || parentContext === 'AlterForeignServerStmt' || parentContext === 'CreateUserMappingStmt' || parentContext === 'AlterUserMappingStmt' || parentContext === 'ColumnDef' || parentContext === 'CreateForeignTableStmt' || parentContext === 'ImportForeignSchemaStmt' || context.alterColumnOptions || context.alterTableOptions) {
       if (['handler', 'validator'].includes(node.defname)) {
         if (!node.arg) {
           return `NO ${node.defname.toUpperCase()}`;
@@ -4297,13 +4306,7 @@ export class Deparser implements DeparserVisitor {
         return `${quotedDefname} ${quotedValue}`;
       }
       
-      // CreateUserMappingStmt and AlterUserMappingStmt use equals format
-      if (parentContext === 'CreateUserMappingStmt' || parentContext === 'AlterUserMappingStmt') {
-        const quotedValue = typeof argValue === 'string' 
-          ? QuoteUtils.escape(argValue) 
-          : argValue;
-        return `${node.defname} = ${quotedValue}`;
-      }
+
       
       if (parentContext === 'CreateRoleStmt' || parentContext === 'AlterRoleStmt') {
         if (node.defname === 'rolemembers') {
@@ -4314,7 +4317,7 @@ export class Deparser implements DeparserVisitor {
             const roleNames = listItems.map(item => this.visit(item, context));
             
             if (parentContext === 'CreateRoleStmt') {
-              return `WITH ROLE ${roleNames.join(', ')}`;
+              return `ROLE ${roleNames.join(', ')}`;
             } else {
               // AlterRoleStmt - use ADD USER syntax
               return `ADD USER ${roleNames.join(', ')}`;
@@ -4327,7 +4330,7 @@ export class Deparser implements DeparserVisitor {
             const listData = this.getNodeData(node.arg);
             const listItems = ListUtils.unwrapList(listData.items);
             const roleNames = listItems.map(item => this.visit(item, context));
-            return `WITH IN ROLE ${roleNames.join(', ')}`;
+            return `IN ROLE ${roleNames.join(', ')}`;
           }
         }
         if (argValue === 'true') {
@@ -9132,32 +9135,38 @@ export class Deparser implements DeparserVisitor {
   }
 
   AlterRoleSetStmt(node: t.AlterRoleSetStmt, context: DeparserContext): string {
-    const output: string[] = ['ALTER'];
+    const output: string[] = ['ALTER', 'ROLE'];
     
     if (node.role) {
-      output.push('ROLE');
       output.push(this.RoleSpec(node.role, context));
     } else {
-      output.push('USER');
+      output.push('ALL');
     }
     
     if (node.database) {
       output.push('IN DATABASE');
-      output.push(QuoteUtils.quote(node.database));
+      output.push(this.quoteIfNeeded(node.database));
     }
     
     if (node.setstmt) {
-      output.push('SET');
-      if (node.setstmt.name) {
-        output.push(node.setstmt.name);
-      }
-      
-      if (node.setstmt.args && node.setstmt.args.length > 0) {
-        output.push('TO');
-        const args = ListUtils.unwrapList(node.setstmt.args)
-          .map(arg => this.visit(arg, context))
-          .join(', ');
-        output.push(args);
+      if (node.setstmt.kind === 'VAR_RESET') {
+        output.push('RESET');
+        if (node.setstmt.name) {
+          output.push(node.setstmt.name);
+        }
+      } else {
+        output.push('SET');
+        if (node.setstmt.name) {
+          output.push(node.setstmt.name);
+        }
+        
+        if (node.setstmt.args && node.setstmt.args.length > 0) {
+          output.push('TO');
+          const args = ListUtils.unwrapList(node.setstmt.args)
+            .map(arg => this.visit(arg, context))
+            .join(', ');
+          output.push(args);
+        }
       }
     }
     
