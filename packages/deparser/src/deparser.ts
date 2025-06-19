@@ -8229,7 +8229,11 @@ export class Deparser implements DeparserVisitor {
         break;
         
       case 'OBJECT_AGGREGATE':
-        output.push('CREATE AGGREGATE');
+        output.push('CREATE');
+        if (node.replace) {
+          output.push('OR REPLACE');
+        }
+        output.push('AGGREGATE');
         
         if (node.defnames && node.defnames.length > 0) {
           const nameStrs = ListUtils.unwrapList(node.defnames).map(name => this.visit(name, context));
