@@ -1250,7 +1250,7 @@ export class Deparser implements DeparserVisitor {
 
   Alias(node: t.Alias, context: DeparserContext): string {
     const name = node.aliasname;
-    const output: string[] = ['AS'];
+    const output: string[] = [];
 
     if (node.colnames) {
       const colnames = ListUtils.unwrapList(node.colnames);
@@ -1258,9 +1258,9 @@ export class Deparser implements DeparserVisitor {
         const colStr = this.deparse(col, context);
         return QuoteUtils.quote(colStr);
       });
-      output.push(QuoteUtils.quote(name) + this.formatter.parens(quotedColnames.join(', ')));
+      output.push('AS', QuoteUtils.quote(name) + this.formatter.parens(quotedColnames.join(', ')));
     } else {
-      output.push(QuoteUtils.quote(name));
+      output.push(this.quoteIfNeeded(name));
     }
 
     return output.join(' ');
@@ -2720,7 +2720,13 @@ export class Deparser implements DeparserVisitor {
     output.push(joinStr);
     
     if (node.rarg) {
-      output.push(this.visit(node.rarg, context));
+      let rargStr = this.visit(node.rarg, context);
+      
+      if (node.rarg && 'JoinExpr' in node.rarg && !node.rarg.JoinExpr.alias) {
+        rargStr = `(${rargStr})`;
+      }
+      
+      output.push(rargStr);
     }
     
     if (node.usingClause && node.usingClause.length > 0) {
