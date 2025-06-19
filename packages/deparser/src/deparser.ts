@@ -1230,9 +1230,14 @@ export class Deparser implements DeparserVisitor {
 
     const mods = (name: string, size: string | null) => {
       if (size != null) {
-        // For interval types with precision, always use parentheses
-        if (name === 'interval' && size && size.startsWith('(')) {
-          return `${name}${size}`;
+        // For interval types in TypeCast context, use space separation for fields
+        if (name === 'interval' && context.parentNodeTypes.includes('TypeCast')) {
+          // If size starts with '(', it's precision - keep parentheses
+          if (size.startsWith('(')) {
+            return `${name}${size}`;
+          }
+          // Otherwise it's a field - use space separation
+          return `${name} ${size}`;
         }
         return `${name}(${size})`;
       }
