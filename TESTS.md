@@ -16,7 +16,7 @@
 - **Test Suites**: 29 failed, 323 passed, 352 total
 - **Tests**: 29 failed, 323 passed, 352 total  
 - **Pass Rate**: 91.8% test suites (323/352), 91.8% individual tests
-- **Last Updated**: June 19, 2025 18:38 UTC (verified full test suite status - 29 failed, 323 passed, 91.8% pass rate confirmed)
+- **Last Updated**: June 19, 2025 18:45 UTC (verified full test suite status - 29 failed, 323 passed, 91.8% pass rate confirmed after reverting FunctionParameter regression)
 
 **Recent Changes**:
 - ✅ **ObjectWithArgs Exception Restored**: Added back ObjectWithArgs exception to String method to fix ALTER OPERATOR quoting issue - improved from 35 to 29 failed tests (91.8% pass rate)
