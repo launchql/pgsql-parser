@@ -7461,16 +7461,14 @@ export class Deparser implements DeparserVisitor {
 
     const transforms: string[] = [];
     if (node.fromsql) {
-      const fromSqlName = ListUtils.unwrapList(node.fromsql)
-        .map(name => this.visit(name, context))
-        .join('.');
+      // Handle ObjectWithArgs directly to avoid visitor routing issues
+      const fromSqlName = this.ObjectWithArgs(node.fromsql as any, context);
       transforms.push(`FROM SQL WITH FUNCTION ${fromSqlName}`);
     }
 
     if (node.tosql) {
-      const toSqlName = ListUtils.unwrapList(node.tosql)
-        .map(name => this.visit(name, context))
-        .join('.');
+      // Handle ObjectWithArgs directly to avoid visitor routing issues
+      const toSqlName = this.ObjectWithArgs(node.tosql as any, context);
       transforms.push(`TO SQL WITH FUNCTION ${toSqlName}`);
     }
 
@@ -9240,7 +9238,25 @@ export class Deparser implements DeparserVisitor {
     if (node && node.String && node.String.sval) {
       return QuoteUtils.quote(node.String.sval);
     }
-    return this.visit(node, context);
+    // Handle other node types without recursion
+    if (node && typeof node === 'object') {
+      if (node.sval !== undefined) {
+        return QuoteUtils.quote(node.sval);
+      }
+      // Handle List nodes that might contain schema names
+      if (node.List && Array.isArray(node.List.items)) {
+        const items = node.List.items;
+        if (items.length > 0 && items[0].String && items[0].String.sval) {
+          return QuoteUtils.quote(items[0].String.sval);
+        }
+      }
+      // For other complex nodes, try to extract string value without recursion
+      if (node.val !== undefined) {
+        return QuoteUtils.quote(node.val);
+      }
+      return '';
+    }
+    return '';
   }
 
   RangeTableSample(node: t.RangeTableSample, context: DeparserContext): string {
@@ -9806,7 +9822,8 @@ export class Deparser implements DeparserVisitor {
     
     if (node.base && node.base.relation) {
       const relationContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'CreateForeignTableStmt'] };
-      output.push(this.visit(node.base.relation as any, relationContext));
+      // Handle relation node directly as RangeVar since it contains the RangeVar properties
+      output.push(this.RangeVar(node.base.relation as any, relationContext));
     }
     
     if (node.base && node.base.tableElts) {
