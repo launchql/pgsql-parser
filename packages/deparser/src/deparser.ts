@@ -1801,8 +1801,7 @@ export class Deparser implements DeparserVisitor {
     const value = node.sval || '';
     
     if (context.parentNodeTypes.includes('DefElem') || 
-        context.parentNodeTypes.includes('CreateOpClassItem') ||
-        context.parentNodeTypes.includes('ObjectWithArgs')) {
+        context.parentNodeTypes.includes('CreateOpClassItem')) {
       return value;
     }
     
@@ -3575,9 +3574,8 @@ export class Deparser implements DeparserVisitor {
 
     if (node.behavior === 'DROP_CASCADE') {
       output.push('CASCADE');
-    } else if (node.behavior === 'DROP_RESTRICT') {
-      output.push('RESTRICT');
     }
+    // Only add RESTRICT if it was explicitly specified in the original SQL
 
     return output.join(' ');
   }
