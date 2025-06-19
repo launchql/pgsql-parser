@@ -13,12 +13,13 @@
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
 ## Current Status (Corrected - Full Test Suite Results - June 19, 2025)
-- **Test Suites**: 30 failed, 322 passed, 352 total
-- **Tests**: 30 failed, 322 passed, 352 total  
-- **Pass Rate**: 91.5% test suites (322/352), 91.5% individual tests
-- **Last Updated**: June 19, 2025 18:15 UTC (verified full test suite status - 30 failed, 322 passed, 91.5% pass rate confirmed)
+- **Test Suites**: 29 failed, 323 passed, 352 total
+- **Tests**: 29 failed, 323 passed, 352 total  
+- **Pass Rate**: 91.8% test suites (323/352), 91.8% individual tests
+- **Last Updated**: June 19, 2025 18:21 UTC (verified full test suite status - 29 failed, 323 passed, 91.8% pass rate confirmed)
 
 **Recent Changes**:
+- ✅ **Column Name Quoting Fix**: Fixed String method to properly handle quoted identifiers in GRANT statements - removed GrantStmt exception from quoting logic so column names like `"another-column"` with hyphens are properly quoted, resolving `original-grants-custom` test failure - improved pass rate from 91.5% to 91.8% (29 failed, 323 passed)
 - ✅ **REVOKE INHERIT OPTION Fix**: Fixed GrantRoleStmt method to correctly handle REVOKE INHERIT OPTION FOR syntax - restructured logic to place inherit options immediately after REVOKE keyword and handle `is_grant: undefined` as falsy for REVOKE operations - verified with debug script showing exact match
 - ✅ **PASSWORD NULL DefElem Fix**: Fixed critical control flow issue in DefElem method where PASSWORD NULL handling was unreachable inside `if (node.arg)` block - moved password handling logic before node.arg check to properly handle both PASSWORD 'value' and PASSWORD NULL cases
 - ✅ **latest-postgres-create_role Test**: Stack overflow resolved - now shows "Invalid deparsed SQL" indicating deparser runs successfully but needs SQL formatting fixes
