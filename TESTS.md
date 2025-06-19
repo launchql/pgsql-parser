@@ -12,7 +12,7 @@
 
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
-## Current Status (After LockStmt Lock Mode Mapping Fix)
+## Current Status (After Latest Fixes - June 19, 2025)
 - **Test Suites**: 57 failed, 295 passed, 352 total
 - **Tests**: 57 failed, 295 passed, 352 total  
 - **Pass Rate**: 83.8% test suites, 83.8% individual tests
