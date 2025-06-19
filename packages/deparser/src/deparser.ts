@@ -8026,6 +8026,21 @@ export class Deparser implements DeparserVisitor {
       output.push(')');
     }
     
+    if (node.into && node.into.onCommit && node.into.onCommit !== 'ONCOMMIT_NOOP') {
+      output.push('ON COMMIT');
+      switch (node.into.onCommit) {
+        case 'ONCOMMIT_PRESERVE_ROWS':
+          output.push('PRESERVE ROWS');
+          break;
+        case 'ONCOMMIT_DELETE_ROWS':
+          output.push('DELETE ROWS');
+          break;
+        case 'ONCOMMIT_DROP':
+          output.push('DROP');
+          break;
+      }
+    }
+    
     output.push('AS');
     
     if (node.query) {
