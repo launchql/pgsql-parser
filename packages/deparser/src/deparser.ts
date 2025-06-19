@@ -5107,17 +5107,18 @@ export class Deparser implements DeparserVisitor {
     
     if (node.mode !== undefined) {
       const lockModes = [
-        'ACCESS SHARE',           // mode 0
-        'ROW SHARE',              // mode 1
-        'SHARE UPDATE EXCLUSIVE', // mode 2
+        '',                       // mode 0 (unused)
+        'ACCESS SHARE',           // mode 1
+        'ROW SHARE',              // mode 2
         'ROW EXCLUSIVE',          // mode 3
-        'SHARE',                  // mode 4
-        'SHARE ROW EXCLUSIVE',    // mode 5
-        'EXCLUSIVE',              // mode 6
-        'ACCESS EXCLUSIVE'        // mode 7
+        'SHARE UPDATE EXCLUSIVE', // mode 4
+        'SHARE',                  // mode 5
+        'SHARE ROW EXCLUSIVE',    // mode 6
+        'EXCLUSIVE',              // mode 7
+        'ACCESS EXCLUSIVE'        // mode 8
       ];
       
-      if (node.mode >= 0 && node.mode < lockModes.length) {
+      if (node.mode >= 1 && node.mode < lockModes.length) {
         output.push('IN', lockModes[node.mode], 'MODE');
       }
     }
