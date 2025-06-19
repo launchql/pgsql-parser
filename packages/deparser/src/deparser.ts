@@ -6646,6 +6646,8 @@ export class Deparser implements DeparserVisitor {
           output.push('FOREIGN', 'DATA', 'WRAPPER');
         } else if (node.objtype === 'OBJECT_FOREIGN_SERVER') {
           output.push('FOREIGN', 'SERVER');
+        } else if (node.objtype === 'OBJECT_DATABASE') {
+          output.push('DATABASE');
         }
         if (node.objects && node.objects.length > 0) {
           const objects = ListUtils.unwrapList(node.objects)
