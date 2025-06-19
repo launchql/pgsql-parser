@@ -1935,9 +1935,10 @@ export class Deparser implements DeparserVisitor {
             .join(', ');
           output.push(`(${upperValues})`);
         }
-      } else if (node.partbound.strategy === 'h' && node.partbound.modulus !== undefined && node.partbound.remainder !== undefined) {
+      } else if (node.partbound.strategy === 'h' && node.partbound.modulus !== undefined) {
         output.push('FOR VALUES WITH');
-        output.push(`(modulus ${node.partbound.modulus}, remainder ${node.partbound.remainder})`);
+        const remainder = node.partbound.remainder !== undefined ? node.partbound.remainder : 0;
+        output.push(`(MODULUS ${node.partbound.modulus}, REMAINDER ${remainder})`);
       } else if (node.partbound.is_default) {
         output.push('DEFAULT');
       }
@@ -3602,6 +3603,30 @@ export class Deparser implements DeparserVisitor {
               const schemaName = items[1];
               const objectName = items[2];
               return `${QuoteUtils.quote(schemaName)}.${QuoteUtils.quote(objectName)} USING ${accessMethod}`;
+            }
+            return items.join('.');
+          }
+          
+          const objName = this.visit(objList, context);
+          return objName;
+        }).filter((name: string) => name && name.trim()).join(', ');
+        if (objects) {
+          output.push(objects);
+        }
+      } else if (node.removeType === 'OBJECT_TRANSFORM') {
+        // Handle TRANSFORM objects specially to format FOR type_name LANGUAGE language_name correctly
+        const objects = node.objects.map((objList: any) => {
+          if (objList && objList.List && objList.List.items) {
+            const items = objList.List.items.map((item: any) => {
+              if (item.String && item.String.sval) {
+                return item.String.sval;
+              }
+              return this.visit(item, context);
+            }).filter((name: string) => name && name.trim());
+            
+            if (items.length === 2) {
+              const [typeName, languageName] = items;
+              return `FOR ${typeName} LANGUAGE ${languageName}`;
             }
             return items.join('.');
           }
