@@ -12,20 +12,21 @@
 
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
-## Current Status (After LockStmt and CreateUserMappingStmt Fixes)
-- **Test Suites**: 66 failed, 309 passed, 375 total
-- **Tests**: 69 failed, 581 passed, 650 total  
-- **Pass Rate**: 82.4% test suites, 89.4% individual tests
+## Current Status (After Dan's Updates - Kitchen-Sink Tests Only)
+- **Test Suites**: 66 failed, 286 passed, 352 total
+- **Tests**: 66 failed, 286 passed, 352 total  
+- **Pass Rate**: 81.3% test suites, 81.3% individual tests
 
-**Recent Fixes Completed**:
-- ✅ **LockStmt**: Fixed lock mode mapping - maintenance-stmt test suite now passes 22/22 tests
-- ✅ **CreateUserMappingStmt**: Fixed server name quoting - advanced-policy-stmt test suite now passes 10/10 tests
-- ✅ **Comprehensive Quoting**: Dan's needsQuotes regex and RESERVED_WORDS set already implemented in deparser
+**Recent Changes**:
+- ✅ **Dan's Updates**: Removed all ast-driven tests (32 files, 7977 lines) - now focusing exclusively on kitchen-sink tests
+- ✅ **New Test Fixtures**: Added latest-misc-cascades and latest-misc-quotes_etc test suites
+- ✅ **Previous Fixes**: LockStmt lock mode mapping and CreateUserMappingStmt server name quoting still working
+- ✅ **Comprehensive Quoting**: Dan's needsQuotes regex and RESERVED_WORDS set implemented in deparser
 
-**Progress**: Steady improvement in test pass rate through systematic node type fixes
-**Impact**: Both LOCK statements and CREATE USER MAPPING statements now generate correct PostgreSQL syntax
-**Next Priority**: Continue systematic fixes on remaining 66 failed test suites, focusing on high-impact patterns
-**Status**: Ready to tackle next batch of failing tests
+**Current Focus**: Kitchen-sink tests only (ast-driven tests removed per Dan's request)
+**Progress**: 81.3% pass rate with 66 failing test suites to systematically address
+**Next Priority**: Identify and fix high-impact patterns in kitchen-sink test failures
+**Status**: Ready to continue systematic kitchen-sink test fixes
 
 ## Current High-Impact Issues to Fix
 Based on latest `yarn test` output, key patterns causing multiple test failures:
