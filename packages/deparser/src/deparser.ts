@@ -870,12 +870,19 @@ export class Deparser implements DeparserVisitor {
     // Handle TRIM function with SQL syntax (TRIM TRAILING/LEADING/BOTH)
     if (node.funcformat === 'COERCE_SQL_SYNTAX' && (name === 'pg_catalog.rtrim' || name === 'pg_catalog.ltrim' || name === 'pg_catalog.btrim') && args.length >= 1) {
       const source = this.visit(args[0], context);
+      let trimChar = '';
+      
+      // Handle optional trim character (second argument)
+      if (args.length >= 2) {
+        trimChar = ` ${this.visit(args[1], context)}`;
+      }
+      
       if (name === 'pg_catalog.rtrim') {
-        return `TRIM(TRAILING FROM ${source})`;
+        return `TRIM(TRAILING${trimChar} FROM ${source})`;
       } else if (name === 'pg_catalog.ltrim') {
-        return `TRIM(LEADING FROM ${source})`;
+        return `TRIM(LEADING${trimChar} FROM ${source})`;
       } else if (name === 'pg_catalog.btrim') {
-        return `TRIM(BOTH FROM ${source})`;
+        return `TRIM(BOTH${trimChar} FROM ${source})`;
       }
     }
     
