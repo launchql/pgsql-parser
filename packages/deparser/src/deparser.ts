@@ -1364,7 +1364,7 @@ export class Deparser implements DeparserVisitor {
   RangeVar(node: t.RangeVar, context: DeparserContext): string {
     const output: string[] = [];
     // Handle ONLY keyword for inheritance control (but not for type definitions, ALTER TYPE, or CREATE FOREIGN TABLE)
-    if ((!('inh' in node) || node.inh === undefined) && 
+    if (node && (!('inh' in node) || node.inh === undefined) && 
         !context.parentNodeTypes.includes('CompositeTypeStmt') && 
         !context.parentNodeTypes.includes('AlterTypeStmt') &&
         !context.parentNodeTypes.includes('CreateForeignTableStmt')) {
@@ -4694,6 +4694,10 @@ export class Deparser implements DeparserVisitor {
         
         // Handle role options that need keyword format, not key=value
         if (node.defname === 'password') {
+          // Handle PASSWORD NULL case when no arg is provided
+          if (!node.arg) {
+            return 'PASSWORD NULL';
+          }
           const quotedValue = typeof argValue === 'string' && !argValue.startsWith("'") 
             ? `'${argValue}'` 
             : argValue;
