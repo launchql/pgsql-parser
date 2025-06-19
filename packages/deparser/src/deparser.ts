@@ -1593,10 +1593,13 @@ export class Deparser implements DeparserVisitor {
     
     if (context.parentNodeType === 'DefElem' || 
         context.parentNodeType === 'GrantStmt' ||
-        context.parentNodeType === 'AccessPriv' ||
         context.parentNodeType === 'CreateOpClassItem' ||
         context.parentNodeType === 'ObjectWithArgs') {
       return value;
+    }
+    
+    if (context.parentNodeType === 'AccessPriv') {
+      return QuoteUtils.quote(value);
     }
     
     const result = QuoteUtils.quote(value);
@@ -7604,7 +7607,8 @@ export class Deparser implements DeparserVisitor {
     
     if (node.cols && node.cols.length > 0) {
       output.push('(');
-      const columns = ListUtils.unwrapList(node.cols).map(col => this.visit(col, context));
+      const colContext = { ...context, parentNodeType: 'AccessPriv' };
+      const columns = ListUtils.unwrapList(node.cols).map(col => this.visit(col, colContext));
       output.push(columns.join(', '));
       output.push(')');
     }

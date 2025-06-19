@@ -12,16 +12,16 @@
 
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
-## Current Status (After CREATE ROLE isreplication Fix)
-- **Test Suites**: 62 failed, 313 passed, 375 total
-- **Tests**: 70 failed, 580 passed, 650 total  
-- **Pass Rate**: 83.5% test suites, 89.2% individual tests
+## Current Status (After AccessPriv Column Quoting Fix)
+- **Test Suites**: 61 failed, 314 passed, 375 total
+- **Tests**: 69 failed, 581 passed, 650 total  
+- **Pass Rate**: 83.7% test suites, 89.4% individual tests
 
-**Progress**: ✅ Continued improvement - reduced failed test suites from 63→62 and failed tests from 71→70
-**Recent Fix**: Fixed DefElem method in CreateRoleStmt context to properly handle "isreplication" → "NOREPLICATION" instead of "NOISREPLICATION"
-**Test Status**: ✅ original-upstream-roleattributes test now passes - CREATE ROLE WITH NOREPLICATION syntax resolved
-**Impact**: DefElem context-aware formatting for role attributes now correctly handles negative boolean forms
-**Next Priority**: Focus on remaining 62 failed test suites, particularly high-impact patterns affecting multiple tests
+**Progress**: ✅ Continued improvement - reduced failed test suites from 62→61 and failed tests from 70→69
+**Recent Fix**: Fixed AccessPriv column name quoting in GRANT statements - String method now properly quotes identifiers with special characters in AccessPriv context
+**Test Status**: ✅ original-grants-custom test now passes - GRANT statement column quoting resolved for "another-column" identifiers
+**Impact**: Column names with hyphens and special characters now properly quoted in GRANT privilege specifications
+**Next Priority**: Focus on remaining 61 failed test suites, particularly CreateUserMappingStmt server name quoting and LockStmt mode mapping
 **Status**: Steady progress with no regressions detected - ready to continue systematic fixes
 
 ## Current High-Impact Issues to Fix
@@ -35,10 +35,16 @@ Based on latest `yarn test` output, key patterns causing multiple test failures:
 - **Pattern**: Multiple failures show DefElem nodes need context-aware formatting
 
 ### CREATE USER MAPPING - Server Name Quoting ⭐ HIGH PRIORITY
-- **Expected**: `CREATE USER MAPPING FOR local_user SERVER "foreign_server"`
-- **Actual**: `CREATE USER MAPPING FOR local_user SERVER foreign_server`
-- **Issue**: Server names should be quoted when necessary in CreateUserMappingStmt
+- **Expected**: `CREATE USER MAPPING FOR local_user SERVER "foreign_server" OPTIONS (user = 'remote_user', password = 'secret123')`
+- **Actual**: `CREATE USER MAPPING FOR local_user SERVER foreign_server OPTIONS (user 'remote_user', password 'secret123')`
+- **Issue**: Server names should be quoted when necessary in CreateUserMappingStmt, and DefElem options need proper key=value formatting
 - **Test**: `__tests__/ast-driven/advanced-policy-stmt.test.ts`
+
+### LOCK STATEMENT - Mode Mapping Issues ⭐ HIGH PRIORITY  
+- **Expected**: `LOCK users IN SHARE MODE`
+- **Actual**: `LOCK TABLE users IN SHARE UPDATE EXCLUSIVE MODE`
+- **Issue**: LockStmt method has incorrect lock mode number to string mapping
+- **Test**: `__tests__/ast-driven/maintenance-stmt.test.ts`
 
 ### ✅ FIXED: GrantRoleStmt - WITH ADMIN OPTION
 - **Status**: ✅ Fixed GrantRoleStmt method to handle both String and DefElem admin option structures
