@@ -1306,7 +1306,12 @@ export class Deparser implements DeparserVisitor {
         } else if (type === 'bool') {
           typeName = 'boolean';
         } else if (type === 'timestamptz') {
-          typeName = 'timestamp with time zone';
+          if (args) {
+            typeName = `timestamp(${args}) with time zone`;
+            args = null; // Don't apply args again in mods()
+          } else {
+            typeName = 'timestamp with time zone';
+          }
         } else if (type === 'timetz') {
           if (args) {
             typeName = `time(${args}) with time zone`;
