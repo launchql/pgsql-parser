@@ -8434,18 +8434,18 @@ export class Deparser implements DeparserVisitor {
       output.push(QuoteUtils.quote(node.portalname));
     }
     
-    // Handle cursor options before CURSOR keyword - only add explicit options
+    // Handle cursor options before CURSOR keyword
     const cursorOptions: string[] = [];
     if (node.options) {
-      // Only add SCROLL/NO SCROLL if explicitly different from default
-      if (node.options & 1) {
+      
+      if (node.options & 2) {
         cursorOptions.push('SCROLL');
-      } else if (node.options & 2) {
+      } else if (node.options & 4) {
         cursorOptions.push('NO SCROLL');
       }
       
       // Handle other cursor options
-      if (node.options & 4) cursorOptions.push('BINARY');
+      if (node.options & 1) cursorOptions.push('BINARY');
       if (node.options & 8) cursorOptions.push('INSENSITIVE');
     }
     
@@ -8455,8 +8455,8 @@ export class Deparser implements DeparserVisitor {
     
     output.push('CURSOR');
     
-    // Handle WITH HOLD after CURSOR keyword
-    if (node.options && (node.options & 32)) {
+    // Handle WITH HOLD after CURSOR keyword (0x0010 = 16)
+    if (node.options && (node.options & 16)) {
       output.push('WITH HOLD');
     }
     
