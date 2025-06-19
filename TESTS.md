@@ -72,7 +72,7 @@
 
 **Current Focus**: Kitchen-sink tests only (ast-driven tests removed per Dan's request)
 **Progress**: 91.2% pass rate with 31 failing test suites - stack overflow issues need resolution
-**Next Priority**: Fix infinite recursion in RuleStmt, CreateForeignTableStmt, and other node types causing "Maximum call stack size exceeded" errors, then systematic fixes for remaining failing tests
+**Next Priority**: fix systematic fixes for remaining failing tests
 **Status**: Good progress overall - improved from ~50% to 91.2% pass rate, but critical stack overflow issues preventing further progress
 
 ## Current High-Impact Issues to Fix
