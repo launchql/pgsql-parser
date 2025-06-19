@@ -4340,24 +4340,23 @@ export class Deparser implements DeparserVisitor {
         const argValue = this.visit(node.arg, defElemContext);
         
         if (parentContext === 'CreateFdwStmt' || parentContext === 'AlterFdwStmt') {
-          const isUnquotedValue = typeof argValue === 'string' && (
-            /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(argValue) || // simple identifier
-            /^\d+$/.test(argValue) || // numeric value
-            ['on', 'off', 'true', 'false', 'yes', 'no'].includes(argValue.toLowerCase()) // common keywords
-          );
+          const finalValue = typeof argValue === 'string' && !argValue.startsWith("'") 
+            ? `'${argValue}'` 
+            : argValue;
           
-          const finalValue = isUnquotedValue ? argValue : 
-            (typeof argValue === 'string' && !argValue.startsWith("'") ? `'${argValue}'` : argValue);
+          const quotedDefname = node.defname.includes(' ') || node.defname.includes('-') || Deparser.needsQuotes(node.defname)
+            ? `"${node.defname}"` 
+            : node.defname;
           
           if (node.defaction === 'DEFELEM_ADD') {
-            return `ADD ${node.defname.toUpperCase()} ${finalValue}`;
+            return `ADD ${quotedDefname} ${finalValue}`;
           } else if (node.defaction === 'DEFELEM_DROP') {
-            return `DROP ${node.defname.toUpperCase()}`;
+            return `DROP ${quotedDefname}`;
           } else if (node.defaction === 'DEFELEM_SET') {
-            return `SET ${node.defname.toUpperCase()} ${finalValue}`;
+            return `SET ${quotedDefname} ${finalValue}`;
           }
           
-          return `${node.defname.toUpperCase()} ${finalValue}`;
+          return `${quotedDefname} ${finalValue}`;
         }
         
         const quotedValue = typeof argValue === 'string' && !argValue.startsWith("'") 
