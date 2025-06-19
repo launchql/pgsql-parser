@@ -4609,12 +4609,22 @@ export class Deparser implements DeparserVisitor {
       const defElemContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'DefElem'] };
       const argValue = this.visit(node.arg, defElemContext);
       
-      if (context.parentNodeTypes.includes('AlterOperatorStmt') && node.arg && this.getNodeType(node.arg) === 'TypeName') {
-        const typeNameData = this.getNodeData(node.arg);
-        if (typeNameData.names) {
-          const names = ListUtils.unwrapList(typeNameData.names);
-          if (names.length === 1 && names[0].String) {
-            return `${node.defname} = ${names[0].String.sval}`;
+      if (context.parentNodeTypes.includes('AlterOperatorStmt')) {
+        if (node.arg && this.getNodeType(node.arg) === 'TypeName') {
+          const typeNameData = this.getNodeData(node.arg);
+          if (typeNameData.names) {
+            const names = ListUtils.unwrapList(typeNameData.names);
+            if (names.length === 1 && names[0].String) {
+              return `${node.defname} = ${names[0].String.sval}`;
+            }
+          }
+        }
+        
+        if (node.arg && this.getNodeType(node.arg) === 'List') {
+          const listData = this.getNodeData(node.arg);
+          const listItems = ListUtils.unwrapList(listData.items);
+          if (listItems.length === 1 && listItems[0].String) {
+            return `${node.defname} = ${listItems[0].String.sval}`;
           }
         }
       }
