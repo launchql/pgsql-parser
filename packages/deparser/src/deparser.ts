@@ -71,12 +71,40 @@ export class Deparser implements DeparserVisitor {
   }
 
   getNodeType(node: Node): string {
-    return Object.keys(node)[0];
+    const keys = Object.keys(node);
+    // Check if this is a wrapped node (single key with object value)
+    if (keys.length === 1 && typeof (node as any)[keys[0]] === 'object' && (node as any)[keys[0]] !== null) {
+      return keys[0];
+    }
+    if (keys.includes('schemaname') && keys.includes('relname')) {
+      return 'RangeVar';
+    }
+    if (keys.includes('sval') && keys.length === 1) {
+      return 'String';
+    }
+    if (keys.includes('ival') && keys.length === 1) {
+      return 'Integer';
+    }
+    if (keys.includes('fval') && keys.length === 1) {
+      return 'Float';
+    }
+    if (keys.includes('boolval') && keys.length === 1) {
+      return 'Boolean';
+    }
+    if (keys.includes('bsval') && keys.length === 1) {
+      return 'BitString';
+    }
+    // Fallback to first key for other cases
+    return keys[0];
   }
 
   getNodeData(node: Node): any {
-    const type = this.getNodeType(node);
-    return (node as any)[type];
+    const keys = Object.keys(node);
+    // Check if this is a wrapped node (single key with object value)
+    if (keys.length === 1 && typeof (node as any)[keys[0]] === 'object' && (node as any)[keys[0]] !== null) {
+      return (node as any)[keys[0]];
+    }
+    return node;
   }
 
   RawStmt(node: t.RawStmt, context: DeparserContext): string {

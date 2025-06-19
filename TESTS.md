@@ -13,16 +13,17 @@
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
 ## Current Status (Corrected - Full Test Suite Results - June 19, 2025)
-- **Test Suites**: 29 failed, 323 passed, 352 total
-- **Tests**: 29 failed, 323 passed, 352 total  
-- **Pass Rate**: 91.8% test suites (323/352), 91.8% individual tests
-- **Last Updated**: June 19, 2025 17:16 UTC (after reverting duck typing in getNodeType() - full yarn test without testNamePattern)
+- **Test Suites**: 30 failed, 322 passed, 352 total
+- **Tests**: 30 failed, 322 passed, 352 total  
+- **Pass Rate**: 91.5% test suites (322/352), 91.5% individual tests
+- **Last Updated**: June 19, 2025 17:22 UTC (after getNodeType() wrapped/unwrapped node handling - full yarn test without testNamePattern)
 
 **Recent Changes**:
-- ✅ **DefElem CreateRoleStmt connectionlimit Fix**: Added missing "connectionlimit" case to DefElem method - now generates "CONNECTION LIMIT 5" instead of "connectionlimit = '5'" for CREATE ROLE statements - maintains 91.8% pass rate (29 failed, 323 passed)
-- ✅ **Full Test Suite Verification**: Confirmed accurate test status using full yarn test suite (29 failed, 323 passed) - no testNamePattern filtering as Dan corrected
-- ✅ **Context System Robustness Verified**: Comprehensive analysis confirmed that parentNodeTypes is already a required array (`parentNodeTypes: string[]`) with robust `includes()` checks throughout the deparser - no brittle array indexing patterns exist - context system meets all requirements for nested node handling
-- ✅ **Reverted Duck Typing**: Removed hacky property-based node type detection from getNodeType() method - restored to original `Object.keys(node)[0]` approach per Dan's feedback - maintains 91.8% pass rate (29 failed, 323 passed)
+- ❌ **Regression Introduced**: Updated getNodeType() and getNodeData() methods to handle wrapped/unwrapped nodes - caused regression from 29 to 30 failed tests (91.8% → 91.5% pass rate)
+- ✅ **CreateForeignTableStmt Fix**: Successfully fixed table name preservation in CREATE FOREIGN TABLE statements - `addr_nsp.genftable` now deparses correctly instead of losing table name
+- ⚠️ **Need Investigation**: Must identify what the getNodeType() wrapped/unwrapped node handling broke and fix regressions before continuing
+- ✅ **DefElem CreateRoleStmt connectionlimit Fix**: Added missing "connectionlimit" case to DefElem method - now generates "CONNECTION LIMIT 5" instead of "connectionlimit = '5'" for CREATE ROLE statements
+- ✅ **Full Test Suite Verification**: Confirmed accurate test status using full yarn test suite - no testNamePattern filtering as Dan corrected
 - ✅ **AlterObjectSchemaStmt Matview Fix**: Fixed AlterObjectSchemaStmt to include OBJECT_MATVIEW in relation handling condition - resolves missing table name in `ALTER MATERIALIZED VIEW mvtest_tvm SET SCHEMA mvtest_mvschema` statements - improved pass rate from 92.0% to 92.6% (12 failed, 151 passed)
 - ✅ **Context Array Migration**: Successfully migrated DeparserContext to use required `parentNodeTypes: string[]` instead of optional `parentNodeType?: string` - enables robust nested context tracking with `.includes()` checks without optional chaining - maintains 92.0% pass rate with no regressions
 - ✅ **DeclareCursorStmt SCROLL Option Fix**: Fixed cursor option bit flag mapping from 256 back to 1 for SCROLL detection - resolves unwanted "SCROLL" keyword being added to basic cursor declarations - now correctly outputs `DECLARE foo CURSOR FOR SELECT 1 INTO b` instead of `DECLARE foo SCROLL CURSOR FOR SELECT 1 INTO b`
@@ -60,9 +61,9 @@
 - ✅ **Comprehensive Quoting**: Dan's needsQuotes regex and RESERVED_WORDS set implemented in deparser
 
 **Current Focus**: Kitchen-sink tests only (ast-driven tests removed per Dan's request)
-**Progress**: 91.8% pass rate with 29 failing test suites - significant progress but more work needed
-**Next Priority**: Systematic fixes for 29 failing tests including AST mismatch and invalid SQL issues across various PostgreSQL constructs
-**Status**: Good progress - improved from ~50% to 91.8% pass rate, targeting higher completion rate through systematic deparser fixes
+**Progress**: 91.5% pass rate with 30 failing test suites - regression needs investigation and fix
+**Next Priority**: Fix regression from getNodeType() changes, then systematic fixes for remaining failing tests including AST mismatch and invalid SQL issues across various PostgreSQL constructs
+**Status**: Good progress overall - improved from ~50% to 91.5% pass rate, but need to fix recent regression before continuing
 
 ## Current High-Impact Issues to Fix
 Based on latest `yarn test` output, key patterns causing multiple test failures:
