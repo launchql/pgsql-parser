@@ -922,6 +922,15 @@ export class Deparser implements DeparserVisitor {
         return `OVERLAY(${string} PLACING ${substring} FROM ${start})`;
       }
     }
+    
+    // Handle OVERLAPS operator with special infix syntax
+    if (name === 'pg_catalog.overlaps' && args.length === 4) {
+      const left1 = this.visit(args[0], context);
+      const left2 = this.visit(args[1], context);
+      const right1 = this.visit(args[2], context);
+      const right2 = this.visit(args[3], context);
+      return `(${left1}, ${left2}) OVERLAPS (${right1}, ${right2})`;
+    }
 
     const params: string[] = [];
     

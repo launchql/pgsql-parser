@@ -13,12 +13,16 @@
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
 ## Current Status (After Latest Fixes - June 19, 2025)
-- **Test Suites**: 20 failed, 143 passed, 189 skipped, 163 of 352 total (original-upstream only)
-- **Tests**: 20 failed, 143 passed, 189 skipped, 352 total  
-- **Pass Rate**: 87.7% test suites (143/163), 87.7% individual tests
-- **Last Updated**: June 19, 2025 07:33 UTC
+- **Test Suites**: 18 failed, 145 passed, 189 skipped, 163 of 352 total (original-upstream only)
+- **Tests**: 18 failed, 145 passed, 189 skipped, 352 total  
+- **Pass Rate**: 88.9% test suites (145/163), 88.9% individual tests
+- **Last Updated**: June 19, 2025 07:47 UTC
 
 **Recent Changes**:
+- ✅ **TransactionStmt Boolean Value Parsing**: Fixed complex boolean value parsing for SET TRANSACTION and START TRANSACTION statements - handles nested ival structures in A_Const nodes for transaction_read_only and transaction_deferrable options
+- ✅ **original-upstream-transactions Test**: Now fully passing - resolved READ WRITE vs READ ONLY and DEFERRABLE vs NOT DEFERRABLE parsing issues
+- ✅ **VariableSetStmt SESSION CHARACTERISTICS**: Added support for `SET SESSION CHARACTERISTICS AS TRANSACTION` statements alongside regular `SET TRANSACTION` statements
+- ✅ **Nested A_Const Structure Handling**: Comprehensive fix for accessing nested `{ ival: { ival: 1 } }` and `{ sval: { sval: "value" } }` structures in both TransactionStmt and VariableSetStmt methods
 - ✅ **Timestamp Type Aliases Fix**: Added `timestamptz` → `timestamp with time zone` and `timetz` → `time with time zone` mappings in TypeName method - resolves CREATE TABLE column type formatting
 - ✅ **CREATE TABLE WITH Options Support**: Added table options handling in CreateStmt method for WITH clauses like `WITH (fillfactor=10)` - includes DefElem compact formatting for CreateStmt context
 - ✅ **CREATE FOREIGN DATA WRAPPER DefElem Fix**: Added proper quoting for FDW option names containing spaces or special characters - resolves `CREATE FOREIGN DATA WRAPPER foo OPTIONS ("test wrapper" 'true')` vs `CREATE FOREIGN DATA WRAPPER foo OPTIONS (test wrapper 'true')` mismatch
@@ -40,9 +44,9 @@
 - ✅ **Comprehensive Quoting**: Dan's needsQuotes regex and RESERVED_WORDS set implemented in deparser
 
 **Current Focus**: Kitchen-sink tests only (ast-driven tests removed per Dan's request)
-**Progress**: 87.7% pass rate with 20 failing test suites - excellent progress with systematic fixes
-**Next Priority**: Remaining 20 failing tests including brin, transactions, horology, portals, tablesample, temp, gin, timetz
-**Status**: Outstanding progress - improved from ~50% to 87.7% pass rate, continuing systematic improvements
+**Progress**: 88.9% pass rate with 18 failing test suites - excellent progress with systematic fixes
+**Next Priority**: Remaining 18 failing tests including brin, tsdicts, strings, horology, rangefuncs, object_address, matview, rules, plpgsql, interval, timetz
+**Status**: Outstanding progress - improved from ~50% to 88.9% pass rate, continuing systematic improvements
 
 ## Current High-Impact Issues to Fix
 Based on latest `yarn test` output, key patterns causing multiple test failures:
