@@ -1600,13 +1600,9 @@ export class Deparser implements DeparserVisitor {
   private static needsQuotes(value: string): boolean {
     if (!value) return false;
     
-    // Check if it's a reserved word
-    if (Deparser.RESERVED_WORDS.has(value.toLowerCase())) {
-      return true;
-    }
+    const needsQuotesRegex = /[a-z]+[\W\w]*[A-Z]+|[A-Z]+[\W\w]*[a-z]+|\W/;
     
-    const needsQuotesRegex = /[a-z]+[\W\w]*[A-Z]+|[A-Z]+[\W\w]*[a-z]+|[\W_]/;
-    return needsQuotesRegex.test(value);
+    return needsQuotesRegex.test(value) || Deparser.RESERVED_WORDS.has(value.toLowerCase());
   }
 
   String(node: t.String, context: DeparserContext): string {
@@ -5087,7 +5083,7 @@ export class Deparser implements DeparserVisitor {
   }
 
   LockStmt(node: t.LockStmt, context: DeparserContext): string {
-    const output: string[] = ['LOCK', 'TABLE'];
+    const output: string[] = ['LOCK'];
     
     if (node.relations && node.relations.length > 0) {
       const relations = ListUtils.unwrapList(node.relations)
@@ -5098,18 +5094,17 @@ export class Deparser implements DeparserVisitor {
     
     if (node.mode !== undefined) {
       const lockModes = [
-        '', // mode 0 is unused
-        'ACCESS SHARE',    // mode 1
-        'ROW SHARE',       // mode 2
-        'ROW EXCLUSIVE',   // mode 3
-        'SHARE UPDATE EXCLUSIVE', // mode 4
-        'SHARE',           // mode 5
-        'SHARE ROW EXCLUSIVE', // mode 6
-        'EXCLUSIVE',       // mode 7
-        'ACCESS EXCLUSIVE' // mode 8
+        'ACCESS SHARE',    // mode 0
+        'ROW SHARE',       // mode 1
+        'ROW EXCLUSIVE',   // mode 2
+        'SHARE UPDATE EXCLUSIVE', // mode 3
+        'SHARE',           // mode 4
+        'SHARE ROW EXCLUSIVE', // mode 5
+        'EXCLUSIVE',       // mode 6
+        'ACCESS EXCLUSIVE' // mode 7
       ];
       
-      if (node.mode >= 1 && node.mode < lockModes.length) {
+      if (node.mode >= 0 && node.mode < lockModes.length) {
         output.push('IN', lockModes[node.mode], 'MODE');
       }
     }
@@ -5208,7 +5203,7 @@ export class Deparser implements DeparserVisitor {
     output.push('SERVER');
     
     if (node.servername) {
-      output.push(Deparser.needsQuotes(node.servername) ? `"${node.servername}"` : node.servername);
+      output.push(`"${node.servername}"`);
     }
     
     if (node.options && node.options.length > 0) {
