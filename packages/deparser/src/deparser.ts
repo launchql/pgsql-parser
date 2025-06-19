@@ -1717,6 +1717,21 @@ export class Deparser implements DeparserVisitor {
       output.push(this.formatter.parens(inheritStrs.join(', ')));
     }
 
+    if (node.oncommit && node.oncommit !== 'ONCOMMIT_NOOP') {
+      output.push('ON COMMIT');
+      switch (node.oncommit) {
+        case 'ONCOMMIT_PRESERVE_ROWS':
+          output.push('PRESERVE ROWS');
+          break;
+        case 'ONCOMMIT_DELETE_ROWS':
+          output.push('DELETE ROWS');
+          break;
+        case 'ONCOMMIT_DROP':
+          output.push('DROP');
+          break;
+      }
+    }
+
     return output.join(' ');
   }
 
@@ -1838,6 +1853,10 @@ export class Deparser implements DeparserVisitor {
             .map(key => this.visit(key, context))
             .join(', ');
           output.push(`(${keyList})`);
+        }
+        if (node.indexname) {
+          output.push('USING INDEX');
+          output.push(node.indexname);
         }
         break;
       case 'CONSTR_FOREIGN':
