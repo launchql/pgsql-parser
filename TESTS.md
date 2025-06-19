@@ -13,16 +13,16 @@
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
 ## Current Status (Corrected - Full Test Suite Results - June 19, 2025)
-- **Test Suites**: 29 failed, 323 passed, 352 total (all test suites)
+- **Test Suites**: 29 failed, 323 passed, 352 total
 - **Tests**: 29 failed, 323 passed, 352 total  
 - **Pass Rate**: 91.8% test suites (323/352), 91.8% individual tests
-- **Last Updated**: June 19, 2025 16:43 UTC (corrected after Dan's feedback - my previous 98.2% was wrong, only counted original-upstream pattern)
+- **Last Updated**: June 19, 2025 16:54 UTC (corrected after Dan's feedback - full yarn test without testNamePattern)
 
 **Recent Changes**:
 - ✅ **Context System Robustness Verified**: Comprehensive analysis confirmed that parentNodeTypes is already a required array (`parentNodeTypes: string[]`) with robust `includes()` checks throughout the deparser - no brittle array indexing patterns exist - context system meets all requirements for nested node handling
-- ❌ **Previous Status Correction**: My previous 98.2% pass rate was completely wrong - I was only counting "original-upstream" pattern tests, not the full test suite
-- ✅ **Accurate Status**: Current 91.8% pass rate (323/352 test suites passing) across all test patterns - significant room for improvement with 29 failing tests
-- ✅ **Remaining 3 Test Suites**: Only `object_address`, `timestamptz`, and `plpgsql` test suites still failing - targeted fixes in progress
+- ✅ **Reverted Duck Typing**: Removed hacky property-based node type detection from getNodeType() method - restored to original `Object.keys(node)[0]` approach per Dan's feedback
+- ✅ **Accurate Status**: Current 91.8% pass rate (323/352 test suites passing) across all test patterns - 29 failing tests need systematic fixes
+- ✅ **Test Status Corrected**: Dan was right about 29 failed tests - my previous 98.2% was wrong because I only counted original-upstream pattern, not full test suite
 - ✅ **AlterObjectSchemaStmt Matview Fix**: Fixed AlterObjectSchemaStmt to include OBJECT_MATVIEW in relation handling condition - resolves missing table name in `ALTER MATERIALIZED VIEW mvtest_tvm SET SCHEMA mvtest_mvschema` statements - improved pass rate from 92.0% to 92.6% (12 failed, 151 passed)
 - ✅ **Context Array Migration**: Successfully migrated DeparserContext to use required `parentNodeTypes: string[]` instead of optional `parentNodeType?: string` - enables robust nested context tracking with `.includes()` checks without optional chaining - maintains 92.0% pass rate with no regressions
 - ✅ **DeclareCursorStmt SCROLL Option Fix**: Fixed cursor option bit flag mapping from 256 back to 1 for SCROLL detection - resolves unwanted "SCROLL" keyword being added to basic cursor declarations - now correctly outputs `DECLARE foo CURSOR FOR SELECT 1 INTO b` instead of `DECLARE foo SCROLL CURSOR FOR SELECT 1 INTO b`
@@ -60,9 +60,9 @@
 - ✅ **Comprehensive Quoting**: Dan's needsQuotes regex and RESERVED_WORDS set implemented in deparser
 
 **Current Focus**: Kitchen-sink tests only (ast-driven tests removed per Dan's request)
-**Progress**: 98.2% pass rate with only 3 failing test suites - exceptional progress with systematic fixes
-**Next Priority**: Final 3 failing tests: `object_address` (CreateForeignTableStmt table name), `timestamptz` (AT TIME ZONE syntax), `plpgsql` (DO statement LANGUAGE clause ordering)
-**Status**: Outstanding progress - improved from ~50% to 98.2% pass rate, targeting 100% completion
+**Progress**: 91.8% pass rate with 29 failing test suites - significant progress but more work needed
+**Next Priority**: Systematic fixes for 29 failing tests including AST mismatch and invalid SQL issues across various PostgreSQL constructs
+**Status**: Good progress - improved from ~50% to 91.8% pass rate, targeting higher completion rate through systematic deparser fixes
 
 ## Current High-Impact Issues to Fix
 Based on latest `yarn test` output, key patterns causing multiple test failures:
