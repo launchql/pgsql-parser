@@ -1274,6 +1274,10 @@ export class Deparser implements DeparserVisitor {
           typeName = 'smallint';
         } else if (type === 'bool') {
           typeName = 'boolean';
+        } else if (type === 'timestamptz') {
+          typeName = 'timestamp with time zone';
+        } else if (type === 'timetz') {
+          typeName = 'time with time zone';
         }
         
         let result = mods(typeName, args);
@@ -1799,6 +1803,14 @@ export class Deparser implements DeparserVisitor {
           output.push('DROP');
           break;
       }
+    }
+
+    // Handle table options like WITH (fillfactor=10)
+    if (node.options && node.options.length > 0) {
+      const optionStrs = node.options.map((option: any) => {
+        return this.deparse(option, context);
+      });
+      output.push('WITH', `(${optionStrs.join(', ')})`);
     }
 
     return output.join(' ');
@@ -4673,6 +4685,11 @@ export class Deparser implements DeparserVisitor {
       
       // Handle IndexStmt WITH clause options - no quotes, compact formatting
       if (parentContext === 'IndexStmt') {
+        return `${node.defname}=${argValue}`;
+      }
+      
+      // Handle CreateStmt table options - no quotes, compact formatting
+      if (parentContext === 'CreateStmt') {
         return `${node.defname}=${argValue}`;
       }
       
