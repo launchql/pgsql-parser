@@ -1,0 +1,2 @@
+CREATE USER MAPPING FOR local_user SERVER "foreign_server" OPTIONS (user 'remote_user', password 'secret123');
+CREATE USER MAPPING FOR local_user SERVER foreign_server OPTIONS (user 'remote_user', password 'secret123');
