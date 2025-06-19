@@ -1376,19 +1376,19 @@ export class Deparser implements DeparserVisitor {
 
     const mods = ListUtils.unwrapList(typmods);
     const intervalFields: { [key: number]: string } = {
-      1: 'year',
-      2: 'month', 
-      4: 'day',
-      8: 'hour',
-      16: 'minute',
-      32: 'second',
-      64: 'year to month',
-      128: 'day to hour',
-      256: 'day to minute',
-      512: 'day to second',
-      1024: 'hour to minute',
-      2048: 'hour to second',
-      4096: 'second'
+      32: 'year',
+      64: 'month', 
+      128: 'day',
+      256: 'hour',
+      512: 'minute',
+      1024: 'second',
+      2048: 'minute',
+      4096: 'year to month',
+      8192: 'day to hour',
+      16384: 'day to minute',
+      32768: 'day to second',
+      65536: 'hour to minute',
+      131072: 'hour to second'
     };
 
     const fieldSpecs = mods.map(mod => {
