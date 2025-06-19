@@ -4711,6 +4711,10 @@ export class Deparser implements DeparserVisitor {
           return `ADMIN ${argValue}`;
         }
         
+        if (node.defname === 'connectionlimit') {
+          return `CONNECTION LIMIT ${argValue}`;
+        }
+        
         if (argValue === 'true') {
           return node.defname.toUpperCase();
         } else if (argValue === 'false') {
