@@ -3007,15 +3007,17 @@ export class Deparser implements DeparserVisitor {
                   transactionOptions.push(`ISOLATION LEVEL ${value.replace(/'/g, '').toUpperCase()}`);
                 } else if (defElem.defname === 'transaction_read_only') {
                   const value = defElem.arg ? this.visit(defElem.arg, context) : '';
-                  transactionOptions.push(value.replace(/'/g, '').toLowerCase() === 'true' ? 'READ ONLY' : 'READ WRITE');
+                  const boolValue = value.replace(/'/g, '').toLowerCase();
+                  transactionOptions.push(boolValue === 'on' || boolValue === 'true' ? 'READ ONLY' : 'READ WRITE');
                 } else if (defElem.defname === 'transaction_deferrable') {
                   const value = defElem.arg ? this.visit(defElem.arg, context) : '';
-                  transactionOptions.push(value.replace(/'/g, '').toLowerCase() === 'true' ? 'DEFERRABLE' : 'NOT DEFERRABLE');
+                  const boolValue = value.replace(/'/g, '').toLowerCase();
+                  transactionOptions.push(boolValue === 'on' || boolValue === 'true' ? 'DEFERRABLE' : 'NOT DEFERRABLE');
                 }
               }
             }
           }
-          return `SET TRANSACTION ${transactionOptions.join(' ')}`;
+          return `SET TRANSACTION ${transactionOptions.join(', ')}`;
         } else {
           // Handle other multi-variable sets
           const assignments = node.args ? ListUtils.unwrapList(node.args).map(arg => {
