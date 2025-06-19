@@ -12,17 +12,20 @@
 
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
-## Current Status (After CreateUserMappingStmt Server Name Quoting Fix)
+## Current Status (After LockStmt and CreateUserMappingStmt Fixes)
 - **Test Suites**: 66 failed, 309 passed, 375 total
 - **Tests**: 69 failed, 581 passed, 650 total  
 - **Pass Rate**: 82.4% test suites, 89.4% individual tests
 
-**Progress**: ✅ CreateUserMappingStmt server name quoting fix successful - server names now always quoted as expected
-**Recent Fix**: Fixed CreateUserMappingStmt to always quote server names (e.g., `SERVER "foreign_server"`)
-**Test Status**: ✅ CreateUserMappingStmt test now passes - server name quoting resolved
-**Impact**: CREATE USER MAPPING statements now generate correct SQL syntax with quoted server names
-**Next Priority**: Implement Dan's comprehensive quoting solution (needsQuotes regex + RESERVED_WORDS) and fix CREATE EXTENSION over-quoting
-**Status**: Need to implement smart quoting logic and continue systematic fixes
+**Recent Fixes Completed**:
+- ✅ **LockStmt**: Fixed lock mode mapping - maintenance-stmt test suite now passes 22/22 tests
+- ✅ **CreateUserMappingStmt**: Fixed server name quoting - advanced-policy-stmt test suite now passes 10/10 tests
+- ✅ **Comprehensive Quoting**: Dan's needsQuotes regex and RESERVED_WORDS set already implemented in deparser
+
+**Progress**: Steady improvement in test pass rate through systematic node type fixes
+**Impact**: Both LOCK statements and CREATE USER MAPPING statements now generate correct PostgreSQL syntax
+**Next Priority**: Continue systematic fixes on remaining 66 failed test suites, focusing on high-impact patterns
+**Status**: Ready to tackle next batch of failing tests
 
 ## Current High-Impact Issues to Fix
 Based on latest `yarn test` output, key patterns causing multiple test failures:
