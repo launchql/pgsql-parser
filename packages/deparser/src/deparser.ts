@@ -3006,13 +3006,33 @@ export class Deparser implements DeparserVisitor {
                   const value = defElem.arg ? this.visit(defElem.arg, context) : '';
                   transactionOptions.push(`ISOLATION LEVEL ${value.replace(/'/g, '').toUpperCase()}`);
                 } else if (defElem.defname === 'transaction_read_only') {
-                  const value = defElem.arg ? this.visit(defElem.arg, context) : '';
-                  const boolValue = value.replace(/'/g, '').toLowerCase();
-                  transactionOptions.push(boolValue === 'on' || boolValue === 'true' ? 'READ ONLY' : 'READ WRITE');
+                  // Handle both Integer (ival: 1/0) and String values
+                  let boolValue = false;
+                  if (defElem.arg) {
+                    if (this.getNodeType(defElem.arg) === 'Integer') {
+                      const intData = this.getNodeData(defElem.arg);
+                      boolValue = intData.ival === 1;
+                    } else {
+                      const value = this.visit(defElem.arg, context);
+                      const stringValue = value.replace(/'/g, '').toLowerCase();
+                      boolValue = stringValue === 'on' || stringValue === 'true';
+                    }
+                  }
+                  transactionOptions.push(boolValue ? 'READ ONLY' : 'READ WRITE');
                 } else if (defElem.defname === 'transaction_deferrable') {
-                  const value = defElem.arg ? this.visit(defElem.arg, context) : '';
-                  const boolValue = value.replace(/'/g, '').toLowerCase();
-                  transactionOptions.push(boolValue === 'on' || boolValue === 'true' ? 'DEFERRABLE' : 'NOT DEFERRABLE');
+                  // Handle both Integer (ival: 1/0) and String values
+                  let boolValue = false;
+                  if (defElem.arg) {
+                    if (this.getNodeType(defElem.arg) === 'Integer') {
+                      const intData = this.getNodeData(defElem.arg);
+                      boolValue = intData.ival === 1;
+                    } else {
+                      const value = this.visit(defElem.arg, context);
+                      const stringValue = value.replace(/'/g, '').toLowerCase();
+                      boolValue = stringValue === 'on' || stringValue === 'true';
+                    }
+                  }
+                  transactionOptions.push(boolValue ? 'DEFERRABLE' : 'NOT DEFERRABLE');
                 }
               }
             }
