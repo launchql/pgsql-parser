@@ -1257,7 +1257,11 @@ export class Deparser implements DeparserVisitor {
       const typeName = names[0];
       
       if (typeName === 'char') {
-        output.push(mods('"char"', args));
+        if (context.parentNodeTypes.includes('TypeCast') && args === '1') {
+          output.push('"char"');
+        } else {
+          output.push(mods('"char"', args));
+        }
         return output.join(' ');
       }
       
