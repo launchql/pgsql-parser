@@ -4440,6 +4440,26 @@ export class Deparser implements DeparserVisitor {
             return `IN ROLE ${roleNames.join(', ')}`;
           }
         }
+        
+        // Handle role options that need keyword format, not key=value
+        if (node.defname === 'password') {
+          const quotedValue = typeof argValue === 'string' && !argValue.startsWith("'") 
+            ? `'${argValue}'` 
+            : argValue;
+          return `PASSWORD ${quotedValue}`;
+        }
+        
+        if (node.defname === 'validUntil') {
+          const quotedValue = typeof argValue === 'string' && !argValue.startsWith("'") 
+            ? `'${argValue}'` 
+            : argValue;
+          return `VALID UNTIL ${quotedValue}`;
+        }
+        
+        if (node.defname === 'adminmembers') {
+          return `ADMIN ${argValue}`;
+        }
+        
         if (argValue === 'true') {
           return node.defname.toUpperCase();
         } else if (argValue === 'false') {
