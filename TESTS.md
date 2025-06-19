@@ -13,12 +13,14 @@
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
 ## Current Status (After Latest Fixes - June 19, 2025)
-- **Test Suites**: 24 failed, 139 passed, 189 skipped, 163 of 352 total (original-upstream only)
-- **Tests**: 24 failed, 139 passed, 189 skipped, 352 total  
-- **Pass Rate**: 85.3% test suites (139/163), 85.3% individual tests
-- **Last Updated**: June 19, 2025 07:09 UTC
+- **Test Suites**: 20 failed, 143 passed, 189 skipped, 163 of 352 total (original-upstream only)
+- **Tests**: 20 failed, 143 passed, 189 skipped, 352 total  
+- **Pass Rate**: 87.7% test suites (143/163), 87.7% individual tests
+- **Last Updated**: June 19, 2025 07:33 UTC
 
 **Recent Changes**:
+- ✅ **Timestamp Type Aliases Fix**: Added `timestamptz` → `timestamp with time zone` and `timetz` → `time with time zone` mappings in TypeName method - resolves CREATE TABLE column type formatting
+- ✅ **CREATE TABLE WITH Options Support**: Added table options handling in CreateStmt method for WITH clauses like `WITH (fillfactor=10)` - includes DefElem compact formatting for CreateStmt context
 - ✅ **CREATE FOREIGN DATA WRAPPER DefElem Fix**: Added proper quoting for FDW option names containing spaces or special characters - resolves `CREATE FOREIGN DATA WRAPPER foo OPTIONS ("test wrapper" 'true')` vs `CREATE FOREIGN DATA WRAPPER foo OPTIONS (test wrapper 'true')` mismatch
 - ✅ **original-upstream-foreign_data Test**: Now passing - resolved option name quoting issue in DefElem method
 - ✅ **GrantStmt DATABASE Object Type Fix**: Added `OBJECT_DATABASE` support to GrantStmt method - resolves missing "DATABASE" keyword in grant statements like `GRANT create ON DATABASE regression TO regression_user1`
@@ -38,9 +40,9 @@
 - ✅ **Comprehensive Quoting**: Dan's needsQuotes regex and RESERVED_WORDS set implemented in deparser
 
 **Current Focus**: Kitchen-sink tests only (ast-driven tests removed per Dan's request)
-**Progress**: 84.7% pass rate with 54 failing test suites - excellent progress with systematic fixes
-**Next Priority**: High-impact failing tests like triggers, sequences, comments, extensions, and other SQL construct patterns
-**Status**: Outstanding progress - improved from ~50% to 84.7% pass rate, continuing systematic improvements
+**Progress**: 87.7% pass rate with 20 failing test suites - excellent progress with systematic fixes
+**Next Priority**: Remaining 20 failing tests including brin, transactions, horology, portals, tablesample, temp, gin, timetz
+**Status**: Outstanding progress - improved from ~50% to 87.7% pass rate, continuing systematic improvements
 
 ## Current High-Impact Issues to Fix
 Based on latest `yarn test` output, key patterns causing multiple test failures:

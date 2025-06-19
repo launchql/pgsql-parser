@@ -4690,6 +4690,11 @@ export class Deparser implements DeparserVisitor {
       
       // Handle CreateStmt table options - no quotes, compact formatting
       if (parentContext === 'CreateStmt') {
+        // For numeric values, use the raw value without quotes
+        if (node.arg && this.getNodeType(node.arg) === 'Integer') {
+          const integerData = this.getNodeData(node.arg);
+          return `${node.defname}=${integerData.ival}`;
+        }
         return `${node.defname}=${argValue}`;
       }
       
