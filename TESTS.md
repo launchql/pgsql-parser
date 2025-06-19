@@ -13,12 +13,13 @@
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
 ## Current Status (Corrected - Full Test Suite Results - June 19, 2025)
-- **Test Suites**: 29 failed, 323 passed, 352 total
-- **Tests**: 29 failed, 323 passed, 352 total  
-- **Pass Rate**: 91.8% test suites (323/352), 91.8% individual tests
-- **Last Updated**: June 19, 2025 18:57 UTC (schema name quoting fix completed - 29 failed, 323 passed, 91.8% pass rate maintained)
+- **Test Suites**: 33 failed, 319 passed, 352 total
+- **Tests**: 33 failed, 319 passed, 352 total  
+- **Pass Rate**: 90.6% test suites (319/352), 90.6% individual tests
+- **Last Updated**: June 19, 2025 19:04 UTC (accurate full test suite results - CREATE OPERATOR DefElem fix attempt unsuccessful)
 
 **Recent Changes**:
+- ❌ **CREATE OPERATOR DefElem Fix Attempt**: Attempted to fix DefElem case preservation in CREATE OPERATOR statements by replacing `toUpperCase()` with `quoteIfNeeded()`, but test still fails - need deeper investigation of AST mismatch
 - ✅ **Schema Name Quoting Fix**: Fixed operator detection regex in String method to use pure operator pattern `/^[+*/<>=~!@#%^&|`?]+$/` instead of `/[+\-*/<>=~!@#%^&|`?]/` - prevents hyphens in identifiers like "my-schema" from being treated as operator symbols
 - ✅ **original-drops Test**: Now fully passing - hyphenated schema names like "my-schema" are properly quoted in DROP FUNCTION statements  
 - ✅ **Operator Symbol Detection**: Pure operator symbols like "=" are still correctly unquoted while identifiers with hyphens are properly quoted
