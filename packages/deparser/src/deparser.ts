@@ -5096,7 +5096,7 @@ export class Deparser implements DeparserVisitor {
   }
 
   LockStmt(node: t.LockStmt, context: DeparserContext): string {
-    const output: string[] = ['LOCK'];
+    const output: string[] = ['LOCK', 'TABLE'];
     
     if (node.relations && node.relations.length > 0) {
       const relations = ListUtils.unwrapList(node.relations)
@@ -5107,14 +5107,14 @@ export class Deparser implements DeparserVisitor {
     
     if (node.mode !== undefined) {
       const lockModes = [
-        'ACCESS SHARE',    // mode 0
-        'ROW SHARE',       // mode 1
-        'ROW EXCLUSIVE',   // mode 2
-        'SHARE UPDATE EXCLUSIVE', // mode 3
-        'SHARE',           // mode 4
-        'SHARE ROW EXCLUSIVE', // mode 5
-        'EXCLUSIVE',       // mode 6
-        'ACCESS EXCLUSIVE' // mode 7
+        'ACCESS SHARE',           // mode 0
+        'ROW SHARE',              // mode 1
+        'SHARE UPDATE EXCLUSIVE', // mode 2
+        'ROW EXCLUSIVE',          // mode 3
+        'SHARE',                  // mode 4
+        'SHARE ROW EXCLUSIVE',    // mode 5
+        'EXCLUSIVE',              // mode 6
+        'ACCESS EXCLUSIVE'        // mode 7
       ];
       
       if (node.mode >= 0 && node.mode < lockModes.length) {
