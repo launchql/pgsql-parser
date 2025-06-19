@@ -16,7 +16,7 @@
 - **Test Suites**: 30 failed, 322 passed, 352 total
 - **Tests**: 30 failed, 322 passed, 352 total  
 - **Pass Rate**: 91.4% test suites (322/352), 91.4% individual tests
-- **Last Updated**: June 19, 2025 17:42 UTC (after AT TIME ZONE fix - improved from 31 to 30 failed tests)
+- **Last Updated**: June 19, 2025 17:47 UTC (after CREATE AGGREGATE OR REPLACE fix - maintained 30 failed tests, no regressions)
 
 **Recent Changes**:
 - ❌ **Stack Overflow Issues Persist**: Despite reverting getNodeType() to simple `Object.keys(node)[0]` approach, still seeing "Maximum call stack size exceeded" errors in tests like original-rules-create (RuleStmt) and original-upstream-object_address (CreateForeignTableStmt)
