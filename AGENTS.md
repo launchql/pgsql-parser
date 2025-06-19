@@ -1,14 +1,18 @@
 ## PostgreSQL Deparser for PG17: Architecture Analysis and Implementation Guide
 
-This document explains how to work in the `deparser` repository. It is intended for internal developers and agents contributing to the PostgreSQL 17 upgrade.
+This document provides guidance for working in the `deparser` repository. It is intended for internal developers and agents contributing to the PostgreSQL 17 upgrade.
+
+---
 
 ### Key Technical Goals
 
 * Upgrade compatibility from PostgreSQL 13 to 17
-* Strengthen test coverage, especially for kitchen-sink tests
-* Document structure, types, and helper modules clearly
+* Expand test coverage with thorough kitchen-sink tests
+* Document architecture, types, and helper modules clearly
 
-### Architecture Breakdown
+---
+
+### Architecture Overview
 
 #### Visitor Pattern Core (`packages/deparser/src/deparser.ts`)
 
@@ -35,41 +39,40 @@ export class Deparser implements DeparserVisitor {
 }
 ```
 
-#### Utility Modules
+---
 
-* **SqlFormatter**: SQL string indentation and spacing
-* **QuoteUtils**: Handles quoting/escaping identifiers using PostgreSQL rules
-* **ListUtils**: Unwraps `List` nodes and standardizes array access
-* **DeparserContext**: Contextual info for traversal state and formatting
-* **Node Types (********`@pgsql/types`****\*\*\*\*)**: Canonical type definitions for every node
+### Key Utility Modules
 
-If you need to study the actual source of the node types, refer to:
+* **SqlFormatter**: Manages indentation and spacing
+* **QuoteUtils**: Quotes/escapes identifiers per PostgreSQL rules
+* **ListUtils**: Unwraps `List` nodes, standardizes array access
+* **DeparserContext**: Maintains traversal and formatting state
+* **Node Types (`@pgsql/types`)**: Canonical TypeScript types for all nodes
+
+**Source references for types:**
 
 * `packages/types/src/types.ts`
 * `packages/types/src/enums.ts`
 
-### Context Enhancements
+---
 
-Context can be used to handle corner cases in leaf nodes, especially when a generic type like `String` needs to behave differently based on location. For instance, quoting behavior may depend on whether a string is used in an expression, identifier, constraint, or function. Avoid hardcoding logic in multiple node visitors—use `context` instead to pass information down the tree and guide formatting or escaping decisions correctly.
+### Context-Driven Rendering
+
+Use `DeparserContext` to manage behavior across complex node trees. For example, strings may require different escaping depending on context (e.g., identifier vs. expression). Avoid duplicating logic in node handlers—use `context` to guide formatting.
 
 ```ts
 export interface DeparserContext {
-  parentNode?: Node;
-  parentNodeType?: string;
-  parentField?: string;
-  indentLevel?: number;
-  inSubquery?: boolean;
-  inConstraint?: boolean;
-  inExpression?: boolean;
-  jsonFormatting?: boolean;
-  xmlFormatting?: boolean;
-  partitionContext?: boolean;
+  isStringLiteral?: boolean;
+  parentNodeTypes: string[];
+  [key: string]: any;
 }
 ```
 
-### QuoteUtils (Identifier Handling)
+`parentNodeTypes` keeps track of the path to the leaf nodes during tree traversal so that formatting and behavior in leaf nodes can be adjusted based on their position in the tree.
 
-These are utility functions for quoting and escaping PostgreSQL identifiers. You should be familiar with these methods if working on quoting logic or identifier rendering.
+---
+
+### QuoteUtils: Identifier Handling
 
 ```ts
 export class QuoteUtils {
@@ -80,14 +83,14 @@ export class QuoteUtils {
   }
 
   private static needsQuoting(identifier: string): boolean {
-    return !/^[a-z_][a-z0-9_$]*$/.test(identifier) || RESERVED_KEYWORDS.has(identifier.toLowerCase());
+    return !/^[a-z_][a-z0-9_$]*$/i.test(identifier) || RESERVED_KEYWORDS.has(identifier.toLowerCase());
   }
 }
 ```
 
-### ListUtils (List Unwrapping)
+---
 
-These are helper utilities for traversing and standardizing node lists. Be familiar with this when handling `List` types inside the AST structure.
+### ListUtils: List Handling
 
 ```ts
 export class ListUtils {
@@ -104,70 +107,103 @@ export class ListUtils {
 }
 ```
 
-### Testing Requirements
+---
 
-* Focus exclusively on `deparser/__tests__/kitchen-sink`
-* After green status, expand to `deparser/__tests__/ast-driven`
+### Testing Strategy
 
-### Debugging AST Mismatches
+* Focus on `deparser/__tests__/kitchen-sink`
+* Expand into `ast-driven` tests once stable
+* Run targeted tests with:
 
-* Test failures display meaningful diffs showing AST mismatches
-* Use expected vs actual AST comparison output to isolate:
+```bash
+cd packages/deparser
+yarn test --testNamePattern="specific-test"
+```
 
-  * extra wrapping function calls
-  * incorrect nested structures
-  * missing locations or misquoted identifiers
+---
 
-#### Example Failure (from `simple-5.sql`)
+### AST Debugging: How to Identify and Fix Errors
+
+When a test fails, it shows AST diffs for diagnosis.
+
+Example failure:
 
 ```diff
 -   "rexpr": { "FuncCall": { "args": [ "A_Const" ] } }
 +   "rexpr": { "FuncCall": { "args": [ { "FuncCall": { "args": [...] } ] } } }
 ```
 
-> Fix: Prevent nested `FuncCall` in deparser output
-
-### Development Workflow and Setup
-
-#### Example: Run tests for the deparser package
-
-```bash
-cd packages/deparser
-yarn test
-```
-
-Use `yarn test --testNamePattern="specific-test"` to narrow the test scope during debugging.
-
-To contribute effectively, follow this setup and workflow:
-
-**Initial Setup:**
-
-* Requires Node.js v14+ and Yarn
-* Run `yarn` to install dependencies
-* Run `yarn build` to build all packages
-
-**Running Tests:**
-
-* Run `yarn test --testNamePattern="specific-test"` to test a specific case
-* Use `yarn test` to check for regressions
-* Run `yarn test:watch` during active development
-* Update `TESTS.md` with the current percentage of passing tests
-
-**Available Packages:**
-
-* `packages/deparser`: SQL deparser
-* `packages/parser`: SQL parser
-* `packages/types`: TypeScript AST definitions
-* `packages/utils`: Utility functions
-
-Steps:
-
-1. Start with `kitchen-sink` tests
-2. Use stderr output to compare ASTs
-3. Use the `expected AST` block as ground truth
-4. Match the structure via the deparsed output
-5. Fix one mismatch at a time before moving on
+Fix: prevent accidental nested `FuncCall` by inspecting and unwrapping recursively.
 
 ---
 
-This document excludes high-level marketing prose and focuses strictly on the actionable implementation details needed to maintain and upgrade the deparser for PostgreSQL 17.
+### Development Setup
+
+#### Prerequisites
+
+* Node.js v14+
+* Yarn
+
+#### Install & Build
+
+```bash
+yarn
+yarn build
+```
+
+#### Test Commands
+
+```bash
+yarn test
+# or
+yarn test --testNamePattern="specific-test"
+yarn test:watch
+```
+
+Update `TESTS.md` with latest test status and passing percentages.
+
+---
+
+### Package Structure
+
+* `packages/deparser`: SQL output generator
+* `packages/parser`: SQL AST generator
+* `packages/types`: PG AST type definitions
+* `packages/utils`: Shared helpers (quote, list, context)
+
+---
+
+### Suggested Workflow
+
+1. Begin with `kitchen-sink` cases
+2. Use stderr to view AST diff output
+3. Use expected AST block as source of truth
+4. Match deparsed output to expected structure
+5. Fix one issue at a time—validate before moving forward
+
+---
+
+## Testing Process & Workflow
+
+**Our systematic approach to fixing deparser issues:**
+
+1. **One test at a time**: Focus on individual failing tests using `yarn test --testNamePattern="specific-test"`
+2. **Always check for regressions**: After each fix, run full `yarn test` to ensure no previously passing tests broke
+3. **Track progress**: Update this file with current pass/fail counts after each significant change
+4. **Build before testing**: Always run `yarn build` after code changes before testing
+5. **Clean commits**: Stage files explicitly with `git add <file>`, never use `git add .`
+6. **Tight feedback loops**: Use isolated debug scripts for complex issues, but don't commit them
+
+**Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
+
+**When committing to TESTS.md, always run all tests — do not use testNamePattern, only `yarn test`**
+
+PostgreSQL AST nodes are wrapped with type names as keys — `{ RangeVar: {...} }`, `{ String: {...} }`, etc. — see `Node` type in `@pgsql/types`.
+
+Node type detection should use the wrapper key — `Object.keys(node)[0]` — for wrapped nodes from `@pgsql/types`.
+
+`@pgsql/types` provides comprehensive type definitions for all PostgreSQL AST node types. The `Node` type is the wrapped form.
+
+Parent context should inform node type resolution when wrapper detection fails.
+
+`visit()` should only be called on wrapped `Node` instances — avoid duck typing by checking for properties like `schemaname`, `sval`, `ival`, etc. These should be handled by specific node visitor methods in the deparser.
