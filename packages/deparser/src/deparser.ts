@@ -3006,29 +3006,35 @@ export class Deparser implements DeparserVisitor {
                   const value = defElem.arg ? this.visit(defElem.arg, context) : '';
                   transactionOptions.push(`ISOLATION LEVEL ${value.replace(/'/g, '').toUpperCase()}`);
                 } else if (defElem.defname === 'transaction_read_only') {
-                  // Handle both Integer (ival: 1/0) and String values
+                  // Handle both A_Const with ival (integer) and sval (string) values
                   let boolValue = false;
                   if (defElem.arg) {
-                    if (this.getNodeType(defElem.arg) === 'Integer') {
-                      const intData = this.getNodeData(defElem.arg);
-                      boolValue = intData.ival === 1;
-                    } else {
-                      const value = this.visit(defElem.arg, context);
-                      const stringValue = value.replace(/'/g, '').toLowerCase();
+                    const nodeData = this.getNodeData(defElem.arg);
+                    if (nodeData.ival !== undefined) {
+                      // Handle nested ival structure: { ival: { ival: 1 } }
+                      const ivalValue = typeof nodeData.ival === 'object' ? nodeData.ival.ival : nodeData.ival;
+                      boolValue = ivalValue === 1;
+                    } else if (nodeData.sval !== undefined) {
+                      // Handle nested sval structure: { sval: { sval: "value" } }
+                      const svalValue = typeof nodeData.sval === 'object' ? nodeData.sval.sval : nodeData.sval;
+                      const stringValue = svalValue.replace(/'/g, '').toLowerCase();
                       boolValue = stringValue === 'on' || stringValue === 'true';
                     }
                   }
                   transactionOptions.push(boolValue ? 'READ ONLY' : 'READ WRITE');
                 } else if (defElem.defname === 'transaction_deferrable') {
-                  // Handle both Integer (ival: 1/0) and String values
+                  // Handle both A_Const with ival (integer) and sval (string) values
                   let boolValue = false;
                   if (defElem.arg) {
-                    if (this.getNodeType(defElem.arg) === 'Integer') {
-                      const intData = this.getNodeData(defElem.arg);
-                      boolValue = intData.ival === 1;
-                    } else {
-                      const value = this.visit(defElem.arg, context);
-                      const stringValue = value.replace(/'/g, '').toLowerCase();
+                    const nodeData = this.getNodeData(defElem.arg);
+                    if (nodeData.ival !== undefined) {
+                      // Handle nested ival structure: { ival: { ival: 1 } }
+                      const ivalValue = typeof nodeData.ival === 'object' ? nodeData.ival.ival : nodeData.ival;
+                      boolValue = ivalValue === 1;
+                    } else if (nodeData.sval !== undefined) {
+                      // Handle nested sval structure: { sval: { sval: "value" } }
+                      const svalValue = typeof nodeData.sval === 'object' ? nodeData.sval.sval : nodeData.sval;
+                      const stringValue = svalValue.replace(/'/g, '').toLowerCase();
                       boolValue = stringValue === 'on' || stringValue === 'true';
                     }
                   }
