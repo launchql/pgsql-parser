@@ -5961,23 +5961,22 @@ export class Deparser implements DeparserVisitor {
     // Check if howMany represents "ALL" (PostgreSQL uses LONG_MAX as sentinel)
     const isAll = (node.howMany as any) === 9223372036854776000;
     
-    if (isAll) {
-      output.push('ALL');
-      if (node.portalname) {
-        output.push(QuoteUtils.quote(node.portalname));
-      }
-      return output.join(' ');
-    } else if (node.direction) {
+    // Handle direction first, then check for ALL within each direction
+    if (node.direction) {
       switch (node.direction) {
         case 'FETCH_FORWARD':
-          if (node.howMany !== undefined && node.howMany !== null) {
+          if (isAll) {
+            output.push('FORWARD', 'ALL');
+          } else if (node.howMany !== undefined && node.howMany !== null) {
             output.push('FORWARD', node.howMany.toString());
           } else {
             output.push('FORWARD');
           }
           break;
         case 'FETCH_BACKWARD':
-          if (node.howMany !== undefined && node.howMany !== null) {
+          if (isAll) {
+            output.push('BACKWARD', 'ALL');
+          } else if (node.howMany !== undefined && node.howMany !== null) {
             output.push('BACKWARD', node.howMany.toString());
           } else {
             output.push('BACKWARD');
@@ -5996,10 +5995,13 @@ export class Deparser implements DeparserVisitor {
         default:
           throw new Error(`Unsupported FetchStmt direction: ${node.direction}`);
       }
+    } else if (isAll) {
+      // Handle plain "ALL" without direction
+      output.push('ALL');
     }
     
     if (node.portalname) {
-      output.push('FROM', QuoteUtils.quote(node.portalname));
+      output.push(QuoteUtils.quote(node.portalname));
     }
     
     return output.join(' ');
