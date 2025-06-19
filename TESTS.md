@@ -12,23 +12,25 @@
 
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
-## Current Status (After CollateClause Quoting Fix)
-- **Test Suites**: 60 failed, 292 passed, 352 total
-- **Tests**: 60 failed, 292 passed, 352 total  
-- **Pass Rate**: 83.0% test suites, 83.0% individual tests
+## Current Status (After LockStmt Lock Mode Mapping Fix)
+- **Test Suites**: 57 failed, 295 passed, 352 total
+- **Tests**: 57 failed, 295 passed, 352 total  
+- **Pass Rate**: 83.8% test suites, 83.8% individual tests
 
 **Recent Changes**:
+- ✅ **LockStmt Lock Mode Mapping Fix**: Corrected PostgreSQL lock mode array to use 1-based indexing (modes 1-8) instead of 0-based (0-7)
+- ✅ **original-upstream-privileges Test**: Now passing - resolved "ACCESS SHARE MODE" vs "ROW SHARE MODE" mapping issue
+- ✅ **LOCK TABLE Keyword**: Added missing "TABLE" keyword to LockStmt output for proper PostgreSQL syntax
+- ✅ **JOIN Expression Parentheses Fix**: Resolved double parentheses issue in nested JOIN expressions with aliases
+- ✅ **RenameStmt OBJECT_SCHEMA Fix**: Added schema name extraction from `node.subname` for ALTER SCHEMA RENAME statements
 - ✅ **CollateClause Quoting Fix**: Expanded needsQuotes logic from single character `/^[A-Z]$/` to multi-character `/^[A-Z]+$/`
-- ✅ **Improved Pass Rate**: From 66 failed → 60 failed test suites (6 test suite improvement)
-- ✅ **Case-Sensitive Identifiers**: Fixed "POSIX", "C" and other uppercase collation names preservation
 - ✅ **Dan's Updates**: Removed all ast-driven tests (32 files, 7977 lines) - now focusing exclusively on kitchen-sink tests
-- ✅ **Previous Fixes**: LockStmt lock mode mapping and CreateUserMappingStmt server name quoting still working
 - ✅ **Comprehensive Quoting**: Dan's needsQuotes regex and RESERVED_WORDS set implemented in deparser
 
 **Current Focus**: Kitchen-sink tests only (ast-driven tests removed per Dan's request)
-**Progress**: 83.0% pass rate with 60 failing test suites to systematically address
-**Next Priority**: Identify and fix high-impact patterns in remaining kitchen-sink test failures
-**Status**: Making steady progress - 6 test suite improvement from CollateClause fix
+**Progress**: 83.8% pass rate with 57 failing test suites - improved from 60 failed suites after LockStmt fix
+**Next Priority**: Address remaining high-impact SQL construct patterns causing multiple test failures
+**Status**: Good progress - LockStmt fix resolved 3+ test failures, continuing systematic improvements
 
 ## Current High-Impact Issues to Fix
 Based on latest `yarn test` output, key patterns causing multiple test failures:
