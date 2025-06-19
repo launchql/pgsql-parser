@@ -12,21 +12,23 @@
 
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
-## Current Status (After Dan's Updates - Kitchen-Sink Tests Only)
-- **Test Suites**: 66 failed, 286 passed, 352 total
-- **Tests**: 66 failed, 286 passed, 352 total  
-- **Pass Rate**: 81.3% test suites, 81.3% individual tests
+## Current Status (After CollateClause Quoting Fix)
+- **Test Suites**: 60 failed, 292 passed, 352 total
+- **Tests**: 60 failed, 292 passed, 352 total  
+- **Pass Rate**: 83.0% test suites, 83.0% individual tests
 
 **Recent Changes**:
+- ✅ **CollateClause Quoting Fix**: Expanded needsQuotes logic from single character `/^[A-Z]$/` to multi-character `/^[A-Z]+$/`
+- ✅ **Improved Pass Rate**: From 66 failed → 60 failed test suites (6 test suite improvement)
+- ✅ **Case-Sensitive Identifiers**: Fixed "POSIX", "C" and other uppercase collation names preservation
 - ✅ **Dan's Updates**: Removed all ast-driven tests (32 files, 7977 lines) - now focusing exclusively on kitchen-sink tests
-- ✅ **New Test Fixtures**: Added latest-misc-cascades and latest-misc-quotes_etc test suites
 - ✅ **Previous Fixes**: LockStmt lock mode mapping and CreateUserMappingStmt server name quoting still working
 - ✅ **Comprehensive Quoting**: Dan's needsQuotes regex and RESERVED_WORDS set implemented in deparser
 
 **Current Focus**: Kitchen-sink tests only (ast-driven tests removed per Dan's request)
-**Progress**: 81.3% pass rate with 66 failing test suites to systematically address
-**Next Priority**: Identify and fix high-impact patterns in kitchen-sink test failures
-**Status**: Ready to continue systematic kitchen-sink test fixes
+**Progress**: 83.0% pass rate with 60 failing test suites to systematically address
+**Next Priority**: Identify and fix high-impact patterns in remaining kitchen-sink test failures
+**Status**: Making steady progress - 6 test suite improvement from CollateClause fix
 
 ## Current High-Impact Issues to Fix
 Based on latest `yarn test` output, key patterns causing multiple test failures:

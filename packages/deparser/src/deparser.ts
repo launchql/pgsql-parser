@@ -6292,6 +6292,14 @@ export class Deparser implements DeparserVisitor {
         } else {
           output.push(this.visit(node.object, context));
         }
+      } else if (node.renameType === 'OBJECT_SCHEMA' && (node.object as any).List) {
+        // Handle schema names - extract from List structure
+        const items = ListUtils.unwrapList(node.object as any);
+        if (items.length > 0 && items[0].String) {
+          output.push(this.quoteIfNeeded(items[0].String.sval));
+        } else {
+          output.push(this.visit(node.object, context));
+        }
       } else {
         output.push(this.visit(node.object, context));
       }
@@ -6307,6 +6315,8 @@ export class Deparser implements DeparserVisitor {
       output.push('RENAME ATTRIBUTE', `"${node.subname}"`, 'TO');
     } else if (node.renameType === 'OBJECT_ROLE' && node.subname) {
       output.push(`"${node.subname}"`, 'RENAME TO');
+    } else if (node.renameType === 'OBJECT_SCHEMA' && node.subname) {
+      output.push(this.quoteIfNeeded(node.subname), 'RENAME TO');
     } else {
       output.push('RENAME TO');
     }
