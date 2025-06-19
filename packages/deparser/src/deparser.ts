@@ -4096,7 +4096,31 @@ export class Deparser implements DeparserVisitor {
         output.push(this.visit(node.sql_body, context));
       } else {
         output.push('BEGIN ATOMIC');
-        output.push(this.visit(node.sql_body, context));
+        
+        // Handle List of statements in sql_body
+        if (bodyType === 'List') {
+          const statements = ListUtils.unwrapList(node.sql_body);
+          if (statements.length === 0 || (statements.length === 1 && Object.keys(statements[0]).length === 0)) {
+          } else {
+            const stmtStrings = statements
+              .filter(stmt => stmt && Object.keys(stmt).length > 0) // Filter out empty objects
+              .map(stmt => {
+                const stmtSql = this.visit(stmt, context);
+                return stmtSql.endsWith(';') ? stmtSql : stmtSql + ';';
+              });
+            if (stmtStrings.length > 0) {
+              output.push(stmtStrings.join(' '));
+            }
+          }
+        } else {
+          const bodyStmt = this.visit(node.sql_body, context);
+          if (bodyStmt && !bodyStmt.endsWith(';')) {
+            output.push(bodyStmt + ';');
+          } else {
+            output.push(bodyStmt);
+          }
+        }
+        
         output.push('END');
       }
     }
@@ -6278,6 +6302,9 @@ export class Deparser implements DeparserVisitor {
         } else {
           output.push('TABLE'); // fallback for other relation types
         }
+        break;
+      case 'OBJECT_ROUTINE':
+        output.push('ROUTINE');
         break;
       default:
         throw new Error(`Unsupported RenameStmt renameType: ${node.renameType}`);

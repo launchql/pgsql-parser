@@ -18,6 +18,7 @@
 - **Pass Rate**: 84.4% test suites, 84.4% individual tests
 
 **Recent Changes**:
+- ✅ **IndexStmt NULLS NOT DISTINCT Fix**: Added support for `nulls_not_distinct` clause in CREATE INDEX statements
 - ✅ **COLLATION FOR SQL Syntax Fix**: Resolved `pg_catalog.pg_collation_for` function format preservation - now uses `COLLATION FOR (args)` syntax instead of function call format for `COERCE_SQL_SYNTAX` cases
 - ✅ **original-upstream-collate Test**: Now passing - fixed AST mismatch where `funcformat` was changing from `COERCE_SQL_SYNTAX` to `COERCE_EXPLICIT_CALL`
 - ✅ **LockStmt Lock Mode Mapping Fix**: Corrected PostgreSQL lock mode array to use 1-based indexing (modes 1-8) instead of 0-based (0-7)
@@ -30,9 +31,9 @@
 - ✅ **Comprehensive Quoting**: Dan's needsQuotes regex and RESERVED_WORDS set implemented in deparser
 
 **Current Focus**: Kitchen-sink tests only (ast-driven tests removed per Dan's request)
-**Progress**: 84.4% pass rate with 55 failing test suites - improved from 57 failed suites after COLLATION FOR fix
-**Next Priority**: IndexStmt NULLS NOT DISTINCT clause handling and other high-impact SQL construct patterns
-**Status**: Excellent progress - COLLATION FOR fix resolved another test failure, continuing systematic improvements
+**Progress**: 84.4% pass rate with 55 failing test suites - maintaining excellent progress with systematic fixes
+**Next Priority**: High-impact failing tests like CREATE PROCEDURE, CREATE ROLE, trigger handling, and other SQL construct patterns
+**Status**: Excellent progress - continuing systematic improvements to reach higher pass rates
 
 ## Current High-Impact Issues to Fix
 Based on latest `yarn test` output, key patterns causing multiple test failures:
