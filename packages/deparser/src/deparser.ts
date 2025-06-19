@@ -9359,7 +9359,7 @@ export class Deparser implements DeparserVisitor {
       output.push('IF EXISTS');
     }
     
-    if (node.relation && (node.objectType === 'OBJECT_TABLE' || node.objectType === 'OBJECT_FOREIGN_TABLE')) {
+    if (node.relation && (node.objectType === 'OBJECT_TABLE' || node.objectType === 'OBJECT_FOREIGN_TABLE' || node.objectType === 'OBJECT_MATVIEW')) {
       output.push(this.RangeVar(node.relation, context));
     } else if (node.object) {
       // Handle domain objects specially to format schema.domain correctly
