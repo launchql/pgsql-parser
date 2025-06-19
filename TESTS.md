@@ -13,10 +13,10 @@
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
 ## Current Status (Corrected - Full Test Suite Results - June 19, 2025)
-- **Test Suites**: 31 failed, 321 passed, 352 total
-- **Tests**: 31 failed, 321 passed, 352 total  
-- **Pass Rate**: 91.2% test suites (321/352), 91.2% individual tests
-- **Last Updated**: June 19, 2025 17:36 UTC (confirmed accurate status with fresh full yarn test - stack overflow issues resolved)
+- **Test Suites**: 30 failed, 322 passed, 352 total
+- **Tests**: 30 failed, 322 passed, 352 total  
+- **Pass Rate**: 91.4% test suites (322/352), 91.4% individual tests
+- **Last Updated**: June 19, 2025 17:42 UTC (after AT TIME ZONE fix - improved from 31 to 30 failed tests)
 
 **Recent Changes**:
 - ❌ **Stack Overflow Issues Persist**: Despite reverting getNodeType() to simple `Object.keys(node)[0]` approach, still seeing "Maximum call stack size exceeded" errors in tests like original-rules-create (RuleStmt) and original-upstream-object_address (CreateForeignTableStmt)
