@@ -1230,9 +1230,9 @@ export class Deparser implements DeparserVisitor {
 
     const mods = (name: string, size: string | null) => {
       if (size != null) {
-        // For interval types in TypeCast context, use space separation instead of parentheses
-        if (name === 'interval' && context.parentNodeTypes.includes('TypeCast')) {
-          return `${name} ${size}`;
+        // For interval types with precision, always use parentheses
+        if (name === 'interval' && size && size.startsWith('(')) {
+          return `${name}${size}`;
         }
         return `${name}(${size})`;
       }
@@ -1391,6 +1391,24 @@ export class Deparser implements DeparserVisitor {
       6144: 'minute to second'
     };
 
+    // Handle single modifier - could be field or precision
+    if (mods.length === 1) {
+      const mod = mods[0];
+      if (mod && typeof mod === 'object') {
+        const aConst = (mod as any).A_Const;
+        if (aConst && aConst.ival !== undefined) {
+          const ivalValue = typeof aConst.ival === 'object' ? aConst.ival.ival : aConst.ival;
+          if (ivalValue !== undefined) {
+            // Check if it's a known interval field
+            if (intervalFields[ivalValue]) {
+              return intervalFields[ivalValue];
+            }
+            return `(${ivalValue})`;
+          }
+        }
+      }
+    }
+
     // Handle interval precision: interval(0), interval(3), etc.
     if (mods.length === 2) {
       const firstMod = mods[0];
@@ -1405,12 +1423,14 @@ export class Deparser implements DeparserVisitor {
           if (secondMod && typeof secondMod === 'object') {
             const secondConst = (secondMod as any).A_Const;
             if (secondConst && secondConst.ival !== undefined) {
-              const secondValue = typeof secondConst.ival === 'object' ? secondConst.ival.ival : secondConst.ival;
+              const secondValue = typeof secondConst.ival === 'object' ? 
+                (secondConst.ival.ival !== undefined ? secondConst.ival.ival : 0) : 
+                secondConst.ival;
               
-              if (firstValue === 32767 && (secondValue === 0 || secondValue > 0)) {
+              if (firstValue === 32767 && secondValue >= 0) {
                 return `(${secondValue})`;
               }
-              if (intervalFields[firstValue] && (secondValue === 0 || secondValue > 0)) {
+              if (intervalFields[firstValue] && secondValue >= 0) {
                 return `${intervalFields[firstValue]}(${secondValue})`;
               }
             }
