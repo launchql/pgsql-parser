@@ -2963,13 +2963,43 @@ export class Deparser implements DeparserVisitor {
         if (option.DefElem) {
           const defElem = option.DefElem;
           if (defElem.defname === 'transaction_read_only') {
-            return 'READ ONLY';
+            // Handle both A_Const with ival (integer) and sval (string) values
+            let boolValue = false;
+            if (defElem.arg) {
+              const nodeData = this.getNodeData(defElem.arg);
+              if (nodeData.ival !== undefined) {
+                // Handle nested ival structure: { ival: { ival: 1 } }
+                const ivalValue = typeof nodeData.ival === 'object' ? nodeData.ival.ival : nodeData.ival;
+                boolValue = ivalValue === 1;
+              } else if (nodeData.sval !== undefined) {
+                // Handle nested sval structure: { sval: { sval: "value" } }
+                const svalValue = typeof nodeData.sval === 'object' ? nodeData.sval.sval : nodeData.sval;
+                const stringValue = svalValue.replace(/'/g, '').toLowerCase();
+                boolValue = stringValue === 'on' || stringValue === 'true';
+              }
+            }
+            return boolValue ? 'READ ONLY' : 'READ WRITE';
           } else if (defElem.defname === 'transaction_isolation') {
             if (defElem.arg && defElem.arg.A_Const && defElem.arg.A_Const.sval) {
               return `ISOLATION LEVEL ${defElem.arg.A_Const.sval.sval.toUpperCase()}`;
             }
           } else if (defElem.defname === 'transaction_deferrable') {
-            return 'DEFERRABLE';
+            // Handle both A_Const with ival (integer) and sval (string) values
+            let boolValue = false;
+            if (defElem.arg) {
+              const nodeData = this.getNodeData(defElem.arg);
+              if (nodeData.ival !== undefined) {
+                // Handle nested ival structure: { ival: { ival: 1 } }
+                const ivalValue = typeof nodeData.ival === 'object' ? nodeData.ival.ival : nodeData.ival;
+                boolValue = ivalValue === 1;
+              } else if (nodeData.sval !== undefined) {
+                // Handle nested sval structure: { sval: { sval: "value" } }
+                const svalValue = typeof nodeData.sval === 'object' ? nodeData.sval.sval : nodeData.sval;
+                const stringValue = svalValue.replace(/'/g, '').toLowerCase();
+                boolValue = stringValue === 'on' || stringValue === 'true';
+              }
+            }
+            return boolValue ? 'DEFERRABLE' : 'NOT DEFERRABLE';
           }
         }
         return this.visit(option, context);
@@ -2994,7 +3024,7 @@ export class Deparser implements DeparserVisitor {
       case 'VAR_SET_CURRENT':
         return `SET ${node.name} FROM CURRENT`;
       case 'VAR_SET_MULTI':
-        if (node.name === 'TRANSACTION') {
+        if (node.name === 'TRANSACTION' || node.name === 'SESSION CHARACTERISTICS') {
           // Handle SET TRANSACTION statements specially
           const transactionOptions: string[] = [];
           if (node.args) {
@@ -3043,7 +3073,11 @@ export class Deparser implements DeparserVisitor {
               }
             }
           }
-          return `SET TRANSACTION ${transactionOptions.join(', ')}`;
+          if (node.name === 'SESSION CHARACTERISTICS') {
+            return `SET SESSION CHARACTERISTICS AS TRANSACTION ${transactionOptions.join(', ')}`;
+          } else {
+            return `SET TRANSACTION ${transactionOptions.join(', ')}`;
+          }
         } else {
           // Handle other multi-variable sets
           const assignments = node.args ? ListUtils.unwrapList(node.args).map(arg => {
