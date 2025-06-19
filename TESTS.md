@@ -12,16 +12,17 @@
 
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
-## Current Status (After GrantRoleStmt Admin Option Fix)
-- **Test Suites**: 63 failed, 312 passed, 375 total
-- **Tests**: 72 failed, 578 passed, 650 total  
-- **Pass Rate**: 83.2% test suites, 88.9% individual tests
+## Current Status (After CREATE ROLE isreplication Fix)
+- **Test Suites**: 62 failed, 313 passed, 375 total
+- **Tests**: 70 failed, 580 passed, 650 total  
+- **Pass Rate**: 83.5% test suites, 89.2% individual tests
 
-**Progress**: ✅ Major improvement - reduced failed tests from 79→72 (7 test improvement) and test suites from 64→63 (1 test suite improvement)
-**Recent Fix**: Fixed GrantRoleStmt method to handle both String and DefElem admin option structures, resolving "WITH ADMIN OPTION" vs "WITH ADMIN FALSE" cases
-**Test Status**: ✅ Regression resolved - GrantRoleStmt now correctly handles both standard and boolean admin options
-**Impact**: Combined DropStmt RESTRICT/CASCADE and GrantRoleStmt admin option fixes resolved multiple security statement test failures
-**Status**: Continue with remaining high-impact issues, focusing on CREATE FOREIGN DATA WRAPPER DefElem context handling
+**Progress**: ✅ Continued improvement - reduced failed test suites from 63→62 and failed tests from 71→70
+**Recent Fix**: Fixed DefElem method in CreateRoleStmt context to properly handle "isreplication" → "NOREPLICATION" instead of "NOISREPLICATION"
+**Test Status**: ✅ original-upstream-roleattributes test now passes - CREATE ROLE WITH NOREPLICATION syntax resolved
+**Impact**: DefElem context-aware formatting for role attributes now correctly handles negative boolean forms
+**Next Priority**: Focus on remaining 62 failed test suites, particularly high-impact patterns affecting multiple tests
+**Status**: Steady progress with no regressions detected - ready to continue systematic fixes
 
 ## Current High-Impact Issues to Fix
 Based on latest `yarn test` output, key patterns causing multiple test failures:

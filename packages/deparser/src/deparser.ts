@@ -4201,6 +4201,28 @@ export class Deparser implements DeparserVisitor {
       if (node.arg) {
         const defElemContext = { ...context, parentNodeType: 'DefElem' };
         const argValue = this.visit(node.arg, defElemContext);
+        
+        if (parentContext === 'CreateFdwStmt' || parentContext === 'AlterFdwStmt') {
+          const isUnquotedValue = typeof argValue === 'string' && (
+            /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(argValue) || // simple identifier
+            /^\d+$/.test(argValue) || // numeric value
+            ['on', 'off', 'true', 'false', 'yes', 'no'].includes(argValue.toLowerCase()) // common keywords
+          );
+          
+          const finalValue = isUnquotedValue ? argValue : 
+            (typeof argValue === 'string' && !argValue.startsWith("'") ? `'${argValue}'` : argValue);
+          
+          if (node.defaction === 'DEFELEM_ADD') {
+            return `ADD ${node.defname.toUpperCase()} ${finalValue}`;
+          } else if (node.defaction === 'DEFELEM_DROP') {
+            return `DROP ${node.defname.toUpperCase()}`;
+          } else if (node.defaction === 'DEFELEM_SET') {
+            return `SET ${node.defname.toUpperCase()} ${finalValue}`;
+          }
+          
+          return `${node.defname.toUpperCase()} ${finalValue}`;
+        }
+        
         const quotedValue = typeof argValue === 'string' && !argValue.startsWith("'") 
           ? `'${argValue}'` 
           : argValue;
@@ -4257,6 +4279,14 @@ export class Deparser implements DeparserVisitor {
         return `${quotedDefname} ${quotedValue}`;
       }
       
+      // CreateUserMappingStmt and AlterUserMappingStmt use equals format
+      if (parentContext === 'CreateUserMappingStmt' || parentContext === 'AlterUserMappingStmt') {
+        const quotedValue = typeof argValue === 'string' 
+          ? QuoteUtils.escape(argValue) 
+          : argValue;
+        return `${node.defname} = ${quotedValue}`;
+      }
+      
       if (parentContext === 'CreateRoleStmt' || parentContext === 'AlterRoleStmt') {
         if (node.defname === 'rolemembers') {
           // Handle List of RoleSpec nodes for GROUP statements
@@ -4288,6 +4318,9 @@ export class Deparser implements DeparserVisitor {
           // Handle special cases where the negative form has a different name
           if (node.defname === 'canlogin') {
             return 'NOLOGIN';
+          }
+          if (node.defname === 'isreplication') {
+            return 'NOREPLICATION';
           }
           return `NO${node.defname.toUpperCase()}`;
         }
