@@ -5918,27 +5918,77 @@ export class Deparser implements DeparserVisitor {
       switch (node.kind) {
         case 'ALTER_TSCONFIG_ADD_MAPPING':
           output.push('ADD', 'MAPPING', 'FOR');
+          if (node.tokentype && node.tokentype.length > 0) {
+            const tokenTypes = ListUtils.unwrapList(node.tokentype).map(token => this.visit(token, context));
+            output.push(tokenTypes.join(', '));
+          }
+          if (node.dicts && node.dicts.length > 0) {
+            output.push('WITH');
+            const dictNames = ListUtils.unwrapList(node.dicts).map(dict => {
+              if (dict.List && dict.List.items) {
+                return ListUtils.unwrapList(dict.List.items).map(item => this.visit(item, context)).join('.');
+              }
+              return this.visit(dict, context);
+            });
+            output.push(dictNames.join(', '));
+          }
           break;
         case 'ALTER_TSCONFIG_ALTER_MAPPING_FOR_TOKEN':
           output.push('ALTER', 'MAPPING', 'FOR');
+          if (node.tokentype && node.tokentype.length > 0) {
+            const tokenTypes = ListUtils.unwrapList(node.tokentype).map(token => this.visit(token, context));
+            output.push(tokenTypes.join(', '));
+          }
+          if (node.dicts && node.dicts.length > 0) {
+            output.push('WITH');
+            const dictNames = ListUtils.unwrapList(node.dicts).map(dict => {
+              if (dict.List && dict.List.items) {
+                return ListUtils.unwrapList(dict.List.items).map(item => this.visit(item, context)).join('.');
+              }
+              return this.visit(dict, context);
+            });
+            output.push(dictNames.join(', '));
+          }
           break;
         case 'ALTER_TSCONFIG_REPLACE_DICT':
           output.push('ALTER', 'MAPPING', 'REPLACE');
+          if (node.dicts && node.dicts.length >= 2) {
+            const dictNames = ListUtils.unwrapList(node.dicts).map(dict => {
+              if (dict.List && dict.List.items) {
+                return ListUtils.unwrapList(dict.List.items).map(item => this.visit(item, context)).join('.');
+              }
+              return this.visit(dict, context);
+            });
+            output.push(dictNames[0], 'WITH', dictNames.slice(1).join(', '));
+          }
           break;
         case 'ALTER_TSCONFIG_REPLACE_DICT_FOR_TOKEN':
           output.push('ALTER', 'MAPPING', 'FOR');
+          if (node.tokentype && node.tokentype.length > 0) {
+            const tokenTypes = ListUtils.unwrapList(node.tokentype).map(token => this.visit(token, context));
+            output.push(tokenTypes.join(', '));
+          }
+          if (node.dicts && node.dicts.length >= 2) {
+            output.push('REPLACE');
+            const dictNames = ListUtils.unwrapList(node.dicts).map(dict => {
+              if (dict.List && dict.List.items) {
+                return ListUtils.unwrapList(dict.List.items).map(item => this.visit(item, context)).join('.');
+              }
+              return this.visit(dict, context);
+            });
+            output.push(dictNames[0], 'WITH', dictNames.slice(1).join(', '));
+          }
           break;
         case 'ALTER_TSCONFIG_DROP_MAPPING':
           output.push('DROP', 'MAPPING', 'FOR');
+          if (node.tokentype && node.tokentype.length > 0) {
+            const tokenTypes = ListUtils.unwrapList(node.tokentype).map(token => this.visit(token, context));
+            output.push(tokenTypes.join(', '));
+          }
           break;
         default:
           throw new Error(`Unsupported AlterTSConfigurationStmt kind: ${node.kind}`);
       }
-    }
-    
-    if (node.tokentype && node.tokentype.length > 0) {
-      const tokenTypes = ListUtils.unwrapList(node.tokentype).map(token => this.visit(token, context));
-      output.push(tokenTypes.join(', '));
     }
     
     return output.join(' ');
