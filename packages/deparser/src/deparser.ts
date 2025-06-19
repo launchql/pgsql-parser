@@ -1659,6 +1659,16 @@ export class Deparser implements DeparserVisitor {
     const arg = this.visit(node.arg, context);
     const typeName = this.TypeName(node.typeName, context);
     
+    // Check if this is a bpchar typecast that should use traditional char syntax
+    if (typeName === 'bpchar' && node.typeName && node.typeName.names) {
+      const names = ListUtils.unwrapList(node.typeName.names);
+      if (names.length === 2 && 
+          names[0].String?.sval === 'pg_catalog' && 
+          names[1].String?.sval === 'bpchar') {
+        return `char ${arg}`;
+      }
+    }
+    
     if (typeName.startsWith('interval') || 
         typeName.startsWith('char') || 
         typeName === '"char"' ||
