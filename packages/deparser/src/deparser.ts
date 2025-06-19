@@ -1602,7 +1602,11 @@ export class Deparser implements DeparserVisitor {
     
     const needsQuotesRegex = /[a-z]+[\W\w]*[A-Z]+|[A-Z]+[\W\w]*[a-z]+|\W/;
     
-    return needsQuotesRegex.test(value) || Deparser.RESERVED_WORDS.has(value.toLowerCase());
+    const isAllUppercase = /^[A-Z]+$/.test(value);
+    
+    return needsQuotesRegex.test(value) || 
+           Deparser.RESERVED_WORDS.has(value.toLowerCase()) ||
+           isAllUppercase;
   }
 
   quoteIfNeeded(value: string): string {
