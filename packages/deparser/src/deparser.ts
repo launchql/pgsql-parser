@@ -1376,30 +1376,61 @@ export class Deparser implements DeparserVisitor {
 
     const mods = ListUtils.unwrapList(typmods);
     const intervalFields: { [key: number]: string } = {
-      32: 'year',
-      64: 'month', 
-      128: 'day',
-      256: 'hour',
-      512: 'minute',
-      1024: 'second',
+      4: 'year',
+      2: 'month',
+      8: 'day',
+      1024: 'hour',
       2048: 'minute',
-      4096: 'year to month',
-      8192: 'day to hour',
-      16384: 'day to minute',
-      32768: 'day to second',
-      65536: 'hour to minute',
-      131072: 'hour to second'
+      4096: 'second',
+      6: 'year to month',
+      1032: 'day to hour',
+      3080: 'day to minute',
+      7176: 'day to second',
+      3072: 'hour to minute',
+      7168: 'hour to second',
+      6144: 'minute to second'
     };
+
+    // Handle interval precision: interval(0), interval(3), etc.
+    if (mods.length === 2) {
+      const firstMod = mods[0];
+      const secondMod = mods[1];
+      
+      if (firstMod && typeof firstMod === 'object') {
+        const firstConst = (firstMod as any).A_Const;
+        if (firstConst && firstConst.ival !== undefined) {
+          const firstValue = typeof firstConst.ival === 'object' ? firstConst.ival.ival : firstConst.ival;
+          
+          // Check if second mod is precision (empty ival object or specific precision value)
+          if (secondMod && typeof secondMod === 'object') {
+            const secondConst = (secondMod as any).A_Const;
+            if (secondConst && secondConst.ival !== undefined) {
+              const secondValue = typeof secondConst.ival === 'object' ? secondConst.ival.ival : secondConst.ival;
+              
+              if (firstValue === 32767 && (secondValue === 0 || secondValue > 0)) {
+                return `(${secondValue})`;
+              }
+              if (intervalFields[firstValue] && (secondValue === 0 || secondValue > 0)) {
+                return `${intervalFields[firstValue]}(${secondValue})`;
+              }
+            }
+          }
+        }
+      }
+    }
 
     const fieldSpecs = mods.map(mod => {
       if (mod && typeof mod === 'object') {
         const aConst = (mod as any).A_Const;
-        if (aConst && aConst.ival) {
+        if (aConst && aConst.ival !== undefined) {
           const ivalValue = typeof aConst.ival === 'object' ? aConst.ival.ival : aConst.ival;
-          return intervalFields[ivalValue] || ivalValue.toString();
+          if (ivalValue !== undefined) {
+            return intervalFields[ivalValue] || ivalValue.toString();
+          }
         }
       }
-      return this.deparse(mod, context);
+      const result = this.visit(mod, context);
+      return result || '';
     }).filter(Boolean);
 
     return fieldSpecs.length > 0 ? fieldSpecs.join(' ') : null;
