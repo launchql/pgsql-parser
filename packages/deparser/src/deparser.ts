@@ -1801,7 +1801,8 @@ export class Deparser implements DeparserVisitor {
     const value = node.sval || '';
     
     if (context.parentNodeTypes.includes('DefElem') || 
-        context.parentNodeTypes.includes('CreateOpClassItem')) {
+        context.parentNodeTypes.includes('CreateOpClassItem') ||
+        context.parentNodeTypes.includes('ObjectWithArgs')) {
       return value;
     }
     

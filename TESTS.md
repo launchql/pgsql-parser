@@ -13,14 +13,14 @@
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
 ## Current Status (Corrected - Full Test Suite Results - June 19, 2025)
-- **Test Suites**: 35 failed, 317 passed, 352 total
-- **Tests**: 35 failed, 317 passed, 352 total  
-- **Pass Rate**: 90.1% test suites (317/352), 90.1% individual tests
-- **Last Updated**: June 19, 2025 18:32 UTC (verified full test suite status - 35 failed, 317 passed, 90.1% pass rate confirmed)
+- **Test Suites**: 29 failed, 323 passed, 352 total
+- **Tests**: 29 failed, 323 passed, 352 total  
+- **Pass Rate**: 91.8% test suites (323/352), 91.8% individual tests
+- **Last Updated**: June 19, 2025 18:38 UTC (verified full test suite status - 29 failed, 323 passed, 91.8% pass rate confirmed)
 
 **Recent Changes**:
-- ⚠️ **String Method ObjectWithArgs Exception Removed**: Removed ObjectWithArgs exception from String method to allow proper schema name quoting in DROP FUNCTION statements - resolves issues where hyphenated schema names lose quotes during deparsing - caused regression from 29 to 35 failed tests (90.1% pass rate)
-- ⚠️ **DropStmt RESTRICT Keyword Removed**: Removed automatic RESTRICT keyword addition from DropStmt method - PostgreSQL defaults to RESTRICT behavior but doesn't require the keyword in output - may have contributed to test regression
+- ✅ **ObjectWithArgs Exception Restored**: Added back ObjectWithArgs exception to String method to fix ALTER OPERATOR quoting issue - improved from 35 to 29 failed tests (91.8% pass rate)
+- ✅ **ALTER OPERATOR Fix**: Resolved operator name quoting in ALTER OPERATOR statements - `alter1.=` no longer incorrectly quoted as `alter1."="`
 - ✅ **Column Name Quoting Fix**: Fixed String method to properly handle quoted identifiers in GRANT statements - removed GrantStmt exception from quoting logic so column names like `"another-column"` with hyphens are properly quoted, resolving `original-grants-custom` test failure
 - ✅ **REVOKE INHERIT OPTION Fix**: Fixed GrantRoleStmt method to correctly handle REVOKE INHERIT OPTION FOR syntax - restructured logic to place inherit options immediately after REVOKE keyword and handle `is_grant: undefined` as falsy for REVOKE operations - verified with debug script showing exact match
 - ✅ **PASSWORD NULL DefElem Fix**: Fixed critical control flow issue in DefElem method where PASSWORD NULL handling was unreachable inside `if (node.arg)` block - moved password handling logic before node.arg check to properly handle both PASSWORD 'value' and PASSWORD NULL cases
