@@ -9709,7 +9709,8 @@ export class Deparser implements DeparserVisitor {
     const output: string[] = ['CREATE FOREIGN TABLE'];
     
     if (node.base && node.base.relation) {
-      output.push(this.visit(node.base.relation as any, context));
+      const relationContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'CreateForeignTableStmt'] };
+      output.push(this.visit(node.base.relation as any, relationContext));
     }
     
     if (node.base && node.base.tableElts) {
