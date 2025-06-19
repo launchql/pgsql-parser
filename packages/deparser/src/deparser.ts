@@ -1793,6 +1793,23 @@ export class Deparser implements DeparserVisitor {
     return value;
   }
 
+  preserveOperatorDefElemCase(defName: string): string {
+    const caseMap: { [key: string]: string } = {
+      'leftarg': 'Leftarg',
+      'rightarg': 'Rightarg', 
+      'procedure': 'Procedure',
+      'function': 'Function',
+      'commutator': 'Commutator',
+      'negator': 'Negator',
+      'restrict': 'Restrict',
+      'join': 'Join',
+      'hashes': 'Hashes',
+      'merges': 'Merges'
+    };
+    
+    return caseMap[defName.toLowerCase()] || defName;
+  }
+
   String(node: t.String, context: DeparserContext): string {
     if (context.isStringLiteral || context.isEnumValue) {
       return `'${node.sval || ''}'`;
@@ -4952,8 +4969,33 @@ export class Deparser implements DeparserVisitor {
         return `${node.defname} = ${quotedValue}`;
       }
       
-      // Handle CREATE TYPE context - preserve string literals with single quotes, handle boolean strings
+      // Handle CREATE OPERATOR and CREATE TYPE context
       if (context.parentNodeTypes.includes('DefineStmt')) {
+        const preservedName = this.preserveOperatorDefElemCase(node.defname);
+        
+        // Handle operator arguments that should be Lists vs TypeNames
+        if (['commutator', 'negator'].includes(node.defname.toLowerCase())) {
+          if (node.arg) {
+            const unquotedValue = argValue.replace(/^"(.*)"$/, '$1');
+            return `${preservedName} = ${unquotedValue}`;
+          }
+          return preservedName;
+        }
+        
+        // Handle boolean flags (no arguments)
+        if (['hashes', 'merges'].includes(node.defname.toLowerCase())) {
+          return preservedName.toUpperCase();
+        }
+        
+        // Handle other operator parameters with preserved case
+        if (preservedName !== node.defname) {
+          if (node.arg) {
+            return `${preservedName} = ${argValue}`;
+          }
+          return preservedName;
+        }
+        
+        // CREATE TYPE context - preserve string literals with single quotes, handle boolean strings
         if (node.arg && this.getNodeType(node.arg) === 'String') {
           const stringData = this.getNodeData(node.arg);
           // Handle boolean string values without quotes
@@ -8224,13 +8266,15 @@ export class Deparser implements DeparserVisitor {
               const defValue = defElem.arg;
               
               if (defName && defValue) {
+                const preservedDefName = this.preserveOperatorDefElemCase(defName);
+                
                 if ((defName === 'commutator' || defName === 'negator') && defValue.List) {
                   const listItems = ListUtils.unwrapList(defValue.List.items);
                   if (listItems.length === 1 && listItems[0].String) {
-                    return `${defName} = ${listItems[0].String.sval}`;
+                    return `${preservedDefName} = ${listItems[0].String.sval}`;
                   }
                 }
-                return `${defName} = ${this.visit(defValue, context)}`;
+                return `${preservedDefName} = ${this.visit(defValue, context)}`;
               }
             }
             return this.visit(def, context);
