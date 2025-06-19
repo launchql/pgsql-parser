@@ -1351,8 +1351,8 @@ export class Deparser implements DeparserVisitor {
     const output: string[] = [];
     // Handle ONLY keyword for inheritance control (but not for type definitions or ALTER TYPE)
     if ((!('inh' in node) || node.inh === undefined) && 
-        context.parentContext !== 'CompositeTypeStmt' && 
-        context.parentContext !== 'AlterTypeStmt') {
+        !context.parentNodeTypes.includes('CompositeTypeStmt') && 
+        !context.parentNodeTypes.includes('AlterTypeStmt')) {
       output.push('ONLY');
     }
     
@@ -1762,10 +1762,10 @@ export class Deparser implements DeparserVisitor {
     
     const value = node.sval || '';
     
-    if (context.parentNodeType === 'DefElem' || 
-        context.parentNodeType === 'GrantStmt' ||
-        context.parentNodeType === 'CreateOpClassItem' ||
-        context.parentNodeType === 'ObjectWithArgs') {
+    if (context.parentNodeTypes.includes('DefElem') || 
+        context.parentNodeTypes.includes('GrantStmt') ||
+        context.parentNodeTypes.includes('CreateOpClassItem') ||
+        context.parentNodeTypes.includes('ObjectWithArgs')) {
       return value;
     }
     
@@ -2674,7 +2674,7 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.options && node.options.length > 0) {
-      const viewContext = { ...context, parentContext: 'ViewStmt' };
+      const viewContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'ViewStmt'] };
       const optionStrs = ListUtils.unwrapList(node.options)
         .map(option => this.visit(option, viewContext));
       output.push(`WITH (${optionStrs.join(', ')})`);
@@ -3699,7 +3699,7 @@ export class Deparser implements DeparserVisitor {
     }
 
     const alterContext = node.objtype === 'OBJECT_TYPE' 
-      ? { ...context, parentContext: 'AlterTypeStmt' }
+      ? { ...context, parentNodeTypes: [...context.parentNodeTypes, 'AlterTypeStmt'] }
       : context;
 
     if (node.relation) {
@@ -3723,7 +3723,7 @@ export class Deparser implements DeparserVisitor {
     if (node.subtype) {
       switch (node.subtype) {
         case 'AT_AddColumn':
-          if (context.parentContext === 'AlterTypeStmt') {
+          if (context.parentNodeTypes.includes('AlterTypeStmt')) {
             output.push('ADD ATTRIBUTE');
           } else {
             output.push('ADD COLUMN');
@@ -3776,13 +3776,13 @@ export class Deparser implements DeparserVisitor {
           break;
         case 'AT_DropColumn':
           if (node.missing_ok) {
-            if (context.parentContext === 'AlterTypeStmt') {
+            if (context.parentNodeTypes.includes('AlterTypeStmt')) {
               output.push('DROP ATTRIBUTE IF EXISTS');
             } else {
               output.push('DROP COLUMN IF EXISTS');
             }
           } else {
-            if (context.parentContext === 'AlterTypeStmt') {
+            if (context.parentNodeTypes.includes('AlterTypeStmt')) {
               output.push('DROP ATTRIBUTE');
             } else {
               output.push('DROP COLUMN');
@@ -3798,7 +3798,7 @@ export class Deparser implements DeparserVisitor {
           }
           break;
         case 'AT_AlterColumnType':
-          if (context.parentContext === 'AlterTypeStmt') {
+          if (context.parentNodeTypes.includes('AlterTypeStmt')) {
             output.push('ALTER ATTRIBUTE');
           } else {
             output.push('ALTER COLUMN');
@@ -3858,7 +3858,7 @@ export class Deparser implements DeparserVisitor {
         case 'AT_SetRelOptions':
           output.push('SET');
           if (node.def) {
-            const alterTableContext = { ...context, parentContext: 'AlterTableCmd', subtype: 'AT_SetRelOptions' };
+            const alterTableContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'AlterTableCmd'], subtype: 'AT_SetRelOptions' };
             const options = ListUtils.unwrapList(node.def)
               .map(option => this.visit(option, alterTableContext))
               .join(', ');
@@ -3870,7 +3870,7 @@ export class Deparser implements DeparserVisitor {
         case 'AT_ResetRelOptions':
           output.push('RESET');
           if (node.def) {
-            const alterTableContext = { ...context, parentContext: 'AlterTableCmd', subtype: 'AT_ResetRelOptions' };
+            const alterTableContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'AlterTableCmd'], subtype: 'AT_ResetRelOptions' };
             const options = ListUtils.unwrapList(node.def)
               .map(option => this.visit(option, alterTableContext))
               .join(', ');
@@ -3960,7 +3960,7 @@ export class Deparser implements DeparserVisitor {
           }
           output.push('SET');
           if (node.def) {
-            const alterTableContext = { ...context, parentContext: 'AlterTableCmd', subtype: 'AT_SetOptions' };
+            const alterTableContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'AlterTableCmd'], subtype: 'AT_SetOptions' };
             const options = ListUtils.unwrapList(node.def)
               .map(option => this.visit(option, alterTableContext))
               .join(', ');
@@ -3976,7 +3976,7 @@ export class Deparser implements DeparserVisitor {
           }
           output.push('RESET');
           if (node.def) {
-            const alterTableContext = { ...context, parentContext: 'AlterTableCmd', subtype: 'AT_ResetOptions' };
+            const alterTableContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'AlterTableCmd'], subtype: 'AT_ResetOptions' };
             const options = ListUtils.unwrapList(node.def)
               .map(option => this.visit(option, alterTableContext))
               .join(', ');
@@ -4532,8 +4532,7 @@ export class Deparser implements DeparserVisitor {
     }
     
     // Handle FDW-related statements and ALTER OPTIONS that use space format for options
-    const parentContext = context.parentNodeType;
-    if (parentContext === 'AlterFdwStmt' || parentContext === 'CreateFdwStmt' || parentContext === 'CreateForeignServerStmt' || parentContext === 'AlterForeignServerStmt' || parentContext === 'CreateUserMappingStmt' || parentContext === 'AlterUserMappingStmt' || parentContext === 'ColumnDef' || parentContext === 'CreateForeignTableStmt' || parentContext === 'ImportForeignSchemaStmt' || context.alterColumnOptions || context.alterTableOptions) {
+    if (context.parentNodeTypes.includes('AlterFdwStmt') || context.parentNodeTypes.includes('CreateFdwStmt') || context.parentNodeTypes.includes('CreateForeignServerStmt') || context.parentNodeTypes.includes('AlterForeignServerStmt') || context.parentNodeTypes.includes('CreateUserMappingStmt') || context.parentNodeTypes.includes('AlterUserMappingStmt') || context.parentNodeTypes.includes('ColumnDef') || context.parentNodeTypes.includes('CreateForeignTableStmt') || context.parentNodeTypes.includes('ImportForeignSchemaStmt') || context.alterColumnOptions || context.alterTableOptions) {
       if (['handler', 'validator'].includes(node.defname)) {
         if (!node.arg) {
           return `NO ${node.defname.toUpperCase()}`;
@@ -4547,7 +4546,7 @@ export class Deparser implements DeparserVisitor {
         const defElemContext = { ...context, parentNodeType: 'DefElem' };
         const argValue = this.visit(node.arg, defElemContext);
         
-        if (parentContext === 'CreateFdwStmt' || parentContext === 'AlterFdwStmt') {
+        if (context.parentNodeTypes.includes('CreateFdwStmt') || context.parentNodeTypes.includes('AlterFdwStmt')) {
           const finalValue = typeof argValue === 'string' && !argValue.startsWith("'") 
             ? `'${argValue}'` 
             : argValue;
@@ -4590,7 +4589,7 @@ export class Deparser implements DeparserVisitor {
     }
     
     // Handle sequence options that can have NO prefix when no argument (before checking node.arg)
-    if ((parentContext === 'CreateSeqStmt' || parentContext === 'AlterSeqStmt') && 
+    if ((context.parentNodeTypes.includes('CreateSeqStmt') || context.parentNodeTypes.includes('AlterSeqStmt')) && 
         (node.defname === 'minvalue' || node.defname === 'maxvalue') && !node.arg) {
       return `NO ${node.defname.toUpperCase()}`;
     }
@@ -4599,7 +4598,7 @@ export class Deparser implements DeparserVisitor {
       const defElemContext = { ...context, parentNodeType: 'DefElem' };
       const argValue = this.visit(node.arg, defElemContext);
       
-      if (parentContext === 'AlterOperatorStmt' && node.arg && this.getNodeType(node.arg) === 'TypeName') {
+      if (context.parentNodeTypes.includes('AlterOperatorStmt') && node.arg && this.getNodeType(node.arg) === 'TypeName') {
         const typeNameData = this.getNodeData(node.arg);
         if (typeNameData.names) {
           const names = ListUtils.unwrapList(typeNameData.names);
@@ -4609,7 +4608,7 @@ export class Deparser implements DeparserVisitor {
         }
       }
       
-      if (parentContext === 'CreatedbStmt' || parentContext === 'DropdbStmt') {
+      if (context.parentNodeTypes.includes('CreatedbStmt') || context.parentNodeTypes.includes('DropdbStmt')) {
         const quotedValue = typeof argValue === 'string' 
           ? QuoteUtils.escape(argValue) 
           : argValue;
@@ -4617,7 +4616,7 @@ export class Deparser implements DeparserVisitor {
       }
       
       // CreateForeignServerStmt and AlterForeignServerStmt use space format like CreateFdwStmt
-      if (parentContext === 'CreateForeignServerStmt' || parentContext === 'AlterForeignServerStmt') {
+      if (context.parentNodeTypes.includes('CreateForeignServerStmt') || context.parentNodeTypes.includes('AlterForeignServerStmt')) {
         const quotedValue = typeof argValue === 'string' 
           ? QuoteUtils.escape(argValue) 
           : argValue;
@@ -4629,7 +4628,7 @@ export class Deparser implements DeparserVisitor {
       
 
       
-      if (parentContext === 'CreateRoleStmt' || parentContext === 'AlterRoleStmt') {
+      if (context.parentNodeTypes.includes('CreateRoleStmt') || context.parentNodeTypes.includes('AlterRoleStmt')) {
         if (node.defname === 'rolemembers') {
           // Handle List of RoleSpec nodes for GROUP statements
           if (node.arg && this.getNodeType(node.arg) === 'List') {
@@ -4637,7 +4636,7 @@ export class Deparser implements DeparserVisitor {
             const listItems = ListUtils.unwrapList(listData.items);
             const roleNames = listItems.map(item => this.visit(item, context));
             
-            if (parentContext === 'CreateRoleStmt') {
+            if (context.parentNodeTypes.includes('CreateRoleStmt')) {
               return `ROLE ${roleNames.join(', ')}`;
             } else {
               // AlterRoleStmt - use ADD USER syntax
@@ -4688,7 +4687,7 @@ export class Deparser implements DeparserVisitor {
         }
       }
       
-      if (parentContext === 'CreateSeqStmt' || parentContext === 'AlterSeqStmt') {
+      if (context.parentNodeTypes.includes('CreateSeqStmt') || context.parentNodeTypes.includes('AlterSeqStmt')) {
         if (node.defname === 'owned_by') {
           // Handle List node for table.column reference
           if (node.arg && this.getNodeType(node.arg) === 'List') {
@@ -4719,11 +4718,11 @@ export class Deparser implements DeparserVisitor {
         return `${node.defname.toUpperCase()} ${argValue}`;
       }
       
-      if (parentContext === 'CreateTableSpaceStmt' || parentContext === 'AlterTableSpaceOptionsStmt') {
+      if (context.parentNodeTypes.includes('CreateTableSpaceStmt') || context.parentNodeTypes.includes('AlterTableSpaceOptionsStmt')) {
         return `${node.defname.toUpperCase()} ${argValue}`;
       }
       
-      if (parentContext === 'ExplainStmt') {
+      if (context.parentNodeTypes.includes('ExplainStmt')) {
         if (argValue) {
           return `${node.defname.toUpperCase()} ${argValue.toUpperCase()}`;
         } else {
@@ -4731,7 +4730,7 @@ export class Deparser implements DeparserVisitor {
         }
       }
       
-      if (parentContext === 'DoStmt') {
+      if (context.parentNodeTypes.includes('DoStmt')) {
         if (node.defname === 'as') {
           if (Array.isArray(argValue)) {
             const bodyParts = argValue;
@@ -4747,7 +4746,7 @@ export class Deparser implements DeparserVisitor {
         return '';
       }
       
-      if (parentContext === 'CreateFunctionStmt' || parentContext === 'AlterFunctionStmt') {
+      if (context.parentNodeTypes.includes('CreateFunctionStmt') || context.parentNodeTypes.includes('AlterFunctionStmt')) {
         if (node.defname === 'as') {
           if (Array.isArray(argValue)) {
             const bodyParts = argValue;
@@ -4801,9 +4800,9 @@ export class Deparser implements DeparserVisitor {
         return `${node.defname.toUpperCase()} ${argValue}`;
       }
       
-      if (parentContext === 'CreateExtensionStmt' || parentContext === 'AlterExtensionStmt' || parentContext === 'CreateFdwStmt' || parentContext === 'AlterFdwStmt') {
+      if (context.parentNodeTypes.includes('CreateExtensionStmt') || context.parentNodeTypes.includes('AlterExtensionStmt') || context.parentNodeTypes.includes('CreateFdwStmt') || context.parentNodeTypes.includes('AlterFdwStmt')) {
         // AlterExtensionStmt specific cases
-        if (parentContext === 'AlterExtensionStmt') {
+        if (context.parentNodeTypes.includes('AlterExtensionStmt')) {
           if (node.defname === 'to') {
             return `TO ${argValue}`;
           }
@@ -4813,7 +4812,7 @@ export class Deparser implements DeparserVisitor {
         }
         
         // CreateFdwStmt specific cases
-        if (parentContext === 'CreateFdwStmt') {
+        if (context.parentNodeTypes.includes('CreateFdwStmt')) {
           if (['handler', 'validator'].includes(node.defname)) {
             return `${node.defname.toUpperCase()} ${argValue}`;
           }
@@ -4832,12 +4831,12 @@ export class Deparser implements DeparserVisitor {
       }
       
       // Handle IndexStmt WITH clause options - no quotes, compact formatting
-      if (parentContext === 'IndexStmt') {
+      if (context.parentNodeTypes.includes('IndexStmt')) {
         return `${node.defname}=${argValue}`;
       }
       
       // Handle CreateStmt table options - no quotes, compact formatting
-      if (parentContext === 'CreateStmt') {
+      if (context.parentNodeTypes.includes('CreateStmt')) {
         // For numeric values, use the raw value without quotes
         if (node.arg && this.getNodeType(node.arg) === 'Integer') {
           const integerData = this.getNodeData(node.arg);
@@ -4847,7 +4846,7 @@ export class Deparser implements DeparserVisitor {
       }
       
       // Handle CreateEventTrigStmt WHEN clause - use IN syntax for List arguments
-      if (parentContext === 'CreateEventTrigStmt') {
+      if (context.parentNodeTypes.includes('CreateEventTrigStmt')) {
         if (node.arg && this.getNodeType(node.arg) === 'List') {
           const listData = this.getNodeData(node.arg);
           const listItems = ListUtils.unwrapList(listData.items);
@@ -4864,7 +4863,7 @@ export class Deparser implements DeparserVisitor {
       }
       
       // Handle AT_SetRelOptions context - don't quote values that should be type names
-      if (parentContext === 'AlterTableCmd' || parentContext === 'AlterTableStmt' || context.parentContext === 'AlterTableCmd') {
+      if (context.parentNodeTypes.includes('AlterTableCmd') || context.parentNodeTypes.includes('AlterTableStmt')) {
         const optionName = node.defnamespace ? `${node.defnamespace}.${node.defname}` : node.defname;
         if (node.arg && this.getNodeType(node.arg) === 'TypeName') {
           return `${optionName} = ${argValue}`;
@@ -4873,7 +4872,7 @@ export class Deparser implements DeparserVisitor {
       }
       
       // Handle ViewStmt WITH options - don't quote numeric values
-      if (parentContext === 'ViewStmt' || context.parentContext === 'ViewStmt') {
+      if (context.parentNodeTypes.includes('ViewStmt')) {
         if (typeof argValue === 'string' && /^\d+$/.test(argValue)) {
           return `${node.defname}=${argValue}`;
         }
@@ -4884,7 +4883,7 @@ export class Deparser implements DeparserVisitor {
       }
       
       // Handle CREATE TYPE context - preserve string literals with single quotes, handle boolean strings
-      if (parentContext === 'DefineStmt') {
+      if (context.parentNodeTypes.includes('DefineStmt')) {
         if (node.arg && this.getNodeType(node.arg) === 'String') {
           const stringData = this.getNodeData(node.arg);
           // Handle boolean string values without quotes
@@ -6168,10 +6167,10 @@ export class Deparser implements DeparserVisitor {
     } else if (node.args_unspecified) {
       // For functions with unspecified args, don't add parentheses
     } else {
-      if ((context.parentNodeType === 'CommentStmt' || context.parentNodeType === 'DropStmt') && 
+      if ((context.parentNodeTypes.includes('CommentStmt') || context.parentNodeTypes.includes('DropStmt')) && 
           context.objtype === 'OBJECT_AGGREGATE') {
         result += '(*)';
-      } else if (context.parentNodeType === 'CreateOpClassItem') {
+      } else if (context.parentNodeTypes.includes('CreateOpClassItem')) {
         // For operator class items, don't add empty parentheses for operators without arguments
       } else {
         result += '()';
@@ -6694,7 +6693,7 @@ export class Deparser implements DeparserVisitor {
     
     if (node.relation) {
       const rangeVarContext = node.relationType === 'OBJECT_TYPE' 
-        ? { ...context, parentContext: 'AlterTypeStmt' }
+        ? { ...context, parentNodeTypes: [...context.parentNodeTypes, 'AlterTypeStmt'] }
         : context;
       
       // Add ON keyword for policy operations
@@ -7751,7 +7750,7 @@ export class Deparser implements DeparserVisitor {
     const output: string[] = ['CREATE', 'TYPE'];
     
     if (node.typevar) {
-      const typeContext = { ...context, parentContext: 'CompositeTypeStmt' };
+      const typeContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'CompositeTypeStmt'] };
       output.push(this.RangeVar(node.typevar, typeContext));
     }
     
