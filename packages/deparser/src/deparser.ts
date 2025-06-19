@@ -4382,11 +4382,15 @@ export class Deparser implements DeparserVisitor {
       }
     }
     
+    // Handle sequence options that can have NO prefix when no argument (before checking node.arg)
+    if ((parentContext === 'CreateSeqStmt' || parentContext === 'AlterSeqStmt') && 
+        (node.defname === 'minvalue' || node.defname === 'maxvalue') && !node.arg) {
+      return `NO ${node.defname.toUpperCase()}`;
+    }
+    
     if (node.arg) {
       const defElemContext = { ...context, parentNodeType: 'DefElem' };
       const argValue = this.visit(node.arg, defElemContext);
-      
-      const parentContext = context.parentNodeType;
       
       if (parentContext === 'AlterOperatorStmt' && node.arg && this.getNodeType(node.arg) === 'TypeName') {
         const typeNameData = this.getNodeData(node.arg);
@@ -4489,6 +4493,22 @@ export class Deparser implements DeparserVisitor {
             return `OWNED BY ${argValue}`;
           }
         }
+        
+        // Handle boolean sequence options
+        if (node.defname === 'cycle') {
+          const boolValue = String(argValue).toLowerCase();
+          if (boolValue === 'true' || boolValue === '1') {
+            return 'CYCLE';
+          } else if (boolValue === 'false' || boolValue === '0') {
+            return 'NO CYCLE';
+          }
+        }
+        
+        // Handle sequence options that can have NO prefix when no argument
+        if ((node.defname === 'minvalue' || node.defname === 'maxvalue') && !node.arg) {
+          return `NO ${node.defname.toUpperCase()}`;
+        }
+        
         return `${node.defname.toUpperCase()} ${argValue}`;
       }
       
