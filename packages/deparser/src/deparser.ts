@@ -878,6 +878,12 @@ export class Deparser implements DeparserVisitor {
         return `TRIM(BOTH FROM ${source})`;
       }
     }
+    
+    // Handle COLLATION FOR function - use SQL syntax instead of function call
+    if (node.funcformat === 'COERCE_SQL_SYNTAX' && name === 'pg_catalog.pg_collation_for') {
+      const argStrs = args.map(arg => this.visit(arg, context));
+      return `COLLATION FOR (${argStrs.join(', ')})`;
+    }
 
     const params: string[] = [];
     
@@ -6171,8 +6177,6 @@ export class Deparser implements DeparserVisitor {
       case 'OBJECT_COLUMN':
         if (node.relationType === 'OBJECT_FOREIGN_TABLE') {
           output.push('FOREIGN TABLE');
-        } else if (node.relationType === 'OBJECT_VIEW') {
-          output.push('VIEW');
         } else {
           output.push('TABLE');
         }
@@ -6414,6 +6418,9 @@ export class Deparser implements DeparserVisitor {
         break;
       case 'OBJECT_TYPE':
         output.push('TYPE');
+        break;
+      case 'OBJECT_COLLATION':
+        output.push('COLLATION');
         break;
       default:
         throw new Error(`Unsupported AlterOwnerStmt objectType: ${node.objectType}`);
@@ -7341,20 +7348,7 @@ export class Deparser implements DeparserVisitor {
     
     if (node.coldeflist && node.coldeflist.length > 0) {
       const colDefs = ListUtils.unwrapList(node.coldeflist)
-        .map(colDef => {
-          const colDefData = this.getNodeData(colDef);
-          const parts: string[] = [];
-          
-          if (colDefData.colname) {
-            parts.push(QuoteUtils.quote(colDefData.colname));
-          }
-          
-          if (colDefData.typeName) {
-            parts.push(this.TypeName(colDefData.typeName, context));
-          }
-          
-          return parts.join(' ');
-        })
+        .map(colDef => this.visit(colDef, context))
         .join(', ');
       output.push(`(${colDefs})`);
     } else {
@@ -7945,7 +7939,15 @@ export class Deparser implements DeparserVisitor {
                 if (defName === 'from') {
                   return `FROM ${this.visit(defValue, context)}`;
                 }
-                return `${defName} = ${this.visit(defValue, context)}`;
+                
+                // For CREATE COLLATION, ensure String nodes are quoted as string literals
+                let valueStr;
+                if (defValue.String) {
+                  valueStr = `'${defValue.String.sval}'`;
+                } else {
+                  valueStr = this.visit(defValue, context);
+                }
+                return `${defName} = ${valueStr}`;
               }
             }
             return this.visit(def, context);
@@ -9010,6 +9012,9 @@ export class Deparser implements DeparserVisitor {
         break;
       case 'OBJECT_TYPE':
         output.push('TYPE');
+        break;
+      case 'OBJECT_COLLATION':
+        output.push('COLLATION');
         break;
       case 'OBJECT_CONVERSION':
         output.push('CONVERSION');
