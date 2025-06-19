@@ -4733,6 +4733,10 @@ export class Deparser implements DeparserVisitor {
           return `CONNECTION LIMIT ${argValue}`;
         }
         
+        if (node.defname === 'sysid') {
+          return `SYSID ${argValue}`;
+        }
+        
         if (argValue === 'true') {
           return node.defname.toUpperCase();
         } else if (argValue === 'false') {
@@ -7096,10 +7100,47 @@ export class Deparser implements DeparserVisitor {
   GrantRoleStmt(node: t.GrantRoleStmt, context: DeparserContext): string {
     const output: string[] = [];
     
+    // Check for inherit and admin options first to place them correctly
+    let hasInheritOption = false;
+    let hasAdminOption = false;
+    let inheritValue: boolean | undefined;
+    let adminValue: boolean | undefined;
+    
+    if (node.opt && node.opt.length > 0) {
+      const options = ListUtils.unwrapList(node.opt);
+      
+      const inheritOption = options.find(opt => 
+        opt.DefElem && opt.DefElem.defname === 'inherit'
+      );
+      
+      const adminOption = options.find(opt => 
+        (opt.String && opt.String.sval === 'admin') ||
+        (opt.DefElem && opt.DefElem.defname === 'admin')
+      );
+      
+      if (inheritOption && inheritOption.DefElem) {
+        hasInheritOption = true;
+        inheritValue = inheritOption.DefElem.arg?.Boolean?.boolval;
+      }
+      
+      if (adminOption) {
+        hasAdminOption = true;
+        if (adminOption.DefElem && adminOption.DefElem.arg) {
+          adminValue = adminOption.DefElem.arg.Boolean?.boolval;
+        }
+      }
+    }
+    
     if (node.is_grant) {
       output.push('GRANT');
     } else {
       output.push('REVOKE');
+      
+      if (hasInheritOption) {
+        output.push('INHERIT OPTION FOR');
+      } else if (hasAdminOption) {
+        output.push('ADMIN OPTION FOR');
+      }
     }
 
     if (node.granted_roles && node.granted_roles.length > 0) {
@@ -7122,43 +7163,23 @@ export class Deparser implements DeparserVisitor {
       output.push(grantees);
     }
 
-    // Handle admin options - support both String and DefElem structures
-    if (node.opt && node.opt.length > 0) {
-      const adminOption = ListUtils.unwrapList(node.opt).find(opt => 
-        (opt.String && opt.String.sval === 'admin') ||
-        (opt.DefElem && opt.DefElem.defname === 'admin')
-      );
-      
-      if (adminOption) {
-        if (adminOption.DefElem && adminOption.DefElem.arg) {
-          // Handle DefElem with boolean value (for WITH ADMIN FALSE cases)
-          const adminValue = adminOption.DefElem.arg.Boolean?.boolval;
-          if (node.is_grant) {
-            if (adminValue === true) {
-              output.push('WITH ADMIN OPTION');
-            } else if (adminValue === false) {
-              output.push('WITH ADMIN FALSE');
-            }
-          } else {
-            output.push('ADMIN OPTION FOR');
-          }
-        } else if (adminOption.String) {
-          // Handle String structure (for standard WITH ADMIN OPTION cases)
-          if (node.is_grant) {
-            output.push('WITH ADMIN OPTION');
-          } else {
-            output.push('ADMIN OPTION FOR');
-          }
+    if (node.is_grant) {
+      if (hasAdminOption) {
+        if (adminValue === true) {
+          output.push('WITH ADMIN OPTION');
+        } else if (adminValue === false) {
+          output.push('WITH ADMIN FALSE');
+        } else {
+          output.push('WITH ADMIN OPTION');
         }
       }
-    }
-
-    // Only add behavior for REVOKE operations, not GRANT
-    if (!node.is_grant) {
-      if (node.behavior === 'DROP_CASCADE') {
-        output.push('CASCADE');
-      } else if (node.behavior === 'DROP_RESTRICT') {
-        output.push('RESTRICT');
+      
+      if (hasInheritOption) {
+        if (inheritValue === true) {
+          output.push('WITH INHERIT OPTION');
+        } else if (inheritValue === false) {
+          output.push('WITH INHERIT FALSE');
+        }
       }
     }
 

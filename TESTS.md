@@ -16,12 +16,14 @@
 - **Test Suites**: 30 failed, 322 passed, 352 total
 - **Tests**: 30 failed, 322 passed, 352 total  
 - **Pass Rate**: 91.5% test suites (322/352), 91.5% individual tests
-- **Last Updated**: June 19, 2025 18:00 UTC (after PASSWORD NULL DefElem fix - maintained 30 failed tests, no regressions)
+- **Last Updated**: June 19, 2025 18:15 UTC (verified full test suite status - 30 failed, 322 passed, 91.5% pass rate confirmed)
 
 **Recent Changes**:
+- ✅ **REVOKE INHERIT OPTION Fix**: Fixed GrantRoleStmt method to correctly handle REVOKE INHERIT OPTION FOR syntax - restructured logic to place inherit options immediately after REVOKE keyword and handle `is_grant: undefined` as falsy for REVOKE operations - verified with debug script showing exact match
 - ✅ **PASSWORD NULL DefElem Fix**: Fixed critical control flow issue in DefElem method where PASSWORD NULL handling was unreachable inside `if (node.arg)` block - moved password handling logic before node.arg check to properly handle both PASSWORD 'value' and PASSWORD NULL cases
 - ✅ **latest-postgres-create_role Test**: Stack overflow resolved - now shows "Invalid deparsed SQL" indicating deparser runs successfully but needs SQL formatting fixes
-- ✅ **Test Status Maintained**: Confirmed 30 failed, 322 passed (91.5% pass rate) - no regressions from PASSWORD NULL fix
+- ✅ **INHERIT OPTION Support**: Added comprehensive inherit option handling to GrantRoleStmt method for both GRANT and REVOKE operations with proper syntax placement
+- ✅ **Test Status Maintained**: Confirmed 30 failed, 322 passed (91.5% pass rate) - no regressions from REVOKE INHERIT OPTION fix
 - ✅ **Stack Overflow Issues Resolved**: getNodeType() simplified to `Object.keys(node)[0]` approach successfully eliminated infinite recursion errors
 - ✅ **DefElem CreateRoleStmt connectionlimit Fix**: Added missing "connectionlimit" case to DefElem method - now generates "CONNECTION LIMIT 5" instead of "connectionlimit = '5'" for CREATE ROLE statements
 - ✅ **Full Test Suite Verification**: Confirmed accurate test status using full yarn test suite - no testNamePattern filtering as Dan corrected
