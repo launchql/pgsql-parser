@@ -12,13 +12,17 @@
 
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
-## Current Status (After Latest Fixes - June 19, 2025)
-- **Test Suites**: 15 failed, 148 passed, 189 skipped, 163 of 352 total (original-upstream only)
-- **Tests**: 15 failed, 148 passed, 189 skipped, 352 total  
-- **Pass Rate**: 90.8% test suites (148/163), 90.8% individual tests
-- **Last Updated**: June 19, 2025 07:56 UTC
+## Current Status (After DeclareCursorStmt Fix - June 19, 2025)
+- **Test Suites**: 13 failed, 150 passed, 189 skipped, 163 of 352 total (original-upstream only)
+- **Tests**: 13 failed, 150 passed, 189 skipped, 352 total  
+- **Pass Rate**: 92.0% test suites (150/163), 92.0% individual tests
+- **Last Updated**: June 19, 2025 08:13 UTC
 
 **Recent Changes**:
+- ✅ **DeclareCursorStmt SCROLL Option Fix**: Fixed cursor option bit flag mapping from 256 back to 1 for SCROLL detection - resolves unwanted "SCROLL" keyword being added to basic cursor declarations - now correctly outputs `DECLARE foo CURSOR FOR SELECT 1 INTO b` instead of `DECLARE foo SCROLL CURSOR FOR SELECT 1 INTO b`
+- ✅ **original-upstream-select_into Test**: Now fully passing - resolved DeclareCursorStmt SCROLL option regression
+- ✅ **CREATE TABLE WITH Options Context Fix**: Fixed CreateStmt method to pass parentNodeType: 'CreateStmt' context when processing table options - resolves DefElem method receiving empty context and falling through to default quoted format - now correctly outputs `WITH (fillfactor=10)` instead of `WITH (fillfactor = '10')`
+- ✅ **original-upstream-brin Test**: Now fully passing - resolved CREATE TABLE WITH options DefElem context handling issues
 - ✅ **FetchStmt Direction and ALL Logic**: Fixed FetchStmt to handle direction first, then check for ALL within each direction - supports `FETCH BACKWARD ALL` and other direction/count combinations
 - ✅ **original-upstream-rangefuncs Test**: Now fully passing - resolved FETCH statement direction handling issues
 - ✅ **TRIM Function Optional Trim Character**: Enhanced TRIM function handling to include optional trim character parameter - supports `TRIM(BOTH 'char' FROM string)` syntax

@@ -7899,6 +7899,10 @@ export class Deparser implements DeparserVisitor {
       output.push(`(${options})`);
     }
     
+    if (node.into && node.into.skipData) {
+      output.push('WITH NO DATA');
+    }
+    
     return output.join(' ');
   }
 
@@ -8312,11 +8316,11 @@ export class Deparser implements DeparserVisitor {
       output.push(QuoteUtils.quote(node.portalname));
     }
     
-    // Handle cursor options before CURSOR keyword
+    // Handle cursor options before CURSOR keyword - only add explicit options
     const cursorOptions: string[] = [];
     if (node.options) {
-      // Handle scroll options (mutually exclusive) - correct bit mapping
-      if (node.options & 256) {
+      // Only add SCROLL/NO SCROLL if explicitly different from default
+      if (node.options & 1) {
         cursorOptions.push('SCROLL');
       } else if (node.options & 2) {
         cursorOptions.push('NO SCROLL');
@@ -9343,6 +9347,9 @@ export class Deparser implements DeparserVisitor {
         break;
       case 'OBJECT_FOREIGN_TABLE':
         output.push('FOREIGN TABLE');
+        break;
+      case 'OBJECT_MATVIEW':
+        output.push('MATERIALIZED VIEW');
         break;
       default:
         output.push(node.objectType.toString());
