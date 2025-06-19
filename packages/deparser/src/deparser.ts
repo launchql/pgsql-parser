@@ -1801,9 +1801,16 @@ export class Deparser implements DeparserVisitor {
     const value = node.sval || '';
     
     if (context.parentNodeTypes.includes('DefElem') || 
-        context.parentNodeTypes.includes('CreateOpClassItem') ||
-        context.parentNodeTypes.includes('ObjectWithArgs')) {
+        context.parentNodeTypes.includes('CreateOpClassItem')) {
       return value;
+    }
+    
+    if (context.parentNodeTypes.includes('ObjectWithArgs')) {
+      // Check if this is a pure operator symbol (only operator characters, no alphanumeric)
+      const pureOperatorRegex = /^[+*/<>=~!@#%^&|`?]+$/;
+      if (pureOperatorRegex.test(value)) {
+        return value; // Don't quote pure operator symbols like "="
+      }
     }
     
     return Deparser.needsQuotes(value) ? `"${value}"` : value;

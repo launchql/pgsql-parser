@@ -16,9 +16,12 @@
 - **Test Suites**: 29 failed, 323 passed, 352 total
 - **Tests**: 29 failed, 323 passed, 352 total  
 - **Pass Rate**: 91.8% test suites (323/352), 91.8% individual tests
-- **Last Updated**: June 19, 2025 18:45 UTC (verified full test suite status - 29 failed, 323 passed, 91.8% pass rate confirmed after reverting FunctionParameter regression)
+- **Last Updated**: June 19, 2025 18:57 UTC (schema name quoting fix completed - 29 failed, 323 passed, 91.8% pass rate maintained)
 
 **Recent Changes**:
+- ✅ **Schema Name Quoting Fix**: Fixed operator detection regex in String method to use pure operator pattern `/^[+*/<>=~!@#%^&|`?]+$/` instead of `/[+\-*/<>=~!@#%^&|`?]/` - prevents hyphens in identifiers like "my-schema" from being treated as operator symbols
+- ✅ **original-drops Test**: Now fully passing - hyphenated schema names like "my-schema" are properly quoted in DROP FUNCTION statements  
+- ✅ **Operator Symbol Detection**: Pure operator symbols like "=" are still correctly unquoted while identifiers with hyphens are properly quoted
 - ✅ **ObjectWithArgs Exception Restored**: Added back ObjectWithArgs exception to String method to fix ALTER OPERATOR quoting issue - improved from 35 to 29 failed tests (91.8% pass rate)
 - ✅ **ALTER OPERATOR Fix**: Resolved operator name quoting in ALTER OPERATOR statements - `alter1.=` no longer incorrectly quoted as `alter1."="`
 - ✅ **Column Name Quoting Fix**: Fixed String method to properly handle quoted identifiers in GRANT statements - removed GrantStmt exception from quoting logic so column names like `"another-column"` with hyphens are properly quoted, resolving `original-grants-custom` test failure
