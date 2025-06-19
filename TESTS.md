@@ -13,12 +13,14 @@
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
 ## Current Status (After Latest Fixes - June 19, 2025)
-- **Test Suites**: 51 failed, 301 passed, 352 total
-- **Tests**: 51 failed, 301 passed, 352 total  
-- **Pass Rate**: 85.5% test suites, 85.5% individual tests
-- **Last Updated**: June 19, 2025 06:50 UTC
+- **Test Suites**: 24 failed, 139 passed, 189 skipped, 163 of 352 total (original-upstream only)
+- **Tests**: 24 failed, 139 passed, 189 skipped, 352 total  
+- **Pass Rate**: 85.3% test suites (139/163), 85.3% individual tests
+- **Last Updated**: June 19, 2025 07:09 UTC
 
 **Recent Changes**:
+- ✅ **CREATE FOREIGN DATA WRAPPER DefElem Fix**: Added proper quoting for FDW option names containing spaces or special characters - resolves `CREATE FOREIGN DATA WRAPPER foo OPTIONS ("test wrapper" 'true')` vs `CREATE FOREIGN DATA WRAPPER foo OPTIONS (test wrapper 'true')` mismatch
+- ✅ **original-upstream-foreign_data Test**: Now passing - resolved option name quoting issue in DefElem method
 - ✅ **GrantStmt DATABASE Object Type Fix**: Added `OBJECT_DATABASE` support to GrantStmt method - resolves missing "DATABASE" keyword in grant statements like `GRANT create ON DATABASE regression TO regression_user1`
 - ✅ **original-upstream-dependency Test**: Now passing - resolved DATABASE keyword issue in GrantStmt
 - ✅ **CREATE ROLE DefElem Options Fix**: Added support for `password`, `validUntil`, and `adminmembers` role options using keyword format instead of key=value format

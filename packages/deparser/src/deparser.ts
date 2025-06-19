@@ -1044,7 +1044,10 @@ export class Deparser implements DeparserVisitor {
           if (bsval.startsWith('x') && /^x[0-9A-Fa-f]+$/.test(bsval)) {
             return `x'${bsval.substring(1)}'`;
           }
-          return `B'${bsval}'`;
+          if (bsval.startsWith('b')) {
+            return `b'${bsval.substring(1)}'`;
+          }
+          return `b'${bsval}'`;
         } else if (Object.keys(nodeAny.bsval).length === 0) {
           return "''";
         } else {
@@ -1058,7 +1061,10 @@ export class Deparser implements DeparserVisitor {
         if (bsval.startsWith('x') && /^x[0-9A-Fa-f]+$/.test(bsval)) {
           return `x'${bsval.substring(1)}'`;
         }
-        return `B'${bsval}'`;
+        if (bsval.startsWith('b')) {
+          return `b'${bsval.substring(1)}'`;
+        }
+        return `b'${bsval}'`;
       }
     }
     
@@ -1652,11 +1658,15 @@ export class Deparser implements DeparserVisitor {
   }
   
   BitString(node: t.BitString, context: DeparserContext): string { 
-    // Check if this is a hexadecimal bit string (contains only hex digits)
-    if (/^[0-9A-Fa-f]+$/.test(node.bsval)) {
-      return `x'${node.bsval}'`;
+    // Check if this is a hexadecimal bit string (starts with x)
+    if (node.bsval.startsWith('x')) {
+      return `x'${node.bsval.substring(1)}'`;
     }
-    return `B'${node.bsval}'`; 
+    if (node.bsval.startsWith('b')) {
+      return `b'${node.bsval.substring(1)}'`;
+    }
+    // Fallback for raw values without prefix
+    return `b'${node.bsval}'`; 
   }
   
   Null(node: t.Node, context: DeparserContext): string { 
