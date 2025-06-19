@@ -4632,6 +4632,22 @@ export class Deparser implements DeparserVisitor {
       return `NO ${node.defname.toUpperCase()}`;
     }
     
+    // Handle CREATE ROLE / ALTER ROLE password options BEFORE checking node.arg
+    if (context.parentNodeTypes.includes('CreateRoleStmt') || context.parentNodeTypes.includes('AlterRoleStmt')) {
+      if (node.defname === 'password') {
+        // Handle PASSWORD NULL case when no arg is provided
+        if (!node.arg) {
+          return 'PASSWORD NULL';
+        }
+        const defElemContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'DefElem'] };
+        const argValue = this.visit(node.arg, defElemContext);
+        const quotedValue = typeof argValue === 'string' && !argValue.startsWith("'") 
+          ? `'${argValue}'` 
+          : argValue;
+        return `PASSWORD ${quotedValue}`;
+      }
+    }
+    
     if (node.arg) {
       const defElemContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'DefElem'] };
       const argValue = this.visit(node.arg, defElemContext);
@@ -4700,18 +4716,6 @@ export class Deparser implements DeparserVisitor {
             const roleNames = listItems.map(item => this.visit(item, context));
             return `IN ROLE ${roleNames.join(', ')}`;
           }
-        }
-        
-        // Handle role options that need keyword format, not key=value
-        if (node.defname === 'password') {
-          // Handle PASSWORD NULL case when no arg is provided
-          if (!node.arg) {
-            return 'PASSWORD NULL';
-          }
-          const quotedValue = typeof argValue === 'string' && !argValue.startsWith("'") 
-            ? `'${argValue}'` 
-            : argValue;
-          return `PASSWORD ${quotedValue}`;
         }
         
         if (node.defname === 'validUntil') {
