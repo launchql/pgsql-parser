@@ -13,11 +13,13 @@
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
 ## Current Status (After Latest Fixes - June 19, 2025)
-- **Test Suites**: 57 failed, 295 passed, 352 total
-- **Tests**: 57 failed, 295 passed, 352 total  
-- **Pass Rate**: 83.8% test suites, 83.8% individual tests
+- **Test Suites**: 55 failed, 297 passed, 352 total
+- **Tests**: 55 failed, 297 passed, 352 total  
+- **Pass Rate**: 84.4% test suites, 84.4% individual tests
 
 **Recent Changes**:
+- ✅ **COLLATION FOR SQL Syntax Fix**: Resolved `pg_catalog.pg_collation_for` function format preservation - now uses `COLLATION FOR (args)` syntax instead of function call format for `COERCE_SQL_SYNTAX` cases
+- ✅ **original-upstream-collate Test**: Now passing - fixed AST mismatch where `funcformat` was changing from `COERCE_SQL_SYNTAX` to `COERCE_EXPLICIT_CALL`
 - ✅ **LockStmt Lock Mode Mapping Fix**: Corrected PostgreSQL lock mode array to use 1-based indexing (modes 1-8) instead of 0-based (0-7)
 - ✅ **original-upstream-privileges Test**: Now passing - resolved "ACCESS SHARE MODE" vs "ROW SHARE MODE" mapping issue
 - ✅ **LOCK TABLE Keyword**: Added missing "TABLE" keyword to LockStmt output for proper PostgreSQL syntax
@@ -28,9 +30,9 @@
 - ✅ **Comprehensive Quoting**: Dan's needsQuotes regex and RESERVED_WORDS set implemented in deparser
 
 **Current Focus**: Kitchen-sink tests only (ast-driven tests removed per Dan's request)
-**Progress**: 83.8% pass rate with 57 failing test suites - improved from 60 failed suites after LockStmt fix
-**Next Priority**: Address remaining high-impact SQL construct patterns causing multiple test failures
-**Status**: Good progress - LockStmt fix resolved 3+ test failures, continuing systematic improvements
+**Progress**: 84.4% pass rate with 55 failing test suites - improved from 57 failed suites after COLLATION FOR fix
+**Next Priority**: IndexStmt NULLS NOT DISTINCT clause handling and other high-impact SQL construct patterns
+**Status**: Excellent progress - COLLATION FOR fix resolved another test failure, continuing systematic improvements
 
 ## Current High-Impact Issues to Fix
 Based on latest `yarn test` output, key patterns causing multiple test failures:
