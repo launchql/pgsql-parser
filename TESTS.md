@@ -13,12 +13,14 @@
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
 ## Current Status (After Latest Fixes - June 19, 2025)
-- **Test Suites**: 55 failed, 297 passed, 352 total
-- **Tests**: 55 failed, 297 passed, 352 total  
-- **Pass Rate**: 84.4% test suites, 84.4% individual tests
-- **Last Updated**: June 19, 2025 04:28 UTC
+- **Test Suites**: 54 failed, 298 passed, 352 total
+- **Tests**: 54 failed, 298 passed, 352 total  
+- **Pass Rate**: 84.7% test suites, 84.7% individual tests
+- **Last Updated**: June 19, 2025 06:36 UTC
 
 **Recent Changes**:
+- ✅ **CREATE ROLE DefElem Options Fix**: Added support for `password`, `validUntil`, and `adminmembers` role options using keyword format instead of key=value format
+- ✅ **original-roles-create Test**: Now passing - resolved CREATE ROLE statement formatting issues
 - ✅ **IndexStmt NULLS NOT DISTINCT Fix**: Added support for `nulls_not_distinct` clause in CREATE INDEX statements
 - ✅ **COLLATION FOR SQL Syntax Fix**: Resolved `pg_catalog.pg_collation_for` function format preservation - now uses `COLLATION FOR (args)` syntax instead of function call format for `COERCE_SQL_SYNTAX` cases
 - ✅ **original-upstream-collate Test**: Now passing - fixed AST mismatch where `funcformat` was changing from `COERCE_SQL_SYNTAX` to `COERCE_EXPLICIT_CALL`
@@ -32,9 +34,9 @@
 - ✅ **Comprehensive Quoting**: Dan's needsQuotes regex and RESERVED_WORDS set implemented in deparser
 
 **Current Focus**: Kitchen-sink tests only (ast-driven tests removed per Dan's request)
-**Progress**: 84.4% pass rate with 55 failing test suites - maintaining excellent progress with systematic fixes
-**Next Priority**: High-impact failing tests like CREATE PROCEDURE, CREATE ROLE, trigger handling, and other SQL construct patterns
-**Status**: Excellent progress - continuing systematic improvements to reach higher pass rates
+**Progress**: 84.7% pass rate with 54 failing test suites - excellent progress with systematic fixes
+**Next Priority**: High-impact failing tests like triggers, sequences, comments, extensions, and other SQL construct patterns
+**Status**: Outstanding progress - improved from ~50% to 84.7% pass rate, continuing systematic improvements
 
 ## Current High-Impact Issues to Fix
 Based on latest `yarn test` output, key patterns causing multiple test failures:

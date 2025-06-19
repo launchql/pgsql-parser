@@ -4113,8 +4113,6 @@ export class Deparser implements DeparserVisitor {
       output.push(funcName);
     }
     
-    output.push('(');
-    
     if (node.parameters && node.parameters.length > 0) {
       const params = node.parameters
         .filter((param: any) => {
@@ -4122,10 +4120,15 @@ export class Deparser implements DeparserVisitor {
           return paramData.mode !== 'FUNC_PARAM_TABLE';
         })
         .map((param: any) => this.visit(param, context));
-      output.push(params.join(' , '));
+      
+      if (params.length > 0) {
+        output.push('(' + params.join(', ') + ')');
+      } else {
+        output.push('()');
+      }
+    } else {
+      output.push('()');
     }
-    
-    output.push(')');
     
     const hasTableParams = node.parameters && node.parameters.some((param: any) => {
       const paramData = this.getNodeData(param);
@@ -4565,6 +4568,9 @@ export class Deparser implements DeparserVisitor {
         if (node.defname === 'window') {
           return argValue === 'true' ? 'WINDOW' : '';
         }
+        if (node.defname === 'set') {
+          return this.visit(node.arg, context);
+        }
         return `${node.defname.toUpperCase()} ${argValue}`;
       }
       
@@ -4755,7 +4761,7 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.extname) {
-      output.push(node.extname);
+      output.push(this.quoteIfNeeded(node.extname));
     }
     
     if (node.options && node.options.length > 0) {
@@ -4773,7 +4779,7 @@ export class Deparser implements DeparserVisitor {
     const output: string[] = ['ALTER', 'EXTENSION'];
     
     if (node.extname) {
-      output.push(node.extname);
+      output.push(this.quoteIfNeeded(node.extname));
     }
     
     if (node.options && node.options.length > 0) {
