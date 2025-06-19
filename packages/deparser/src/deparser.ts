@@ -1656,7 +1656,8 @@ export class Deparser implements DeparserVisitor {
     
     if (typeName.startsWith('interval') || 
         typeName.startsWith('char') || 
-        typeName === '"char"') {
+        typeName === '"char"' ||
+        typeName.startsWith('bpchar')) {
       return `${arg}::${typeName}`;
     }
     
