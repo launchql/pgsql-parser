@@ -8227,10 +8227,10 @@ export class Deparser implements DeparserVisitor {
                 if ((defName === 'commutator' || defName === 'negator') && defValue.List) {
                   const listItems = ListUtils.unwrapList(defValue.List.items);
                   if (listItems.length === 1 && listItems[0].String) {
-                    return `${defName.toUpperCase()} = ${listItems[0].String.sval}`;
+                    return `${defName} = ${listItems[0].String.sval}`;
                   }
                 }
-                return `${defName.toUpperCase()} = ${this.visit(defValue, context)}`;
+                return `${defName} = ${this.visit(defValue, context)}`;
               }
             }
             return this.visit(def, context);
