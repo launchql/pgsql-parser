@@ -2571,6 +2571,10 @@ export class Deparser implements DeparserVisitor {
       output.push(this.formatter.parens(optionStrs.join(', ')));
     }
     
+    if (node.nulls_not_distinct) {
+      output.push('NULLS NOT DISTINCT');
+    }
+    
     if (node.tableSpace) {
       output.push('TABLESPACE');
       output.push(QuoteUtils.quote(node.tableSpace));
