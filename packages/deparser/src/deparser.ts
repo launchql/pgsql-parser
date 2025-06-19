@@ -1310,7 +1310,7 @@ export class Deparser implements DeparserVisitor {
       });
       output.push('AS', QuoteUtils.quote(name) + this.formatter.parens(quotedColnames.join(', ')));
     } else {
-      output.push(this.quoteIfNeeded(name));
+      output.push('AS', this.quoteIfNeeded(name));
     }
 
     return output.join(' ');
