@@ -1823,8 +1823,9 @@ export class Deparser implements DeparserVisitor {
 
     // Handle table options like WITH (fillfactor=10)
     if (node.options && node.options.length > 0) {
+      const createStmtContext = { ...context, parentNodeType: 'CreateStmt' };
       const optionStrs = node.options.map((option: any) => {
-        return this.deparse(option, context);
+        return this.deparse(option, createStmtContext);
       });
       output.push('WITH', `(${optionStrs.join(', ')})`);
     }
