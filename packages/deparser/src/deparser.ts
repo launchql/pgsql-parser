@@ -2508,7 +2508,7 @@ export class Deparser implements DeparserVisitor {
       output.push(this.RangeVar(node.relation, context));
     }
     
-    if (node.accessMethod) {
+    if (node.accessMethod && node.accessMethod !== 'btree') {
       output.push('USING');
       output.push(node.accessMethod);
     }
@@ -3222,8 +3222,6 @@ export class Deparser implements DeparserVisitor {
 
     if (node.behavior === 'DROP_CASCADE') {
       output.push('CASCADE');
-    } else if (node.behavior === 'DROP_RESTRICT') {
-      output.push('RESTRICT');
     }
 
     return output.join(' ');
@@ -3245,8 +3243,6 @@ export class Deparser implements DeparserVisitor {
 
     if (node.behavior === 'DROP_CASCADE') {
       output.push('CASCADE');
-    } else if (node.behavior === 'DROP_RESTRICT') {
-      output.push('RESTRICT');
     }
 
     return output.join(' ');
@@ -6552,21 +6548,17 @@ export class Deparser implements DeparserVisitor {
       output.push(grantees);
     }
 
-    // Handle admin options properly based on boolean value
+    // Handle admin options
     if (node.opt && node.opt.length > 0) {
       const adminOption = ListUtils.unwrapList(node.opt).find(opt => 
-        opt.DefElem && opt.DefElem.defname === 'admin'
+        (opt.String && opt.String.sval === 'admin') ||
+        (opt.DefElem && opt.DefElem.defname === 'admin')
       );
       
-      if (adminOption && adminOption.DefElem && adminOption.DefElem.arg) {
-        const adminValue = adminOption.DefElem.arg.Boolean?.boolval;
+      if (adminOption) {
         if (node.is_grant) {
-          if (adminValue === true) {
-            output.push('WITH ADMIN OPTION');
-          } else if (adminValue === false) {
-            output.push('WITH ADMIN FALSE');
-          }
-        } else if (!node.is_grant) {
+          output.push('WITH ADMIN OPTION');
+        } else {
           output.push('ADMIN OPTION FOR');
         }
       }

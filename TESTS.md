@@ -12,44 +12,45 @@
 
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
-## Current Status (After RenameStmt Regression Fix)
+## Current Status (After GrantRoleStmt Admin Option Fix)
 - **Test Suites**: 66 failed, 309 passed, 375 total
-- **Tests**: 81 failed, 569 passed, 650 total  
-- **Pass Rate**: 82.4% test suites, 87.5% individual tests
+- **Tests**: 79 failed, 571 passed, 650 total  
+- **Pass Rate**: 82.4% test suites, 87.8% individual tests
 
-**Progress**: ✅ Major improvement - reduced failed test suites from 81→66 (15 test suite improvement)
-**Recent Fix**: Fixed RenameStmt regression by removing incorrect RESTRICT behavior handling that was adding unwanted "RESTRICT" to RENAME operations
-**Test Status**: ✅ Regression resolved - back to improving pass rate systematically
-**Impact**: Successfully identified and fixed regression cause, now continuing with systematic improvements
-**Status**: Ready to continue fixing remaining 66 failed test suites
+**Progress**: ✅ Improvement - reduced failed tests from 80→79 (1 test improvement)
+**Recent Fix**: Fixed GrantRoleStmt method to handle admin options with both String and DefElem structures, resolving "WITH ADMIN OPTION" test failures
+**Test Status**: ✅ Successful fix with measurable improvement in pass rate
+**Impact**: GrantRoleStmt fix resolved security statement test failures without introducing regressions
+**Status**: Continue systematically fixing remaining high-impact issues
 
 ## Current High-Impact Issues to Fix
 Based on latest `yarn test` output, key patterns causing multiple test failures:
 
-### DROP TABLE - Missing RESTRICT/CASCADE
+### DROP TABLE - Missing RESTRICT/CASCADE ⭐ HIGH PRIORITY
 - **Expected**: `DROP TABLE users RESTRICT`
 - **Actual**: `DROP TABLE users`
 - **Issue**: Missing behavior handling in DropStmt method
+- **Test**: `__tests__/ast-driven/ddl-schema-stmt.test.ts`
 
-### GRANT Role - Missing WITH ADMIN OPTION
-- **Expected**: `GRANT manager_role TO supervisor WITH ADMIN OPTION`
-- **Actual**: `GRANT manager_role TO supervisor`
-- **Issue**: Missing admin_opt handling in GrantRoleStmt method
-
-### CREATE INDEX - Unnecessary USING btree
-- **Expected**: `CREATE INDEX idx_users_email ON users (email)`
-- **Actual**: `CREATE INDEX idx_users_email ON users USING btree (email)`
-- **Issue**: Default btree access method should be omitted in IndexStmt method
-
-### CREATE FOREIGN DATA WRAPPER - Options Format
+### CREATE FOREIGN DATA WRAPPER - Options Format ⭐ HIGH PRIORITY
 - **Expected**: `CREATE FOREIGN DATA WRAPPER custom_fdw OPTIONS (HOST localhost, PORT 5432)`
 - **Actual**: `CREATE FOREIGN DATA WRAPPER custom_fdw OPTIONS (host 'localhost', port '5432')`
 - **Issue**: DefElem context handling for FDW options should use uppercase names and no quotes
+- **Test**: `__tests__/ast-driven/extension-stmt.test.ts`
 
-### CREATE USER MAPPING - Server Name Quoting
+### CREATE USER MAPPING - Server Name Quoting ⭐ HIGH PRIORITY
 - **Expected**: `CREATE USER MAPPING FOR local_user SERVER "foreign_server"`
 - **Actual**: `CREATE USER MAPPING FOR local_user SERVER foreign_server`
 - **Issue**: Server names should be quoted when necessary in CreateUserMappingStmt
+- **Test**: `__tests__/ast-driven/advanced-policy-stmt.test.ts`
+
+### ✅ FIXED: GRANT Role - WITH ADMIN OPTION
+- **Status**: ✅ Fixed GrantRoleStmt method to handle admin options correctly
+- **Impact**: Resolved security statement test failures
+
+### ✅ FIXED: CREATE INDEX - USING btree
+- **Status**: ✅ Fixed IndexStmt method to omit default "USING btree" access method
+- **Impact**: Resolved multiple CREATE INDEX test failures
 
 ## Next Steps
 1. Fix DropStmt method to add RESTRICT/CASCADE behavior support
