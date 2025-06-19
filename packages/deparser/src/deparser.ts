@@ -944,6 +944,13 @@ export class Deparser implements DeparserVisitor {
       return `(${left1}, ${left2}) OVERLAPS (${right1}, ${right2})`;
     }
 
+    // Handle AT TIME ZONE operator with special infix syntax
+    if (name === 'pg_catalog.timezone' && args.length === 2) {
+      const timestamp = this.visit(args[1], context);
+      const timezone = this.visit(args[0], context);
+      return `${timestamp} AT TIME ZONE ${timezone}`;
+    }
+
     const params: string[] = [];
     
     if (node.agg_star) {
