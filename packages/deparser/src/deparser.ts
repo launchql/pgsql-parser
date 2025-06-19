@@ -1904,11 +1904,44 @@ export class Deparser implements DeparserVisitor {
         return this.deparse(el, context);
       });
       output.push(this.formatter.parens(elementStrs.join(', ')));
-    } else {
+    } else if (!node.partbound) {
       output.push(this.formatter.parens(''));
     }
 
-    if (node.inhRelations) {
+    if (node.partbound && node.inhRelations && node.inhRelations.length > 0) {
+      output.push('PARTITION OF');
+      const inherits = ListUtils.unwrapList(node.inhRelations);
+      const inheritStrs = inherits.map(rel => this.visit(rel, context));
+      output.push(inheritStrs[0]);
+      
+      if (node.partbound.strategy === 'l' && node.partbound.listdatums) {
+        output.push('FOR VALUES IN');
+        const listValues = ListUtils.unwrapList(node.partbound.listdatums)
+          .map(datum => this.visit(datum, context))
+          .join(', ');
+        output.push(`(${listValues})`);
+      } else if (node.partbound.strategy === 'r' && (node.partbound.lowerdatums || node.partbound.upperdatums)) {
+        output.push('FOR VALUES FROM');
+        if (node.partbound.lowerdatums) {
+          const lowerValues = ListUtils.unwrapList(node.partbound.lowerdatums)
+            .map(datum => this.visit(datum, context))
+            .join(', ');
+          output.push(`(${lowerValues})`);
+        }
+        if (node.partbound.upperdatums) {
+          output.push('TO');
+          const upperValues = ListUtils.unwrapList(node.partbound.upperdatums)
+            .map(datum => this.visit(datum, context))
+            .join(', ');
+          output.push(`(${upperValues})`);
+        }
+      } else if (node.partbound.strategy === 'h' && node.partbound.modulus !== undefined && node.partbound.remainder !== undefined) {
+        output.push('FOR VALUES WITH');
+        output.push(`(modulus ${node.partbound.modulus}, remainder ${node.partbound.remainder})`);
+      } else if (node.partbound.is_default) {
+        output.push('DEFAULT');
+      }
+    } else if (node.inhRelations) {
       output.push('INHERITS');
       const inherits = ListUtils.unwrapList(node.inhRelations);
       const inheritStrs = inherits.map(rel => this.visit(rel, context));
@@ -2060,6 +2093,15 @@ export class Deparser implements DeparserVisitor {
           output.push(this.formatter.parens(this.visit(node.raw_expr, context)));
         }
         output.push('STORED');
+        break;
+      case 'CONSTR_IDENTITY':
+        output.push('GENERATED');
+        if (node.generated_when === 'a') {
+          output.push('ALWAYS');
+        } else if (node.generated_when === 's') {
+          output.push('BY DEFAULT');
+        }
+        output.push('AS IDENTITY');
         break;
       case 'CONSTR_PRIMARY':
         output.push('PRIMARY KEY');
@@ -5743,6 +5785,15 @@ export class Deparser implements DeparserVisitor {
     }
     
     return output.join(' ');
+  }
+
+  StatsElem(node: t.StatsElem, context: DeparserContext): string {
+    if (node.name) {
+      return this.quoteIfNeeded(node.name);
+    } else if (node.expr) {
+      return `(${this.visit(node.expr, context)})`;
+    }
+    return '';
   }
 
   CreatePublicationStmt(node: t.CreatePublicationStmt, context: DeparserContext): string {
