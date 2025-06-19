@@ -1645,7 +1645,9 @@ export class Deparser implements DeparserVisitor {
     const arg = this.visit(node.arg, context);
     const typeName = this.TypeName(node.typeName, context);
     
-    if (typeName.startsWith('interval')) {
+    if (typeName.startsWith('interval') || 
+        typeName.startsWith('char') || 
+        typeName === '"char"') {
       return `${arg}::${typeName}`;
     }
     
