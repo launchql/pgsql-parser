@@ -35,7 +35,7 @@ export class Deparser implements DeparserVisitor {
       .join(this.formatter.newline() + this.formatter.newline());
   }
 
-  deparse(node: Node, context: DeparserContext = {}): string | null {
+  deparse(node: Node, context: DeparserContext = { parentNodeTypes: [] }): string | null {
     if (node == null) {
       return null;
     }
@@ -52,7 +52,7 @@ export class Deparser implements DeparserVisitor {
     }
   }
 
-  visit(node: Node, context: DeparserContext = {}): string {
+  visit(node: Node, context: DeparserContext = { parentNodeTypes: [] }): string {
     const nodeType = this.getNodeType(node);
     const nodeData = this.getNodeData(node);
 
@@ -84,7 +84,7 @@ export class Deparser implements DeparserVisitor {
     return this.deparse(node.stmt, context);
   }
 
-  stmt(node: any, context: DeparserContext = {}): string {
+  stmt(node: any, context: DeparserContext = { parentNodeTypes: [] }): string {
     // Handle stmt wrapper nodes that contain the actual statement
     const keys = Object.keys(node);
     if (keys.length === 1) {
@@ -433,7 +433,7 @@ export class Deparser implements DeparserVisitor {
       if (n.String) {
         return n.String.sval || n.String.str;
       }
-      return this.visit(n, {});
+      return this.visit(n, { parentNodeTypes: [] });
     });
     
     if (parts.length > 1) {
@@ -2211,8 +2211,8 @@ export class Deparser implements DeparserVisitor {
       boundsParts.push('AND CURRENT ROW');
     } else if (frameOptions === 18453) {
       if (node.startOffset && node.endOffset) {
-        boundsParts.push(`${this.visit(node.startOffset, {})} PRECEDING`);
-        boundsParts.push(`AND ${this.visit(node.endOffset, {})} FOLLOWING`);
+        boundsParts.push(`${this.visit(node.startOffset, { parentNodeTypes: [] })} PRECEDING`);
+        boundsParts.push(`AND ${this.visit(node.endOffset, { parentNodeTypes: [] })} FOLLOWING`);
       }
     } else if (frameOptions === 1557) {
       boundsParts.push('CURRENT ROW');
@@ -2220,7 +2220,7 @@ export class Deparser implements DeparserVisitor {
     } else if (frameOptions === 16917) {
       boundsParts.push('CURRENT ROW');
       if (node.endOffset) {
-        boundsParts.push(`AND ${this.visit(node.endOffset, {})} FOLLOWING`);
+        boundsParts.push(`AND ${this.visit(node.endOffset, { parentNodeTypes: [] })} FOLLOWING`);
       }
     } else if (frameOptions === 1058) {
       return null;
@@ -2228,11 +2228,11 @@ export class Deparser implements DeparserVisitor {
       // Handle start bound - prioritize explicit offset values over bit flags
       if (node.startOffset) {
         if (frameOptions & 0x400) { // FRAMEOPTION_START_VALUE_PRECEDING
-          boundsParts.push(`${this.visit(node.startOffset, {})} PRECEDING`);
+          boundsParts.push(`${this.visit(node.startOffset, { parentNodeTypes: [] })} PRECEDING`);
         } else if (frameOptions & 0x800) { // FRAMEOPTION_START_VALUE_FOLLOWING
-          boundsParts.push(`${this.visit(node.startOffset, {})} FOLLOWING`);
+          boundsParts.push(`${this.visit(node.startOffset, { parentNodeTypes: [] })} FOLLOWING`);
         } else {
-          boundsParts.push(`${this.visit(node.startOffset, {})} PRECEDING`);
+          boundsParts.push(`${this.visit(node.startOffset, { parentNodeTypes: [] })} PRECEDING`);
         }
       } else if (frameOptions & 0x10) { // FRAMEOPTION_START_UNBOUNDED_PRECEDING
         boundsParts.push('UNBOUNDED PRECEDING');
@@ -2244,11 +2244,11 @@ export class Deparser implements DeparserVisitor {
       if (node.endOffset) {
         if (boundsParts.length > 0) {
           if (frameOptions & 0x1000) { // FRAMEOPTION_END_VALUE_PRECEDING
-            boundsParts.push(`AND ${this.visit(node.endOffset, {})} PRECEDING`);
+            boundsParts.push(`AND ${this.visit(node.endOffset, { parentNodeTypes: [] })} PRECEDING`);
           } else if (frameOptions & 0x2000) { // FRAMEOPTION_END_VALUE_FOLLOWING
-            boundsParts.push(`AND ${this.visit(node.endOffset, {})} FOLLOWING`);
+            boundsParts.push(`AND ${this.visit(node.endOffset, { parentNodeTypes: [] })} FOLLOWING`);
           } else {
-            boundsParts.push(`AND ${this.visit(node.endOffset, {})} FOLLOWING`);
+            boundsParts.push(`AND ${this.visit(node.endOffset, { parentNodeTypes: [] })} FOLLOWING`);
           }
         }
       } else if (frameOptions & 0x80) { // FRAMEOPTION_END_UNBOUNDED_FOLLOWING

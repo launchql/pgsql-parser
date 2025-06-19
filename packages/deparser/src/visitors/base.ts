@@ -2,7 +2,7 @@ import { Node } from '@pgsql/types';
 
 export interface DeparserContext {
   isStringLiteral?: boolean;
-  parentNodeType?: string;
+  parentNodeTypes: string[];
   [key: string]: any;
 }
 
