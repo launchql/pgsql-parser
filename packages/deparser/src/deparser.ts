@@ -884,6 +884,44 @@ export class Deparser implements DeparserVisitor {
       const argStrs = args.map(arg => this.visit(arg, context));
       return `COLLATION FOR (${argStrs.join(', ')})`;
     }
+    
+    // Handle SUBSTRING function with FROM ... FOR ... syntax
+    if (node.funcformat === 'COERCE_SQL_SYNTAX' && name === 'pg_catalog.substring') {
+      const source = this.visit(args[0], context);
+      if (args.length === 3) {
+        const start = this.visit(args[1], context);
+        const length = this.visit(args[2], context);
+        return `SUBSTRING(${source} FROM ${start} FOR ${length})`;
+      } else if (args.length === 2) {
+        const start = this.visit(args[1], context);
+        return `SUBSTRING(${source} FROM ${start})`;
+      }
+    }
+    
+    // Handle POSITION function with IN syntax
+    if (node.funcformat === 'COERCE_SQL_SYNTAX' && name === 'pg_catalog.position') {
+      if (args.length === 2) {
+        const string = this.visit(args[0], context);
+        const substring = this.visit(args[1], context);
+        return `POSITION(${substring} IN ${string})`;
+      }
+    }
+    
+    // Handle OVERLAY function with PLACING ... FROM ... FOR ... syntax
+    if (node.funcformat === 'COERCE_SQL_SYNTAX' && name === 'pg_catalog.overlay') {
+      if (args.length === 4) {
+        const string = this.visit(args[0], context);
+        const substring = this.visit(args[1], context);
+        const start = this.visit(args[2], context);
+        const length = this.visit(args[3], context);
+        return `OVERLAY(${string} PLACING ${substring} FROM ${start} FOR ${length})`;
+      } else if (args.length === 3) {
+        const string = this.visit(args[0], context);
+        const substring = this.visit(args[1], context);
+        const start = this.visit(args[2], context);
+        return `OVERLAY(${string} PLACING ${substring} FROM ${start})`;
+      }
+    }
 
     const params: string[] = [];
     
