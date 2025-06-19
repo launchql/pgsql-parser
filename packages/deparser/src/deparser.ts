@@ -3222,6 +3222,8 @@ export class Deparser implements DeparserVisitor {
 
     if (node.behavior === 'DROP_CASCADE') {
       output.push('CASCADE');
+    } else if (node.behavior === 'DROP_RESTRICT') {
+      output.push('RESTRICT');
     }
 
     return output.join(' ');
@@ -6548,7 +6550,7 @@ export class Deparser implements DeparserVisitor {
       output.push(grantees);
     }
 
-    // Handle admin options
+    // Handle admin options - support both String and DefElem structures
     if (node.opt && node.opt.length > 0) {
       const adminOption = ListUtils.unwrapList(node.opt).find(opt => 
         (opt.String && opt.String.sval === 'admin') ||
@@ -6556,10 +6558,25 @@ export class Deparser implements DeparserVisitor {
       );
       
       if (adminOption) {
-        if (node.is_grant) {
-          output.push('WITH ADMIN OPTION');
-        } else {
-          output.push('ADMIN OPTION FOR');
+        if (adminOption.DefElem && adminOption.DefElem.arg) {
+          // Handle DefElem with boolean value (for WITH ADMIN FALSE cases)
+          const adminValue = adminOption.DefElem.arg.Boolean?.boolval;
+          if (node.is_grant) {
+            if (adminValue === true) {
+              output.push('WITH ADMIN OPTION');
+            } else if (adminValue === false) {
+              output.push('WITH ADMIN FALSE');
+            }
+          } else {
+            output.push('ADMIN OPTION FOR');
+          }
+        } else if (adminOption.String) {
+          // Handle String structure (for standard WITH ADMIN OPTION cases)
+          if (node.is_grant) {
+            output.push('WITH ADMIN OPTION');
+          } else {
+            output.push('ADMIN OPTION FOR');
+          }
         }
       }
     }

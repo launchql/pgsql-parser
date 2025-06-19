@@ -13,30 +13,25 @@
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
 ## Current Status (After GrantRoleStmt Admin Option Fix)
-- **Test Suites**: 66 failed, 309 passed, 375 total
-- **Tests**: 79 failed, 571 passed, 650 total  
-- **Pass Rate**: 82.4% test suites, 87.8% individual tests
+- **Test Suites**: 63 failed, 312 passed, 375 total
+- **Tests**: 72 failed, 578 passed, 650 total  
+- **Pass Rate**: 83.2% test suites, 88.9% individual tests
 
-**Progress**: ✅ Improvement - reduced failed tests from 80→79 (1 test improvement)
-**Recent Fix**: Fixed GrantRoleStmt method to handle admin options with both String and DefElem structures, resolving "WITH ADMIN OPTION" test failures
-**Test Status**: ✅ Successful fix with measurable improvement in pass rate
-**Impact**: GrantRoleStmt fix resolved security statement test failures without introducing regressions
-**Status**: Continue systematically fixing remaining high-impact issues
+**Progress**: ✅ Major improvement - reduced failed tests from 79→72 (7 test improvement) and test suites from 64→63 (1 test suite improvement)
+**Recent Fix**: Fixed GrantRoleStmt method to handle both String and DefElem admin option structures, resolving "WITH ADMIN OPTION" vs "WITH ADMIN FALSE" cases
+**Test Status**: ✅ Regression resolved - GrantRoleStmt now correctly handles both standard and boolean admin options
+**Impact**: Combined DropStmt RESTRICT/CASCADE and GrantRoleStmt admin option fixes resolved multiple security statement test failures
+**Status**: Continue with remaining high-impact issues, focusing on CREATE FOREIGN DATA WRAPPER DefElem context handling
 
 ## Current High-Impact Issues to Fix
 Based on latest `yarn test` output, key patterns causing multiple test failures:
 
-### DROP TABLE - Missing RESTRICT/CASCADE ⭐ HIGH PRIORITY
-- **Expected**: `DROP TABLE users RESTRICT`
-- **Actual**: `DROP TABLE users`
-- **Issue**: Missing behavior handling in DropStmt method
-- **Test**: `__tests__/ast-driven/ddl-schema-stmt.test.ts`
-
 ### CREATE FOREIGN DATA WRAPPER - Options Format ⭐ HIGH PRIORITY
 - **Expected**: `CREATE FOREIGN DATA WRAPPER custom_fdw OPTIONS (HOST localhost, PORT 5432)`
 - **Actual**: `CREATE FOREIGN DATA WRAPPER custom_fdw OPTIONS (host 'localhost', port '5432')`
-- **Issue**: DefElem context handling for FDW options should use uppercase names and no quotes
+- **Issue**: DefElem context handling for FDW options should use uppercase names and no quotes for certain contexts
 - **Test**: `__tests__/ast-driven/extension-stmt.test.ts`
+- **Pattern**: Multiple failures show DefElem nodes need context-aware formatting
 
 ### CREATE USER MAPPING - Server Name Quoting ⭐ HIGH PRIORITY
 - **Expected**: `CREATE USER MAPPING FOR local_user SERVER "foreign_server"`
@@ -44,21 +39,24 @@ Based on latest `yarn test` output, key patterns causing multiple test failures:
 - **Issue**: Server names should be quoted when necessary in CreateUserMappingStmt
 - **Test**: `__tests__/ast-driven/advanced-policy-stmt.test.ts`
 
-### ✅ FIXED: GRANT Role - WITH ADMIN OPTION
-- **Status**: ✅ Fixed GrantRoleStmt method to handle admin options correctly
-- **Impact**: Resolved security statement test failures
+### ✅ FIXED: GrantRoleStmt - WITH ADMIN OPTION
+- **Status**: ✅ Fixed GrantRoleStmt method to handle both String and DefElem admin option structures
+- **Impact**: Resolved "WITH ADMIN OPTION" vs "WITH ADMIN FALSE" test failures
+
+### ✅ FIXED: DropStmt - RESTRICT/CASCADE
+- **Status**: ✅ Fixed DropStmt method to handle RESTRICT/CASCADE behavior
+- **Impact**: Resolved multiple DROP statement test failures
 
 ### ✅ FIXED: CREATE INDEX - USING btree
 - **Status**: ✅ Fixed IndexStmt method to omit default "USING btree" access method
 - **Impact**: Resolved multiple CREATE INDEX test failures
 
 ## Next Steps
-1. Fix DropStmt method to add RESTRICT/CASCADE behavior support
-2. Fix GrantRoleStmt method to add WITH ADMIN OPTION support
-3. Fix IndexStmt method to omit default "USING btree" access method
-4. Fix CreateFdwStmt DefElem context to use uppercase option names without quotes
-5. Fix CreateUserMappingStmt to properly quote server names when necessary
-6. Continue systematically through remaining 67 failed test suites
+1. Fix DefElem method to handle context-aware formatting for FDW options (uppercase names, no quotes)
+2. Fix CreateUserMappingStmt to properly quote server names when necessary
+3. Continue systematically through remaining 63 failed test suites
+4. Focus on commonly used SQL constructs that appear across multiple test failures
+5. Prioritize fixes that will resolve multiple test failures simultaneously
 
 ## Workflow
 - Make changes → `yarn test --testNamePattern="specific-test"` → `yarn test` (check regressions) → update this file
