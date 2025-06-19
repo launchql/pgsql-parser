@@ -8309,15 +8309,30 @@ export class Deparser implements DeparserVisitor {
       output.push(QuoteUtils.quote(node.portalname));
     }
     
+    // Handle cursor options before CURSOR keyword
+    const cursorOptions: string[] = [];
+    if (node.options) {
+      // Handle scroll options (mutually exclusive) - correct bit mapping
+      if (node.options & 256) {
+        cursorOptions.push('SCROLL');
+      } else if (node.options & 2) {
+        cursorOptions.push('NO SCROLL');
+      }
+      
+      // Handle other cursor options
+      if (node.options & 4) cursorOptions.push('BINARY');
+      if (node.options & 8) cursorOptions.push('INSENSITIVE');
+    }
+    
+    if (cursorOptions.length > 0) {
+      output.push(...cursorOptions);
+    }
+    
     output.push('CURSOR');
     
-    if (node.options) {
-      // Handle cursor options like SCROLL, NO SCROLL, etc.
-      if (node.options & 1) output.push('SCROLL');
-      if (node.options & 2) output.push('NO SCROLL');
-      if (node.options & 4) output.push('BINARY');
-      if (node.options & 8) output.push('INSENSITIVE');
-      if (node.options & 32) output.push('WITH HOLD');
+    // Handle WITH HOLD after CURSOR keyword
+    if (node.options && (node.options & 32)) {
+      output.push('WITH HOLD');
     }
     
     output.push('FOR');
