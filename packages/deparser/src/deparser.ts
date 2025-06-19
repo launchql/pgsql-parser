@@ -1584,7 +1584,32 @@ export class Deparser implements DeparserVisitor {
     return output.join(' ');
   }
 
-  String(node: t.String, context: DeparserContext): string { 
+  private static readonly RESERVED_WORDS = new Set([
+    'all', 'analyse', 'analyze', 'and', 'any', 'array', 'as', 'asc', 'asymmetric', 'both',
+    'case', 'cast', 'check', 'collate', 'column', 'constraint', 'create', 'current_catalog',
+    'current_date', 'current_role', 'current_time', 'current_timestamp', 'current_user',
+    'default', 'deferrable', 'desc', 'distinct', 'do', 'else', 'end', 'except', 'false',
+    'fetch', 'for', 'foreign', 'from', 'grant', 'group', 'having', 'in', 'initially',
+    'intersect', 'into', 'lateral', 'leading', 'limit', 'localtime', 'localtimestamp',
+    'not', 'null', 'offset', 'on', 'only', 'or', 'order', 'placing', 'primary',
+    'references', 'returning', 'select', 'session_user', 'some', 'symmetric', 'table',
+    'then', 'to', 'trailing', 'true', 'union', 'unique', 'user', 'using', 'variadic',
+    'when', 'where', 'window', 'with'
+  ]);
+
+  private static needsQuotes(value: string): boolean {
+    if (!value) return false;
+    
+    // Check if it's a reserved word
+    if (Deparser.RESERVED_WORDS.has(value.toLowerCase())) {
+      return true;
+    }
+    
+    const needsQuotesRegex = /[a-z]+[\W\w]*[A-Z]+|[A-Z]+[\W\w]*[a-z]+|[\W_]/;
+    return needsQuotesRegex.test(value);
+  }
+
+  String(node: t.String, context: DeparserContext): string {
     if (context.isStringLiteral || context.isEnumValue) {
       return `'${node.sval || ''}'`;
     }
@@ -1598,13 +1623,7 @@ export class Deparser implements DeparserVisitor {
       return value;
     }
     
-    if (context.parentNodeType === 'AccessPriv') {
-      return QuoteUtils.quote(value);
-    }
-    
-    const result = QuoteUtils.quote(value);
-    
-    return result; 
+    return Deparser.needsQuotes(value) ? `"${value}"` : value;
   }
   
   Integer(node: t.Integer, context: DeparserContext): string { 
@@ -4191,7 +4210,7 @@ export class Deparser implements DeparserVisitor {
     
     // Handle FDW-related statements and ALTER OPTIONS that use space format for options
     const parentContext = context.parentNodeType;
-    if (parentContext === 'AlterFdwStmt' || parentContext === 'CreateFdwStmt' || parentContext === 'CreateForeignServerStmt' || parentContext === 'AlterForeignServerStmt' || parentContext === 'CreateUserMappingStmt' || parentContext === 'AlterUserMappingStmt' || parentContext === 'ColumnDef' || parentContext === 'CreateForeignTableStmt' || parentContext === 'ImportForeignSchemaStmt' || context.alterColumnOptions || context.alterTableOptions) {
+    if (parentContext === 'AlterFdwStmt' || parentContext === 'CreateFdwStmt' || parentContext === 'CreateForeignServerStmt' || parentContext === 'AlterForeignServerStmt' || parentContext === 'ColumnDef' || parentContext === 'CreateForeignTableStmt' || parentContext === 'ImportForeignSchemaStmt' || context.alterColumnOptions || context.alterTableOptions) {
       if (['handler', 'validator'].includes(node.defname)) {
         if (!node.arg) {
           return `NO ${node.defname.toUpperCase()}`;
@@ -5189,7 +5208,7 @@ export class Deparser implements DeparserVisitor {
     output.push('SERVER');
     
     if (node.servername) {
-      output.push(QuoteUtils.quote(node.servername));
+      output.push(Deparser.needsQuotes(node.servername) ? `"${node.servername}"` : node.servername);
     }
     
     if (node.options && node.options.length > 0) {
