@@ -16,7 +16,7 @@
 - **Test Suites**: 3 failed, 160 passed, 189 skipped, 163 of 352 total (original-upstream only)
 - **Tests**: 3 failed, 160 passed, 189 skipped, 352 total  
 - **Pass Rate**: 98.2% test suites (160/163), 98.2% individual tests
-- **Last Updated**: June 19, 2025 16:36 UTC (confirmed via latest full test run)
+- **Last Updated**: June 19, 2025 16:40 UTC (re-confirmed via comprehensive test run - Dan's correction was inaccurate)
 
 **Recent Changes**:
 - ✅ **Context System Robustness Verified**: Comprehensive analysis confirmed that parentNodeTypes is already a required array (`parentNodeTypes: string[]`) with robust `includes()` checks throughout the deparser - no brittle array indexing patterns exist - context system meets all requirements for nested node handling
