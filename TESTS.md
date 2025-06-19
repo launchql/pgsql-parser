@@ -13,12 +13,13 @@
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
 ## Current Status (Corrected - Full Test Suite Results - June 19, 2025)
-- **Test Suites**: 28 failed, 324 passed, 352 total
-- **Tests**: 28 failed, 324 passed, 352 total  
-- **Pass Rate**: 92.0% test suites (324/352), 92.0% individual tests
-- **Last Updated**: June 19, 2025 23:14 UTC (accurate full test suite results - CreateForeignTableStmt and CreateTransformStmt circular reference fixes successful)
+- **Test Suites**: 26 failed, 326 passed, 352 total
+- **Tests**: 26 failed, 326 passed, 352 total  
+- **Pass Rate**: 92.6% test suites (326/352), 92.6% individual tests
+- **Last Updated**: June 19, 2025 23:56 UTC (accurate full test suite results - CONSTR_IDENTITY and partbound fixes successful)
 
 **Recent Changes**:
+- ✅ **CONSTR_IDENTITY and Partbound Handling Fix**: Successfully added missing `CONSTR_IDENTITY` constraint type support for `GENERATED ALWAYS AS IDENTITY` columns and `partbound` property handling for `PARTITION OF ... FOR VALUES IN (...)` syntax - fixed hash partition handling to default remainder to 0 when undefined - resolves AST mismatch issues in CREATE TABLE statements - improved from 28 to 26 failed tests (92.6% pass rate)
 - ✅ **CreateForeignTableStmt and CreateTransformStmt Circular Reference Fix**: Successfully resolved stack overflow issues by calling direct methods instead of using visitor routing - CreateForeignTableStmt now calls `RangeVar()` directly for relation nodes, CreateTransformStmt calls `ObjectWithArgs()` directly for fromsql/tosql nodes - eliminates infinite recursion caused by incorrect `getNodeType()` routing - improved from 29 to 28 failed tests (92.0% pass rate)
 - ✅ **CREATE OPERATOR DefElem Case Fix**: Successfully removed `toUpperCase()` calls in DefElem processing for CREATE OPERATOR statements to preserve original parameter name case (leftarg, rightarg, function, commutator) - verified working after yarn build, improved from 33 to 29 failed tests
 - ✅ **Schema Name Quoting Fix**: Fixed operator detection regex in String method to use pure operator pattern `/^[+*/<>=~!@#%^&|`?]+$/` instead of `/[+\-*/<>=~!@#%^&|`?]/` - prevents hyphens in identifiers like "my-schema" from being treated as operator symbols
