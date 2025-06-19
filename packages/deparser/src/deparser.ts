@@ -58,9 +58,11 @@ export class Deparser implements DeparserVisitor {
 
     const methodName = nodeType as keyof this;
     if (typeof this[methodName] === 'function') {
-      const result = (this[methodName] as any)(nodeData, context);
-      
-
+      const childContext: DeparserContext = {
+        ...context,
+        parentNodeTypes: [...context.parentNodeTypes, nodeType]
+      };
+      const result = (this[methodName] as any)(nodeData, childContext);
       
       return result;
     }
@@ -1228,6 +1230,10 @@ export class Deparser implements DeparserVisitor {
 
     const mods = (name: string, size: string | null) => {
       if (size != null) {
+        // For interval types in TypeCast context, use space separation instead of parentheses
+        if (name === 'interval' && context.parentNodeTypes.includes('TypeCast')) {
+          return `${name} ${size}`;
+        }
         return `${name}(${size})`;
       }
       return name;
@@ -1580,7 +1586,14 @@ export class Deparser implements DeparserVisitor {
   }
 
   TypeCast(node: t.TypeCast, context: DeparserContext): string {
-    return `CAST(${this.visit(node.arg, context)} AS ${this.TypeName(node.typeName, context)})`;
+    const arg = this.visit(node.arg, context);
+    const typeName = this.TypeName(node.typeName, context);
+    
+    if (typeName.startsWith('interval')) {
+      return `${arg}::${typeName}`;
+    }
+    
+    return `CAST(${arg} AS ${typeName})`;
   }
 
   CollateClause(node: t.CollateClause, context: DeparserContext): string {
