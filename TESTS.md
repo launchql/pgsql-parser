@@ -12,11 +12,11 @@
 
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
-## Current Status (After Context System Improvements - June 19, 2025)
+## Current Status (After CreateForeignTableStmt Context Fix - June 19, 2025)
 - **Test Suites**: 3 failed, 160 passed, 189 skipped, 163 of 352 total (original-upstream only)
 - **Tests**: 3 failed, 160 passed, 189 skipped, 352 total  
 - **Pass Rate**: 98.2% test suites (160/163), 98.2% individual tests
-- **Last Updated**: June 19, 2025 16:30 UTC
+- **Last Updated**: June 19, 2025 16:36 UTC (confirmed via latest full test run)
 
 **Recent Changes**:
 - ✅ **Context System Robustness Verified**: Comprehensive analysis confirmed that parentNodeTypes is already a required array (`parentNodeTypes: string[]`) with robust `includes()` checks throughout the deparser - no brittle array indexing patterns exist - context system meets all requirements for nested node handling
