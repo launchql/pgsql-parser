@@ -13,12 +13,14 @@
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
 ## Current Status (After Latest Fixes - June 19, 2025)
-- **Test Suites**: 18 failed, 145 passed, 189 skipped, 163 of 352 total (original-upstream only)
-- **Tests**: 18 failed, 145 passed, 189 skipped, 352 total  
-- **Pass Rate**: 88.9% test suites (145/163), 88.9% individual tests
-- **Last Updated**: June 19, 2025 07:47 UTC
+- **Test Suites**: 17 failed, 146 passed, 189 skipped, 163 of 352 total (original-upstream only)
+- **Tests**: 17 failed, 146 passed, 189 skipped, 352 total  
+- **Pass Rate**: 89.6% test suites (146/163), 89.6% individual tests
+- **Last Updated**: June 19, 2025 07:49 UTC
 
 **Recent Changes**:
+- ✅ **OVERLAPS Operator Infix Syntax**: Added special handling for pg_catalog.overlaps function calls to preserve infix syntax `(left1, left2) OVERLAPS (right1, right2)` instead of converting to function call format
+- ✅ **original-upstream-horology Test**: Now fully passing - resolved OVERLAPS operator syntax preservation issues
 - ✅ **TransactionStmt Boolean Value Parsing**: Fixed complex boolean value parsing for SET TRANSACTION and START TRANSACTION statements - handles nested ival structures in A_Const nodes for transaction_read_only and transaction_deferrable options
 - ✅ **original-upstream-transactions Test**: Now fully passing - resolved READ WRITE vs READ ONLY and DEFERRABLE vs NOT DEFERRABLE parsing issues
 - ✅ **VariableSetStmt SESSION CHARACTERISTICS**: Added support for `SET SESSION CHARACTERISTICS AS TRANSACTION` statements alongside regular `SET TRANSACTION` statements
@@ -44,8 +46,8 @@
 - ✅ **Comprehensive Quoting**: Dan's needsQuotes regex and RESERVED_WORDS set implemented in deparser
 
 **Current Focus**: Kitchen-sink tests only (ast-driven tests removed per Dan's request)
-**Progress**: 88.9% pass rate with 18 failing test suites - excellent progress with systematic fixes
-**Next Priority**: Remaining 18 failing tests including brin, tsdicts, strings, horology, rangefuncs, object_address, matview, rules, plpgsql, interval, timetz
+**Progress**: 89.6% pass rate with 17 failing test suites - excellent progress with systematic fixes
+**Next Priority**: Remaining 17 failing tests including brin, tsdicts, strings, rangefuncs, object_address, matview, rules, plpgsql, interval, timetz
 **Status**: Outstanding progress - improved from ~50% to 88.9% pass rate, continuing systematic improvements
 
 ## Current High-Impact Issues to Fix
