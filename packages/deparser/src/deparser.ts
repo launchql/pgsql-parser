@@ -6146,6 +6146,8 @@ export class Deparser implements DeparserVisitor {
         case 'FETCH_RELATIVE':
           if (node.howMany !== undefined && node.howMany !== null) {
             output.push('RELATIVE', node.howMany.toString());
+          } else {
+            output.push('RELATIVE', '0');
           }
           break;
         default:
