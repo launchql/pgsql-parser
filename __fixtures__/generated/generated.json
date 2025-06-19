@@ -23041,5 +23041,7 @@
   "latest/postgres/create_aggregate-56.sql": "CREATE FUNCTION float8mi_int(float8, float8) RETURNS int AS $$ SELECT CAST($1 - $2 AS INT); $$ LANGUAGE sql",
   "latest/postgres/create_aggregate-57.sql": "CREATE AGGREGATE wrongreturntype (float8) (stype = float8, sfunc = float8pl, mstype = float8, msfunc = float8pl, minvfunc = float8mi_int)",
   "latest/postgres/create_aggregate-58.sql": "CREATE AGGREGATE case_agg (\"Sfunc1\" = int4pl, \"Basetype\" = int4, \"Stype1\" = int4, \"Initcond1\" = '0', \"Parallel\" = safe)",
-  "latest/postgres/create_aggregate-59.sql": "CREATE AGGREGATE case_agg (float8) (\"Stype\" = internal, \"Sfunc\" = ordered_set_transition, \"Finalfunc\" = percentile_disc_final, \"Finalfunc_extra\" = true, \"Finalfunc_modify\" = read_write, \"Parallel\" = safe)"
+  "latest/postgres/create_aggregate-59.sql": "CREATE AGGREGATE case_agg (float8) (\"Stype\" = internal, \"Sfunc\" = ordered_set_transition, \"Finalfunc\" = percentile_disc_final, \"Finalfunc_extra\" = true, \"Finalfunc_modify\" = read_write, \"Parallel\" = safe)",
+  "latest/misc/quotes_etc-1.sql": "CREATE USER MAPPING FOR local_user SERVER foreign_server OPTIONS (\"user\" 'remote_user', password 'secret123')",
+  "latest/misc/quotes_etc-2.sql": "CREATE USER MAPPING FOR local_user SERVER foreign_server OPTIONS (\"user\" 'remote_user', password 'secret123')"
 }
