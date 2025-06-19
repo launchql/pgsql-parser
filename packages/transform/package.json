@@ -1,0 +1,37 @@
+{
+  "name": "@pgsql/transform",
+  "version": "17.0.0",
+  "author": "Dan Lynch <pyramation@gmail.com>",
+  "description": "Transform PostgreSQL AST types for pgsql-parser",
+  "main": "index.js",
+  "module": "esm/index.js",
+  "types": "index.d.ts",
+  "homepage": "https://github.com/launchql/pgsql-parser",
+  "license": "SEE LICENSE IN LICENSE",
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/launchql/pgsql-parser"
+  },
+  "bugs": {
+    "url": "https://github.com/launchql/pgsql-parser/issues"
+  },
+  "scripts": {
+    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
+    "clean": "rimraf dist/**",
+    "prepare": "npm run build",
+    "build": "npm run build:proto && npm run clean; tsc; tsc -p tsconfig.esm.json; npm run copy",
+    "build:dev": "npm run clean; tsc --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
+    "build:proto": "ts-node scripts/pg-proto-parser",
+    "lint": "eslint . --fix",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "devDependencies": {
+    "pg-proto-parser": "^1.24.0"
+  },
+  "keywords": []
+}
