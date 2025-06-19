@@ -13,13 +13,14 @@
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
 ## Current Status (Corrected - Full Test Suite Results - June 19, 2025)
-- **Test Suites**: 30 failed, 322 passed, 352 total
-- **Tests**: 30 failed, 322 passed, 352 total  
-- **Pass Rate**: 91.5% test suites (322/352), 91.5% individual tests
-- **Last Updated**: June 19, 2025 17:22 UTC (after getNodeType() wrapped/unwrapped node handling - full yarn test without testNamePattern)
+- **Test Suites**: 31 failed, 321 passed, 352 total
+- **Tests**: 31 failed, 321 passed, 352 total  
+- **Pass Rate**: 91.2% test suites (321/352), 91.2% individual tests
+- **Last Updated**: June 19, 2025 17:30 UTC (after getNodeType() wrapped/unwrapped node handling - full yarn test without testNamePattern)
 
 **Recent Changes**:
-- ❌ **Regression Introduced**: Updated getNodeType() and getNodeData() methods to handle wrapped/unwrapped nodes - caused regression from 29 to 30 failed tests (91.8% → 91.5% pass rate)
+- ❌ **Stack Overflow Issues Persist**: Despite reverting getNodeType() to simple `Object.keys(node)[0]` approach, still seeing "Maximum call stack size exceeded" errors in tests like original-rules-create (RuleStmt) and original-upstream-object_address (CreateForeignTableStmt)
+- ❌ **Test Status**: Currently at 31 failed, 321 passed (91.2% pass rate) - slight regression from previous 30 failed tests
 - ✅ **CreateForeignTableStmt Fix**: Successfully fixed table name preservation in CREATE FOREIGN TABLE statements - `addr_nsp.genftable` now deparses correctly instead of losing table name
 - ⚠️ **Need Investigation**: Must identify what the getNodeType() wrapped/unwrapped node handling broke and fix regressions before continuing
 - ✅ **DefElem CreateRoleStmt connectionlimit Fix**: Added missing "connectionlimit" case to DefElem method - now generates "CONNECTION LIMIT 5" instead of "connectionlimit = '5'" for CREATE ROLE statements
@@ -61,9 +62,9 @@
 - ✅ **Comprehensive Quoting**: Dan's needsQuotes regex and RESERVED_WORDS set implemented in deparser
 
 **Current Focus**: Kitchen-sink tests only (ast-driven tests removed per Dan's request)
-**Progress**: 91.5% pass rate with 30 failing test suites - regression needs investigation and fix
-**Next Priority**: Fix regression from getNodeType() changes, then systematic fixes for remaining failing tests including AST mismatch and invalid SQL issues across various PostgreSQL constructs
-**Status**: Good progress overall - improved from ~50% to 91.5% pass rate, but need to fix recent regression before continuing
+**Progress**: 91.2% pass rate with 31 failing test suites - stack overflow issues need resolution
+**Next Priority**: Fix infinite recursion in RuleStmt, CreateForeignTableStmt, and other node types causing "Maximum call stack size exceeded" errors, then systematic fixes for remaining failing tests
+**Status**: Good progress overall - improved from ~50% to 91.2% pass rate, but critical stack overflow issues preventing further progress
 
 ## Current High-Impact Issues to Fix
 Based on latest `yarn test` output, key patterns causing multiple test failures:
