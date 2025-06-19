@@ -1717,6 +1717,27 @@ export class Deparser implements DeparserVisitor {
       output.push(this.formatter.parens(inheritStrs.join(', ')));
     }
 
+    if (node.partspec) {
+      output.push('PARTITION BY');
+      switch (node.partspec.strategy) {
+        case 'PARTITION_STRATEGY_HASH':
+          output.push('HASH');
+          break;
+        case 'PARTITION_STRATEGY_LIST':
+          output.push('LIST');
+          break;
+        case 'PARTITION_STRATEGY_RANGE':
+          output.push('RANGE');
+          break;
+      }
+      if (node.partspec.partParams && node.partspec.partParams.length > 0) {
+        const partParams = ListUtils.unwrapList(node.partspec.partParams)
+          .map(param => this.visit(param, context))
+          .join(', ');
+        output.push(`(${partParams})`);
+      }
+    }
+
     if (node.oncommit && node.oncommit !== 'ONCOMMIT_NOOP') {
       output.push('ON COMMIT');
       switch (node.oncommit) {
@@ -2644,6 +2665,29 @@ export class Deparser implements DeparserVisitor {
       }
     }
     
+    return output.join(' ');
+  }
+
+  PartitionElem(node: t.PartitionElem, context: DeparserContext): string {
+    const output: string[] = [];
+
+    if (node.name) {
+      output.push(QuoteUtils.quote(node.name));
+    } else if (node.expr) {
+      output.push(this.formatter.parens(this.visit(node.expr, context)));
+    }
+
+    if (node.collation && node.collation.length > 0) {
+      const collationStrs = ListUtils.unwrapList(node.collation).map(coll => this.visit(coll, context));
+      output.push('COLLATE');
+      output.push(collationStrs.join('.'));
+    }
+
+    if (node.opclass && node.opclass.length > 0) {
+      const opclassStrs = ListUtils.unwrapList(node.opclass).map(op => this.visit(op, context));
+      output.push(opclassStrs.join('.'));
+    }
+
     return output.join(' ');
   }
 
