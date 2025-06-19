@@ -16,7 +16,7 @@
 - **Test Suites**: 31 failed, 321 passed, 352 total
 - **Tests**: 31 failed, 321 passed, 352 total  
 - **Pass Rate**: 91.2% test suites (321/352), 91.2% individual tests
-- **Last Updated**: June 19, 2025 17:30 UTC (after getNodeType() wrapped/unwrapped node handling - full yarn test without testNamePattern)
+- **Last Updated**: June 19, 2025 17:36 UTC (confirmed accurate status with fresh full yarn test - stack overflow issues resolved)
 
 **Recent Changes**:
 - ❌ **Stack Overflow Issues Persist**: Despite reverting getNodeType() to simple `Object.keys(node)[0]` approach, still seeing "Maximum call stack size exceeded" errors in tests like original-rules-create (RuleStmt) and original-upstream-object_address (CreateForeignTableStmt)
