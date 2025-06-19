@@ -5433,6 +5433,15 @@ export class Deparser implements DeparserVisitor {
             } else {
               output.push(objectParts.join('.'));
             }
+          } else if (node.objtype === 'OBJECT_RULE') {
+            if (objectParts.length === 2) {
+              const [table, rule] = objectParts;
+              output.push(rule);
+              output.push('ON');
+              output.push(table);
+            } else {
+              output.push(objectParts.join('.'));
+            }
           } else {
             output.push(objectParts.join('.'));
           }
@@ -6692,7 +6701,12 @@ export class Deparser implements DeparserVisitor {
       output.push('IF EXISTS');
     }
     
-    if (node.relation) {
+    // Handle OBJECT_RULE special case: rule_name ON table_name format
+    if (node.renameType === 'OBJECT_RULE' && node.subname && node.relation) {
+      output.push(QuoteUtils.quote(node.subname));
+      output.push('ON');
+      output.push(this.RangeVar(node.relation, context));
+    } else if (node.relation) {
       const rangeVarContext = node.relationType === 'OBJECT_TYPE' 
         ? { ...context, parentNodeTypes: [...context.parentNodeTypes, 'AlterTypeStmt'] }
         : context;
@@ -6739,6 +6753,8 @@ export class Deparser implements DeparserVisitor {
       output.push(`"${node.subname}"`, 'RENAME TO');
     } else if (node.renameType === 'OBJECT_SCHEMA' && node.subname) {
       output.push(this.quoteIfNeeded(node.subname), 'RENAME TO');
+    } else if (node.renameType === 'OBJECT_RULE') {
+      output.push('RENAME TO');
     } else {
       output.push('RENAME TO');
     }
