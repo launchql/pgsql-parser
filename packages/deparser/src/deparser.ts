@@ -2890,7 +2890,15 @@ export class Deparser implements DeparserVisitor {
     
     if (node.opclass && node.opclass.length > 0) {
       const opclassStrs = ListUtils.unwrapList(node.opclass).map(op => this.visit(op, context));
-      output.push(opclassStrs.join('.'));
+      let opclassStr = opclassStrs.join('.');
+      
+      // Handle operator class parameters (opclassopts)
+      if (node.opclassopts && node.opclassopts.length > 0) {
+        const opclassOpts = ListUtils.unwrapList(node.opclassopts).map(opt => this.visit(opt, context));
+        opclassStr += `(${opclassOpts.join(', ')})`;
+      }
+      
+      output.push(opclassStr);
     }
     
     if (node.ordering) {
@@ -8372,7 +8380,12 @@ export class Deparser implements DeparserVisitor {
               const defValue = defElem.arg;
               
               if (defName && defValue) {
-                const preservedDefName = this.preserveOperatorDefElemCase(defName);
+                let preservedDefName;
+                if (Deparser.needsQuotes(defName)) {
+                  preservedDefName = `"${defName}"`;
+                } else {
+                  preservedDefName = this.preserveOperatorDefElemCase(defName);
+                }
                 
                 if ((defName === 'commutator' || defName === 'negator') && defValue.List) {
                   const listItems = ListUtils.unwrapList(defValue.List.items);
