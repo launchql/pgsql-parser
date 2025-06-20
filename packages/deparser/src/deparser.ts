@@ -1336,6 +1336,8 @@ export class Deparser implements DeparserVisitor {
         
         if (type === 'bpchar' && args) {
           typeName = 'char';
+        } else if (type === 'varchar') {
+          typeName = 'varchar';
         } else if (type === 'int4') {
           typeName = 'int';
         } else if (type === 'float8') {
@@ -1348,8 +1350,14 @@ export class Deparser implements DeparserVisitor {
           typeName = 'smallint';
         } else if (type === 'bool') {
           typeName = 'boolean';
-        } else if (type === 'interval' && context.parentNodeTypes.includes('TypeCast')) {
-          typeName = 'interval';
+        } else if (type === 'interval') {
+          // For interval types, strip pg_catalog prefix and handle field specifications properly
+          if (context.parentNodeTypes.includes('TypeCast')) {
+            typeName = 'interval';
+          } else {
+            // For CREATE TABLE column definitions, preserve interval field syntax
+            typeName = 'interval';
+          }
         } else if (type === 'timestamptz') {
           if (args) {
             typeName = `timestamp(${args}) with time zone`;
