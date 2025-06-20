@@ -9439,7 +9439,8 @@ export class Deparser implements DeparserVisitor {
     output.push('TO');
     
     if (node.relation) {
-      output.push(this.visit(node.relation as any, context));
+      // Handle relation node directly as RangeVar since it contains the RangeVar properties
+      output.push(this.RangeVar(node.relation as any, context));
     }
     
     if (node.whereClause) {
