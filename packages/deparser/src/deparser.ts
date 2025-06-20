@@ -118,11 +118,8 @@ export class Deparser implements DeparserVisitor {
       const leftStmt = this.SelectStmt(node.larg as t.SelectStmt, context);
       const rightStmt = this.SelectStmt(node.rarg as t.SelectStmt, context);
       
-      // Only add parentheses if the child statement has set operations
-      const needsLeftParens = (node.larg as t.SelectStmt).op && (node.larg as t.SelectStmt).op !== 'SETOP_NONE';
-      const needsRightParens = (node.rarg as t.SelectStmt).op && (node.rarg as t.SelectStmt).op !== 'SETOP_NONE';
-      
-      output.push(needsLeftParens ? this.formatter.parens(leftStmt) : leftStmt);
+      // Always add parentheses around individual SELECT statements in set operations
+      output.push(this.formatter.parens(leftStmt));
 
       switch (node.op) {
         case 'SETOP_UNION':
@@ -142,7 +139,7 @@ export class Deparser implements DeparserVisitor {
         output.push('ALL');
       }
 
-      output.push(needsRightParens ? this.formatter.parens(rightStmt) : rightStmt);
+      output.push(this.formatter.parens(rightStmt));
     }
 
     if (node.distinctClause) {
