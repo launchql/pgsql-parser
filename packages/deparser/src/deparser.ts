@@ -939,6 +939,35 @@ export class Deparser implements DeparserVisitor {
       }
     }
     
+    // Handle IS NORMALIZED function with SQL syntax
+    if (node.funcformat === 'COERCE_SQL_SYNTAX' && name === 'pg_catalog.is_normalized') {
+      const string = this.visit(args[0], context);
+      if (args.length === 2) {
+        const form = this.visit(args[1], context);
+        const formValue = form.replace(/'/g, '');
+        return `${string} IS ${formValue} NORMALIZED`;
+      } else {
+        return `${string} IS NORMALIZED`;
+      }
+    }
+    
+    // Handle NORMALIZE function with SQL syntax
+    if (node.funcformat === 'COERCE_SQL_SYNTAX' && name === 'pg_catalog.normalize') {
+      const string = this.visit(args[0], context);
+      if (args.length === 2) {
+        const form = this.visit(args[1], context);
+        const formValue = form.replace(/'/g, '');
+        return `normalize(${string}, ${formValue})`;
+      } else {
+        return `normalize(${string})`;
+      }
+    }
+    
+    // Handle SYSTEM_USER function with SQL syntax (no parentheses)
+    if (node.funcformat === 'COERCE_SQL_SYNTAX' && name === 'pg_catalog.system_user' && args.length === 0) {
+      return 'SYSTEM_USER';
+    }
+    
     // Handle OVERLAPS operator with special infix syntax
     if (name === 'pg_catalog.overlaps' && args.length === 4) {
       const left1 = this.visit(args[0], context);
