@@ -2894,7 +2894,13 @@ export class Deparser implements DeparserVisitor {
       
       // Handle operator class parameters (opclassopts)
       if (node.opclassopts && node.opclassopts.length > 0) {
-        const opclassOpts = ListUtils.unwrapList(node.opclassopts).map(opt => this.visit(opt, context));
+        const opclassOpts = ListUtils.unwrapList(node.opclassopts).map(opt => {
+          if (opt.DefElem && opt.DefElem.arg && this.getNodeType(opt.DefElem.arg) === 'String') {
+            const stringData = this.getNodeData(opt.DefElem.arg);
+            return `${opt.DefElem.defname}='${stringData.sval}'`;
+          }
+          return this.visit(opt, context);
+        });
         opclassStr += `(${opclassOpts.join(', ')})`;
       }
       
@@ -4666,6 +4672,34 @@ export class Deparser implements DeparserVisitor {
       return '';
     }
     
+    // Handle CREATE OPERATOR commutator/negator - MUST be first to prevent quoting
+    if (context.parentNodeTypes.includes('DefineStmt') && 
+        ['commutator', 'negator'].includes(node.defname.toLowerCase())) {
+      if (node.arg && this.getNodeType(node.arg) === 'List') {
+        const listData = this.getNodeData(node.arg);
+        const listItems = ListUtils.unwrapList(listData.items);
+        if (listItems.length === 1 && listItems[0].String) {
+          const preservedName = this.preserveOperatorDefElemCase(node.defname);
+          return `${preservedName} = ${listItems[0].String.sval}`;
+        }
+      }
+    }
+    
+    // Handle IndexElem opclassopts - MUST be first to preserve string types
+    if (context.parentNodeTypes.includes('IndexElem')) {
+      if (node.arg && this.getNodeType(node.arg) === 'String') {
+        const stringData = this.getNodeData(node.arg);
+        return `${node.defname}='${stringData.sval}'`;
+      }
+      return `${node.defname}=${this.visit(node.arg, { ...context, parentNodeTypes: [...context.parentNodeTypes, 'DefElem'] })}`;
+    }
+    
+    // Handle CREATE OPERATOR boolean flags - MUST be first to preserve case
+    if (context.parentNodeTypes.includes('DefineStmt') && 
+        ['hashes', 'merges'].includes(node.defname.toLowerCase()) && !node.arg) {
+      return node.defname.charAt(0).toUpperCase() + node.defname.slice(1).toLowerCase();
+    }
+    
     // Handle FDW-related statements and ALTER OPTIONS that use space format for options
     if (context.parentNodeTypes.includes('AlterFdwStmt') || context.parentNodeTypes.includes('CreateFdwStmt') || context.parentNodeTypes.includes('CreateForeignServerStmt') || context.parentNodeTypes.includes('AlterForeignServerStmt') || context.parentNodeTypes.includes('CreateUserMappingStmt') || context.parentNodeTypes.includes('AlterUserMappingStmt') || context.parentNodeTypes.includes('ColumnDef') || context.parentNodeTypes.includes('CreateForeignTableStmt') || context.parentNodeTypes.includes('ImportForeignSchemaStmt') || context.alterColumnOptions || context.alterTableOptions) {
       if (['handler', 'validator'].includes(node.defname)) {
@@ -5000,6 +5034,15 @@ export class Deparser implements DeparserVisitor {
         return `${node.defname}=${argValue}`;
       }
       
+      // Handle IndexElem opclassopts - preserve string values as strings
+      if (context.parentNodeTypes.includes('IndexElem')) {
+        if (node.arg && this.getNodeType(node.arg) === 'String') {
+          const stringData = this.getNodeData(node.arg);
+          return `${node.defname}='${stringData.sval}'`;
+        }
+        return `${node.defname}=${argValue}`;
+      }
+      
       // Handle CreateStmt table options - no quotes, compact formatting
       if (context.parentNodeTypes.includes('CreateStmt')) {
         // For numeric values, use the raw value without quotes
@@ -5055,6 +5098,14 @@ export class Deparser implements DeparserVisitor {
         // Handle operator arguments that should be Lists vs TypeNames
         if (['commutator', 'negator'].includes(node.defname.toLowerCase())) {
           if (node.arg) {
+            // For commutator/negator, preserve the original operator symbol without quotes
+            if (node.arg && this.getNodeType(node.arg) === 'List') {
+              const listData = this.getNodeData(node.arg);
+              const listItems = ListUtils.unwrapList(listData.items);
+              if (listItems.length === 1 && listItems[0].String) {
+                return `${preservedName} = ${listItems[0].String.sval}`;
+              }
+            }
             const unquotedValue = argValue.replace(/^"(.*)"$/, '$1');
             return `${preservedName} = ${unquotedValue}`;
           }
@@ -8387,13 +8438,23 @@ export class Deparser implements DeparserVisitor {
                   preservedDefName = this.preserveOperatorDefElemCase(defName);
                 }
                 
-                if ((defName === 'commutator' || defName === 'negator') && defValue.List) {
+                if ((defName.toLowerCase() === 'commutator' || defName.toLowerCase() === 'negator') && defValue.List) {
                   const listItems = ListUtils.unwrapList(defValue.List.items);
                   if (listItems.length === 1 && listItems[0].String) {
                     return `${preservedDefName} = ${listItems[0].String.sval}`;
                   }
                 }
+                // For commutator/negator, we already handled them above
+                if ((defName.toLowerCase() === 'commutator' || defName.toLowerCase() === 'negator')) {
+                  return `${preservedDefName} = ${this.visit(defValue, context)}`;
+                }
                 return `${preservedDefName} = ${this.visit(defValue, context)}`;
+              } else if (defName && !defValue) {
+                // Handle boolean flags like HASHES, MERGES - preserve original case
+                if (defName === 'Hashes' || defName === 'Merges') {
+                  return defName.toUpperCase();
+                }
+                return this.preserveOperatorDefElemCase(defName).toUpperCase();
               }
             }
             return this.visit(def, context);
