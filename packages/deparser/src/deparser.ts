@@ -4938,7 +4938,18 @@ export class Deparser implements DeparserVisitor {
           if (node.arg && this.getNodeType(node.arg) === 'List') {
             const listData = this.getNodeData(node.arg);
             const listItems = ListUtils.unwrapList(listData.items);
-            const parts = listItems.map(item => this.visit(item, context));
+            const parts = listItems.map(item => {
+              const itemData = this.getNodeData(item);
+              if (this.getNodeType(item) === 'String') {
+                // Check if this identifier needs quotes to preserve case
+                const value = itemData.sval;
+                if (Deparser.needsQuotes(value)) {
+                  return `"${value}"`;
+                }
+                return value;
+              }
+              return this.visit(item, context);
+            });
             return `OWNED BY ${parts.join('.')}`;
           } else {
             return `OWNED BY ${argValue}`;
