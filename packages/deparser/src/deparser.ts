@@ -115,7 +115,14 @@ export class Deparser implements DeparserVisitor {
         output.push('SELECT');
       }
     } else {
-      output.push(this.formatter.parens(this.SelectStmt(node.larg as t.SelectStmt, context)));
+      const leftStmt = this.SelectStmt(node.larg as t.SelectStmt, context);
+      const rightStmt = this.SelectStmt(node.rarg as t.SelectStmt, context);
+      
+      // Only add parentheses if the child statement has set operations
+      const needsLeftParens = (node.larg as t.SelectStmt).op && (node.larg as t.SelectStmt).op !== 'SETOP_NONE';
+      const needsRightParens = (node.rarg as t.SelectStmt).op && (node.rarg as t.SelectStmt).op !== 'SETOP_NONE';
+      
+      output.push(needsLeftParens ? this.formatter.parens(leftStmt) : leftStmt);
 
       switch (node.op) {
         case 'SETOP_UNION':
@@ -135,7 +142,7 @@ export class Deparser implements DeparserVisitor {
         output.push('ALL');
       }
 
-      output.push(this.formatter.parens(this.SelectStmt(node.rarg as t.SelectStmt, context)));
+      output.push(needsRightParens ? this.formatter.parens(rightStmt) : rightStmt);
     }
 
     if (node.distinctClause) {
@@ -2510,10 +2517,18 @@ export class Deparser implements DeparserVisitor {
     if (node.aliascolnames) {
       const colnames = ListUtils.unwrapList(node.aliascolnames);
       const colnameStrs = colnames.map(col => this.visit(col, context));
-      output.push(this.formatter.parens(colnameStrs.join(', ')));
+      // Don't add space before column list parentheses to match original formatting
+      output[output.length - 1] += this.formatter.parens(colnameStrs.join(', '));
     }
     
     output.push('AS');
+    
+    // Handle materialization clauses
+    if (node.ctematerialized === 'CTEMaterializeNever') {
+      output.push('NOT MATERIALIZED');
+    } else if (node.ctematerialized === 'CTEMaterializeAlways') {
+      output.push('MATERIALIZED');
+    }
     
     if (node.ctequery) {
       output.push(this.formatter.parens(this.visit(node.ctequery, context)));
