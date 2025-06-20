@@ -2106,10 +2106,35 @@ export class Deparser implements DeparserVisitor {
         output.push('GENERATED');
         if (node.generated_when === 'a') {
           output.push('ALWAYS');
-        } else if (node.generated_when === 's') {
+        } else if (node.generated_when === 'd') {
           output.push('BY DEFAULT');
         }
         output.push('AS IDENTITY');
+        if (node.options && node.options.length > 0) {
+          const optionStrs = ListUtils.unwrapList(node.options)
+            .map(option => {
+              if (option.DefElem) {
+                const defElem = option.DefElem;
+                const argValue = defElem.arg ? this.visit(defElem.arg, context) : '';
+                if (defElem.defname === 'start') {
+                  return `START WITH ${argValue}`;
+                } else if (defElem.defname === 'increment') {
+                  return `INCREMENT BY ${argValue}`;
+                } else if (defElem.defname === 'minvalue') {
+                  return `MINVALUE ${argValue}`;
+                } else if (defElem.defname === 'maxvalue') {
+                  return `MAXVALUE ${argValue}`;
+                } else if (defElem.defname === 'cache') {
+                  return `CACHE ${argValue}`;
+                } else if (defElem.defname === 'cycle') {
+                  return argValue === 'true' ? 'CYCLE' : 'NO CYCLE';
+                }
+                return `${defElem.defname.toUpperCase()} ${argValue}`;
+              }
+              return this.visit(option, context);
+            });
+          output.push(`(${optionStrs.join(' ')})`);
+        }
         break;
       case 'CONSTR_PRIMARY':
         output.push('PRIMARY KEY');
