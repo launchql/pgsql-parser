@@ -3350,8 +3350,8 @@ export class Deparser implements DeparserVisitor {
           const nodeData = this.getNodeData(arg);
           if (nodeData.sval !== undefined) {
             const svalValue = typeof nodeData.sval === 'object' ? nodeData.sval.sval : nodeData.sval;
-            if (svalValue.includes(' ') || svalValue.includes('-') || /[A-Z]/.test(svalValue) || /^\d/.test(svalValue) || svalValue.includes('.')) {
-              return `'${svalValue}'`;
+            if (svalValue.includes(' ') || svalValue.includes('-') || /[A-Z]/.test(svalValue) || /^\d/.test(svalValue) || svalValue.includes('.') || svalValue.includes('$')) {
+              return `"${svalValue}"`;
             }
             return svalValue;
           }
@@ -5819,11 +5819,17 @@ export class Deparser implements DeparserVisitor {
         case 'OBJECT_LARGEOBJECT':
           output.push('LARGE OBJECT');
           break;
+        case 'OBJECT_OPERATOR':
+          output.push('OPERATOR');
+          break;
         case 'OBJECT_OPCLASS':
           output.push('OPERATOR CLASS');
           break;
         case 'OBJECT_OPFAMILY':
           output.push('OPERATOR FAMILY');
+          break;
+        case 'OBJECT_POLICY':
+          output.push('POLICY');
           break;
         case 'OBJECT_TSPARSER':
           output.push('TEXT SEARCH PARSER');
@@ -5882,10 +5888,85 @@ export class Deparser implements DeparserVisitor {
             } else {
               output.push(objectParts.join('.'));
             }
+          } else if (node.objtype === 'OBJECT_OPERATOR') {
+            // Handle OPERATOR syntax: COMMENT ON OPERATOR -(NONE, integer) IS 'comment'
+            // For operators, we need to handle ObjectWithArgs structure
+            if (node.object && (node.object as any).ObjectWithArgs) {
+              const objWithArgs = (node.object as any).ObjectWithArgs;
+              let operatorName = objWithArgs.objname && objWithArgs.objname[0] && objWithArgs.objname[0].String 
+                ? objWithArgs.objname[0].String.sval : 'unknown';
+              
+              if (operatorName.startsWith('"') && operatorName.endsWith('"')) {
+                operatorName = operatorName.slice(1, -1);
+              }
+              
+              const args: string[] = [];
+              if (objWithArgs.objargs) {
+                objWithArgs.objargs.forEach((arg: any) => {
+                  if (!arg || Object.keys(arg).length === 0) {
+                    args.push('NONE');
+                  } else if (arg.TypeName) {
+                    const typeName = this.visit(arg, context);
+                    args.push(typeName);
+                  } else {
+                    args.push('unknown');
+                  }
+                });
+              }
+              
+              output.push(`${operatorName} (${args.join(', ')})`);
+            } else {
+              output.push(objectParts.join('.'));
+            }
+          } else if (node.objtype === 'OBJECT_OPCLASS' || node.objtype === 'OBJECT_OPFAMILY') {
+            // Handle OPERATOR CLASS/FAMILY syntax: don't prefix with schema
+            if (objectParts.length >= 2) {
+              const className = objectParts[objectParts.length - 1];
+              const accessMethod = objectParts[objectParts.length - 2];
+              output.push(`${className} USING ${accessMethod}`);
+            } else {
+              output.push(objectParts.join(' USING '));
+            }
+          } else if (node.objtype === 'OBJECT_POLICY') {
+            // Handle POLICY syntax: COMMENT ON POLICY policy_name ON table_name IS 'comment'
+            if (objectParts.length === 2) {
+              const [table, policy] = objectParts;
+              output.push(policy);
+              output.push('ON');
+              output.push(table);
+            } else {
+              output.push(objectParts.join('.'));
+            }
           } else {
             output.push(objectParts.join('.'));
           }
         }
+      } else if (node.objtype === 'OBJECT_OPERATOR' && node.object && (node.object as any).ObjectWithArgs) {
+        // Handle direct ObjectWithArgs for OPERATOR syntax: COMMENT ON OPERATOR -(NONE, integer) IS 'comment'
+        const objWithArgs = (node.object as any).ObjectWithArgs;
+        let operatorName = objWithArgs.objname && objWithArgs.objname[0] && objWithArgs.objname[0].String 
+          ? objWithArgs.objname[0].String.sval : 'unknown';
+        
+        // Remove quotes from operator name if present
+        if (operatorName.startsWith('"') && operatorName.endsWith('"')) {
+          operatorName = operatorName.slice(1, -1);
+        }
+        
+        const args: string[] = [];
+        if (objWithArgs.objargs) {
+          objWithArgs.objargs.forEach((arg: any) => {
+            if (!arg || Object.keys(arg).length === 0) {
+              args.push('NONE');
+            } else if (arg.TypeName) {
+              const typeName = this.visit(arg, context);
+              args.push(typeName);
+            } else {
+              args.push('unknown');
+            }
+          });
+        }
+        
+        output.push(`${operatorName}(${args.join(', ')})`);
       } else {
         const objContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'CommentStmt'], objtype: node.objtype };
         output.push(this.visit(node.object, objContext));
