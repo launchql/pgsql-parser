@@ -6050,8 +6050,15 @@ export class Deparser implements DeparserVisitor {
       output.push(this.RangeVar(node.table, context));
     }
     
+    // Handle AS RESTRICTIVE/PERMISSIVE clause
+    if (node.permissive === undefined) {
+      output.push('AS', 'RESTRICTIVE');
+    } else if (node.permissive === true) {
+      output.push('AS', 'PERMISSIVE');
+    }
+    
     if (node.cmd_name) {
-      output.push('FOR', node.cmd_name);
+      output.push('FOR', node.cmd_name.toUpperCase());
     }
     
     if (node.roles && node.roles.length > 0) {
@@ -7999,6 +8006,15 @@ export class Deparser implements DeparserVisitor {
       output.push('INITIALLY DEFERRED');
     }
 
+    // Handle REFERENCING clauses
+    if (node.transitionRels && node.transitionRels.length > 0) {
+      output.push('REFERENCING');
+      const transitionClauses = ListUtils.unwrapList(node.transitionRels)
+        .map(rel => this.visit(rel, context))
+        .join(' ');
+      output.push(transitionClauses);
+    }
+
     if (node.row) {
       output.push('FOR EACH ROW');
     } else {
@@ -8031,6 +8047,22 @@ export class Deparser implements DeparserVisitor {
       output.push('()');
     }
 
+    return output.join(' ');
+  }
+
+  TriggerTransition(node: t.TriggerTransition, context: DeparserContext): string {
+    const output: string[] = [];
+    
+    if (node.isNew) {
+      output.push('NEW TABLE AS');
+    } else {
+      output.push('OLD TABLE AS');
+    }
+    
+    if (node.name) {
+      output.push(QuoteUtils.quote(node.name));
+    }
+    
     return output.join(' ');
   }
 
