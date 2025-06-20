@@ -2136,6 +2136,15 @@ export class Deparser implements DeparserVisitor {
         output.push('GENERATED');
         if (node.generated_when === 'a') {
           output.push('ALWAYS');
+        } else if (node.generated_when === 's') {
+          output.push('BY DEFAULT');
+        }
+        output.push('AS IDENTITY');
+        break;
+      case 'CONSTR_IDENTITY':
+        output.push('GENERATED');
+        if (node.generated_when === 'a') {
+          output.push('ALWAYS');
         } else if (node.generated_when === 'd') {
           output.push('BY DEFAULT');
         }
@@ -4654,7 +4663,13 @@ export class Deparser implements DeparserVisitor {
           const statements = ListUtils.unwrapList(node.sql_body);
           if (statements.length === 0 || (statements.length === 1 && Object.keys(statements[0]).length === 0)) {
           } else {
-            const stmtStrings = statements
+            // Handle nested List structure in BEGIN ATOMIC blocks
+            let actualStatements = statements;
+            if (statements.length === 1 && statements[0].List) {
+              actualStatements = ListUtils.unwrapList(statements[0]);
+            }
+            
+            const stmtStrings = actualStatements
               .filter(stmt => stmt && Object.keys(stmt).length > 0) // Filter out empty objects
               .map(stmt => {
                 const stmtSql = this.visit(stmt, context);
@@ -4664,7 +4679,7 @@ export class Deparser implements DeparserVisitor {
               output.push(stmtStrings.join(' '));
             }
           }
-        } else {
+        }else {
           const bodyStmt = this.visit(node.sql_body, context);
           if (bodyStmt && !bodyStmt.endsWith(';')) {
             output.push(bodyStmt + ';');
