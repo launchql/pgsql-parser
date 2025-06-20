@@ -1871,9 +1871,9 @@ export class Deparser implements DeparserVisitor {
     
     if (context.parentNodeTypes.includes('ObjectWithArgs')) {
       // Check if this is a pure operator symbol (only operator characters, no alphanumeric)
-      const pureOperatorRegex = /^[+*/<>=~!@#%^&|`?]+$/;
+      const pureOperatorRegex = /^[+\-*/<>=~!@#%^&|`?]+$/;
       if (pureOperatorRegex.test(value)) {
-        return value; // Don't quote pure operator symbols like "="
+        return value; // Don't quote pure operator symbols like "=" or "-"
       }
     }
     
@@ -3360,13 +3360,18 @@ export class Deparser implements DeparserVisitor {
           const nodeData = this.getNodeData(arg);
           if (nodeData.sval !== undefined) {
             const svalValue = typeof nodeData.sval === 'object' ? nodeData.sval.sval : nodeData.sval;
-            if (svalValue.includes(' ') || svalValue.includes('-') || /[A-Z]/.test(svalValue) || /^\d/.test(svalValue) || svalValue.includes('.') || svalValue.includes('$') || svalValue.toLowerCase() === 'all') {
+            if (svalValue.includes(' ') || svalValue.includes('-') || /[A-Z]/.test(svalValue) || /^\d/.test(svalValue) || svalValue.includes('.') || svalValue.includes('$') || svalValue.toLowerCase() === 'all' || /^[+-]\d/.test(svalValue)) {
               return `"${svalValue}"`;
             }
             return svalValue;
           }
           return this.visit(arg, context);
         }).join(', ') : '';
+        
+        // Handle empty args case - don't output TO if no value
+        if (args.trim() === '') {
+          return `SET ${localPrefix}${node.name}`;
+        }
         return `SET ${localPrefix}${node.name} TO ${args}`;
       case 'VAR_SET_DEFAULT':
         return `SET ${node.name} TO DEFAULT`;
@@ -4353,6 +4358,9 @@ export class Deparser implements DeparserVisitor {
           output.push('SET ACCESS METHOD');
           if (node.name) {
             output.push(QuoteUtils.quote(node.name));
+          } else {
+            // Handle DEFAULT access method case
+            output.push('DEFAULT');
           }
           break;
         case 'AT_EnableRowSecurity':
