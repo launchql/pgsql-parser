@@ -3360,7 +3360,7 @@ export class Deparser implements DeparserVisitor {
           const nodeData = this.getNodeData(arg);
           if (nodeData.sval !== undefined) {
             const svalValue = typeof nodeData.sval === 'object' ? nodeData.sval.sval : nodeData.sval;
-            if (svalValue.includes(' ') || svalValue.includes('-') || /[A-Z]/.test(svalValue) || /^\d/.test(svalValue) || svalValue.includes('.') || svalValue.includes('$')) {
+            if (svalValue.includes(' ') || svalValue.includes('-') || /[A-Z]/.test(svalValue) || /^\d/.test(svalValue) || svalValue.includes('.') || svalValue.includes('$') || svalValue.toLowerCase() === 'all') {
               return `"${svalValue}"`;
             }
             return svalValue;
