@@ -19,11 +19,11 @@
 - **Last Updated**: June 20, 2025 21:52 UTC (confirmed 96.9% pass rate with complete kitchen sink test suite)
 
 ## Priority Failing Tests (Fix in this order)
-1. `original-policies-custom.test.ts` - AST mismatch after parse/deparse cycle
-2. `original-triggers-create.test.ts` - AST mismatch after parse/deparse cycle
-3. `original-upstream-create_type.test.ts` - AST mismatch after parse/deparse cycle
-4. `original-comments-custom.test.ts` - Invalid deparsed SQL
-5. `original-upstream-rules.test.ts` - AST mismatch after parse/deparse cycle
+1. `original-policies-custom.test.ts` - AST mismatch after parse/deparse cycle ✅ **FIXED**
+2. `original-triggers-create.test.ts` - AST mismatch after parse/deparse cycle ✅ **FIXED**
+3. `original-upstream-create_type.test.ts` - AST mismatch after parse/deparse cycle ✅ **FIXED**
+4. `original-comments-custom.test.ts` - Invalid deparsed SQL ✅ **FIXED**
+5. `original-upstream-rules.test.ts` - AST mismatch after parse/deparse cycle ✅ **FIXED**
 6. `original-statements-conflicts.test.ts` - AST mismatch after parse/deparse cycle
 7. `original-upstream-plpgsql.test.ts` - AST mismatch after parse/deparse cycle
 8. `latest-postgres-create_view.test.ts` - AST mismatch after parse/deparse cycle
