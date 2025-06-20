@@ -4183,6 +4183,8 @@ export class Deparser implements DeparserVisitor {
           output.push('ALTER COLUMN');
           if (node.name) {
             output.push(QuoteUtils.quote(node.name));
+          } else if (node.num !== undefined && node.num !== null) {
+            output.push(node.num.toString());
           }
           output.push('SET STATISTICS');
           if (node.def) {
