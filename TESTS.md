@@ -13,12 +13,14 @@
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
 ## Current Status (Latest - Full Test Suite Results - June 20, 2025)
-- **Test Suites**: 13 failed, 339 passed, 352 total
-- **Tests**: 13 failed, 339 passed, 352 total  
-- **Pass Rate**: 96.3% test suites (339/352), 96.3% individual tests
-- **Last Updated**: June 20, 2025 11:00 UTC (achieved 96.3% pass rate, exceeding 96% baseline target)
+- **Test Suites**: 11 failed, 341 passed, 352 total
+- **Tests**: 11 failed, 341 passed, 352 total  
+- **Pass Rate**: 96.9% test suites (341/352), 96.9% individual tests
+- **Last Updated**: June 20, 2025 16:40 UTC (achieved 96.9% pass rate, exceeding 96% baseline target)
 
 **Recent Changes**:
+- ✅ **ALTER OPERATOR Minus Symbol Fix**: Successfully added minus operator (\-) to pure operator regex pattern to prevent incorrect quoting of "-" operator in ALTER OPERATOR statements - resolves "ALTER OPERATOR - (integer, integer)" syntax errors - improves pass rate from 96.3% to 96.9% (11 failed, 341 passed)
+- ✅ **SET Statement Value Quoting Improvements**: Successfully enhanced VariableSetStmt method with special quoting for timezone values like "+02:00" and reserved word "all" handling - resolves SET statement AST mismatch issues
 - ✅ **SET STATISTICS Column Number Fix**: Successfully added column number support in AT_SetStatistics case for AlterTableCmd - handles both named columns (node.name) and numbered columns (node.num) - fixes "ALTER INDEX ... ALTER COLUMN SET STATISTICS" missing column number issue - resolves latest-postgres-create_index test failure, improving pass rate from 94.9% to 95.2%
 - ✅ **ALTER VIEW Column Rename Fix**: Successfully added OBJECT_VIEW support in RenameStmt OBJECT_COLUMN case - ensures "ALTER VIEW" is output instead of "ALTER TABLE" for view column renames - resolves AST mismatch in view rename operations
 - ✅ **UNION ALL Parentheses Fix**: Successfully fixed parentheses handling in UNION ALL operations by always preserving parentheses around individual SELECT statements in set operations - fixes syntax errors like "syntax error at or near 'UNION'" in complex subqueries - resolves 4 test failures, improving pass rate from 93.8% to 94.9%
