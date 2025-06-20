@@ -118,8 +118,15 @@ export class Deparser implements DeparserVisitor {
       const leftStmt = this.SelectStmt(node.larg as t.SelectStmt, context);
       const rightStmt = this.SelectStmt(node.rarg as t.SelectStmt, context);
       
-      // Always add parentheses around individual SELECT statements in set operations
-      output.push(this.formatter.parens(leftStmt));
+      // Only add parentheses if the operand is itself a set operation
+      const leftNeedsParens = node.larg && (node.larg as t.SelectStmt).op && (node.larg as t.SelectStmt).op !== 'SETOP_NONE';
+      const rightNeedsParens = node.rarg && (node.rarg as t.SelectStmt).op && (node.rarg as t.SelectStmt).op !== 'SETOP_NONE';
+      
+      if (leftNeedsParens) {
+        output.push(this.formatter.parens(leftStmt));
+      } else {
+        output.push(leftStmt);
+      }
 
       switch (node.op) {
         case 'SETOP_UNION':
@@ -139,7 +146,11 @@ export class Deparser implements DeparserVisitor {
         output.push('ALL');
       }
 
-      output.push(this.formatter.parens(rightStmt));
+      if (rightNeedsParens) {
+        output.push(this.formatter.parens(rightStmt));
+      } else {
+        output.push(rightStmt);
+      }
     }
 
     if (node.distinctClause) {
@@ -1342,6 +1353,8 @@ export class Deparser implements DeparserVisitor {
           typeName = 'char';
         } else if (type === 'varchar') {
           typeName = 'varchar';
+        } else if (type === 'numeric') {
+          typeName = 'numeric';
         } else if (type === 'int4') {
           typeName = 'int';
         } else if (type === 'float8') {
@@ -1416,7 +1429,7 @@ export class Deparser implements DeparserVisitor {
       });
       output.push('AS', this.quoteIfNeeded(name) + this.formatter.parens(quotedColnames.join(', ')));
     } else {
-      output.push('AS', this.quoteIfNeeded(name));
+      output.push(this.quoteIfNeeded(name));
     }
 
     return output.join(' ');
@@ -1736,8 +1749,12 @@ export class Deparser implements DeparserVisitor {
         typeName === '"char"' ||
         typeName.startsWith('bpchar') ||
         typeName === 'bytea' ||
-        typeName === 'orderedarray') {
-      return `${arg}::${typeName}`;
+        typeName === 'orderedarray' ||
+        typeName.startsWith('numeric') ||
+        typeName.startsWith('pg_catalog.numeric')) {
+      // Remove pg_catalog prefix for :: syntax
+      const cleanTypeName = typeName.replace('pg_catalog.', '');
+      return `${arg}::${cleanTypeName}`;
     }
     
     return `CAST(${arg} AS ${typeName})`;
@@ -3168,7 +3185,7 @@ export class Deparser implements DeparserVisitor {
         else if (!node.quals && (!node.usingClause || node.usingClause.length === 0)) {
           joinStr += 'CROSS JOIN';
         } else {
-          joinStr += 'INNER JOIN';
+          joinStr += 'JOIN';
         }
         break;
       case 'JOIN_LEFT':
