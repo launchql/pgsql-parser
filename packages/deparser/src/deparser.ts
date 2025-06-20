@@ -1368,6 +1368,10 @@ export class Deparser implements DeparserVisitor {
       const colnames = ListUtils.unwrapList(node.colnames);
       const quotedColnames = colnames.map(col => {
         const colStr = this.deparse(col, context);
+        // Check if already quoted to avoid double-quoting
+        if (colStr.startsWith('"') && colStr.endsWith('"')) {
+          return colStr;
+        }
         return this.quoteIfNeeded(colStr);
       });
       output.push('AS', this.quoteIfNeeded(name) + this.formatter.parens(quotedColnames.join(', ')));
@@ -5083,6 +5087,9 @@ export class Deparser implements DeparserVisitor {
 
         
         // CreateExtensionStmt cases (schema, version, etc.)
+        if (node.defname === 'cascade') {
+          return argValue === 'true' ? 'CASCADE' : '';
+        }
         return `${node.defname.toUpperCase()} ${argValue}`;
       }
       
