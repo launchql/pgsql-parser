@@ -9945,7 +9945,13 @@ export class Deparser implements DeparserVisitor {
   }
 
   AlterFunctionStmt(node: t.AlterFunctionStmt, context: DeparserContext): string {
-    const output: string[] = ['ALTER FUNCTION'];
+    const output: string[] = ['ALTER'];
+    
+    if (node.objtype === 'OBJECT_PROCEDURE') {
+      output.push('PROCEDURE');
+    } else {
+      output.push('FUNCTION');
+    }
     
     if (node.func) {
       output.push(this.ObjectWithArgs(node.func, context));
