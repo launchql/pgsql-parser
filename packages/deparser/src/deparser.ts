@@ -5277,6 +5277,15 @@ export class Deparser implements DeparserVisitor {
           return preservedName.toUpperCase();
         }
         
+        // Handle CREATE AGGREGATE quoted identifiers - preserve quotes when needed
+        if (Deparser.needsQuotes(node.defname)) {
+          const quotedDefname = `"${node.defname}"`;
+          if (node.arg) {
+            return `${quotedDefname} = ${argValue}`;
+          }
+          return quotedDefname;
+        }
+        
         // Handle other operator parameters with preserved case
         if (preservedName !== node.defname) {
           if (node.arg) {
@@ -8786,11 +8795,18 @@ export class Deparser implements DeparserVisitor {
               const defValue = defElem.arg;
               
               if (defName && defValue) {
+                let preservedDefName;
+                if (Deparser.needsQuotes(defName)) {
+                  preservedDefName = `"${defName}"`;
+                } else {
+                  preservedDefName = defName;
+                }
+                
                 // Handle String arguments with single quotes for string literals
                 if (defValue.String) {
-                  return `${defName} = '${defValue.String.sval}'`;
+                  return `${preservedDefName} = '${defValue.String.sval}'`;
                 }
-                return `${defName} = ${this.visit(defValue, context)}`;
+                return `${preservedDefName} = ${this.visit(defValue, context)}`;
               }
             }
             return this.visit(def, context);
