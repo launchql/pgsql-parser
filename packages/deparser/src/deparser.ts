@@ -3163,23 +3163,26 @@ export class Deparser implements DeparserVisitor {
     
     let result = output.join(' ');
     
-    // Handle JOIN alias - check both regular alias and join_using_alias
-    const joinAlias = node.alias || node.join_using_alias;
-    if (joinAlias && joinAlias.aliasname) {
-      let aliasStr = joinAlias.aliasname;
-      if (joinAlias.colnames && joinAlias.colnames.length > 0) {
-        const colNames = ListUtils.unwrapList(joinAlias.colnames);
+    // Handle join_using_alias first (for USING clause aliases like "AS x")
+    if (node.join_using_alias && node.join_using_alias.aliasname) {
+      let aliasStr = node.join_using_alias.aliasname;
+      if (node.join_using_alias.colnames && node.join_using_alias.colnames.length > 0) {
+        const colNames = ListUtils.unwrapList(node.join_using_alias.colnames);
         const columnList = colNames.map(col => this.visit(col, context)).join(', ');
         aliasStr += `(${columnList})`;
       }
-      
-      // For join_using_alias, add alias directly without parentheses
-      if (node.join_using_alias) {
-        result += ` AS ${aliasStr}`;
-      } else {
-        // For regular alias, wrap in parentheses
-        result = `(${result}) AS ${aliasStr}`;
+      result += ` AS ${aliasStr}`;
+    }
+    
+    // Handle regular alias (for outer table aliases like "y")
+    if (node.alias && node.alias.aliasname) {
+      let aliasStr = node.alias.aliasname;
+      if (node.alias.colnames && node.alias.colnames.length > 0) {
+        const colNames = ListUtils.unwrapList(node.alias.colnames);
+        const columnList = colNames.map(col => this.visit(col, context)).join(', ');
+        aliasStr += `(${columnList})`;
       }
+      result = `(${result}) ${aliasStr}`;
     }
     
     return result;
