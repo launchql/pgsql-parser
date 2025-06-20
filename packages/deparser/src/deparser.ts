@@ -524,7 +524,8 @@ export class Deparser implements DeparserVisitor {
       node.CaseExpr ||
       node.CoalesceExpr ||
       node.SubLink ||
-      node.A_Expr
+      node.A_Expr ||
+      node.TypeCast
     );
   }
 
@@ -994,8 +995,17 @@ export class Deparser implements DeparserVisitor {
 
     // Handle AT TIME ZONE operator with special infix syntax
     if (name === 'pg_catalog.timezone' && args.length === 2) {
-      const timestamp = this.visit(args[1], context);
+      let timestamp = this.visit(args[1], context);
       const timezone = this.visit(args[0], context);
+      
+      // Add parentheses around timestamp if it contains arithmetic operations
+      if (args[1] && 'A_Expr' in args[1] && args[1].A_Expr?.kind === 'AEXPR_OP') {
+        const op = this.deparseOperatorName(ListUtils.unwrapList(args[1].A_Expr.name));
+        if (op === '+' || op === '-' || op === '*' || op === '/') {
+          timestamp = this.formatter.parens(timestamp);
+        }
+      }
+      
       return `${timestamp} AT TIME ZONE ${timezone}`;
     }
 
@@ -1429,7 +1439,7 @@ export class Deparser implements DeparserVisitor {
       });
       output.push('AS', this.quoteIfNeeded(name) + this.formatter.parens(quotedColnames.join(', ')));
     } else {
-      output.push(this.quoteIfNeeded(name));
+      output.push('AS', this.quoteIfNeeded(name));
     }
 
     return output.join(' ');
@@ -1751,7 +1761,8 @@ export class Deparser implements DeparserVisitor {
         typeName === 'bytea' ||
         typeName === 'orderedarray' ||
         typeName.startsWith('numeric') ||
-        typeName.startsWith('pg_catalog.numeric')) {
+        typeName.startsWith('pg_catalog.numeric') ||
+        typeName === 'date') {
       // Remove pg_catalog prefix for :: syntax
       const cleanTypeName = typeName.replace('pg_catalog.', '');
       return `${arg}::${cleanTypeName}`;
@@ -5162,9 +5173,14 @@ export class Deparser implements DeparserVisitor {
                 return `AS $$${body}$$`;
               }
             } else {
-              return `AS ${bodyParts.map(part => `'${part.replace(/'/g, "''")}'`).join(', ')}`;
+              return `AS ${bodyParts.map(part => `$$${part}$$`).join(', ')}`;
             }
           } else {
+            // Handle case where argValue contains comma-separated values that should be separate dollar-quoted strings
+            if (argValue.includes(',') && !argValue.includes('SELECT') && !argValue.includes('INSERT') && !argValue.includes('UPDATE') && !argValue.includes('DELETE')) {
+              const parts = argValue.split(',').map(part => part.trim());
+              return `AS ${parts.map(part => `$$${part}$$`).join(', ')}`;
+            }
             // Check if argValue contains $$ to avoid conflicts
             if (argValue.includes('$$')) {
               return `AS '${argValue.replace(/'/g, "''")}'`;
@@ -6435,11 +6451,11 @@ export class Deparser implements DeparserVisitor {
         }
       }
       
-      if (codeArg) {
-        output.push(codeArg);
-      }
       if (languageArg) {
         output.push(languageArg);
+      }
+      if (codeArg) {
+        output.push(codeArg);
       }
     }
     
