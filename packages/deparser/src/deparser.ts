@@ -5579,6 +5579,9 @@ export class Deparser implements DeparserVisitor {
         case 'OBJECT_FOREIGN_TABLE':
           output.push('FOREIGN TABLE');
           break;
+        case 'OBJECT_STATISTIC_EXT':
+          output.push('STATISTICS');
+          break;
         default:
           output.push(node.objtype.replace('OBJECT_', ''));
       }
