@@ -1323,7 +1323,7 @@ export class Deparser implements DeparserVisitor {
       const [catalog, type] = names;
       
       if (catalog === 'pg_catalog' && type === 'char') {
-        output.push(mods('pg_catalog."char"', args));
+        output.push(mods('pg_catalog.char', args));
         return output.join(' ');
       }
       
@@ -1348,6 +1348,8 @@ export class Deparser implements DeparserVisitor {
           typeName = 'smallint';
         } else if (type === 'bool') {
           typeName = 'boolean';
+        } else if (type === 'interval' && context.parentNodeTypes.includes('TypeCast')) {
+          typeName = 'interval';
         } else if (type === 'timestamptz') {
           if (args) {
             typeName = `timestamp(${args}) with time zone`;
