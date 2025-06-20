@@ -12,11 +12,11 @@
 
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
-## Current Status (Corrected - Full Test Suite Results - June 20, 2025)
-- **Test Suites**: 17 failed, 335 passed, 352 total
-- **Tests**: 17 failed, 335 passed, 352 total  
-- **Pass Rate**: 95.2% test suites (335/352), 95.2% individual tests
-- **Last Updated**: June 20, 2025 03:40 UTC (accurate full test suite results - SET STATISTICS column number fix applied)
+## Current Status (Latest - Full Test Suite Results - June 20, 2025)
+- **Test Suites**: 14 failed, 338 passed, 352 total
+- **Tests**: 14 failed, 338 passed, 352 total  
+- **Pass Rate**: 96.0% test suites (338/352), 96.0% individual tests
+- **Last Updated**: June 20, 2025 05:19 UTC (systematic AST mismatch investigation completed)
 
 **Recent Changes**:
 - ✅ **SET STATISTICS Column Number Fix**: Successfully added column number support in AT_SetStatistics case for AlterTableCmd - handles both named columns (node.name) and numbered columns (node.num) - fixes "ALTER INDEX ... ALTER COLUMN SET STATISTICS" missing column number issue - resolves latest-postgres-create_index test failure, improving pass rate from 94.9% to 95.2%
