@@ -7339,6 +7339,8 @@ export class Deparser implements DeparserVisitor {
           output.push('LANGUAGE');
         } else if (node.objtype === 'OBJECT_FUNCTION') {
           output.push('FUNCTION');
+        } else if (node.objtype === 'OBJECT_PROCEDURE') {
+          output.push('PROCEDURE');
         } else if (node.objtype === 'OBJECT_TYPE') {
           output.push('TYPE');
         } else if (node.objtype === 'OBJECT_DOMAIN') {
