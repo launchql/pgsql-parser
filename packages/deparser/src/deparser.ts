@@ -529,8 +529,7 @@ export class Deparser implements DeparserVisitor {
     const output: string[] = [];
 
     if (node.withClause) {
-      const withResult = this.visit(node.withClause as Node, context);
-      output.push(withResult);
+      output.push(this.WithClause(node.withClause, context));
     }
 
     output.push('INSERT INTO');
@@ -554,7 +553,12 @@ export class Deparser implements DeparserVisitor {
       output.push('ON CONFLICT');
       if (node.onConflictClause.infer) {
         const infer = node.onConflictClause.infer;
-        if (infer.indexElems) {
+        
+        // Handle ON CONSTRAINT clause
+        if (infer.conname) {
+          output.push('ON CONSTRAINT');
+          output.push(infer.conname);
+        } else if (infer.indexElems) {
           const elems = ListUtils.unwrapList(infer.indexElems);
           const indexElems = elems.map(elem => this.visit(elem as Node, context));
           output.push(this.formatter.parens(indexElems.join(', ')));
@@ -1730,7 +1734,9 @@ export class Deparser implements DeparserVisitor {
     if (typeName.startsWith('interval') || 
         typeName.startsWith('char') || 
         typeName === '"char"' ||
-        typeName.startsWith('bpchar')) {
+        typeName.startsWith('bpchar') ||
+        typeName === 'bytea' ||
+        typeName === 'orderedarray') {
       return `${arg}::${typeName}`;
     }
     
@@ -3369,14 +3375,17 @@ export class Deparser implements DeparserVisitor {
         }).join(', ') : '';
         
         // Handle empty args case - don't output TO if no value
+        const paramName = node.name && (node.name.includes('.') || node.name.includes('-') || /[A-Z]/.test(node.name)) ? `"${node.name}"` : node.name;
         if (args.trim() === '') {
-          return `SET ${localPrefix}${node.name}`;
+          return `SET ${localPrefix}${paramName}`;
         }
-        return `SET ${localPrefix}${node.name} TO ${args}`;
+        return `SET ${localPrefix}${paramName} TO ${args}`;
       case 'VAR_SET_DEFAULT':
-        return `SET ${node.name} TO DEFAULT`;
+        const defaultParamName = node.name && (node.name.includes('.') || node.name.includes('-') || /[A-Z]/.test(node.name)) ? `"${node.name}"` : node.name;
+        return `SET ${defaultParamName} TO DEFAULT`;
       case 'VAR_SET_CURRENT':
-        return `SET ${node.name} FROM CURRENT`;
+        const currentParamName = node.name && (node.name.includes('.') || node.name.includes('-') || /[A-Z]/.test(node.name)) ? `"${node.name}"` : node.name;
+        return `SET ${currentParamName} FROM CURRENT`;
       case 'VAR_SET_MULTI':
         if (node.name === 'TRANSACTION' || node.name === 'SESSION CHARACTERISTICS') {
           // Handle SET TRANSACTION statements specially
@@ -3443,7 +3452,8 @@ export class Deparser implements DeparserVisitor {
           return `SET ${assignments}`;
         }
       case 'VAR_RESET':
-        return `RESET ${node.name}`;
+        const resetParamName = node.name && (node.name.includes('.') || node.name.includes('-') || /[A-Z]/.test(node.name)) ? `"${node.name}"` : node.name;
+        return `RESET ${resetParamName}`;
       case 'VAR_RESET_ALL':
         return 'RESET ALL';
       default:
@@ -5304,6 +5314,15 @@ export class Deparser implements DeparserVisitor {
         if (Deparser.needsQuotes(node.defname)) {
           const quotedDefname = `"${node.defname}"`;
           if (node.arg) {
+            if (this.getNodeType(node.arg) === 'String') {
+              const stringData = this.getNodeData(node.arg);
+              // Handle boolean string values without quotes
+              if (stringData.sval === 'true' || stringData.sval === 'false') {
+                return `${quotedDefname} = ${stringData.sval}`;
+              }
+              // Regular string literals get single quotes
+              return `${quotedDefname} = '${stringData.sval}'`;
+            }
             return `${quotedDefname} = ${argValue}`;
           }
           return quotedDefname;
@@ -5860,6 +5879,9 @@ export class Deparser implements DeparserVisitor {
         case 'OBJECT_TSCONFIGURATION':
           output.push('TEXT SEARCH CONFIGURATION');
           break;
+        case 'OBJECT_TRANSFORM':
+          output.push('TRANSFORM');
+          break;
         default:
           output.push(node.objtype.replace('OBJECT_', ''));
       }
@@ -5951,6 +5973,17 @@ export class Deparser implements DeparserVisitor {
               output.push(policy);
               output.push('ON');
               output.push(table);
+            } else {
+              output.push(objectParts.join('.'));
+            }
+          } else if (node.objtype === 'OBJECT_TRANSFORM') {
+            // Handle TRANSFORM syntax: COMMENT ON TRANSFORM FOR type LANGUAGE language IS 'comment'
+            if (objectParts.length === 2) {
+              const [type, language] = objectParts;
+              output.push('FOR');
+              output.push(type);
+              output.push('LANGUAGE');
+              output.push(language);
             } else {
               output.push(objectParts.join('.'));
             }
