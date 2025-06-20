@@ -8685,13 +8685,11 @@ export class Deparser implements DeparserVisitor {
         }
         
         if (node.definition && node.definition.length > 0) {
-          output.push('(');
           const defineStmtContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'DefineStmt'] };
           const definitions = ListUtils.unwrapList(node.definition).map(def => {
             return this.visit(def, defineStmtContext);
           });
-          output.push(definitions.join(', '));
-          output.push(')');
+          output.push(`(${definitions.join(', ')})`);
         }
         break;
         
