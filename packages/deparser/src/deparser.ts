@@ -1368,9 +1368,9 @@ export class Deparser implements DeparserVisitor {
       const colnames = ListUtils.unwrapList(node.colnames);
       const quotedColnames = colnames.map(col => {
         const colStr = this.deparse(col, context);
-        return QuoteUtils.quote(colStr);
+        return this.quoteIfNeeded(colStr);
       });
-      output.push('AS', QuoteUtils.quote(name) + this.formatter.parens(quotedColnames.join(', ')));
+      output.push('AS', this.quoteIfNeeded(name) + this.formatter.parens(quotedColnames.join(', ')));
     } else {
       output.push('AS', this.quoteIfNeeded(name));
     }
