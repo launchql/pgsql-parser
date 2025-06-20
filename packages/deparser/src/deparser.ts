@@ -5701,6 +5701,27 @@ export class Deparser implements DeparserVisitor {
         case 'OBJECT_STATISTIC_EXT':
           output.push('STATISTICS');
           break;
+        case 'OBJECT_LARGEOBJECT':
+          output.push('LARGE OBJECT');
+          break;
+        case 'OBJECT_OPCLASS':
+          output.push('OPERATOR CLASS');
+          break;
+        case 'OBJECT_OPFAMILY':
+          output.push('OPERATOR FAMILY');
+          break;
+        case 'OBJECT_TSPARSER':
+          output.push('TEXT SEARCH PARSER');
+          break;
+        case 'OBJECT_TSDICTIONARY':
+          output.push('TEXT SEARCH DICTIONARY');
+          break;
+        case 'OBJECT_TSTEMPLATE':
+          output.push('TEXT SEARCH TEMPLATE');
+          break;
+        case 'OBJECT_TSCONFIGURATION':
+          output.push('TEXT SEARCH CONFIGURATION');
+          break;
         default:
           output.push(node.objtype.replace('OBJECT_', ''));
       }
@@ -8179,18 +8200,22 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.oldVal && node.newVal) {
-      output.push('RENAME', 'VALUE', `'${node.oldVal}'`, 'TO', `'${node.newVal}'`);
+      const escapedOldVal = node.oldVal.replace(/'/g, "''");
+      const escapedNewVal = node.newVal.replace(/'/g, "''");
+      output.push('RENAME', 'VALUE', `'${escapedOldVal}'`, 'TO', `'${escapedNewVal}'`);
     } else if (node.newVal) {
       output.push('ADD', 'VALUE');
       if (node.skipIfNewValExists) {
         output.push('IF NOT EXISTS');
       }
-      output.push(`'${node.newVal}'`);
+      const escapedNewVal = node.newVal.replace(/'/g, "''");
+      output.push(`'${escapedNewVal}'`);
       if (node.newValNeighbor) {
+        const escapedNeighbor = node.newValNeighbor.replace(/'/g, "''");
         if (node.newValIsAfter) {
-          output.push('AFTER', `'${node.newValNeighbor}'`);
+          output.push('AFTER', `'${escapedNeighbor}'`);
         } else {
-          output.push('BEFORE', `'${node.newValNeighbor}'`);
+          output.push('BEFORE', `'${escapedNeighbor}'`);
         }
       }
     }
