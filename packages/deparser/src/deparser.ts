@@ -3309,8 +3309,18 @@ export class Deparser implements DeparserVisitor {
     switch (node.kind) {
       case 'VAR_SET_VALUE':
         const localPrefix = node.is_local ? 'LOCAL ' : '';
-        const args = node.args ? ListUtils.unwrapList(node.args).map(arg => this.visit(arg, context)).join(', ') : '';
-        return `SET ${localPrefix}${node.name} = ${args}`;
+        const args = node.args ? ListUtils.unwrapList(node.args).map(arg => {
+          const nodeData = this.getNodeData(arg);
+          if (nodeData.sval !== undefined) {
+            const svalValue = typeof nodeData.sval === 'object' ? nodeData.sval.sval : nodeData.sval;
+            if (svalValue.includes(' ') || svalValue.includes('-') || /[A-Z]/.test(svalValue) || /^\d/.test(svalValue) || svalValue.includes('.')) {
+              return `'${svalValue}'`;
+            }
+            return svalValue;
+          }
+          return this.visit(arg, context);
+        }).join(', ') : '';
+        return `SET ${localPrefix}${node.name} TO ${args}`;
       case 'VAR_SET_DEFAULT':
         return `SET ${node.name} TO DEFAULT`;
       case 'VAR_SET_CURRENT':
