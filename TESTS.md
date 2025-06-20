@@ -16,7 +16,20 @@
 - **Test Suites**: 11 failed, 341 passed, 352 total
 - **Tests**: 11 failed, 341 passed, 352 total  
 - **Pass Rate**: 96.9% test suites (341/352), 96.9% individual tests
-- **Last Updated**: June 20, 2025 16:40 UTC (achieved 96.9% pass rate, exceeding 96% baseline target)
+- **Last Updated**: June 20, 2025 21:52 UTC (confirmed 96.9% pass rate with complete kitchen sink test suite)
+
+**Currently Failing Tests (11 total)**:
+1. `original-upstream-plpgsql.test.ts` - AST mismatch after parse/deparse cycle
+2. `original-upstream-rules.test.ts` - AST mismatch after parse/deparse cycle  
+3. `latest-postgres-create_view.test.ts` - AST mismatch after parse/deparse cycle
+4. `latest-postgres-create_function_sql.test.ts` - AST mismatch after parse/deparse cycle
+5. `latest-postgres-create_am.test.ts` - Invalid deparsed SQL
+6. `latest-postgres-create_type.test.ts` - AST mismatch after parse/deparse cycle
+7. `original-upstream-create_type.test.ts` - AST mismatch after parse/deparse cycle
+8. `original-comments-custom.test.ts` - Invalid deparsed SQL
+9. `original-policies-custom.test.ts` - AST mismatch after parse/deparse cycle
+10. `original-triggers-create.test.ts` - AST mismatch after parse/deparse cycle
+11. `original-statements-conflicts.test.ts` - AST mismatch after parse/deparse cycle
 
 **Recent Changes**:
 - ✅ **ALTER OPERATOR Minus Symbol Fix**: Successfully added minus operator (\-) to pure operator regex pattern to prevent incorrect quoting of "-" operator in ALTER OPERATOR statements - resolves "ALTER OPERATOR - (integer, integer)" syntax errors - improves pass rate from 96.3% to 96.9% (11 failed, 341 passed)
