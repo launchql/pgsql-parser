@@ -5162,7 +5162,31 @@ export class Deparser implements DeparserVisitor {
       
       if (context.parentNodeTypes.includes('CreateFunctionStmt') || context.parentNodeTypes.includes('AlterFunctionStmt')) {
         if (node.defname === 'as') {
-          if (Array.isArray(argValue)) {
+          // Handle List type (multiple function body strings)
+          if (node.arg && (node.arg as any).List) {
+            const listNode = (node.arg as any).List;
+            const listItems = listNode.items || [];
+            const bodyParts = listItems.map((item: any) => {
+              if (item.String) {
+                return item.String.sval;
+              }
+              return this.visit(item, context);
+            });
+            
+            if (bodyParts.length === 1) {
+              const body = bodyParts[0];
+              // Check if body contains $$ to avoid conflicts
+              if (body.includes('$$')) {
+                return `AS '${body.replace(/'/g, "''")}'`;
+              } else {
+                return `AS $$${body}$$`;
+              }
+            } else {
+              return `AS ${bodyParts.map((part: string) => `$$${part}$$`).join(', ')}`;
+            }
+          }
+          // Handle Array type (legacy support)
+          else if (Array.isArray(argValue)) {
             const bodyParts = argValue;
             if (bodyParts.length === 1) {
               const body = bodyParts[0];
@@ -5175,12 +5199,9 @@ export class Deparser implements DeparserVisitor {
             } else {
               return `AS ${bodyParts.map(part => `$$${part}$$`).join(', ')}`;
             }
-          } else {
-            // Handle case where argValue contains comma-separated values that should be separate dollar-quoted strings
-            if (argValue.includes(',') && !argValue.includes('SELECT') && !argValue.includes('INSERT') && !argValue.includes('UPDATE') && !argValue.includes('DELETE')) {
-              const parts = argValue.split(',').map(part => part.trim());
-              return `AS ${parts.map(part => `$$${part}$$`).join(', ')}`;
-            }
+          } 
+          // Handle String type (single function body)
+          else {
             // Check if argValue contains $$ to avoid conflicts
             if (argValue.includes('$$')) {
               return `AS '${argValue.replace(/'/g, "''")}'`;
