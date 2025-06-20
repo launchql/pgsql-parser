@@ -13,12 +13,14 @@
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
 ## Current Status (Corrected - Full Test Suite Results - June 20, 2025)
-- **Test Suites**: 25 failed, 327 passed, 352 total
-- **Tests**: 25 failed, 327 passed, 352 total  
-- **Pass Rate**: 92.9% test suites (327/352), 92.9% individual tests
-- **Last Updated**: June 20, 2025 00:05 UTC (accurate full test suite results - RuleStmt table name fix successful)
+- **Test Suites**: 24 failed, 328 passed, 352 total
+- **Tests**: 24 failed, 328 passed, 352 total  
+- **Pass Rate**: 93.2% test suites (328/352), 93.2% individual tests
+- **Last Updated**: June 20, 2025 00:40 UTC (accurate full test suite results - COMMENT ON STATISTICS fix successful)
 
 **Recent Changes**:
+- ✅ **COMMENT ON STATISTICS Fix**: Successfully added OBJECT_STATISTIC_EXT case to CommentStmt method to convert to STATISTICS instead of STATISTIC_EXT in COMMENT syntax - resolves "Invalid deparsed SQL" error in latest-postgres-create_table_like test - improved from 25 to 24 failed tests (93.2% pass rate)
+- ✅ **REPLICATION Role Option Fix**: Successfully fixed DefElem method to convert isreplication=true to REPLICATION instead of ISREPLICATION - resolves AST mismatch in CREATE ROLE statements with replication options - maintained 92.9% pass rate with improved CREATE ROLE support
 - ✅ **RuleStmt Table Name Fix**: Successfully resolved missing table name in CREATE RULE statements after TO clause - fixed RuleStmt method to call RangeVar directly instead of using visitor - resolves AST mismatch issues in rule creation statements - improved from 26 to 25 failed tests (92.9% pass rate)
 - ✅ **CONSTR_IDENTITY and Partbound Handling Fix**: Successfully added missing `CONSTR_IDENTITY` constraint type support for `GENERATED ALWAYS AS IDENTITY` columns and `partbound` property handling for `PARTITION OF ... FOR VALUES IN (...)` syntax - fixed hash partition handling to default remainder to 0 when undefined - resolves AST mismatch issues in CREATE TABLE statements - improved from 28 to 26 failed tests (92.6% pass rate)
 - ✅ **CreateForeignTableStmt and CreateTransformStmt Circular Reference Fix**: Successfully resolved stack overflow issues by calling direct methods instead of using visitor routing - CreateForeignTableStmt now calls `RangeVar()` directly for relation nodes, CreateTransformStmt calls `ObjectWithArgs()` directly for fromsql/tosql nodes - eliminates infinite recursion caused by incorrect `getNodeType()` routing - improved from 29 to 28 failed tests (92.0% pass rate)
