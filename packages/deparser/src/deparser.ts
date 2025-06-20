@@ -1332,7 +1332,7 @@ export class Deparser implements DeparserVisitor {
                              'varchar', 'char', 'bpchar', 'text', 'bool', 'date', 'time', 'timestamp', 
                              'timestamptz', 'interval', 'bytea', 'uuid', 'json', 'jsonb'];
         
-        let typeName = builtinTypes.includes(type) ? type : `${catalog}.${type}`;
+        let typeName = `${catalog}.${type}`;
         
         if (type === 'bpchar' && args) {
           typeName = 'char';
@@ -4596,24 +4596,23 @@ export class Deparser implements DeparserVisitor {
     
     if (node.funcname && node.funcname.length > 0) {
       const funcName = node.funcname.map((name: any) => this.visit(name, context)).join('.');
-      output.push(funcName);
-    }
-    
-    if (node.parameters && node.parameters.length > 0) {
-      const params = node.parameters
-        .filter((param: any) => {
-          const paramData = this.getNodeData(param);
-          return paramData.mode !== 'FUNC_PARAM_TABLE';
-        })
-        .map((param: any) => this.visit(param, context));
       
-      if (params.length > 0) {
-        output.push('(' + params.join(', ') + ')');
+      if (node.parameters && node.parameters.length > 0) {
+        const params = node.parameters
+          .filter((param: any) => {
+            const paramData = this.getNodeData(param);
+            return paramData.mode !== 'FUNC_PARAM_TABLE';
+          })
+          .map((param: any) => this.visit(param, context));
+        
+        if (params.length > 0) {
+          output.push(funcName + '(' + params.join(', ') + ')');
+        } else {
+          output.push(funcName + '()');
+        }
       } else {
-        output.push('()');
+        output.push(funcName + '()');
       }
-    } else {
-      output.push('()');
     }
     
     const hasTableParams = node.parameters && node.parameters.some((param: any) => {
@@ -7433,7 +7432,7 @@ export class Deparser implements DeparserVisitor {
         .join(', ');
       output.push(privileges);
     } else {
-      output.push('ALL PRIVILEGES');
+      output.push('ALL');
     }
 
     output.push('ON');
