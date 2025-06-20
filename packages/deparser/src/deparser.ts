@@ -2075,6 +2075,12 @@ export class Deparser implements DeparserVisitor {
       output.push('WITH', `(${optionStrs.join(', ')})`);
     }
 
+    // Handle access method (USING clause)
+    if (node.accessMethod) {
+      output.push('USING');
+      output.push(this.quoteIfNeeded(node.accessMethod));
+    }
+
     return output.join(' ');
   }
 
