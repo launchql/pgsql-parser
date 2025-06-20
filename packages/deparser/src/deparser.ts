@@ -8633,18 +8633,56 @@ export class Deparser implements DeparserVisitor {
         if (node.args && node.args.length > 0) {
           const args = ListUtils.unwrapList(node.args);
           
-          // Check if this is an ordered-set aggregate (indicated by Integer(1))
+          // Check if this is an ordered-set aggregate (indicated by Integer(1) or empty Integer after List with FunctionParameter FUNC_PARAM_DEFAULT)
           const hasOrderedSetIndicator = args.some(arg => arg.Integer && arg.Integer.ival === 1);
+          
+          // Check for ORDER BY pattern: List with FunctionParameter FUNC_PARAM_DEFAULT followed by empty Integer
+          const hasOrderByPattern = args.length >= 2 && 
+            args[0].List && 
+            args[0].List.items && 
+            args[0].List.items.length === 1 &&
+            args[0].List.items[0].FunctionParameter && 
+            args[0].List.items[0].FunctionParameter.mode === 'FUNC_PARAM_DEFAULT' &&
+            args[1].Integer && Object.keys(args[1].Integer).length === 0;
           
           const filteredArgs = args.filter(arg => {
             if (arg.Integer && (arg.Integer.ival === -1 || arg.Integer.ival === 1)) {
+              return false;
+            }
+            if (arg.Integer && Object.keys(arg.Integer).length === 0 && hasOrderByPattern) {
               return false;
             }
             return true;
           });
           
           if (filteredArgs.length > 0) {
-            if (hasOrderedSetIndicator && filteredArgs.length === 1 && filteredArgs[0].List) {
+            if (hasOrderByPattern) {
+              // Handle ORDER BY syntax for aggregates like myavg (ORDER BY numeric)
+              const listArg = filteredArgs[0];
+              if (listArg.List && listArg.List.items && listArg.List.items[0].FunctionParameter) {
+                const functionParam = listArg.List.items[0].FunctionParameter;
+                // Handle argType which has a TypeName-like structure with names array
+                let paramStr;
+                if (functionParam.argType && functionParam.argType.names) {
+                  // Extract type name from names array (skip pg_catalog schema)
+                  const names = functionParam.argType.names;
+                  if (names.length >= 2 && names[0].String && names[0].String.sval === 'pg_catalog') {
+                    paramStr = names[1].String.sval;
+                  } else if (names.length >= 1 && names[0].String) {
+                    paramStr = names[0].String.sval;
+                  } else {
+                    paramStr = 'unknown';
+                  }
+                } else {
+                  // Fallback to visiting the argType as a TypeName
+                  paramStr = this.visit({ TypeName: functionParam.argType }, context);
+                }
+                output.push(`(ORDER BY ${paramStr})`);
+              } else {
+                const paramStr = this.visit(listArg, context);
+                output.push(`(ORDER BY ${paramStr})`);
+              }
+            } else if (hasOrderedSetIndicator && filteredArgs.length === 1 && filteredArgs[0].List) {
               // Handle ordered-set aggregate with ORDER BY syntax
               const listArg = filteredArgs[0].List;
               if (listArg.items && listArg.items.length >= 2) {
@@ -8673,7 +8711,7 @@ export class Deparser implements DeparserVisitor {
                 });
                 output.push(`(${argStrs.join(', ')})`);
               }
-            }else {
+            } else {
               // Handle regular aggregate arguments
               const argStrs = filteredArgs.map(arg => {
                 // Handle empty object representing * wildcard
