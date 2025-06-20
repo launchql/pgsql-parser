@@ -4737,6 +4737,9 @@ export class Deparser implements DeparserVisitor {
     // Handle CREATE OPERATOR boolean flags - MUST be first to preserve case
     if (context.parentNodeTypes.includes('DefineStmt') && 
         ['hashes', 'merges'].includes(node.defname.toLowerCase()) && !node.arg) {
+      if (node.defname !== node.defname.toLowerCase() && node.defname !== node.defname.toUpperCase()) {
+        return `"${node.defname}"`;
+      }
       return node.defname.charAt(0).toUpperCase() + node.defname.slice(1).toLowerCase();
     }
     
@@ -5152,8 +5155,11 @@ export class Deparser implements DeparserVisitor {
           return preservedName;
         }
         
-        // Handle boolean flags (no arguments)
+        // Handle boolean flags (no arguments) - preserve quoted case
         if (['hashes', 'merges'].includes(node.defname.toLowerCase())) {
+          if (node.defname !== node.defname.toLowerCase() && node.defname !== node.defname.toUpperCase()) {
+            return `"${node.defname}"`;
+          }
           return preservedName.toUpperCase();
         }
         
@@ -8492,7 +8498,7 @@ export class Deparser implements DeparserVisitor {
               } else if (defName && !defValue) {
                 // Handle boolean flags like HASHES, MERGES - preserve original case
                 if (defName === 'Hashes' || defName === 'Merges') {
-                  return defName.toUpperCase();
+                  return `"${defName}"`;
                 }
                 return this.preserveOperatorDefElemCase(defName).toUpperCase();
               }
