@@ -8440,6 +8440,33 @@ export class Deparser implements DeparserVisitor {
     return output.join(' ');
   }
 
+  AlterTypeStmt(node: t.AlterTypeStmt, context: DeparserContext): string {
+    const output: string[] = ['ALTER', 'TYPE'];
+    
+    if (node.typeName && node.typeName.length > 0) {
+      const typeNameStr = ListUtils.unwrapList(node.typeName)
+        .map(name => this.visit(name, context))
+        .join('.');
+      output.push(typeNameStr);
+    }
+    
+    output.push('SET');
+    
+    if (node.options && node.options.length > 0) {
+      const optionStrs = ListUtils.unwrapList(node.options).map(option => {
+        const optionData = this.getNodeData(option);
+        if (optionData.defname && optionData.arg) {
+          const argValue = this.visit(optionData.arg, context);
+          return `${optionData.defname} = ${argValue}`;
+        }
+        return this.visit(option, context);
+      });
+      output.push(`(${optionStrs.join(', ')})`);
+    }
+    
+    return output.join(' ');
+  }
+
   AlterRoleStmt(node: t.AlterRoleStmt, context: DeparserContext): string {
     // Check if this is an ALTER GROUP statement by looking for rolemembers DefElem
     const isGroupStatement = node.options && 
