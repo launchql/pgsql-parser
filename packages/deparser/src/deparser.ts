@@ -7230,11 +7230,13 @@ export class Deparser implements DeparserVisitor {
   GrantRoleStmt(node: t.GrantRoleStmt, context: DeparserContext): string {
     const output: string[] = [];
     
-    // Check for inherit and admin options first to place them correctly
+    // Check for inherit, admin, and set options first to place them correctly
     let hasInheritOption = false;
     let hasAdminOption = false;
+    let hasSetOption = false;
     let inheritValue: boolean | undefined;
     let adminValue: boolean | undefined;
+    let setValue: boolean | undefined;
     
     if (node.opt && node.opt.length > 0) {
       const options = ListUtils.unwrapList(node.opt);
@@ -7248,6 +7250,10 @@ export class Deparser implements DeparserVisitor {
         (opt.DefElem && opt.DefElem.defname === 'admin')
       );
       
+      const setOption = options.find(opt => 
+        opt.DefElem && opt.DefElem.defname === 'set'
+      );
+      
       if (inheritOption && inheritOption.DefElem) {
         hasInheritOption = true;
         inheritValue = inheritOption.DefElem.arg?.Boolean?.boolval;
@@ -7258,6 +7264,11 @@ export class Deparser implements DeparserVisitor {
         if (adminOption.DefElem && adminOption.DefElem.arg) {
           adminValue = adminOption.DefElem.arg.Boolean?.boolval;
         }
+      }
+      
+      if (setOption && setOption.DefElem) {
+        hasSetOption = true;
+        setValue = setOption.DefElem.arg?.Boolean?.boolval;
       }
     }
     
@@ -7294,22 +7305,36 @@ export class Deparser implements DeparserVisitor {
     }
 
     if (node.is_grant) {
+      const withOptions: string[] = [];
+      
       if (hasAdminOption) {
         if (adminValue === true) {
-          output.push('WITH ADMIN OPTION');
+          withOptions.push('ADMIN OPTION');
         } else if (adminValue === false) {
-          output.push('WITH ADMIN FALSE');
+          withOptions.push('ADMIN FALSE');
         } else {
-          output.push('WITH ADMIN OPTION');
+          withOptions.push('ADMIN OPTION');
         }
       }
       
       if (hasInheritOption) {
         if (inheritValue === true) {
-          output.push('WITH INHERIT OPTION');
+          withOptions.push('INHERIT OPTION');
         } else if (inheritValue === false) {
-          output.push('WITH INHERIT FALSE');
+          withOptions.push('INHERIT FALSE');
         }
+      }
+      
+      if (hasSetOption) {
+        if (setValue === true) {
+          withOptions.push('SET TRUE');
+        } else if (setValue === false) {
+          withOptions.push('SET FALSE');
+        }
+      }
+      
+      if (withOptions.length > 0) {
+        output.push('WITH', withOptions.join(', '));
       }
     }
 
