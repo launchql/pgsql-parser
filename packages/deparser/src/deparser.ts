@@ -2136,16 +2136,7 @@ export class Deparser implements DeparserVisitor {
         output.push('GENERATED');
         if (node.generated_when === 'a') {
           output.push('ALWAYS');
-        } else if (node.generated_when === 's') {
-          output.push('BY DEFAULT');
-        }
-        output.push('AS IDENTITY');
-        break;
-      case 'CONSTR_IDENTITY':
-        output.push('GENERATED');
-        if (node.generated_when === 'a') {
-          output.push('ALWAYS');
-        } else if (node.generated_when === 'd') {
+        } else if (node.generated_when === 'd' || node.generated_when === 's') {
           output.push('BY DEFAULT');
         }
         output.push('AS IDENTITY');
