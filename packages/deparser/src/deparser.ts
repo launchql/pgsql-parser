@@ -5432,6 +5432,14 @@ export class Deparser implements DeparserVisitor {
       return `${node.defname} = ${quotedValue}`;
     }
     
+    // Handle CREATE TYPE boolean flags - preserve quoted case for attributes like "Passedbyvalue"
+    if (context.parentNodeTypes.includes('DefineStmt') && !node.arg) {
+      // Check if the original defname appears to be quoted (mixed case that's not all upper/lower)
+      if (node.defname !== node.defname.toLowerCase() && node.defname !== node.defname.toUpperCase()) {
+        return `"${node.defname}"`;
+      }
+    }
+    
     return node.defname.toUpperCase();
   }
 
