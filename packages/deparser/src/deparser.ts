@@ -6986,6 +6986,8 @@ export class Deparser implements DeparserVisitor {
       case 'OBJECT_COLUMN':
         if (node.relationType === 'OBJECT_FOREIGN_TABLE') {
           output.push('FOREIGN TABLE');
+        } else if (node.relationType === 'OBJECT_VIEW') {
+          output.push('VIEW');
         } else {
           output.push('TABLE');
         }
