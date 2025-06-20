@@ -2999,6 +2999,50 @@ export class Deparser implements DeparserVisitor {
     return output.join(' ');
   }
 
+  PartitionCmd(node: t.PartitionCmd, context: DeparserContext): string {
+    const output: string[] = [];
+    
+    if (node.concurrent) {
+      output.push('CONCURRENTLY');
+    }
+    
+    if (node.name) {
+      output.push(this.visit(node.name as any, context));
+    }
+    
+    if (node.bound) {
+      if (node.bound.strategy === 'l' && node.bound.listdatums) {
+        output.push('FOR VALUES IN');
+        const listValues = ListUtils.unwrapList(node.bound.listdatums)
+          .map(datum => this.visit(datum, context))
+          .join(', ');
+        output.push(`(${listValues})`);
+      } else if (node.bound.strategy === 'r' && (node.bound.lowerdatums || node.bound.upperdatums)) {
+        output.push('FOR VALUES FROM');
+        if (node.bound.lowerdatums) {
+          const lowerValues = ListUtils.unwrapList(node.bound.lowerdatums)
+            .map(datum => this.visit(datum, context))
+            .join(', ');
+          output.push(`(${lowerValues})`);
+        }
+        if (node.bound.upperdatums) {
+          output.push('TO');
+          const upperValues = ListUtils.unwrapList(node.bound.upperdatums)
+            .map(datum => this.visit(datum, context))
+            .join(', ');
+          output.push(`(${upperValues})`);
+        }
+      } else if (node.bound.strategy === 'h' && node.bound.modulus !== undefined && node.bound.remainder !== undefined) {
+        output.push('FOR VALUES WITH');
+        output.push(`(modulus ${node.bound.modulus}, remainder ${node.bound.remainder})`);
+      } else if (node.bound.is_default) {
+        output.push('DEFAULT');
+      }
+    }
+    
+    return output.join(' ');
+  }
+
   private getAggFunctionName(aggfnoid?: number): string {
     const commonAggFunctions: { [key: number]: string } = {
       2100: 'avg',
