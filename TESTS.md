@@ -13,12 +13,14 @@
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
 ## Current Status (Corrected - Full Test Suite Results - June 20, 2025)
-- **Test Suites**: 25 failed, 327 passed, 352 total
-- **Tests**: 25 failed, 327 passed, 352 total  
-- **Pass Rate**: 92.9% test suites (327/352), 92.9% individual tests
-- **Last Updated**: June 20, 2025 01:17 UTC (accurate full test suite results - identity column options formatting fix added)
+- **Test Suites**: 18 failed, 334 passed, 352 total
+- **Tests**: 18 failed, 334 passed, 352 total  
+- **Pass Rate**: 94.9% test suites (334/352), 94.9% individual tests
+- **Last Updated**: June 20, 2025 03:32 UTC (accurate full test suite results - UNION ALL parentheses fix applied)
 
 **Recent Changes**:
+- ✅ **UNION ALL Parentheses Fix**: Successfully fixed parentheses handling in UNION ALL operations by always preserving parentheses around individual SELECT statements in set operations - fixes syntax errors like "syntax error at or near 'UNION'" in complex subqueries - resolves 4 test failures, improving pass rate from 93.8% to 94.9%
+- ✅ **SET Statement Syntax Fix**: Successfully changed VariableSetStmt from "=" to "TO" syntax with improved quote handling for values - fixes "SET client_min_messages TO warning" and similar statements - resolves AST mismatch issues in SET statements - improved from 24 to 22 failed tests (93.8% pass rate)
 - ✅ **Identity Column Options Formatting Fix**: Successfully added proper DefElem handling for identity sequence options (START WITH, INCREMENT BY, etc.) in CONSTR_IDENTITY case - converts defname values to proper PostgreSQL syntax - resolves "Invalid deparsed SQL" error for identity columns with options like (START WITH 17 INCREMENT BY 21) - improved from 26 to 25 failed tests (92.9% pass rate)
 - ✅ **CTE Materialization Clause Support**: Successfully added support for MATERIALIZED and NOT MATERIALIZED clauses in CommonTableExpr method - handles CTEMaterializeNever and CTEMaterializeAlways property values - resolves AST mismatch issues in original-statements-cte test - improved from 23 to 22 failed tests but current status shows 26 failed (92.6% pass rate)
 - ✅ **AST Mismatch Handling Improvements**: Successfully improved AST mismatch handling in DefineStmt and DefElem methods for CREATE OPERATOR statements, enhanced IndexElem method to preserve string values in opclassopts parameters - improved from 28 to 23 failed tests (93.4% pass rate) - resolves 5 additional AST mismatch issues
