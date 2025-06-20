@@ -3400,17 +3400,17 @@ export class Deparser implements DeparserVisitor {
           const nodeData = this.getNodeData(arg);
           if (nodeData.sval !== undefined) {
             const svalValue = typeof nodeData.sval === 'object' ? nodeData.sval.sval : nodeData.sval;
-            if (svalValue.includes(' ') || svalValue.includes('-') || /[A-Z]/.test(svalValue) || /^\d/.test(svalValue) || svalValue.includes('.') || svalValue.includes('$') || svalValue.toLowerCase() === 'all' || /^[+-]\d/.test(svalValue)) {
-              return `"${svalValue}"`;
+            if (svalValue === '' || svalValue.includes(' ') || svalValue.includes('-') || /[A-Z]/.test(svalValue) || /^\d/.test(svalValue) || svalValue.includes('.') || svalValue.includes('$') || svalValue.toLowerCase() === 'all' || /^[+-]\d/.test(svalValue)) {
+              return `'${svalValue}'`;
             }
             return svalValue;
           }
           return this.visit(arg, context);
         }).join(', ') : '';
         
-        // Handle empty args case - don't output TO if no value
+        // Handle args - always include TO clause if args exist (even if empty string)
         const paramName = node.name && (node.name.includes('.') || node.name.includes('-') || /[A-Z]/.test(node.name)) ? `"${node.name}"` : node.name;
-        if (args.trim() === '') {
+        if (!node.args || node.args.length === 0) {
           return `SET ${localPrefix}${paramName}`;
         }
         return `SET ${localPrefix}${paramName} TO ${args}`;
