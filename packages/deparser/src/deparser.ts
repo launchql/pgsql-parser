@@ -4827,6 +4827,10 @@ export class Deparser implements DeparserVisitor {
         }
         
         if (argValue === 'true') {
+          // Handle special cases where the positive form has a different name
+          if (node.defname === 'isreplication') {
+            return 'REPLICATION';
+          }
           return node.defname.toUpperCase();
         } else if (argValue === 'false') {
           // Handle special cases where the negative form has a different name
