@@ -78,10 +78,12 @@ export interface PgProtoStoreOptions {
         filename?: string;
         // Whether enums in TypeScript are a union type
         enumsAsTypeUnion?: boolean;
-        // Options for JSON mappings of enums.
-        json?: {
-            // Whether to generate JSON files mapping enum names to values.
+        // Options for enum mappings output.
+        enumMap?: {
+            // Whether to generate enum mapping files.
             enabled?: boolean;
+            // Output format: 'json' for plain JSON files, 'ts' for TypeScript exports
+            format?: 'json' | 'ts';
             toIntOutFile?: string;
             toStrOutFile?: string;
         };
