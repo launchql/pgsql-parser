@@ -536,8 +536,7 @@ export class Deparser implements DeparserVisitor {
       node.CaseExpr ||
       node.CoalesceExpr ||
       node.SubLink ||
-      node.A_Expr ||
-      node.TypeCast
+      node.A_Expr
     );
   }
 
@@ -1782,8 +1781,7 @@ export class Deparser implements DeparserVisitor {
       return `${arg}::${cleanTypeName}`;
     }
     
-    const cleanTypeName = typeName.replace('pg_catalog.', '');
-    return `CAST(${arg} AS ${cleanTypeName})`;
+    return `CAST(${arg} AS ${typeName})`;
   }
 
   CollateClause(node: t.CollateClause, context: DeparserContext): string {
