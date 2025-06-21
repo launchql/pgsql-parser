@@ -6475,8 +6475,7 @@ export class Deparser implements DeparserVisitor {
       const doContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'DoStmt'] };
       const args = ListUtils.unwrapList(node.args);
       
-      let languageArg = '';
-      let codeArg = '';
+      const processedArgs: string[] = [];
       
       for (const arg of args) {
         const nodeType = this.getNodeType(arg);
@@ -6484,27 +6483,22 @@ export class Deparser implements DeparserVisitor {
           const defElem = this.getNodeData(arg) as any;
           if (defElem.defname === 'language') {
             const langValue = this.visit(defElem.arg, doContext);
-            languageArg = `LANGUAGE ${langValue}`;
+            processedArgs.push(`LANGUAGE ${langValue}`);
           } else if (defElem.defname === 'as') {
             // Handle code block with dollar quoting
             const argNodeType = this.getNodeType(defElem.arg);
             if (argNodeType === 'String') {
               const stringNode = this.getNodeData(defElem.arg) as any;
               const dollarTag = this.generateUniqueDollarTag(stringNode.sval);
-              codeArg = `${dollarTag}${stringNode.sval}${dollarTag}`;
+              processedArgs.push(`${dollarTag}${stringNode.sval}${dollarTag}`);
             } else {
-              codeArg = this.visit(defElem.arg, doContext);
+              processedArgs.push(this.visit(defElem.arg, doContext));
             }
           }
         }
       }
       
-      if (codeArg) {
-        output.push(codeArg);
-      }
-      if (languageArg) {
-        output.push(languageArg);
-      }
+      output.push(...processedArgs);
     }
     
     return output.join(' ');
