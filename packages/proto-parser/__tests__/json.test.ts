@@ -6,7 +6,9 @@ describe('enums', () => {
       enums: {
         enumMap: {
           enabled: true,
-          format: 'json'
+          format: 'json',
+          toIntOutFile: 'enums2int.json',
+          toStrOutFile: 'enums2str.json'
         }
       }
     });
@@ -17,7 +19,9 @@ describe('enums', () => {
       enums: {
         enumMap: {
           enabled: true,
-          format: 'ts'
+          format: 'ts',
+          toIntOutFile: 'enums2int.ts',
+          toStrOutFile: 'enums2str.ts'
         }
       }
     });
