@@ -4566,10 +4566,10 @@ libnpmpublish@7.1.4:
     sigstore "^1.4.0"
     ssri "^10.0.1"
 
-libpg-query@17.3.0:
-  version "17.3.0"
-  resolved "https://registry.yarnpkg.com/libpg-query/-/libpg-query-17.3.0.tgz#e63629d4d666c983a17ed3e1f68766a9701df00c"
-  integrity sha512-b47So533/eC9zpNxHRWYdwgeVz1jnNScToC7X4ofo754/20iKgFV6/o2p2roX5yW7TW9T6SHOk6tUMEe3TpL5g==
+libpg-query@17.3.1:
+  version "17.3.1"
+  resolved "https://registry.yarnpkg.com/libpg-query/-/libpg-query-17.3.1.tgz#57c27353c4ebf059380da2d61c35cb2e02c6ee19"
+  integrity sha512-r+89vlXsYSDFDJyYmTQnd0b0ZPZpxNhIBkLYXG965QBy27UQ3YUPYAPPWfN/zqdtaN8z0Me5Ra9SqzUuaG8vPQ==
   dependencies:
     "@launchql/protobufjs" "7.2.6"
     "@pgsql/types" "^17.0.0"
