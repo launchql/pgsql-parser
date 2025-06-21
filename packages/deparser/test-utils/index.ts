@@ -95,11 +95,17 @@ export class TestUtils {
   async expectAstMatch(testName: string, sql: string) {
     let tree: any;
     try {
-      tree = this.tryParse(sql);
+      tree = await this.tryParse(sql);
       if (tree.stmts) {
-        tree.stmts.forEach(async (stmt: any) => {
+        for (const stmt of tree.stmts) {
           if (stmt.stmt) {
             const outSql = deparse(stmt.stmt);
+            
+            console.log(`\n🔍 DEBUGGING SQL COMPARISON for test: ${testName}`);
+            console.log(`📥 INPUT SQL: ${sql}`);
+            console.log(`📤 DEPARSED SQL: ${outSql}`);
+            console.log(`🔄 SQL MATCH: ${sql.trim() === outSql.trim() ? '✅ EXACT MATCH' : '❌ DIFFERENT'}`);
+            
             let reparsed;
             try {
               reparsed = await parse(outSql);
@@ -135,7 +141,7 @@ export class TestUtils {
               throw createParseError('AST_MISMATCH', testName, sql, outSql, originalClean, reparsedClean);
             }
           }
-        });
+        }
       }
     } catch (err) {
       const errorMessages: string[] = [];
@@ -164,7 +170,7 @@ export class TestUtils {
             `\nACTUAL AST:`,
             JSON.stringify(parseError.reparsedAst, null, 2),
             `\nDIFF (what's missing from actual vs expected):`,
-            diff(parseError.originalAst, parseError.reparsedAst)
+            diff(parseError.originalAst, parseError.reparsedAst) || 'No diff available'
           );
         } else if (parseError.originalAst) {
           errorMessages.push(`❌ AST: ${JSON.stringify(parseError.originalAst, null, 2)}`);
@@ -210,12 +216,16 @@ export class FixtureTestUtils extends TestUtils {
       console.log('no filters provided, skipping tests.');
       return;
     }
-    this.getTestEntries(filters).forEach(async ([relativePath, sql]) => {
+    console.log(`\n🚀 STARTING FIXTURE TESTS with filters:`, filters);
+    const entries = this.getTestEntries(filters);
+    for (const [relativePath, sql] of entries) {
+      console.log(`\n📁 Processing fixture: ${relativePath}`);
+      console.log(`📝 SQL Content: ${sql}`);
       try {
         await this.expectAstMatch(relativePath, sql);
       } catch (err) {
         throw err;
       }
-    });
+    }
   }
 }
