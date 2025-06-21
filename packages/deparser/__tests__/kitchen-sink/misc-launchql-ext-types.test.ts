@@ -1,5 +1,6 @@
 
 import { FixtureTestUtils } from '../../test-utils';
+
 const fixtures = new FixtureTestUtils();
 
 it('misc-launchql-ext-types', async () => {

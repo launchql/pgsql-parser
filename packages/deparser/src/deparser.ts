@@ -979,10 +979,10 @@ export class Deparser implements DeparserVisitor {
     switch (boolop) {
       case 'AND_EXPR':
         const andArgs = args.map(arg => this.visit(arg, boolContext)).join(' AND ');
-        return formatStr.replace('%s', andArgs);
+        return formatStr.replace('%s', () => andArgs);
       case 'OR_EXPR':
         const orArgs = args.map(arg => this.visit(arg, boolContext)).join(' OR ');
-        return formatStr.replace('%s', orArgs);
+        return formatStr.replace('%s', () => orArgs);
       case 'NOT_EXPR':
         return `NOT (${this.visit(args[0], context)})`;
       default:
