@@ -1,0 +1,34 @@
+name: Parser tests
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  container-job:
+    runs-on: ubuntu-latest
+    container: node:20.12.0-alpine
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: deps
+        run: yarn
+
+      - name: build
+        run: yarn build
+
+      - name: parser
+        run: cd ./packages/parser && yarn test
+
+      - name: deparser
+        run: cd ./packages/deparser && yarn test
+
+      - name: enums
+        run: cd ./packages/enums && yarn test
+
+      - name: types
+        run: cd ./packages/types && yarn test
+
+      - name: transform
+        run: cd ./packages/transform && yarn test
