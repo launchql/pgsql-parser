@@ -209,8 +209,6 @@ export class Deparser implements DeparserVisitor {
     return deparsedStmt;
   }
 
-
-
   SelectStmt(node: t.SelectStmt, context: DeparserContext): string {
     const output: string[] = [];
 
