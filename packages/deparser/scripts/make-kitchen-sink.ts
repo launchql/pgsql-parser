@@ -27,7 +27,7 @@ it('${name}', async () => {
 `
 };
 
-const fixtures = globSync(`${FIXTURE_DIR}/**/*.sql`);
+const fixtures = globSync(path.join(FIXTURE_DIR, '**/*.sql'));
 
 async function main() {
   for (const fixturePath of fixtures) {

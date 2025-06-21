@@ -1,10 +1,11 @@
 import deepmerge from 'deepmerge';
+import { join } from 'path';
 
 import { PgProtoParserOptions } from "./types";
 
 // Define default options outside of the class
 export const defaultPgProtoParserOptions: PgProtoParserOptions = {
-    outDir: `${process.cwd()}/out`,
+    outDir: join(process.cwd(), 'out'),
     includeHeader: true,
     exclude: [],
     utils: {

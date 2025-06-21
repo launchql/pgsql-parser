@@ -44,6 +44,7 @@ export default async (argv: CommandOptions): Promise<CommandOptions> => {
     await replaceTextInProtoJS(argv.outFile, argv.originalPackageName, argv.newPackageName);
     console.log('All operations completed successfully.');
   } catch (error) {
+    // @ts-ignore
     console.error('An error occurred:', error.message);
   }
 

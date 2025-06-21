@@ -150,6 +150,9 @@ Our latest is built with `17-latest` branch from libpg_query
 | PostgreSQL Major Version | libpg_query | Status              | npm tag |
 |--------------------------|-------------|---------------------|---------|
 | 17                       | 17-latest   | Active Development  | `latest` |
+| 16                       | (n/a)       | Not supported       |
+| 15                       | (n/a)       | Not supported       |
+| 14                       | (n/a)       | Not supported       |
 | 13                       | 13-latest   | Only Critical Fixes | `13.16.0` |
 | 12                       | (n/a)       | Not supported       |
 | 11                       | (n/a)       | Not supported       |
