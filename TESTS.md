@@ -13,10 +13,10 @@
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
 ## Current Status (Latest - Full Test Suite Results - June 21, 2025)
-- **Test Suites**: 7 failed, 345 passed, 352 total
-- **Tests**: 7 failed, 345 passed, 352 total
-- **Pass Rate**: 98.0% test suites (345/352), 98.0% individual tests
-- **Last Updated**: June 21, 2025 00:04 UTC (confirmed 98.0% pass rate with complete kitchen sink test suite)
+- **Test Suites**: 3 failed, 349 passed, 352 total
+- **Tests**: 3 failed, 349 passed, 352 total
+- **Pass Rate**: 99.1% test suites (349/352), 99.1% individual tests
+- **Last Updated**: June 21, 2025 00:19 UTC (confirmed 99.1% pass rate with complete kitchen sink test suite)
 
 ## Priority Failing Tests (Fix in this order)
 **Previously prioritized tests - NOW FIXED:**
@@ -39,18 +39,23 @@
 **🎉 MAJOR PROGRESS: Only 3 failing tests remaining! 99.1% pass rate (349/352) 🎉**
 
 **Remaining failing tests (3 total failures - 99.1% pass rate):**
-1. `original-upstream-with.test.ts` - Invalid deparsed SQL
-2. `original-upstream-arrays.test.ts` - AST mismatch after parse/deparse cycle
-3. `original-upstream-numeric.test.ts` - AST mismatch after parse/deparse cycle
+1. `original-upstream-arrays.test.ts` - AST mismatch after parse/deparse cycle
+2. `original-upstream-bit.test.ts` - AST mismatch after parse/deparse cycle
+3. `original-upstream-char.test.ts` - AST mismatch after parse/deparse cycle
 
-**Recently fixed by union parentheses improvement:**
+**Recently fixed by WITH clause and TypeCast improvements:**
+- `original-upstream-with.test.ts` ✅ **FIXED** (nested WITH parentheses + CAST syntax preservation)
 - `original-upstream-union.test.ts` ✅ **FIXED**
 - `original-upstream-random.test.ts` ✅ **FIXED** 
 - `original-upstream-privileges.test.ts` ✅ **FIXED**
 - `original-upstream-inherit.test.ts` ✅ **FIXED**
+- `original-upstream-numeric.test.ts` ✅ **FIXED** (TypeCast CAST syntax preservation)
 
 **Next Steps:**
-1. Run full test suite to identify all 7 remaining failing tests
-2. Create focused debug scripts for each failing test using cleanTree
-3. Fix deparser methods systematically
-4. Achieve 100% pass rate
+1. **Fix remaining 3 AST mismatch tests** using focused debug scripts with `cleanTree` utility:
+   - `original-upstream-arrays.test.ts` - likely array syntax or type casting issues
+   - `original-upstream-bit.test.ts` - bit string literal or type handling issues  
+   - `original-upstream-char.test.ts` - character type casting or literal formatting issues
+2. **Systematically debug each test** to identify specific SQL causing AST mismatches
+3. **Update deparser methods** to preserve AST fidelity for array, bit, and char operations
+4. **Achieve 100% pass rate** by resolving these final 3 tests
