@@ -2528,6 +2528,9 @@ export default class Deparser {
     const output = [];
     output.push('DROP');
     output.push(objtypeName(node.removeType));
+    if (node.concurrent) {
+      output.push('CONCURRENTLY');
+    }
     if (node.missing_ok) {
       output.push('IF EXISTS');
     }
