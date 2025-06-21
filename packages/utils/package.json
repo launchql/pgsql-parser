@@ -1,6 +1,6 @@
 {
   "name": "@pgsql/utils",
-  "version": "17.1.0",
+  "version": "17.2.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostgreSQL AST utils for pgsql-parser",
   "main": "index.js",
@@ -34,7 +34,7 @@
     "pg-proto-parser": "^1.25.0"
   },
   "dependencies": {
-    "@pgsql/types": "^17.1.0",
+    "@pgsql/types": "^17.2.0",
     "nested-obj": "0.0.1"
   },
   "keywords": []

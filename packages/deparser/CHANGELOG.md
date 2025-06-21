@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [17.2.0](https://github.com/launchql/pgsql-parser/compare/pgsql-deparser@17.1.0...pgsql-deparser@17.2.0) (2025-06-21)
+
+
+### Code Refactoring
+
+* **deparser:** improve entry point handling with proper type guards ([a240d13](https://github.com/launchql/pgsql-parser/commit/a240d1313b9a57035656d7b00c7f664d90946248))
+
+
+### Features
+
+* **deparser:** add ParseResult support, array handling, and configurable function delimiters ([1815fff](https://github.com/launchql/pgsql-parser/commit/1815fff259940adcb1d619b6e8479cf59b11115f))
+
+
+### BREAKING CHANGES
+
+* **deparser:** Removed unused stmt() and version() methods. Use deparse() with appropriate node types instead.
+
+The deparser now properly handles:
+1. ParseResult from libpg-query (bare or wrapped)
+2. Wrapped RawStmt nodes
+3. Arrays of Nodes
+4. Single Node statements
+
+Note: ParseResult.stmts contains RawStmt objects directly (not wrapped as nodes)
+
+
+
+
+
 # [17.1.0](https://github.com/launchql/pgsql-parser/compare/pgsql-deparser@13.15.0...pgsql-deparser@17.1.0) (2025-06-21)
 
 
