@@ -6,7 +6,7 @@ This document provides guidance for working in the `deparser` repository. It is 
 
 ### Key Technical Goals
 
-* Upgrade compatibility from PostgreSQL 13 to 17
+* Compatibility for PostgreSQL 17
 * Expand test coverage with thorough kitchen-sink tests
 * Document architecture, types, and helper modules clearly
 
@@ -112,7 +112,6 @@ export class ListUtils {
 ### Testing Strategy
 
 * Focus on `deparser/__tests__/kitchen-sink`
-* Expand into `ast-driven` tests once stable
 * Run targeted tests with:
 
 ```bash
