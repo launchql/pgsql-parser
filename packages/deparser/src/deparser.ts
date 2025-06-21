@@ -10528,7 +10528,8 @@ export class Deparser implements DeparserVisitor {
     if (node.base && node.base.tableElts) {
       const elementStrs = ListUtils.unwrapList(node.base.tableElts).map(el => this.visit(el, context));
       output.push(`(${elementStrs.join(', ')})`);
-    } else {
+    } else if (!node.base?.partbound) {
+      // Only add empty parentheses if this is not a partition table
       output.push('()');
     }
     
