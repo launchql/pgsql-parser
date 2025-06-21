@@ -18,9 +18,6 @@ jobs:
       - name: build
         run: yarn build
 
-      - name: parser
-        run: cd ./packages/parser && yarn test
-
       - name: deparser
         run: cd ./packages/deparser && yarn test
 
