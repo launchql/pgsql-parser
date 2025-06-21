@@ -8,24 +8,45 @@ import * as t from '@pgsql/types';
 export interface DeparserOptions {
   newline?: string;
   tab?: string;
+  // Function body delimiter options
+  functionDelimiter?: string;  // Default: '$$'
+  // Alternative delimiter when the default is found in the body
+  functionDelimiterFallback?: string;  // Default: '$EOFCODE$'
 }
 
 export class Deparser implements DeparserVisitor {
   private formatter: SqlFormatter;
   private tree: Node[];
+  private options: DeparserOptions;
 
-  constructor(tree: Node | Node[], opts: DeparserOptions = {}) {
+  constructor(tree: Node | Node[] | t.ParseResult, opts: DeparserOptions = {}) {
     this.formatter = new SqlFormatter(opts.newline, opts.tab);
     
-    // Handle parsed query objects that contain both version and stmts
+    // Set default options
+    this.options = {
+      functionDelimiter: '$$',
+      functionDelimiterFallback: '$EOFCODE$',
+      ...opts
+    };
+    
+    // Handle ParseResult objects
     if (tree && typeof tree === 'object' && !Array.isArray(tree) && 'stmts' in tree) {
-      this.tree = (tree as any).stmts;
-    } else {
-      this.tree = Array.isArray(tree) ? tree : [tree];
+      // This is a ParseResult
+      const parseResult = tree as t.ParseResult;
+      // Extract the actual Node from each RawStmt
+      this.tree = (parseResult.stmts || []).map(rawStmt => rawStmt.stmt).filter(stmt => stmt !== undefined) as Node[];
+    } 
+    // Handle arrays of Node
+    else if (Array.isArray(tree)) {
+      this.tree = tree;
+    } 
+    // Handle single Node
+    else {
+      this.tree = [tree as Node];
     }
   }
 
-  static deparse(query: Node | Node[], opts: DeparserOptions = {}): string {
+  static deparse(query: Node | Node[] | t.ParseResult, opts: DeparserOptions = {}): string {
     return new Deparser(query, opts).deparseQuery();
   }
 
@@ -33,6 +54,19 @@ export class Deparser implements DeparserVisitor {
     return this.tree
       .map(node => this.deparse(node))
       .join(this.formatter.newline() + this.formatter.newline());
+  }
+
+  /**
+   * Get the appropriate function delimiter based on the body content
+   * @param body The function body to check
+   * @returns The delimiter to use
+   */
+  private getFunctionDelimiter(body: string): string {
+    const delimiter = this.options.functionDelimiter || '$$';
+    if (body.includes(delimiter)) {
+      return this.options.functionDelimiterFallback || '$EOFCODE$';
+    }
+    return delimiter;
   }
 
   deparse(node: Node, context: DeparserContext = { parentNodeTypes: [] }): string | null {
@@ -5165,15 +5199,17 @@ export class Deparser implements DeparserVisitor {
       
       if (context.parentNodeTypes.includes('DoStmt')) {
         if (node.defname === 'as') {
+          const defElemContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'DefElem'] };
+          const argValue = node.arg ? this.visit(node.arg, defElemContext) : '';
+          
           if (Array.isArray(argValue)) {
             const bodyParts = argValue;
-            if (bodyParts.length === 1) {
-              return `$$${bodyParts[0]}$$`;
-            } else {
-              return `$$${bodyParts.join('')}$$`;
-            }
+            const body = bodyParts.join('');
+            const delimiter = this.getFunctionDelimiter(body);
+            return `${delimiter}${body}${delimiter}`;
           } else {
-            return `$$${argValue}$$`;
+            const delimiter = this.getFunctionDelimiter(argValue);
+            return `${delimiter}${argValue}${delimiter}`;
           }
         }
         return '';
@@ -5194,14 +5230,13 @@ export class Deparser implements DeparserVisitor {
             
             if (bodyParts.length === 1) {
               const body = bodyParts[0];
-              // Check if body contains $$ to avoid conflicts
-              if (body.includes('$$')) {
-                return `AS '${body.replace(/'/g, "''")}'`;
-              } else {
-                return `AS $$${body}$$`;
-              }
+              const delimiter = this.getFunctionDelimiter(body);
+              return `AS ${delimiter}${body}${delimiter}`;
             } else {
-              return `AS ${bodyParts.map((part: string) => `$$${part}$$`).join(', ')}`;
+              return `AS ${bodyParts.map((part: string) => {
+                const delimiter = this.getFunctionDelimiter(part);
+                return `${delimiter}${part}${delimiter}`;
+              }).join(', ')}`;
             }
           }
           // Handle Array type (legacy support)
@@ -5209,24 +5244,19 @@ export class Deparser implements DeparserVisitor {
             const bodyParts = argValue;
             if (bodyParts.length === 1) {
               const body = bodyParts[0];
-              // Check if body contains $$ to avoid conflicts
-              if (body.includes('$$')) {
-                return `AS '${body.replace(/'/g, "''")}'`;
-              } else {
-                return `AS $$${body}$$`;
-              }
+              const delimiter = this.getFunctionDelimiter(body);
+              return `AS ${delimiter}${body}${delimiter}`;
             } else {
-              return `AS ${bodyParts.map(part => `$$${part}$$`).join(', ')}`;
+              return `AS ${bodyParts.map(part => {
+                const delimiter = this.getFunctionDelimiter(part);
+                return `${delimiter}${part}${delimiter}`;
+              }).join(', ')}`;
             }
           } 
           // Handle String type (single function body)
           else {
-            // Check if argValue contains $$ to avoid conflicts
-            if (argValue.includes('$$')) {
-              return `AS '${argValue.replace(/'/g, "''")}'`;
-            } else {
-              return `AS $$${argValue}$$`;
-            }
+            const delimiter = this.getFunctionDelimiter(argValue);
+            return `AS ${delimiter}${argValue}${delimiter}`;
           }
         }
         if (node.defname === 'language') {
@@ -6485,12 +6515,12 @@ export class Deparser implements DeparserVisitor {
             const langValue = this.visit(defElem.arg, doContext);
             processedArgs.push(`LANGUAGE ${langValue}`);
           } else if (defElem.defname === 'as') {
-            // Handle code block with dollar quoting
+            // Handle code block with configurable delimiter
             const argNodeType = this.getNodeType(defElem.arg);
             if (argNodeType === 'String') {
               const stringNode = this.getNodeData(defElem.arg) as any;
-              const dollarTag = this.generateUniqueDollarTag(stringNode.sval);
-              processedArgs.push(`${dollarTag}${stringNode.sval}${dollarTag}`);
+              const delimiter = this.getFunctionDelimiter(stringNode.sval);
+              processedArgs.push(`${delimiter}${stringNode.sval}${delimiter}`);
             } else {
               processedArgs.push(this.visit(defElem.arg, doContext));
             }
@@ -6533,9 +6563,11 @@ export class Deparser implements DeparserVisitor {
 
   InlineCodeBlock(node: t.InlineCodeBlock, context: DeparserContext): string {
     if (node.source_text) {
-      return `$$${node.source_text}$$`;
+      const delimiter = this.getFunctionDelimiter(node.source_text);
+      return `${delimiter}${node.source_text}${delimiter}`;
     }
-    return '$$$$';
+    const delimiter = this.options.functionDelimiter || '$$';
+    return `${delimiter}${delimiter}`;
   }
 
   CallContext(node: t.CallContext, context: DeparserContext): string {

@@ -1,4 +1,4 @@
-import { Deparser } from "./deparser";
+import { Deparser, DeparserOptions } from "./deparser";
 
 const deparse = Deparser.deparse;
-export { deparse, Deparser };
+export { deparse, Deparser, DeparserOptions };
