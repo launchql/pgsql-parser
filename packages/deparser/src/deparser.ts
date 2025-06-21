@@ -118,9 +118,19 @@ export class Deparser implements DeparserVisitor {
       const leftStmt = this.SelectStmt(node.larg as t.SelectStmt, context);
       const rightStmt = this.SelectStmt(node.rarg as t.SelectStmt, context);
       
-      // Only add parentheses if the operand is itself a set operation
-      const leftNeedsParens = node.larg && (node.larg as t.SelectStmt).op && (node.larg as t.SelectStmt).op !== 'SETOP_NONE';
-      const rightNeedsParens = node.rarg && (node.rarg as t.SelectStmt).op && (node.rarg as t.SelectStmt).op !== 'SETOP_NONE';
+      // Add parentheses if the operand is a set operation OR has ORDER BY/LIMIT clauses
+      const leftNeedsParens = node.larg && (
+        ((node.larg as t.SelectStmt).op && (node.larg as t.SelectStmt).op !== 'SETOP_NONE') ||
+        (node.larg as t.SelectStmt).sortClause ||
+        (node.larg as t.SelectStmt).limitCount ||
+        (node.larg as t.SelectStmt).limitOffset
+      );
+      const rightNeedsParens = node.rarg && (
+        ((node.rarg as t.SelectStmt).op && (node.rarg as t.SelectStmt).op !== 'SETOP_NONE') ||
+        (node.rarg as t.SelectStmt).sortClause ||
+        (node.rarg as t.SelectStmt).limitCount ||
+        (node.rarg as t.SelectStmt).limitOffset
+      );
       
       if (leftNeedsParens) {
         output.push(this.formatter.parens(leftStmt));
