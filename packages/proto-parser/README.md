@@ -107,7 +107,6 @@ The options for `PgProtoParserOptions` are organized into the following categori
 |-----------------|----------------------------------------------------------------|--------------------------|
 | `outDir`        | The directory where the generated files will be saved.         | `process.cwd() + "/out"` |
 | `exclude`       | List of type or enum names to exclude during processing.       | `[]`                     |
-| `includeHeader` | Includes a header at the top of generated TypeScript files to avoid manual manipulation which could cause issues in CI/CD pipelines. | `true` |
 
 ### Type Generation Options
 
@@ -117,15 +116,9 @@ The options for `PgProtoParserOptions` are organized into the following categori
 | `types.filename`            | Filename for the generated TypeScript interfaces.                                                                               | `'types.ts'`    |
 | `types.optionalFields`      | Generates TypeScript interfaces with optional fields mapping to the PostgreSQL node types' fields; sets all fields to optional. | `true`          |
 | `types.enumsSource`         | Path to the TypeScript enums to use when generating TypeScript interfaces.                                                      | `'./enums'`     |
-| `types.wrappedNodeTypeExport` | Simpler option for exporting Node type references (alternative to wrapped types).                                             | `false`         |
+| `types.wrappedNodeTypeExport` | Simpler option for exporting Node type references.                                                                           | `true`          |
 
-### Wrapped Types Options
 
-| Option                      | Description                                                                       | Default Value   |
-|-----------------------------|-----------------------------------------------------------------------------------|-----------------|
-| `types.wrapped.enabled`     | Whether to generate wrapped TypeScript interfaces to match AST nodes.             | `false`         |
-| `types.wrapped.enumsSource` | Path to the TypeScript enums to use when generating wrapped TypeScript interfaces.| `'./enums'`     |
-| `types.wrapped.filename`    | Filename for the generated wrapped TypeScript interfaces.                         | `'wrapped.ts'`  |
 
 ### Enum Generation Options
 

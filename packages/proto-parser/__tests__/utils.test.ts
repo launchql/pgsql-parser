@@ -20,10 +20,7 @@ describe('utils', () => {
         enabled: true
       },
       types: {
-        enabled: true,
-        wrapped: {
-          enabled: true
-        }
+        enabled: true
       },
       utils: {
         astHelpers: {

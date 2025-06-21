@@ -14,7 +14,7 @@ export const defaultPgProtoParserOptions: PgProtoParserOptions = {
         },
         astHelpers: {
             enabled: false,
-            wrappedTypesSource: './wrapped',
+            typesSource: './types',
             inlineNestedObj: false,
             nestedObjFile: 'nested-obj.ts',
             filename: 'asts.ts',
@@ -25,12 +25,7 @@ export const defaultPgProtoParserOptions: PgProtoParserOptions = {
         filename: 'types.ts',
         optionalFields: true,
         enumsSource: './enums',
-        wrappedNodeTypeExport: false,
-        wrapped: {
-            enabled: false,
-            enumsSource: './enums',
-            filename: 'wrapped.ts'
-        }
+        wrappedNodeTypeExport: true
     },
     enums: {
         enabled: false,

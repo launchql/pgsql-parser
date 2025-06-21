@@ -3,21 +3,21 @@ import { NodeSpec, FieldSpec } from './types';
 
 export class RuntimeSchemaGenerator {
   private root: Namespace;
-  private wrappedTypes: Set<string> = new Set();
+  private nodeTypes: Set<string> = new Set();
 
   constructor(root: Namespace) {
     this.root = root;
-    this.extractWrappedTypes();
+    this.extractNodeTypes();
   }
 
-  private extractWrappedTypes(): void {
+  private extractNodeTypes(): void {
     const nodeType = this.root.lookupType('Node');
     if (nodeType && nodeType.oneofs && nodeType.oneofs.node) {
       const oneof = nodeType.oneofs.node;
       for (const fieldName of oneof.fieldsArray.map(f => f.name)) {
         const field = nodeType.fields[fieldName];
         if (field && field.type) {
-          this.wrappedTypes.add(field.type);
+          this.nodeTypes.add(field.type);
         }
       }
     }
@@ -53,7 +53,7 @@ export class RuntimeSchemaGenerator {
 
     return {
       name: type.name,
-      wrapped: this.wrappedTypes.has(type.name),
+      isNode: this.nodeTypes.has(type.name),
       fields: fields.sort((a, b) => a.name.localeCompare(b.name))
     };
   }
@@ -63,7 +63,7 @@ export class RuntimeSchemaGenerator {
     const isArray = field.repeated || false;
     const optional = !field.required;
     const fieldType = field.type;
-    const isNode = fieldType === 'Node' || this.wrappedTypes.has(fieldType);
+    const isNode = fieldType === 'Node' || this.nodeTypes.has(fieldType);
 
     return {
       name: fieldName,
@@ -74,11 +74,11 @@ export class RuntimeSchemaGenerator {
     };
   }
 
-  public getWrappedTypes(): string[] {
-    return Array.from(this.wrappedTypes).sort();
+  public getNodeTypes(): string[] {
+    return Array.from(this.nodeTypes).sort();
   }
 
-  public getWrappedTypesCount(): number {
-    return this.wrappedTypes.size;
+  public getNodeTypesCount(): number {
+    return this.nodeTypes.size;
   }
 }

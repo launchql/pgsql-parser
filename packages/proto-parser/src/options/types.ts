@@ -26,7 +26,7 @@ export interface PgProtoStoreOptions {
             // Whether to include TypeScript AST builders
             enabled?: boolean;
             // Source file for AST helper types.
-            wrappedTypesSource?: string;
+            typesSource?: string;
             // Whether to inline nested-obj
             inlineNestedObj?: boolean;
             // if inlined, filename
@@ -47,19 +47,10 @@ export interface PgProtoStoreOptions {
         // Enums source specifier
         enumsSource?: string;
         // Node Object Keys, e.g. { ParseResult: ParseResult, ... }
-        // meant for simpler user cases where wrapped is advanced
-        // if a field in an object uses Node, it's wrapped
+        // meant for simpler user cases
+        // if a field in an object uses Node, it's a node type
         // if a field in an object references a type, e.g. RangeVar, it's flat
         wrappedNodeTypeExport?: boolean;
-        // wrapped types, for building AST
-        wrapped?: {
-            // Enabled wrapped types, to match AST
-            enabled?: boolean;
-            // Source file for enums
-            enumsSource?: string;
-            // Types filename
-            filename?: string;
-        }
     };
 
     // Options related to runtime schema generation.

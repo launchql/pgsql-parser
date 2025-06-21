@@ -1,5 +1,5 @@
 import { Service, Type, Field, Enum, Namespace, ReflectionObject } from '@launchql/protobufjs';
-import { generateEnumImports, generateAstHelperMethods, generateTypeImportSpecifiers, generateEnumValueFunctions, convertEnumToTsUnionType, convertEnumToTsEnumDeclaration, generateNodeUnionType, convertTypeToTsInterface, convertTypeToWrappedTsInterface } from './ast';
+import { generateEnumImports, generateAstHelperMethods, generateTypeImportSpecifiers, generateEnumValueFunctions, convertEnumToTsUnionType, convertEnumToTsEnumDeclaration, generateNodeUnionType, convertTypeToTsInterface } from './ast';
 import { RuntimeSchemaGenerator } from './runtime-schema';
 import { generateEnum2IntJSON, generateEnum2StrJSON } from './ast/enums/enums-json';
 import { jsStringify } from 'strfy-js';
@@ -92,17 +92,12 @@ export class ProtoStore implements IProtoStore {
     // Ensure the output directory exists
     mkdirSync(this.options.outDir, { recursive: true });
 
-    this.writeEnumsJSON();
+    this.writeEnumMaps();
     this.writeTypes();
-    this.writeWrappedTypes();
     this.writeEnums();
     this.writeUtilsEnums();
     this.writeAstHelpers();
     this.writeRuntimeSchema();
-  }
-
-  writeEnumsJSON() {
-    this.writeEnumMaps();
   }
 
   writeEnumMaps() {
@@ -170,24 +165,7 @@ export class ProtoStore implements IProtoStore {
     }
   }
 
-  writeWrappedTypes() {
-    if (this.options.types.wrapped.enabled) {
-      const typesToProcess = this.typesToProcess();
-      const enumImports = generateEnumImports(
-        this.enumsToProcess(),
-        this.options.types.wrapped.enumsSource
-      );
-      const node = generateNodeUnionType(this.options, typesToProcess);
-      const types = typesToProcess.reduce((m, type) => {
-        return [...m, convertTypeToWrappedTsInterface(type, this.options, (typeName: string) => this.isWrappedType(typeName))]
-      }, []);
-      this.writeCodeToFile(this.options.types.wrapped.filename, [
-        enumImports,
-        node,
-        ...types
-      ]);
-    }
-  }
+
 
   writeEnums() {
     if (this.options.enums.enabled) {
@@ -257,11 +235,7 @@ export class ProtoStore implements IProtoStore {
     return this._runtimeSchema;
   }
 
-  isWrappedType(typeName: string): boolean {
-    const schema = this.getRuntimeSchema();
-    const nodeSpec = schema.find(spec => spec.name === typeName);
-    return nodeSpec ? nodeSpec.wrapped : false;
-  }
+
 
   generateRuntimeSchemaTypeScript(nodeSpecs: any[]): string {
     const interfaceDefinitions = [
@@ -275,7 +249,7 @@ export class ProtoStore implements IProtoStore {
       '',
       'export interface NodeSpec {',
       '  name: string;',
-      '  wrapped: boolean;',
+      '  isNode: boolean;',
       '  fields: FieldSpec[];',
       '}',
       ''

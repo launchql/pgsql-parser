@@ -60,10 +60,7 @@ describe('runtime-schema', () => {
         filename: 'complete-schema'
       },
       types: {
-        enabled: true,
-        wrapped: {
-          enabled: true
-        }
+        enabled: true
       },
       enums: {
         enabled: true
@@ -84,10 +81,7 @@ describe('runtime-schema', () => {
         filename: 'complete-schema'
       },
       types: {
-        enabled: true,
-        wrapped: {
-          enabled: true
-        }
+        enabled: true
       },
       enums: {
         enabled: true
