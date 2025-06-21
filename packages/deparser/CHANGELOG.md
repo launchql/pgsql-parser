@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.16.0](https://github.com/launchql/pgsql-parser/compare/pgsql-deparser@13.15.0...pgsql-deparser@13.16.0) (2025-06-21)
+
+
+### Bug Fixes
+
+* support concurrently in DROP INDEX ([6d78dbe](https://github.com/launchql/pgsql-parser/commit/6d78dbe8cbc1b1ceb08aba5826edb50f7259ba01))
+* support create index if not exists ([60f309f](https://github.com/launchql/pgsql-parser/commit/60f309f6c83bf30ba7b6858dbf2afbbaf4b648c4))
+
+
+
+
+
 # [13.15.0](https://github.com/launchql/pgsql-parser/compare/pgsql-deparser@13.14.0...pgsql-deparser@13.15.0) (2024-04-04)
 
 **Note:** Version bump only for package pgsql-deparser

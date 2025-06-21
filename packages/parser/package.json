@@ -1,6 +1,6 @@
 {
   "name": "@pgsql/parser",
-  "version": "16.1.0",
+  "version": "16.2.0",
   "description": "The real PostgreSQL query parser",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/pgsql-parser",
@@ -84,7 +84,7 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@pgsql/types": "^13.9.0",
+    "@pgsql/types": "^13.10.0",
     "libpg-query": "16.2.0",
     "minimist": "^1.2.6"
   }

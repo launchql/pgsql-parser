@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.12.0](https://github.com/launchql/pgsql-parser/compare/@pgsql/utils@13.11.0...@pgsql/utils@13.12.0) (2025-06-21)
+
+
+### Bug Fixes
+
+* convert enums from JSON to TS ([ab32da2](https://github.com/launchql/pgsql-parser/commit/ab32da2dbd7d1ec4866ffa041da79a270bc75b1e))
+
+
+
+
+
 # [13.11.0](https://github.com/launchql/pgsql-parser/compare/@pgsql/utils@13.10.1...@pgsql/utils@13.11.0) (2024-04-04)
 
 **Note:** Version bump only for package @pgsql/utils
