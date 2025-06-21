@@ -36,14 +36,18 @@
 
 **🎉 ALL PRIORITY TESTS FROM DAN'S LIST ARE NOW FIXED! 🎉**
 
-**Remaining failing tests (7 total failures - 98.0% pass rate):**
-1. `original-upstream-union.test.ts` - AST mismatch after parse/deparse cycle
-2. `original-upstream-random.test.ts` - AST mismatch after parse/deparse cycle
-3. `original-upstream-arrays.test.ts` - AST mismatch after parse/deparse cycle
-4. `original-upstream-privileges.test.ts` - AST mismatch after parse/deparse cycle
-5. `original-upstream-inherit.test.ts` - AST mismatch after parse/deparse cycle
-6. `original-upstream-with.test.ts` - AST mismatch after parse/deparse cycle
-7. `original-upstream-numeric.test.ts` - AST mismatch after parse/deparse cycle
+**🎉 MAJOR PROGRESS: Only 3 failing tests remaining! 99.1% pass rate (349/352) 🎉**
+
+**Remaining failing tests (3 total failures - 99.1% pass rate):**
+1. `original-upstream-with.test.ts` - Invalid deparsed SQL
+2. `original-upstream-arrays.test.ts` - AST mismatch after parse/deparse cycle
+3. `original-upstream-numeric.test.ts` - AST mismatch after parse/deparse cycle
+
+**Recently fixed by union parentheses improvement:**
+- `original-upstream-union.test.ts` ✅ **FIXED**
+- `original-upstream-random.test.ts` ✅ **FIXED** 
+- `original-upstream-privileges.test.ts` ✅ **FIXED**
+- `original-upstream-inherit.test.ts` ✅ **FIXED**
 
 **Next Steps:**
 1. Run full test suite to identify all 7 remaining failing tests
