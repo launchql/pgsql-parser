@@ -39,9 +39,9 @@ export const defaultPgProtoParserOptions: PgProtoParserOptions = {
 
         enumMap: {
             enabled: false,
-            format: 'json',
-            toIntOutFile: 'enums2int.json',
-            toStrOutFile: 'enums2str.json'
+            format: 'ts',
+            toIntOutFile: 'enums2int.ts',
+            toStrOutFile: 'enums2str.ts'
         },
         removeUndefinedAt0: true
     },
