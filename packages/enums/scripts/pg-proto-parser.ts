@@ -8,7 +8,8 @@ const options: PgProtoParserOptions = {
   outDir,
   enums: {
     enabled: true,
-    enumsAsTypeUnion: false
+    enumsAsTypeUnion: false,
+    filename: 'index.ts'
   }
 };
 const parser = new PgProtoParser(inFile, options);
