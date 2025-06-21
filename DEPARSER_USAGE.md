@@ -9,7 +9,7 @@ The deparser converts PostgreSQL AST nodes back to SQL strings. It handles vario
 The most common entry point - handles the complete parse result from libpg-query:
 
 ```typescript
-import deparse from '@pgsql/deparser';
+import deparse from 'pgsql-deparser';
 
 const parseResult = {
   version: 170004,
@@ -113,7 +113,7 @@ const sql = deparse(parseResult, options);
 You can also create a deparser instance:
 
 ```typescript
-import { Deparser } from '@pgsql/deparser';
+import { Deparser } from 'pgsql-deparser';
 
 const deparser = new Deparser(parseResult);
 const sql = deparser.deparse();
@@ -149,8 +149,8 @@ These ensure proper handling of different input formats automatically.
 ### Complete Example
 
 ```typescript
-import deparse from '@pgsql/deparser';
-import { parse } from '@pgsql/parser';
+import deparse from 'pgsql-deparser';
+import { parse } from 'pgsql-parser';
 
 // Parse SQL
 const sql = 'SELECT * FROM users; INSERT INTO logs (action) VALUES ($1);';
