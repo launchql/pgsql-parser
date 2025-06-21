@@ -43,7 +43,7 @@
   ],
   "dependencies": {
     "@pgsql/types": "^17.0.0",
-    "libpg-query": "17.3.2",
+    "libpg-query": "17.3.3",
     "minimist": "^1.2.6"
   }
 }
