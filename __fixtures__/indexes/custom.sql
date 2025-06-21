@@ -11,3 +11,5 @@ CREATE UNIQUE INDEX uniq_service_when_not_null
   WHERE svc IS NOT NULL;
 
 CREATE UNIQUE INDEX new_unique_idx ON new_example(a, b) INCLUDE (c);
+
+CREATE INDEX CONCURRENTLY idx_with_operator ON boom.merkle_tree USING GIN ( name gin_trgm_ops ( param1 = 32, param2 = true) );
