@@ -14,6 +14,48 @@ export interface DeparserOptions {
   functionDelimiterFallback?: string;  // Default: '$EOFCODE$'
 }
 
+// Type guards for better type safety
+function isParseResult(obj: any): obj is t.ParseResult {
+  // A ParseResult is an object that could have stmts (but not required)
+  // and is not already wrapped as a Node
+  // IMPORTANT: ParseResult.stmts contains RawStmt objects directly (not wrapped)
+  // Example: { version: 170004, stmts: [{ stmt: {...}, stmt_len: 32 }] }
+  return obj && typeof obj === 'object' && 
+    !Array.isArray(obj) &&
+    !('ParseResult' in obj) &&
+    !('RawStmt' in obj) &&
+    // Check if it looks like a ParseResult (has stmts or version)
+    ('stmts' in obj || 'version' in obj);
+}
+
+function isWrappedParseResult(obj: any): obj is { ParseResult: t.ParseResult } {
+  return obj && typeof obj === 'object' && 'ParseResult' in obj;
+}
+
+/**
+ * Deparser - Converts PostgreSQL AST nodes back to SQL strings
+ * 
+ * Entry Points:
+ * 1. ParseResult (from libpg-query) - The complete parse result
+ *    Structure: { version: number, stmts: RawStmt[] }
+ *    Note: stmts contains RawStmt objects directly, NOT wrapped as { RawStmt: ... }
+ *    Example: { version: 170004, stmts: [{ stmt: {...}, stmt_len: 32 }] }
+ * 
+ * 2. Wrapped ParseResult - When explicitly wrapped as a Node
+ *    Structure: { ParseResult: { version: number, stmts: RawStmt[] } }
+ * 
+ * 3. Wrapped RawStmt - When explicitly wrapped as a Node
+ *    Structure: { RawStmt: { stmt: Node, stmt_len?: number } }
+ * 
+ * 4. Array of Nodes - Multiple statements to deparse
+ *    Can be: Node[] (e.g., SelectStmt, InsertStmt, etc.)
+ * 
+ * 5. Single Node - Individual statement node
+ *    Example: { SelectStmt: {...} }, { InsertStmt: {...} }, etc.
+ * 
+ * The deparser automatically detects bare ParseResult objects for backward
+ * compatibility and wraps them internally for consistent processing.
+ */
 export class Deparser implements DeparserVisitor {
   private formatter: SqlFormatter;
   private tree: Node[];
@@ -29,30 +71,44 @@ export class Deparser implements DeparserVisitor {
       ...opts
     };
     
-    // Handle ParseResult objects
-    if (tree && typeof tree === 'object' && !Array.isArray(tree) && 'stmts' in tree) {
-      // This is a ParseResult
-      const parseResult = tree as t.ParseResult;
-      // Extract the actual Node from each RawStmt
-      this.tree = (parseResult.stmts || []).map(rawStmt => rawStmt.stmt).filter(stmt => stmt !== undefined) as Node[];
-    } 
-    // Handle arrays of Node
-    else if (Array.isArray(tree)) {
+    // Handle different input types
+    if (isParseResult(tree)) {
+      // Duck-typed ParseResult (backward compatibility)
+      // Wrap it as a proper Node for consistent handling
+      this.tree = [{ ParseResult: tree } as Node];
+    } else if (Array.isArray(tree)) {
+      // Array of Nodes
       this.tree = tree;
-    } 
-    // Handle single Node
-    else {
+    } else {
+      // Single Node (including wrapped ParseResult)
       this.tree = [tree as Node];
     }
   }
 
+  /**
+   * Static method to deparse PostgreSQL AST nodes to SQL
+   * @param query - Can be:
+   *   - ParseResult from libpg-query (e.g., { version: 170004, stmts: [...] })
+   *   - Wrapped ParseResult node (e.g., { ParseResult: {...} })
+   *   - Wrapped RawStmt node (e.g., { RawStmt: {...} })
+   *   - Array of Nodes
+   *   - Single Node (e.g., { SelectStmt: {...} })
+   * @param opts - Deparser options for formatting
+   * @returns The deparsed SQL string
+   */
   static deparse(query: Node | Node[] | t.ParseResult, opts: DeparserOptions = {}): string {
     return new Deparser(query, opts).deparseQuery();
   }
 
   deparseQuery(): string {
     return this.tree
-      .map(node => this.deparse(node))
+      .map(node => {
+        // All nodes should go through the standard deparse method
+        // which will route to the appropriate handler
+        const result = this.deparse(node);
+        return result || '';
+      })
+      .filter(result => result !== '')
       .join(this.formatter.newline() + this.formatter.newline());
   }
 
@@ -88,6 +144,12 @@ export class Deparser implements DeparserVisitor {
 
   visit(node: Node, context: DeparserContext = { parentNodeTypes: [] }): string {
     const nodeType = this.getNodeType(node);
+    
+    // Handle empty objects
+    if (!nodeType) {
+      return '';
+    }
+    
     const nodeData = this.getNodeData(node);
 
     const methodName = nodeType as keyof this;
@@ -116,26 +178,36 @@ export class Deparser implements DeparserVisitor {
     return node;
   }
 
-  RawStmt(node: t.RawStmt, context: DeparserContext): string {
-    if (node.stmt_len) {
-      return this.deparse(node.stmt, context) + ';';
+  ParseResult(node: t.ParseResult, context: DeparserContext): string {
+    if (!node.stmts || node.stmts.length === 0) {
+      return '';
     }
-    return this.deparse(node.stmt, context);
+    
+    // Deparse each RawStmt in the ParseResult
+    // Note: node.stmts contains RawStmt objects directly (not wrapped)
+    // Each element has structure: { stmt: Node, stmt_len?: number, stmt_location?: number }
+    return node.stmts
+      .filter((rawStmt: t.RawStmt) => rawStmt != null)
+      .map((rawStmt: t.RawStmt) => this.RawStmt(rawStmt, context))
+      .filter((result: string) => result !== '')
+      .join(this.formatter.newline() + this.formatter.newline());
   }
 
-  stmt(node: any, context: DeparserContext = { parentNodeTypes: [] }): string {
-    // Handle stmt wrapper nodes that contain the actual statement
-    const keys = Object.keys(node);
-    if (keys.length === 1) {
-      const statementType = keys[0];
-      const methodName = statementType as keyof this;
-      if (typeof this[methodName] === 'function') {
-        return (this[methodName] as any)(node[statementType], context);
-      }
-      throw new Error(`Deparser does not handle statement type: ${statementType}`);
+  RawStmt(node: t.RawStmt, context: DeparserContext): string {
+    if (!node.stmt) {
+      return '';
     }
-    return '';
+    
+    const deparsedStmt = this.deparse(node.stmt, context);
+    
+    // Add semicolon if stmt_len is provided (indicates it had one in original)
+    if (node.stmt_len) {
+      return deparsedStmt + ';';
+    }
+    return deparsedStmt;
   }
+
+
 
   SelectStmt(node: t.SelectStmt, context: DeparserContext): string {
     const output: string[] = [];
@@ -1326,7 +1398,7 @@ export class Deparser implements DeparserVisitor {
 
     let args: string | null = null;
     if (node.typmods) {
-      const isInterval = names.some(name => {
+      const isInterval = names.some((name: any) => {
         const nameStr = typeof name === 'string' ? name : (name.String?.sval || name.String?.str);
         return nameStr === 'interval';
       });
@@ -10599,18 +10671,6 @@ export class Deparser implements DeparserVisitor {
     return output.join(' ');
   }
 
-  version(node: any, context: any): string {
-    // Handle version node - typically just return the version number
-    if (typeof node === 'number') {
-      return node.toString();
-    }
-    if (typeof node === 'string') {
-      return node;
-    }
-    if (node && typeof node === 'object' && node.version) {
-      return node.version.toString();
-    }
-    return '';
-  }
+
 
 }
