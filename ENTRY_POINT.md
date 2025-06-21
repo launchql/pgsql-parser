@@ -44,11 +44,25 @@
 
 ### Key Clarification:
 
-The structure from libpg-query is:
+The structure from libpg-query is based on the protobuf definition:
+```protobuf
+message ParseResult {
+  int32 version = 1;
+  repeated RawStmt stmts = 2;  // "repeated" means array contains RawStmt inline
+}
+
+message RawStmt {
+  Node stmt = 1;
+  int32 stmt_location = 2;
+  int32 stmt_len = 3;
+}
+```
+
+This translates to:
 ```typescript
 ParseResult {
   version: number;
-  stmts: RawStmt[];  // Array of RawStmt objects directly (NOT wrapped)
+  stmts: RawStmt[];  // Array contains RawStmt objects inline (not wrapped as nodes)
 }
 
 // Each RawStmt in the array has this structure:
@@ -59,7 +73,7 @@ RawStmt {
 }
 ```
 
-This is different from wrapped nodes like `{ RawStmt: {...} }` which are used when explicitly creating a Node.
+Important: While RawStmt IS a Node type (listed in the Node oneof), when it appears in ParseResult.stmts, it's inline due to the "repeated RawStmt" protobuf definition. This is different from wrapped nodes like `{ RawStmt: {...} }` which are used when explicitly creating a Node for the deparser.
 
 ## Overview
 

@@ -18,7 +18,8 @@ export interface DeparserOptions {
 function isParseResult(obj: any): obj is t.ParseResult {
   // A ParseResult is an object that could have stmts (but not required)
   // and is not already wrapped as a Node
-  // IMPORTANT: ParseResult.stmts contains RawStmt objects directly (not wrapped)
+  // IMPORTANT: ParseResult.stmts is "repeated RawStmt" in protobuf, meaning
+  // the array contains RawStmt objects inline (not wrapped as { RawStmt: ... })
   // Example: { version: 170004, stmts: [{ stmt: {...}, stmt_len: 32 }] }
   return obj && typeof obj === 'object' && 
     !Array.isArray(obj) &&
@@ -38,7 +39,8 @@ function isWrappedParseResult(obj: any): obj is { ParseResult: t.ParseResult } {
  * Entry Points:
  * 1. ParseResult (from libpg-query) - The complete parse result
  *    Structure: { version: number, stmts: RawStmt[] }
- *    Note: stmts contains RawStmt objects directly, NOT wrapped as { RawStmt: ... }
+ *    Note: stmts is "repeated RawStmt" in protobuf, so array contains RawStmt 
+ *    objects inline (not wrapped as { RawStmt: ... } nodes)
  *    Example: { version: 170004, stmts: [{ stmt: {...}, stmt_len: 32 }] }
  * 
  * 2. Wrapped ParseResult - When explicitly wrapped as a Node
@@ -184,7 +186,7 @@ export class Deparser implements DeparserVisitor {
     }
     
     // Deparse each RawStmt in the ParseResult
-    // Note: node.stmts contains RawStmt objects directly (not wrapped)
+    // Note: node.stmts is "repeated RawStmt" so contains RawStmt objects inline
     // Each element has structure: { stmt: Node, stmt_len?: number, stmt_location?: number }
     return node.stmts
       .filter((rawStmt: t.RawStmt) => rawStmt != null)
