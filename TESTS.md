@@ -12,11 +12,11 @@
 
 **Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
 
-## Current Status (Latest - Full Test Suite Results - June 20, 2025)
-- **Test Suites**: 9 failed, 343 passed, 352 total
-- **Tests**: 9 failed, 343 passed, 352 total
-- **Pass Rate**: 97.4% test suites (343/352), 97.4% individual tests
-- **Last Updated**: June 20, 2025 23:42 UTC (confirmed 97.4% pass rate with complete kitchen sink test suite)
+## Current Status (Latest - Full Test Suite Results - June 21, 2025)
+- **Test Suites**: 7 failed, 345 passed, 352 total
+- **Tests**: 7 failed, 345 passed, 352 total
+- **Pass Rate**: 98.0% test suites (345/352), 98.0% individual tests
+- **Last Updated**: June 21, 2025 00:04 UTC (confirmed 98.0% pass rate with complete kitchen sink test suite)
 
 ## Priority Failing Tests (Fix in this order)
 **Previously prioritized tests - NOW FIXED:**
@@ -27,12 +27,13 @@
 5. `original-upstream-rules.test.ts` - AST mismatch after parse/deparse cycle ✅ **FIXED**
 9. `latest-postgres-create_function_sql.test.ts` - AST mismatch after parse/deparse cycle ✅ **FIXED**
 
+10. `latest-postgres-create_am.test.ts` - Invalid deparsed SQL ✅ **FIXED**
+11. `latest-postgres-create_type.test.ts` - AST mismatch after parse/deparse cycle ✅ **FIXED**
+
 **Currently failing tests from original priority list:**
 6. `original-statements-conflicts.test.ts` - AST mismatch after parse/deparse cycle
 7. `original-upstream-plpgsql.test.ts` - AST mismatch after parse/deparse cycle
 8. `latest-postgres-create_view.test.ts` - AST mismatch after parse/deparse cycle
-10. `latest-postgres-create_am.test.ts` - Invalid deparsed SQL
-11. `latest-postgres-create_type.test.ts` - AST mismatch after parse/deparse cycle
 
 **Additional failing tests identified (27 total failures):**
 - `original-upstream-with.test.ts` - Invalid deparsed SQL
