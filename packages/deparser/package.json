@@ -48,8 +48,6 @@
     "@pgsql/parser": "^17.0.0"
   },
   "dependencies": {
-    "@pgsql/types": "^17.0.0",
-    "dotty": "^0.1.0",
-    "pgsql-enums": "^17.0.0"
+    "@pgsql/types": "^17.0.0"
   }
 }

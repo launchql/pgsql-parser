@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  container-job:
+  parser-tests:
     runs-on: ubuntu-latest
     container: node:20.12.0-alpine
 
