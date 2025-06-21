@@ -11,6 +11,9 @@ export const defaultPgProtoParserOptions: PgProtoParserOptions = {
         enums: {
             enabled: false,
             filename: 'utils.ts',
+            unidirectional: false,
+            toIntFilename: 'enum-to-int.ts',
+            toStringFilename: 'enum-to-string.ts'
         },
         astHelpers: {
             enabled: false,

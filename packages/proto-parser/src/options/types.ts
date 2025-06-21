@@ -19,6 +19,12 @@ export interface PgProtoStoreOptions {
             enabled?: boolean;
             // Enums helpers filename
             filename?: string;
+            // Whether to generate separate unidirectional functions
+            unidirectional?: boolean;
+            // Filename for enum to int function
+            toIntFilename?: string;
+            // Filename for enum to string function
+            toStringFilename?: string;
         }
 
         // AST helper functions.

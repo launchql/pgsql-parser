@@ -110,3 +110,157 @@ export const generateEnumValueFunctions = (enumData: Enum[]) => {
   // Return the entire AST
   return [exportedEnumTypeAlias, exportedFunction];
 }
+
+export const generateEnumToIntFunctions = (enumData: Enum[]) => {
+  // Create the union type for EnumType
+  const enumTypeIdentifier = t.identifier('EnumType');
+  const enumTypeUnion = t.tsUnionType(
+    enumData.map(enumDef => t.tsLiteralType(t.stringLiteral(enumDef.name)))
+  );
+  const enumTypeAlias = t.tsTypeAliasDeclaration(enumTypeIdentifier, null, enumTypeUnion);
+
+  // Create the function parameter and its type
+  const enumTypeParam = t.identifier('enumType');
+  const enumTypeParamAnnotation = t.tsTypeAnnotation(t.tsTypeReference(enumTypeIdentifier));
+  enumTypeParam.typeAnnotation = enumTypeParamAnnotation;
+
+  const keyParam = t.identifier('key');
+  const keyParamAnnotation = t.tsTypeAnnotation(t.tsStringKeyword());
+  keyParam.typeAnnotation = keyParamAnnotation;
+
+  // Create return type annotation
+  const returnTypeAnnotation = t.tsTypeAnnotation(t.tsNumberKeyword());
+
+  // Create the switch cases for the outer switch statement
+  const outerCases = enumData.map(enumDef => {
+    const innerCases = Object.entries(enumDef.values).map(([key, value]) => {
+      return t.switchCase(t.stringLiteral(key), [t.returnStatement(t.numericLiteral(value))]);
+    });
+
+    // Add the default case for the inner switch
+    innerCases.push(t.switchCase(null, [
+      t.throwStatement(t.newExpression(t.identifier('Error'), [t.stringLiteral(`Key not recognized in enum ${enumDef.name}`)]))
+    ]));
+
+    return t.switchCase(t.stringLiteral(enumDef.name), [
+      t.blockStatement([t.switchStatement(keyParam, innerCases)])
+    ]);
+  });
+
+  // Add the default case for the outer switch
+  outerCases.push(t.switchCase(null,
+    [
+      t.throwStatement(
+        t.newExpression(t.identifier('Error'), [t.stringLiteral('Enum type not recognized')])
+      )
+    ]
+  ));
+
+  // Create the outer switch statement
+  const switchStatement = t.switchStatement(enumTypeParam, outerCases);
+
+  // Create the function body
+  const functionBody = t.blockStatement([switchStatement]);
+
+  // Create the arrow function expression with return type
+  const arrowFunctionExpression = t.arrowFunctionExpression(
+    [enumTypeParam, keyParam],
+    functionBody
+  );
+  arrowFunctionExpression.returnType = returnTypeAnnotation;
+
+  // Create the variable declarator for the function
+  const variableDeclarator = t.variableDeclarator(
+    t.identifier('getEnumInt'),
+    arrowFunctionExpression
+  );
+
+  // Create the variable declaration (const getEnumInt = ...)
+  const variableDeclaration = t.variableDeclaration('const', [variableDeclarator]);
+
+  // Export the arrow function
+  const exportedFunction = t.exportNamedDeclaration(variableDeclaration, []);
+
+  // Export the type
+  const exportedEnumTypeAlias = t.exportNamedDeclaration(enumTypeAlias, []);
+
+  // Return the entire AST
+  return [exportedEnumTypeAlias, exportedFunction];
+}
+
+export const generateEnumToStringFunctions = (enumData: Enum[]) => {
+  // Create the union type for EnumType
+  const enumTypeIdentifier = t.identifier('EnumType');
+  const enumTypeUnion = t.tsUnionType(
+    enumData.map(enumDef => t.tsLiteralType(t.stringLiteral(enumDef.name)))
+  );
+  const enumTypeAlias = t.tsTypeAliasDeclaration(enumTypeIdentifier, null, enumTypeUnion);
+
+  // Create the function parameter and its type
+  const enumTypeParam = t.identifier('enumType');
+  const enumTypeParamAnnotation = t.tsTypeAnnotation(t.tsTypeReference(enumTypeIdentifier));
+  enumTypeParam.typeAnnotation = enumTypeParamAnnotation;
+
+  const keyParam = t.identifier('key');
+  const keyParamAnnotation = t.tsTypeAnnotation(t.tsNumberKeyword());
+  keyParam.typeAnnotation = keyParamAnnotation;
+
+  // Create return type annotation
+  const returnTypeAnnotation = t.tsTypeAnnotation(t.tsStringKeyword());
+
+  // Create the switch cases for the outer switch statement
+  const outerCases = enumData.map(enumDef => {
+    const innerCases = Object.entries(enumDef.values).map(([key, value]) => {
+      return t.switchCase(t.numericLiteral(value), [t.returnStatement(t.stringLiteral(key))]);
+    });
+
+    // Add the default case for the inner switch
+    innerCases.push(t.switchCase(null, [
+      t.throwStatement(t.newExpression(t.identifier('Error'), [t.stringLiteral(`Value not recognized in enum ${enumDef.name}`)]))
+    ]));
+
+    return t.switchCase(t.stringLiteral(enumDef.name), [
+      t.blockStatement([t.switchStatement(keyParam, innerCases)])
+    ]);
+  });
+
+  // Add the default case for the outer switch
+  outerCases.push(t.switchCase(null,
+    [
+      t.throwStatement(
+        t.newExpression(t.identifier('Error'), [t.stringLiteral('Enum type not recognized')])
+      )
+    ]
+  ));
+
+  // Create the outer switch statement
+  const switchStatement = t.switchStatement(enumTypeParam, outerCases);
+
+  // Create the function body
+  const functionBody = t.blockStatement([switchStatement]);
+
+  // Create the arrow function expression with return type
+  const arrowFunctionExpression = t.arrowFunctionExpression(
+    [enumTypeParam, keyParam],
+    functionBody
+  );
+  arrowFunctionExpression.returnType = returnTypeAnnotation;
+
+  // Create the variable declarator for the function
+  const variableDeclarator = t.variableDeclarator(
+    t.identifier('getEnumString'),
+    arrowFunctionExpression
+  );
+
+  // Create the variable declaration (const getEnumString = ...)
+  const variableDeclaration = t.variableDeclaration('const', [variableDeclarator]);
+
+  // Export the arrow function
+  const exportedFunction = t.exportNamedDeclaration(variableDeclaration, []);
+
+  // Export the type
+  const exportedEnumTypeAlias = t.exportNamedDeclaration(enumTypeAlias, []);
+
+  // Return the entire AST
+  return [exportedEnumTypeAlias, exportedFunction];
+}

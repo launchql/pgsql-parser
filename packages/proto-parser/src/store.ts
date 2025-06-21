@@ -1,5 +1,5 @@
 import { Service, Type, Field, Enum, Namespace, ReflectionObject } from '@launchql/protobufjs';
-import { generateEnumImports, generateAstHelperMethods, generateTypeImportSpecifiers, generateEnumValueFunctions, convertEnumToTsUnionType, convertEnumToTsEnumDeclaration, generateNodeUnionType, convertTypeToTsInterface } from './ast';
+import { generateEnumImports, generateAstHelperMethods, generateTypeImportSpecifiers, generateEnumValueFunctions, generateEnumToIntFunctions, generateEnumToStringFunctions, convertEnumToTsUnionType, convertEnumToTsEnumDeclaration, generateNodeUnionType, convertTypeToTsInterface } from './ast';
 import { RuntimeSchemaGenerator } from './runtime-schema';
 import { generateEnum2IntJSON, generateEnum2StrJSON } from './ast/enums/enums-json';
 import { jsStringify } from 'strfy-js';
@@ -180,8 +180,20 @@ export class ProtoStore implements IProtoStore {
 
   writeUtilsEnums() {
     if (this.options.utils.enums.enabled) {
-      const code = convertAstToCode(generateEnumValueFunctions(this.enumsToProcess()));
-      this.writeFile(this.options.utils.enums.filename, code);
+      const enumsToProcess = this.enumsToProcess();
+      
+      if (this.options.utils.enums.unidirectional) {
+        // Generate separate unidirectional functions
+        const toIntCode = convertAstToCode(generateEnumToIntFunctions(enumsToProcess));
+        this.writeFile(this.options.utils.enums.toIntFilename, toIntCode);
+        
+        const toStringCode = convertAstToCode(generateEnumToStringFunctions(enumsToProcess));
+        this.writeFile(this.options.utils.enums.toStringFilename, toStringCode);
+      } else {
+        // Generate bidirectional function (original behavior)
+        const code = convertAstToCode(generateEnumValueFunctions(enumsToProcess));
+        this.writeFile(this.options.utils.enums.filename, code);
+      }
     }
   }
 

@@ -2,14 +2,22 @@
 
 ## Overview
 
-The `generateEnumValueFunctions` function is a key utility in the proto-parser package that generates TypeScript code for bidirectional enum value lookups. It creates a runtime utility function that can convert between enum string names and their numeric values.
+The proto-parser package provides three enum utility generation functions:
+
+1. **`generateEnumValueFunctions`**: Generates bidirectional enum value lookups (string ↔ number)
+2. **`generateEnumToIntFunctions`**: Generates unidirectional string → number conversions
+3. **`generateEnumToStringFunctions`**: Generates unidirectional number → string conversions
+
+These utilities create runtime functions that can convert between enum string names and their numeric values with full type safety.
 
 ## Function Location
 
 - **File**: `src/ast/enums/enums.ts`
-- **Export**: Named export from the enums module
+- **Export**: Named exports from the enums module
 
-## Function Signature
+## Function Signatures
+
+### Bidirectional Function
 
 ```typescript
 export const generateEnumValueFunctions = (enumData: Enum[]) => {
@@ -19,13 +27,32 @@ export const generateEnumValueFunctions = (enumData: Enum[]) => {
 }
 ```
 
+### Unidirectional Functions
+
+```typescript
+export const generateEnumToIntFunctions = (enumData: Enum[]) => {
+  // Returns an array of two AST nodes:
+  // 1. EnumType type alias export
+  // 2. getEnumInt function export
+}
+
+export const generateEnumToStringFunctions = (enumData: Enum[]) => {
+  // Returns an array of two AST nodes:
+  // 1. EnumType type alias export
+  // 2. getEnumString function export
+}
+```
+
 ## Purpose
 
-The function generates a TypeScript utility that provides:
+These functions generate TypeScript utilities that provide:
 
-1. **Bidirectional enum lookups**: Convert enum names to values and values to names
+1. **Flexible enum conversions**: 
+   - Bidirectional: Convert between names and values in both directions
+   - Unidirectional: Optimized single-direction conversions with cleaner types
 2. **Type safety**: Uses a union type of all enum names for compile-time checking
 3. **Runtime validation**: Throws descriptive errors for invalid inputs
+4. **Better type inference**: Unidirectional functions have more precise return types
 
 ## Generated Code Structure
 
@@ -37,7 +64,9 @@ export type EnumType = "Enum1" | "Enum2" | "Enum3" | ...;
 
 A union type of all enum names in the protobuf schema, providing type safety when calling the utility function.
 
-### 2. getEnumValue Function
+### 2. Generated Functions
+
+#### Bidirectional Function (getEnumValue)
 
 ```typescript
 export const getEnumValue = (enumType: EnumType, key: string | number) => {
@@ -50,6 +79,44 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
           case 0: return "ENUM_VALUE_1";
           case 1: return "ENUM_VALUE_2";
           default: throw new Error("Key not recognized in enum EnumName");
+        }
+      }
+    // ... more enum cases
+    default: throw new Error("Enum type not recognized");
+  }
+}
+```
+
+#### String to Int Function (getEnumInt)
+
+```typescript
+export const getEnumInt = (enumType: EnumType, key: string): number => {
+  switch (enumType) {
+    case "EnumName":
+      {
+        switch (key) {
+          case "ENUM_VALUE_1": return 0;
+          case "ENUM_VALUE_2": return 1;
+          default: throw new Error("Key not recognized in enum EnumName");
+        }
+      }
+    // ... more enum cases
+    default: throw new Error("Enum type not recognized");
+  }
+}
+```
+
+#### Int to String Function (getEnumString)
+
+```typescript
+export const getEnumString = (enumType: EnumType, key: number): string => {
+  switch (enumType) {
+    case "EnumName":
+      {
+        switch (key) {
+          case 0: return "ENUM_VALUE_1";
+          case 1: return "ENUM_VALUE_2";
+          default: throw new Error("Value not recognized in enum EnumName");
         }
       }
     // ... more enum cases
@@ -116,13 +183,18 @@ The enum utilities are controlled by the following configuration:
 ```typescript
 utils: {
   enums: {
-    enabled: boolean;      // Default: false
-    filename: string;      // Default: 'utils.ts'
+    enabled: boolean;           // Default: false
+    filename: string;           // Default: 'utils.ts'
+    unidirectional?: boolean;   // Default: false
+    toIntFilename?: string;     // Default: 'enum-to-int.ts'
+    toStringFilename?: string;  // Default: 'enum-to-string.ts'
   }
 }
 ```
 
-### Enabling Enum Utilities
+### Configuration Examples
+
+#### Bidirectional Functions (Default)
 
 ```typescript
 const options = {
@@ -130,6 +202,21 @@ const options = {
     enums: {
       enabled: true,
       filename: 'enum-utils.ts'
+    }
+  }
+};
+```
+
+#### Unidirectional Functions
+
+```typescript
+const options = {
+  utils: {
+    enums: {
+      enabled: true,
+      unidirectional: true,
+      toIntFilename: 'enums-to-int.ts',
+      toStringFilename: 'enums-to-string.ts'
     }
   }
 };
@@ -171,6 +258,7 @@ export const getEnumValue = (enumType: EnumType, key: string | number) => {
 
 ### 1. Dynamic Enum Value Resolution
 
+#### Bidirectional Function
 ```typescript
 // Get numeric value from string
 const value = getEnumValue("OverridingKind", "OVERRIDING_USER_VALUE"); // Returns: 1
@@ -179,19 +267,36 @@ const value = getEnumValue("OverridingKind", "OVERRIDING_USER_VALUE"); // Return
 const name = getEnumValue("OverridingKind", 1); // Returns: "OVERRIDING_USER_VALUE"
 ```
 
+#### Unidirectional Functions
+```typescript
+// String to number conversion with precise types
+const value: number = getEnumInt("OverridingKind", "OVERRIDING_USER_VALUE"); // Returns: 1
+
+// Number to string conversion with precise types
+const name: string = getEnumString("OverridingKind", 1); // Returns: "OVERRIDING_USER_VALUE"
+```
+
 ### 2. Type-Safe Enum Operations
 
 ```typescript
 // TypeScript will enforce valid enum names
-getEnumValue("InvalidEnum", "VALUE"); // Type error!
+getEnumInt("InvalidEnum", "VALUE"); // Type error!
 
 // Runtime validation for values
-getEnumValue("OverridingKind", "INVALID_VALUE"); // Throws: "Key not recognized in enum OverridingKind"
+getEnumInt("OverridingKind", "INVALID_VALUE"); // Throws: "Key not recognized in enum OverridingKind"
+getEnumString("OverridingKind", 999); // Throws: "Value not recognized in enum OverridingKind"
 ```
 
 ### 3. Protocol Message Parsing
 
 Useful when parsing protocol buffer messages where you need to convert between wire format (numbers) and readable format (strings).
+
+### 4. Benefits of Unidirectional Functions
+
+1. **Cleaner Types**: Function signatures are more precise (string → number or number → string)
+2. **Better IntelliSense**: IDEs can provide better autocomplete and type hints
+3. **Smaller Bundle Size**: When using tree-shaking, you only include the direction you need
+4. **Performance**: Slightly faster as there's no runtime type checking for the input parameter
 
 ## Performance Considerations
 
