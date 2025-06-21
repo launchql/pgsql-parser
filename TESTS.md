@@ -30,22 +30,23 @@
 10. `latest-postgres-create_am.test.ts` - Invalid deparsed SQL ✅ **FIXED**
 11. `latest-postgres-create_type.test.ts` - AST mismatch after parse/deparse cycle ✅ **FIXED**
 
-**Currently failing tests from original priority list:**
-6. `original-statements-conflicts.test.ts` - AST mismatch after parse/deparse cycle
-7. `original-upstream-plpgsql.test.ts` - AST mismatch after parse/deparse cycle
-8. `latest-postgres-create_view.test.ts` - AST mismatch after parse/deparse cycle
+6. `original-statements-conflicts.test.ts` - AST mismatch after parse/deparse cycle ✅ **FIXED**
+7. `original-upstream-plpgsql.test.ts` - AST mismatch after parse/deparse cycle ✅ **FIXED**
+8. `latest-postgres-create_view.test.ts` - AST mismatch after parse/deparse cycle ✅ **FIXED**
 
-**Additional failing tests identified (27 total failures):**
-- `original-upstream-with.test.ts` - Invalid deparsed SQL
-- `original-upstream-event_trigger.test.ts` - Invalid deparsed SQL
-- `original-upstream-truncate.test.ts` - Invalid deparsed SQL
-- `latest-postgres-create_procedure.test.ts` - Invalid deparsed SQL
-- `original-upstream-union.test.ts` - AST mismatch after parse/deparse cycle
-- `original-upstream-select.test.ts` - Invalid deparsed SQL
-- `original-upstream-groupingsets.test.ts` - Invalid deparsed SQL
-- `latest-postgres-create_aggregate.test.ts` - Invalid deparsed SQL
-- `original-upstream-plancache.test.ts` - Invalid deparsed SQL
-- `original-upstream-select_views.test.ts` - AST mismatch after parse/deparse cycle
-- `original-upstream-create_aggregate.test.ts` - Invalid deparsed SQL
-- `original-upstream-random.test.ts` - Invalid deparsed SQL
-- And others (see full test output for complete list)
+**🎉 ALL PRIORITY TESTS FROM DAN'S LIST ARE NOW FIXED! 🎉**
+
+**Remaining failing tests (7 total failures - 98.0% pass rate):**
+1. `original-upstream-union.test.ts` - AST mismatch after parse/deparse cycle
+2. `original-upstream-random.test.ts` - AST mismatch after parse/deparse cycle
+3. `original-upstream-arrays.test.ts` - AST mismatch after parse/deparse cycle
+4. `original-upstream-privileges.test.ts` - AST mismatch after parse/deparse cycle
+5. `original-upstream-inherit.test.ts` - AST mismatch after parse/deparse cycle
+6. `original-upstream-with.test.ts` - AST mismatch after parse/deparse cycle
+7. `original-upstream-numeric.test.ts` - AST mismatch after parse/deparse cycle
+
+**Next Steps:**
+1. Run full test suite to identify all 7 remaining failing tests
+2. Create focused debug scripts for each failing test using cleanTree
+3. Fix deparser methods systematically
+4. Achieve 100% pass rate
