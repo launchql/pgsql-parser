@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-case', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-case', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/case-1.sql",
   "original/upstream/case-2.sql",
   "original/upstream/case-3.sql",

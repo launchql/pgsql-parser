@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-polymorphism', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-polymorphism', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/polymorphism-1.sql",
   "original/upstream/polymorphism-2.sql",
   "original/upstream/polymorphism-3.sql",

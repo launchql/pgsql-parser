@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-geometry', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-geometry', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/geometry-1.sql",
   "original/upstream/geometry-2.sql",
   "original/upstream/geometry-3.sql",

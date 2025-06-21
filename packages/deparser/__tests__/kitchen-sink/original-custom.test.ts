@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-custom', () => {
-  fixtures.runFixtureTests([
+it('original-custom', async () => {
+  await fixtures.runFixtureTests([
   "original/custom-1.sql",
   "original/custom-2.sql",
   "original/custom-3.sql",

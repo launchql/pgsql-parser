@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-polygon', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-polygon', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/polygon-1.sql",
   "original/upstream/polygon-2.sql",
   "original/upstream/polygon-3.sql",

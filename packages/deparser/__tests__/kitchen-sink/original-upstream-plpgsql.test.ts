@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-plpgsql', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-plpgsql', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/plpgsql-1.sql",
   "original/upstream/plpgsql-2.sql",
   "original/upstream/plpgsql-3.sql",

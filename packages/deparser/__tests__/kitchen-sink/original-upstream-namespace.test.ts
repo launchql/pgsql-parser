@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-namespace', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-namespace', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/namespace-1.sql",
   "original/upstream/namespace-2.sql",
   "original/upstream/namespace-3.sql",

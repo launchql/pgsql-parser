@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-hash_index', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-hash_index', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/hash_index-1.sql",
   "original/upstream/hash_index-2.sql",
   "original/upstream/hash_index-3.sql",

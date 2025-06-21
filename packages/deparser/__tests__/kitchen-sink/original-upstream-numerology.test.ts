@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-numerology', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-numerology', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/numerology-1.sql",
   "original/upstream/numerology-2.sql",
   "original/upstream/numerology-3.sql",

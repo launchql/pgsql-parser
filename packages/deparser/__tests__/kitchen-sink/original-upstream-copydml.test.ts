@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-copydml', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-copydml', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/copydml-1.sql",
   "original/upstream/copydml-2.sql",
   "original/upstream/copydml-3.sql",

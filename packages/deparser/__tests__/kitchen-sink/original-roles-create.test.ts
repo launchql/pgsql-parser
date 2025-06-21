@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-roles-create', () => {
-  fixtures.runFixtureTests([
+it('original-roles-create', async () => {
+  await fixtures.runFixtureTests([
   "original/roles/create-1.sql",
   "original/roles/create-2.sql",
   "original/roles/create-3.sql",

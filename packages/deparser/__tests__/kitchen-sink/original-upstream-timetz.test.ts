@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-timetz', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-timetz', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/timetz-1.sql",
   "original/upstream/timetz-2.sql",
   "original/upstream/timetz-3.sql",

@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-plancache', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-plancache', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/plancache-1.sql",
   "original/upstream/plancache-2.sql",
   "original/upstream/plancache-3.sql",

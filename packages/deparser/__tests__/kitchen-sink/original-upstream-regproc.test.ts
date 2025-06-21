@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-regproc', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-regproc', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/regproc-1.sql",
   "original/upstream/regproc-2.sql",
   "original/upstream/regproc-3.sql",

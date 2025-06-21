@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('latest-misc-cascades', () => {
-  fixtures.runFixtureTests([
+it('latest-misc-cascades', async () => {
+  await fixtures.runFixtureTests([
   "latest/misc/cascades-1.sql",
   "latest/misc/cascades-2.sql",
   "latest/misc/cascades-3.sql",

@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-xmlmap', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-xmlmap', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/xmlmap-1.sql",
   "original/upstream/xmlmap-2.sql",
   "original/upstream/xmlmap-3.sql",

@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-subselect', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-subselect', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/subselect-1.sql",
   "original/upstream/subselect-2.sql",
   "original/upstream/subselect-3.sql",

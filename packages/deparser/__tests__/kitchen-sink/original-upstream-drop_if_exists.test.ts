@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-drop_if_exists', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-drop_if_exists', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/drop_if_exists-1.sql",
   "original/upstream/drop_if_exists-2.sql",
   "original/upstream/drop_if_exists-3.sql",

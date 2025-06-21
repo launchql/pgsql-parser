@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-rowsecurity', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-rowsecurity', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/rowsecurity-1.sql",
   "original/upstream/rowsecurity-2.sql",
   "original/upstream/rowsecurity-3.sql",

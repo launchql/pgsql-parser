@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-rangetypes', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-rangetypes', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/rangetypes-1.sql",
   "original/upstream/rangetypes-2.sql",
   "original/upstream/rangetypes-3.sql",

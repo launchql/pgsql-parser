@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-truncate', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-truncate', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/truncate-1.sql",
   "original/upstream/truncate-2.sql",
   "original/upstream/truncate-3.sql",

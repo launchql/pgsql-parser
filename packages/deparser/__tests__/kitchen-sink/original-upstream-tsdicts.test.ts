@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-tsdicts', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-tsdicts', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/tsdicts-1.sql",
   "original/upstream/tsdicts-2.sql",
   "original/upstream/tsdicts-3.sql",

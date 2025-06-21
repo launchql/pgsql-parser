@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('latest-postgres-create_type', () => {
-  fixtures.runFixtureTests([
+it('latest-postgres-create_type', async () => {
+  await fixtures.runFixtureTests([
   "latest/postgres/create_type-1.sql",
   "latest/postgres/create_type-2.sql",
   "latest/postgres/create_type-3.sql",

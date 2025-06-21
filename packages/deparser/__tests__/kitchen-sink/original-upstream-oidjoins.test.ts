@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-oidjoins', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-oidjoins', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/oidjoins-1.sql",
   "original/upstream/oidjoins-2.sql",
   "original/upstream/oidjoins-3.sql",

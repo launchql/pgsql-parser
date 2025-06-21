@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-groupingsets', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-groupingsets', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/groupingsets-1.sql",
   "original/upstream/groupingsets-2.sql",
   "original/upstream/groupingsets-3.sql",

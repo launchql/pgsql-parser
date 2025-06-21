@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-dbsize', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-dbsize', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/dbsize-1.sql",
   "original/upstream/dbsize-2.sql",
   "original/upstream/dbsize-3.sql",

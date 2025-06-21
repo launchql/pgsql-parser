@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-create_cast', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-create_cast', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/create_cast-1.sql",
   "original/upstream/create_cast-2.sql",
   "original/upstream/create_cast-3.sql",

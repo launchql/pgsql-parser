@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-tsearch', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-tsearch', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/tsearch-1.sql",
   "original/upstream/tsearch-2.sql",
   "original/upstream/tsearch-3.sql",

@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-enum', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-enum', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/enum-1.sql",
   "original/upstream/enum-2.sql",
   "original/upstream/enum-3.sql",

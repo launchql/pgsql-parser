@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-create_index', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-create_index', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/create_index-1.sql",
   "original/upstream/create_index-2.sql",
   "original/upstream/create_index-3.sql",

@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-hs_standby_disallowed', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-hs_standby_disallowed', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/hs_standby_disallowed-1.sql",
   "original/upstream/hs_standby_disallowed-2.sql",
   "original/upstream/hs_standby_disallowed-3.sql",

@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-triggers-create', () => {
-  fixtures.runFixtureTests([
+it('original-triggers-create', async () => {
+  await fixtures.runFixtureTests([
   "original/triggers/create-1.sql",
   "original/triggers/create-2.sql",
   "original/triggers/create-3.sql",

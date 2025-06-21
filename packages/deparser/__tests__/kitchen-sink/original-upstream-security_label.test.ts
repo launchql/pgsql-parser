@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-security_label', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-security_label', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/security_label-1.sql",
   "original/upstream/security_label-2.sql",
   "original/upstream/security_label-3.sql",

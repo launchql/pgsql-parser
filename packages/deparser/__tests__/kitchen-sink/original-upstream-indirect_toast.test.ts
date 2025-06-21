@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-indirect_toast', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-indirect_toast', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/indirect_toast-1.sql",
   "original/upstream/indirect_toast-2.sql",
   "original/upstream/indirect_toast-3.sql",

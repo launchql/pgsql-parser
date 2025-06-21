@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-json_encoding', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-json_encoding', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/json_encoding-1.sql",
   "original/upstream/json_encoding-2.sql",
   "original/upstream/json_encoding-3.sql",

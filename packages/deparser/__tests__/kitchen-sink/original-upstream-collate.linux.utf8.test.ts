@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-collate.linux.utf8', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-collate.linux.utf8', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/collate.linux.utf8-1.sql",
   "original/upstream/collate.linux.utf8-2.sql",
   "original/upstream/collate.linux.utf8-3.sql",
