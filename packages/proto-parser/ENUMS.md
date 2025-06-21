@@ -188,6 +188,7 @@ utils: {
     unidirectional?: boolean;   // Default: false
     toIntFilename?: string;     // Default: 'enum-to-int.ts'
     toStringFilename?: string;  // Default: 'enum-to-string.ts'
+    outputFormat?: 'switchStatements' | 'nestedObjects'; // Default: 'switchStatements'
   }
 }
 ```
@@ -217,6 +218,22 @@ const options = {
       unidirectional: true,
       toIntFilename: 'enums-to-int.ts',
       toStringFilename: 'enums-to-string.ts'
+    }
+  }
+};
+```
+
+#### Nested Objects Format
+
+```typescript
+const options = {
+  utils: {
+    enums: {
+      enabled: true,
+      unidirectional: true,
+      outputFormat: 'nestedObjects',
+      toIntFilename: 'enum-to-int-map.ts',
+      toStringFilename: 'enum-to-string-map.ts'
     }
   }
 };
@@ -297,6 +314,29 @@ Useful when parsing protocol buffer messages where you need to convert between w
 2. **Better IntelliSense**: IDEs can provide better autocomplete and type hints
 3. **Smaller Bundle Size**: When using tree-shaking, you only include the direction you need
 4. **Performance**: Slightly faster as there's no runtime type checking for the input parameter
+
+### 5. Nested Objects Format
+
+The nested objects format provides an alternative API that's more modular:
+
+#### Usage
+```typescript
+import { enumToIntMap } from './enum-to-int-map';
+import { enumToStringMap } from './enum-to-string-map';
+
+// Convert string to number
+const value = enumToIntMap.OverridingKind("OVERRIDING_USER_VALUE"); // Returns: 1
+
+// Convert number to string
+const name = enumToStringMap.OverridingKind(1); // Returns: "OVERRIDING_USER_VALUE"
+```
+
+#### Benefits of Nested Objects
+
+1. **Better Tree-Shaking**: Import only the specific enum converters you need
+2. **Direct Access**: No need to pass enum name as first parameter
+3. **Type-Safe Property Access**: TypeScript knows exactly which enums are available
+4. **Modular Code**: Each enum has its own converter function
 
 ## Performance Considerations
 

@@ -25,6 +25,8 @@ export interface PgProtoStoreOptions {
             toIntFilename?: string;
             // Filename for enum to string function
             toStringFilename?: string;
+            // Output format: 'switchStatements' or 'nestedObjects'
+            outputFormat?: 'switchStatements' | 'nestedObjects';
         }
 
         // AST helper functions.

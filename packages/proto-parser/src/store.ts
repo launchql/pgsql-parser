@@ -1,5 +1,5 @@
 import { Service, Type, Field, Enum, Namespace, ReflectionObject } from '@launchql/protobufjs';
-import { generateEnumImports, generateAstHelperMethods, generateTypeImportSpecifiers, generateEnumValueFunctions, generateEnumToIntFunctions, generateEnumToStringFunctions, convertEnumToTsUnionType, convertEnumToTsEnumDeclaration, generateNodeUnionType, convertTypeToTsInterface } from './ast';
+import { generateEnumImports, generateAstHelperMethods, generateTypeImportSpecifiers, generateEnumValueFunctions, generateEnumToIntFunctions, generateEnumToStringFunctions, generateEnumToIntFunctionsNested, generateEnumToStringFunctionsNested, convertEnumToTsUnionType, convertEnumToTsEnumDeclaration, generateNodeUnionType, convertTypeToTsInterface } from './ast';
 import { RuntimeSchemaGenerator } from './runtime-schema';
 import { generateEnum2IntJSON, generateEnum2StrJSON } from './ast/enums/enums-json';
 import { jsStringify } from 'strfy-js';
@@ -181,16 +181,21 @@ export class ProtoStore implements IProtoStore {
   writeUtilsEnums() {
     if (this.options.utils.enums.enabled) {
       const enumsToProcess = this.enumsToProcess();
+      const useNestedObjects = this.options.utils.enums.outputFormat === 'nestedObjects';
       
       if (this.options.utils.enums.unidirectional) {
         // Generate separate unidirectional functions
-        const toIntCode = convertAstToCode(generateEnumToIntFunctions(enumsToProcess));
+        const toIntGenerator = useNestedObjects ? generateEnumToIntFunctionsNested : generateEnumToIntFunctions;
+        const toStringGenerator = useNestedObjects ? generateEnumToStringFunctionsNested : generateEnumToStringFunctions;
+        
+        const toIntCode = convertAstToCode(toIntGenerator(enumsToProcess));
         this.writeFile(this.options.utils.enums.toIntFilename, toIntCode);
         
-        const toStringCode = convertAstToCode(generateEnumToStringFunctions(enumsToProcess));
+        const toStringCode = convertAstToCode(toStringGenerator(enumsToProcess));
         this.writeFile(this.options.utils.enums.toStringFilename, toStringCode);
       } else {
         // Generate bidirectional function (original behavior)
+        // Note: Nested objects format only supported for unidirectional functions
         const code = convertAstToCode(generateEnumValueFunctions(enumsToProcess));
         this.writeFile(this.options.utils.enums.filename, code);
       }

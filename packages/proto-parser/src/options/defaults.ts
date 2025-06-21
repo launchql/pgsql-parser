@@ -13,7 +13,8 @@ export const defaultPgProtoParserOptions: PgProtoParserOptions = {
             filename: 'utils.ts',
             unidirectional: false,
             toIntFilename: 'enum-to-int.ts',
-            toStringFilename: 'enum-to-string.ts'
+            toStringFilename: 'enum-to-string.ts',
+            outputFormat: 'switchStatements'
         },
         astHelpers: {
             enabled: false,
