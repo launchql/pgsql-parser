@@ -16,7 +16,7 @@ function ensureDir(dir: string) {
 
 ensureDir(OUT_DIR);
 
-const fixtures = globSync(`${FIXTURE_DIR}/**/*.sql`);
+const fixtures = globSync(path.join(FIXTURE_DIR, '**/*.sql'));
 
 async function main() {
   // Collect deparsed SQL in a single JSON
