@@ -6501,11 +6501,11 @@ export class Deparser implements DeparserVisitor {
         }
       }
       
-      if (languageArg) {
-        output.push(languageArg);
-      }
       if (codeArg) {
         output.push(codeArg);
+      }
+      if (languageArg) {
+        output.push(languageArg);
       }
     }
     
