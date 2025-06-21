@@ -1,5 +1,66 @@
 # Deparser Entry Point Analysis
 
+## Implementation Status
+
+✅ **Phase 1 Complete** (Commit: a240d13)
+
+### Implemented Changes:
+
+1. **Added Type Guards**
+   - `isParseResult()` - Detects bare ParseResult objects
+   - `isWrappedParseResult()` - Detects wrapped ParseResult nodes
+
+2. **Added ParseResult Method**
+   - Handles wrapped ParseResult nodes properly
+   - Filters null/undefined RawStmt entries
+   - Joins statements with double newlines
+
+3. **Updated RawStmt Method**
+   - Handles empty statements gracefully
+   - Adds semicolons based on stmt_len presence
+
+4. **Refactored Constructor**
+   - Uses type guards for proper type detection
+   - Wraps bare ParseResult as `{ ParseResult: tree }` for consistency
+   - Maintains backward compatibility
+
+5. **Updated deparseQuery()**
+   - Filters out empty results
+   - Joins with double newlines
+
+6. **Removed Unused Methods**
+   - Removed `stmt()` method (never used)
+   - Removed `version()` method (never used)
+
+7. **Added Comprehensive Documentation**
+   - Clear explanation of all entry points
+   - Important note about ParseResult.stmts structure
+   - Examples for each entry point type
+
+8. **Added Test Suite**
+   - 14 test cases covering all entry points
+   - Tests for edge cases (empty objects, undefined stmts)
+   - All tests passing
+
+### Key Clarification:
+
+The structure from libpg-query is:
+```typescript
+ParseResult {
+  version: number;
+  stmts: RawStmt[];  // Array of RawStmt objects directly (NOT wrapped)
+}
+
+// Each RawStmt in the array has this structure:
+RawStmt {
+  stmt: Node;
+  stmt_len?: number;
+  stmt_location?: number;
+}
+```
+
+This is different from wrapped nodes like `{ RawStmt: {...} }` which are used when explicitly creating a Node.
+
 ## Overview
 
 This document analyzes the entry points of the deparser system, focusing on how users interact with the top-level API and how we can refactor to make the system more consistent and intuitive.
