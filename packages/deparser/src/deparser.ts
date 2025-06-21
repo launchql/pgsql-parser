@@ -976,6 +976,10 @@ export class Deparser implements DeparserVisitor {
     
     const boolContext = { ...context, bool: true };
 
+    // explanation of our syntax/fix below:
+    // return formatStr.replace('%s', andArgs); // ❌ Interprets $ as special syntax
+    // return formatStr.replace('%s', () => andArgs); // ✅ Function callback prevents interpretation
+
     switch (boolop) {
       case 'AND_EXPR':
         const andArgs = args.map(arg => this.visit(arg, boolContext)).join(' AND ');
