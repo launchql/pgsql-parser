@@ -118,18 +118,20 @@ export class Deparser implements DeparserVisitor {
       const leftStmt = this.SelectStmt(node.larg as t.SelectStmt, context);
       const rightStmt = this.SelectStmt(node.rarg as t.SelectStmt, context);
       
-      // Add parentheses if the operand is a set operation OR has ORDER BY/LIMIT clauses
+      // Add parentheses if the operand is a set operation OR has ORDER BY/LIMIT clauses OR has WITH clause
       const leftNeedsParens = node.larg && (
         ((node.larg as t.SelectStmt).op && (node.larg as t.SelectStmt).op !== 'SETOP_NONE') ||
         (node.larg as t.SelectStmt).sortClause ||
         (node.larg as t.SelectStmt).limitCount ||
-        (node.larg as t.SelectStmt).limitOffset
+        (node.larg as t.SelectStmt).limitOffset ||
+        (node.larg as t.SelectStmt).withClause
       );
       const rightNeedsParens = node.rarg && (
         ((node.rarg as t.SelectStmt).op && (node.rarg as t.SelectStmt).op !== 'SETOP_NONE') ||
         (node.rarg as t.SelectStmt).sortClause ||
         (node.rarg as t.SelectStmt).limitCount ||
-        (node.rarg as t.SelectStmt).limitOffset
+        (node.rarg as t.SelectStmt).limitOffset ||
+        (node.rarg as t.SelectStmt).withClause
       );
       
       if (leftNeedsParens) {
@@ -1764,21 +1766,24 @@ export class Deparser implements DeparserVisitor {
       }
     }
     
-    if (typeName.startsWith('interval') || 
+    // Check if the argument is a complex expression that should preserve CAST syntax
+    const argType = this.getNodeType(node.arg);
+    const isComplexExpression = argType === 'A_Expr' || argType === 'FuncCall' || argType === 'OpExpr';
+    
+    if (!isComplexExpression && (typeName.startsWith('interval') || 
         typeName.startsWith('char') || 
         typeName === '"char"' ||
         typeName.startsWith('bpchar') ||
         typeName === 'bytea' ||
         typeName === 'orderedarray' ||
-        typeName.startsWith('numeric') ||
-        typeName.startsWith('pg_catalog.numeric') ||
-        typeName === 'date') {
+        typeName === 'date')) {
       // Remove pg_catalog prefix for :: syntax
       const cleanTypeName = typeName.replace('pg_catalog.', '');
       return `${arg}::${cleanTypeName}`;
     }
     
-    return `CAST(${arg} AS ${typeName})`;
+    const cleanTypeName = typeName.replace('pg_catalog.', '');
+    return `CAST(${arg} AS ${cleanTypeName})`;
   }
 
   CollateClause(node: t.CollateClause, context: DeparserContext): string {
