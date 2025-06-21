@@ -8777,6 +8777,11 @@ export class Deparser implements DeparserVisitor {
       output.push(')');
     }
     
+    if (node.into && node.into.accessMethod) {
+      output.push('USING');
+      output.push(node.into.accessMethod);
+    }
+    
     if (node.into && node.into.onCommit && node.into.onCommit !== 'ONCOMMIT_NOOP') {
       output.push('ON COMMIT');
       switch (node.into.onCommit) {
@@ -10528,8 +10533,16 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.base && node.base.inhRelations && node.base.inhRelations.length > 0) {
-      const inheritStrs = ListUtils.unwrapList(node.base.inhRelations).map(rel => this.visit(rel, context));
-      output.push(`INHERITS (${inheritStrs.join(', ')})`);
+      if (node.base.partbound) {
+        const inheritStrs = ListUtils.unwrapList(node.base.inhRelations).map(rel => this.visit(rel, context));
+        output.push(`PARTITION OF ${inheritStrs.join(', ')}`);
+        if (node.base.partbound.is_default) {
+          output.push('DEFAULT');
+        }
+      } else {
+        const inheritStrs = ListUtils.unwrapList(node.base.inhRelations).map(rel => this.visit(rel, context));
+        output.push(`INHERITS (${inheritStrs.join(', ')})`);
+      }
     }
     
     if (node.servername) {
