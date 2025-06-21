@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-create_type', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-create_type', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/create_type-1.sql",
   "original/upstream/create_type-2.sql",
   "original/upstream/create_type-3.sql",

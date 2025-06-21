@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-inherit', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-inherit', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/inherit-1.sql",
   "original/upstream/inherit-2.sql",
   "original/upstream/inherit-3.sql",

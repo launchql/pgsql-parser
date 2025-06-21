@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('latest-postgres-create_role', () => {
-  fixtures.runFixtureTests([
+it('latest-postgres-create_role', async () => {
+  await fixtures.runFixtureTests([
   "latest/postgres/create_role-1.sql",
   "latest/postgres/create_role-2.sql",
   "latest/postgres/create_role-3.sql",

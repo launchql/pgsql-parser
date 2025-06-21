@@ -2,9 +2,8 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import { sync as globSync } from 'glob';
-import { parse, deparse as deparseSync } from '@pgsql/parser';
+import { parse } from 'libpg-query';
 import { ParseResult, RawStmt } from '@pgsql/types';
-import { cleanTree } from '../src/utils';
 
 const FIXTURE_DIR = path.join(__dirname, '../../../__fixtures__/kitchen-sink');
 const OUT_DIR = path.join(__dirname, '../__tests__/kitchen-sink');
@@ -22,30 +21,35 @@ const generateTestFile = (name: string, tests: string[]) => {
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('${name}', () => {
-  fixtures.runFixtureTests(${JSON.stringify(tests, null, 2)});
+it('${name}', async () => {
+  await fixtures.runFixtureTests(${JSON.stringify(tests, null, 2)});
 });
 `
 };
 
 const fixtures = globSync(`${FIXTURE_DIR}/**/*.sql`);
-fixtures.forEach((fixturePath) => {
-  const relPath = path.relative(FIXTURE_DIR, fixturePath);
-  const sql = fs.readFileSync(fixturePath, 'utf-8');
-  let statements: ParseResult;
-  try {
-    statements = parse(sql);
-  } catch (err: any) {
-    console.error(`Failed to parse ${relPath}:`, err);
-    return;
+
+async function main() {
+  for (const fixturePath of fixtures) {
+    const relPath = path.relative(FIXTURE_DIR, fixturePath);
+    const sql = fs.readFileSync(fixturePath, 'utf-8');
+    let statements: ParseResult;
+    try {
+      statements = await parse(sql);
+    } catch (err: any) {
+      console.error(`Failed to parse ${relPath}:`, err);
+      continue;
+    }
+
+    const names = statements.stmts.map((stmt: RawStmt, idx: number) => {
+      const outName = `${relPath.replace(/\.sql$/, '')}-${idx + 1}.sql`;
+      return outName;
+    });
+
+    const testFileName = relPath.replace(/\//g, '-').replace(/\.sql$/, '');
+    const testFile = generateTestFile(testFileName, names);
+    fs.writeFileSync(path.join(OUT_DIR, `${testFileName}.test.ts`), testFile);
   }
+}
 
-  const names = statements.stmts.map((stmt: RawStmt, idx: number) => {
-    const outName = `${relPath.replace(/\.sql$/, '')}-${idx + 1}.sql`;
-    return outName;
-  });
-
-  const testFileName = relPath.replace(/\//g, '-').replace(/\.sql$/, '');
-  const testFile = generateTestFile(testFileName, names);
-  fs.writeFileSync(path.join(OUT_DIR, `${testFileName}.test.ts`), testFile);
-});
+main().catch(console.error);

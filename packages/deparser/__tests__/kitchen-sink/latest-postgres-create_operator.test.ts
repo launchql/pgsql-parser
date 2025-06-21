@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('latest-postgres-create_operator', () => {
-  fixtures.runFixtureTests([
+it('latest-postgres-create_operator', async () => {
+  await fixtures.runFixtureTests([
   "latest/postgres/create_operator-1.sql",
   "latest/postgres/create_operator-2.sql",
   "latest/postgres/create_operator-3.sql",

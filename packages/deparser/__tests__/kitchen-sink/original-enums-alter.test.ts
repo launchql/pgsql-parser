@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-enums-alter', () => {
-  fixtures.runFixtureTests([
+it('original-enums-alter', async () => {
+  await fixtures.runFixtureTests([
   "original/enums/alter-1.sql",
   "original/enums/alter-2.sql",
   "original/enums/alter-3.sql",

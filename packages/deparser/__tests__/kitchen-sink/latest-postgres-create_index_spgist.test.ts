@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('latest-postgres-create_index_spgist', () => {
-  fixtures.runFixtureTests([
+it('latest-postgres-create_index_spgist', async () => {
+  await fixtures.runFixtureTests([
   "latest/postgres/create_index_spgist-1.sql",
   "latest/postgres/create_index_spgist-2.sql",
   "latest/postgres/create_index_spgist-3.sql",

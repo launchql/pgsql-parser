@@ -1,5 +1,5 @@
 import { Service, Type, Field, Enum, Namespace, ReflectionObject } from '@launchql/protobufjs';
-import { generateEnumImports, generateAstHelperMethods, generateTypeImportSpecifiers, generateEnumValueFunctions, convertEnumToTsUnionType, convertEnumToTsEnumDeclaration, generateNodeUnionType, convertTypeToTsInterface, convertTypeToWrappedTsInterface } from './ast';
+import { generateEnumImports, generateAstHelperMethods, generateTypeImportSpecifiers, generateEnumValueFunctions, generateEnumToIntFunctions, generateEnumToStringFunctions, generateEnumToIntFunctionsNested, generateEnumToStringFunctionsNested, convertEnumToTsUnionType, convertEnumToTsEnumDeclaration, generateNodeUnionType, convertTypeToTsInterface } from './ast';
 import { RuntimeSchemaGenerator } from './runtime-schema';
 import { generateEnum2IntJSON, generateEnum2StrJSON } from './ast/enums/enums-json';
 import { jsStringify } from 'strfy-js';
@@ -92,22 +92,44 @@ export class ProtoStore implements IProtoStore {
     // Ensure the output directory exists
     mkdirSync(this.options.outDir, { recursive: true });
 
-    this.writeEnumsJSON();
+    this.writeEnumMaps();
     this.writeTypes();
-    this.writeWrappedTypes();
     this.writeEnums();
     this.writeUtilsEnums();
     this.writeAstHelpers();
     this.writeRuntimeSchema();
   }
 
-  writeEnumsJSON() {
-    if (this.options.enums.json.enabled) {
-      const enums2int = generateEnum2IntJSON(this.enums);
-      const enums2str = generateEnum2StrJSON(this.enums);
+  writeEnumMaps() {
+    if (!this.options.enums.enumMap?.enabled) {
+      return;
+    }
 
-      this.writeFile(this.options.enums.json.toIntOutFile, JSON.stringify(enums2int, null, 2));
-      this.writeFile(this.options.enums.json.toStrOutFile, JSON.stringify(enums2str, null, 2));
+    const enumsToProcess = this.enumsToProcess();
+    const enums2int = generateEnum2IntJSON(enumsToProcess);
+    const enums2str = generateEnum2StrJSON(enumsToProcess);
+    const format = this.options.enums.enumMap.format || 'json';
+
+    if (format === 'json') {
+      // Write plain JSON files
+      if (this.options.enums.enumMap.toIntOutFile) {
+        this.writeFile(this.options.enums.enumMap.toIntOutFile, JSON.stringify(enums2int, null, 2));
+      }
+      if (this.options.enums.enumMap.toStrOutFile) {
+        this.writeFile(this.options.enums.enumMap.toStrOutFile, JSON.stringify(enums2str, null, 2));
+      }
+    } else if (format === 'ts') {
+      // Write TypeScript files with exports
+      if (this.options.enums.enumMap.toIntOutFile) {
+        const tsContent = this.generateEnumMapTypeScript(enums2int, 'enumToIntMap', 'EnumToIntMap');
+        const filename = this.ensureCorrectExtension(this.options.enums.enumMap.toIntOutFile, '.ts');
+        this.writeFile(filename, tsContent);
+      }
+      if (this.options.enums.enumMap.toStrOutFile) {
+        const tsContent = this.generateEnumMapTypeScript(enums2str, 'enumToStrMap', 'EnumToStrMap');
+        const filename = this.ensureCorrectExtension(this.options.enums.enumMap.toStrOutFile, '.ts');
+        this.writeFile(filename, tsContent);
+      }
     }
   }
 
@@ -143,24 +165,7 @@ export class ProtoStore implements IProtoStore {
     }
   }
 
-  writeWrappedTypes() {
-    if (this.options.types.wrapped.enabled) {
-      const typesToProcess = this.typesToProcess();
-      const enumImports = generateEnumImports(
-        this.enumsToProcess(),
-        this.options.types.wrapped.enumsSource
-      );
-      const node = generateNodeUnionType(this.options, typesToProcess);
-      const types = typesToProcess.reduce((m, type) => {
-        return [...m, convertTypeToWrappedTsInterface(type, this.options, (typeName: string) => this.isWrappedType(typeName))]
-      }, []);
-      this.writeCodeToFile(this.options.types.wrapped.filename, [
-        enumImports,
-        node,
-        ...types
-      ]);
-    }
-  }
+
 
   writeEnums() {
     if (this.options.enums.enabled) {
@@ -175,8 +180,25 @@ export class ProtoStore implements IProtoStore {
 
   writeUtilsEnums() {
     if (this.options.utils.enums.enabled) {
-      const code = convertAstToCode(generateEnumValueFunctions(this.enumsToProcess()));
-      this.writeFile(this.options.utils.enums.filename, code);
+      const enumsToProcess = this.enumsToProcess();
+      const useNestedObjects = this.options.utils.enums.outputFormat === 'nestedObjects';
+      
+      if (this.options.utils.enums.unidirectional) {
+        // Generate separate unidirectional functions
+        const toIntGenerator = useNestedObjects ? generateEnumToIntFunctionsNested : generateEnumToIntFunctions;
+        const toStringGenerator = useNestedObjects ? generateEnumToStringFunctionsNested : generateEnumToStringFunctions;
+        
+        const toIntCode = convertAstToCode(toIntGenerator(enumsToProcess));
+        this.writeFile(this.options.utils.enums.toIntFilename, toIntCode);
+        
+        const toStringCode = convertAstToCode(toStringGenerator(enumsToProcess));
+        this.writeFile(this.options.utils.enums.toStringFilename, toStringCode);
+      } else {
+        // Generate bidirectional function (original behavior)
+        // Note: Nested objects format only supported for unidirectional functions
+        const code = convertAstToCode(generateEnumValueFunctions(enumsToProcess));
+        this.writeFile(this.options.utils.enums.filename, code);
+      }
     }
   }
 
@@ -230,11 +252,7 @@ export class ProtoStore implements IProtoStore {
     return this._runtimeSchema;
   }
 
-  isWrappedType(typeName: string): boolean {
-    const schema = this.getRuntimeSchema();
-    const nodeSpec = schema.find(spec => spec.name === typeName);
-    return nodeSpec ? nodeSpec.wrapped : false;
-  }
+
 
   generateRuntimeSchemaTypeScript(nodeSpecs: any[]): string {
     const interfaceDefinitions = [
@@ -248,7 +266,7 @@ export class ProtoStore implements IProtoStore {
       '',
       'export interface NodeSpec {',
       '  name: string;',
-      '  wrapped: boolean;',
+      '  isNode: boolean;',
       '  fields: FieldSpec[];',
       '}',
       ''
@@ -261,14 +279,38 @@ export class ProtoStore implements IProtoStore {
     })};`;
 
     return [
-      this.options.includeHeader ? this.getHeader() : '',
       ...interfaceDefinitions,
       exportStatement
     ].filter(Boolean).join('\n');
   }
 
-  getHeader(): string {
-    return `// Generated by pg-proto-parser`;
+  generateEnumMapTypeScript(enumMap: any, varName: string, typeName: string): string {
+    const exportStatement = `export const ${varName} = ${jsStringify(enumMap, {
+      space: 2,
+      camelCase: false,  // Preserve enum casing
+      quotes: 'single'
+    })};`;
+
+    const typeStatement = `export type ${typeName} = typeof ${varName};`;
+
+    return [
+      exportStatement,
+      '',
+      typeStatement
+    ].filter(Boolean).join('\n');
+  }
+
+  ensureCorrectExtension(filename: string, expectedExt: string): string {
+    const currentExt = filename.match(/\.[^.]+$/)?.[0] || '';
+    if (currentExt && currentExt !== expectedExt) {
+      // Replace the current extension with the expected one
+      return filename.slice(0, -currentExt.length) + expectedExt;
+    } else if (!currentExt) {
+      // No extension, add the expected one
+      return filename + expectedExt;
+    }
+    // Extension is already correct
+    return filename;
   }
 
   writeFile(filePath: string, content: string) {

@@ -1,5 +1,5 @@
 {
-  "name": "@pgsql/deparser",
+  "name": "pgsql-deparser",
   "version": "17.0.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostgreSQL AST Deparser",
@@ -45,11 +45,9 @@
     "database"
   ],
   "devDependencies": {
-    "@pgsql/parser": "^17.0.0"
+    "libpg-query": "17.3.3"
   },
   "dependencies": {
-    "@pgsql/types": "^17.0.0",
-    "dotty": "^0.1.0",
-    "pgsql-enums": "^17.0.0"
+    "@pgsql/types": "^17.0.0"
   }
 }

@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-hs_primary_setup', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-hs_primary_setup', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/hs_primary_setup-1.sql",
   "original/upstream/hs_primary_setup-2.sql",
   "original/upstream/hs_primary_setup-3.sql",

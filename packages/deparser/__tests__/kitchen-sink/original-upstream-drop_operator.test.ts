@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-drop_operator', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-drop_operator', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/drop_operator-1.sql",
   "original/upstream/drop_operator-2.sql",
   "original/upstream/drop_operator-3.sql",

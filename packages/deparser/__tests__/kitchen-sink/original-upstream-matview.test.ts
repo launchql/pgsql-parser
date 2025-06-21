@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-matview', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-matview', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/matview-1.sql",
   "original/upstream/matview-2.sql",
   "original/upstream/matview-3.sql",

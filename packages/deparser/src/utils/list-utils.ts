@@ -1,5 +1,3 @@
-import { Node } from '@pgsql/types';
-
 export class ListUtils {
   static unwrapList(obj: any): any[] {
     if (obj === undefined || obj === null) {

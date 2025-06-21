@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-bitmapops', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-bitmapops', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/bitmapops-1.sql",
   "original/upstream/bitmapops-2.sql",
   "original/upstream/bitmapops-3.sql",

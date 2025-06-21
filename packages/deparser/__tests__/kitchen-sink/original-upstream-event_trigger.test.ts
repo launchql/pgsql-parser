@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-event_trigger', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-event_trigger', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/event_trigger-1.sql",
   "original/upstream/event_trigger-2.sql",
   "original/upstream/event_trigger-3.sql",

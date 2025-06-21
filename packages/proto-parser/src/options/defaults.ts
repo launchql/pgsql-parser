@@ -11,10 +11,14 @@ export const defaultPgProtoParserOptions: PgProtoParserOptions = {
         enums: {
             enabled: false,
             filename: 'utils.ts',
+            unidirectional: false,
+            toIntFilename: 'enum-to-int.ts',
+            toStringFilename: 'enum-to-string.ts',
+            outputFormat: 'switchStatements'
         },
         astHelpers: {
             enabled: false,
-            wrappedTypesSource: './wrapped',
+            typesSource: './types',
             inlineNestedObj: false,
             nestedObjFile: 'nested-obj.ts',
             filename: 'asts.ts',
@@ -25,22 +29,18 @@ export const defaultPgProtoParserOptions: PgProtoParserOptions = {
         filename: 'types.ts',
         optionalFields: true,
         enumsSource: './enums',
-        wrappedNodeTypeExport: false,
-        wrapped: {
-            enabled: false,
-            enumsSource: './enums',
-            filename: 'wrapped.ts'
-        }
+        wrappedNodeTypeExport: true
     },
     enums: {
         enabled: false,
         filename: 'enums.ts',
         enumsAsTypeUnion: true,
 
-        json: {
+        enumMap: {
             enabled: false,
-            toIntOutFile: 'enums2int.json',
-            toStrOutFile: 'enums2str.json'
+            format: 'ts',
+            toIntOutFile: 'enums2int.ts',
+            toStrOutFile: 'enums2str.ts'
         },
         removeUndefinedAt0: true
     },

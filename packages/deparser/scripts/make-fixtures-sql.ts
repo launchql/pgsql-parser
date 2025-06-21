@@ -2,7 +2,7 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import { sync as globSync } from 'glob';
-import { parse, deparse as deparseSync } from '@pgsql/parser';
+import { parse, deparse } from 'libpg-query';
 import { ParseResult, RawStmt } from '@pgsql/types';
 
 const FIXTURE_DIR = path.join(__dirname, '../../../__fixtures__/legacy');
@@ -17,34 +17,40 @@ function ensureDir(dir: string) {
 ensureDir(OUT_DIR);
 
 const fixtures = globSync(`${FIXTURE_DIR}/**/*.sql`);
-fixtures.forEach((fixturePath) => {
-  const relPath = path.relative(FIXTURE_DIR, fixturePath);
-  const sql = fs.readFileSync(fixturePath, 'utf-8');
-  let statements: ParseResult;
-  try {
-    statements = parse(sql);
-  } catch (err: any) {
-    console.error(`Failed to parse ${relPath}:`, err);
-    return;
-  }
 
-  statements.stmts.forEach((stmt: RawStmt, idx: number) => {
-    const outDir = path.join(OUT_DIR, path.dirname(relPath));
-    ensureDir(outDir);
-    const base = path.basename(relPath, '.sql');
-    const outName = `${base}-${idx + 1}.sql`;
-    const outPath = path.join(outDir, outName);
-    let deparsedSql: string;
+async function main() {
+  for (const fixturePath of fixtures) {
+    const relPath = path.relative(FIXTURE_DIR, fixturePath);
+    const sql = fs.readFileSync(fixturePath, 'utf-8');
+    let statements: ParseResult;
     try {
-      deparsedSql = deparseSync({
-        version: 170000,
-        stmts: [stmt]
-      });
+      statements = await parse(sql);
     } catch (err: any) {
-      console.error(`Failed to deparse statement ${idx + 1} in ${relPath}:`, err);
-      return;
+      console.error(`Failed to parse ${relPath}:`, err);
+      continue;
     }
-    fs.writeFileSync(outPath, deparsedSql);
-    console.log(`Generated ${outPath}`);
-  });
-});
+
+    for (let idx = 0; idx < statements.stmts.length; idx++) {
+      const stmt = statements.stmts[idx];
+      const outDir = path.join(OUT_DIR, path.dirname(relPath));
+      ensureDir(outDir);
+      const base = path.basename(relPath, '.sql');
+      const outName = `${base}-${idx + 1}.sql`;
+      const outPath = path.join(outDir, outName);
+      let deparsedSql: string;
+      try {
+        deparsedSql = await deparse({
+          version: 170000,
+          stmts: [stmt]
+        });
+      } catch (err: any) {
+        console.error(`Failed to deparse statement ${idx + 1} in ${relPath}:`, err);
+        continue;
+      }
+      fs.writeFileSync(outPath, deparsedSql);
+      console.log(`Generated ${outPath}`);
+    }
+  }
+}
+
+main().catch(console.error);

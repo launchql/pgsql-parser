@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-combocid', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-combocid', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/combocid-1.sql",
   "original/upstream/combocid-2.sql",
   "original/upstream/combocid-3.sql",

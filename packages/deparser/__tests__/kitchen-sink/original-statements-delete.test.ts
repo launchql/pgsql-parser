@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-statements-delete', () => {
-  fixtures.runFixtureTests([
+it('original-statements-delete', async () => {
+  await fixtures.runFixtureTests([
   "original/statements/delete-1.sql",
   "original/statements/delete-2.sql",
   "original/statements/delete-3.sql",

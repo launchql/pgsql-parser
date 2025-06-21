@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-random', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-random', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/random-1.sql",
   "original/upstream/random-2.sql",
   "original/upstream/random-3.sql",

@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('latest-postgres-create_aggregate', () => {
-  fixtures.runFixtureTests([
+it('latest-postgres-create_aggregate', async () => {
+  await fixtures.runFixtureTests([
   "latest/postgres/create_aggregate-1.sql",
   "latest/postgres/create_aggregate-2.sql",
   "latest/postgres/create_aggregate-3.sql",

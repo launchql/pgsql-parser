@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-upstream-replica_identity', () => {
-  fixtures.runFixtureTests([
+it('original-upstream-replica_identity', async () => {
+  await fixtures.runFixtureTests([
   "original/upstream/replica_identity-1.sql",
   "original/upstream/replica_identity-2.sql",
   "original/upstream/replica_identity-3.sql",

@@ -1,5 +1,5 @@
 {
-  "name": "@pgsql/parser",
+  "name": "pgsql-parser",
   "version": "17.0.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "The real PostgreSQL query parser",
@@ -43,7 +43,7 @@
   ],
   "dependencies": {
     "@pgsql/types": "^17.0.0",
-    "libpg-query": "17.1.1",
+    "libpg-query": "17.3.3",
     "minimist": "^1.2.6"
   }
 }

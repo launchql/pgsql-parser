@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-statements-update', () => {
-  fixtures.runFixtureTests([
+it('original-statements-update', async () => {
+  await fixtures.runFixtureTests([
   "original/statements/update-1.sql",
   "original/statements/update-2.sql",
   "original/statements/update-3.sql",

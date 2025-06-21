@@ -2,8 +2,8 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('original-transactions-lock', () => {
-  fixtures.runFixtureTests([
+it('original-transactions-lock', async () => {
+  await fixtures.runFixtureTests([
   "original/transactions/lock-1.sql",
   "original/transactions/lock-2.sql",
   "original/transactions/lock-3.sql",

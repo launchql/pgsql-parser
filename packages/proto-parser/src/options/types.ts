@@ -19,6 +19,14 @@ export interface PgProtoStoreOptions {
             enabled?: boolean;
             // Enums helpers filename
             filename?: string;
+            // Whether to generate separate unidirectional functions
+            unidirectional?: boolean;
+            // Filename for enum to int function
+            toIntFilename?: string;
+            // Filename for enum to string function
+            toStringFilename?: string;
+            // Output format: 'switchStatements' or 'nestedObjects'
+            outputFormat?: 'switchStatements' | 'nestedObjects';
         }
 
         // AST helper functions.
@@ -26,7 +34,7 @@ export interface PgProtoStoreOptions {
             // Whether to include TypeScript AST builders
             enabled?: boolean;
             // Source file for AST helper types.
-            wrappedTypesSource?: string;
+            typesSource?: string;
             // Whether to inline nested-obj
             inlineNestedObj?: boolean;
             // if inlined, filename
@@ -47,19 +55,10 @@ export interface PgProtoStoreOptions {
         // Enums source specifier
         enumsSource?: string;
         // Node Object Keys, e.g. { ParseResult: ParseResult, ... }
-        // meant for simpler user cases where wrapped is advanced
-        // if a field in an object uses Node, it's wrapped
+        // meant for simpler user cases
+        // if a field in an object uses Node, it's a node type
         // if a field in an object references a type, e.g. RangeVar, it's flat
         wrappedNodeTypeExport?: boolean;
-        // wrapped types, for building AST
-        wrapped?: {
-            // Enabled wrapped types, to match AST
-            enabled?: boolean;
-            // Source file for enums
-            enumsSource?: string;
-            // Types filename
-            filename?: string;
-        }
     };
 
     // Options related to runtime schema generation.
@@ -78,10 +77,12 @@ export interface PgProtoStoreOptions {
         filename?: string;
         // Whether enums in TypeScript are a union type
         enumsAsTypeUnion?: boolean;
-        // Options for JSON mappings of enums.
-        json?: {
-            // Whether to generate JSON files mapping enum names to values.
+        // Options for enum mappings output.
+        enumMap?: {
+            // Whether to generate enum mapping files.
             enabled?: boolean;
+            // Output format: 'json' for plain JSON files, 'ts' for TypeScript exports
+            format?: 'json' | 'ts';
             toIntOutFile?: string;
             toStrOutFile?: string;
         };
