@@ -101,10 +101,10 @@ export class TestUtils {
           if (stmt.stmt) {
             const outSql = deparse(stmt.stmt);
             
-            console.log(`\n🔍 DEBUGGING SQL COMPARISON for test: ${testName}`);
-            console.log(`📥 INPUT SQL: ${sql}`);
-            console.log(`📤 DEPARSED SQL: ${outSql}`);
-            console.log(`🔄 SQL MATCH: ${sql.trim() === outSql.trim() ? '✅ EXACT MATCH' : '❌ DIFFERENT'}`);
+            // console.log(`\n🔍 DEBUGGING SQL COMPARISON for test: ${testName}`);
+            // console.log(`📥 INPUT SQL: ${sql}`);
+            // console.log(`📤 DEPARSED SQL: ${outSql}`);
+            // console.log(`🔄 SQL MATCH: ${sql.trim() === outSql.trim() ? '✅ EXACT MATCH' : '❌ DIFFERENT'}`);
             
             let reparsed;
             try {
@@ -216,11 +216,8 @@ export class FixtureTestUtils extends TestUtils {
       console.log('no filters provided, skipping tests.');
       return;
     }
-    console.log(`\n🚀 STARTING FIXTURE TESTS with filters:`, filters);
     const entries = this.getTestEntries(filters);
     for (const [relativePath, sql] of entries) {
-      console.log(`\n📁 Processing fixture: ${relativePath}`);
-      console.log(`📝 SQL Content: ${sql}`);
       try {
         await this.expectAstMatch(relativePath, sql);
       } catch (err) {
