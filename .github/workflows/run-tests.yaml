@@ -5,8 +5,10 @@ on:
 
 jobs:
   parser-tests:
-    runs-on: ubuntu-latest
-    container: node:20.12.0-alpine
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
       - name: checkout
