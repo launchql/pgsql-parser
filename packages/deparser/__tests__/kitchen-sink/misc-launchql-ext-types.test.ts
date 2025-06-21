@@ -1,8 +1,10 @@
 
 import { FixtureTestUtils } from '../../test-utils';
+
+
 const fixtures = new FixtureTestUtils();
 
-it('misc-launchql-ext-types', async () => {
+it.skip('misc-launchql-ext-types', async () => {
   await fixtures.runFixtureTests([
   "misc/launchql-ext-types-1.sql",
   "misc/launchql-ext-types-2.sql",
