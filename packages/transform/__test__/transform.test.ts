@@ -2,45 +2,6 @@ import { transformPG13ToPG17 } from '../src/index';
 import { Node as PG13Node } from '../src/13/types';
 import { Node as PG17Node } from '../src/17/types';
 
-const describe = (name: string, fn: () => void) => {
-  console.log(`\n=== ${name} ===`);
-  fn();
-};
-
-const test = (name: string, fn: () => void) => {
-  try {
-    fn();
-    console.log(`✓ ${name}`);
-  } catch (error) {
-    console.log(`✗ ${name}: ${error}`);
-  }
-};
-
-const expect = (actual: any) => ({
-  toEqual: (expected: any) => {
-    const actualStr = JSON.stringify(actual, null, 2);
-    const expectedStr = JSON.stringify(expected, null, 2);
-    if (actualStr !== expectedStr) {
-      throw new Error(`Expected ${expectedStr} but got ${actualStr}`);
-    }
-  },
-  toBe: (expected: any) => {
-    if (actual !== expected) {
-      throw new Error(`Expected ${expected} but got ${actual}`);
-    }
-  },
-  toBeUndefined: () => {
-    if (actual !== undefined) {
-      throw new Error(`Expected undefined but got ${actual}`);
-    }
-  },
-  toHaveLength: (length: number) => {
-    if (!actual || actual.length !== length) {
-      throw new Error(`Expected length ${length} but got ${actual?.length}`);
-    }
-  }
-});
-
 describe('PG13 to PG17 transformer', () => {
   test('transforms basic string node', () => {
     const pg13Node: PG13Node = {
@@ -167,11 +128,9 @@ describe('PG13 to PG17 transformer', () => {
   test('handles PG17-only node types by passing through', () => {
     const pg17OnlyNode = {
       WindowFuncRunCondition: {
-        xpr: undefined,
         opno: 123,
         inputcollid: 456,
-        wfunc_left: true,
-        arg: undefined
+        wfunc_left: true
       }
     };
     
@@ -245,5 +204,3 @@ describe('PG13 to PG17 transformer', () => {
     }
   });
 });
-
-console.log('Running PG13 to PG17 transformer tests...');
