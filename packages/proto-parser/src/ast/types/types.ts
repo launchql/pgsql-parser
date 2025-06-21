@@ -16,8 +16,12 @@ export const generateAstHelperMethods = (types: Type[]): t.ExportDefaultDeclarat
     const typeName = type.name;
     const param = t.identifier('_p');
     param.optional = true;
-
     param.typeAnnotation = t.tsTypeAnnotation(t.tsTypeReference(t.identifier(typeName)));
+
+    // Add isNode parameter
+    const isNodeParam = t.identifier('isNode');
+    isNodeParam.optional = true;
+    isNodeParam.typeAnnotation = t.tsTypeAnnotation(t.tsBooleanKeyword());
 
     let init: any = [];
 
@@ -53,6 +57,21 @@ export const generateAstHelperMethods = (types: Type[]): t.ExportDefaultDeclarat
         );
       });
 
+    // Create the if statement for isNode check
+    const wrappedReturn = t.ifStatement(
+      t.identifier('isNode'),
+      t.blockStatement([
+        t.returnStatement(
+          t.objectExpression([
+            t.objectProperty(
+              t.identifier(typeName),
+              t.identifier('_j')
+            )
+          ])
+        )
+      ])
+    );
+
     // Ensures camel case
     const methodName = toSpecialCamelCase(typeName);
 
@@ -60,15 +79,30 @@ export const generateAstHelperMethods = (types: Type[]): t.ExportDefaultDeclarat
     const method = t.objectMethod(
       'method',
       t.identifier(methodName),
-      [param],
+      [param, isNodeParam],
       t.blockStatement([
         astNodeInit,
         ...setStatements,
+        wrappedReturn,
         t.returnStatement(t.identifier('_j'))
       ])
     );
 
-    method.returnType = t.tsTypeAnnotation(t.tsTypeReference(t.identifier(typeName)));
+    // Update return type to be union of Type | { Type: Type }
+    const wrappedType = t.tsTypeLiteral([
+      t.tsPropertySignature(
+        t.identifier(typeName),
+        t.tsTypeAnnotation(t.tsTypeReference(t.identifier(typeName)))
+      )
+    ]);
+    
+    method.returnType = t.tsTypeAnnotation(
+      t.tsUnionType([
+        t.tsTypeReference(t.identifier(typeName)),
+        wrappedType
+      ])
+    );
+    
     return method;
   });
 

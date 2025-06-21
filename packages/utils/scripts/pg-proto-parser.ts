@@ -7,16 +7,12 @@ const outDir: string = resolve(join(__dirname, '../src'));
 const options: PgProtoParserOptions = {
   outDir,
   types: {
-    enabled: false,
-    wrapped: {
-      enabled: true,
-      enumsSource: '@pgsql/types',
-    }
+    enabled: false
   },
   utils: {
     astHelpers: {
       enabled: true,
-      wrappedTypesSource: './wrapped'
+      typesSource: '@pgsql/types'
     }
   }
 };
