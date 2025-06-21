@@ -25,6 +25,6 @@ $EOFCODE$ LANGUAGE plpgsql IMMUTABLE;
      `;
 
 it('works', async () => {
-  const results = parseFunction(testFunction);
+  const results = await parseFunction(testFunction);
   expect(cleanTree(results)).toMatchSnapshot();
 });

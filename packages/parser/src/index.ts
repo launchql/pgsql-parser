@@ -1,7 +1,8 @@
 export {
-  parseQuery as parseAsync,
-  parseQuerySync as parse,
-  parsePlPgSQLSync as parseFunction,
-  deparseSync as deparse,
-  deparse as deparseAsync
+  parse as parse,
+  parseSync as parseSync,
+  parsePlPgSQL as parseFunction,
+  deparseSync as deparseSync,
+  deparse as deparse,
+  loadModule as loadModule
 } from 'libpg-query';

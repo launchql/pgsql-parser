@@ -27,6 +27,51 @@ npm install pgsql-parser
 - **True PostgreSQL Parsing:** Utilizes the real PostgreSQL source code for accurate parsing.
 - **Symmetric Parsing and Deparsing:** Convert SQL to AST and back, enabling query manipulation.
 - **AST Manipulation:** Easily modify parts of a SQL statement through the AST.
+- **WebAssembly Powered:** Cross-platform compatibility without native dependencies.
+
+## API
+
+The package exports both async and sync methods. Async methods handle initialization automatically, while sync methods require explicit initialization.
+
+⚠️ We recommend using `@pgsql/deparser` instead of `deparse` from `pgsql-parser`. The deparser package is more complete, supports sub-expressions, and doesn't require the WebAssembly module, making it lighter and more flexible for most use cases. It will soon be deprecated, in a minor version bump.
+
+### Async Methods (Recommended)
+
+```typescript
+import { parse, deparse, parseFunction } from 'pgsql-parser';
+
+// Parse SQL to AST
+const stmts = await parse('SELECT * FROM test_table');
+
+// Deparse AST back to SQL
+const sql = await deparse(stmts);
+
+// Parse PL/pgSQL functions
+const funcAst = await parseFunction(`
+  CREATE FUNCTION get_count() RETURNS integer AS $$
+  BEGIN
+    RETURN (SELECT COUNT(*) FROM users);
+  END;
+  $$ LANGUAGE plpgsql;
+`);
+```
+
+### Sync Methods
+
+Sync methods require explicit initialization using `loadModule()`:
+
+```typescript
+import { loadModule, parseSync, deparseSync } from 'pgsql-parser';
+
+// Initialize first (required for sync methods)
+await loadModule();
+
+// Now safe to use sync methods
+const stmts = parseSync('SELECT * FROM test_table');
+const sql = deparseSync(stmts);
+```
+
+**Note:** We recommend using async methods as they handle initialization automatically. Use sync methods only when necessary, and always call `loadModule()` first.
 
 ## Parser Example
 
@@ -35,12 +80,12 @@ Rewrite part of a SQL query:
 ```js
 import { parse, deparse } from 'pgsql-parser';
 
-const stmts = parse('SELECT * FROM test_table');
+const stmts = await parse('SELECT * FROM test_table');
 
 // Assuming the structure of stmts is known and matches the expected type
 stmts[0].RawStmt.stmt.SelectStmt.fromClause[0].RangeVar.relname = 'another_table';
 
-console.log(deparse(stmts));
+console.log(await deparse(stmts));
 
 // SELECT * FROM "another_table"
 ```
@@ -52,11 +97,11 @@ The `pgsql-deparser` module serializes ASTs to SQL in pure TypeScript, avoiding 
 Here's how you can use the deparser in your TypeScript code, using [`@pgsql/utils`](https://github.com/launchql/pgsql-parser/tree/main/packages/utils) to create an AST for `deparse`:
 
 ```ts
-import ast, { SelectStmt } from '@pgsql/utils';
+import ast from '@pgsql/utils';
 import { deparse } from 'pgsql-deparser';
 
 // This could have been obtained from any JSON or AST, not necessarily @pgsql/utils
-const stmt: SelectStmt = ast.selectStmt({
+const stmt = ast.selectStmt({
   targetList: [
     ast.resTarget({
       val: ast.columnRef({
@@ -96,51 +141,16 @@ npm install -g pgsql-parser
 pgsql-parser <sqlfile>
 ```
 
-### Documentation
-
-### `parser.parse(sql)`
-
-Parses the query and returns a parse object.
-
-### Parameters
-
-| parameter            | type               | description                                               |
-| -------------------- | ------------------ | --------------------------------------------------------- |
-| `query`              | String             | SQL query                                                 |
-
-Returns an object in the format:
-
-```
-{ query: <query|Object>,
-  error: { message: <message|String>,
-           fileName: <fileName|String>,
-           lineNumber: <line|Number>,
-           cursorPosition: <cursor|Number> }
-```
-
-### `parser.deparse(query)`
-
-Deparses the query tree and returns a formatted SQL statement. This function takes as input a query AST
-in the same format as the `query` property of on the result of the `parse` method. This is the primary
-functionality of this module.
-
-### Parameters
-
-| parameter            | type               | description                                               |
-| -------------------- | ------------------ | --------------------------------------------------------- |
-| `query`              | Object             | Query tree obtained from `parse`                          |
-
-Returns a normalized formatted SQL string.
-
 ## Versions
 
 As of PG 13, PG majors versions maintained will have a matching dedicated major npm version. Only the latest Postgres stable release receives active updates.
 
-Our latest is built with `13-latest` branch from libpg_query
+Our latest is built with `17-latest` branch from libpg_query
 
-| PostgreSQL Major Version | libpg_query | Status              | npm 
+| PostgreSQL Major Version | libpg_query | Status              | npm tag |
 |--------------------------|-------------|---------------------|---------|
-| 13                       | 13-latest   | Active development  | `latest`
+| 17                       | 17-latest   | Active Development  | `latest` |
+| 13                       | 13-latest   | Only Critical Fixes | `13.16.0` |
 | 12                       | (n/a)       | Not supported       |
 | 11                       | (n/a)       | Not supported       |
 | 10                       | 10-latest   | Not supported       | `@1.3.1` ([tree](https://github.com/launchql/pgsql-parser/tree/39b7b1adc8914253226e286a48105785219a81ca))      | 
@@ -157,22 +167,18 @@ Our latest is built with `13-latest` branch from libpg_query
 * [pg-proto-parser](https://github.com/launchql/pg-proto-parser): A TypeScript tool that parses PostgreSQL Protocol Buffers definitions to generate TypeScript interfaces, utility functions, and JSON mappings for enums.
 * [libpg-query](https://github.com/launchql/libpg-query-node): The real PostgreSQL parser exposed for Node.js, used primarily in `pgsql-parser` for parsing and deparsing SQL queries.
 
+## Credits
+
 Thanks [@lfittl](https://github.com/lfittl) for building the core `libpg_query` suite:
 
 * [libpg_query](https://github.com/pganalyze/libpg_query)
 * [pg_query](https://github.com/lfittl/pg_query)
 * [pg_query.go](https://github.com/lfittl/pg_query.go)
 
-## Credits
-
-Thanks to [@zhm](https://github.com/zhm) for the OG parser that started it all:
-
-* [pg-query-parser](https://github.com/zhm/pg-query-parser)
-* [pg-query-native](https://github.com/zhm/node-pg-query-native)
-* [Original LICENSE](https://github.com/zhm/pg-query-parser/blob/master/LICENSE.md)
+Thanks to [@zhm](https://github.com/zhm) for the [OG Parser](https://github.com/zhm/pg-query-parser/blob/master/LICENSE.md) that started it all.
 
 ## Disclaimer
 
-AS DESCRIBED IN THE LICENSES, THE SOFTWARE IS PROVIDED “AS IS”, AT YOUR OWN RISK, AND WITHOUT WARRANTIES OF ANY KIND.
+AS DESCRIBED IN THE LICENSES, THE SOFTWARE IS PROVIDED "AS IS", AT YOUR OWN RISK, AND WITHOUT WARRANTIES OF ANY KIND.
 
 No developer or entity involved in creating Software will be liable for any claims or damages whatsoever associated with your use, inability to use, or your interaction with other users of the Software code or Software CLI, including any direct, indirect, incidental, special, exemplary, punitive or consequential damages, or loss of profits, cryptocurrencies, tokens, or anything else of value.

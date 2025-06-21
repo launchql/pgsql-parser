@@ -1,4 +1,4 @@
-import { parseAsync } from '../src';
+import { parse } from '../src';
 import { cleanTree } from '../src/utils';
 
 const testQuery = `
@@ -9,6 +9,6 @@ const testQuery = `
 `;
 
 it('works', async () => {
-  const results = await parseAsync(testQuery);
+  const results = await parse(testQuery);
   expect(cleanTree(results)).toMatchSnapshot();
 });

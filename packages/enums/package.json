@@ -1,5 +1,5 @@
 {
-  "name": "@pgsql/enums",
+  "name": "pgsql-enums",
   "version": "17.0.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostgreSQL AST enums for pgsql-parser",

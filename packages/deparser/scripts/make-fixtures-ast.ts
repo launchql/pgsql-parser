@@ -2,7 +2,7 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import { sync as globSync } from 'glob';
-import { parse, deparse as deparseSync } from '@pgsql/parser';
+import { parse } from 'libpg-query';
 import { ParseResult, RawStmt } from '@pgsql/types';
 import { cleanTree } from '../src/utils';
 
@@ -18,25 +18,31 @@ function ensureDir(dir: string) {
 ensureDir(OUT_DIR);
 
 const fixtures = globSync(`${FIXTURE_DIR}/**/*.sql`);
-fixtures.forEach((fixturePath) => {
-  const relPath = path.relative(FIXTURE_DIR, fixturePath);
-  const sql = fs.readFileSync(fixturePath, 'utf-8');
-  let statements: ParseResult;
-  try {
-    statements = parse(sql);
-  } catch (err: any) {
-    console.error(`Failed to parse ${relPath}:`, err);
-    return;
-  }
 
-  statements.stmts.forEach((stmt: RawStmt, idx: number) => {
-    const outDir = path.join(OUT_DIR, path.dirname(relPath));
-    ensureDir(outDir);
-    const base = path.basename(relPath, '.sql');
-    const outName = `${base}-${idx + 1}.sql`;
-    const outPath = path.join(outDir, outName);
-    
-    fs.writeFileSync(outPath, JSON.stringify(cleanTree(stmt.stmt), null, 2));
-    console.log(`Generated ${outPath}`);
-  });
-});
+async function main() {
+  for (const fixturePath of fixtures) {
+    const relPath = path.relative(FIXTURE_DIR, fixturePath);
+    const sql = fs.readFileSync(fixturePath, 'utf-8');
+    let statements: ParseResult;
+    try {
+      statements = await parse(sql);
+    } catch (err: any) {
+      console.error(`Failed to parse ${relPath}:`, err);
+      continue;
+    }
+
+    for (let idx = 0; idx < statements.stmts.length; idx++) {
+      const stmt = statements.stmts[idx];
+      const outDir = path.join(OUT_DIR, path.dirname(relPath));
+      ensureDir(outDir);
+      const base = path.basename(relPath, '.sql');
+      const outName = `${base}-${idx + 1}.sql`;
+      const outPath = path.join(outDir, outName);
+      
+      fs.writeFileSync(outPath, JSON.stringify(cleanTree(stmt.stmt), null, 2));
+      console.log(`Generated ${outPath}`);
+    }
+  }
+}
+
+main().catch(console.error);

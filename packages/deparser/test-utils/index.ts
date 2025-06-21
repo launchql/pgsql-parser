@@ -1,6 +1,6 @@
-import { parse } from '@pgsql/parser';
+import { parse } from 'libpg-query';
 import { deparse } from '../src';
-import { cleanTree, cleanLines } from '../src/utils';
+import { cleanTree } from '../src/utils';
 import { readFileSync } from 'fs';
 import * as path from 'path';
 import { expect } from '@jest/globals';
@@ -81,9 +81,9 @@ export class TestUtils {
     console.error(errMessage.join('\n'));
   }
 
-  tryParse(sql: string) {
+  async tryParse(sql: string) {
     try {
-      return parse(sql);
+      return await parse(sql);
     } catch (err: any) {
       if (err.cursorPosition) {
         this.printErrorMessage(sql, err.cursorPosition);
@@ -92,17 +92,17 @@ export class TestUtils {
     }
   }
 
-  expectAstMatch(testName: string, sql: string) {
+  async expectAstMatch(testName: string, sql: string) {
     let tree: any;
     try {
       tree = this.tryParse(sql);
       if (tree.stmts) {
-        tree.stmts.forEach((stmt: any) => {
+        tree.stmts.forEach(async (stmt: any) => {
           if (stmt.stmt) {
             const outSql = deparse(stmt.stmt);
             let reparsed;
             try {
-              reparsed = parse(outSql);
+              reparsed = await parse(outSql);
             } catch (parseErr) {
               throw createParseError(
                 'INVALID_DEPARSED_SQL',
@@ -205,14 +205,14 @@ export class FixtureTestUtils extends TestUtils {
     );
   }
 
-  runFixtureTests(filters: string[]) {
+  async runFixtureTests(filters: string[]) {
     if (filters.length === 0) {
       console.log('no filters provided, skipping tests.');
       return;
     }
-    this.getTestEntries(filters).forEach(([relativePath, sql]) => {
+    this.getTestEntries(filters).forEach(async ([relativePath, sql]) => {
       try {
-        this.expectAstMatch(relativePath, sql);
+        await this.expectAstMatch(relativePath, sql);
       } catch (err) {
         throw err;
       }
