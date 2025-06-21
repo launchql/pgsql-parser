@@ -18,8 +18,12 @@
 
 - Parses protobuf definitions and creates a structured representation in TypeScript.
 - Generates TypeScript interfaces for protobuf messages.
-- Creates utility functions for enum value conversions.
+- Creates utility functions for enum value conversions with multiple output formats:
+  - Bidirectional conversion functions (string ↔ number)
+  - Unidirectional conversion functions with precise types
+  - Switch statement or nested object output formats
 - Produces JSON or TypeScript files mapping enum names to integer values and vice versa
+- Supports tree-shakable enum utilities for optimal bundle sizes
 
 ## Parsing and Generating Files
 
@@ -90,6 +94,86 @@ export const enumToStrMap = {
 export type EnumToStrMap = typeof enumToStrMap;
 ```
 
+### Example: Generating Enum Utility Functions
+
+You can generate utility functions for runtime enum conversions:
+
+```js
+// Bidirectional function (default)
+const parser = new PgProtoParser(inFile, {
+  outDir,
+  utils: {
+    enums: {
+      enabled: true,
+      filename: 'enum-utils.ts'
+    }
+  }
+});
+
+// Unidirectional functions with switch statements
+const parser = new PgProtoParser(inFile, {
+  outDir,
+  utils: {
+    enums: {
+      enabled: true,
+      unidirectional: true,
+      toIntFilename: 'enum-to-int.ts',
+      toStringFilename: 'enum-to-string.ts'
+    }
+  }
+});
+
+// Unidirectional functions with nested objects format
+const parser = new PgProtoParser(inFile, {
+  outDir,
+  utils: {
+    enums: {
+      enabled: true,
+      unidirectional: true,
+      outputFormat: 'nestedObjects',
+      toIntFilename: 'enum-to-int-map.ts',
+      toStringFilename: 'enum-to-string-map.ts'
+    }
+  }
+});
+```
+
+#### Generated Utility Functions
+
+**Bidirectional (default):**
+```ts
+// utils.ts
+export const getEnumValue = (enumType: EnumType, key: string | number) => {
+  // Returns number for string input, string for number input
+};
+```
+
+**Unidirectional with switch statements:**
+```ts
+// enum-to-int.ts
+export const getEnumInt = (enumType: EnumType, key: string): number => {
+  // Converts enum string to number
+};
+
+// enum-to-string.ts
+export const getEnumString = (enumType: EnumType, key: number): string => {
+  // Converts enum number to string
+};
+```
+
+**Unidirectional with nested objects:**
+```ts
+// enum-to-int-map.ts
+export const enumToIntMap = {
+  OverridingKind: (key: string): number => { /* ... */ },
+  QuerySource: (key: string): number => { /* ... */ },
+  // ... more enums
+};
+
+// Usage
+const value = enumToIntMap.OverridingKind("OVERRIDING_USER_VALUE"); // Returns: 1
+```
+
 ## Configuration
 
 You can configure `pg-proto-parser` by passing different parameters to the `ProtoStore` constructor:
@@ -145,7 +229,11 @@ The options for `PgProtoParserOptions` are organized into the following categori
 | Option                                 | Description                                                                     | Default Value      |
 |----------------------------------------|---------------------------------------------------------------------------------|--------------------|
 | `utils.enums.enabled`                  | Whether to generate TypeScript utility functions for enums.                    | `false`            |
-| `utils.enums.filename`                 | Filename for the generated enums utilities.                                    | `'utils.ts'`       |
+| `utils.enums.filename`                 | Filename for the generated enums utilities (bidirectional).                    | `'utils.ts'`       |
+| `utils.enums.unidirectional`           | Generate separate unidirectional conversion functions instead of bidirectional. | `false`            |
+| `utils.enums.toIntFilename`            | Filename for string-to-int conversion utilities (when unidirectional).         | `'enum-to-int.ts'` |
+| `utils.enums.toStringFilename`         | Filename for int-to-string conversion utilities (when unidirectional).         | `'enum-to-string.ts'` |
+| `utils.enums.outputFormat`             | Output format: 'switchStatements' or 'nestedObjects'.                         | `'switchStatements'` |
 | `utils.astHelpers.enabled`             | Outputs TypeScript helpers for building PostgreSQL ASTs.                        | `false`            |
 | `utils.astHelpers.wrappedTypesSource`  | Path to the TypeScript types to use when generating AST helpers.               | `'./wrapped'`      |
 | `utils.astHelpers.inlineNestedObj`     | Whether to inline `nested-obj` code within the generated file.                 | `false`            |

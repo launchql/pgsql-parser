@@ -1,4 +1,4 @@
-# Implementation Summary: Unidirectional Enum Conversion Functions
+# Implementation Summary: Enum Conversion Functions Enhancements
 
 ## What Was Implemented
 
@@ -77,8 +77,81 @@ const name = getEnumString("OverridingKind", 1); // Returns: "OVERRIDING_USER_VA
 
 Added comprehensive tests in `__tests__/enum-utils.test.ts` covering:
 - Bidirectional generation (default behavior)
-- Unidirectional generation
-- Custom filenames
+- Unidirectional generation with switch statements
+- Unidirectional generation with nested objects
+- Custom filenames for both formats
 - Explicit bidirectional mode
 
 All tests pass and generate appropriate snapshots.
+
+## Part 2: Nested Objects Output Format
+
+### 1. New Generator Functions
+
+Added two new functions for nested objects format:
+
+- **`generateEnumToIntFunctionsNested`**: Generates an object map where each enum has its own converter function
+- **`generateEnumToStringFunctionsNested`**: Similar but for number to string conversions
+
+### 2. Configuration Enhancement
+
+Added `outputFormat` option:
+
+```typescript
+utils: {
+  enums: {
+    outputFormat?: 'switchStatements' | 'nestedObjects'; // Default: 'switchStatements'
+  }
+}
+```
+
+### 3. Generated Output Structure
+
+#### Switch Statements Format (Default)
+```typescript
+export const getEnumInt = (enumType: EnumType, key: string): number => {
+  switch (enumType) {
+    case "EnumName": {
+      switch (key) {
+        case "VALUE": return 0;
+        // ...
+      }
+    }
+  }
+}
+```
+
+#### Nested Objects Format
+```typescript
+export const enumToIntMap: EnumToIntMap = {
+  "EnumName": (key: string): number => {
+    switch (key) {
+      case "VALUE": return 0;
+      // ...
+    }
+  },
+  // ... more enums
+}
+```
+
+### 4. Usage Comparison
+
+#### Switch Statements
+```typescript
+import { getEnumInt } from './enum-to-int';
+const value = getEnumInt("OverridingKind", "OVERRIDING_USER_VALUE");
+```
+
+#### Nested Objects
+```typescript
+import { enumToIntMap } from './enum-to-int-map';
+const value = enumToIntMap.OverridingKind("OVERRIDING_USER_VALUE");
+```
+
+### 5. Benefits of Nested Objects Format
+
+1. **Better Tree-Shaking**: Bundlers can eliminate unused enum converters
+2. **Direct Access**: No need to pass enum name as parameter
+3. **Type-Safe Properties**: TypeScript knows exactly which enums are available
+4. **Modular Organization**: Each enum has its own isolated converter function
+5. **Cleaner API**: More intuitive object-oriented interface
