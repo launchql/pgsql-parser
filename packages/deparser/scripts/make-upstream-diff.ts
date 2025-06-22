@@ -6,6 +6,7 @@ import { parse, deparse } from 'libpg-query';
 import { ParseResult, RawStmt } from '@pgsql/types';
 import { deparse as ourDeparse } from '../src';
 import { cleanTree } from '../src/utils';
+import { splitStatements, generateStatementKey } from '../src/utils/statement-splitter';
 
 const FIXTURE_DIR = path.join(__dirname, '../../../__fixtures__/kitchen-sink');
 const OUT_DIR = path.join(__dirname, '../../../__fixtures__/generated');
@@ -20,67 +21,6 @@ ensureDir(OUT_DIR);
 
 const fixtures = globSync(path.join(FIXTURE_DIR, '**/*.sql'));
 
-function extractOriginalSQL(originalSQL: string, rawStmt: RawStmt, isFirst: boolean = false): string | null {
-  let extracted: string | null = null;
-  
-  if (rawStmt.stmt_location !== undefined && rawStmt.stmt_len !== undefined) {
-    // Check if we need to adjust location - if the character before the location looks like part of a SQL keyword
-    let adjustedLocation = rawStmt.stmt_location;
-    if (rawStmt.stmt_location > 0) {
-      const charBefore = originalSQL[rawStmt.stmt_location - 1];
-      const charAtLocation = originalSQL[rawStmt.stmt_location];
-      // If the char before looks like it should be part of the statement (e.g., 'C' before 'REATE')
-      if (/[A-Za-z]/.test(charBefore) && /[A-Za-z]/.test(charAtLocation)) {
-        adjustedLocation = rawStmt.stmt_location - 1;
-      }
-    }
-    extracted = originalSQL.substring(adjustedLocation, adjustedLocation + rawStmt.stmt_len);
-  } else if (rawStmt.stmt_location !== undefined && rawStmt.stmt_len === undefined) {
-    // We have location but no length - extract from location to end of file
-    let adjustedLocation = rawStmt.stmt_location;
-    if (rawStmt.stmt_location > 0) {
-      const charBefore = originalSQL[rawStmt.stmt_location - 1];
-      const charAtLocation = originalSQL[rawStmt.stmt_location];
-      // If the char before looks like it should be part of the statement (e.g., 'C' before 'REATE')
-      if (/[A-Za-z]/.test(charBefore) && /[A-Za-z]/.test(charAtLocation)) {
-        adjustedLocation = rawStmt.stmt_location - 1;
-      }
-    }
-    extracted = originalSQL.substring(adjustedLocation);
-  } else if (isFirst && rawStmt.stmt_len !== undefined) {
-    // For first statement when location is missing but we have length
-    extracted = originalSQL.substring(0, rawStmt.stmt_len);
-  } else if (isFirst && rawStmt.stmt_location === undefined && rawStmt.stmt_len === undefined) {
-    // For first statement when both location and length are missing, use entire SQL
-    extracted = originalSQL;
-  }
-  
-  if (extracted) {
-    // Split into lines to handle leading whitespace and comments properly
-    const lines = extracted.split('\n');
-    let startLineIndex = 0;
-    
-    // Find the first line that contains actual SQL content
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i].trim();
-      // Skip empty lines and comment-only lines
-      if (line === '' || line.startsWith('--')) {
-        continue;
-      }
-      startLineIndex = i;
-      break;
-    }
-    
-    // Reconstruct from the first SQL line, preserving the original indentation of that line
-    if (startLineIndex < lines.length) {
-      const resultLines = lines.slice(startLineIndex);
-      extracted = resultLines.join('\n').trim();
-    }
-  }
-  
-  return extracted;
-}
-
 async function main() {
   // Collect only files with differences between deparsers
   const results: Record<string, { upstream?: string; deparsed?: string; original: string }> = {};
@@ -88,73 +28,68 @@ async function main() {
   for (const fixturePath of fixtures) {
     const relPath = path.relative(FIXTURE_DIR, fixturePath);
     const sql = fs.readFileSync(fixturePath, 'utf-8');
-    let parseResult: ParseResult;
+    
     try {
-      parseResult = await parse(sql);
+      const statements = await splitStatements(sql);
+      
+      for (const stmt of statements) {
+        // We need the original statement to get the RawStmt for deparsing
+        const parseResult = await parse(sql);
+        const rawStmt = parseResult.stmts[stmt.index];
+        
+        // Get source of truth: cleanTree(parse(original))
+        let sourceOfTruthAst: any;
+        try {
+          const originalParsed = await parse(stmt.statement);
+          sourceOfTruthAst = cleanTree(originalParsed.stmts?.[0]?.stmt);
+        } catch (err: any) {
+          console.error(`Failed to parse original SQL for statement ${stmt.index + 1} in ${relPath}:`, err);
+          continue;
+        }
+        
+        // Get upstream deparse and its AST
+        let upstreamSql: string | undefined;
+        let upstreamAst: any;
+        try {
+          upstreamSql = await deparse({ version: 170000, stmts: [rawStmt] });
+          const upstreamParsed = await parse(upstreamSql);
+          upstreamAst = cleanTree(upstreamParsed.stmts?.[0]?.stmt);
+        } catch (err: any) {
+          console.error(`Failed to process upstream deparse for statement ${stmt.index + 1} in ${relPath}:`, err);
+          continue;
+        }
+        
+        // Get our deparse and its AST
+        let ourDeparsedSql: string | undefined;
+        let ourAst: any;
+        try {
+          ourDeparsedSql = ourDeparse(rawStmt.stmt);
+          const ourParsed = await parse(ourDeparsedSql);
+          ourAst = cleanTree(ourParsed.stmts?.[0]?.stmt);
+        } catch (err: any) {
+          console.error(`Failed to process our deparse for statement ${stmt.index + 1} in ${relPath}:`, err);
+          // Continue with just upstream comparison
+        }
+        
+        // Compare ASTs to source of truth only
+        const upstreamMatches = JSON.stringify(upstreamAst) === JSON.stringify(sourceOfTruthAst);
+        const ourMatches = ourAst ? JSON.stringify(ourAst) === JSON.stringify(sourceOfTruthAst) : false;
+        
+        // Only include if either deparser differs from original
+        if (!upstreamMatches || !ourMatches) {
+          const key = generateStatementKey(relPath, stmt.index);
+          results[key] = {
+            original: stmt.statement,
+            // Show upstream only if it differs from original
+            ...(!upstreamMatches && upstreamSql && { upstream: upstreamSql }),
+            // Show our deparser only if it differs from original
+            ...(!ourMatches && ourDeparsedSql && { deparsed: ourDeparsedSql })
+          };
+        }
+      }
     } catch (err: any) {
       console.error(`Failed to parse ${relPath}:`, err);
       continue;
-    }
-    
-    for (let idx = 0; idx < parseResult.stmts.length; idx++) {
-      const stmt = parseResult.stmts[idx];
-      
-      // Extract original SQL using location info
-      const originalSql = extractOriginalSQL(sql, stmt, idx === 0);
-      if (!originalSql) {
-        console.error(`Failed to extract original SQL for statement ${idx + 1} in ${relPath}`);
-        continue;
-      }
-      
-      // Get source of truth: cleanTree(parse(original))
-      let sourceOfTruthAst: any;
-      try {
-        const originalParsed = await parse(originalSql);
-        sourceOfTruthAst = cleanTree(originalParsed.stmts?.[0]?.stmt);
-      } catch (err: any) {
-        console.error(`Failed to parse original SQL for statement ${idx + 1} in ${relPath}:`, err);
-        continue;
-      }
-      
-      // Get upstream deparse and its AST
-      let upstreamSql: string | undefined;
-      let upstreamAst: any;
-      try {
-        upstreamSql = await deparse({ version: 170000, stmts: [stmt] });
-        const upstreamParsed = await parse(upstreamSql);
-        upstreamAst = cleanTree(upstreamParsed.stmts?.[0]?.stmt);
-      } catch (err: any) {
-        console.error(`Failed to process upstream deparse for statement ${idx + 1} in ${relPath}:`, err);
-        continue;
-      }
-      
-      // Get our deparse and its AST
-      let ourDeparsedSql: string | undefined;
-      let ourAst: any;
-      try {
-        ourDeparsedSql = ourDeparse(stmt.stmt);
-        const ourParsed = await parse(ourDeparsedSql);
-        ourAst = cleanTree(ourParsed.stmts?.[0]?.stmt);
-      } catch (err: any) {
-        console.error(`Failed to process our deparse for statement ${idx + 1} in ${relPath}:`, err);
-        // Continue with just upstream comparison
-      }
-      
-      // Compare ASTs to source of truth only
-      const upstreamMatches = JSON.stringify(upstreamAst) === JSON.stringify(sourceOfTruthAst);
-      const ourMatches = ourAst ? JSON.stringify(ourAst) === JSON.stringify(sourceOfTruthAst) : false;
-      
-      // Only include if either deparser differs from original
-      if (!upstreamMatches || !ourMatches) {
-        const key = `${relPath.replace(/\.sql$/, '')}-${idx + 1}.sql`;
-        results[key] = {
-          original: originalSql,
-          // Show upstream only if it differs from original
-          ...(!upstreamMatches && upstreamSql && { upstream: upstreamSql }),
-          // Show our deparser only if it differs from original
-          ...(!ourMatches && ourDeparsedSql && { deparsed: ourDeparsedSql })
-        };
-      }
     }
   }
 
