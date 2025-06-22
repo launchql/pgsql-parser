@@ -60,4 +60,43 @@ export class QuoteUtils {
   static escape(literal: string): string {
     return `'${literal.replace(/'/g, "''")}'`;
   }
+
+  /**
+   * Escapes a string value for use in E-prefixed string literals
+   * Handles both backslashes and single quotes properly
+   */
+  static escapeEString(value: string): string {
+    return value.replace(/\\/g, '\\\\').replace(/'/g, "''");
+  }
+
+  /**
+   * Formats a string as an E-prefixed string literal with proper escaping
+   * This wraps the complete E-prefix logic including detection and formatting
+   */
+  static formatEString(value: string): string {
+    const needsEscape = QuoteUtils.needsEscapePrefix(value);
+    if (needsEscape) {
+      const escapedValue = QuoteUtils.escapeEString(value);
+      return `E'${escapedValue}'`;
+    } else {
+      return QuoteUtils.escape(value);
+    }
+  }
+
+  /**
+   * Determines if a string value needs E-prefix for escaped string literals
+   * Detects backslash escape sequences that require E-prefix in PostgreSQL
+   */
+  static needsEscapePrefix(value: string): boolean {
+    if (/^\\x[0-9a-fA-F]+$/i.test(value)) {
+      return false;
+    }
+    
+    if (/\\x[0-9a-fA-F]/.test(value) && !/\\[nrtbf\\']/.test(value)) {
+      return false;
+    }
+    
+    // Check for common backslash escape sequences that require E-prefix
+    return /\\(?:[nrtbf\\']|u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8}|[0-7]{1,3})/.test(value);
+  }
 }

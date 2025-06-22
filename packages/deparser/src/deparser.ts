@@ -1254,46 +1254,18 @@ export class Deparser implements DeparserVisitor {
     } else if (nodeAny.sval !== undefined) {
       if (typeof nodeAny.sval === 'object' && nodeAny.sval !== null) {
         if (nodeAny.sval.sval !== undefined) {
-          const value = nodeAny.sval.sval;
-          const needsEscape = this.needsEscapePrefix(value);
-          if (needsEscape) {
-            const escapedValue = value.replace(/\\/g, '\\\\').replace(/'/g, "''");
-            return `E'${escapedValue}'`;
-          } else {
-            return QuoteUtils.escape(value);
-          }
+          return QuoteUtils.formatEString(nodeAny.sval.sval);
         } else if (nodeAny.sval.String && nodeAny.sval.String.sval !== undefined) {
-          const value = nodeAny.sval.String.sval;
-          const needsEscape = this.needsEscapePrefix(value);
-          if (needsEscape) {
-            const escapedValue = value.replace(/\\/g, '\\\\').replace(/'/g, "''");
-            return `E'${escapedValue}'`;
-          } else {
-            return QuoteUtils.escape(value);
-          }
+          return QuoteUtils.formatEString(nodeAny.sval.String.sval);
         } else if (Object.keys(nodeAny.sval).length === 0) {
           return "''";
         } else {
-          const value = nodeAny.sval.toString();
-          const needsEscape = this.needsEscapePrefix(value);
-          if (needsEscape) {
-            const escapedValue = value.replace(/\\/g, '\\\\').replace(/'/g, "''");
-            return `E'${escapedValue}'`;
-          } else {
-            return QuoteUtils.escape(value);
-          }
+          return QuoteUtils.formatEString(nodeAny.sval.toString());
         }
       } else if (nodeAny.sval === null) {
         return 'NULL';
       } else {
-        const value = nodeAny.sval;
-        const needsEscape = this.needsEscapePrefix(value);
-        if (needsEscape) {
-          const escapedValue = value.replace(/\\/g, '\\\\').replace(/'/g, "''");
-          return `E'${escapedValue}'`;
-        } else {
-          return QuoteUtils.escape(value);
-        }
+        return QuoteUtils.formatEString(nodeAny.sval);
       }
     } else if (nodeAny.boolval !== undefined) {
       if (typeof nodeAny.boolval === 'object' && nodeAny.boolval !== null) {
@@ -2042,34 +2014,11 @@ export class Deparser implements DeparserVisitor {
     return caseMap[defName.toLowerCase()] || defName;
   }
 
-  needsEscapePrefix(value: string): boolean {
-    // Don't add E-prefix to hexadecimal bytea literals (e.g., \xDeAdBeEf)
-    if (/^\\x[0-9a-fA-F]+$/i.test(value)) {
-      return false;
-    }
-    
-    // Don't add E-prefix to strings that look like bytea literals with mixed content
-    if (/\\x[0-9a-fA-F]/.test(value) && !/\\[nrtbf\\']/.test(value)) {
-      return false;
-    }
-    
-    // Check for common backslash escape sequences that require E-prefix
-    return /\\[nrtbf\\']/.test(value) ||             // Basic escapes: \n, \t, \r, \b, \f, \\, \'
-           /\\u[0-9a-fA-F]{4}/.test(value) ||        // Unicode escapes: \u0041
-           /\\U[0-9a-fA-F]{8}/.test(value) ||        // Extended unicode escapes: \U00000041
-           /\\[0-7]{1,3}/.test(value);               // Octal escapes: \123
-  }
+
 
   String(node: t.String, context: DeparserContext): string {
     if (context.isStringLiteral || context.isEnumValue) {
-      const value = node.sval || '';
-      const needsEscape = this.needsEscapePrefix(value);
-      if (needsEscape) {
-        const escapedValue = value.replace(/\\/g, '\\\\').replace(/'/g, "''");
-        return `E'${escapedValue}'`;
-      } else {
-        return QuoteUtils.escape(value);
-      }
+      return QuoteUtils.formatEString(node.sval || '');
     }
     
     const value = node.sval || '';
@@ -6268,8 +6217,7 @@ export class Deparser implements DeparserVisitor {
     if (node.comment === null || node.comment === undefined) {
       output.push('NULL');
     } else if (node.comment) {
-      const escapedComment = node.comment.replace(/'/g, "''");
-      output.push(`'${escapedComment}'`);
+      output.push(QuoteUtils.formatEString(node.comment));
     }
     
     return output.join(' ');
