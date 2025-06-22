@@ -1,8 +1,10 @@
 import { Enum, Field, ReflectionObject } from '@launchql/protobufjs';
-import pkg from '../../package.json';
 import { PgProtoParserOptions } from '../options';
 import { writeFileSync } from 'fs';
 import { extname, basename } from 'path';
+import { readAndParsePackageJson } from '../package';
+
+const pkg = readAndParsePackageJson();
 
 export const getUndefinedKey = (enumName: string) => {
   // Split the name into parts where a lowercase letter is followed by an uppercase letter
