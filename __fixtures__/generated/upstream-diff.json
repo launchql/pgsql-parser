@@ -1,8 +1,4 @@
 {
-  "original/copy-1.sql": {
-    "original": "COPY (SELECT 1) TO '/test.csv' WITH (FORMAT CSV)",
-    "deparsed": "COPY (SELECT 1) TO '/test.csv' WITH (format = 'csv')"
-  },
   "original/upstream/xmlmap-7.sql": {
     "original": "INSERT INTO testxmlschema.test2 VALUES (55, 'abc', 'def', 98.6, 2, 999, 0, '21:07', '2009-06-08 21:07:30', '2009-06-08', NULL, 'ABC', true, 'XYZ')",
     "upstream": "INSERT INTO testxmlschema.test2 VALUES (55, 'abc', 'def', 98.6, 2, 999, 0, '21:07', '2009-06-08 21:07:30', '2009-06-08', NULL, 'ABC', false, 'XYZ')"
