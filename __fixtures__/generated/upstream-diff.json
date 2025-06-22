@@ -1,0 +1,1594 @@
+{
+  "original/copy-1.sql": {
+    "original": "COPY (SELECT 1) TO '/test.csv' WITH (FORMAT CSV)",
+    "deparsed": "COPY (SELECT 1) TO '/test.csv' WITH (format = 'csv')"
+  },
+  "original/upstream/xmlmap-7.sql": {
+    "original": "INSERT INTO testxmlschema.test2 VALUES (55, 'abc', 'def', 98.6, 2, 999, 0, '21:07', '2009-06-08 21:07:30', '2009-06-08', NULL, 'ABC', true, 'XYZ')",
+    "upstream": "INSERT INTO testxmlschema.test2 VALUES (55, 'abc', 'def', 98.6, 2, 999, 0, '21:07', '2009-06-08 21:07:30', '2009-06-08', NULL, 'ABC', false, 'XYZ')"
+  },
+  "original/upstream/xmlmap-9.sql": {
+    "original": "SELECT table_to_xml('testxmlschema.test1', true, false, 'foo')",
+    "upstream": "SELECT table_to_xml('testxmlschema.test1', false, false, 'foo')"
+  },
+  "original/upstream/xmlmap-10.sql": {
+    "original": "SELECT table_to_xml('testxmlschema.test1', false, true, '')",
+    "upstream": "SELECT table_to_xml('testxmlschema.test1', false, false, '')"
+  },
+  "original/upstream/xmlmap-11.sql": {
+    "original": "SELECT table_to_xml('testxmlschema.test1', true, true, '')",
+    "upstream": "SELECT table_to_xml('testxmlschema.test1', false, false, '')"
+  },
+  "original/upstream/xmlmap-14.sql": {
+    "original": "SELECT table_to_xmlschema('testxmlschema.test1', true, false, '')",
+    "upstream": "SELECT table_to_xmlschema('testxmlschema.test1', false, false, '')"
+  },
+  "original/upstream/xmlmap-15.sql": {
+    "original": "SELECT table_to_xmlschema('testxmlschema.test1', false, true, 'foo')",
+    "upstream": "SELECT table_to_xmlschema('testxmlschema.test1', false, false, 'foo')"
+  },
+  "original/upstream/xmlmap-16.sql": {
+    "original": "SELECT table_to_xmlschema('testxmlschema.test1', true, true, '')",
+    "upstream": "SELECT table_to_xmlschema('testxmlschema.test1', false, false, '')"
+  },
+  "original/upstream/xmlmap-19.sql": {
+    "original": "SELECT table_to_xml_and_xmlschema('testxmlschema.test1', true, false, '')",
+    "upstream": "SELECT table_to_xml_and_xmlschema('testxmlschema.test1', false, false, '')"
+  },
+  "original/upstream/xmlmap-20.sql": {
+    "original": "SELECT table_to_xml_and_xmlschema('testxmlschema.test1', false, true, '')",
+    "upstream": "SELECT table_to_xml_and_xmlschema('testxmlschema.test1', false, false, '')"
+  },
+  "original/upstream/xmlmap-21.sql": {
+    "original": "SELECT table_to_xml_and_xmlschema('testxmlschema.test1', true, true, 'foo')",
+    "upstream": "SELECT table_to_xml_and_xmlschema('testxmlschema.test1', false, false, 'foo')"
+  },
+  "original/upstream/xmlmap-24.sql": {
+    "original": "SELECT query_to_xml_and_xmlschema('SELECT * FROM testxmlschema.test1', true, true, '')",
+    "upstream": "SELECT query_to_xml_and_xmlschema('SELECT * FROM testxmlschema.test1', false, false, '')"
+  },
+  "original/upstream/xmlmap-26.sql": {
+    "original": "SELECT cursor_to_xml('xc'::refcursor, 5, false, true, '')",
+    "upstream": "SELECT cursor_to_xml('xc'::refcursor, 5, false, false, '')"
+  },
+  "original/upstream/xmlmap-28.sql": {
+    "original": "SELECT cursor_to_xml('xc'::refcursor, 5, true, false, '')",
+    "upstream": "SELECT cursor_to_xml('xc'::refcursor, 5, false, false, '')"
+  },
+  "original/upstream/xmlmap-29.sql": {
+    "original": "SELECT cursor_to_xmlschema('xc'::refcursor, true, false, '')",
+    "upstream": "SELECT cursor_to_xmlschema('xc'::refcursor, false, false, '')"
+  },
+  "original/upstream/xmlmap-30.sql": {
+    "original": "SELECT schema_to_xml('testxmlschema', false, true, '')",
+    "upstream": "SELECT schema_to_xml('testxmlschema', false, false, '')"
+  },
+  "original/upstream/xmlmap-31.sql": {
+    "original": "SELECT schema_to_xml('testxmlschema', true, false, '')",
+    "upstream": "SELECT schema_to_xml('testxmlschema', false, false, '')"
+  },
+  "original/upstream/xmlmap-32.sql": {
+    "original": "SELECT schema_to_xmlschema('testxmlschema', false, true, '')",
+    "upstream": "SELECT schema_to_xmlschema('testxmlschema', false, false, '')"
+  },
+  "original/upstream/xmlmap-33.sql": {
+    "original": "SELECT schema_to_xmlschema('testxmlschema', true, false, '')",
+    "upstream": "SELECT schema_to_xmlschema('testxmlschema', false, false, '')"
+  },
+  "original/upstream/xmlmap-34.sql": {
+    "original": "SELECT schema_to_xml_and_xmlschema('testxmlschema', true, true, 'foo')",
+    "upstream": "SELECT schema_to_xml_and_xmlschema('testxmlschema', false, false, 'foo')"
+  },
+  "original/upstream/xmlmap-37.sql": {
+    "original": "CREATE TABLE testxmlschema.test3\n    AS SELECT true c1,\n              true::testboolxmldomain c2,\n              '2013-02-21'::date c3,\n              '2013-02-21'::testdatexmldomain c4",
+    "upstream": "CREATE TABLE testxmlschema.test3 AS SELECT false AS c1, false::testboolxmldomain AS c2, '2013-02-21'::date AS c3, '2013-02-21'::testdatexmldomain AS c4"
+  },
+  "original/upstream/xmlmap-39.sql": {
+    "original": "SELECT table_to_xml('testxmlschema.test3', true, true, '')",
+    "upstream": "SELECT table_to_xml('testxmlschema.test3', false, false, '')"
+  },
+  "original/upstream/xml-34.sql": {
+    "original": "SELECT xmlelement(name foo, xmlattributes(true as bar))",
+    "upstream": "SELECT xmlelement(name foo, xmlattributes(false AS bar))"
+  },
+  "original/upstream/with-32.sql": {
+    "original": "SELECT pg_get_viewdef('vsubdepartment'::regclass, true)",
+    "upstream": "SELECT pg_get_viewdef('vsubdepartment'::regclass, false)"
+  },
+  "original/upstream/window-65.sql": {
+    "original": "CREATE FUNCTION nth_value_def(val anyelement, n integer = 1) RETURNS anyelement\n  LANGUAGE internal WINDOW IMMUTABLE STRICT AS 'window_nth_value'",
+    "upstream": "CREATE FUNCTION nth_value_def(val anyelement, n int = 1) RETURNS anyelement LANGUAGE internal WINDOW IMMUTABLE CALLED ON NULL INPUT AS $$window_nth_value$$"
+  },
+  "original/upstream/window-73.sql": {
+    "original": "CREATE FUNCTION logging_sfunc_strict(text, anyelement) RETURNS text AS\n$$ SELECT $1 || '*' || quote_nullable($2) $$\nLANGUAGE SQL STRICT IMMUTABLE",
+    "upstream": "CREATE FUNCTION logging_sfunc_strict(text, anyelement) RETURNS text AS $$ SELECT $1 || '*' || quote_nullable($2) $$ LANGUAGE sql CALLED ON NULL INPUT IMMUTABLE"
+  },
+  "original/upstream/window-74.sql": {
+    "original": "CREATE FUNCTION logging_msfunc_strict(text, anyelement) RETURNS text AS\n$$ SELECT $1 || '+' || quote_nullable($2) $$\nLANGUAGE SQL STRICT IMMUTABLE",
+    "upstream": "CREATE FUNCTION logging_msfunc_strict(text, anyelement) RETURNS text AS $$ SELECT $1 || '+' || quote_nullable($2) $$ LANGUAGE sql CALLED ON NULL INPUT IMMUTABLE"
+  },
+  "original/upstream/window-75.sql": {
+    "original": "CREATE FUNCTION logging_minvfunc_strict(text, anyelement) RETURNS text AS\n$$ SELECT $1 || '-' || quote_nullable($2) $$\nLANGUAGE SQL STRICT IMMUTABLE",
+    "upstream": "CREATE FUNCTION logging_minvfunc_strict(text, anyelement) RETURNS text AS $$ SELECT $1 || '-' || quote_nullable($2) $$ LANGUAGE sql CALLED ON NULL INPUT IMMUTABLE"
+  },
+  "original/upstream/window-79.sql": {
+    "original": "SELECT\n\tp::text || ',' || i::text || ':' ||\n\t\tCASE WHEN f THEN COALESCE(v::text, 'NULL') ELSE '-' END as row,\n\tlogging_agg_nonstrict(v) filter(where f) over wnd as nstrict_filt,\n\tlogging_agg_nonstrict_initcond(v) filter(where f) over wnd as nstrict_init_filt,\n\tlogging_agg_strict(v::text) filter(where f) over wnd as strict_filt,\n\tlogging_agg_strict_initcond(v) filter(where f) over wnd as strict_init_filt\nFROM (VALUES\n\t(1, 1, true,  NULL),\n\t(1, 2, false, 'a'),\n\t(1, 3, true,  'b'),\n\t(1, 4, false, NULL),\n\t(1, 5, false, NULL),\n\t(1, 6, false, 'c'),\n\t(2, 1, false, NULL),\n\t(2, 2, true,  'x'),\n\t(3, 1, true,  'z')\n) AS t(p, i, f, v)\nWINDOW wnd AS (PARTITION BY p ORDER BY i ROWS BETWEEN 1 PRECEDING AND CURRENT ROW)\nORDER BY p, i",
+    "upstream": "SELECT (((p::text || ',') || i::text) || ':') || CASE WHEN f THEN COALESCE(v::text, 'NULL') ELSE '-' END AS \"row\", logging_agg_nonstrict(v) FILTER (WHERE f) OVER wnd AS nstrict_filt, logging_agg_nonstrict_initcond(v) FILTER (WHERE f) OVER wnd AS nstrict_init_filt, logging_agg_strict(v::text) FILTER (WHERE f) OVER wnd AS strict_filt, logging_agg_strict_initcond(v) FILTER (WHERE f) OVER wnd AS strict_init_filt FROM (VALUES (1, 1, false, NULL), (1, 2, false, 'a'), (1, 3, false, 'b'), (1, 4, false, NULL), (1, 5, false, NULL), (1, 6, false, 'c'), (2, 1, false, NULL), (2, 2, false, 'x'), (3, 1, false, 'z')) t(p, i, f, v) WINDOW wnd AS (PARTITION BY p ORDER BY i ROWS BETWEEN 1 PRECEDING AND CURRENT ROW) ORDER BY p, i"
+  },
+  "original/upstream/window-81.sql": {
+    "original": "SELECT\n\ti::text || ':' || COALESCE(v::text, 'NULL') as row,\n\tlogging_agg_strict(v::text) filter(where true)\n\t\tover wnd as inverse,\n\tlogging_agg_strict(v::text) filter(where random() >= 0)\n\t\tover wnd as noinverse\nFROM (VALUES\n\t(1, 'a'),\n\t(2, 'b'),\n\t(3, 'c')\n) AS t(i, v)\nWINDOW wnd AS (ORDER BY i ROWS BETWEEN 1 PRECEDING AND CURRENT ROW)\nORDER BY i",
+    "upstream": "SELECT (i::text || ':') || COALESCE(v::text, 'NULL') AS \"row\", logging_agg_strict(v::text) FILTER (WHERE false) OVER wnd AS inverse, logging_agg_strict(v::text) FILTER (WHERE random() >= 0) OVER wnd AS noinverse FROM (VALUES (1, 'a'), (2, 'b'), (3, 'c')) t(i, v) WINDOW wnd AS (ORDER BY i ROWS BETWEEN 1 PRECEDING AND CURRENT ROW) ORDER BY i"
+  },
+  "original/upstream/window-83.sql": {
+    "original": "CREATE FUNCTION sum_int_randrestart_minvfunc(int4, int4) RETURNS int4 AS\n$$ SELECT CASE WHEN random() < 0.2 THEN NULL ELSE $1 - $2 END $$\nLANGUAGE SQL STRICT",
+    "upstream": "CREATE FUNCTION sum_int_randrestart_minvfunc(int4, int4) RETURNS int4 AS $$ SELECT CASE WHEN random() < 0.2 THEN NULL ELSE $1 - $2 END $$ LANGUAGE sql CALLED ON NULL INPUT"
+  },
+  "original/upstream/window-129.sql": {
+    "original": "SELECT i, b, bool_and(b) OVER w, bool_or(b) OVER w\n  FROM (VALUES (1,true), (2,true), (3,false), (4,false), (5,true)) v(i,b)\n  WINDOW w AS (ORDER BY i ROWS BETWEEN CURRENT ROW AND 1 FOLLOWING)",
+    "upstream": "SELECT i, b, bool_and(b) OVER w, bool_or(b) OVER w FROM (VALUES (1, false), (2, false), (3, false), (4, false), (5, false)) v(i, b) WINDOW w AS (ORDER BY i ROWS BETWEEN CURRENT ROW AND 1 FOLLOWING)"
+  },
+  "original/upstream/updatable_views-433.sql": {
+    "original": "CREATE OR REPLACE FUNCTION leakproof(anyelement)\nRETURNS boolean AS\n$$\nBEGIN\n  RETURN true;\nEND;\n$$\nLANGUAGE plpgsql STRICT IMMUTABLE LEAKPROOF",
+    "upstream": "CREATE OR REPLACE FUNCTION leakproof(anyelement) RETURNS boolean AS $$\nBEGIN\n  RETURN true;\nEND;\n$$ LANGUAGE plpgsql CALLED ON NULL INPUT IMMUTABLE NOT LEAKPROOF"
+  },
+  "original/upstream/updatable_views-459.sql": {
+    "original": "INSERT INTO base_tbl VALUES (1, 'Row 1', false), (2, 'Row 2', true)",
+    "upstream": "INSERT INTO base_tbl VALUES (1, 'Row 1', false), (2, 'Row 2', false)"
+  },
+  "original/upstream/updatable_views-461.sql": {
+    "original": "CREATE RULE base_tbl_del_rule AS ON DELETE TO base_tbl\n  DO INSTEAD\n    UPDATE base_tbl SET deleted = true WHERE id = old.id",
+    "upstream": "CREATE RULE base_tbl_del_rule AS ON DELETE TO base_tbl DO INSTEAD UPDATE base_tbl SET deleted = false WHERE id = old.id"
+  },
+  "original/upstream/union-86.sql": {
+    "original": "create function expensivefunc(int) returns int\nlanguage plpgsql immutable strict cost 10000\nas $$begin return $1; end$$",
+    "upstream": "CREATE FUNCTION expensivefunc(int) RETURNS int LANGUAGE plpgsql IMMUTABLE CALLED ON NULL INPUT COST 10000 AS $$begin return $1; end$$"
+  },
+  "original/upstream/triggers-86.sql": {
+    "original": "CREATE TRIGGER insert_when BEFORE INSERT ON main_table\nFOR EACH STATEMENT WHEN (true) EXECUTE PROCEDURE trigger_func('insert_when')",
+    "upstream": "CREATE TRIGGER insert_when BEFORE INSERT ON main_table WHEN (false) EXECUTE FUNCTION trigger_func('insert_when')"
+  },
+  "original/upstream/triggers-87.sql": {
+    "original": "CREATE TRIGGER delete_when AFTER DELETE ON main_table\nFOR EACH STATEMENT WHEN (true) EXECUTE PROCEDURE trigger_func('delete_when')",
+    "upstream": "CREATE TRIGGER delete_when AFTER DELETE ON main_table WHEN (false) EXECUTE FUNCTION trigger_func('delete_when')"
+  },
+  "original/upstream/triggers-92.sql": {
+    "original": "SELECT pg_get_triggerdef(oid, true) FROM pg_trigger WHERE tgrelid = 'main_table'::regclass AND tgname = 'modified_a'",
+    "upstream": "SELECT pg_get_triggerdef(oid, false) FROM pg_trigger WHERE tgrelid = 'main_table'::regclass AND tgname = 'modified_a'"
+  },
+  "original/upstream/triggers-94.sql": {
+    "original": "SELECT pg_get_triggerdef(oid, true) FROM pg_trigger WHERE tgrelid = 'main_table'::regclass AND tgname = 'modified_any'",
+    "upstream": "SELECT pg_get_triggerdef(oid, false) FROM pg_trigger WHERE tgrelid = 'main_table'::regclass AND tgname = 'modified_any'"
+  },
+  "original/upstream/triggers-115.sql": {
+    "original": "INSERT INTO some_t VALUES (TRUE)",
+    "upstream": "INSERT INTO some_t VALUES (false)"
+  },
+  "original/upstream/triggers-116.sql": {
+    "original": "UPDATE some_t SET some_col = TRUE",
+    "upstream": "UPDATE some_t SET some_col = false"
+  },
+  "original/upstream/triggers-118.sql": {
+    "original": "UPDATE some_t SET some_col = TRUE",
+    "upstream": "UPDATE some_t SET some_col = false"
+  },
+  "original/upstream/text-12.sql": {
+    "original": "select concat(1,2,3,'hello',true, false, to_date('20100309','YYYYMMDD'))",
+    "upstream": "SELECT concat(1, 2, 3, 'hello', false, false, to_date('20100309', 'YYYYMMDD'))"
+  },
+  "original/upstream/text-14.sql": {
+    "original": "select concat_ws('#',1,2,3,'hello',true, false, to_date('20100309','YYYYMMDD'))",
+    "upstream": "SELECT concat_ws('#', 1, 2, 3, 'hello', false, false, to_date('20100309', 'YYYYMMDD'))"
+  },
+  "original/upstream/text-54.sql": {
+    "original": "select format('%s, %s', variadic array[true, false])",
+    "upstream": "SELECT format('%s, %s', VARIADIC ARRAY[false, false])"
+  },
+  "original/upstream/text-55.sql": {
+    "original": "select format('%s, %s', variadic array[true, false]::text[])",
+    "upstream": "SELECT format('%s, %s', VARIADIC ARRAY[false, false]::text[])"
+  },
+  "original/upstream/subselect-57.sql": {
+    "original": "INSERT INTO orderstest VALUES (66, 1, true)",
+    "upstream": "INSERT INTO orderstest VALUES (66, 1, false)"
+  },
+  "original/upstream/sequence-60.sql": {
+    "original": "ALTER SEQUENCE IF EXISTS sequence_test2 RESTART WITH 24\n\t INCREMENT BY 4 MAXVALUE 36 MINVALUE 5 CYCLE",
+    "upstream": "ALTER SEQUENCE IF EXISTS sequence_test2 RESTART 24 INCREMENT 4 MAXVALUE 36 MINVALUE 5 NO CYCLE"
+  },
+  "original/upstream/sequence-63.sql": {
+    "original": "ALTER SEQUENCE sequence_test2 RESTART WITH 24\n\t INCREMENT BY 4 MAXVALUE 36 MINVALUE 5 CYCLE",
+    "upstream": "ALTER SEQUENCE sequence_test2 RESTART 24 INCREMENT 4 MAXVALUE 36 MINVALUE 5 NO CYCLE"
+  },
+  "original/upstream/security_label-7.sql": {
+    "original": "CREATE USER seclabel_user1 WITH CREATEROLE",
+    "upstream": "CREATE USER seclabel_user1 WITH NOCREATEROLE"
+  },
+  "original/upstream/rules-452.sql": {
+    "original": "select pg_get_viewdef('shoe'::regclass,true) as pretty",
+    "upstream": "SELECT pg_get_viewdef('shoe'::regclass, false) AS pretty"
+  },
+  "original/upstream/rowtypes-80.sql": {
+    "original": "insert into price values (1,false,42), (10,false,100), (11,true,17.99)",
+    "upstream": "INSERT INTO price VALUES (1, false, 42), (10, false, 100), (11, false, 17.99)"
+  },
+  "original/upstream/rowtypes-81.sql": {
+    "original": "UPDATE price\n    SET active = true, price = input_prices.price\n    FROM unnest(ARRAY[(10, 123.00), (11, 99.99)]::price_input[]) input_prices\n    WHERE price_key_from_table(price.*) = price_key_from_input(input_prices.*)",
+    "upstream": "UPDATE price SET active = false, price = input_prices.price FROM unnest(ARRAY[(10, 123.00), (11, 99.99)]::price_input[]) input_prices WHERE price_key_from_table(price.*) = price_key_from_input(input_prices.*)"
+  },
+  "original/upstream/rowsecurity-13.sql": {
+    "original": "CREATE USER regress_rls_exempt_user BYPASSRLS NOLOGIN",
+    "upstream": "CREATE USER regress_rls_exempt_user WITH NOBYPASSRLS NOLOGIN"
+  },
+  "original/upstream/rowsecurity-44.sql": {
+    "original": "ALTER POLICY p1 ON document USING (true)",
+    "upstream": "ALTER POLICY p1 ON document USING (false) "
+  },
+  "original/upstream/rowsecurity-263.sql": {
+    "original": "CREATE POLICY p1 ON document FOR SELECT USING (true)",
+    "upstream": "CREATE POLICY p1 ON document FOR SELECT TO public USING (false) "
+  },
+  "original/upstream/rolenames-9.sql": {
+    "original": "CREATE ROLE testrol0 SUPERUSER LOGIN",
+    "upstream": "CREATE ROLE testrol0 WITH NOSUPERUSER NOLOGIN"
+  },
+  "original/upstream/rolenames-10.sql": {
+    "original": "CREATE ROLE testrolx SUPERUSER LOGIN",
+    "upstream": "CREATE ROLE testrolx WITH NOSUPERUSER NOLOGIN"
+  },
+  "original/upstream/rolenames-11.sql": {
+    "original": "CREATE ROLE testrol2 SUPERUSER",
+    "upstream": "CREATE ROLE testrol2 WITH NOSUPERUSER"
+  },
+  "original/upstream/rolenames-12.sql": {
+    "original": "CREATE ROLE testrol1 SUPERUSER LOGIN IN ROLE testrol2",
+    "upstream": "CREATE ROLE testrol1 WITH NOSUPERUSER NOLOGIN IN ROLE testrol2"
+  },
+  "original/upstream/rolenames-17.sql": {
+    "original": "ALTER ROLE CURRENT_USER WITH REPLICATION",
+    "upstream": "ALTER ROLE CURRENT_USER WITH NOREPLICATION"
+  },
+  "original/upstream/rolenames-19.sql": {
+    "original": "ALTER ROLE \"current_user\" WITH REPLICATION",
+    "upstream": "ALTER ROLE \"current_user\" WITH NOREPLICATION"
+  },
+  "original/upstream/rolenames-21.sql": {
+    "original": "ALTER ROLE SESSION_USER WITH REPLICATION",
+    "upstream": "ALTER ROLE SESSION_USER WITH NOREPLICATION"
+  },
+  "original/upstream/rolenames-23.sql": {
+    "original": "ALTER ROLE \"session_user\" WITH REPLICATION",
+    "upstream": "ALTER ROLE \"session_user\" WITH NOREPLICATION"
+  },
+  "original/upstream/rolenames-25.sql": {
+    "original": "ALTER USER \"Public\" WITH REPLICATION",
+    "upstream": "ALTER ROLE \"Public\" WITH NOREPLICATION"
+  },
+  "original/upstream/rolenames-26.sql": {
+    "original": "ALTER USER \"None\" WITH REPLICATION",
+    "upstream": "ALTER ROLE \"None\" WITH NOREPLICATION"
+  },
+  "original/upstream/rolenames-34.sql": {
+    "original": "ALTER USER CURRENT_USER WITH REPLICATION",
+    "upstream": "ALTER ROLE CURRENT_USER WITH NOREPLICATION"
+  },
+  "original/upstream/rolenames-36.sql": {
+    "original": "ALTER USER \"current_user\" WITH REPLICATION",
+    "upstream": "ALTER ROLE \"current_user\" WITH NOREPLICATION"
+  },
+  "original/upstream/rolenames-38.sql": {
+    "original": "ALTER USER SESSION_USER WITH REPLICATION",
+    "upstream": "ALTER ROLE SESSION_USER WITH NOREPLICATION"
+  },
+  "original/upstream/rolenames-40.sql": {
+    "original": "ALTER USER \"session_user\" WITH REPLICATION",
+    "upstream": "ALTER ROLE \"session_user\" WITH NOREPLICATION"
+  },
+  "original/upstream/rolenames-42.sql": {
+    "original": "ALTER USER \"Public\" WITH REPLICATION",
+    "upstream": "ALTER ROLE \"Public\" WITH NOREPLICATION"
+  },
+  "original/upstream/rolenames-43.sql": {
+    "original": "ALTER USER \"None\" WITH REPLICATION",
+    "upstream": "ALTER ROLE \"None\" WITH NOREPLICATION"
+  },
+  "original/upstream/roleattributes-3.sql": {
+    "original": "CREATE ROLE test_superuser WITH SUPERUSER",
+    "upstream": "CREATE ROLE test_superuser WITH NOSUPERUSER"
+  },
+  "original/upstream/roleattributes-7.sql": {
+    "original": "ALTER ROLE test_superuser WITH SUPERUSER",
+    "upstream": "ALTER ROLE test_superuser WITH NOSUPERUSER"
+  },
+  "original/upstream/roleattributes-13.sql": {
+    "original": "ALTER ROLE test_inherit WITH INHERIT",
+    "upstream": "ALTER ROLE test_inherit WITH NOINHERIT"
+  },
+  "original/upstream/roleattributes-19.sql": {
+    "original": "CREATE ROLE test_createrole WITH CREATEROLE",
+    "upstream": "CREATE ROLE test_createrole WITH NOCREATEROLE"
+  },
+  "original/upstream/roleattributes-23.sql": {
+    "original": "ALTER ROLE test_createrole WITH CREATEROLE",
+    "upstream": "ALTER ROLE test_createrole WITH NOCREATEROLE"
+  },
+  "original/upstream/roleattributes-27.sql": {
+    "original": "CREATE ROLE test_createdb WITH CREATEDB",
+    "upstream": "CREATE ROLE test_createdb WITH NOCREATEDB"
+  },
+  "original/upstream/roleattributes-31.sql": {
+    "original": "ALTER ROLE test_createdb WITH CREATEDB",
+    "upstream": "ALTER ROLE test_createdb WITH NOCREATEDB"
+  },
+  "original/upstream/roleattributes-35.sql": {
+    "original": "CREATE ROLE test_role_canlogin WITH LOGIN",
+    "upstream": "CREATE ROLE test_role_canlogin WITH NOLOGIN"
+  },
+  "original/upstream/roleattributes-39.sql": {
+    "original": "ALTER ROLE test_role_canlogin WITH LOGIN",
+    "upstream": "ALTER ROLE test_role_canlogin WITH NOLOGIN"
+  },
+  "original/upstream/roleattributes-45.sql": {
+    "original": "ALTER USER test_user_canlogin WITH LOGIN",
+    "upstream": "ALTER ROLE test_user_canlogin WITH NOLOGIN"
+  },
+  "original/upstream/roleattributes-51.sql": {
+    "original": "CREATE ROLE test_replication WITH REPLICATION",
+    "upstream": "CREATE ROLE test_replication WITH NOREPLICATION"
+  },
+  "original/upstream/roleattributes-55.sql": {
+    "original": "ALTER ROLE test_replication WITH REPLICATION",
+    "upstream": "ALTER ROLE test_replication WITH NOREPLICATION"
+  },
+  "original/upstream/roleattributes-59.sql": {
+    "original": "CREATE ROLE test_bypassrls WITH BYPASSRLS",
+    "upstream": "CREATE ROLE test_bypassrls WITH NOBYPASSRLS"
+  },
+  "original/upstream/roleattributes-63.sql": {
+    "original": "ALTER ROLE test_bypassrls WITH BYPASSRLS",
+    "upstream": "ALTER ROLE test_bypassrls WITH NOBYPASSRLS"
+  },
+  "original/upstream/rangefuncs-296.sql": {
+    "original": "create function array_to_set(anyarray) returns setof record as $$\n  select i AS \"index\", $1[i] AS \"value\" from generate_subscripts($1, 1) i\n$$ language sql strict immutable",
+    "upstream": "CREATE FUNCTION array_to_set(anyarray) RETURNS SETOF record AS $$\n  select i AS \"index\", $1[i] AS \"value\" from generate_subscripts($1, 1) i\n$$ LANGUAGE sql CALLED ON NULL INPUT IMMUTABLE"
+  },
+  "original/upstream/rangefuncs-312.sql": {
+    "original": "insert into users values ('id',1,'email',true,11,true)",
+    "upstream": "INSERT INTO users VALUES ('id', 1, 'email', false, 11, false)"
+  },
+  "original/upstream/rangefuncs-313.sql": {
+    "original": "insert into users values ('id2',2,'email2',true,12,true)",
+    "upstream": "INSERT INTO users VALUES ('id2', 2, 'email2', false, 12, false)"
+  },
+  "original/upstream/privileges-23.sql": {
+    "original": "GRANT regressgroup2 TO regressuser4 WITH ADMIN OPTION",
+    "upstream": "GRANT regressgroup2 TO regressuser4 WITH ADMIN FALSE"
+  },
+  "original/upstream/privileges-50.sql": {
+    "original": "INSERT INTO atest2 VALUES ('foo', true)",
+    "upstream": "INSERT INTO atest2 VALUES ('foo', false)"
+  },
+  "original/upstream/privileges-69.sql": {
+    "original": "INSERT INTO atest2 VALUES ('foo', true)",
+    "upstream": "INSERT INTO atest2 VALUES ('foo', false)"
+  },
+  "original/upstream/privileges-74.sql": {
+    "original": "UPDATE atest2 SET col2 = true FROM atest1 WHERE atest1.a = 5",
+    "upstream": "UPDATE atest2 SET col2 = false FROM atest1 WHERE atest1.a = 5"
+  },
+  "original/upstream/privileges-241.sql": {
+    "original": "CREATE FUNCTION testfunc4(boolean) RETURNS text\n  AS 'select col1 from atest2 where col2 = $1;'\n  LANGUAGE sql SECURITY DEFINER",
+    "upstream": "CREATE FUNCTION testfunc4(boolean) RETURNS text AS $$select col1 from atest2 where col2 = $1;$$ LANGUAGE sql SECURITY INVOKER"
+  },
+  "original/upstream/privileges-248.sql": {
+    "original": "SELECT col1 FROM atest2 WHERE col2 = true",
+    "upstream": "SELECT col1 FROM atest2 WHERE col2 = false"
+  },
+  "original/upstream/privileges-249.sql": {
+    "original": "SELECT testfunc4(true)",
+    "upstream": "SELECT testfunc4(false)"
+  },
+  "original/upstream/privileges-389.sql": {
+    "original": "CREATE FUNCTION dogrant_ok() RETURNS void LANGUAGE sql SECURITY DEFINER AS\n\t'GRANT regressgroup2 TO regressuser5'",
+    "upstream": "CREATE FUNCTION dogrant_ok() RETURNS void LANGUAGE sql SECURITY INVOKER AS $$GRANT regressgroup2 TO regressuser5$$"
+  },
+  "original/upstream/privileges-400.sql": {
+    "original": "CREATE FUNCTION dogrant_fails() RETURNS void LANGUAGE sql SECURITY DEFINER AS\n\t'GRANT regressgroup2 TO regressuser5'",
+    "upstream": "CREATE FUNCTION dogrant_fails() RETURNS void LANGUAGE sql SECURITY INVOKER AS $$GRANT regressgroup2 TO regressuser5$$"
+  },
+  "original/upstream/privileges-528.sql": {
+    "original": "CREATE ROLE schemauser1 superuser login",
+    "upstream": "CREATE ROLE schemauser1 WITH NOSUPERUSER NOLOGIN"
+  },
+  "original/upstream/privileges-529.sql": {
+    "original": "CREATE ROLE schemauser2 superuser login",
+    "upstream": "CREATE ROLE schemauser2 WITH NOSUPERUSER NOLOGIN"
+  },
+  "original/upstream/prepare-17.sql": {
+    "original": "PREPARE q3(text, int, float, boolean, oid, smallint) AS\n\tSELECT * FROM tenk1 WHERE string4 = $1 AND (four = $2 OR\n\tten = $3::bigint OR true = $4 OR oid = $5 OR odd = $6::int)\n\tORDER BY unique1",
+    "upstream": "PREPARE q3(text, int, double precision, boolean, oid, smallint) AS SELECT * FROM tenk1 WHERE string4 = $1 AND (four = $2 OR ten = $3::bigint OR false = $4 OR oid = $5 OR odd = $6::int) ORDER BY unique1"
+  },
+  "original/upstream/prepare-20.sql": {
+    "original": "EXECUTE q3('bytea', 5::smallint, 10.5::float, false, 500::oid, 4::bigint, true)",
+    "upstream": "EXECUTE q3('bytea', 5::smallint, (10.5)::double precision, false, 500::oid, 4::bigint, false)"
+  },
+  "original/upstream/polymorphism-7.sql": {
+    "original": "CREATE FUNCTION sum3(anyelement,anyelement,anyelement) returns anyelement AS\n'select $1+$2+$3' language sql strict",
+    "upstream": "CREATE FUNCTION sum3(anyelement, anyelement, anyelement) RETURNS anyelement AS $$select $1+$2+$3$$ LANGUAGE sql CALLED ON NULL INPUT"
+  },
+  "original/upstream/polymorphism-118.sql": {
+    "original": "create function myleast(variadic anyarray) returns anyelement as $$\n  select min($1[i]) from generate_subscripts($1,1) g(i)\n$$ language sql immutable strict",
+    "upstream": "CREATE FUNCTION myleast(VARIADIC anyarray) RETURNS anyelement AS $$\n  select min($1[i]) from generate_subscripts($1,1) g(i)\n$$ LANGUAGE sql IMMUTABLE CALLED ON NULL INPUT"
+  },
+  "original/upstream/polymorphism-126.sql": {
+    "original": "create function concat(text, variadic anyarray) returns text as $$\n  select array_to_string($2, $1);\n$$ language sql immutable strict",
+    "upstream": "CREATE FUNCTION concat(text, VARIADIC anyarray) RETURNS text AS $$\n  select array_to_string($2, $1);\n$$ LANGUAGE sql IMMUTABLE CALLED ON NULL INPUT"
+  },
+  "original/upstream/polymorphism-132.sql": {
+    "original": "create function formarray(anyelement, variadic anyarray) returns anyarray as $$\n  select array_prepend($1, $2);\n$$ language sql immutable strict",
+    "upstream": "CREATE FUNCTION formarray(anyelement, VARIADIC anyarray) RETURNS anyarray AS $$\n  select array_prepend($1, $2);\n$$ LANGUAGE sql IMMUTABLE CALLED ON NULL INPUT"
+  },
+  "original/upstream/polymorphism-249.sql": {
+    "original": "create function dfunc(a anyelement, b anyelement = null, flag bool = true)\nreturns anyelement as $$\n  select case when $3 then $1 else $2 end;\n$$ language sql",
+    "upstream": "CREATE FUNCTION dfunc(a anyelement, b anyelement = NULL, flag bool = false) RETURNS anyelement AS $$\n  select case when $3 then $1 else $2 end;\n$$ LANGUAGE sql"
+  },
+  "original/upstream/polymorphism-256.sql": {
+    "original": "select dfunc(a := 'a'::text, flag := true)",
+    "upstream": "SELECT dfunc(a := 'a'::text, flag := false)"
+  },
+  "original/upstream/polymorphism-258.sql": {
+    "original": "select dfunc(b := 'b'::text, a := 'a', flag := true)",
+    "upstream": "SELECT dfunc(b := 'b'::text, a := 'a', flag := false)"
+  },
+  "original/upstream/polymorphism-261.sql": {
+    "original": "select dfunc('a'::text, 'b', true)",
+    "upstream": "SELECT dfunc('a'::text, 'b', false)"
+  },
+  "original/upstream/polymorphism-262.sql": {
+    "original": "select dfunc('a'::text, 'b', flag := true)",
+    "upstream": "SELECT dfunc('a'::text, 'b', flag := false)"
+  },
+  "original/upstream/polymorphism-267.sql": {
+    "original": "select dfunc(a => 'a'::text, flag => true)",
+    "upstream": "SELECT dfunc(a := 'a'::text, flag := false)"
+  },
+  "original/upstream/polymorphism-269.sql": {
+    "original": "select dfunc(b => 'b'::text, a => 'a', flag => true)",
+    "upstream": "SELECT dfunc(b := 'b'::text, a := 'a', flag := false)"
+  },
+  "original/upstream/polymorphism-272.sql": {
+    "original": "select dfunc('a'::text, 'b', true)",
+    "upstream": "SELECT dfunc('a'::text, 'b', false)"
+  },
+  "original/upstream/polymorphism-273.sql": {
+    "original": "select dfunc('a'::text, 'b', flag => true)",
+    "upstream": "SELECT dfunc('a'::text, 'b', flag := false)"
+  },
+  "original/upstream/plpgsql-691.sql": {
+    "original": "create or replace function pleast(variadic numeric[])\nreturns numeric as $$\ndeclare aux numeric = $1[array_lower($1,1)];\nbegin\n  for i in array_lower($1,1)+1..array_upper($1,1) loop\n    if $1[i] < aux then aux := $1[i]; end if;\n  end loop;\n  return aux;\nend;\n$$ language plpgsql immutable strict",
+    "upstream": "CREATE OR REPLACE FUNCTION pleast(VARIADIC numeric[]) RETURNS numeric AS $$\ndeclare aux numeric = $1[array_lower($1,1)];\nbegin\n  for i in array_lower($1,1)+1..array_upper($1,1) loop\n    if $1[i] < aux then aux := $1[i]; end if;\n  end loop;\n  return aux;\nend;\n$$ LANGUAGE plpgsql IMMUTABLE CALLED ON NULL INPUT"
+  },
+  "original/upstream/plpgsql-696.sql": {
+    "original": "create or replace function pleast(numeric)\nreturns numeric as $$\nbegin\n  raise notice 'non-variadic function called';\n  return $1;\nend;\n$$ language plpgsql immutable strict",
+    "upstream": "CREATE OR REPLACE FUNCTION pleast(numeric) RETURNS numeric AS $$\nbegin\n  raise notice 'non-variadic function called';\n  return $1;\nend;\n$$ LANGUAGE plpgsql IMMUTABLE CALLED ON NULL INPUT"
+  },
+  "original/upstream/plpgsql-700.sql": {
+    "original": "create function tftest(int) returns table(a int, b int) as $$\nbegin\n  return query select $1, $1+i from generate_series(1,5) g(i);\nend;\n$$ language plpgsql immutable strict",
+    "upstream": "CREATE FUNCTION tftest(int) RETURNS TABLE (a int, b int) AS $$\nbegin\n  return query select $1, $1+i from generate_series(1,5) g(i);\nend;\n$$ LANGUAGE plpgsql IMMUTABLE CALLED ON NULL INPUT"
+  },
+  "original/upstream/plpgsql-702.sql": {
+    "original": "create or replace function tftest(a1 int) returns table(a int, b int) as $$\nbegin\n  a := a1; b := a1 + 1;\n  return next;\n  a := a1 * 10; b := a1 * 10 + 1;\n  return next;\nend;\n$$ language plpgsql immutable strict",
+    "upstream": "CREATE OR REPLACE FUNCTION tftest(a1 int) RETURNS TABLE (a int, b int) AS $$\nbegin\n  a := a1; b := a1 + 1;\n  return next;\n  a := a1 * 10; b := a1 * 10 + 1;\n  return next;\nend;\n$$ LANGUAGE plpgsql IMMUTABLE CALLED ON NULL INPUT"
+  },
+  "original/upstream/plpgsql-711.sql": {
+    "original": "SELECT * FROM leaker_1(true)",
+    "upstream": "SELECT * FROM leaker_1(false)"
+  },
+  "original/upstream/plpgsql-734.sql": {
+    "original": "create function sql_to_date(integer) returns date as $$\nselect $1::text::date\n$$ language sql immutable strict",
+    "upstream": "CREATE FUNCTION sql_to_date(int) RETURNS date AS $$\nselect $1::text::date\n$$ LANGUAGE sql IMMUTABLE CALLED ON NULL INPUT"
+  },
+  "original/upstream/opr_sanity-1.sql": {
+    "original": "create function binary_coercible(oid, oid) returns bool as $$\nSELECT ($1 = $2) OR\n EXISTS(select 1 from pg_catalog.pg_cast where\n        castsource = $1 and casttarget = $2 and\n        castmethod = 'b' and castcontext = 'i') OR\n ($2 = 'pg_catalog.any'::pg_catalog.regtype) OR\n ($2 = 'pg_catalog.anyarray'::pg_catalog.regtype AND\n  EXISTS(select 1 from pg_catalog.pg_type where\n         oid = $1 and typelem != 0 and typlen = -1)) OR\n ($2 = 'pg_catalog.anyrange'::pg_catalog.regtype AND\n  (select typtype from pg_catalog.pg_type where oid = $1) = 'r')\n$$ language sql strict stable",
+    "upstream": "CREATE FUNCTION binary_coercible(oid, oid) RETURNS bool AS $$\nSELECT ($1 = $2) OR\n EXISTS(select 1 from pg_catalog.pg_cast where\n        castsource = $1 and casttarget = $2 and\n        castmethod = 'b' and castcontext = 'i') OR\n ($2 = 'pg_catalog.any'::pg_catalog.regtype) OR\n ($2 = 'pg_catalog.anyarray'::pg_catalog.regtype AND\n  EXISTS(select 1 from pg_catalog.pg_type where\n         oid = $1 and typelem != 0 and typlen = -1)) OR\n ($2 = 'pg_catalog.anyrange'::pg_catalog.regtype AND\n  (select typtype from pg_catalog.pg_type where oid = $1) = 'r')\n$$ LANGUAGE sql CALLED ON NULL INPUT STABLE"
+  },
+  "original/upstream/opr_sanity-2.sql": {
+    "original": "create function physically_coercible(oid, oid) returns bool as $$\nSELECT ($1 = $2) OR\n EXISTS(select 1 from pg_catalog.pg_cast where\n        castsource = $1 and casttarget = $2 and\n        castmethod = 'b') OR\n ($2 = 'pg_catalog.any'::pg_catalog.regtype) OR\n ($2 = 'pg_catalog.anyarray'::pg_catalog.regtype AND\n  EXISTS(select 1 from pg_catalog.pg_type where\n         oid = $1 and typelem != 0 and typlen = -1)) OR\n ($2 = 'pg_catalog.anyrange'::pg_catalog.regtype AND\n  (select typtype from pg_catalog.pg_type where oid = $1) = 'r')\n$$ language sql strict stable",
+    "upstream": "CREATE FUNCTION physically_coercible(oid, oid) RETURNS bool AS $$\nSELECT ($1 = $2) OR\n EXISTS(select 1 from pg_catalog.pg_cast where\n        castsource = $1 and casttarget = $2 and\n        castmethod = 'b') OR\n ($2 = 'pg_catalog.any'::pg_catalog.regtype) OR\n ($2 = 'pg_catalog.anyarray'::pg_catalog.regtype AND\n  EXISTS(select 1 from pg_catalog.pg_type where\n         oid = $1 and typelem != 0 and typlen = -1)) OR\n ($2 = 'pg_catalog.anyrange'::pg_catalog.regtype AND\n  (select typtype from pg_catalog.pg_type where oid = $1) = 'r')\n$$ LANGUAGE sql CALLED ON NULL INPUT STABLE"
+  },
+  "original/upstream/opr_sanity-95.sql": {
+    "original": "SELECT aggfnoid,aggcombinefn\nFROM pg_aggregate a\nINNER JOIN pg_proc p ON a.aggcombinefn = p.oid\nINNER JOIN pg_type t ON a.aggtranstype = t.oid\nWHERE t.typname = 'internal' AND p.proisstrict = true",
+    "upstream": "SELECT aggfnoid, aggcombinefn FROM pg_aggregate a JOIN pg_proc p ON a.aggcombinefn = p.oid JOIN pg_type t ON a.aggtranstype = t.oid WHERE t.typname = 'internal' AND p.proisstrict = false"
+  },
+  "original/upstream/jsonb-222.sql": {
+    "original": "SELECT jsonb_build_array('a',1,'b',1.2,'c',true,'d',null,'e',json '{\"x\": 3, \"y\": [1,2,3]}')",
+    "upstream": "SELECT jsonb_build_array('a', 1, 'b', 1.2, 'c', false, 'd', NULL, 'e', '{\"x\": 3, \"y\": [1,2,3]}'::pg_catalog.json)"
+  },
+  "original/upstream/jsonb-223.sql": {
+    "original": "SELECT jsonb_build_object('a',1,'b',1.2,'c',true,'d',null,'e',json '{\"x\": 3, \"y\": [1,2,3]}')",
+    "upstream": "SELECT jsonb_build_object('a', 1, 'b', 1.2, 'c', false, 'd', NULL, 'e', '{\"x\": 3, \"y\": [1,2,3]}'::pg_catalog.json)"
+  },
+  "original/upstream/jsonb-575.sql": {
+    "original": "select jsonb_insert('{\"a\": [0,1,2]}', '{a, 1}', '\"new_value\"', true)",
+    "upstream": "SELECT jsonb_insert('{\"a\": [0,1,2]}', '{a, 1}', '\"new_value\"', false)"
+  },
+  "original/upstream/jsonb-577.sql": {
+    "original": "select jsonb_insert('{\"a\": {\"b\": {\"c\": [0, 1, \"test1\", \"test2\"]}}}', '{a, b, c, 2}', '\"new_value\"', true)",
+    "upstream": "SELECT jsonb_insert('{\"a\": {\"b\": {\"c\": [0, 1, \"test1\", \"test2\"]}}}', '{a, b, c, 2}', '\"new_value\"', false)"
+  },
+  "original/upstream/jsonb-581.sql": {
+    "original": "select jsonb_insert('{\"a\": [0,1,2]}', '{a, 0}', '\"new_value\"', true)",
+    "upstream": "SELECT jsonb_insert('{\"a\": [0,1,2]}', '{a, 0}', '\"new_value\"', false)"
+  },
+  "original/upstream/jsonb-583.sql": {
+    "original": "select jsonb_insert('{\"a\": [0,1,2]}', '{a, 2}', '\"new_value\"', true)",
+    "upstream": "SELECT jsonb_insert('{\"a\": [0,1,2]}', '{a, 2}', '\"new_value\"', false)"
+  },
+  "original/upstream/jsonb-585.sql": {
+    "original": "select jsonb_insert('{\"a\": [0,1,2]}', '{a, -1}', '\"new_value\"', true)",
+    "upstream": "SELECT jsonb_insert('{\"a\": [0,1,2]}', '{a, -1}', '\"new_value\"', false)"
+  },
+  "original/upstream/jsonb-587.sql": {
+    "original": "select jsonb_insert('[]', '{1}', '\"new_value\"', true)",
+    "upstream": "SELECT jsonb_insert('[]', '{1}', '\"new_value\"', false)"
+  },
+  "original/upstream/jsonb-589.sql": {
+    "original": "select jsonb_insert('{\"a\": []}', '{a, 1}', '\"new_value\"', true)",
+    "upstream": "SELECT jsonb_insert('{\"a\": []}', '{a, 1}', '\"new_value\"', false)"
+  },
+  "original/upstream/jsonb-593.sql": {
+    "original": "select jsonb_insert('{\"a\": {\"b\": \"value\"}}', '{a, c}', '\"new_value\"', true)",
+    "upstream": "SELECT jsonb_insert('{\"a\": {\"b\": \"value\"}}', '{a, c}', '\"new_value\"', false)"
+  },
+  "original/upstream/jsonb-595.sql": {
+    "original": "select jsonb_insert('{\"a\": {\"b\": \"value\"}}', '{a, b}', '\"new_value\"', true)",
+    "upstream": "SELECT jsonb_insert('{\"a\": {\"b\": \"value\"}}', '{a, b}', '\"new_value\"', false)"
+  },
+  "original/upstream/json-50.sql": {
+    "original": "SELECT array_to_json(array_agg(q),true) from (select x as b, x * 2 as c from generate_series(1,3) x) q",
+    "upstream": "SELECT array_to_json(array_agg(q), false) FROM (SELECT x AS b, x * 2 AS c FROM generate_series(1, 3) x) q"
+  },
+  "original/upstream/json-56.sql": {
+    "original": "SELECT row_to_json(q,true)\nFROM (SELECT $$a$$ || x AS b,\n         y AS c,\n         ARRAY[ROW(x.*,ARRAY[1,2,3]),\n               ROW(y.*,ARRAY[4,5,6])] AS z\n      FROM generate_series(1,2) x,\n           generate_series(4,5) y) q",
+    "upstream": "SELECT row_to_json(q, false) FROM (SELECT 'a' || x AS b, y AS c, ARRAY[ROW(x.*, ARRAY[1, 2, 3]), ROW(y.*, ARRAY[4, 5, 6])] AS z FROM generate_series(1, 2) x, generate_series(4, 5) y) q"
+  },
+  "original/upstream/json-58.sql": {
+    "original": "SELECT row_to_json(q,true)\nFROM rows q",
+    "upstream": "SELECT row_to_json(q, false) FROM rows q"
+  },
+  "original/upstream/json-222.sql": {
+    "original": "SELECT json_build_array('a',1,'b',1.2,'c',true,'d',null,'e',json '{\"x\": 3, \"y\": [1,2,3]}')",
+    "upstream": "SELECT json_build_array('a', 1, 'b', 1.2, 'c', false, 'd', NULL, 'e', '{\"x\": 3, \"y\": [1,2,3]}'::pg_catalog.json)"
+  },
+  "original/upstream/json-223.sql": {
+    "original": "SELECT json_build_object('a',1,'b',1.2,'c',true,'d',null,'e',json '{\"x\": 3, \"y\": [1,2,3]}')",
+    "upstream": "SELECT json_build_object('a', 1, 'b', 1.2, 'c', false, 'd', NULL, 'e', '{\"x\": 3, \"y\": [1,2,3]}'::pg_catalog.json)"
+  },
+  "original/upstream/join-193.sql": {
+    "original": "execute foo(true)",
+    "upstream": "EXECUTE foo(false)"
+  },
+  "original/upstream/join-227.sql": {
+    "original": "insert into nt1 values (1,true,true)",
+    "upstream": "INSERT INTO nt1 VALUES (1, false, false)"
+  },
+  "original/upstream/join-228.sql": {
+    "original": "insert into nt1 values (2,true,false)",
+    "upstream": "INSERT INTO nt1 VALUES (2, false, false)"
+  },
+  "original/upstream/join-230.sql": {
+    "original": "insert into nt2 values (1,1,true,true)",
+    "upstream": "INSERT INTO nt2 VALUES (1, 1, false, false)"
+  },
+  "original/upstream/join-231.sql": {
+    "original": "insert into nt2 values (2,2,true,false)",
+    "upstream": "INSERT INTO nt2 VALUES (2, 2, false, false)"
+  },
+  "original/upstream/join-233.sql": {
+    "original": "insert into nt3 values (1,1,true)",
+    "upstream": "INSERT INTO nt3 VALUES (1, 1, false)"
+  },
+  "original/upstream/join-235.sql": {
+    "original": "insert into nt3 values (3,3,true)",
+    "upstream": "INSERT INTO nt3 VALUES (3, 3, false)"
+  },
+  "original/upstream/join-240.sql": {
+    "original": "select * from int4_tbl a full join int4_tbl b on true",
+    "upstream": "SELECT * FROM int4_tbl a FULL JOIN int4_tbl b ON false"
+  },
+  "original/upstream/join-319.sql": {
+    "original": "select p.*, linked from parent p\n  left join (select c.*, true as linked from child c) as ss\n  on (p.k = ss.k)",
+    "upstream": "SELECT p.*, linked FROM parent p LEFT JOIN (SELECT c.*, false AS linked FROM child c) ss ON p.k = ss.k"
+  },
+  "original/upstream/join-320.sql": {
+    "original": "explain (costs off)\n  select p.*, linked from parent p\n    left join (select c.*, true as linked from child c) as ss\n    on (p.k = ss.k)",
+    "upstream": "EXPLAIN (COSTS OFF) SELECT p.*, linked FROM parent p LEFT JOIN (SELECT c.*, false AS linked FROM child c) ss ON p.k = ss.k"
+  },
+  "original/upstream/join-336.sql": {
+    "original": "SELECT * FROM\n    (SELECT 1 AS x) ss1\n  LEFT JOIN\n    (SELECT q1, q2, COALESCE(dat1, q1) AS y\n     FROM int8_tbl LEFT JOIN innertab ON q2 = id) ss2\n  ON true",
+    "upstream": "SELECT * FROM (SELECT 1 AS x) ss1 LEFT JOIN (SELECT q1, q2, COALESCE(dat1, q1) AS y FROM int8_tbl LEFT JOIN innertab ON q2 = id) ss2 ON false"
+  },
+  "original/upstream/join-356.sql": {
+    "original": "select unique2, x.*\nfrom int4_tbl x left join lateral (select unique1, unique2 from tenk1 where f1 = unique1) ss on true",
+    "upstream": "SELECT unique2, x.* FROM int4_tbl x LEFT JOIN LATERAL (SELECT unique1, unique2 FROM tenk1 WHERE f1 = unique1) ss ON false"
+  },
+  "original/upstream/join-357.sql": {
+    "original": "explain (costs off)\n  select unique2, x.*\n  from int4_tbl x left join lateral (select unique1, unique2 from tenk1 where f1 = unique1) ss on true",
+    "upstream": "EXPLAIN (COSTS OFF) SELECT unique2, x.* FROM int4_tbl x LEFT JOIN LATERAL (SELECT unique1, unique2 FROM tenk1 WHERE f1 = unique1) ss ON false"
+  },
+  "original/upstream/join-392.sql": {
+    "original": "explain (verbose, costs off)\nselect * from int4_tbl i left join\n  lateral (select * from int2_tbl j where i.f1 = j.f1) k on true",
+    "upstream": "EXPLAIN (VERBOSE, COSTS OFF) SELECT * FROM int4_tbl i LEFT JOIN LATERAL (SELECT * FROM int2_tbl j WHERE i.f1 = j.f1) k ON false"
+  },
+  "original/upstream/join-393.sql": {
+    "original": "select * from int4_tbl i left join\n  lateral (select * from int2_tbl j where i.f1 = j.f1) k on true",
+    "upstream": "SELECT * FROM int4_tbl i LEFT JOIN LATERAL (SELECT * FROM int2_tbl j WHERE i.f1 = j.f1) k ON false"
+  },
+  "original/upstream/join-394.sql": {
+    "original": "explain (verbose, costs off)\nselect * from int4_tbl i left join\n  lateral (select coalesce(i) from int2_tbl j where i.f1 = j.f1) k on true",
+    "upstream": "EXPLAIN (VERBOSE, COSTS OFF) SELECT * FROM int4_tbl i LEFT JOIN LATERAL (SELECT COALESCE(i) FROM int2_tbl j WHERE i.f1 = j.f1) k ON false"
+  },
+  "original/upstream/join-395.sql": {
+    "original": "select * from int4_tbl i left join\n  lateral (select coalesce(i) from int2_tbl j where i.f1 = j.f1) k on true",
+    "upstream": "SELECT * FROM int4_tbl i LEFT JOIN LATERAL (SELECT COALESCE(i) FROM int2_tbl j WHERE i.f1 = j.f1) k ON false"
+  },
+  "original/upstream/join-411.sql": {
+    "original": "select f1,g from int4_tbl a right join lateral generate_series(0, a.f1) g on true",
+    "upstream": "SELECT f1, g FROM int4_tbl a RIGHT JOIN LATERAL generate_series(0, a.f1) g ON false"
+  },
+  "original/upstream/join-412.sql": {
+    "original": "select f1,g from int4_tbl a full join lateral generate_series(0, a.f1) g on true",
+    "upstream": "SELECT f1, g FROM int4_tbl a FULL JOIN LATERAL generate_series(0, a.f1) g ON false"
+  },
+  "original/upstream/guc-176.sql": {
+    "original": "select current_setting('nosuch.setting', true) is null",
+    "upstream": "SELECT current_setting('nosuch.setting', false) IS NULL"
+  },
+  "original/upstream/guc-180.sql": {
+    "original": "select current_setting('nosuch.setting', true)",
+    "upstream": "SELECT current_setting('nosuch.setting', false)"
+  },
+  "original/upstream/groupingsets-36.sql": {
+    "original": "select pg_get_viewdef('gstest_view'::regclass, true)",
+    "upstream": "SELECT pg_get_viewdef('gstest_view'::regclass, false)"
+  },
+  "original/upstream/groupingsets-54.sql": {
+    "original": "select v.c, (select count(*) from gstest2 group by () having v.c)\n  from (values (false),(true)) v(c) order by v.c",
+    "upstream": "SELECT v.c, (SELECT count(*) FROM gstest2 GROUP BY () HAVING v.c) FROM (VALUES (false), (false)) v(c) ORDER BY v.c"
+  },
+  "original/upstream/groupingsets-55.sql": {
+    "original": "explain (costs off)\n  select v.c, (select count(*) from gstest2 group by () having v.c)\n    from (values (false),(true)) v(c) order by v.c",
+    "upstream": "EXPLAIN (COSTS OFF) SELECT v.c, (SELECT count(*) FROM gstest2 GROUP BY () HAVING v.c) FROM (VALUES (false), (false)) v(c) ORDER BY v.c"
+  },
+  "original/upstream/groupingsets-62.sql": {
+    "original": "select * from (values (1),(2)) v(a) left join lateral (select v.a, four, ten, count(*) from onek group by cube(four,ten)) s on true order by v.a,four,ten",
+    "upstream": "SELECT * FROM (VALUES (1), (2)) v(a) LEFT JOIN LATERAL (SELECT v.a, four, ten, count(*) FROM onek GROUP BY CUBE (four, ten)) s ON false ORDER BY v.a, four, ten"
+  },
+  "original/upstream/foreign_data-4.sql": {
+    "original": "CREATE ROLE foreign_data_user LOGIN SUPERUSER",
+    "upstream": "CREATE ROLE foreign_data_user WITH NOLOGIN NOSUPERUSER"
+  },
+  "original/upstream/foreign_data-8.sql": {
+    "original": "CREATE ROLE regress_test_role_super SUPERUSER",
+    "upstream": "CREATE ROLE regress_test_role_super WITH NOSUPERUSER"
+  },
+  "original/upstream/event_trigger-36.sql": {
+    "original": "alter role regression_bob superuser",
+    "upstream": "ALTER ROLE regression_bob WITH NOSUPERUSER"
+  },
+  "original/upstream/event_trigger-119.sql": {
+    "original": "ALTER POLICY p1 ON event_trigger_test USING (TRUE)",
+    "upstream": "ALTER POLICY p1 ON event_trigger_test USING (false) "
+  },
+  "original/upstream/equivclass-2.sql": {
+    "original": "create function int8alias1in(cstring) returns int8alias1\n  strict immutable language internal as 'int8in'",
+    "upstream": "CREATE FUNCTION int8alias1in(cstring) RETURNS int8alias1 CALLED ON NULL INPUT IMMUTABLE LANGUAGE internal AS $$int8in$$"
+  },
+  "original/upstream/equivclass-3.sql": {
+    "original": "create function int8alias1out(int8alias1) returns cstring\n  strict immutable language internal as 'int8out'",
+    "upstream": "CREATE FUNCTION int8alias1out(int8alias1) RETURNS cstring CALLED ON NULL INPUT IMMUTABLE LANGUAGE internal AS $$int8out$$"
+  },
+  "original/upstream/equivclass-6.sql": {
+    "original": "create function int8alias2in(cstring) returns int8alias2\n  strict immutable language internal as 'int8in'",
+    "upstream": "CREATE FUNCTION int8alias2in(cstring) RETURNS int8alias2 CALLED ON NULL INPUT IMMUTABLE LANGUAGE internal AS $$int8in$$"
+  },
+  "original/upstream/equivclass-7.sql": {
+    "original": "create function int8alias2out(int8alias2) returns cstring\n  strict immutable language internal as 'int8out'",
+    "upstream": "CREATE FUNCTION int8alias2out(int8alias2) RETURNS cstring CALLED ON NULL INPUT IMMUTABLE LANGUAGE internal AS $$int8out$$"
+  },
+  "original/upstream/equivclass-13.sql": {
+    "original": "create function int8alias1eq(int8alias1, int8alias1) returns bool\n  strict immutable language internal as 'int8eq'",
+    "upstream": "CREATE FUNCTION int8alias1eq(int8alias1, int8alias1) RETURNS bool CALLED ON NULL INPUT IMMUTABLE LANGUAGE internal AS $$int8eq$$"
+  },
+  "original/upstream/equivclass-16.sql": {
+    "original": "create function int8alias2eq(int8alias2, int8alias2) returns bool\n  strict immutable language internal as 'int8eq'",
+    "upstream": "CREATE FUNCTION int8alias2eq(int8alias2, int8alias2) RETURNS bool CALLED ON NULL INPUT IMMUTABLE LANGUAGE internal AS $$int8eq$$"
+  },
+  "original/upstream/equivclass-19.sql": {
+    "original": "create function int8alias1eq(int8, int8alias1) returns bool\n  strict immutable language internal as 'int8eq'",
+    "upstream": "CREATE FUNCTION int8alias1eq(int8, int8alias1) RETURNS bool CALLED ON NULL INPUT IMMUTABLE LANGUAGE internal AS $$int8eq$$"
+  },
+  "original/upstream/equivclass-22.sql": {
+    "original": "create function int8alias1eq(int8alias1, int8alias2) returns bool\n  strict immutable language internal as 'int8eq'",
+    "upstream": "CREATE FUNCTION int8alias1eq(int8alias1, int8alias2) RETURNS bool CALLED ON NULL INPUT IMMUTABLE LANGUAGE internal AS $$int8eq$$"
+  },
+  "original/upstream/equivclass-25.sql": {
+    "original": "create function int8alias1lt(int8alias1, int8alias1) returns bool\n  strict immutable language internal as 'int8lt'",
+    "upstream": "CREATE FUNCTION int8alias1lt(int8alias1, int8alias1) RETURNS bool CALLED ON NULL INPUT IMMUTABLE LANGUAGE internal AS $$int8lt$$"
+  },
+  "original/upstream/equivclass-28.sql": {
+    "original": "create function int8alias1cmp(int8, int8alias1) returns int\n  strict immutable language internal as 'btint8cmp'",
+    "upstream": "CREATE FUNCTION int8alias1cmp(int8, int8alias1) RETURNS int CALLED ON NULL INPUT IMMUTABLE LANGUAGE internal AS $$btint8cmp$$"
+  },
+  "original/upstream/create_view-42.sql": {
+    "original": "CREATE VIEW v12_temp AS SELECT true FROM v11_temp",
+    "upstream": "CREATE VIEW v12_temp AS SELECT false FROM v11_temp"
+  },
+  "original/upstream/create_view-108.sql": {
+    "original": "select pg_get_viewdef('v1', true)",
+    "upstream": "SELECT pg_get_viewdef('v1', false)"
+  },
+  "original/upstream/create_view-109.sql": {
+    "original": "select pg_get_viewdef('v1a', true)",
+    "upstream": "SELECT pg_get_viewdef('v1a', false)"
+  },
+  "original/upstream/create_view-110.sql": {
+    "original": "select pg_get_viewdef('v2', true)",
+    "upstream": "SELECT pg_get_viewdef('v2', false)"
+  },
+  "original/upstream/create_view-111.sql": {
+    "original": "select pg_get_viewdef('v2a', true)",
+    "upstream": "SELECT pg_get_viewdef('v2a', false)"
+  },
+  "original/upstream/create_view-112.sql": {
+    "original": "select pg_get_viewdef('v3', true)",
+    "upstream": "SELECT pg_get_viewdef('v3', false)"
+  },
+  "original/upstream/create_view-115.sql": {
+    "original": "select pg_get_viewdef('v1', true)",
+    "upstream": "SELECT pg_get_viewdef('v1', false)"
+  },
+  "original/upstream/create_view-116.sql": {
+    "original": "select pg_get_viewdef('v1a', true)",
+    "upstream": "SELECT pg_get_viewdef('v1a', false)"
+  },
+  "original/upstream/create_view-117.sql": {
+    "original": "select pg_get_viewdef('v2', true)",
+    "upstream": "SELECT pg_get_viewdef('v2', false)"
+  },
+  "original/upstream/create_view-118.sql": {
+    "original": "select pg_get_viewdef('v2a', true)",
+    "upstream": "SELECT pg_get_viewdef('v2a', false)"
+  },
+  "original/upstream/create_view-119.sql": {
+    "original": "select pg_get_viewdef('v3', true)",
+    "upstream": "SELECT pg_get_viewdef('v3', false)"
+  },
+  "original/upstream/create_view-121.sql": {
+    "original": "select pg_get_viewdef('v1', true)",
+    "upstream": "SELECT pg_get_viewdef('v1', false)"
+  },
+  "original/upstream/create_view-122.sql": {
+    "original": "select pg_get_viewdef('v1a', true)",
+    "upstream": "SELECT pg_get_viewdef('v1a', false)"
+  },
+  "original/upstream/create_view-123.sql": {
+    "original": "select pg_get_viewdef('v2', true)",
+    "upstream": "SELECT pg_get_viewdef('v2', false)"
+  },
+  "original/upstream/create_view-124.sql": {
+    "original": "select pg_get_viewdef('v2a', true)",
+    "upstream": "SELECT pg_get_viewdef('v2a', false)"
+  },
+  "original/upstream/create_view-125.sql": {
+    "original": "select pg_get_viewdef('v3', true)",
+    "upstream": "SELECT pg_get_viewdef('v3', false)"
+  },
+  "original/upstream/create_view-128.sql": {
+    "original": "select pg_get_viewdef('v1', true)",
+    "upstream": "SELECT pg_get_viewdef('v1', false)"
+  },
+  "original/upstream/create_view-129.sql": {
+    "original": "select pg_get_viewdef('v1a', true)",
+    "upstream": "SELECT pg_get_viewdef('v1a', false)"
+  },
+  "original/upstream/create_view-130.sql": {
+    "original": "select pg_get_viewdef('v2', true)",
+    "upstream": "SELECT pg_get_viewdef('v2', false)"
+  },
+  "original/upstream/create_view-131.sql": {
+    "original": "select pg_get_viewdef('v2a', true)",
+    "upstream": "SELECT pg_get_viewdef('v2a', false)"
+  },
+  "original/upstream/create_view-132.sql": {
+    "original": "select pg_get_viewdef('v3', true)",
+    "upstream": "SELECT pg_get_viewdef('v3', false)"
+  },
+  "original/upstream/create_view-134.sql": {
+    "original": "select pg_get_viewdef('v1', true)",
+    "upstream": "SELECT pg_get_viewdef('v1', false)"
+  },
+  "original/upstream/create_view-135.sql": {
+    "original": "select pg_get_viewdef('v1a', true)",
+    "upstream": "SELECT pg_get_viewdef('v1a', false)"
+  },
+  "original/upstream/create_view-136.sql": {
+    "original": "select pg_get_viewdef('v2', true)",
+    "upstream": "SELECT pg_get_viewdef('v2', false)"
+  },
+  "original/upstream/create_view-137.sql": {
+    "original": "select pg_get_viewdef('v2a', true)",
+    "upstream": "SELECT pg_get_viewdef('v2a', false)"
+  },
+  "original/upstream/create_view-138.sql": {
+    "original": "select pg_get_viewdef('v3', true)",
+    "upstream": "SELECT pg_get_viewdef('v3', false)"
+  },
+  "original/upstream/create_view-142.sql": {
+    "original": "select pg_get_viewdef('vv1', true)",
+    "upstream": "SELECT pg_get_viewdef('vv1', false)"
+  },
+  "original/upstream/create_view-144.sql": {
+    "original": "select pg_get_viewdef('vv1', true)",
+    "upstream": "SELECT pg_get_viewdef('vv1', false)"
+  },
+  "original/upstream/create_view-146.sql": {
+    "original": "select pg_get_viewdef('vv1', true)",
+    "upstream": "SELECT pg_get_viewdef('vv1', false)"
+  },
+  "original/upstream/create_view-148.sql": {
+    "original": "select pg_get_viewdef('vv1', true)",
+    "upstream": "SELECT pg_get_viewdef('vv1', false)"
+  },
+  "original/upstream/create_view-153.sql": {
+    "original": "select pg_get_viewdef('vv2', true)",
+    "upstream": "SELECT pg_get_viewdef('vv2', false)"
+  },
+  "original/upstream/create_view-155.sql": {
+    "original": "select pg_get_viewdef('vv3', true)",
+    "upstream": "SELECT pg_get_viewdef('vv3', false)"
+  },
+  "original/upstream/create_view-157.sql": {
+    "original": "select pg_get_viewdef('vv4', true)",
+    "upstream": "SELECT pg_get_viewdef('vv4', false)"
+  },
+  "original/upstream/create_view-162.sql": {
+    "original": "select pg_get_viewdef('vv2', true)",
+    "upstream": "SELECT pg_get_viewdef('vv2', false)"
+  },
+  "original/upstream/create_view-163.sql": {
+    "original": "select pg_get_viewdef('vv3', true)",
+    "upstream": "SELECT pg_get_viewdef('vv3', false)"
+  },
+  "original/upstream/create_view-164.sql": {
+    "original": "select pg_get_viewdef('vv4', true)",
+    "upstream": "SELECT pg_get_viewdef('vv4', false)"
+  },
+  "original/upstream/create_view-169.sql": {
+    "original": "select pg_get_viewdef('vv2a', true)",
+    "upstream": "SELECT pg_get_viewdef('vv2a', false)"
+  },
+  "original/upstream/create_view-173.sql": {
+    "original": "select pg_get_viewdef('vv5', true)",
+    "upstream": "SELECT pg_get_viewdef('vv5', false)"
+  },
+  "original/upstream/create_view-175.sql": {
+    "original": "select pg_get_viewdef('vv5', true)",
+    "upstream": "SELECT pg_get_viewdef('vv5', false)"
+  },
+  "original/upstream/create_view-180.sql": {
+    "original": "select pg_get_viewdef('vv6', true)",
+    "upstream": "SELECT pg_get_viewdef('vv6', false)"
+  },
+  "original/upstream/create_view-182.sql": {
+    "original": "select pg_get_viewdef('vv6', true)",
+    "upstream": "SELECT pg_get_viewdef('vv6', false)"
+  },
+  "original/upstream/create_view-188.sql": {
+    "original": "select pg_get_viewdef('tt14v', true)",
+    "upstream": "SELECT pg_get_viewdef('tt14v', false)"
+  },
+  "original/upstream/create_view-191.sql": {
+    "original": "select pg_get_viewdef('tt14v', true)",
+    "upstream": "SELECT pg_get_viewdef('tt14v', false)"
+  },
+  "original/upstream/create_view-196.sql": {
+    "original": "select pg_get_viewdef('tt15v', true)",
+    "upstream": "SELECT pg_get_viewdef('tt15v', false)"
+  },
+  "original/upstream/create_view-200.sql": {
+    "original": "select pg_get_viewdef('tt16v', true)",
+    "upstream": "SELECT pg_get_viewdef('tt16v', false)"
+  },
+  "original/upstream/create_view-204.sql": {
+    "original": "select pg_get_viewdef('tt17v', true)",
+    "upstream": "SELECT pg_get_viewdef('tt17v', false)"
+  },
+  "original/upstream/create_view-207.sql": {
+    "original": "select pg_get_viewdef('tt18v', true)",
+    "upstream": "SELECT pg_get_viewdef('tt18v', false)"
+  },
+  "original/upstream/create_view-213.sql": {
+    "original": "select pg_get_viewdef('tt19v', true)",
+    "upstream": "SELECT pg_get_viewdef('tt19v', false)"
+  },
+  "original/upstream/create_type-10.sql": {
+    "original": "CREATE FUNCTION int42_in(cstring)\n   RETURNS int42\n   AS 'int4in'\n   LANGUAGE internal STRICT IMMUTABLE",
+    "upstream": "CREATE FUNCTION int42_in(cstring) RETURNS int42 AS $$int4in$$ LANGUAGE internal CALLED ON NULL INPUT IMMUTABLE"
+  },
+  "original/upstream/create_type-11.sql": {
+    "original": "CREATE FUNCTION int42_out(int42)\n   RETURNS cstring\n   AS 'int4out'\n   LANGUAGE internal STRICT IMMUTABLE",
+    "upstream": "CREATE FUNCTION int42_out(int42) RETURNS cstring AS $$int4out$$ LANGUAGE internal CALLED ON NULL INPUT IMMUTABLE"
+  },
+  "original/upstream/create_type-12.sql": {
+    "original": "CREATE FUNCTION text_w_default_in(cstring)\n   RETURNS text_w_default\n   AS 'textin'\n   LANGUAGE internal STRICT IMMUTABLE",
+    "upstream": "CREATE FUNCTION text_w_default_in(cstring) RETURNS text_w_default AS $$textin$$ LANGUAGE internal CALLED ON NULL INPUT IMMUTABLE"
+  },
+  "original/upstream/create_type-13.sql": {
+    "original": "CREATE FUNCTION text_w_default_out(text_w_default)\n   RETURNS cstring\n   AS 'textout'\n   LANGUAGE internal STRICT IMMUTABLE",
+    "upstream": "CREATE FUNCTION text_w_default_out(text_w_default) RETURNS cstring AS $$textout$$ LANGUAGE internal CALLED ON NULL INPUT IMMUTABLE"
+  },
+  "original/upstream/create_function_3-18.sql": {
+    "original": "CREATE FUNCTION functext_C_2(int) RETURNS bool LANGUAGE 'sql'\n       SECURITY DEFINER AS 'SELECT $1 = 0'",
+    "upstream": "CREATE FUNCTION functext_c_2(int) RETURNS bool LANGUAGE sql SECURITY INVOKER AS $$SELECT $1 = 0$$"
+  },
+  "original/upstream/create_function_3-23.sql": {
+    "original": "ALTER FUNCTION functext_C_3(int) SECURITY DEFINER",
+    "upstream": "ALTER FUNCTION functext_c_3(int) SECURITY INVOKER"
+  },
+  "original/upstream/create_function_3-26.sql": {
+    "original": "CREATE FUNCTION functext_E_2(int) RETURNS bool LANGUAGE 'sql'\n       LEAKPROOF AS 'SELECT $1 > 100'",
+    "upstream": "CREATE FUNCTION functext_e_2(int) RETURNS bool LANGUAGE sql NOT LEAKPROOF AS $$SELECT $1 > 100$$"
+  },
+  "original/upstream/create_function_3-28.sql": {
+    "original": "ALTER FUNCTION functext_E_1(int) LEAKPROOF",
+    "upstream": "ALTER FUNCTION functext_e_1(int) NOT LEAKPROOF"
+  },
+  "original/upstream/create_function_3-38.sql": {
+    "original": "ALTER FUNCTION functext_E_2(int) LEAKPROOF",
+    "upstream": "ALTER FUNCTION functext_e_2(int) NOT LEAKPROOF"
+  },
+  "original/upstream/create_function_3-39.sql": {
+    "original": "CREATE FUNCTION functext_E_3(int) RETURNS bool LANGUAGE 'sql'\n       LEAKPROOF AS 'SELECT $1 < 200'",
+    "upstream": "CREATE FUNCTION functext_e_3(int) RETURNS bool LANGUAGE sql NOT LEAKPROOF AS $$SELECT $1 < 200$$"
+  },
+  "original/upstream/create_function_3-43.sql": {
+    "original": "CREATE FUNCTION functext_F_3(int) RETURNS bool LANGUAGE 'sql'\n       RETURNS NULL ON NULL INPUT AS 'SELECT $1 < 50'",
+    "upstream": "CREATE FUNCTION functext_f_3(int) RETURNS bool LANGUAGE sql CALLED ON NULL INPUT AS $$SELECT $1 < 50$$"
+  },
+  "original/upstream/create_function_3-44.sql": {
+    "original": "CREATE FUNCTION functext_F_4(int) RETURNS bool LANGUAGE 'sql'\n       STRICT AS 'SELECT $1 = 50'",
+    "upstream": "CREATE FUNCTION functext_f_4(int) RETURNS bool LANGUAGE sql CALLED ON NULL INPUT AS $$SELECT $1 = 50$$"
+  },
+  "original/upstream/create_function_3-47.sql": {
+    "original": "ALTER FUNCTION functext_F_2(int) STRICT",
+    "upstream": "ALTER FUNCTION functext_f_2(int) CALLED ON NULL INPUT"
+  },
+  "original/upstream/create_cast-2.sql": {
+    "original": "CREATE FUNCTION casttesttype_in(cstring)\n   RETURNS casttesttype\n   AS 'textin'\n   LANGUAGE internal STRICT IMMUTABLE",
+    "upstream": "CREATE FUNCTION casttesttype_in(cstring) RETURNS casttesttype AS $$textin$$ LANGUAGE internal CALLED ON NULL INPUT IMMUTABLE"
+  },
+  "original/upstream/create_cast-3.sql": {
+    "original": "CREATE FUNCTION casttesttype_out(casttesttype)\n   RETURNS cstring\n   AS 'textout'\n   LANGUAGE internal STRICT IMMUTABLE",
+    "upstream": "CREATE FUNCTION casttesttype_out(casttesttype) RETURNS cstring AS $$textout$$ LANGUAGE internal CALLED ON NULL INPUT IMMUTABLE"
+  },
+  "original/upstream/create_aggregate-12.sql": {
+    "original": "create function sum3(int8,int8,int8) returns int8 as\n'select $1 + $2 + $3' language sql strict immutable",
+    "upstream": "CREATE FUNCTION sum3(int8, int8, int8) RETURNS int8 AS $$select $1 + $2 + $3$$ LANGUAGE sql CALLED ON NULL INPUT IMMUTABLE"
+  },
+  "original/upstream/create_aggregate-15.sql": {
+    "original": "create function aggf_trans(aggtype[],integer,integer,text) returns aggtype[]\nas 'select array_append($1,ROW($2,$3,$4)::aggtype)'\nlanguage sql strict immutable",
+    "upstream": "CREATE FUNCTION aggf_trans(aggtype[], int, int, text) RETURNS aggtype[] AS $$select array_append($1,ROW($2,$3,$4)::aggtype)$$ LANGUAGE sql CALLED ON NULL INPUT IMMUTABLE"
+  },
+  "original/upstream/boolean-2.sql": {
+    "original": "SELECT true AS true",
+    "upstream": "SELECT false AS \"true\""
+  },
+  "original/upstream/boolean-38.sql": {
+    "original": "SELECT true::boolean::text AS true, false::boolean::text AS false",
+    "upstream": "SELECT false::boolean::text AS \"true\", false::boolean::text AS \"false\""
+  },
+  "original/upstream/alter_table-150.sql": {
+    "original": "CREATE FUNCTION boo(int) RETURNS int IMMUTABLE STRICT LANGUAGE plpgsql AS $$ BEGIN RAISE NOTICE 'boo: %', $1; RETURN $1; END; $$",
+    "upstream": "CREATE FUNCTION boo(int) RETURNS int IMMUTABLE CALLED ON NULL INPUT LANGUAGE plpgsql AS $$ BEGIN RAISE NOTICE 'boo: %', $1; RETURN $1; END; $$"
+  },
+  "original/upstream/alter_table-654.sql": {
+    "original": "insert into anothertab (atcol1, atcol2) values (default, true)",
+    "upstream": "INSERT INTO anothertab (atcol1, atcol2) VALUES (DEFAULT, false)"
+  },
+  "original/upstream/alter_table-666.sql": {
+    "original": "alter table anothertab alter column atcol1 type boolean\n        using case when atcol1 % 2 = 0 then true else false end",
+    "upstream": "ALTER TABLE anothertab ALTER COLUMN atcol1 TYPE boolean USING CASE WHEN (atcol1 % 2) = 0 THEN false ELSE false END"
+  },
+  "original/upstream/alter_table-668.sql": {
+    "original": "alter table anothertab alter column atcol1 type boolean\n        using case when atcol1 % 2 = 0 then true else false end",
+    "upstream": "ALTER TABLE anothertab ALTER COLUMN atcol1 TYPE boolean USING CASE WHEN (atcol1 % 2) = 0 THEN false ELSE false END"
+  },
+  "original/upstream/alter_table-672.sql": {
+    "original": "alter table anothertab alter column atcol1 type boolean\n        using case when atcol1 % 2 = 0 then true else false end",
+    "upstream": "ALTER TABLE anothertab ALTER COLUMN atcol1 TYPE boolean USING CASE WHEN (atcol1 % 2) = 0 THEN false ELSE false END"
+  },
+  "original/upstream/alter_table-807.sql": {
+    "original": "create function test_strict(text) returns text as\n    'select coalesce($1, ''got passed a null'');'\n    language sql returns null on null input",
+    "upstream": "CREATE FUNCTION test_strict(text) RETURNS text AS $$select coalesce($1, 'got passed a null');$$ LANGUAGE sql CALLED ON NULL INPUT"
+  },
+  "original/upstream/alter_table-813.sql": {
+    "original": "alter function non_strict(text) returns null on null input",
+    "upstream": "ALTER FUNCTION non_strict(text) CALLED ON NULL INPUT"
+  },
+  "original/upstream/alter_operator-2.sql": {
+    "original": "CREATE FUNCTION customcontsel(internal, oid, internal, integer)\nRETURNS float8 AS 'contsel' LANGUAGE internal STABLE STRICT",
+    "upstream": "CREATE FUNCTION customcontsel(internal, oid, internal, int) RETURNS float8 AS $$contsel$$ LANGUAGE internal STABLE CALLED ON NULL INPUT"
+  },
+  "original/upstream/aggregates-58.sql": {
+    "original": "SELECT\n  -- boolean and transitions\n  -- null because strict\n  booland_statefunc(NULL, NULL)  IS NULL AS \"t\",\n  booland_statefunc(TRUE, NULL)  IS NULL AS \"t\",\n  booland_statefunc(FALSE, NULL) IS NULL AS \"t\",\n  booland_statefunc(NULL, TRUE)  IS NULL AS \"t\",\n  booland_statefunc(NULL, FALSE) IS NULL AS \"t\",\n  -- and actual computations\n  booland_statefunc(TRUE, TRUE) AS \"t\",\n  NOT booland_statefunc(TRUE, FALSE) AS \"t\",\n  NOT booland_statefunc(FALSE, TRUE) AS \"t\",\n  NOT booland_statefunc(FALSE, FALSE) AS \"t\"",
+    "upstream": "SELECT booland_statefunc(NULL, NULL) IS NULL AS t, booland_statefunc(false, NULL) IS NULL AS t, booland_statefunc(false, NULL) IS NULL AS t, booland_statefunc(NULL, false) IS NULL AS t, booland_statefunc(NULL, false) IS NULL AS t, booland_statefunc(false, false) AS t, NOT booland_statefunc(false, false) AS t, NOT booland_statefunc(false, false) AS t, NOT booland_statefunc(false, false) AS t"
+  },
+  "original/upstream/aggregates-59.sql": {
+    "original": "SELECT\n  -- boolean or transitions\n  -- null because strict\n  boolor_statefunc(NULL, NULL)  IS NULL AS \"t\",\n  boolor_statefunc(TRUE, NULL)  IS NULL AS \"t\",\n  boolor_statefunc(FALSE, NULL) IS NULL AS \"t\",\n  boolor_statefunc(NULL, TRUE)  IS NULL AS \"t\",\n  boolor_statefunc(NULL, FALSE) IS NULL AS \"t\",\n  -- actual computations\n  boolor_statefunc(TRUE, TRUE) AS \"t\",\n  boolor_statefunc(TRUE, FALSE) AS \"t\",\n  boolor_statefunc(FALSE, TRUE) AS \"t\",\n  NOT boolor_statefunc(FALSE, FALSE) AS \"t\"",
+    "upstream": "SELECT boolor_statefunc(NULL, NULL) IS NULL AS t, boolor_statefunc(false, NULL) IS NULL AS t, boolor_statefunc(false, NULL) IS NULL AS t, boolor_statefunc(NULL, false) IS NULL AS t, boolor_statefunc(NULL, false) IS NULL AS t, boolor_statefunc(false, false) AS t, boolor_statefunc(false, false) AS t, boolor_statefunc(false, false) AS t, NOT boolor_statefunc(false, false) AS t"
+  },
+  "original/tables/check-6.sql": {
+    "original": "CREATE TABLE boomin (d date, CHECK (true) NO INHERIT NOT VALID)",
+    "upstream": "CREATE TABLE boomin (d date, CHECK (false) NO INHERIT NOT VALID)"
+  },
+  "original/statements/insert-1.sql": {
+    "original": "INSERT INTO shoelace_data\n  VALUES (1, 2, 3, 'truth', TRUE)",
+    "upstream": "INSERT INTO shoelace_data VALUES (1, 2, 3, 'truth', false)"
+  },
+  "original/statements/insert-2.sql": {
+    "original": "INSERT INTO shoelace_data (id, col1, col2, val1, bl2)\n  VALUES (1, 2, 3, 'truth', TRUE)",
+    "upstream": "INSERT INTO shoelace_data (id, col1, col2, val1, bl2) VALUES (1, 2, 3, 'truth', false)"
+  },
+  "original/sequences/sequences-3.sql": {
+    "original": "CREATE SEQUENCE three\nINCREMENT -1\nMINVALUE 1 \nMAXVALUE 3\nSTART 3\nCYCLE",
+    "upstream": "CREATE SEQUENCE three INCREMENT -1 MINVALUE 1 MAXVALUE 3 START 3 NO CYCLE"
+  },
+  "original/roles/create-3.sql": {
+    "original": "CREATE ROLE app_user LOGIN PASSWORD 'xyz'",
+    "upstream": "CREATE ROLE app_user WITH NOLOGIN PASSWORD 'xyz'"
+  },
+  "original/roles/create-4.sql": {
+    "original": "CREATE ROLE miriam WITH LOGIN PASSWORD 'jw8s0F4' VALID UNTIL '2005-01-01'",
+    "upstream": "CREATE ROLE miriam WITH NOLOGIN PASSWORD 'jw8s0F4' VALID UNTIL '2005-01-01'"
+  },
+  "original/roles/create-5.sql": {
+    "original": "CREATE ROLE admin1 WITH LOGIN PASSWORD 'jw8s0F4' CREATEDB CREATEROLE INHERIT",
+    "upstream": "CREATE ROLE admin1 WITH NOLOGIN PASSWORD 'jw8s0F4' NOCREATEDB NOCREATEROLE NOINHERIT"
+  },
+  "original/policies/custom-5.sql": {
+    "original": "CREATE POLICY select_user ON users.\"user\" FOR SELECT TO PUBLIC USING (TRUE)",
+    "upstream": "CREATE POLICY select_user ON users.\"user\" FOR SELECT TO public USING (false) "
+  },
+  "original/policies/custom-8.sql": {
+    "original": "CREATE POLICY select_any ON myschema.mytable FOR SELECT TO PUBLIC USING (TRUE)",
+    "upstream": "CREATE POLICY select_any ON myschema.mytable FOR SELECT TO public USING (false) "
+  },
+  "misc/inflection-7.sql": {
+    "original": "CREATE FUNCTION inflection.pg_slugify ( value text, allow_unicode boolean ) RETURNS text AS $EOFCODE$\n  WITH normalized AS (\n    SELECT\n      CASE WHEN allow_unicode THEN\n        value\n      ELSE\n        unaccent (value)\n      END AS value\n),\nno_consecutive_caps AS (\n  SELECT\n    inflection.no_consecutive_caps (value) AS value\nFROM\n  normalized\n),\nremove_chars AS (\n  SELECT\n    regexp_replace(value, E'[^\\\\w\\\\s-]', '', 'gi') AS value\nFROM\n  no_consecutive_caps\n),\ntrimmed AS (\n  SELECT\n    trim(value) AS value\nFROM\n  remove_chars\n),\nhyphenated AS (\n  SELECT\n    regexp_replace(value, E'[-\\\\s]+', '-', 'gi') AS value\nFROM\n  trimmed\n),\nunderscored AS (\n  SELECT\n    regexp_replace(value, E'[-]+', '_', 'gi') AS value\nFROM\n  hyphenated\n),\nremovedups AS (\n  SELECT\n    regexp_replace(value, E'[_]+', '_', 'gi') AS value\nFROM\n  underscored\n)\nSELECT\n  value\nFROM\n  removedups;\n$EOFCODE$ LANGUAGE sql STRICT IMMUTABLE",
+    "upstream": "CREATE FUNCTION inflection.pg_slugify(value text, allow_unicode boolean) RETURNS text AS $$\n  WITH normalized AS (\n    SELECT\n      CASE WHEN allow_unicode THEN\n        value\n      ELSE\n        unaccent (value)\n      END AS value\n),\nno_consecutive_caps AS (\n  SELECT\n    inflection.no_consecutive_caps (value) AS value\nFROM\n  normalized\n),\nremove_chars AS (\n  SELECT\n    regexp_replace(value, E'[^\\\\w\\\\s-]', '', 'gi') AS value\nFROM\n  no_consecutive_caps\n),\ntrimmed AS (\n  SELECT\n    trim(value) AS value\nFROM\n  remove_chars\n),\nhyphenated AS (\n  SELECT\n    regexp_replace(value, E'[-\\\\s]+', '-', 'gi') AS value\nFROM\n  trimmed\n),\nunderscored AS (\n  SELECT\n    regexp_replace(value, E'[-]+', '_', 'gi') AS value\nFROM\n  hyphenated\n),\nremovedups AS (\n  SELECT\n    regexp_replace(value, E'[_]+', '_', 'gi') AS value\nFROM\n  underscored\n)\nSELECT\n  value\nFROM\n  removedups;\n$$ LANGUAGE sql CALLED ON NULL INPUT IMMUTABLE"
+  },
+  "misc/inflection-23.sql": {
+    "original": "CREATE FUNCTION inflection.slugify ( value text, allow_unicode boolean ) RETURNS text AS $EOFCODE$\n  WITH normalized AS (\n    SELECT\n      CASE WHEN allow_unicode THEN\n        value\n      ELSE\n        unaccent (value)\n      END AS value\n),\nremove_chars AS (\n  SELECT\n    regexp_replace(value, E'[^\\\\w\\\\s-]', '', 'gi') AS value\nFROM\n  normalized\n),\nlowercase AS (\n  SELECT\n    lower(value) AS value\nFROM\n  remove_chars\n),\ntrimmed AS (\n  SELECT\n    trim(value) AS value\nFROM\n  lowercase\n),\nhyphenated AS (\n  SELECT\n    regexp_replace(value, E'[-\\\\s]+', '-', 'gi') AS value\nFROM\n  trimmed\n)\nSELECT\n  value\nFROM\n  hyphenated;\n$EOFCODE$ LANGUAGE sql STRICT IMMUTABLE",
+    "upstream": "CREATE FUNCTION inflection.slugify(value text, allow_unicode boolean) RETURNS text AS $$\n  WITH normalized AS (\n    SELECT\n      CASE WHEN allow_unicode THEN\n        value\n      ELSE\n        unaccent (value)\n      END AS value\n),\nremove_chars AS (\n  SELECT\n    regexp_replace(value, E'[^\\\\w\\\\s-]', '', 'gi') AS value\nFROM\n  normalized\n),\nlowercase AS (\n  SELECT\n    lower(value) AS value\nFROM\n  remove_chars\n),\ntrimmed AS (\n  SELECT\n    trim(value) AS value\nFROM\n  lowercase\n),\nhyphenated AS (\n  SELECT\n    regexp_replace(value, E'[-\\\\s]+', '-', 'gi') AS value\nFROM\n  trimmed\n)\nSELECT\n  value\nFROM\n  hyphenated;\n$$ LANGUAGE sql CALLED ON NULL INPUT IMMUTABLE"
+  },
+  "misc/cascades-17.sql": {
+    "original": "DROP SUBSCRIPTION IF EXISTS some_sub CASCADE",
+    "upstream": "DROP SUBSCRIPTION IF EXISTS some_sub"
+  },
+  "latest/postgres/create_view-1.sql": {
+    "original": "CREATE FUNCTION interpt_pp(path, path)\n    RETURNS point\n    AS 'regresslib'\n    LANGUAGE C STRICT",
+    "upstream": "CREATE FUNCTION interpt_pp(path, path) RETURNS point AS $$regresslib$$ LANGUAGE c CALLED ON NULL INPUT"
+  },
+  "latest/postgres/create_view-53.sql": {
+    "original": "CREATE VIEW v12_temp AS SELECT true FROM v11_temp",
+    "upstream": "CREATE VIEW v12_temp AS SELECT false FROM v11_temp"
+  },
+  "latest/postgres/create_view-133.sql": {
+    "original": "select pg_get_viewdef('view_of_joins_2a', true)",
+    "upstream": "SELECT pg_get_viewdef('view_of_joins_2a', false)"
+  },
+  "latest/postgres/create_view-134.sql": {
+    "original": "select pg_get_viewdef('view_of_joins_2b', true)",
+    "upstream": "SELECT pg_get_viewdef('view_of_joins_2b', false)"
+  },
+  "latest/postgres/create_view-135.sql": {
+    "original": "select pg_get_viewdef('view_of_joins_2c', true)",
+    "upstream": "SELECT pg_get_viewdef('view_of_joins_2c', false)"
+  },
+  "latest/postgres/create_view-136.sql": {
+    "original": "select pg_get_viewdef('view_of_joins_2d', true)",
+    "upstream": "SELECT pg_get_viewdef('view_of_joins_2d', false)"
+  },
+  "latest/postgres/create_view-145.sql": {
+    "original": "select pg_get_viewdef('v1', true)",
+    "upstream": "SELECT pg_get_viewdef('v1', false)"
+  },
+  "latest/postgres/create_view-146.sql": {
+    "original": "select pg_get_viewdef('v1a', true)",
+    "upstream": "SELECT pg_get_viewdef('v1a', false)"
+  },
+  "latest/postgres/create_view-147.sql": {
+    "original": "select pg_get_viewdef('v2', true)",
+    "upstream": "SELECT pg_get_viewdef('v2', false)"
+  },
+  "latest/postgres/create_view-148.sql": {
+    "original": "select pg_get_viewdef('v2a', true)",
+    "upstream": "SELECT pg_get_viewdef('v2a', false)"
+  },
+  "latest/postgres/create_view-149.sql": {
+    "original": "select pg_get_viewdef('v3', true)",
+    "upstream": "SELECT pg_get_viewdef('v3', false)"
+  },
+  "latest/postgres/create_view-152.sql": {
+    "original": "select pg_get_viewdef('v1', true)",
+    "upstream": "SELECT pg_get_viewdef('v1', false)"
+  },
+  "latest/postgres/create_view-153.sql": {
+    "original": "select pg_get_viewdef('v1a', true)",
+    "upstream": "SELECT pg_get_viewdef('v1a', false)"
+  },
+  "latest/postgres/create_view-154.sql": {
+    "original": "select pg_get_viewdef('v2', true)",
+    "upstream": "SELECT pg_get_viewdef('v2', false)"
+  },
+  "latest/postgres/create_view-155.sql": {
+    "original": "select pg_get_viewdef('v2a', true)",
+    "upstream": "SELECT pg_get_viewdef('v2a', false)"
+  },
+  "latest/postgres/create_view-156.sql": {
+    "original": "select pg_get_viewdef('v3', true)",
+    "upstream": "SELECT pg_get_viewdef('v3', false)"
+  },
+  "latest/postgres/create_view-158.sql": {
+    "original": "select pg_get_viewdef('v1', true)",
+    "upstream": "SELECT pg_get_viewdef('v1', false)"
+  },
+  "latest/postgres/create_view-159.sql": {
+    "original": "select pg_get_viewdef('v1a', true)",
+    "upstream": "SELECT pg_get_viewdef('v1a', false)"
+  },
+  "latest/postgres/create_view-160.sql": {
+    "original": "select pg_get_viewdef('v2', true)",
+    "upstream": "SELECT pg_get_viewdef('v2', false)"
+  },
+  "latest/postgres/create_view-161.sql": {
+    "original": "select pg_get_viewdef('v2a', true)",
+    "upstream": "SELECT pg_get_viewdef('v2a', false)"
+  },
+  "latest/postgres/create_view-162.sql": {
+    "original": "select pg_get_viewdef('v3', true)",
+    "upstream": "SELECT pg_get_viewdef('v3', false)"
+  },
+  "latest/postgres/create_view-165.sql": {
+    "original": "select pg_get_viewdef('v1', true)",
+    "upstream": "SELECT pg_get_viewdef('v1', false)"
+  },
+  "latest/postgres/create_view-166.sql": {
+    "original": "select pg_get_viewdef('v1a', true)",
+    "upstream": "SELECT pg_get_viewdef('v1a', false)"
+  },
+  "latest/postgres/create_view-167.sql": {
+    "original": "select pg_get_viewdef('v2', true)",
+    "upstream": "SELECT pg_get_viewdef('v2', false)"
+  },
+  "latest/postgres/create_view-168.sql": {
+    "original": "select pg_get_viewdef('v2a', true)",
+    "upstream": "SELECT pg_get_viewdef('v2a', false)"
+  },
+  "latest/postgres/create_view-169.sql": {
+    "original": "select pg_get_viewdef('v3', true)",
+    "upstream": "SELECT pg_get_viewdef('v3', false)"
+  },
+  "latest/postgres/create_view-171.sql": {
+    "original": "select pg_get_viewdef('v1', true)",
+    "upstream": "SELECT pg_get_viewdef('v1', false)"
+  },
+  "latest/postgres/create_view-172.sql": {
+    "original": "select pg_get_viewdef('v1a', true)",
+    "upstream": "SELECT pg_get_viewdef('v1a', false)"
+  },
+  "latest/postgres/create_view-173.sql": {
+    "original": "select pg_get_viewdef('v2', true)",
+    "upstream": "SELECT pg_get_viewdef('v2', false)"
+  },
+  "latest/postgres/create_view-174.sql": {
+    "original": "select pg_get_viewdef('v2a', true)",
+    "upstream": "SELECT pg_get_viewdef('v2a', false)"
+  },
+  "latest/postgres/create_view-175.sql": {
+    "original": "select pg_get_viewdef('v3', true)",
+    "upstream": "SELECT pg_get_viewdef('v3', false)"
+  },
+  "latest/postgres/create_view-179.sql": {
+    "original": "select pg_get_viewdef('vv1', true)",
+    "upstream": "SELECT pg_get_viewdef('vv1', false)"
+  },
+  "latest/postgres/create_view-181.sql": {
+    "original": "select pg_get_viewdef('vv1', true)",
+    "upstream": "SELECT pg_get_viewdef('vv1', false)"
+  },
+  "latest/postgres/create_view-183.sql": {
+    "original": "select pg_get_viewdef('vv1', true)",
+    "upstream": "SELECT pg_get_viewdef('vv1', false)"
+  },
+  "latest/postgres/create_view-185.sql": {
+    "original": "select pg_get_viewdef('vv1', true)",
+    "upstream": "SELECT pg_get_viewdef('vv1', false)"
+  },
+  "latest/postgres/create_view-188.sql": {
+    "original": "select pg_get_viewdef('v1', true)",
+    "upstream": "SELECT pg_get_viewdef('v1', false)"
+  },
+  "latest/postgres/create_view-189.sql": {
+    "original": "select pg_get_viewdef('v4', true)",
+    "upstream": "SELECT pg_get_viewdef('v4', false)"
+  },
+  "latest/postgres/create_view-194.sql": {
+    "original": "select pg_get_viewdef('vv2', true)",
+    "upstream": "SELECT pg_get_viewdef('vv2', false)"
+  },
+  "latest/postgres/create_view-196.sql": {
+    "original": "select pg_get_viewdef('vv3', true)",
+    "upstream": "SELECT pg_get_viewdef('vv3', false)"
+  },
+  "latest/postgres/create_view-198.sql": {
+    "original": "select pg_get_viewdef('vv4', true)",
+    "upstream": "SELECT pg_get_viewdef('vv4', false)"
+  },
+  "latest/postgres/create_view-203.sql": {
+    "original": "select pg_get_viewdef('vv2', true)",
+    "upstream": "SELECT pg_get_viewdef('vv2', false)"
+  },
+  "latest/postgres/create_view-204.sql": {
+    "original": "select pg_get_viewdef('vv3', true)",
+    "upstream": "SELECT pg_get_viewdef('vv3', false)"
+  },
+  "latest/postgres/create_view-205.sql": {
+    "original": "select pg_get_viewdef('vv4', true)",
+    "upstream": "SELECT pg_get_viewdef('vv4', false)"
+  },
+  "latest/postgres/create_view-210.sql": {
+    "original": "select pg_get_viewdef('vv2a', true)",
+    "upstream": "SELECT pg_get_viewdef('vv2a', false)"
+  },
+  "latest/postgres/create_view-214.sql": {
+    "original": "select pg_get_viewdef('vv5', true)",
+    "upstream": "SELECT pg_get_viewdef('vv5', false)"
+  },
+  "latest/postgres/create_view-216.sql": {
+    "original": "select pg_get_viewdef('vv5', true)",
+    "upstream": "SELECT pg_get_viewdef('vv5', false)"
+  },
+  "latest/postgres/create_view-221.sql": {
+    "original": "select pg_get_viewdef('vv6', true)",
+    "upstream": "SELECT pg_get_viewdef('vv6', false)"
+  },
+  "latest/postgres/create_view-223.sql": {
+    "original": "select pg_get_viewdef('vv6', true)",
+    "upstream": "SELECT pg_get_viewdef('vv6', false)"
+  },
+  "latest/postgres/create_view-229.sql": {
+    "original": "select pg_get_viewdef('tt14v', true)",
+    "upstream": "SELECT pg_get_viewdef('tt14v', false)"
+  },
+  "latest/postgres/create_view-235.sql": {
+    "original": "select pg_get_viewdef('tt14v', true)",
+    "upstream": "SELECT pg_get_viewdef('tt14v', false)"
+  },
+  "latest/postgres/create_view-244.sql": {
+    "original": "select pg_get_viewdef('tt14v', true)",
+    "upstream": "SELECT pg_get_viewdef('tt14v', false)"
+  },
+  "latest/postgres/create_view-250.sql": {
+    "original": "select pg_get_viewdef('tt14v', true)",
+    "upstream": "SELECT pg_get_viewdef('tt14v', false)"
+  },
+  "latest/postgres/create_view-253.sql": {
+    "original": "select pg_get_viewdef('tt14v', true)",
+    "upstream": "SELECT pg_get_viewdef('tt14v', false)"
+  },
+  "latest/postgres/create_view-259.sql": {
+    "original": "select pg_get_viewdef('tt15v', true)",
+    "upstream": "SELECT pg_get_viewdef('tt15v', false)"
+  },
+  "latest/postgres/create_view-263.sql": {
+    "original": "select pg_get_viewdef('tt16v', true)",
+    "upstream": "SELECT pg_get_viewdef('tt16v', false)"
+  },
+  "latest/postgres/create_view-267.sql": {
+    "original": "select pg_get_viewdef('tt17v', true)",
+    "upstream": "SELECT pg_get_viewdef('tt17v', false)"
+  },
+  "latest/postgres/create_view-272.sql": {
+    "original": "select pg_get_viewdef('tt18v', true)",
+    "upstream": "SELECT pg_get_viewdef('tt18v', false)"
+  },
+  "latest/postgres/create_view-278.sql": {
+    "original": "select pg_get_viewdef('tt19v', true)",
+    "upstream": "SELECT pg_get_viewdef('tt19v', false)"
+  },
+  "latest/postgres/create_view-280.sql": {
+    "original": "select pg_get_viewdef('tt20v', true)",
+    "upstream": "SELECT pg_get_viewdef('tt20v', false)"
+  },
+  "latest/postgres/create_view-282.sql": {
+    "original": "select pg_get_viewdef('tt201v', true)",
+    "upstream": "SELECT pg_get_viewdef('tt201v', false)"
+  },
+  "latest/postgres/create_view-284.sql": {
+    "original": "select pg_get_viewdef('tt21v', true)",
+    "upstream": "SELECT pg_get_viewdef('tt21v', false)"
+  },
+  "latest/postgres/create_view-286.sql": {
+    "original": "select pg_get_viewdef('tt22v', true)",
+    "upstream": "SELECT pg_get_viewdef('tt22v', false)"
+  },
+  "latest/postgres/create_view-288.sql": {
+    "original": "select pg_get_viewdef('tt23v', true)",
+    "upstream": "SELECT pg_get_viewdef('tt23v', false)"
+  },
+  "latest/postgres/create_view-289.sql": {
+    "original": "select pg_get_ruledef(oid, true) from pg_rewrite\n  where ev_class = 'tt23v'::regclass and ev_type = '1'",
+    "upstream": "SELECT pg_get_ruledef(oid, false) FROM pg_rewrite WHERE ev_class = 'tt23v'::regclass AND ev_type = '1'"
+  },
+  "latest/postgres/create_view-291.sql": {
+    "original": "select pg_get_viewdef('tt24v', true)",
+    "upstream": "SELECT pg_get_viewdef('tt24v', false)"
+  },
+  "latest/postgres/create_view-293.sql": {
+    "original": "select pg_get_viewdef('tt25v', true)",
+    "upstream": "SELECT pg_get_viewdef('tt25v', false)"
+  },
+  "latest/postgres/create_view-297.sql": {
+    "original": "select pg_get_viewdef('tt26v', true)",
+    "upstream": "SELECT pg_get_viewdef('tt26v', false)"
+  },
+  "latest/postgres/create_type-1.sql": {
+    "original": "CREATE FUNCTION widget_in(cstring)\n   RETURNS widget\n   AS 'regresslib'\n   LANGUAGE C STRICT IMMUTABLE",
+    "upstream": "CREATE FUNCTION widget_in(cstring) RETURNS widget AS $$regresslib$$ LANGUAGE c CALLED ON NULL INPUT IMMUTABLE"
+  },
+  "latest/postgres/create_type-2.sql": {
+    "original": "CREATE FUNCTION widget_out(widget)\n   RETURNS cstring\n   AS 'regresslib'\n   LANGUAGE C STRICT IMMUTABLE",
+    "upstream": "CREATE FUNCTION widget_out(widget) RETURNS cstring AS $$regresslib$$ LANGUAGE c CALLED ON NULL INPUT IMMUTABLE"
+  },
+  "latest/postgres/create_type-3.sql": {
+    "original": "CREATE FUNCTION int44in(cstring)\n   RETURNS city_budget\n   AS 'regresslib'\n   LANGUAGE C STRICT IMMUTABLE",
+    "upstream": "CREATE FUNCTION int44in(cstring) RETURNS city_budget AS $$regresslib$$ LANGUAGE c CALLED ON NULL INPUT IMMUTABLE"
+  },
+  "latest/postgres/create_type-4.sql": {
+    "original": "CREATE FUNCTION int44out(city_budget)\n   RETURNS cstring\n   AS 'regresslib'\n   LANGUAGE C STRICT IMMUTABLE",
+    "upstream": "CREATE FUNCTION int44out(city_budget) RETURNS cstring AS $$regresslib$$ LANGUAGE c CALLED ON NULL INPUT IMMUTABLE"
+  },
+  "latest/postgres/create_type-14.sql": {
+    "original": "CREATE FUNCTION int42_in(cstring)\n   RETURNS int42\n   AS 'int4in'\n   LANGUAGE internal STRICT IMMUTABLE",
+    "upstream": "CREATE FUNCTION int42_in(cstring) RETURNS int42 AS $$int4in$$ LANGUAGE internal CALLED ON NULL INPUT IMMUTABLE"
+  },
+  "latest/postgres/create_type-15.sql": {
+    "original": "CREATE FUNCTION int42_out(int42)\n   RETURNS cstring\n   AS 'int4out'\n   LANGUAGE internal STRICT IMMUTABLE",
+    "upstream": "CREATE FUNCTION int42_out(int42) RETURNS cstring AS $$int4out$$ LANGUAGE internal CALLED ON NULL INPUT IMMUTABLE"
+  },
+  "latest/postgres/create_type-16.sql": {
+    "original": "CREATE FUNCTION text_w_default_in(cstring)\n   RETURNS text_w_default\n   AS 'textin'\n   LANGUAGE internal STRICT IMMUTABLE",
+    "upstream": "CREATE FUNCTION text_w_default_in(cstring) RETURNS text_w_default AS $$textin$$ LANGUAGE internal CALLED ON NULL INPUT IMMUTABLE"
+  },
+  "latest/postgres/create_type-17.sql": {
+    "original": "CREATE FUNCTION text_w_default_out(text_w_default)\n   RETURNS cstring\n   AS 'textout'\n   LANGUAGE internal STRICT IMMUTABLE",
+    "upstream": "CREATE FUNCTION text_w_default_out(text_w_default) RETURNS cstring AS $$textout$$ LANGUAGE internal CALLED ON NULL INPUT IMMUTABLE"
+  },
+  "latest/postgres/create_type-41.sql": {
+    "original": "CREATE FUNCTION base_fn_in(cstring) RETURNS base_type AS 'boolin'\n    LANGUAGE internal IMMUTABLE STRICT",
+    "upstream": "CREATE FUNCTION base_fn_in(cstring) RETURNS base_type AS $$boolin$$ LANGUAGE internal IMMUTABLE CALLED ON NULL INPUT"
+  },
+  "latest/postgres/create_type-42.sql": {
+    "original": "CREATE FUNCTION base_fn_out(base_type) RETURNS cstring AS 'boolout'\n    LANGUAGE internal IMMUTABLE STRICT",
+    "upstream": "CREATE FUNCTION base_fn_out(base_type) RETURNS cstring AS $$boolout$$ LANGUAGE internal IMMUTABLE CALLED ON NULL INPUT"
+  },
+  "latest/postgres/create_type-62.sql": {
+    "original": "CREATE FUNCTION pt_in_widget(point, widget)\n   RETURNS bool\n   AS 'regresslib'\n   LANGUAGE C STRICT",
+    "upstream": "CREATE FUNCTION pt_in_widget(point, widget) RETURNS bool AS $$regresslib$$ LANGUAGE c CALLED ON NULL INPUT"
+  },
+  "latest/postgres/create_type-69.sql": {
+    "original": "CREATE FUNCTION myvarcharin(cstring, oid, integer) RETURNS myvarchar\nLANGUAGE internal IMMUTABLE PARALLEL SAFE STRICT AS 'varcharin'",
+    "upstream": "CREATE FUNCTION myvarcharin(cstring, oid, int) RETURNS myvarchar LANGUAGE internal IMMUTABLE PARALLEL safe CALLED ON NULL INPUT AS $$varcharin$$"
+  },
+  "latest/postgres/create_type-70.sql": {
+    "original": "CREATE FUNCTION myvarcharout(myvarchar) RETURNS cstring\nLANGUAGE internal IMMUTABLE PARALLEL SAFE STRICT AS 'varcharout'",
+    "upstream": "CREATE FUNCTION myvarcharout(myvarchar) RETURNS cstring LANGUAGE internal IMMUTABLE PARALLEL safe CALLED ON NULL INPUT AS $$varcharout$$"
+  },
+  "latest/postgres/create_type-71.sql": {
+    "original": "CREATE FUNCTION myvarcharsend(myvarchar) RETURNS bytea\nLANGUAGE internal STABLE PARALLEL SAFE STRICT AS 'varcharsend'",
+    "upstream": "CREATE FUNCTION myvarcharsend(myvarchar) RETURNS bytea LANGUAGE internal STABLE PARALLEL safe CALLED ON NULL INPUT AS $$varcharsend$$"
+  },
+  "latest/postgres/create_type-72.sql": {
+    "original": "CREATE FUNCTION myvarcharrecv(internal, oid, integer) RETURNS myvarchar\nLANGUAGE internal STABLE PARALLEL SAFE STRICT AS 'varcharrecv'",
+    "upstream": "CREATE FUNCTION myvarcharrecv(internal, oid, int) RETURNS myvarchar LANGUAGE internal STABLE PARALLEL safe CALLED ON NULL INPUT AS $$varcharrecv$$"
+  },
+  "latest/postgres/create_table-2.sql": {
+    "original": "CREATE TABLE data_types (\n  a BOOLEAN DEFAULT TRUE,\n  b INTEGER,\n  c TEXT DEFAULT 'hello',\n  d NUMERIC(10,2) CHECK (d > 0),\n  e TIMESTAMP DEFAULT now()\n)",
+    "upstream": "CREATE TABLE data_types (a boolean DEFAULT false, b int, c text DEFAULT 'hello', d numeric(10, 2) CHECK (d > 0), e timestamp DEFAULT now())"
+  },
+  "latest/postgres/create_schema-1.sql": {
+    "original": "CREATE ROLE regress_create_schema_role SUPERUSER",
+    "upstream": "CREATE ROLE regress_create_schema_role WITH NOSUPERUSER"
+  },
+  "latest/postgres/create_role-1.sql": {
+    "original": "CREATE ROLE regress_role_super SUPERUSER",
+    "upstream": "CREATE ROLE regress_role_super WITH NOSUPERUSER"
+  },
+  "latest/postgres/create_role-2.sql": {
+    "original": "CREATE ROLE regress_role_admin CREATEDB CREATEROLE REPLICATION BYPASSRLS",
+    "upstream": "CREATE ROLE regress_role_admin WITH NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS"
+  },
+  "latest/postgres/create_role-4.sql": {
+    "original": "CREATE ROLE regress_role_limited_admin CREATEROLE",
+    "upstream": "CREATE ROLE regress_role_limited_admin WITH NOCREATEROLE"
+  },
+  "latest/postgres/create_role-7.sql": {
+    "original": "CREATE ROLE regress_nosuch_superuser SUPERUSER",
+    "upstream": "CREATE ROLE regress_nosuch_superuser WITH NOSUPERUSER"
+  },
+  "latest/postgres/create_role-8.sql": {
+    "original": "CREATE ROLE regress_nosuch_replication_bypassrls REPLICATION BYPASSRLS",
+    "upstream": "CREATE ROLE regress_nosuch_replication_bypassrls WITH NOREPLICATION NOBYPASSRLS"
+  },
+  "latest/postgres/create_role-9.sql": {
+    "original": "CREATE ROLE regress_nosuch_replication REPLICATION",
+    "upstream": "CREATE ROLE regress_nosuch_replication WITH NOREPLICATION"
+  },
+  "latest/postgres/create_role-10.sql": {
+    "original": "CREATE ROLE regress_nosuch_bypassrls BYPASSRLS",
+    "upstream": "CREATE ROLE regress_nosuch_bypassrls WITH NOBYPASSRLS"
+  },
+  "latest/postgres/create_role-11.sql": {
+    "original": "CREATE ROLE regress_nosuch_createdb CREATEDB",
+    "upstream": "CREATE ROLE regress_nosuch_createdb WITH NOCREATEDB"
+  },
+  "latest/postgres/create_role-13.sql": {
+    "original": "ALTER ROLE regress_role_limited SUPERUSER",
+    "upstream": "ALTER ROLE regress_role_limited WITH NOSUPERUSER"
+  },
+  "latest/postgres/create_role-14.sql": {
+    "original": "ALTER ROLE regress_role_limited REPLICATION",
+    "upstream": "ALTER ROLE regress_role_limited WITH NOREPLICATION"
+  },
+  "latest/postgres/create_role-15.sql": {
+    "original": "ALTER ROLE regress_role_limited CREATEDB",
+    "upstream": "ALTER ROLE regress_role_limited WITH NOCREATEDB"
+  },
+  "latest/postgres/create_role-16.sql": {
+    "original": "ALTER ROLE regress_role_limited BYPASSRLS",
+    "upstream": "ALTER ROLE regress_role_limited WITH NOBYPASSRLS"
+  },
+  "latest/postgres/create_role-19.sql": {
+    "original": "CREATE ROLE regress_replication_bypassrls REPLICATION BYPASSRLS",
+    "upstream": "CREATE ROLE regress_replication_bypassrls WITH NOREPLICATION NOBYPASSRLS"
+  },
+  "latest/postgres/create_role-20.sql": {
+    "original": "CREATE ROLE regress_replication REPLICATION",
+    "upstream": "CREATE ROLE regress_replication WITH NOREPLICATION"
+  },
+  "latest/postgres/create_role-21.sql": {
+    "original": "CREATE ROLE regress_bypassrls BYPASSRLS",
+    "upstream": "CREATE ROLE regress_bypassrls WITH NOBYPASSRLS"
+  },
+  "latest/postgres/create_role-22.sql": {
+    "original": "CREATE ROLE regress_createdb CREATEDB",
+    "upstream": "CREATE ROLE regress_createdb WITH NOCREATEDB"
+  },
+  "latest/postgres/create_role-24.sql": {
+    "original": "ALTER ROLE regress_replication REPLICATION",
+    "upstream": "ALTER ROLE regress_replication WITH NOREPLICATION"
+  },
+  "latest/postgres/create_role-26.sql": {
+    "original": "ALTER ROLE regress_bypassrls BYPASSRLS",
+    "upstream": "ALTER ROLE regress_bypassrls WITH NOBYPASSRLS"
+  },
+  "latest/postgres/create_role-28.sql": {
+    "original": "ALTER ROLE regress_createdb CREATEDB",
+    "upstream": "ALTER ROLE regress_createdb WITH NOCREATEDB"
+  },
+  "latest/postgres/create_role-29.sql": {
+    "original": "ALTER ROLE regress_createdb SUPERUSER",
+    "upstream": "ALTER ROLE regress_createdb WITH NOSUPERUSER"
+  },
+  "latest/postgres/create_role-31.sql": {
+    "original": "CREATE ROLE regress_createrole CREATEROLE NOINHERIT",
+    "upstream": "CREATE ROLE regress_createrole WITH NOCREATEROLE NOINHERIT"
+  },
+  "latest/postgres/create_role-33.sql": {
+    "original": "CREATE ROLE regress_login LOGIN",
+    "upstream": "CREATE ROLE regress_login WITH NOLOGIN"
+  },
+  "latest/postgres/create_role-34.sql": {
+    "original": "CREATE ROLE regress_inherit INHERIT",
+    "upstream": "CREATE ROLE regress_inherit WITH NOINHERIT"
+  },
+  "latest/postgres/create_role-48.sql": {
+    "original": "CREATE ROLE regress_rolecreator CREATEROLE",
+    "upstream": "CREATE ROLE regress_rolecreator WITH NOCREATEROLE"
+  },
+  "latest/postgres/create_role-49.sql": {
+    "original": "CREATE ROLE regress_hasprivs CREATEROLE LOGIN INHERIT CONNECTION LIMIT 5",
+    "upstream": "CREATE ROLE regress_hasprivs WITH NOCREATEROLE NOLOGIN NOINHERIT CONNECTION LIMIT 5"
+  },
+  "latest/postgres/create_role-83.sql": {
+    "original": "GRANT regress_tenant2 TO regress_createrole WITH INHERIT TRUE, SET FALSE",
+    "upstream": "GRANT regress_tenant2 TO regress_createrole WITH INHERIT FALSE, SET FALSE"
+  },
+  "latest/postgres/create_procedure-78.sql": {
+    "original": "CREATE PROCEDURE ptestx() LANGUAGE SQL STRICT AS $$ INSERT INTO cp_test VALUES (1, 'a') $$",
+    "upstream": "CREATE PROCEDURE ptestx() LANGUAGE sql CALLED ON NULL INPUT AS $$ INSERT INTO cp_test VALUES (1, 'a') $$"
+  },
+  "latest/postgres/create_procedure-81.sql": {
+    "original": "ALTER PROCEDURE ptest1(text) STRICT",
+    "upstream": "ALTER PROCEDURE ptest1(text) CALLED ON NULL INPUT"
+  },
+  "latest/postgres/create_operator-14.sql": {
+    "original": "SELECT true<>-1 BETWEEN 1 AND 1",
+    "upstream": "SELECT false <> (-1 BETWEEN 1 AND 1)"
+  },
+  "latest/postgres/create_index-341.sql": {
+    "original": "INSERT INTO concur_exprs_tab (c1, c2) VALUES (1369652450, FALSE),\n  (414515746, TRUE),\n  (897778963, FALSE)",
+    "upstream": "INSERT INTO concur_exprs_tab (c1, c2) VALUES (1369652450, false), (414515746, false), (897778963, false)"
+  },
+  "latest/postgres/create_function_sql-21.sql": {
+    "original": "CREATE FUNCTION functest_C_2(int) RETURNS bool LANGUAGE 'sql'\n       SECURITY DEFINER AS 'SELECT $1 = 0'",
+    "upstream": "CREATE FUNCTION functest_c_2(int) RETURNS bool LANGUAGE sql SECURITY INVOKER AS $$SELECT $1 = 0$$"
+  },
+  "latest/postgres/create_function_sql-26.sql": {
+    "original": "ALTER FUNCTION functest_C_3(int) SECURITY DEFINER",
+    "upstream": "ALTER FUNCTION functest_c_3(int) SECURITY INVOKER"
+  },
+  "latest/postgres/create_function_sql-29.sql": {
+    "original": "CREATE FUNCTION functest_E_2(int) RETURNS bool LANGUAGE 'sql'\n       LEAKPROOF AS 'SELECT $1 > 100'",
+    "upstream": "CREATE FUNCTION functest_e_2(int) RETURNS bool LANGUAGE sql NOT LEAKPROOF AS $$SELECT $1 > 100$$"
+  },
+  "latest/postgres/create_function_sql-31.sql": {
+    "original": "ALTER FUNCTION functest_E_1(int) LEAKPROOF",
+    "upstream": "ALTER FUNCTION functest_e_1(int) NOT LEAKPROOF"
+  },
+  "latest/postgres/create_function_sql-41.sql": {
+    "original": "ALTER FUNCTION functest_E_2(int) LEAKPROOF",
+    "upstream": "ALTER FUNCTION functest_e_2(int) NOT LEAKPROOF"
+  },
+  "latest/postgres/create_function_sql-42.sql": {
+    "original": "CREATE FUNCTION functest_E_3(int) RETURNS bool LANGUAGE 'sql'\n       LEAKPROOF AS 'SELECT $1 < 200'",
+    "upstream": "CREATE FUNCTION functest_e_3(int) RETURNS bool LANGUAGE sql NOT LEAKPROOF AS $$SELECT $1 < 200$$"
+  },
+  "latest/postgres/create_function_sql-46.sql": {
+    "original": "CREATE FUNCTION functest_F_3(int) RETURNS bool LANGUAGE 'sql'\n       RETURNS NULL ON NULL INPUT AS 'SELECT $1 < 50'",
+    "upstream": "CREATE FUNCTION functest_f_3(int) RETURNS bool LANGUAGE sql CALLED ON NULL INPUT AS $$SELECT $1 < 50$$"
+  },
+  "latest/postgres/create_function_sql-47.sql": {
+    "original": "CREATE FUNCTION functest_F_4(int) RETURNS bool LANGUAGE 'sql'\n       STRICT AS 'SELECT $1 = 50'",
+    "upstream": "CREATE FUNCTION functest_f_4(int) RETURNS bool LANGUAGE sql CALLED ON NULL INPUT AS $$SELECT $1 = 50$$"
+  },
+  "latest/postgres/create_function_sql-50.sql": {
+    "original": "ALTER FUNCTION functest_F_2(int) STRICT",
+    "upstream": "ALTER FUNCTION functest_f_2(int) CALLED ON NULL INPUT"
+  },
+  "latest/postgres/create_function_sql-68.sql": {
+    "original": "CREATE FUNCTION functest_S_15(x int) RETURNS boolean\nLANGUAGE SQL\nBEGIN ATOMIC\n    select case when x % 2 = 0 then true else false end;\nEND",
+    "upstream": "CREATE FUNCTION functest_s_15(x int) RETURNS boolean LANGUAGE sql BEGIN ATOMIC SELECT CASE WHEN (x % 2) = 0 THEN false ELSE false END; END"
+  },
+  "latest/postgres/create_cast-2.sql": {
+    "original": "CREATE FUNCTION casttesttype_in(cstring)\n   RETURNS casttesttype\n   AS 'textin'\n   LANGUAGE internal STRICT IMMUTABLE",
+    "upstream": "CREATE FUNCTION casttesttype_in(cstring) RETURNS casttesttype AS $$textin$$ LANGUAGE internal CALLED ON NULL INPUT IMMUTABLE"
+  },
+  "latest/postgres/create_cast-3.sql": {
+    "original": "CREATE FUNCTION casttesttype_out(casttesttype)\n   RETURNS cstring\n   AS 'textout'\n   LANGUAGE internal STRICT IMMUTABLE",
+    "upstream": "CREATE FUNCTION casttesttype_out(casttesttype) RETURNS cstring AS $$textout$$ LANGUAGE internal CALLED ON NULL INPUT IMMUTABLE"
+  },
+  "latest/postgres/create_aggregate-12.sql": {
+    "original": "create function sum3(int8,int8,int8) returns int8 as\n'select $1 + $2 + $3' language sql strict immutable",
+    "upstream": "CREATE FUNCTION sum3(int8, int8, int8) RETURNS int8 AS $$select $1 + $2 + $3$$ LANGUAGE sql CALLED ON NULL INPUT IMMUTABLE"
+  },
+  "latest/postgres/create_aggregate-15.sql": {
+    "original": "create function aggf_trans(aggtype[],integer,integer,text) returns aggtype[]\nas 'select array_append($1,ROW($2,$3,$4)::aggtype)'\nlanguage sql strict immutable",
+    "upstream": "CREATE FUNCTION aggf_trans(aggtype[], int, int, text) RETURNS aggtype[] AS $$select array_append($1,ROW($2,$3,$4)::aggtype)$$ LANGUAGE sql CALLED ON NULL INPUT IMMUTABLE"
+  },
+  "latest/postgres/create_aggregate-49.sql": {
+    "original": "create function sum4(int8,int8,int8,int8) returns int8 as\n'select $1 + $2 + $3 + $4' language sql strict immutable",
+    "upstream": "CREATE FUNCTION sum4(int8, int8, int8, int8) RETURNS int8 AS $$select $1 + $2 + $3 + $4$$ LANGUAGE sql CALLED ON NULL INPUT IMMUTABLE"
+  }
+}
