@@ -9,7 +9,8 @@
   "homepage": "https://github.com/launchql/pgsql-parser/tree/master/packages/proto-parser#readme",
   "license": "SEE LICENSE IN LICENSE",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "directory": "dist"
   },
   "repository": {
     "type": "git",
