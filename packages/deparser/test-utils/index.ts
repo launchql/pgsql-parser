@@ -219,7 +219,8 @@ export class FixtureTestUtils extends TestUtils {
     const entries = this.getTestEntries(filters);
     for (const [relativePath, sql] of entries) {
       try {
-        await this.expectAstMatch(relativePath, sql);
+        // @ts-ignore
+        await this.expectAstMatch(relativePath, sql.original);
       } catch (err) {
         throw err;
       }
