@@ -1071,6 +1071,18 @@
     "original": "DROP SUBSCRIPTION IF EXISTS some_sub CASCADE",
     "upstream": "DROP SUBSCRIPTION IF EXISTS some_sub"
   },
+  "misc/booleans-cast-1.sql": {
+    "original": "SELECT * FROM myschema.mytable WHERE a = TRUE",
+    "upstream": "SELECT * FROM myschema.mytable WHERE a = false"
+  },
+  "misc/booleans-cast-2.sql": {
+    "original": "SELECT * FROM myschema.mytable WHERE a = CAST('t' AS boolean)",
+    "upstream": "SELECT * FROM myschema.mytable WHERE a = true"
+  },
+  "misc/booleans-cast-3.sql": {
+    "original": "SELECT * FROM myschema.mytable WHERE a = 't'::boolean",
+    "upstream": "SELECT * FROM myschema.mytable WHERE a = true"
+  },
   "latest/postgres/create_view-1.sql": {
     "original": "CREATE FUNCTION interpt_pp(path, path)\n    RETURNS point\n    AS 'regresslib'\n    LANGUAGE C STRICT",
     "upstream": "CREATE FUNCTION interpt_pp(path, path) RETURNS point AS $$regresslib$$ LANGUAGE c CALLED ON NULL INPUT"

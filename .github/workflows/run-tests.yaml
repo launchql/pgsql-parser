@@ -22,5 +22,8 @@ jobs:
       - name: proto-parser
         run: cd ./packages/proto-parser && yarn test
 
+      - name: utils
+        run: cd ./packages/utils && yarn test
+
       - name: transform
         run: cd ./packages/transform && yarn test

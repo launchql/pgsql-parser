@@ -1,24 +1,18 @@
-import * as u from '../src';
-import ast, { SelectStmt, RangeVar } from '../src';
+import * as t from '../src';
+import { RangeVar, SelectStmt } from '@pgsql/types';
 import { deparse } from 'pgsql-deparser';
 
-it('getEnumValue snapshots', () => {
-  for (let i = 0; i <= 5; i++) {
-    expect(u.getEnumValue('A_Expr_Kind', i)).toMatchSnapshot();
-  }
-});
-
 it('simple SelectStmt', () => {
-  const stmt: SelectStmt = ast.selectStmt({
+  const stmt: { SelectStmt: SelectStmt } = t.nodes.selectStmt({
     targetList: [
-      ast.resTarget({
-        val: ast.columnRef({
-          fields: [ast.aStar()]
+      t.nodes.resTarget({
+        val: t.nodes.columnRef({
+          fields: [t.nodes.aStar()]
         })
       })
     ],
     fromClause: [
-      ast.rangeVar({
+      t.nodes.rangeVar({
         relname: 'some_table',
         inh: true,
         relpersistence: 'p'
@@ -28,44 +22,43 @@ it('simple SelectStmt', () => {
     op: 'SETOP_NONE'
   });
   
-  // @ts-ignore (because of optional args)
-  stmt.SelectStmt.fromClause[0].RangeVar.relname = 'another_table';
+  (stmt.SelectStmt.fromClause[0] as {RangeVar: RangeVar}).RangeVar.relname = 'another_table';
 
   expect(stmt).toMatchSnapshot();
   expect(deparse(stmt, {})).toMatchSnapshot();
 });
 
 it('SelectStmt with WHERE clause', () => {
-  const selectStmt: SelectStmt = ast.selectStmt({
+  const selectStmt: { SelectStmt: SelectStmt } = t.nodes.selectStmt({
     targetList: [
-      ast.resTarget({
-        val: ast.columnRef({
-          fields: [ast.aStar()]
+      t.nodes.resTarget({
+        val: t.nodes.columnRef({
+          fields: [t.nodes.aStar()]
         })
       })
     ],
     fromClause: [
-      ast.rangeVar({
+      t.nodes.rangeVar({
         schemaname: 'myschema',
         relname: 'mytable',
         inh: true,
         relpersistence: 'p'
       })
     ],
-    whereClause: ast.aExpr({
+    whereClause: t.nodes.aExpr({
       kind: 'AEXPR_OP',
-      name: [ast.string({ str: '=' })],
-      lexpr: ast.columnRef({
-        fields: [ast.string({ str: 'a' })]
+      name: [t.nodes.string({ sval: '=' })],
+      lexpr: t.nodes.columnRef({
+        fields: [t.nodes.string({ sval: 'a' })]
       }),
-      rexpr: ast.typeCast({
-        arg: ast.aConst({
-          val: ast.string({ str: 't' })
+      rexpr: t.nodes.typeCast({
+        arg: t.nodes.aConst({
+          sval: t.ast.string({ sval: 't' })
         }),
-        typeName: ast.typeName({
+        typeName: t.ast.typeName({
           names: [
-            ast.string({ str: 'pg_catalog' }),
-            ast.string({ str: 'bool' })
+            t.nodes.string({ sval: 'pg_catalog' }),
+            t.nodes.string({ sval: 'bool' })
           ],
           typemod: -1
         })
@@ -74,7 +67,8 @@ it('SelectStmt with WHERE clause', () => {
     limitOption: 'LIMIT_OPTION_DEFAULT',
     op: 'SETOP_NONE'
   });
-  expect(deparse(selectStmt, {})).toEqual('SELECT * FROM myschema.mytable WHERE a = TRUE');
+  
+  expect(deparse(selectStmt, {})).toEqual(`SELECT * FROM myschema.mytable WHERE a = CAST('t' AS boolean)`);
 });
 
 it('dynamic creation of tables', () => {
@@ -90,19 +84,19 @@ it('dynamic creation of tables', () => {
   };
 
   // Construct the CREATE TABLE statement
-  const createStmt = ast.createStmt({
-    relation: ast.rangeVar({ 
+  const createStmt = t.nodes.createStmt({
+    relation: t.ast.rangeVar({ 
       relname: schema.tableName,
       inh: true,
       relpersistence: 'p'
-    }).RangeVar as RangeVar, // special case due to PG AST
-    tableElts: schema.columns.map(column => ast.columnDef({
+    }),
+    tableElts: schema.columns.map(column => t.nodes.columnDef({
       colname: column.name,
-      typeName: ast.typeName({
-        names: [ast.string({ str: column.type })]
+      typeName: t.ast.typeName({
+        names: [t.nodes.string({ sval: column.type })]
       }),
       constraints: column.constraints?.map(constraint =>
-        ast.constraint({
+        t.nodes.constraint({
           contype: constraint === "PRIMARY KEY" ? "CONSTR_PRIMARY" : constraint === "UNIQUE" ? "CONSTR_UNIQUE" : "CONSTR_NOTNULL"
         })
       )

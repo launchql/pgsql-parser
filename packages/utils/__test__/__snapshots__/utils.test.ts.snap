@@ -1,25 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`dynamic creation of tables 1`] = `
-"CREATE TABLE users (
- 	id int PRIMARY KEY,
-	username text,
-	email text UNIQUE,
-	created_at timestamp NOT NULL 
-)"
-`;
-
-exports[`getEnumValue snapshots 1`] = `"AEXPR_OP"`;
-
-exports[`getEnumValue snapshots 2`] = `"AEXPR_OP_ANY"`;
-
-exports[`getEnumValue snapshots 3`] = `"AEXPR_OP_ALL"`;
-
-exports[`getEnumValue snapshots 4`] = `"AEXPR_DISTINCT"`;
-
-exports[`getEnumValue snapshots 5`] = `"AEXPR_NOT_DISTINCT"`;
-
-exports[`getEnumValue snapshots 6`] = `"AEXPR_NULLIF"`;
+exports[`dynamic creation of tables 1`] = `"CREATE TABLE users (id int PRIMARY KEY, username text, email text UNIQUE, created_at timestamp NOT NULL)"`;
 
 exports[`simple SelectStmt 1`] = `
 {

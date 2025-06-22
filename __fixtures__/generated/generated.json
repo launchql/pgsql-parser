@@ -21148,6 +21148,8 @@
   "misc/cascades-23.sql": "DROP TRANSFORM IF EXISTS FOR some_type LANGUAGE plpgsql CASCADE",
   "misc/cascades-24.sql": "ALTER TABLE some_table DROP COLUMN some_column CASCADE",
   "misc/cascades-25.sql": "ALTER TABLE some_table DROP CONSTRAINT some_constraint CASCADE",
+  "misc/booleans-cast-1.sql": "SELECT * FROM myschema.mytable WHERE a = TRUE",
+  "misc/booleans-cast-2.sql": "SELECT * FROM myschema.mytable WHERE a = CAST('t' AS boolean)",
   "latest/postgres/create_view-1.sql": "CREATE FUNCTION interpt_pp(path, path)\n    RETURNS point\n    AS 'regresslib'\n    LANGUAGE C STRICT",
   "latest/postgres/create_view-2.sql": "CREATE TABLE real_city (\n\tpop\t\t\tint4,\n\tcname\t\ttext,\n\toutline \tpath\n)",
   "latest/postgres/create_view-3.sql": "COPY real_city FROM 'filename'",
