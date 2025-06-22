@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [17.4.2](https://github.com/launchql/pgsql-parser/compare/pgsql-deparser@17.4.1...pgsql-deparser@17.4.2) (2025-06-22)
+
+
+### Bug Fixes
+
+* add test back ([d44ab3f](https://github.com/launchql/pgsql-parser/commit/d44ab3f126a7661efee3ebc50d1fdb1931dc5024))
+* async forEach bug in test framework preventing error catching ([01b01d8](https://github.com/launchql/pgsql-parser/commit/01b01d80d406c23bb692954a393d8e9afe122a54))
+* quotes ([fac64e9](https://github.com/launchql/pgsql-parser/commit/fac64e9360dba171a17585c82cc43daa1b91106f))
+
+
+### Features
+
+* implement automatic E-prefix detection for escaped string literals ([e029f29](https://github.com/launchql/pgsql-parser/commit/e029f297589925102834a794a29f14c00a9c3e2b))
+
+
+
+
+
 ## [17.4.1](https://github.com/launchql/pgsql-parser/compare/pgsql-deparser@17.4.0...pgsql-deparser@17.4.1) (2025-06-21)
 
 **Note:** Version bump only for package pgsql-deparser
