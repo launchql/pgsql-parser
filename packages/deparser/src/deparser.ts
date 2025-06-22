@@ -5461,7 +5461,20 @@ export class Deparser implements DeparserVisitor {
           : argValue;
         return `${node.defname} = ${quotedValue}`;
       }
-      
+            
+      // Handle CopyStmt WITH clause options - uppercase format without quotes
+      if (context.parentNodeTypes.includes('CopyStmt')) {
+        if (node.defname === 'format' && node.arg && this.getNodeType(node.arg) === 'String') {
+          const stringData = this.getNodeData(node.arg);
+          return `FORMAT ${stringData.sval.toUpperCase()}`;
+        }
+        // Handle other COPY options with uppercase defname
+        if (node.arg) {
+          return `${node.defname.toUpperCase()} ${argValue}`;
+        }
+        return node.defname.toUpperCase();
+      }
+
       // Handle CREATE OPERATOR and CREATE TYPE context
       if (context.parentNodeTypes.includes('DefineStmt')) {
         const preservedName = this.preserveOperatorDefElemCase(node.defname);
