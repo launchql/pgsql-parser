@@ -49,6 +49,6 @@
     "libpg-query": "17.3.3"
   },
   "dependencies": {
-    "@pgsql/types": "^17.5.2"
+    "@pgsql/types": "^17.5.3"
   }
 }

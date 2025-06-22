@@ -19,11 +19,8 @@ jobs:
       - name: deparser
         run: cd ./packages/deparser && yarn test
 
-      - name: enums
-        run: cd ./packages/enums && yarn test
-
-      - name: types
-        run: cd ./packages/types && yarn test
+      - name: proto-parser
+        run: cd ./packages/proto-parser && yarn test
 
       - name: transform
         run: cd ./packages/transform && yarn test
