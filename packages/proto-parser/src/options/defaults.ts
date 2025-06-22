@@ -23,6 +23,10 @@ export const defaultPgProtoParserOptions: PgProtoParserOptions = {
             inlineNestedObj: false,
             nestedObjFile: 'nested-obj.ts',
             filename: 'asts.ts',
+        },
+        wrappedAstHelpers: {
+            enabled: false,
+            filename: 'wrapped-asts.ts'
         }
     },
     types: {

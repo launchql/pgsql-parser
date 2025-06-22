@@ -34,4 +34,33 @@ describe('utils', () => {
       }
     });
   });
+
+  it('wrappedAstHelpers enabled', () => {
+    parseAndSnap('utils/wrappedAstHelpers/enabled', {
+      types: {
+        enabled: true
+      },
+      utils: {
+        wrappedAstHelpers: {
+          enabled: true
+        }
+      }
+    });
+  });
+
+  it('both astHelpers and wrappedAstHelpers enabled', () => {
+    parseAndSnap('utils/astHelpers/bothEnabled', {
+      types: {
+        enabled: true
+      },
+      utils: {
+        astHelpers: {
+          enabled: true
+        },
+        wrappedAstHelpers: {
+          enabled: true
+        }
+      }
+    });
+  });
 });

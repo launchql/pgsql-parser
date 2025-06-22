@@ -2,6 +2,11 @@ import { Enum } from '@launchql/protobufjs';
 import * as t from '@babel/types';
 import { createNamedImport } from '../../utils';
 
+/**
+ * Converts a protobuf Enum into a TypeScript enum declaration.
+ * Example output: export enum MyEnum { VALUE1 = 0, VALUE2 = 1, ... }
+ * This is the traditional enum format that creates both type and value in TypeScript.
+ */
 export const convertEnumToTsEnumDeclaration = (enumData: Enum) => {
   const members = Object.entries(enumData.values).map(([key, value]) =>
     t.tsEnumMember(t.identifier(key), t.numericLiteral(value as number))
@@ -11,10 +16,20 @@ export const convertEnumToTsEnumDeclaration = (enumData: Enum) => {
   return t.exportNamedDeclaration(enumDeclaration);
 };
 
+/**
+ * Generates import statements for enums from a specified source module.
+ * Used when enums need to be imported into other generated files (like types.ts).
+ * Example output: import { Enum1, Enum2, ... } from './enums';
+ */
 export const generateEnumImports = (enums: Enum[], source: string) => {
   return createNamedImport(enums.map(e=>e.name), source);
 };
 
+/**
+ * Converts a protobuf Enum into a TypeScript union type of string literals.
+ * Example output: export type MyEnum = 'VALUE1' | 'VALUE2' | ...
+ * This creates a type-only representation without runtime values.
+ */
 export const convertEnumToTsUnionType = (enumData: Enum) => {
   const literals = Object.keys(enumData.values).map(key =>
     t.tsLiteralType(t.stringLiteral(key))
@@ -31,6 +46,11 @@ export const convertEnumToTsUnionType = (enumData: Enum) => {
   return t.exportNamedDeclaration(typeAlias);
 };
 
+/**
+ * Generates a bidirectional enum value converter function that can convert between string keys and numeric values.
+ * Creates getEnumValue(enumType, key) that accepts either string or number and returns the corresponding value.
+ * Example: getEnumValue('MyEnum', 'VALUE1') => 0, getEnumValue('MyEnum', 0) => 'VALUE1'
+ */
 export const generateEnumValueFunctions = (enumData: Enum[]) => {
   // Create the union type for EnumType
   const enumTypeIdentifier = t.identifier('EnumType');
@@ -111,6 +131,11 @@ export const generateEnumValueFunctions = (enumData: Enum[]) => {
   return [exportedEnumTypeAlias, exportedFunction];
 }
 
+/**
+ * Generates a unidirectional function that converts enum string keys to their numeric values.
+ * Creates getEnumInt(enumType, key) that only accepts string keys and returns numbers.
+ * Example: getEnumInt('MyEnum', 'VALUE1') => 0
+ */
 export const generateEnumToIntFunctions = (enumData: Enum[]) => {
   // Create the union type for EnumType
   const enumTypeIdentifier = t.identifier('EnumType');
@@ -188,6 +213,11 @@ export const generateEnumToIntFunctions = (enumData: Enum[]) => {
   return [exportedEnumTypeAlias, exportedFunction];
 }
 
+/**
+ * Generates a nested object structure with individual converter functions for each enum.
+ * Creates enumToIntMap object where each enum has its own converter: enumToIntMap.MyEnum('VALUE1') => 0
+ * This format provides better type safety and autocomplete for specific enums.
+ */
 export const generateEnumToIntFunctionsNested = (enumData: Enum[]) => {
   // Create the union type for EnumType
   const enumTypeIdentifier = t.identifier('EnumType');
@@ -280,6 +310,11 @@ export const generateEnumToIntFunctionsNested = (enumData: Enum[]) => {
   return [exportedEnumType, exportedMapType, exportedObject];
 }
 
+/**
+ * Generates a nested object structure with functions to convert enum numeric values to string keys.
+ * Creates enumToStringMap object where each enum has its own converter: enumToStringMap.MyEnum(0) => 'VALUE1'
+ * Provides type-safe reverse mapping from numbers to string keys.
+ */
 export const generateEnumToStringFunctionsNested = (enumData: Enum[]) => {
   // Create the union type for EnumType
   const enumTypeIdentifier = t.identifier('EnumType');
@@ -372,6 +407,11 @@ export const generateEnumToStringFunctionsNested = (enumData: Enum[]) => {
   return [exportedEnumType, exportedMapType, exportedObject];
 }
 
+/**
+ * Generates a unidirectional function that converts enum numeric values to their string keys.
+ * Creates getEnumString(enumType, key) that only accepts numbers and returns string keys.
+ * Example: getEnumString('MyEnum', 0) => 'VALUE1'
+ */
 export const generateEnumToStringFunctions = (enumData: Enum[]) => {
   // Create the union type for EnumType
   const enumTypeIdentifier = t.identifier('EnumType');

@@ -1,6 +1,11 @@
 import * as t from '@babel/types';
 import { isPrimitiveType } from '../../utils';
 
+/**
+ * Maps protobuf primitive types to their TypeScript equivalents.
+ * Handles numeric types, strings, booleans, bytes, and bigints.
+ * Falls back to type references for custom/non-primitive types.
+ */
 export const getTSType = (type: string = 'any') => {
   switch (type) {
     case 'string':
@@ -30,6 +35,11 @@ export const getTSType = (type: string = 'any') => {
   };
 };
 
+/**
+ * Resolves a type name to its TypeScript AST representation.
+ * Delegates to getTSType for primitives, creates type references for custom types.
+ * This is the main entry point for type resolution in the code generator.
+ */
 export const resolveTypeName = (type: string) => {
   if (isPrimitiveType(type)) {
     return getTSType(type);

@@ -42,6 +42,14 @@ export interface PgProtoStoreOptions {
             // ASTs helpers filename
             filename?: string;
         }
+
+        // Wrapped AST helper functions.
+        wrappedAstHelpers?: {
+            // Whether to include wrapped TypeScript AST builders
+            enabled?: boolean;
+            // Wrapped ASTs helpers filename
+            filename?: string;
+        }
     };
 
     // Options related to TypeScript types.
