@@ -1254,18 +1254,18 @@ export class Deparser implements DeparserVisitor {
     } else if (nodeAny.sval !== undefined) {
       if (typeof nodeAny.sval === 'object' && nodeAny.sval !== null) {
         if (nodeAny.sval.sval !== undefined) {
-          return QuoteUtils.escape(nodeAny.sval.sval);
+          return QuoteUtils.formatEString(nodeAny.sval.sval);
         } else if (nodeAny.sval.String && nodeAny.sval.String.sval !== undefined) {
-          return QuoteUtils.escape(nodeAny.sval.String.sval);
+          return QuoteUtils.formatEString(nodeAny.sval.String.sval);
         } else if (Object.keys(nodeAny.sval).length === 0) {
           return "''";
         } else {
-          return QuoteUtils.escape(nodeAny.sval.toString());
+          return QuoteUtils.formatEString(nodeAny.sval.toString());
         }
       } else if (nodeAny.sval === null) {
         return 'NULL';
       } else {
-        return QuoteUtils.escape(nodeAny.sval);
+        return QuoteUtils.formatEString(nodeAny.sval);
       }
     } else if (nodeAny.boolval !== undefined) {
       if (typeof nodeAny.boolval === 'object' && nodeAny.boolval !== null) {
@@ -2014,9 +2014,11 @@ export class Deparser implements DeparserVisitor {
     return caseMap[defName.toLowerCase()] || defName;
   }
 
+
+
   String(node: t.String, context: DeparserContext): string {
     if (context.isStringLiteral || context.isEnumValue) {
-      return `'${node.sval || ''}'`;
+      return QuoteUtils.formatEString(node.sval || '');
     }
     
     const value = node.sval || '';
@@ -6215,8 +6217,7 @@ export class Deparser implements DeparserVisitor {
     if (node.comment === null || node.comment === undefined) {
       output.push('NULL');
     } else if (node.comment) {
-      const escapedComment = node.comment.replace(/'/g, "''");
-      output.push(`'${escapedComment}'`);
+      output.push(QuoteUtils.formatEString(node.comment));
     }
     
     return output.join(' ');
