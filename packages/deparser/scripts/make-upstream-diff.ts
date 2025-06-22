@@ -62,28 +62,31 @@ async function main() {
         // Get our deparse and its AST
         let ourDeparsedSql: string | undefined;
         let ourAst: any;
+        let ourDeParseError = false;
         try {
           ourDeparsedSql = ourDeparse(rawStmt.stmt);
           const ourParsed = await parse(ourDeparsedSql);
           ourAst = cleanTree(ourParsed.stmts?.[0]?.stmt);
         } catch (err: any) {
           console.error(`Failed to process our deparse for statement ${stmt.index + 1} in ${relPath}:`, err);
-          // Continue with just upstream comparison
+          ourDeParseError = true;
+          // Keep ourDeparsedSql so we can still show it in results even if it doesn't parse
         }
         
         // Compare ASTs to source of truth only
         const upstreamMatches = JSON.stringify(upstreamAst) === JSON.stringify(sourceOfTruthAst);
         const ourMatches = ourAst ? JSON.stringify(ourAst) === JSON.stringify(sourceOfTruthAst) : false;
         
-        // Only include if either deparser differs from original
-        if (!upstreamMatches || !ourMatches) {
+        
+        // Only include if either deparser differs from original OR our deparser failed to parse
+        if (!upstreamMatches || !ourMatches || ourDeParseError) {
           const key = generateStatementKey(relPath, stmt.index);
           results[key] = {
             original: stmt.statement,
             // Show upstream only if it differs from original
             ...(!upstreamMatches && upstreamSql && { upstream: upstreamSql }),
-            // Show our deparser only if it differs from original
-            ...(!ourMatches && ourDeparsedSql && { deparsed: ourDeparsedSql })
+            // Show our deparser if it differs from original OR if it failed to parse (both indicate issues)
+            ...((!ourMatches || ourDeParseError) && ourDeparsedSql && { deparsed: ourDeparsedSql })
           };
         }
       }

@@ -2,6 +2,7 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import { sync as globSync } from 'glob';
+import { parse } from 'libpg-query';
 import { splitStatements, generateStatementKey } from '../src/utils/statement-splitter';
 
 const FIXTURE_DIR = path.join(__dirname, '../../../__fixtures__/kitchen-sink');
@@ -30,7 +31,16 @@ async function main() {
       
       for (const stmt of statements) {
         const key = generateStatementKey(relPath, stmt.index);
-        results[key] = stmt.statement;
+        
+        // Validate that the extracted statement parses correctly on its own
+        try {
+          await parse(stmt.statement);
+          results[key] = stmt.statement;
+        } catch (parseErr: any) {
+          console.error(`Failed to parse extracted statement ${key}:`, parseErr.message);
+          console.error(`Statement: ${stmt.statement.substring(0, 200)}${stmt.statement.length > 200 ? '...' : ''}`);
+          // Skip this statement - don't add it to results
+        }
       }
     } catch (err: any) {
       console.error(`Failed to parse ${relPath}:`, err);
