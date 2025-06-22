@@ -7,7 +7,7 @@ CREATE USER MAPPING FOR local_user SERVER foreign_server OPTIONS (user 'remote_u
 SELECT E'Line 1\nLine 2';
 
 -- Tab character and single quote
-SELECT E'Column\tValue with quote: \'' AS formatted_string';
+SELECT E'Column\tValue with quote: \'' AS formatted_string;
 
 -- Escaped backslash and carriage return
 SELECT E'Path is C:\\Program Files\\PostgreSQL\r\nDone.';
@@ -61,3 +61,45 @@ SELECT 'Just a plain string, nothing to escape.';
 -- Just to make sure we're parsing string types correctly
 -- sval.String.str with embedded backslashes and quotes
 SELECT E'This string has \"quotes\" and \\slashes\\' AS tricky_string;
+
+
+SELECT E'String with null byte: \\0 after this' AS null_char;
+
+-- Backslash at end of string
+SELECT E'This ends in backslash: \\' AS trailing_backslash;
+
+-- Double escaped path
+SELECT E'Config path: C:\\\\Temp\\\\Files\\' AS double_slash;
+
+-- Multi-line string (escaped newlines)
+SELECT E'First line\nSecond line\nThird line' AS multiline_string;
+
+-- E-string inside CTE
+WITH msg AS (
+  SELECT E'CTE with newline\nand tab\tinside' AS txt
+)
+SELECT * FROM msg;
+
+-- Reserved keyword as alias (quoted identifier)
+SELECT E'Some string' AS "select";
+
+-- All common escapes in one go
+SELECT E'Escapes: \\ \b \f \n \r \t \v \'' AS all_escapes;
+
+-- E-string inside a dollar-quoted PL/pgSQL block
+CREATE FUNCTION escape_example() RETURNS text AS $$
+BEGIN
+  RETURN E'This has a newline\\nand tab\\twith quotes: \\'hello\\'';
+END;
+$$ LANGUAGE plpgsql;
+
+-- Dollar-quoted function without E-string — for contrast
+DO $$
+BEGIN
+  RAISE NOTICE 'Line one\nLine two';
+END;
+$$ LANGUAGE plpgsql;
+
+-- CREATE USER MAPPING with and without quoted identifiers
+CREATE USER MAPPING FOR local_user SERVER "foreign_server" OPTIONS (user 'remote_user', password 'secret123');
+CREATE USER MAPPING FOR local_user SERVER foreign_server OPTIONS (user 'remote_user', password 'secret123');

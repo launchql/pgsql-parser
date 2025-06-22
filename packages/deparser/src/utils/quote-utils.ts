@@ -88,15 +88,9 @@ export class QuoteUtils {
    * Detects backslash escape sequences that require E-prefix in PostgreSQL
    */
   static needsEscapePrefix(value: string): boolean {
-    if (/^\\x[0-9a-fA-F]+$/i.test(value)) {
-      return false;
-    }
-    
-    if (/\\x[0-9a-fA-F]/.test(value) && !/\\[nrtbf\\']/.test(value)) {
-      return false;
-    }
-    
-    // Check for common backslash escape sequences that require E-prefix
-    return /\\(?:[nrtbf\\']|u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8}|[0-7]{1,3})/.test(value);
+    // Always use E'' if the string contains any backslashes,
+    // unless it's a raw \x... bytea-style literal.
+    return !/^\\x[0-9a-fA-F]+$/i.test(value) && value.includes('\\');
   }
+  
 }
