@@ -3,3 +3,6 @@
 **/dist
 **/yarn-error.log
 lerna-debug.log
+
+.openhands
+.claude
