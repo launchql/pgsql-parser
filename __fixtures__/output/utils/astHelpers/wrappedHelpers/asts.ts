@@ -6,59 +6,101 @@
 import _o from "nested-obj";
 import { ParseResult, ScanResult, Integer, Float, Boolean, String, BitString, List, OidList, IntList, A_Const, Alias, RangeVar, TableFunc, IntoClause, Var, Param, Aggref, GroupingFunc, WindowFunc, SubscriptingRef, FuncExpr, NamedArgExpr, OpExpr, DistinctExpr, NullIfExpr, ScalarArrayOpExpr, BoolExpr, SubLink, SubPlan, AlternativeSubPlan, FieldSelect, FieldStore, RelabelType, CoerceViaIO, ArrayCoerceExpr, ConvertRowtypeExpr, CollateExpr, CaseExpr, CaseWhen, CaseTestExpr, ArrayExpr, RowExpr, RowCompareExpr, CoalesceExpr, MinMaxExpr, SQLValueFunction, XmlExpr, JsonFormat, JsonReturning, JsonValueExpr, JsonConstructorExpr, JsonIsPredicate, NullTest, BooleanTest, CoerceToDomain, CoerceToDomainValue, SetToDefault, CurrentOfExpr, NextValueExpr, InferenceElem, TargetEntry, RangeTblRef, JoinExpr, FromExpr, OnConflictExpr, Query, TypeName, ColumnRef, ParamRef, A_Expr, TypeCast, CollateClause, RoleSpec, FuncCall, A_Star, A_Indices, A_Indirection, A_ArrayExpr, ResTarget, MultiAssignRef, SortBy, WindowDef, RangeSubselect, RangeFunction, RangeTableFunc, RangeTableFuncCol, RangeTableSample, ColumnDef, TableLikeClause, IndexElem, DefElem, LockingClause, XmlSerialize, PartitionElem, PartitionSpec, PartitionBoundSpec, PartitionRangeDatum, PartitionCmd, RangeTblEntry, RTEPermissionInfo, RangeTblFunction, TableSampleClause, WithCheckOption, SortGroupClause, GroupingSet, WindowClause, RowMarkClause, WithClause, InferClause, OnConflictClause, CTESearchClause, CTECycleClause, CommonTableExpr, MergeWhenClause, MergeAction, TriggerTransition, JsonOutput, JsonKeyValue, JsonObjectConstructor, JsonArrayConstructor, JsonArrayQueryConstructor, JsonAggConstructor, JsonObjectAgg, JsonArrayAgg, RawStmt, InsertStmt, DeleteStmt, UpdateStmt, MergeStmt, SelectStmt, SetOperationStmt, ReturnStmt, PLAssignStmt, CreateSchemaStmt, AlterTableStmt, ReplicaIdentityStmt, AlterTableCmd, AlterCollationStmt, AlterDomainStmt, GrantStmt, ObjectWithArgs, AccessPriv, GrantRoleStmt, AlterDefaultPrivilegesStmt, CopyStmt, VariableSetStmt, VariableShowStmt, CreateStmt, Constraint, CreateTableSpaceStmt, DropTableSpaceStmt, AlterTableSpaceOptionsStmt, AlterTableMoveAllStmt, CreateExtensionStmt, AlterExtensionStmt, AlterExtensionContentsStmt, CreateFdwStmt, AlterFdwStmt, CreateForeignServerStmt, AlterForeignServerStmt, CreateForeignTableStmt, CreateUserMappingStmt, AlterUserMappingStmt, DropUserMappingStmt, ImportForeignSchemaStmt, CreatePolicyStmt, AlterPolicyStmt, CreateAmStmt, CreateTrigStmt, CreateEventTrigStmt, AlterEventTrigStmt, CreatePLangStmt, CreateRoleStmt, AlterRoleStmt, AlterRoleSetStmt, DropRoleStmt, CreateSeqStmt, AlterSeqStmt, DefineStmt, CreateDomainStmt, CreateOpClassStmt, CreateOpClassItem, CreateOpFamilyStmt, AlterOpFamilyStmt, DropStmt, TruncateStmt, CommentStmt, SecLabelStmt, DeclareCursorStmt, ClosePortalStmt, FetchStmt, IndexStmt, CreateStatsStmt, StatsElem, AlterStatsStmt, CreateFunctionStmt, FunctionParameter, AlterFunctionStmt, DoStmt, InlineCodeBlock, CallStmt, CallContext, RenameStmt, AlterObjectDependsStmt, AlterObjectSchemaStmt, AlterOwnerStmt, AlterOperatorStmt, AlterTypeStmt, RuleStmt, NotifyStmt, ListenStmt, UnlistenStmt, TransactionStmt, CompositeTypeStmt, CreateEnumStmt, CreateRangeStmt, AlterEnumStmt, ViewStmt, LoadStmt, CreatedbStmt, AlterDatabaseStmt, AlterDatabaseRefreshCollStmt, AlterDatabaseSetStmt, DropdbStmt, AlterSystemStmt, ClusterStmt, VacuumStmt, VacuumRelation, ExplainStmt, CreateTableAsStmt, RefreshMatViewStmt, CheckPointStmt, DiscardStmt, LockStmt, ConstraintsSetStmt, ReindexStmt, CreateConversionStmt, CreateCastStmt, CreateTransformStmt, PrepareStmt, ExecuteStmt, DeallocateStmt, DropOwnedStmt, ReassignOwnedStmt, AlterTSDictionaryStmt, AlterTSConfigurationStmt, PublicationTable, PublicationObjSpec, CreatePublicationStmt, AlterPublicationStmt, CreateSubscriptionStmt, AlterSubscriptionStmt, DropSubscriptionStmt, ScanToken } from "./types";
 export default {
-  parseResult(_p?: ParseResult): ParseResult {
+  parseResult(_p?: ParseResult): {
+    ParseResult: ParseResult;
+  } {
     const _j = {} as ParseResult;
     _o.set(_j, "version", _p?.version);
     _o.set(_j, "stmts", _p?.stmts);
-    return _j;
+    return {
+      ParseResult: _j
+    };
   },
-  scanResult(_p?: ScanResult): ScanResult {
+  scanResult(_p?: ScanResult): {
+    ScanResult: ScanResult;
+  } {
     const _j = {} as ScanResult;
     _o.set(_j, "version", _p?.version);
     _o.set(_j, "tokens", _p?.tokens);
-    return _j;
+    return {
+      ScanResult: _j
+    };
   },
-  integer(_p?: Integer): Integer {
+  integer(_p?: Integer): {
+    Integer: Integer;
+  } {
     const _j = {} as Integer;
     _o.set(_j, "ival", _p?.ival);
-    return _j;
+    return {
+      Integer: _j
+    };
   },
-  float(_p?: Float): Float {
+  float(_p?: Float): {
+    Float: Float;
+  } {
     const _j = {} as Float;
     _o.set(_j, "fval", _p?.fval);
-    return _j;
+    return {
+      Float: _j
+    };
   },
-  boolean(_p?: Boolean): Boolean {
+  boolean(_p?: Boolean): {
+    Boolean: Boolean;
+  } {
     const _j = {} as Boolean;
     _o.set(_j, "boolval", _p?.boolval);
-    return _j;
+    return {
+      Boolean: _j
+    };
   },
-  string(_p?: String): String {
+  string(_p?: String): {
+    String: String;
+  } {
     const _j = {} as String;
     _o.set(_j, "sval", _p?.sval);
-    return _j;
+    return {
+      String: _j
+    };
   },
-  bitString(_p?: BitString): BitString {
+  bitString(_p?: BitString): {
+    BitString: BitString;
+  } {
     const _j = {} as BitString;
     _o.set(_j, "bsval", _p?.bsval);
-    return _j;
+    return {
+      BitString: _j
+    };
   },
-  list(_p?: List): List {
+  list(_p?: List): {
+    List: List;
+  } {
     const _j = {} as List;
     _o.set(_j, "items", _p?.items);
-    return _j;
+    return {
+      List: _j
+    };
   },
-  oidList(_p?: OidList): OidList {
+  oidList(_p?: OidList): {
+    OidList: OidList;
+  } {
     const _j = {} as OidList;
     _o.set(_j, "items", _p?.items);
-    return _j;
+    return {
+      OidList: _j
+    };
   },
-  intList(_p?: IntList): IntList {
+  intList(_p?: IntList): {
+    IntList: IntList;
+  } {
     const _j = {} as IntList;
     _o.set(_j, "items", _p?.items);
-    return _j;
+    return {
+      IntList: _j
+    };
   },
-  aConst(_p?: A_Const): A_Const {
+  aConst(_p?: A_Const): {
+    A_Const: A_Const;
+  } {
     const _j = {} as A_Const;
     _o.set(_j, "ival", _p?.ival);
     _o.set(_j, "fval", _p?.fval);
@@ -67,15 +109,23 @@ export default {
     _o.set(_j, "bsval", _p?.bsval);
     _o.set(_j, "isnull", _p?.isnull);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      A_Const: _j
+    };
   },
-  alias(_p?: Alias): Alias {
+  alias(_p?: Alias): {
+    Alias: Alias;
+  } {
     const _j = {} as Alias;
     _o.set(_j, "aliasname", _p?.aliasname);
     _o.set(_j, "colnames", _p?.colnames);
-    return _j;
+    return {
+      Alias: _j
+    };
   },
-  rangeVar(_p?: RangeVar): RangeVar {
+  rangeVar(_p?: RangeVar): {
+    RangeVar: RangeVar;
+  } {
     const _j = {} as RangeVar;
     _o.set(_j, "catalogname", _p?.catalogname);
     _o.set(_j, "schemaname", _p?.schemaname);
@@ -84,9 +134,13 @@ export default {
     _o.set(_j, "relpersistence", _p?.relpersistence);
     _o.set(_j, "alias", _p?.alias);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      RangeVar: _j
+    };
   },
-  tableFunc(_p?: TableFunc): TableFunc {
+  tableFunc(_p?: TableFunc): {
+    TableFunc: TableFunc;
+  } {
     const _j = {} as TableFunc;
     _o.set(_j, "ns_uris", _p?.ns_uris);
     _o.set(_j, "ns_names", _p?.ns_names);
@@ -101,9 +155,13 @@ export default {
     _o.set(_j, "notnulls", _p?.notnulls);
     _o.set(_j, "ordinalitycol", _p?.ordinalitycol);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      TableFunc: _j
+    };
   },
-  intoClause(_p?: IntoClause): IntoClause {
+  intoClause(_p?: IntoClause): {
+    IntoClause: IntoClause;
+  } {
     const _j = {} as IntoClause;
     _o.set(_j, "rel", _p?.rel);
     _o.set(_j, "colNames", _p?.colNames);
@@ -113,9 +171,13 @@ export default {
     _o.set(_j, "tableSpaceName", _p?.tableSpaceName);
     _o.set(_j, "viewQuery", _p?.viewQuery);
     _o.set(_j, "skipData", _p?.skipData);
-    return _j;
+    return {
+      IntoClause: _j
+    };
   },
-  var(_p?: Var): Var {
+  var(_p?: Var): {
+    Var: Var;
+  } {
     const _j = {} as Var;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "varno", _p?.varno);
@@ -126,9 +188,13 @@ export default {
     _o.set(_j, "varnullingrels", _p?.varnullingrels);
     _o.set(_j, "varlevelsup", _p?.varlevelsup);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      Var: _j
+    };
   },
-  param(_p?: Param): Param {
+  param(_p?: Param): {
+    Param: Param;
+  } {
     const _j = {} as Param;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "paramkind", _p?.paramkind);
@@ -137,9 +203,13 @@ export default {
     _o.set(_j, "paramtypmod", _p?.paramtypmod);
     _o.set(_j, "paramcollid", _p?.paramcollid);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      Param: _j
+    };
   },
-  aggref(_p?: Aggref): Aggref {
+  aggref(_p?: Aggref): {
+    Aggref: Aggref;
+  } {
     const _j = {} as Aggref;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "aggfnoid", _p?.aggfnoid);
@@ -160,18 +230,26 @@ export default {
     _o.set(_j, "aggno", _p?.aggno);
     _o.set(_j, "aggtransno", _p?.aggtransno);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      Aggref: _j
+    };
   },
-  groupingFunc(_p?: GroupingFunc): GroupingFunc {
+  groupingFunc(_p?: GroupingFunc): {
+    GroupingFunc: GroupingFunc;
+  } {
     const _j = {} as GroupingFunc;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "args", _p?.args);
     _o.set(_j, "refs", _p?.refs);
     _o.set(_j, "agglevelsup", _p?.agglevelsup);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      GroupingFunc: _j
+    };
   },
-  windowFunc(_p?: WindowFunc): WindowFunc {
+  windowFunc(_p?: WindowFunc): {
+    WindowFunc: WindowFunc;
+  } {
     const _j = {} as WindowFunc;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "winfnoid", _p?.winfnoid);
@@ -184,9 +262,13 @@ export default {
     _o.set(_j, "winstar", _p?.winstar);
     _o.set(_j, "winagg", _p?.winagg);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      WindowFunc: _j
+    };
   },
-  subscriptingRef(_p?: SubscriptingRef): SubscriptingRef {
+  subscriptingRef(_p?: SubscriptingRef): {
+    SubscriptingRef: SubscriptingRef;
+  } {
     const _j = {} as SubscriptingRef;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "refcontainertype", _p?.refcontainertype);
@@ -198,9 +280,13 @@ export default {
     _o.set(_j, "reflowerindexpr", _p?.reflowerindexpr);
     _o.set(_j, "refexpr", _p?.refexpr);
     _o.set(_j, "refassgnexpr", _p?.refassgnexpr);
-    return _j;
+    return {
+      SubscriptingRef: _j
+    };
   },
-  funcExpr(_p?: FuncExpr): FuncExpr {
+  funcExpr(_p?: FuncExpr): {
+    FuncExpr: FuncExpr;
+  } {
     const _j = {} as FuncExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "funcid", _p?.funcid);
@@ -212,18 +298,26 @@ export default {
     _o.set(_j, "inputcollid", _p?.inputcollid);
     _o.set(_j, "args", _p?.args);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      FuncExpr: _j
+    };
   },
-  namedArgExpr(_p?: NamedArgExpr): NamedArgExpr {
+  namedArgExpr(_p?: NamedArgExpr): {
+    NamedArgExpr: NamedArgExpr;
+  } {
     const _j = {} as NamedArgExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "arg", _p?.arg);
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "argnumber", _p?.argnumber);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      NamedArgExpr: _j
+    };
   },
-  opExpr(_p?: OpExpr): OpExpr {
+  opExpr(_p?: OpExpr): {
+    OpExpr: OpExpr;
+  } {
     const _j = {} as OpExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "opno", _p?.opno);
@@ -233,9 +327,13 @@ export default {
     _o.set(_j, "inputcollid", _p?.inputcollid);
     _o.set(_j, "args", _p?.args);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      OpExpr: _j
+    };
   },
-  distinctExpr(_p?: DistinctExpr): DistinctExpr {
+  distinctExpr(_p?: DistinctExpr): {
+    DistinctExpr: DistinctExpr;
+  } {
     const _j = {} as DistinctExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "opno", _p?.opno);
@@ -245,9 +343,13 @@ export default {
     _o.set(_j, "inputcollid", _p?.inputcollid);
     _o.set(_j, "args", _p?.args);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      DistinctExpr: _j
+    };
   },
-  nullIfExpr(_p?: NullIfExpr): NullIfExpr {
+  nullIfExpr(_p?: NullIfExpr): {
+    NullIfExpr: NullIfExpr;
+  } {
     const _j = {} as NullIfExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "opno", _p?.opno);
@@ -257,9 +359,13 @@ export default {
     _o.set(_j, "inputcollid", _p?.inputcollid);
     _o.set(_j, "args", _p?.args);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      NullIfExpr: _j
+    };
   },
-  scalarArrayOpExpr(_p?: ScalarArrayOpExpr): ScalarArrayOpExpr {
+  scalarArrayOpExpr(_p?: ScalarArrayOpExpr): {
+    ScalarArrayOpExpr: ScalarArrayOpExpr;
+  } {
     const _j = {} as ScalarArrayOpExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "opno", _p?.opno);
@@ -267,17 +373,25 @@ export default {
     _o.set(_j, "inputcollid", _p?.inputcollid);
     _o.set(_j, "args", _p?.args);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      ScalarArrayOpExpr: _j
+    };
   },
-  boolExpr(_p?: BoolExpr): BoolExpr {
+  boolExpr(_p?: BoolExpr): {
+    BoolExpr: BoolExpr;
+  } {
     const _j = {} as BoolExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "boolop", _p?.boolop);
     _o.set(_j, "args", _p?.args);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      BoolExpr: _j
+    };
   },
-  subLink(_p?: SubLink): SubLink {
+  subLink(_p?: SubLink): {
+    SubLink: SubLink;
+  } {
     const _j = {} as SubLink;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "subLinkType", _p?.subLinkType);
@@ -286,9 +400,13 @@ export default {
     _o.set(_j, "operName", _p?.operName);
     _o.set(_j, "subselect", _p?.subselect);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      SubLink: _j
+    };
   },
-  subPlan(_p?: SubPlan): SubPlan {
+  subPlan(_p?: SubPlan): {
+    SubPlan: SubPlan;
+  } {
     const _j = {} as SubPlan;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "subLinkType", _p?.subLinkType);
@@ -307,15 +425,23 @@ export default {
     _o.set(_j, "args", _p?.args);
     _o.set(_j, "startup_cost", _p?.startup_cost);
     _o.set(_j, "per_call_cost", _p?.per_call_cost);
-    return _j;
+    return {
+      SubPlan: _j
+    };
   },
-  alternativeSubPlan(_p?: AlternativeSubPlan): AlternativeSubPlan {
+  alternativeSubPlan(_p?: AlternativeSubPlan): {
+    AlternativeSubPlan: AlternativeSubPlan;
+  } {
     const _j = {} as AlternativeSubPlan;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "subplans", _p?.subplans);
-    return _j;
+    return {
+      AlternativeSubPlan: _j
+    };
   },
-  fieldSelect(_p?: FieldSelect): FieldSelect {
+  fieldSelect(_p?: FieldSelect): {
+    FieldSelect: FieldSelect;
+  } {
     const _j = {} as FieldSelect;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "arg", _p?.arg);
@@ -323,18 +449,26 @@ export default {
     _o.set(_j, "resulttype", _p?.resulttype);
     _o.set(_j, "resulttypmod", _p?.resulttypmod);
     _o.set(_j, "resultcollid", _p?.resultcollid);
-    return _j;
+    return {
+      FieldSelect: _j
+    };
   },
-  fieldStore(_p?: FieldStore): FieldStore {
+  fieldStore(_p?: FieldStore): {
+    FieldStore: FieldStore;
+  } {
     const _j = {} as FieldStore;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "arg", _p?.arg);
     _o.set(_j, "newvals", _p?.newvals);
     _o.set(_j, "fieldnums", _p?.fieldnums);
     _o.set(_j, "resulttype", _p?.resulttype);
-    return _j;
+    return {
+      FieldStore: _j
+    };
   },
-  relabelType(_p?: RelabelType): RelabelType {
+  relabelType(_p?: RelabelType): {
+    RelabelType: RelabelType;
+  } {
     const _j = {} as RelabelType;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "arg", _p?.arg);
@@ -343,9 +477,13 @@ export default {
     _o.set(_j, "resultcollid", _p?.resultcollid);
     _o.set(_j, "relabelformat", _p?.relabelformat);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      RelabelType: _j
+    };
   },
-  coerceViaio(_p?: CoerceViaIO): CoerceViaIO {
+  coerceViaio(_p?: CoerceViaIO): {
+    CoerceViaIO: CoerceViaIO;
+  } {
     const _j = {} as CoerceViaIO;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "arg", _p?.arg);
@@ -353,9 +491,13 @@ export default {
     _o.set(_j, "resultcollid", _p?.resultcollid);
     _o.set(_j, "coerceformat", _p?.coerceformat);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      CoerceViaIO: _j
+    };
   },
-  arrayCoerceExpr(_p?: ArrayCoerceExpr): ArrayCoerceExpr {
+  arrayCoerceExpr(_p?: ArrayCoerceExpr): {
+    ArrayCoerceExpr: ArrayCoerceExpr;
+  } {
     const _j = {} as ArrayCoerceExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "arg", _p?.arg);
@@ -365,26 +507,38 @@ export default {
     _o.set(_j, "resultcollid", _p?.resultcollid);
     _o.set(_j, "coerceformat", _p?.coerceformat);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      ArrayCoerceExpr: _j
+    };
   },
-  convertRowtypeExpr(_p?: ConvertRowtypeExpr): ConvertRowtypeExpr {
+  convertRowtypeExpr(_p?: ConvertRowtypeExpr): {
+    ConvertRowtypeExpr: ConvertRowtypeExpr;
+  } {
     const _j = {} as ConvertRowtypeExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "arg", _p?.arg);
     _o.set(_j, "resulttype", _p?.resulttype);
     _o.set(_j, "convertformat", _p?.convertformat);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      ConvertRowtypeExpr: _j
+    };
   },
-  collateExpr(_p?: CollateExpr): CollateExpr {
+  collateExpr(_p?: CollateExpr): {
+    CollateExpr: CollateExpr;
+  } {
     const _j = {} as CollateExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "arg", _p?.arg);
     _o.set(_j, "collOid", _p?.collOid);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      CollateExpr: _j
+    };
   },
-  caseExpr(_p?: CaseExpr): CaseExpr {
+  caseExpr(_p?: CaseExpr): {
+    CaseExpr: CaseExpr;
+  } {
     const _j = {} as CaseExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "casetype", _p?.casetype);
@@ -393,25 +547,37 @@ export default {
     _o.set(_j, "args", _p?.args);
     _o.set(_j, "defresult", _p?.defresult);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      CaseExpr: _j
+    };
   },
-  caseWhen(_p?: CaseWhen): CaseWhen {
+  caseWhen(_p?: CaseWhen): {
+    CaseWhen: CaseWhen;
+  } {
     const _j = {} as CaseWhen;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "expr", _p?.expr);
     _o.set(_j, "result", _p?.result);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      CaseWhen: _j
+    };
   },
-  caseTestExpr(_p?: CaseTestExpr): CaseTestExpr {
+  caseTestExpr(_p?: CaseTestExpr): {
+    CaseTestExpr: CaseTestExpr;
+  } {
     const _j = {} as CaseTestExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "typeId", _p?.typeId);
     _o.set(_j, "typeMod", _p?.typeMod);
     _o.set(_j, "collation", _p?.collation);
-    return _j;
+    return {
+      CaseTestExpr: _j
+    };
   },
-  arrayExpr(_p?: ArrayExpr): ArrayExpr {
+  arrayExpr(_p?: ArrayExpr): {
+    ArrayExpr: ArrayExpr;
+  } {
     const _j = {} as ArrayExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "array_typeid", _p?.array_typeid);
@@ -420,9 +586,13 @@ export default {
     _o.set(_j, "elements", _p?.elements);
     _o.set(_j, "multidims", _p?.multidims);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      ArrayExpr: _j
+    };
   },
-  rowExpr(_p?: RowExpr): RowExpr {
+  rowExpr(_p?: RowExpr): {
+    RowExpr: RowExpr;
+  } {
     const _j = {} as RowExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "args", _p?.args);
@@ -430,9 +600,13 @@ export default {
     _o.set(_j, "row_format", _p?.row_format);
     _o.set(_j, "colnames", _p?.colnames);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      RowExpr: _j
+    };
   },
-  rowCompareExpr(_p?: RowCompareExpr): RowCompareExpr {
+  rowCompareExpr(_p?: RowCompareExpr): {
+    RowCompareExpr: RowCompareExpr;
+  } {
     const _j = {} as RowCompareExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "rctype", _p?.rctype);
@@ -441,18 +615,26 @@ export default {
     _o.set(_j, "inputcollids", _p?.inputcollids);
     _o.set(_j, "largs", _p?.largs);
     _o.set(_j, "rargs", _p?.rargs);
-    return _j;
+    return {
+      RowCompareExpr: _j
+    };
   },
-  coalesceExpr(_p?: CoalesceExpr): CoalesceExpr {
+  coalesceExpr(_p?: CoalesceExpr): {
+    CoalesceExpr: CoalesceExpr;
+  } {
     const _j = {} as CoalesceExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "coalescetype", _p?.coalescetype);
     _o.set(_j, "coalescecollid", _p?.coalescecollid);
     _o.set(_j, "args", _p?.args);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      CoalesceExpr: _j
+    };
   },
-  minMaxExpr(_p?: MinMaxExpr): MinMaxExpr {
+  minMaxExpr(_p?: MinMaxExpr): {
+    MinMaxExpr: MinMaxExpr;
+  } {
     const _j = {} as MinMaxExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "minmaxtype", _p?.minmaxtype);
@@ -461,18 +643,26 @@ export default {
     _o.set(_j, "op", _p?.op);
     _o.set(_j, "args", _p?.args);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      MinMaxExpr: _j
+    };
   },
-  sqlValueFunction(_p?: SQLValueFunction): SQLValueFunction {
+  sqlValueFunction(_p?: SQLValueFunction): {
+    SQLValueFunction: SQLValueFunction;
+  } {
     const _j = {} as SQLValueFunction;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "op", _p?.op);
     _o.set(_j, "type", _p?.type);
     _o.set(_j, "typmod", _p?.typmod);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      SQLValueFunction: _j
+    };
   },
-  xmlExpr(_p?: XmlExpr): XmlExpr {
+  xmlExpr(_p?: XmlExpr): {
+    XmlExpr: XmlExpr;
+  } {
     const _j = {} as XmlExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "op", _p?.op);
@@ -485,30 +675,46 @@ export default {
     _o.set(_j, "type", _p?.type);
     _o.set(_j, "typmod", _p?.typmod);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      XmlExpr: _j
+    };
   },
-  jsonFormat(_p?: JsonFormat): JsonFormat {
+  jsonFormat(_p?: JsonFormat): {
+    JsonFormat: JsonFormat;
+  } {
     const _j = {} as JsonFormat;
     _o.set(_j, "format_type", _p?.format_type);
     _o.set(_j, "encoding", _p?.encoding);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      JsonFormat: _j
+    };
   },
-  jsonReturning(_p?: JsonReturning): JsonReturning {
+  jsonReturning(_p?: JsonReturning): {
+    JsonReturning: JsonReturning;
+  } {
     const _j = {} as JsonReturning;
     _o.set(_j, "format", _p?.format);
     _o.set(_j, "typid", _p?.typid);
     _o.set(_j, "typmod", _p?.typmod);
-    return _j;
+    return {
+      JsonReturning: _j
+    };
   },
-  jsonValueExpr(_p?: JsonValueExpr): JsonValueExpr {
+  jsonValueExpr(_p?: JsonValueExpr): {
+    JsonValueExpr: JsonValueExpr;
+  } {
     const _j = {} as JsonValueExpr;
     _o.set(_j, "raw_expr", _p?.raw_expr);
     _o.set(_j, "formatted_expr", _p?.formatted_expr);
     _o.set(_j, "format", _p?.format);
-    return _j;
+    return {
+      JsonValueExpr: _j
+    };
   },
-  jsonConstructorExpr(_p?: JsonConstructorExpr): JsonConstructorExpr {
+  jsonConstructorExpr(_p?: JsonConstructorExpr): {
+    JsonConstructorExpr: JsonConstructorExpr;
+  } {
     const _j = {} as JsonConstructorExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "type", _p?.type);
@@ -519,35 +725,51 @@ export default {
     _o.set(_j, "absent_on_null", _p?.absent_on_null);
     _o.set(_j, "unique", _p?.unique);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      JsonConstructorExpr: _j
+    };
   },
-  jsonIsPredicate(_p?: JsonIsPredicate): JsonIsPredicate {
+  jsonIsPredicate(_p?: JsonIsPredicate): {
+    JsonIsPredicate: JsonIsPredicate;
+  } {
     const _j = {} as JsonIsPredicate;
     _o.set(_j, "expr", _p?.expr);
     _o.set(_j, "format", _p?.format);
     _o.set(_j, "item_type", _p?.item_type);
     _o.set(_j, "unique_keys", _p?.unique_keys);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      JsonIsPredicate: _j
+    };
   },
-  nullTest(_p?: NullTest): NullTest {
+  nullTest(_p?: NullTest): {
+    NullTest: NullTest;
+  } {
     const _j = {} as NullTest;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "arg", _p?.arg);
     _o.set(_j, "nulltesttype", _p?.nulltesttype);
     _o.set(_j, "argisrow", _p?.argisrow);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      NullTest: _j
+    };
   },
-  booleanTest(_p?: BooleanTest): BooleanTest {
+  booleanTest(_p?: BooleanTest): {
+    BooleanTest: BooleanTest;
+  } {
     const _j = {} as BooleanTest;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "arg", _p?.arg);
     _o.set(_j, "booltesttype", _p?.booltesttype);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      BooleanTest: _j
+    };
   },
-  coerceToDomain(_p?: CoerceToDomain): CoerceToDomain {
+  coerceToDomain(_p?: CoerceToDomain): {
+    CoerceToDomain: CoerceToDomain;
+  } {
     const _j = {} as CoerceToDomain;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "arg", _p?.arg);
@@ -556,50 +778,74 @@ export default {
     _o.set(_j, "resultcollid", _p?.resultcollid);
     _o.set(_j, "coercionformat", _p?.coercionformat);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      CoerceToDomain: _j
+    };
   },
-  coerceToDomainValue(_p?: CoerceToDomainValue): CoerceToDomainValue {
+  coerceToDomainValue(_p?: CoerceToDomainValue): {
+    CoerceToDomainValue: CoerceToDomainValue;
+  } {
     const _j = {} as CoerceToDomainValue;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "typeId", _p?.typeId);
     _o.set(_j, "typeMod", _p?.typeMod);
     _o.set(_j, "collation", _p?.collation);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      CoerceToDomainValue: _j
+    };
   },
-  setToDefault(_p?: SetToDefault): SetToDefault {
+  setToDefault(_p?: SetToDefault): {
+    SetToDefault: SetToDefault;
+  } {
     const _j = {} as SetToDefault;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "typeId", _p?.typeId);
     _o.set(_j, "typeMod", _p?.typeMod);
     _o.set(_j, "collation", _p?.collation);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      SetToDefault: _j
+    };
   },
-  currentOfExpr(_p?: CurrentOfExpr): CurrentOfExpr {
+  currentOfExpr(_p?: CurrentOfExpr): {
+    CurrentOfExpr: CurrentOfExpr;
+  } {
     const _j = {} as CurrentOfExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "cvarno", _p?.cvarno);
     _o.set(_j, "cursor_name", _p?.cursor_name);
     _o.set(_j, "cursor_param", _p?.cursor_param);
-    return _j;
+    return {
+      CurrentOfExpr: _j
+    };
   },
-  nextValueExpr(_p?: NextValueExpr): NextValueExpr {
+  nextValueExpr(_p?: NextValueExpr): {
+    NextValueExpr: NextValueExpr;
+  } {
     const _j = {} as NextValueExpr;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "seqid", _p?.seqid);
     _o.set(_j, "typeId", _p?.typeId);
-    return _j;
+    return {
+      NextValueExpr: _j
+    };
   },
-  inferenceElem(_p?: InferenceElem): InferenceElem {
+  inferenceElem(_p?: InferenceElem): {
+    InferenceElem: InferenceElem;
+  } {
     const _j = {} as InferenceElem;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "expr", _p?.expr);
     _o.set(_j, "infercollid", _p?.infercollid);
     _o.set(_j, "inferopclass", _p?.inferopclass);
-    return _j;
+    return {
+      InferenceElem: _j
+    };
   },
-  targetEntry(_p?: TargetEntry): TargetEntry {
+  targetEntry(_p?: TargetEntry): {
+    TargetEntry: TargetEntry;
+  } {
     const _j = {} as TargetEntry;
     _o.set(_j, "xpr", _p?.xpr);
     _o.set(_j, "expr", _p?.expr);
@@ -609,14 +855,22 @@ export default {
     _o.set(_j, "resorigtbl", _p?.resorigtbl);
     _o.set(_j, "resorigcol", _p?.resorigcol);
     _o.set(_j, "resjunk", _p?.resjunk);
-    return _j;
+    return {
+      TargetEntry: _j
+    };
   },
-  rangeTblRef(_p?: RangeTblRef): RangeTblRef {
+  rangeTblRef(_p?: RangeTblRef): {
+    RangeTblRef: RangeTblRef;
+  } {
     const _j = {} as RangeTblRef;
     _o.set(_j, "rtindex", _p?.rtindex);
-    return _j;
+    return {
+      RangeTblRef: _j
+    };
   },
-  joinExpr(_p?: JoinExpr): JoinExpr {
+  joinExpr(_p?: JoinExpr): {
+    JoinExpr: JoinExpr;
+  } {
     const _j = {} as JoinExpr;
     _o.set(_j, "jointype", _p?.jointype);
     _o.set(_j, "isNatural", _p?.isNatural);
@@ -627,15 +881,23 @@ export default {
     _o.set(_j, "quals", _p?.quals);
     _o.set(_j, "alias", _p?.alias);
     _o.set(_j, "rtindex", _p?.rtindex);
-    return _j;
+    return {
+      JoinExpr: _j
+    };
   },
-  fromExpr(_p?: FromExpr): FromExpr {
+  fromExpr(_p?: FromExpr): {
+    FromExpr: FromExpr;
+  } {
     const _j = {} as FromExpr;
     _o.set(_j, "fromlist", _p?.fromlist);
     _o.set(_j, "quals", _p?.quals);
-    return _j;
+    return {
+      FromExpr: _j
+    };
   },
-  onConflictExpr(_p?: OnConflictExpr): OnConflictExpr {
+  onConflictExpr(_p?: OnConflictExpr): {
+    OnConflictExpr: OnConflictExpr;
+  } {
     const _j = {} as OnConflictExpr;
     _o.set(_j, "action", _p?.action);
     _o.set(_j, "arbiterElems", _p?.arbiterElems);
@@ -645,9 +907,13 @@ export default {
     _o.set(_j, "onConflictWhere", _p?.onConflictWhere);
     _o.set(_j, "exclRelIndex", _p?.exclRelIndex);
     _o.set(_j, "exclRelTlist", _p?.exclRelTlist);
-    return _j;
+    return {
+      OnConflictExpr: _j
+    };
   },
-  query(_p?: Query): Query {
+  query(_p?: Query): {
+    Query: Query;
+  } {
     const _j = {} as Query;
     _o.set(_j, "commandType", _p?.commandType);
     _o.set(_j, "querySource", _p?.querySource);
@@ -690,9 +956,13 @@ export default {
     _o.set(_j, "withCheckOptions", _p?.withCheckOptions);
     _o.set(_j, "stmt_location", _p?.stmt_location);
     _o.set(_j, "stmt_len", _p?.stmt_len);
-    return _j;
+    return {
+      Query: _j
+    };
   },
-  typeName(_p?: TypeName): TypeName {
+  typeName(_p?: TypeName): {
+    TypeName: TypeName;
+  } {
     const _j = {} as TypeName;
     _o.set(_j, "names", _p?.names);
     _o.set(_j, "typeOid", _p?.typeOid);
@@ -702,51 +972,79 @@ export default {
     _o.set(_j, "typemod", _p?.typemod);
     _o.set(_j, "arrayBounds", _p?.arrayBounds);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      TypeName: _j
+    };
   },
-  columnRef(_p?: ColumnRef): ColumnRef {
+  columnRef(_p?: ColumnRef): {
+    ColumnRef: ColumnRef;
+  } {
     const _j = {} as ColumnRef;
     _o.set(_j, "fields", _p?.fields);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      ColumnRef: _j
+    };
   },
-  paramRef(_p?: ParamRef): ParamRef {
+  paramRef(_p?: ParamRef): {
+    ParamRef: ParamRef;
+  } {
     const _j = {} as ParamRef;
     _o.set(_j, "number", _p?.number);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      ParamRef: _j
+    };
   },
-  aExpr(_p?: A_Expr): A_Expr {
+  aExpr(_p?: A_Expr): {
+    A_Expr: A_Expr;
+  } {
     const _j = {} as A_Expr;
     _o.set(_j, "kind", _p?.kind);
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "lexpr", _p?.lexpr);
     _o.set(_j, "rexpr", _p?.rexpr);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      A_Expr: _j
+    };
   },
-  typeCast(_p?: TypeCast): TypeCast {
+  typeCast(_p?: TypeCast): {
+    TypeCast: TypeCast;
+  } {
     const _j = {} as TypeCast;
     _o.set(_j, "arg", _p?.arg);
     _o.set(_j, "typeName", _p?.typeName);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      TypeCast: _j
+    };
   },
-  collateClause(_p?: CollateClause): CollateClause {
+  collateClause(_p?: CollateClause): {
+    CollateClause: CollateClause;
+  } {
     const _j = {} as CollateClause;
     _o.set(_j, "arg", _p?.arg);
     _o.set(_j, "collname", _p?.collname);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      CollateClause: _j
+    };
   },
-  roleSpec(_p?: RoleSpec): RoleSpec {
+  roleSpec(_p?: RoleSpec): {
+    RoleSpec: RoleSpec;
+  } {
     const _j = {} as RoleSpec;
     _o.set(_j, "roletype", _p?.roletype);
     _o.set(_j, "rolename", _p?.rolename);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      RoleSpec: _j
+    };
   },
-  funcCall(_p?: FuncCall): FuncCall {
+  funcCall(_p?: FuncCall): {
+    FuncCall: FuncCall;
+  } {
     const _j = {} as FuncCall;
     _o.set(_j, "funcname", _p?.funcname);
     _o.set(_j, "args", _p?.args);
@@ -759,56 +1057,88 @@ export default {
     _o.set(_j, "func_variadic", _p?.func_variadic);
     _o.set(_j, "funcformat", _p?.funcformat);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      FuncCall: _j
+    };
   },
-  aStar(_p?: A_Star): A_Star {
+  aStar(_p?: A_Star): {
+    A_Star: A_Star;
+  } {
     const _j = {} as A_Star;
-    return _j;
+    return {
+      A_Star: _j
+    };
   },
-  aIndices(_p?: A_Indices): A_Indices {
+  aIndices(_p?: A_Indices): {
+    A_Indices: A_Indices;
+  } {
     const _j = {} as A_Indices;
     _o.set(_j, "is_slice", _p?.is_slice);
     _o.set(_j, "lidx", _p?.lidx);
     _o.set(_j, "uidx", _p?.uidx);
-    return _j;
+    return {
+      A_Indices: _j
+    };
   },
-  aIndirection(_p?: A_Indirection): A_Indirection {
+  aIndirection(_p?: A_Indirection): {
+    A_Indirection: A_Indirection;
+  } {
     const _j = {} as A_Indirection;
     _o.set(_j, "arg", _p?.arg);
     _o.set(_j, "indirection", _p?.indirection);
-    return _j;
+    return {
+      A_Indirection: _j
+    };
   },
-  aArrayExpr(_p?: A_ArrayExpr): A_ArrayExpr {
+  aArrayExpr(_p?: A_ArrayExpr): {
+    A_ArrayExpr: A_ArrayExpr;
+  } {
     const _j = {} as A_ArrayExpr;
     _o.set(_j, "elements", _p?.elements);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      A_ArrayExpr: _j
+    };
   },
-  resTarget(_p?: ResTarget): ResTarget {
+  resTarget(_p?: ResTarget): {
+    ResTarget: ResTarget;
+  } {
     const _j = {} as ResTarget;
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "indirection", _p?.indirection);
     _o.set(_j, "val", _p?.val);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      ResTarget: _j
+    };
   },
-  multiAssignRef(_p?: MultiAssignRef): MultiAssignRef {
+  multiAssignRef(_p?: MultiAssignRef): {
+    MultiAssignRef: MultiAssignRef;
+  } {
     const _j = {} as MultiAssignRef;
     _o.set(_j, "source", _p?.source);
     _o.set(_j, "colno", _p?.colno);
     _o.set(_j, "ncolumns", _p?.ncolumns);
-    return _j;
+    return {
+      MultiAssignRef: _j
+    };
   },
-  sortBy(_p?: SortBy): SortBy {
+  sortBy(_p?: SortBy): {
+    SortBy: SortBy;
+  } {
     const _j = {} as SortBy;
     _o.set(_j, "node", _p?.node);
     _o.set(_j, "sortby_dir", _p?.sortby_dir);
     _o.set(_j, "sortby_nulls", _p?.sortby_nulls);
     _o.set(_j, "useOp", _p?.useOp);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      SortBy: _j
+    };
   },
-  windowDef(_p?: WindowDef): WindowDef {
+  windowDef(_p?: WindowDef): {
+    WindowDef: WindowDef;
+  } {
     const _j = {} as WindowDef;
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "refname", _p?.refname);
@@ -818,16 +1148,24 @@ export default {
     _o.set(_j, "startOffset", _p?.startOffset);
     _o.set(_j, "endOffset", _p?.endOffset);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      WindowDef: _j
+    };
   },
-  rangeSubselect(_p?: RangeSubselect): RangeSubselect {
+  rangeSubselect(_p?: RangeSubselect): {
+    RangeSubselect: RangeSubselect;
+  } {
     const _j = {} as RangeSubselect;
     _o.set(_j, "lateral", _p?.lateral);
     _o.set(_j, "subquery", _p?.subquery);
     _o.set(_j, "alias", _p?.alias);
-    return _j;
+    return {
+      RangeSubselect: _j
+    };
   },
-  rangeFunction(_p?: RangeFunction): RangeFunction {
+  rangeFunction(_p?: RangeFunction): {
+    RangeFunction: RangeFunction;
+  } {
     const _j = {} as RangeFunction;
     _o.set(_j, "lateral", _p?.lateral);
     _o.set(_j, "ordinality", _p?.ordinality);
@@ -835,9 +1173,13 @@ export default {
     _o.set(_j, "functions", _p?.functions);
     _o.set(_j, "alias", _p?.alias);
     _o.set(_j, "coldeflist", _p?.coldeflist);
-    return _j;
+    return {
+      RangeFunction: _j
+    };
   },
-  rangeTableFunc(_p?: RangeTableFunc): RangeTableFunc {
+  rangeTableFunc(_p?: RangeTableFunc): {
+    RangeTableFunc: RangeTableFunc;
+  } {
     const _j = {} as RangeTableFunc;
     _o.set(_j, "lateral", _p?.lateral);
     _o.set(_j, "docexpr", _p?.docexpr);
@@ -846,9 +1188,13 @@ export default {
     _o.set(_j, "columns", _p?.columns);
     _o.set(_j, "alias", _p?.alias);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      RangeTableFunc: _j
+    };
   },
-  rangeTableFuncCol(_p?: RangeTableFuncCol): RangeTableFuncCol {
+  rangeTableFuncCol(_p?: RangeTableFuncCol): {
+    RangeTableFuncCol: RangeTableFuncCol;
+  } {
     const _j = {} as RangeTableFuncCol;
     _o.set(_j, "colname", _p?.colname);
     _o.set(_j, "typeName", _p?.typeName);
@@ -857,18 +1203,26 @@ export default {
     _o.set(_j, "colexpr", _p?.colexpr);
     _o.set(_j, "coldefexpr", _p?.coldefexpr);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      RangeTableFuncCol: _j
+    };
   },
-  rangeTableSample(_p?: RangeTableSample): RangeTableSample {
+  rangeTableSample(_p?: RangeTableSample): {
+    RangeTableSample: RangeTableSample;
+  } {
     const _j = {} as RangeTableSample;
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "method", _p?.method);
     _o.set(_j, "args", _p?.args);
     _o.set(_j, "repeatable", _p?.repeatable);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      RangeTableSample: _j
+    };
   },
-  columnDef(_p?: ColumnDef): ColumnDef {
+  columnDef(_p?: ColumnDef): {
+    ColumnDef: ColumnDef;
+  } {
     const _j = {} as ColumnDef;
     _o.set(_j, "colname", _p?.colname);
     _o.set(_j, "typeName", _p?.typeName);
@@ -889,16 +1243,24 @@ export default {
     _o.set(_j, "constraints", _p?.constraints);
     _o.set(_j, "fdwoptions", _p?.fdwoptions);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      ColumnDef: _j
+    };
   },
-  tableLikeClause(_p?: TableLikeClause): TableLikeClause {
+  tableLikeClause(_p?: TableLikeClause): {
+    TableLikeClause: TableLikeClause;
+  } {
     const _j = {} as TableLikeClause;
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "options", _p?.options);
     _o.set(_j, "relationOid", _p?.relationOid);
-    return _j;
+    return {
+      TableLikeClause: _j
+    };
   },
-  indexElem(_p?: IndexElem): IndexElem {
+  indexElem(_p?: IndexElem): {
+    IndexElem: IndexElem;
+  } {
     const _j = {} as IndexElem;
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "expr", _p?.expr);
@@ -908,50 +1270,74 @@ export default {
     _o.set(_j, "opclassopts", _p?.opclassopts);
     _o.set(_j, "ordering", _p?.ordering);
     _o.set(_j, "nulls_ordering", _p?.nulls_ordering);
-    return _j;
+    return {
+      IndexElem: _j
+    };
   },
-  defElem(_p?: DefElem): DefElem {
+  defElem(_p?: DefElem): {
+    DefElem: DefElem;
+  } {
     const _j = {} as DefElem;
     _o.set(_j, "defnamespace", _p?.defnamespace);
     _o.set(_j, "defname", _p?.defname);
     _o.set(_j, "arg", _p?.arg);
     _o.set(_j, "defaction", _p?.defaction);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      DefElem: _j
+    };
   },
-  lockingClause(_p?: LockingClause): LockingClause {
+  lockingClause(_p?: LockingClause): {
+    LockingClause: LockingClause;
+  } {
     const _j = {} as LockingClause;
     _o.set(_j, "lockedRels", _p?.lockedRels);
     _o.set(_j, "strength", _p?.strength);
     _o.set(_j, "waitPolicy", _p?.waitPolicy);
-    return _j;
+    return {
+      LockingClause: _j
+    };
   },
-  xmlSerialize(_p?: XmlSerialize): XmlSerialize {
+  xmlSerialize(_p?: XmlSerialize): {
+    XmlSerialize: XmlSerialize;
+  } {
     const _j = {} as XmlSerialize;
     _o.set(_j, "xmloption", _p?.xmloption);
     _o.set(_j, "expr", _p?.expr);
     _o.set(_j, "typeName", _p?.typeName);
     _o.set(_j, "indent", _p?.indent);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      XmlSerialize: _j
+    };
   },
-  partitionElem(_p?: PartitionElem): PartitionElem {
+  partitionElem(_p?: PartitionElem): {
+    PartitionElem: PartitionElem;
+  } {
     const _j = {} as PartitionElem;
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "expr", _p?.expr);
     _o.set(_j, "collation", _p?.collation);
     _o.set(_j, "opclass", _p?.opclass);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      PartitionElem: _j
+    };
   },
-  partitionSpec(_p?: PartitionSpec): PartitionSpec {
+  partitionSpec(_p?: PartitionSpec): {
+    PartitionSpec: PartitionSpec;
+  } {
     const _j = {} as PartitionSpec;
     _o.set(_j, "strategy", _p?.strategy);
     _o.set(_j, "partParams", _p?.partParams);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      PartitionSpec: _j
+    };
   },
-  partitionBoundSpec(_p?: PartitionBoundSpec): PartitionBoundSpec {
+  partitionBoundSpec(_p?: PartitionBoundSpec): {
+    PartitionBoundSpec: PartitionBoundSpec;
+  } {
     const _j = {} as PartitionBoundSpec;
     _o.set(_j, "strategy", _p?.strategy);
     _o.set(_j, "is_default", _p?.is_default);
@@ -961,23 +1347,35 @@ export default {
     _o.set(_j, "lowerdatums", _p?.lowerdatums);
     _o.set(_j, "upperdatums", _p?.upperdatums);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      PartitionBoundSpec: _j
+    };
   },
-  partitionRangeDatum(_p?: PartitionRangeDatum): PartitionRangeDatum {
+  partitionRangeDatum(_p?: PartitionRangeDatum): {
+    PartitionRangeDatum: PartitionRangeDatum;
+  } {
     const _j = {} as PartitionRangeDatum;
     _o.set(_j, "kind", _p?.kind);
     _o.set(_j, "value", _p?.value);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      PartitionRangeDatum: _j
+    };
   },
-  partitionCmd(_p?: PartitionCmd): PartitionCmd {
+  partitionCmd(_p?: PartitionCmd): {
+    PartitionCmd: PartitionCmd;
+  } {
     const _j = {} as PartitionCmd;
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "bound", _p?.bound);
     _o.set(_j, "concurrent", _p?.concurrent);
-    return _j;
+    return {
+      PartitionCmd: _j
+    };
   },
-  rangeTblEntry(_p?: RangeTblEntry): RangeTblEntry {
+  rangeTblEntry(_p?: RangeTblEntry): {
+    RangeTblEntry: RangeTblEntry;
+  } {
     const _j = {} as RangeTblEntry;
     _o.set(_j, "rtekind", _p?.rtekind);
     _o.set(_j, "relid", _p?.relid);
@@ -1011,9 +1409,13 @@ export default {
     _o.set(_j, "inh", _p?.inh);
     _o.set(_j, "inFromCl", _p?.inFromCl);
     _o.set(_j, "securityQuals", _p?.securityQuals);
-    return _j;
+    return {
+      RangeTblEntry: _j
+    };
   },
-  rtePermissionInfo(_p?: RTEPermissionInfo): RTEPermissionInfo {
+  rtePermissionInfo(_p?: RTEPermissionInfo): {
+    RTEPermissionInfo: RTEPermissionInfo;
+  } {
     const _j = {} as RTEPermissionInfo;
     _o.set(_j, "relid", _p?.relid);
     _o.set(_j, "inh", _p?.inh);
@@ -1022,9 +1424,13 @@ export default {
     _o.set(_j, "selectedCols", _p?.selectedCols);
     _o.set(_j, "insertedCols", _p?.insertedCols);
     _o.set(_j, "updatedCols", _p?.updatedCols);
-    return _j;
+    return {
+      RTEPermissionInfo: _j
+    };
   },
-  rangeTblFunction(_p?: RangeTblFunction): RangeTblFunction {
+  rangeTblFunction(_p?: RangeTblFunction): {
+    RangeTblFunction: RangeTblFunction;
+  } {
     const _j = {} as RangeTblFunction;
     _o.set(_j, "funcexpr", _p?.funcexpr);
     _o.set(_j, "funccolcount", _p?.funccolcount);
@@ -1033,41 +1439,61 @@ export default {
     _o.set(_j, "funccoltypmods", _p?.funccoltypmods);
     _o.set(_j, "funccolcollations", _p?.funccolcollations);
     _o.set(_j, "funcparams", _p?.funcparams);
-    return _j;
+    return {
+      RangeTblFunction: _j
+    };
   },
-  tableSampleClause(_p?: TableSampleClause): TableSampleClause {
+  tableSampleClause(_p?: TableSampleClause): {
+    TableSampleClause: TableSampleClause;
+  } {
     const _j = {} as TableSampleClause;
     _o.set(_j, "tsmhandler", _p?.tsmhandler);
     _o.set(_j, "args", _p?.args);
     _o.set(_j, "repeatable", _p?.repeatable);
-    return _j;
+    return {
+      TableSampleClause: _j
+    };
   },
-  withCheckOption(_p?: WithCheckOption): WithCheckOption {
+  withCheckOption(_p?: WithCheckOption): {
+    WithCheckOption: WithCheckOption;
+  } {
     const _j = {} as WithCheckOption;
     _o.set(_j, "kind", _p?.kind);
     _o.set(_j, "relname", _p?.relname);
     _o.set(_j, "polname", _p?.polname);
     _o.set(_j, "qual", _p?.qual);
     _o.set(_j, "cascaded", _p?.cascaded);
-    return _j;
+    return {
+      WithCheckOption: _j
+    };
   },
-  sortGroupClause(_p?: SortGroupClause): SortGroupClause {
+  sortGroupClause(_p?: SortGroupClause): {
+    SortGroupClause: SortGroupClause;
+  } {
     const _j = {} as SortGroupClause;
     _o.set(_j, "tleSortGroupRef", _p?.tleSortGroupRef);
     _o.set(_j, "eqop", _p?.eqop);
     _o.set(_j, "sortop", _p?.sortop);
     _o.set(_j, "nulls_first", _p?.nulls_first);
     _o.set(_j, "hashable", _p?.hashable);
-    return _j;
+    return {
+      SortGroupClause: _j
+    };
   },
-  groupingSet(_p?: GroupingSet): GroupingSet {
+  groupingSet(_p?: GroupingSet): {
+    GroupingSet: GroupingSet;
+  } {
     const _j = {} as GroupingSet;
     _o.set(_j, "kind", _p?.kind);
     _o.set(_j, "content", _p?.content);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      GroupingSet: _j
+    };
   },
-  windowClause(_p?: WindowClause): WindowClause {
+  windowClause(_p?: WindowClause): {
+    WindowClause: WindowClause;
+  } {
     const _j = {} as WindowClause;
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "refname", _p?.refname);
@@ -1084,49 +1510,73 @@ export default {
     _o.set(_j, "inRangeNullsFirst", _p?.inRangeNullsFirst);
     _o.set(_j, "winref", _p?.winref);
     _o.set(_j, "copiedOrder", _p?.copiedOrder);
-    return _j;
+    return {
+      WindowClause: _j
+    };
   },
-  rowMarkClause(_p?: RowMarkClause): RowMarkClause {
+  rowMarkClause(_p?: RowMarkClause): {
+    RowMarkClause: RowMarkClause;
+  } {
     const _j = {} as RowMarkClause;
     _o.set(_j, "rti", _p?.rti);
     _o.set(_j, "strength", _p?.strength);
     _o.set(_j, "waitPolicy", _p?.waitPolicy);
     _o.set(_j, "pushedDown", _p?.pushedDown);
-    return _j;
+    return {
+      RowMarkClause: _j
+    };
   },
-  withClause(_p?: WithClause): WithClause {
+  withClause(_p?: WithClause): {
+    WithClause: WithClause;
+  } {
     const _j = {} as WithClause;
     _o.set(_j, "ctes", _p?.ctes);
     _o.set(_j, "recursive", _p?.recursive);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      WithClause: _j
+    };
   },
-  inferClause(_p?: InferClause): InferClause {
+  inferClause(_p?: InferClause): {
+    InferClause: InferClause;
+  } {
     const _j = {} as InferClause;
     _o.set(_j, "indexElems", _p?.indexElems);
     _o.set(_j, "whereClause", _p?.whereClause);
     _o.set(_j, "conname", _p?.conname);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      InferClause: _j
+    };
   },
-  onConflictClause(_p?: OnConflictClause): OnConflictClause {
+  onConflictClause(_p?: OnConflictClause): {
+    OnConflictClause: OnConflictClause;
+  } {
     const _j = {} as OnConflictClause;
     _o.set(_j, "action", _p?.action);
     _o.set(_j, "infer", _p?.infer);
     _o.set(_j, "targetList", _p?.targetList);
     _o.set(_j, "whereClause", _p?.whereClause);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      OnConflictClause: _j
+    };
   },
-  cteSearchClause(_p?: CTESearchClause): CTESearchClause {
+  cteSearchClause(_p?: CTESearchClause): {
+    CTESearchClause: CTESearchClause;
+  } {
     const _j = {} as CTESearchClause;
     _o.set(_j, "search_col_list", _p?.search_col_list);
     _o.set(_j, "search_breadth_first", _p?.search_breadth_first);
     _o.set(_j, "search_seq_column", _p?.search_seq_column);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      CTESearchClause: _j
+    };
   },
-  cteCycleClause(_p?: CTECycleClause): CTECycleClause {
+  cteCycleClause(_p?: CTECycleClause): {
+    CTECycleClause: CTECycleClause;
+  } {
     const _j = {} as CTECycleClause;
     _o.set(_j, "cycle_col_list", _p?.cycle_col_list);
     _o.set(_j, "cycle_mark_column", _p?.cycle_mark_column);
@@ -1138,9 +1588,13 @@ export default {
     _o.set(_j, "cycle_mark_typmod", _p?.cycle_mark_typmod);
     _o.set(_j, "cycle_mark_collation", _p?.cycle_mark_collation);
     _o.set(_j, "cycle_mark_neop", _p?.cycle_mark_neop);
-    return _j;
+    return {
+      CTECycleClause: _j
+    };
   },
-  commonTableExpr(_p?: CommonTableExpr): CommonTableExpr {
+  commonTableExpr(_p?: CommonTableExpr): {
+    CommonTableExpr: CommonTableExpr;
+  } {
     const _j = {} as CommonTableExpr;
     _o.set(_j, "ctename", _p?.ctename);
     _o.set(_j, "aliascolnames", _p?.aliascolnames);
@@ -1155,9 +1609,13 @@ export default {
     _o.set(_j, "ctecoltypes", _p?.ctecoltypes);
     _o.set(_j, "ctecoltypmods", _p?.ctecoltypmods);
     _o.set(_j, "ctecolcollations", _p?.ctecolcollations);
-    return _j;
+    return {
+      CommonTableExpr: _j
+    };
   },
-  mergeWhenClause(_p?: MergeWhenClause): MergeWhenClause {
+  mergeWhenClause(_p?: MergeWhenClause): {
+    MergeWhenClause: MergeWhenClause;
+  } {
     const _j = {} as MergeWhenClause;
     _o.set(_j, "matched", _p?.matched);
     _o.set(_j, "commandType", _p?.commandType);
@@ -1165,9 +1623,13 @@ export default {
     _o.set(_j, "condition", _p?.condition);
     _o.set(_j, "targetList", _p?.targetList);
     _o.set(_j, "values", _p?.values);
-    return _j;
+    return {
+      MergeWhenClause: _j
+    };
   },
-  mergeAction(_p?: MergeAction): MergeAction {
+  mergeAction(_p?: MergeAction): {
+    MergeAction: MergeAction;
+  } {
     const _j = {} as MergeAction;
     _o.set(_j, "matched", _p?.matched);
     _o.set(_j, "commandType", _p?.commandType);
@@ -1175,85 +1637,129 @@ export default {
     _o.set(_j, "qual", _p?.qual);
     _o.set(_j, "targetList", _p?.targetList);
     _o.set(_j, "updateColnos", _p?.updateColnos);
-    return _j;
+    return {
+      MergeAction: _j
+    };
   },
-  triggerTransition(_p?: TriggerTransition): TriggerTransition {
+  triggerTransition(_p?: TriggerTransition): {
+    TriggerTransition: TriggerTransition;
+  } {
     const _j = {} as TriggerTransition;
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "isNew", _p?.isNew);
     _o.set(_j, "isTable", _p?.isTable);
-    return _j;
+    return {
+      TriggerTransition: _j
+    };
   },
-  jsonOutput(_p?: JsonOutput): JsonOutput {
+  jsonOutput(_p?: JsonOutput): {
+    JsonOutput: JsonOutput;
+  } {
     const _j = {} as JsonOutput;
     _o.set(_j, "typeName", _p?.typeName);
     _o.set(_j, "returning", _p?.returning);
-    return _j;
+    return {
+      JsonOutput: _j
+    };
   },
-  jsonKeyValue(_p?: JsonKeyValue): JsonKeyValue {
+  jsonKeyValue(_p?: JsonKeyValue): {
+    JsonKeyValue: JsonKeyValue;
+  } {
     const _j = {} as JsonKeyValue;
     _o.set(_j, "key", _p?.key);
     _o.set(_j, "value", _p?.value);
-    return _j;
+    return {
+      JsonKeyValue: _j
+    };
   },
-  jsonObjectConstructor(_p?: JsonObjectConstructor): JsonObjectConstructor {
+  jsonObjectConstructor(_p?: JsonObjectConstructor): {
+    JsonObjectConstructor: JsonObjectConstructor;
+  } {
     const _j = {} as JsonObjectConstructor;
     _o.set(_j, "exprs", _p?.exprs);
     _o.set(_j, "output", _p?.output);
     _o.set(_j, "absent_on_null", _p?.absent_on_null);
     _o.set(_j, "unique", _p?.unique);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      JsonObjectConstructor: _j
+    };
   },
-  jsonArrayConstructor(_p?: JsonArrayConstructor): JsonArrayConstructor {
+  jsonArrayConstructor(_p?: JsonArrayConstructor): {
+    JsonArrayConstructor: JsonArrayConstructor;
+  } {
     const _j = {} as JsonArrayConstructor;
     _o.set(_j, "exprs", _p?.exprs);
     _o.set(_j, "output", _p?.output);
     _o.set(_j, "absent_on_null", _p?.absent_on_null);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      JsonArrayConstructor: _j
+    };
   },
-  jsonArrayQueryConstructor(_p?: JsonArrayQueryConstructor): JsonArrayQueryConstructor {
+  jsonArrayQueryConstructor(_p?: JsonArrayQueryConstructor): {
+    JsonArrayQueryConstructor: JsonArrayQueryConstructor;
+  } {
     const _j = {} as JsonArrayQueryConstructor;
     _o.set(_j, "query", _p?.query);
     _o.set(_j, "output", _p?.output);
     _o.set(_j, "format", _p?.format);
     _o.set(_j, "absent_on_null", _p?.absent_on_null);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      JsonArrayQueryConstructor: _j
+    };
   },
-  jsonAggConstructor(_p?: JsonAggConstructor): JsonAggConstructor {
+  jsonAggConstructor(_p?: JsonAggConstructor): {
+    JsonAggConstructor: JsonAggConstructor;
+  } {
     const _j = {} as JsonAggConstructor;
     _o.set(_j, "output", _p?.output);
     _o.set(_j, "agg_filter", _p?.agg_filter);
     _o.set(_j, "agg_order", _p?.agg_order);
     _o.set(_j, "over", _p?.over);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      JsonAggConstructor: _j
+    };
   },
-  jsonObjectAgg(_p?: JsonObjectAgg): JsonObjectAgg {
+  jsonObjectAgg(_p?: JsonObjectAgg): {
+    JsonObjectAgg: JsonObjectAgg;
+  } {
     const _j = {} as JsonObjectAgg;
     _o.set(_j, "constructor", _p?.constructor);
     _o.set(_j, "arg", _p?.arg);
     _o.set(_j, "absent_on_null", _p?.absent_on_null);
     _o.set(_j, "unique", _p?.unique);
-    return _j;
+    return {
+      JsonObjectAgg: _j
+    };
   },
-  jsonArrayAgg(_p?: JsonArrayAgg): JsonArrayAgg {
+  jsonArrayAgg(_p?: JsonArrayAgg): {
+    JsonArrayAgg: JsonArrayAgg;
+  } {
     const _j = {} as JsonArrayAgg;
     _o.set(_j, "constructor", _p?.constructor);
     _o.set(_j, "arg", _p?.arg);
     _o.set(_j, "absent_on_null", _p?.absent_on_null);
-    return _j;
+    return {
+      JsonArrayAgg: _j
+    };
   },
-  rawStmt(_p?: RawStmt): RawStmt {
+  rawStmt(_p?: RawStmt): {
+    RawStmt: RawStmt;
+  } {
     const _j = {} as RawStmt;
     _o.set(_j, "stmt", _p?.stmt);
     _o.set(_j, "stmt_location", _p?.stmt_location);
     _o.set(_j, "stmt_len", _p?.stmt_len);
-    return _j;
+    return {
+      RawStmt: _j
+    };
   },
-  insertStmt(_p?: InsertStmt): InsertStmt {
+  insertStmt(_p?: InsertStmt): {
+    InsertStmt: InsertStmt;
+  } {
     const _j = {} as InsertStmt;
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "cols", _p?.cols);
@@ -1262,18 +1768,26 @@ export default {
     _o.set(_j, "returningList", _p?.returningList);
     _o.set(_j, "withClause", _p?.withClause);
     _o.set(_j, "override", _p?.override);
-    return _j;
+    return {
+      InsertStmt: _j
+    };
   },
-  deleteStmt(_p?: DeleteStmt): DeleteStmt {
+  deleteStmt(_p?: DeleteStmt): {
+    DeleteStmt: DeleteStmt;
+  } {
     const _j = {} as DeleteStmt;
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "usingClause", _p?.usingClause);
     _o.set(_j, "whereClause", _p?.whereClause);
     _o.set(_j, "returningList", _p?.returningList);
     _o.set(_j, "withClause", _p?.withClause);
-    return _j;
+    return {
+      DeleteStmt: _j
+    };
   },
-  updateStmt(_p?: UpdateStmt): UpdateStmt {
+  updateStmt(_p?: UpdateStmt): {
+    UpdateStmt: UpdateStmt;
+  } {
     const _j = {} as UpdateStmt;
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "targetList", _p?.targetList);
@@ -1281,18 +1795,26 @@ export default {
     _o.set(_j, "fromClause", _p?.fromClause);
     _o.set(_j, "returningList", _p?.returningList);
     _o.set(_j, "withClause", _p?.withClause);
-    return _j;
+    return {
+      UpdateStmt: _j
+    };
   },
-  mergeStmt(_p?: MergeStmt): MergeStmt {
+  mergeStmt(_p?: MergeStmt): {
+    MergeStmt: MergeStmt;
+  } {
     const _j = {} as MergeStmt;
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "sourceRelation", _p?.sourceRelation);
     _o.set(_j, "joinCondition", _p?.joinCondition);
     _o.set(_j, "mergeWhenClauses", _p?.mergeWhenClauses);
     _o.set(_j, "withClause", _p?.withClause);
-    return _j;
+    return {
+      MergeStmt: _j
+    };
   },
-  selectStmt(_p?: SelectStmt): SelectStmt {
+  selectStmt(_p?: SelectStmt): {
+    SelectStmt: SelectStmt;
+  } {
     const _j = {} as SelectStmt;
     _o.set(_j, "distinctClause", _p?.distinctClause);
     _o.set(_j, "intoClause", _p?.intoClause);
@@ -1314,9 +1836,13 @@ export default {
     _o.set(_j, "all", _p?.all);
     _o.set(_j, "larg", _p?.larg);
     _o.set(_j, "rarg", _p?.rarg);
-    return _j;
+    return {
+      SelectStmt: _j
+    };
   },
-  setOperationStmt(_p?: SetOperationStmt): SetOperationStmt {
+  setOperationStmt(_p?: SetOperationStmt): {
+    SetOperationStmt: SetOperationStmt;
+  } {
     const _j = {} as SetOperationStmt;
     _o.set(_j, "op", _p?.op);
     _o.set(_j, "all", _p?.all);
@@ -1326,45 +1852,69 @@ export default {
     _o.set(_j, "colTypmods", _p?.colTypmods);
     _o.set(_j, "colCollations", _p?.colCollations);
     _o.set(_j, "groupClauses", _p?.groupClauses);
-    return _j;
+    return {
+      SetOperationStmt: _j
+    };
   },
-  returnStmt(_p?: ReturnStmt): ReturnStmt {
+  returnStmt(_p?: ReturnStmt): {
+    ReturnStmt: ReturnStmt;
+  } {
     const _j = {} as ReturnStmt;
     _o.set(_j, "returnval", _p?.returnval);
-    return _j;
+    return {
+      ReturnStmt: _j
+    };
   },
-  plAssignStmt(_p?: PLAssignStmt): PLAssignStmt {
+  plAssignStmt(_p?: PLAssignStmt): {
+    PLAssignStmt: PLAssignStmt;
+  } {
     const _j = {} as PLAssignStmt;
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "indirection", _p?.indirection);
     _o.set(_j, "nnames", _p?.nnames);
     _o.set(_j, "val", _p?.val);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      PLAssignStmt: _j
+    };
   },
-  createSchemaStmt(_p?: CreateSchemaStmt): CreateSchemaStmt {
+  createSchemaStmt(_p?: CreateSchemaStmt): {
+    CreateSchemaStmt: CreateSchemaStmt;
+  } {
     const _j = {} as CreateSchemaStmt;
     _o.set(_j, "schemaname", _p?.schemaname);
     _o.set(_j, "authrole", _p?.authrole);
     _o.set(_j, "schemaElts", _p?.schemaElts);
     _o.set(_j, "if_not_exists", _p?.if_not_exists);
-    return _j;
+    return {
+      CreateSchemaStmt: _j
+    };
   },
-  alterTableStmt(_p?: AlterTableStmt): AlterTableStmt {
+  alterTableStmt(_p?: AlterTableStmt): {
+    AlterTableStmt: AlterTableStmt;
+  } {
     const _j = {} as AlterTableStmt;
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "cmds", _p?.cmds);
     _o.set(_j, "objtype", _p?.objtype);
     _o.set(_j, "missing_ok", _p?.missing_ok);
-    return _j;
+    return {
+      AlterTableStmt: _j
+    };
   },
-  replicaIdentityStmt(_p?: ReplicaIdentityStmt): ReplicaIdentityStmt {
+  replicaIdentityStmt(_p?: ReplicaIdentityStmt): {
+    ReplicaIdentityStmt: ReplicaIdentityStmt;
+  } {
     const _j = {} as ReplicaIdentityStmt;
     _o.set(_j, "identity_type", _p?.identity_type);
     _o.set(_j, "name", _p?.name);
-    return _j;
+    return {
+      ReplicaIdentityStmt: _j
+    };
   },
-  alterTableCmd(_p?: AlterTableCmd): AlterTableCmd {
+  alterTableCmd(_p?: AlterTableCmd): {
+    AlterTableCmd: AlterTableCmd;
+  } {
     const _j = {} as AlterTableCmd;
     _o.set(_j, "subtype", _p?.subtype);
     _o.set(_j, "name", _p?.name);
@@ -1374,14 +1924,22 @@ export default {
     _o.set(_j, "behavior", _p?.behavior);
     _o.set(_j, "missing_ok", _p?.missing_ok);
     _o.set(_j, "recurse", _p?.recurse);
-    return _j;
+    return {
+      AlterTableCmd: _j
+    };
   },
-  alterCollationStmt(_p?: AlterCollationStmt): AlterCollationStmt {
+  alterCollationStmt(_p?: AlterCollationStmt): {
+    AlterCollationStmt: AlterCollationStmt;
+  } {
     const _j = {} as AlterCollationStmt;
     _o.set(_j, "collname", _p?.collname);
-    return _j;
+    return {
+      AlterCollationStmt: _j
+    };
   },
-  alterDomainStmt(_p?: AlterDomainStmt): AlterDomainStmt {
+  alterDomainStmt(_p?: AlterDomainStmt): {
+    AlterDomainStmt: AlterDomainStmt;
+  } {
     const _j = {} as AlterDomainStmt;
     _o.set(_j, "subtype", _p?.subtype);
     _o.set(_j, "typeName", _p?.typeName);
@@ -1389,9 +1947,13 @@ export default {
     _o.set(_j, "def", _p?.def);
     _o.set(_j, "behavior", _p?.behavior);
     _o.set(_j, "missing_ok", _p?.missing_ok);
-    return _j;
+    return {
+      AlterDomainStmt: _j
+    };
   },
-  grantStmt(_p?: GrantStmt): GrantStmt {
+  grantStmt(_p?: GrantStmt): {
+    GrantStmt: GrantStmt;
+  } {
     const _j = {} as GrantStmt;
     _o.set(_j, "is_grant", _p?.is_grant);
     _o.set(_j, "targtype", _p?.targtype);
@@ -1402,23 +1964,35 @@ export default {
     _o.set(_j, "grant_option", _p?.grant_option);
     _o.set(_j, "grantor", _p?.grantor);
     _o.set(_j, "behavior", _p?.behavior);
-    return _j;
+    return {
+      GrantStmt: _j
+    };
   },
-  objectWithArgs(_p?: ObjectWithArgs): ObjectWithArgs {
+  objectWithArgs(_p?: ObjectWithArgs): {
+    ObjectWithArgs: ObjectWithArgs;
+  } {
     const _j = {} as ObjectWithArgs;
     _o.set(_j, "objname", _p?.objname);
     _o.set(_j, "objargs", _p?.objargs);
     _o.set(_j, "objfuncargs", _p?.objfuncargs);
     _o.set(_j, "args_unspecified", _p?.args_unspecified);
-    return _j;
+    return {
+      ObjectWithArgs: _j
+    };
   },
-  accessPriv(_p?: AccessPriv): AccessPriv {
+  accessPriv(_p?: AccessPriv): {
+    AccessPriv: AccessPriv;
+  } {
     const _j = {} as AccessPriv;
     _o.set(_j, "priv_name", _p?.priv_name);
     _o.set(_j, "cols", _p?.cols);
-    return _j;
+    return {
+      AccessPriv: _j
+    };
   },
-  grantRoleStmt(_p?: GrantRoleStmt): GrantRoleStmt {
+  grantRoleStmt(_p?: GrantRoleStmt): {
+    GrantRoleStmt: GrantRoleStmt;
+  } {
     const _j = {} as GrantRoleStmt;
     _o.set(_j, "granted_roles", _p?.granted_roles);
     _o.set(_j, "grantee_roles", _p?.grantee_roles);
@@ -1426,15 +2000,23 @@ export default {
     _o.set(_j, "opt", _p?.opt);
     _o.set(_j, "grantor", _p?.grantor);
     _o.set(_j, "behavior", _p?.behavior);
-    return _j;
+    return {
+      GrantRoleStmt: _j
+    };
   },
-  alterDefaultPrivilegesStmt(_p?: AlterDefaultPrivilegesStmt): AlterDefaultPrivilegesStmt {
+  alterDefaultPrivilegesStmt(_p?: AlterDefaultPrivilegesStmt): {
+    AlterDefaultPrivilegesStmt: AlterDefaultPrivilegesStmt;
+  } {
     const _j = {} as AlterDefaultPrivilegesStmt;
     _o.set(_j, "options", _p?.options);
     _o.set(_j, "action", _p?.action);
-    return _j;
+    return {
+      AlterDefaultPrivilegesStmt: _j
+    };
   },
-  copyStmt(_p?: CopyStmt): CopyStmt {
+  copyStmt(_p?: CopyStmt): {
+    CopyStmt: CopyStmt;
+  } {
     const _j = {} as CopyStmt;
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "query", _p?.query);
@@ -1444,22 +2026,34 @@ export default {
     _o.set(_j, "filename", _p?.filename);
     _o.set(_j, "options", _p?.options);
     _o.set(_j, "whereClause", _p?.whereClause);
-    return _j;
+    return {
+      CopyStmt: _j
+    };
   },
-  variableSetStmt(_p?: VariableSetStmt): VariableSetStmt {
+  variableSetStmt(_p?: VariableSetStmt): {
+    VariableSetStmt: VariableSetStmt;
+  } {
     const _j = {} as VariableSetStmt;
     _o.set(_j, "kind", _p?.kind);
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "args", _p?.args);
     _o.set(_j, "is_local", _p?.is_local);
-    return _j;
+    return {
+      VariableSetStmt: _j
+    };
   },
-  variableShowStmt(_p?: VariableShowStmt): VariableShowStmt {
+  variableShowStmt(_p?: VariableShowStmt): {
+    VariableShowStmt: VariableShowStmt;
+  } {
     const _j = {} as VariableShowStmt;
     _o.set(_j, "name", _p?.name);
-    return _j;
+    return {
+      VariableShowStmt: _j
+    };
   },
-  createStmt(_p?: CreateStmt): CreateStmt {
+  createStmt(_p?: CreateStmt): {
+    CreateStmt: CreateStmt;
+  } {
     const _j = {} as CreateStmt;
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "tableElts", _p?.tableElts);
@@ -1473,9 +2067,13 @@ export default {
     _o.set(_j, "tablespacename", _p?.tablespacename);
     _o.set(_j, "accessMethod", _p?.accessMethod);
     _o.set(_j, "if_not_exists", _p?.if_not_exists);
-    return _j;
+    return {
+      CreateStmt: _j
+    };
   },
-  constraint(_p?: Constraint): Constraint {
+  constraint(_p?: Constraint): {
+    Constraint: Constraint;
+  } {
     const _j = {} as Constraint;
     _o.set(_j, "contype", _p?.contype);
     _o.set(_j, "conname", _p?.conname);
@@ -1507,74 +2105,114 @@ export default {
     _o.set(_j, "old_pktable_oid", _p?.old_pktable_oid);
     _o.set(_j, "skip_validation", _p?.skip_validation);
     _o.set(_j, "initially_valid", _p?.initially_valid);
-    return _j;
+    return {
+      Constraint: _j
+    };
   },
-  createTableSpaceStmt(_p?: CreateTableSpaceStmt): CreateTableSpaceStmt {
+  createTableSpaceStmt(_p?: CreateTableSpaceStmt): {
+    CreateTableSpaceStmt: CreateTableSpaceStmt;
+  } {
     const _j = {} as CreateTableSpaceStmt;
     _o.set(_j, "tablespacename", _p?.tablespacename);
     _o.set(_j, "owner", _p?.owner);
     _o.set(_j, "location", _p?.location);
     _o.set(_j, "options", _p?.options);
-    return _j;
+    return {
+      CreateTableSpaceStmt: _j
+    };
   },
-  dropTableSpaceStmt(_p?: DropTableSpaceStmt): DropTableSpaceStmt {
+  dropTableSpaceStmt(_p?: DropTableSpaceStmt): {
+    DropTableSpaceStmt: DropTableSpaceStmt;
+  } {
     const _j = {} as DropTableSpaceStmt;
     _o.set(_j, "tablespacename", _p?.tablespacename);
     _o.set(_j, "missing_ok", _p?.missing_ok);
-    return _j;
+    return {
+      DropTableSpaceStmt: _j
+    };
   },
-  alterTableSpaceOptionsStmt(_p?: AlterTableSpaceOptionsStmt): AlterTableSpaceOptionsStmt {
+  alterTableSpaceOptionsStmt(_p?: AlterTableSpaceOptionsStmt): {
+    AlterTableSpaceOptionsStmt: AlterTableSpaceOptionsStmt;
+  } {
     const _j = {} as AlterTableSpaceOptionsStmt;
     _o.set(_j, "tablespacename", _p?.tablespacename);
     _o.set(_j, "options", _p?.options);
     _o.set(_j, "isReset", _p?.isReset);
-    return _j;
+    return {
+      AlterTableSpaceOptionsStmt: _j
+    };
   },
-  alterTableMoveAllStmt(_p?: AlterTableMoveAllStmt): AlterTableMoveAllStmt {
+  alterTableMoveAllStmt(_p?: AlterTableMoveAllStmt): {
+    AlterTableMoveAllStmt: AlterTableMoveAllStmt;
+  } {
     const _j = {} as AlterTableMoveAllStmt;
     _o.set(_j, "orig_tablespacename", _p?.orig_tablespacename);
     _o.set(_j, "objtype", _p?.objtype);
     _o.set(_j, "roles", _p?.roles);
     _o.set(_j, "new_tablespacename", _p?.new_tablespacename);
     _o.set(_j, "nowait", _p?.nowait);
-    return _j;
+    return {
+      AlterTableMoveAllStmt: _j
+    };
   },
-  createExtensionStmt(_p?: CreateExtensionStmt): CreateExtensionStmt {
+  createExtensionStmt(_p?: CreateExtensionStmt): {
+    CreateExtensionStmt: CreateExtensionStmt;
+  } {
     const _j = {} as CreateExtensionStmt;
     _o.set(_j, "extname", _p?.extname);
     _o.set(_j, "if_not_exists", _p?.if_not_exists);
     _o.set(_j, "options", _p?.options);
-    return _j;
+    return {
+      CreateExtensionStmt: _j
+    };
   },
-  alterExtensionStmt(_p?: AlterExtensionStmt): AlterExtensionStmt {
+  alterExtensionStmt(_p?: AlterExtensionStmt): {
+    AlterExtensionStmt: AlterExtensionStmt;
+  } {
     const _j = {} as AlterExtensionStmt;
     _o.set(_j, "extname", _p?.extname);
     _o.set(_j, "options", _p?.options);
-    return _j;
+    return {
+      AlterExtensionStmt: _j
+    };
   },
-  alterExtensionContentsStmt(_p?: AlterExtensionContentsStmt): AlterExtensionContentsStmt {
+  alterExtensionContentsStmt(_p?: AlterExtensionContentsStmt): {
+    AlterExtensionContentsStmt: AlterExtensionContentsStmt;
+  } {
     const _j = {} as AlterExtensionContentsStmt;
     _o.set(_j, "extname", _p?.extname);
     _o.set(_j, "action", _p?.action);
     _o.set(_j, "objtype", _p?.objtype);
     _o.set(_j, "object", _p?.object);
-    return _j;
+    return {
+      AlterExtensionContentsStmt: _j
+    };
   },
-  createFdwStmt(_p?: CreateFdwStmt): CreateFdwStmt {
+  createFdwStmt(_p?: CreateFdwStmt): {
+    CreateFdwStmt: CreateFdwStmt;
+  } {
     const _j = {} as CreateFdwStmt;
     _o.set(_j, "fdwname", _p?.fdwname);
     _o.set(_j, "func_options", _p?.func_options);
     _o.set(_j, "options", _p?.options);
-    return _j;
+    return {
+      CreateFdwStmt: _j
+    };
   },
-  alterFdwStmt(_p?: AlterFdwStmt): AlterFdwStmt {
+  alterFdwStmt(_p?: AlterFdwStmt): {
+    AlterFdwStmt: AlterFdwStmt;
+  } {
     const _j = {} as AlterFdwStmt;
     _o.set(_j, "fdwname", _p?.fdwname);
     _o.set(_j, "func_options", _p?.func_options);
     _o.set(_j, "options", _p?.options);
-    return _j;
+    return {
+      AlterFdwStmt: _j
+    };
   },
-  createForeignServerStmt(_p?: CreateForeignServerStmt): CreateForeignServerStmt {
+  createForeignServerStmt(_p?: CreateForeignServerStmt): {
+    CreateForeignServerStmt: CreateForeignServerStmt;
+  } {
     const _j = {} as CreateForeignServerStmt;
     _o.set(_j, "servername", _p?.servername);
     _o.set(_j, "servertype", _p?.servertype);
@@ -1582,46 +2220,70 @@ export default {
     _o.set(_j, "fdwname", _p?.fdwname);
     _o.set(_j, "if_not_exists", _p?.if_not_exists);
     _o.set(_j, "options", _p?.options);
-    return _j;
+    return {
+      CreateForeignServerStmt: _j
+    };
   },
-  alterForeignServerStmt(_p?: AlterForeignServerStmt): AlterForeignServerStmt {
+  alterForeignServerStmt(_p?: AlterForeignServerStmt): {
+    AlterForeignServerStmt: AlterForeignServerStmt;
+  } {
     const _j = {} as AlterForeignServerStmt;
     _o.set(_j, "servername", _p?.servername);
     _o.set(_j, "version", _p?.version);
     _o.set(_j, "options", _p?.options);
     _o.set(_j, "has_version", _p?.has_version);
-    return _j;
+    return {
+      AlterForeignServerStmt: _j
+    };
   },
-  createForeignTableStmt(_p?: CreateForeignTableStmt): CreateForeignTableStmt {
+  createForeignTableStmt(_p?: CreateForeignTableStmt): {
+    CreateForeignTableStmt: CreateForeignTableStmt;
+  } {
     const _j = {} as CreateForeignTableStmt;
     _o.set(_j, "base", _p?.base);
     _o.set(_j, "servername", _p?.servername);
     _o.set(_j, "options", _p?.options);
-    return _j;
+    return {
+      CreateForeignTableStmt: _j
+    };
   },
-  createUserMappingStmt(_p?: CreateUserMappingStmt): CreateUserMappingStmt {
+  createUserMappingStmt(_p?: CreateUserMappingStmt): {
+    CreateUserMappingStmt: CreateUserMappingStmt;
+  } {
     const _j = {} as CreateUserMappingStmt;
     _o.set(_j, "user", _p?.user);
     _o.set(_j, "servername", _p?.servername);
     _o.set(_j, "if_not_exists", _p?.if_not_exists);
     _o.set(_j, "options", _p?.options);
-    return _j;
+    return {
+      CreateUserMappingStmt: _j
+    };
   },
-  alterUserMappingStmt(_p?: AlterUserMappingStmt): AlterUserMappingStmt {
+  alterUserMappingStmt(_p?: AlterUserMappingStmt): {
+    AlterUserMappingStmt: AlterUserMappingStmt;
+  } {
     const _j = {} as AlterUserMappingStmt;
     _o.set(_j, "user", _p?.user);
     _o.set(_j, "servername", _p?.servername);
     _o.set(_j, "options", _p?.options);
-    return _j;
+    return {
+      AlterUserMappingStmt: _j
+    };
   },
-  dropUserMappingStmt(_p?: DropUserMappingStmt): DropUserMappingStmt {
+  dropUserMappingStmt(_p?: DropUserMappingStmt): {
+    DropUserMappingStmt: DropUserMappingStmt;
+  } {
     const _j = {} as DropUserMappingStmt;
     _o.set(_j, "user", _p?.user);
     _o.set(_j, "servername", _p?.servername);
     _o.set(_j, "missing_ok", _p?.missing_ok);
-    return _j;
+    return {
+      DropUserMappingStmt: _j
+    };
   },
-  importForeignSchemaStmt(_p?: ImportForeignSchemaStmt): ImportForeignSchemaStmt {
+  importForeignSchemaStmt(_p?: ImportForeignSchemaStmt): {
+    ImportForeignSchemaStmt: ImportForeignSchemaStmt;
+  } {
     const _j = {} as ImportForeignSchemaStmt;
     _o.set(_j, "server_name", _p?.server_name);
     _o.set(_j, "remote_schema", _p?.remote_schema);
@@ -1629,9 +2291,13 @@ export default {
     _o.set(_j, "list_type", _p?.list_type);
     _o.set(_j, "table_list", _p?.table_list);
     _o.set(_j, "options", _p?.options);
-    return _j;
+    return {
+      ImportForeignSchemaStmt: _j
+    };
   },
-  createPolicyStmt(_p?: CreatePolicyStmt): CreatePolicyStmt {
+  createPolicyStmt(_p?: CreatePolicyStmt): {
+    CreatePolicyStmt: CreatePolicyStmt;
+  } {
     const _j = {} as CreatePolicyStmt;
     _o.set(_j, "policy_name", _p?.policy_name);
     _o.set(_j, "table", _p?.table);
@@ -1640,25 +2306,37 @@ export default {
     _o.set(_j, "roles", _p?.roles);
     _o.set(_j, "qual", _p?.qual);
     _o.set(_j, "with_check", _p?.with_check);
-    return _j;
+    return {
+      CreatePolicyStmt: _j
+    };
   },
-  alterPolicyStmt(_p?: AlterPolicyStmt): AlterPolicyStmt {
+  alterPolicyStmt(_p?: AlterPolicyStmt): {
+    AlterPolicyStmt: AlterPolicyStmt;
+  } {
     const _j = {} as AlterPolicyStmt;
     _o.set(_j, "policy_name", _p?.policy_name);
     _o.set(_j, "table", _p?.table);
     _o.set(_j, "roles", _p?.roles);
     _o.set(_j, "qual", _p?.qual);
     _o.set(_j, "with_check", _p?.with_check);
-    return _j;
+    return {
+      AlterPolicyStmt: _j
+    };
   },
-  createAmStmt(_p?: CreateAmStmt): CreateAmStmt {
+  createAmStmt(_p?: CreateAmStmt): {
+    CreateAmStmt: CreateAmStmt;
+  } {
     const _j = {} as CreateAmStmt;
     _o.set(_j, "amname", _p?.amname);
     _o.set(_j, "handler_name", _p?.handler_name);
     _o.set(_j, "amtype", _p?.amtype);
-    return _j;
+    return {
+      CreateAmStmt: _j
+    };
   },
-  createTrigStmt(_p?: CreateTrigStmt): CreateTrigStmt {
+  createTrigStmt(_p?: CreateTrigStmt): {
+    CreateTrigStmt: CreateTrigStmt;
+  } {
     const _j = {} as CreateTrigStmt;
     _o.set(_j, "replace", _p?.replace);
     _o.set(_j, "isconstraint", _p?.isconstraint);
@@ -1675,23 +2353,35 @@ export default {
     _o.set(_j, "deferrable", _p?.deferrable);
     _o.set(_j, "initdeferred", _p?.initdeferred);
     _o.set(_j, "constrrel", _p?.constrrel);
-    return _j;
+    return {
+      CreateTrigStmt: _j
+    };
   },
-  createEventTrigStmt(_p?: CreateEventTrigStmt): CreateEventTrigStmt {
+  createEventTrigStmt(_p?: CreateEventTrigStmt): {
+    CreateEventTrigStmt: CreateEventTrigStmt;
+  } {
     const _j = {} as CreateEventTrigStmt;
     _o.set(_j, "trigname", _p?.trigname);
     _o.set(_j, "eventname", _p?.eventname);
     _o.set(_j, "whenclause", _p?.whenclause);
     _o.set(_j, "funcname", _p?.funcname);
-    return _j;
+    return {
+      CreateEventTrigStmt: _j
+    };
   },
-  alterEventTrigStmt(_p?: AlterEventTrigStmt): AlterEventTrigStmt {
+  alterEventTrigStmt(_p?: AlterEventTrigStmt): {
+    AlterEventTrigStmt: AlterEventTrigStmt;
+  } {
     const _j = {} as AlterEventTrigStmt;
     _o.set(_j, "trigname", _p?.trigname);
     _o.set(_j, "tgenabled", _p?.tgenabled);
-    return _j;
+    return {
+      AlterEventTrigStmt: _j
+    };
   },
-  createpLangStmt(_p?: CreatePLangStmt): CreatePLangStmt {
+  createpLangStmt(_p?: CreatePLangStmt): {
+    CreatePLangStmt: CreatePLangStmt;
+  } {
     const _j = {} as CreatePLangStmt;
     _o.set(_j, "replace", _p?.replace);
     _o.set(_j, "plname", _p?.plname);
@@ -1699,53 +2389,81 @@ export default {
     _o.set(_j, "plinline", _p?.plinline);
     _o.set(_j, "plvalidator", _p?.plvalidator);
     _o.set(_j, "pltrusted", _p?.pltrusted);
-    return _j;
+    return {
+      CreatePLangStmt: _j
+    };
   },
-  createRoleStmt(_p?: CreateRoleStmt): CreateRoleStmt {
+  createRoleStmt(_p?: CreateRoleStmt): {
+    CreateRoleStmt: CreateRoleStmt;
+  } {
     const _j = {} as CreateRoleStmt;
     _o.set(_j, "stmt_type", _p?.stmt_type);
     _o.set(_j, "role", _p?.role);
     _o.set(_j, "options", _p?.options);
-    return _j;
+    return {
+      CreateRoleStmt: _j
+    };
   },
-  alterRoleStmt(_p?: AlterRoleStmt): AlterRoleStmt {
+  alterRoleStmt(_p?: AlterRoleStmt): {
+    AlterRoleStmt: AlterRoleStmt;
+  } {
     const _j = {} as AlterRoleStmt;
     _o.set(_j, "role", _p?.role);
     _o.set(_j, "options", _p?.options);
     _o.set(_j, "action", _p?.action);
-    return _j;
+    return {
+      AlterRoleStmt: _j
+    };
   },
-  alterRoleSetStmt(_p?: AlterRoleSetStmt): AlterRoleSetStmt {
+  alterRoleSetStmt(_p?: AlterRoleSetStmt): {
+    AlterRoleSetStmt: AlterRoleSetStmt;
+  } {
     const _j = {} as AlterRoleSetStmt;
     _o.set(_j, "role", _p?.role);
     _o.set(_j, "database", _p?.database);
     _o.set(_j, "setstmt", _p?.setstmt);
-    return _j;
+    return {
+      AlterRoleSetStmt: _j
+    };
   },
-  dropRoleStmt(_p?: DropRoleStmt): DropRoleStmt {
+  dropRoleStmt(_p?: DropRoleStmt): {
+    DropRoleStmt: DropRoleStmt;
+  } {
     const _j = {} as DropRoleStmt;
     _o.set(_j, "roles", _p?.roles);
     _o.set(_j, "missing_ok", _p?.missing_ok);
-    return _j;
+    return {
+      DropRoleStmt: _j
+    };
   },
-  createSeqStmt(_p?: CreateSeqStmt): CreateSeqStmt {
+  createSeqStmt(_p?: CreateSeqStmt): {
+    CreateSeqStmt: CreateSeqStmt;
+  } {
     const _j = {} as CreateSeqStmt;
     _o.set(_j, "sequence", _p?.sequence);
     _o.set(_j, "options", _p?.options);
     _o.set(_j, "ownerId", _p?.ownerId);
     _o.set(_j, "for_identity", _p?.for_identity);
     _o.set(_j, "if_not_exists", _p?.if_not_exists);
-    return _j;
+    return {
+      CreateSeqStmt: _j
+    };
   },
-  alterSeqStmt(_p?: AlterSeqStmt): AlterSeqStmt {
+  alterSeqStmt(_p?: AlterSeqStmt): {
+    AlterSeqStmt: AlterSeqStmt;
+  } {
     const _j = {} as AlterSeqStmt;
     _o.set(_j, "sequence", _p?.sequence);
     _o.set(_j, "options", _p?.options);
     _o.set(_j, "for_identity", _p?.for_identity);
     _o.set(_j, "missing_ok", _p?.missing_ok);
-    return _j;
+    return {
+      AlterSeqStmt: _j
+    };
   },
-  defineStmt(_p?: DefineStmt): DefineStmt {
+  defineStmt(_p?: DefineStmt): {
+    DefineStmt: DefineStmt;
+  } {
     const _j = {} as DefineStmt;
     _o.set(_j, "kind", _p?.kind);
     _o.set(_j, "oldstyle", _p?.oldstyle);
@@ -1754,17 +2472,25 @@ export default {
     _o.set(_j, "definition", _p?.definition);
     _o.set(_j, "if_not_exists", _p?.if_not_exists);
     _o.set(_j, "replace", _p?.replace);
-    return _j;
+    return {
+      DefineStmt: _j
+    };
   },
-  createDomainStmt(_p?: CreateDomainStmt): CreateDomainStmt {
+  createDomainStmt(_p?: CreateDomainStmt): {
+    CreateDomainStmt: CreateDomainStmt;
+  } {
     const _j = {} as CreateDomainStmt;
     _o.set(_j, "domainname", _p?.domainname);
     _o.set(_j, "typeName", _p?.typeName);
     _o.set(_j, "collClause", _p?.collClause);
     _o.set(_j, "constraints", _p?.constraints);
-    return _j;
+    return {
+      CreateDomainStmt: _j
+    };
   },
-  createOpClassStmt(_p?: CreateOpClassStmt): CreateOpClassStmt {
+  createOpClassStmt(_p?: CreateOpClassStmt): {
+    CreateOpClassStmt: CreateOpClassStmt;
+  } {
     const _j = {} as CreateOpClassStmt;
     _o.set(_j, "opclassname", _p?.opclassname);
     _o.set(_j, "opfamilyname", _p?.opfamilyname);
@@ -1772,9 +2498,13 @@ export default {
     _o.set(_j, "datatype", _p?.datatype);
     _o.set(_j, "items", _p?.items);
     _o.set(_j, "isDefault", _p?.isDefault);
-    return _j;
+    return {
+      CreateOpClassStmt: _j
+    };
   },
-  createOpClassItem(_p?: CreateOpClassItem): CreateOpClassItem {
+  createOpClassItem(_p?: CreateOpClassItem): {
+    CreateOpClassItem: CreateOpClassItem;
+  } {
     const _j = {} as CreateOpClassItem;
     _o.set(_j, "itemtype", _p?.itemtype);
     _o.set(_j, "name", _p?.name);
@@ -1782,74 +2512,114 @@ export default {
     _o.set(_j, "order_family", _p?.order_family);
     _o.set(_j, "class_args", _p?.class_args);
     _o.set(_j, "storedtype", _p?.storedtype);
-    return _j;
+    return {
+      CreateOpClassItem: _j
+    };
   },
-  createOpFamilyStmt(_p?: CreateOpFamilyStmt): CreateOpFamilyStmt {
+  createOpFamilyStmt(_p?: CreateOpFamilyStmt): {
+    CreateOpFamilyStmt: CreateOpFamilyStmt;
+  } {
     const _j = {} as CreateOpFamilyStmt;
     _o.set(_j, "opfamilyname", _p?.opfamilyname);
     _o.set(_j, "amname", _p?.amname);
-    return _j;
+    return {
+      CreateOpFamilyStmt: _j
+    };
   },
-  alterOpFamilyStmt(_p?: AlterOpFamilyStmt): AlterOpFamilyStmt {
+  alterOpFamilyStmt(_p?: AlterOpFamilyStmt): {
+    AlterOpFamilyStmt: AlterOpFamilyStmt;
+  } {
     const _j = {} as AlterOpFamilyStmt;
     _o.set(_j, "opfamilyname", _p?.opfamilyname);
     _o.set(_j, "amname", _p?.amname);
     _o.set(_j, "isDrop", _p?.isDrop);
     _o.set(_j, "items", _p?.items);
-    return _j;
+    return {
+      AlterOpFamilyStmt: _j
+    };
   },
-  dropStmt(_p?: DropStmt): DropStmt {
+  dropStmt(_p?: DropStmt): {
+    DropStmt: DropStmt;
+  } {
     const _j = {} as DropStmt;
     _o.set(_j, "objects", _p?.objects);
     _o.set(_j, "removeType", _p?.removeType);
     _o.set(_j, "behavior", _p?.behavior);
     _o.set(_j, "missing_ok", _p?.missing_ok);
     _o.set(_j, "concurrent", _p?.concurrent);
-    return _j;
+    return {
+      DropStmt: _j
+    };
   },
-  truncateStmt(_p?: TruncateStmt): TruncateStmt {
+  truncateStmt(_p?: TruncateStmt): {
+    TruncateStmt: TruncateStmt;
+  } {
     const _j = {} as TruncateStmt;
     _o.set(_j, "relations", _p?.relations);
     _o.set(_j, "restart_seqs", _p?.restart_seqs);
     _o.set(_j, "behavior", _p?.behavior);
-    return _j;
+    return {
+      TruncateStmt: _j
+    };
   },
-  commentStmt(_p?: CommentStmt): CommentStmt {
+  commentStmt(_p?: CommentStmt): {
+    CommentStmt: CommentStmt;
+  } {
     const _j = {} as CommentStmt;
     _o.set(_j, "objtype", _p?.objtype);
     _o.set(_j, "object", _p?.object);
     _o.set(_j, "comment", _p?.comment);
-    return _j;
+    return {
+      CommentStmt: _j
+    };
   },
-  secLabelStmt(_p?: SecLabelStmt): SecLabelStmt {
+  secLabelStmt(_p?: SecLabelStmt): {
+    SecLabelStmt: SecLabelStmt;
+  } {
     const _j = {} as SecLabelStmt;
     _o.set(_j, "objtype", _p?.objtype);
     _o.set(_j, "object", _p?.object);
     _o.set(_j, "provider", _p?.provider);
     _o.set(_j, "label", _p?.label);
-    return _j;
+    return {
+      SecLabelStmt: _j
+    };
   },
-  declareCursorStmt(_p?: DeclareCursorStmt): DeclareCursorStmt {
+  declareCursorStmt(_p?: DeclareCursorStmt): {
+    DeclareCursorStmt: DeclareCursorStmt;
+  } {
     const _j = {} as DeclareCursorStmt;
     _o.set(_j, "portalname", _p?.portalname);
     _o.set(_j, "options", _p?.options);
     _o.set(_j, "query", _p?.query);
-    return _j;
+    return {
+      DeclareCursorStmt: _j
+    };
   },
-  closePortalStmt(_p?: ClosePortalStmt): ClosePortalStmt {
+  closePortalStmt(_p?: ClosePortalStmt): {
+    ClosePortalStmt: ClosePortalStmt;
+  } {
     const _j = {} as ClosePortalStmt;
     _o.set(_j, "portalname", _p?.portalname);
-    return _j;
+    return {
+      ClosePortalStmt: _j
+    };
   },
-  fetchStmt(_p?: FetchStmt): FetchStmt {
+  fetchStmt(_p?: FetchStmt): {
+    FetchStmt: FetchStmt;
+  } {
     const _j = {} as FetchStmt;
     _o.set(_j, "direction", _p?.direction);
     _o.set(_j, "howMany", _p?.howMany);
     _o.set(_j, "portalname", _p?.portalname);
     _o.set(_j, "ismove", _p?.ismove);
-    return _j;
+    return {
+      FetchStmt: _j
+    };
   },
-  indexStmt(_p?: IndexStmt): IndexStmt {
+  indexStmt(_p?: IndexStmt): {
+    IndexStmt: IndexStmt;
+  } {
     const _j = {} as IndexStmt;
     _o.set(_j, "idxname", _p?.idxname);
     _o.set(_j, "relation", _p?.relation);
@@ -1875,9 +2645,13 @@ export default {
     _o.set(_j, "concurrent", _p?.concurrent);
     _o.set(_j, "if_not_exists", _p?.if_not_exists);
     _o.set(_j, "reset_default_tblspc", _p?.reset_default_tblspc);
-    return _j;
+    return {
+      IndexStmt: _j
+    };
   },
-  createStatsStmt(_p?: CreateStatsStmt): CreateStatsStmt {
+  createStatsStmt(_p?: CreateStatsStmt): {
+    CreateStatsStmt: CreateStatsStmt;
+  } {
     const _j = {} as CreateStatsStmt;
     _o.set(_j, "defnames", _p?.defnames);
     _o.set(_j, "stat_types", _p?.stat_types);
@@ -1886,22 +2660,34 @@ export default {
     _o.set(_j, "stxcomment", _p?.stxcomment);
     _o.set(_j, "transformed", _p?.transformed);
     _o.set(_j, "if_not_exists", _p?.if_not_exists);
-    return _j;
+    return {
+      CreateStatsStmt: _j
+    };
   },
-  statsElem(_p?: StatsElem): StatsElem {
+  statsElem(_p?: StatsElem): {
+    StatsElem: StatsElem;
+  } {
     const _j = {} as StatsElem;
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "expr", _p?.expr);
-    return _j;
+    return {
+      StatsElem: _j
+    };
   },
-  alterStatsStmt(_p?: AlterStatsStmt): AlterStatsStmt {
+  alterStatsStmt(_p?: AlterStatsStmt): {
+    AlterStatsStmt: AlterStatsStmt;
+  } {
     const _j = {} as AlterStatsStmt;
     _o.set(_j, "defnames", _p?.defnames);
     _o.set(_j, "stxstattarget", _p?.stxstattarget);
     _o.set(_j, "missing_ok", _p?.missing_ok);
-    return _j;
+    return {
+      AlterStatsStmt: _j
+    };
   },
-  createFunctionStmt(_p?: CreateFunctionStmt): CreateFunctionStmt {
+  createFunctionStmt(_p?: CreateFunctionStmt): {
+    CreateFunctionStmt: CreateFunctionStmt;
+  } {
     const _j = {} as CreateFunctionStmt;
     _o.set(_j, "is_procedure", _p?.is_procedure);
     _o.set(_j, "replace", _p?.replace);
@@ -1910,49 +2696,77 @@ export default {
     _o.set(_j, "returnType", _p?.returnType);
     _o.set(_j, "options", _p?.options);
     _o.set(_j, "sql_body", _p?.sql_body);
-    return _j;
+    return {
+      CreateFunctionStmt: _j
+    };
   },
-  functionParameter(_p?: FunctionParameter): FunctionParameter {
+  functionParameter(_p?: FunctionParameter): {
+    FunctionParameter: FunctionParameter;
+  } {
     const _j = {} as FunctionParameter;
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "argType", _p?.argType);
     _o.set(_j, "mode", _p?.mode);
     _o.set(_j, "defexpr", _p?.defexpr);
-    return _j;
+    return {
+      FunctionParameter: _j
+    };
   },
-  alterFunctionStmt(_p?: AlterFunctionStmt): AlterFunctionStmt {
+  alterFunctionStmt(_p?: AlterFunctionStmt): {
+    AlterFunctionStmt: AlterFunctionStmt;
+  } {
     const _j = {} as AlterFunctionStmt;
     _o.set(_j, "objtype", _p?.objtype);
     _o.set(_j, "func", _p?.func);
     _o.set(_j, "actions", _p?.actions);
-    return _j;
+    return {
+      AlterFunctionStmt: _j
+    };
   },
-  doStmt(_p?: DoStmt): DoStmt {
+  doStmt(_p?: DoStmt): {
+    DoStmt: DoStmt;
+  } {
     const _j = {} as DoStmt;
     _o.set(_j, "args", _p?.args);
-    return _j;
+    return {
+      DoStmt: _j
+    };
   },
-  inlineCodeBlock(_p?: InlineCodeBlock): InlineCodeBlock {
+  inlineCodeBlock(_p?: InlineCodeBlock): {
+    InlineCodeBlock: InlineCodeBlock;
+  } {
     const _j = {} as InlineCodeBlock;
     _o.set(_j, "source_text", _p?.source_text);
     _o.set(_j, "langOid", _p?.langOid);
     _o.set(_j, "langIsTrusted", _p?.langIsTrusted);
     _o.set(_j, "atomic", _p?.atomic);
-    return _j;
+    return {
+      InlineCodeBlock: _j
+    };
   },
-  callStmt(_p?: CallStmt): CallStmt {
+  callStmt(_p?: CallStmt): {
+    CallStmt: CallStmt;
+  } {
     const _j = {} as CallStmt;
     _o.set(_j, "funccall", _p?.funccall);
     _o.set(_j, "funcexpr", _p?.funcexpr);
     _o.set(_j, "outargs", _p?.outargs);
-    return _j;
+    return {
+      CallStmt: _j
+    };
   },
-  callContext(_p?: CallContext): CallContext {
+  callContext(_p?: CallContext): {
+    CallContext: CallContext;
+  } {
     const _j = {} as CallContext;
     _o.set(_j, "atomic", _p?.atomic);
-    return _j;
+    return {
+      CallContext: _j
+    };
   },
-  renameStmt(_p?: RenameStmt): RenameStmt {
+  renameStmt(_p?: RenameStmt): {
+    RenameStmt: RenameStmt;
+  } {
     const _j = {} as RenameStmt;
     _o.set(_j, "renameType", _p?.renameType);
     _o.set(_j, "relationType", _p?.relationType);
@@ -1962,47 +2776,71 @@ export default {
     _o.set(_j, "newname", _p?.newname);
     _o.set(_j, "behavior", _p?.behavior);
     _o.set(_j, "missing_ok", _p?.missing_ok);
-    return _j;
+    return {
+      RenameStmt: _j
+    };
   },
-  alterObjectDependsStmt(_p?: AlterObjectDependsStmt): AlterObjectDependsStmt {
+  alterObjectDependsStmt(_p?: AlterObjectDependsStmt): {
+    AlterObjectDependsStmt: AlterObjectDependsStmt;
+  } {
     const _j = {} as AlterObjectDependsStmt;
     _o.set(_j, "objectType", _p?.objectType);
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "object", _p?.object);
     _o.set(_j, "extname", _p?.extname);
     _o.set(_j, "remove", _p?.remove);
-    return _j;
+    return {
+      AlterObjectDependsStmt: _j
+    };
   },
-  alterObjectSchemaStmt(_p?: AlterObjectSchemaStmt): AlterObjectSchemaStmt {
+  alterObjectSchemaStmt(_p?: AlterObjectSchemaStmt): {
+    AlterObjectSchemaStmt: AlterObjectSchemaStmt;
+  } {
     const _j = {} as AlterObjectSchemaStmt;
     _o.set(_j, "objectType", _p?.objectType);
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "object", _p?.object);
     _o.set(_j, "newschema", _p?.newschema);
     _o.set(_j, "missing_ok", _p?.missing_ok);
-    return _j;
+    return {
+      AlterObjectSchemaStmt: _j
+    };
   },
-  alterOwnerStmt(_p?: AlterOwnerStmt): AlterOwnerStmt {
+  alterOwnerStmt(_p?: AlterOwnerStmt): {
+    AlterOwnerStmt: AlterOwnerStmt;
+  } {
     const _j = {} as AlterOwnerStmt;
     _o.set(_j, "objectType", _p?.objectType);
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "object", _p?.object);
     _o.set(_j, "newowner", _p?.newowner);
-    return _j;
+    return {
+      AlterOwnerStmt: _j
+    };
   },
-  alterOperatorStmt(_p?: AlterOperatorStmt): AlterOperatorStmt {
+  alterOperatorStmt(_p?: AlterOperatorStmt): {
+    AlterOperatorStmt: AlterOperatorStmt;
+  } {
     const _j = {} as AlterOperatorStmt;
     _o.set(_j, "opername", _p?.opername);
     _o.set(_j, "options", _p?.options);
-    return _j;
+    return {
+      AlterOperatorStmt: _j
+    };
   },
-  alterTypeStmt(_p?: AlterTypeStmt): AlterTypeStmt {
+  alterTypeStmt(_p?: AlterTypeStmt): {
+    AlterTypeStmt: AlterTypeStmt;
+  } {
     const _j = {} as AlterTypeStmt;
     _o.set(_j, "typeName", _p?.typeName);
     _o.set(_j, "options", _p?.options);
-    return _j;
+    return {
+      AlterTypeStmt: _j
+    };
   },
-  ruleStmt(_p?: RuleStmt): RuleStmt {
+  ruleStmt(_p?: RuleStmt): {
+    RuleStmt: RuleStmt;
+  } {
     const _j = {} as RuleStmt;
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "rulename", _p?.rulename);
@@ -2011,52 +2849,84 @@ export default {
     _o.set(_j, "instead", _p?.instead);
     _o.set(_j, "actions", _p?.actions);
     _o.set(_j, "replace", _p?.replace);
-    return _j;
+    return {
+      RuleStmt: _j
+    };
   },
-  notifyStmt(_p?: NotifyStmt): NotifyStmt {
+  notifyStmt(_p?: NotifyStmt): {
+    NotifyStmt: NotifyStmt;
+  } {
     const _j = {} as NotifyStmt;
     _o.set(_j, "conditionname", _p?.conditionname);
     _o.set(_j, "payload", _p?.payload);
-    return _j;
+    return {
+      NotifyStmt: _j
+    };
   },
-  listenStmt(_p?: ListenStmt): ListenStmt {
+  listenStmt(_p?: ListenStmt): {
+    ListenStmt: ListenStmt;
+  } {
     const _j = {} as ListenStmt;
     _o.set(_j, "conditionname", _p?.conditionname);
-    return _j;
+    return {
+      ListenStmt: _j
+    };
   },
-  unlistenStmt(_p?: UnlistenStmt): UnlistenStmt {
+  unlistenStmt(_p?: UnlistenStmt): {
+    UnlistenStmt: UnlistenStmt;
+  } {
     const _j = {} as UnlistenStmt;
     _o.set(_j, "conditionname", _p?.conditionname);
-    return _j;
+    return {
+      UnlistenStmt: _j
+    };
   },
-  transactionStmt(_p?: TransactionStmt): TransactionStmt {
+  transactionStmt(_p?: TransactionStmt): {
+    TransactionStmt: TransactionStmt;
+  } {
     const _j = {} as TransactionStmt;
     _o.set(_j, "kind", _p?.kind);
     _o.set(_j, "options", _p?.options);
     _o.set(_j, "savepoint_name", _p?.savepoint_name);
     _o.set(_j, "gid", _p?.gid);
     _o.set(_j, "chain", _p?.chain);
-    return _j;
+    return {
+      TransactionStmt: _j
+    };
   },
-  compositeTypeStmt(_p?: CompositeTypeStmt): CompositeTypeStmt {
+  compositeTypeStmt(_p?: CompositeTypeStmt): {
+    CompositeTypeStmt: CompositeTypeStmt;
+  } {
     const _j = {} as CompositeTypeStmt;
     _o.set(_j, "typevar", _p?.typevar);
     _o.set(_j, "coldeflist", _p?.coldeflist);
-    return _j;
+    return {
+      CompositeTypeStmt: _j
+    };
   },
-  createEnumStmt(_p?: CreateEnumStmt): CreateEnumStmt {
+  createEnumStmt(_p?: CreateEnumStmt): {
+    CreateEnumStmt: CreateEnumStmt;
+  } {
     const _j = {} as CreateEnumStmt;
     _o.set(_j, "typeName", _p?.typeName);
     _o.set(_j, "vals", _p?.vals);
-    return _j;
+    return {
+      CreateEnumStmt: _j
+    };
   },
-  createRangeStmt(_p?: CreateRangeStmt): CreateRangeStmt {
+  createRangeStmt(_p?: CreateRangeStmt): {
+    CreateRangeStmt: CreateRangeStmt;
+  } {
     const _j = {} as CreateRangeStmt;
     _o.set(_j, "typeName", _p?.typeName);
     _o.set(_j, "params", _p?.params);
-    return _j;
+    return {
+      CreateRangeStmt: _j
+    };
   },
-  alterEnumStmt(_p?: AlterEnumStmt): AlterEnumStmt {
+  alterEnumStmt(_p?: AlterEnumStmt): {
+    AlterEnumStmt: AlterEnumStmt;
+  } {
     const _j = {} as AlterEnumStmt;
     _o.set(_j, "typeName", _p?.typeName);
     _o.set(_j, "oldVal", _p?.oldVal);
@@ -2064,9 +2934,13 @@ export default {
     _o.set(_j, "newValNeighbor", _p?.newValNeighbor);
     _o.set(_j, "newValIsAfter", _p?.newValIsAfter);
     _o.set(_j, "skipIfNewValExists", _p?.skipIfNewValExists);
-    return _j;
+    return {
+      AlterEnumStmt: _j
+    };
   },
-  viewStmt(_p?: ViewStmt): ViewStmt {
+  viewStmt(_p?: ViewStmt): {
+    ViewStmt: ViewStmt;
+  } {
     const _j = {} as ViewStmt;
     _o.set(_j, "view", _p?.view);
     _o.set(_j, "aliases", _p?.aliases);
@@ -2074,185 +2948,297 @@ export default {
     _o.set(_j, "replace", _p?.replace);
     _o.set(_j, "options", _p?.options);
     _o.set(_j, "withCheckOption", _p?.withCheckOption);
-    return _j;
+    return {
+      ViewStmt: _j
+    };
   },
-  loadStmt(_p?: LoadStmt): LoadStmt {
+  loadStmt(_p?: LoadStmt): {
+    LoadStmt: LoadStmt;
+  } {
     const _j = {} as LoadStmt;
     _o.set(_j, "filename", _p?.filename);
-    return _j;
+    return {
+      LoadStmt: _j
+    };
   },
-  createdbStmt(_p?: CreatedbStmt): CreatedbStmt {
+  createdbStmt(_p?: CreatedbStmt): {
+    CreatedbStmt: CreatedbStmt;
+  } {
     const _j = {} as CreatedbStmt;
     _o.set(_j, "dbname", _p?.dbname);
     _o.set(_j, "options", _p?.options);
-    return _j;
+    return {
+      CreatedbStmt: _j
+    };
   },
-  alterDatabaseStmt(_p?: AlterDatabaseStmt): AlterDatabaseStmt {
+  alterDatabaseStmt(_p?: AlterDatabaseStmt): {
+    AlterDatabaseStmt: AlterDatabaseStmt;
+  } {
     const _j = {} as AlterDatabaseStmt;
     _o.set(_j, "dbname", _p?.dbname);
     _o.set(_j, "options", _p?.options);
-    return _j;
+    return {
+      AlterDatabaseStmt: _j
+    };
   },
-  alterDatabaseRefreshCollStmt(_p?: AlterDatabaseRefreshCollStmt): AlterDatabaseRefreshCollStmt {
+  alterDatabaseRefreshCollStmt(_p?: AlterDatabaseRefreshCollStmt): {
+    AlterDatabaseRefreshCollStmt: AlterDatabaseRefreshCollStmt;
+  } {
     const _j = {} as AlterDatabaseRefreshCollStmt;
     _o.set(_j, "dbname", _p?.dbname);
-    return _j;
+    return {
+      AlterDatabaseRefreshCollStmt: _j
+    };
   },
-  alterDatabaseSetStmt(_p?: AlterDatabaseSetStmt): AlterDatabaseSetStmt {
+  alterDatabaseSetStmt(_p?: AlterDatabaseSetStmt): {
+    AlterDatabaseSetStmt: AlterDatabaseSetStmt;
+  } {
     const _j = {} as AlterDatabaseSetStmt;
     _o.set(_j, "dbname", _p?.dbname);
     _o.set(_j, "setstmt", _p?.setstmt);
-    return _j;
+    return {
+      AlterDatabaseSetStmt: _j
+    };
   },
-  dropdbStmt(_p?: DropdbStmt): DropdbStmt {
+  dropdbStmt(_p?: DropdbStmt): {
+    DropdbStmt: DropdbStmt;
+  } {
     const _j = {} as DropdbStmt;
     _o.set(_j, "dbname", _p?.dbname);
     _o.set(_j, "missing_ok", _p?.missing_ok);
     _o.set(_j, "options", _p?.options);
-    return _j;
+    return {
+      DropdbStmt: _j
+    };
   },
-  alterSystemStmt(_p?: AlterSystemStmt): AlterSystemStmt {
+  alterSystemStmt(_p?: AlterSystemStmt): {
+    AlterSystemStmt: AlterSystemStmt;
+  } {
     const _j = {} as AlterSystemStmt;
     _o.set(_j, "setstmt", _p?.setstmt);
-    return _j;
+    return {
+      AlterSystemStmt: _j
+    };
   },
-  clusterStmt(_p?: ClusterStmt): ClusterStmt {
+  clusterStmt(_p?: ClusterStmt): {
+    ClusterStmt: ClusterStmt;
+  } {
     const _j = {} as ClusterStmt;
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "indexname", _p?.indexname);
     _o.set(_j, "params", _p?.params);
-    return _j;
+    return {
+      ClusterStmt: _j
+    };
   },
-  vacuumStmt(_p?: VacuumStmt): VacuumStmt {
+  vacuumStmt(_p?: VacuumStmt): {
+    VacuumStmt: VacuumStmt;
+  } {
     const _j = {} as VacuumStmt;
     _o.set(_j, "options", _p?.options);
     _o.set(_j, "rels", _p?.rels);
     _o.set(_j, "is_vacuumcmd", _p?.is_vacuumcmd);
-    return _j;
+    return {
+      VacuumStmt: _j
+    };
   },
-  vacuumRelation(_p?: VacuumRelation): VacuumRelation {
+  vacuumRelation(_p?: VacuumRelation): {
+    VacuumRelation: VacuumRelation;
+  } {
     const _j = {} as VacuumRelation;
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "oid", _p?.oid);
     _o.set(_j, "va_cols", _p?.va_cols);
-    return _j;
+    return {
+      VacuumRelation: _j
+    };
   },
-  explainStmt(_p?: ExplainStmt): ExplainStmt {
+  explainStmt(_p?: ExplainStmt): {
+    ExplainStmt: ExplainStmt;
+  } {
     const _j = {} as ExplainStmt;
     _o.set(_j, "query", _p?.query);
     _o.set(_j, "options", _p?.options);
-    return _j;
+    return {
+      ExplainStmt: _j
+    };
   },
-  createTableAsStmt(_p?: CreateTableAsStmt): CreateTableAsStmt {
+  createTableAsStmt(_p?: CreateTableAsStmt): {
+    CreateTableAsStmt: CreateTableAsStmt;
+  } {
     const _j = {} as CreateTableAsStmt;
     _o.set(_j, "query", _p?.query);
     _o.set(_j, "into", _p?.into);
     _o.set(_j, "objtype", _p?.objtype);
     _o.set(_j, "is_select_into", _p?.is_select_into);
     _o.set(_j, "if_not_exists", _p?.if_not_exists);
-    return _j;
+    return {
+      CreateTableAsStmt: _j
+    };
   },
-  refreshMatViewStmt(_p?: RefreshMatViewStmt): RefreshMatViewStmt {
+  refreshMatViewStmt(_p?: RefreshMatViewStmt): {
+    RefreshMatViewStmt: RefreshMatViewStmt;
+  } {
     const _j = {} as RefreshMatViewStmt;
     _o.set(_j, "concurrent", _p?.concurrent);
     _o.set(_j, "skipData", _p?.skipData);
     _o.set(_j, "relation", _p?.relation);
-    return _j;
+    return {
+      RefreshMatViewStmt: _j
+    };
   },
-  checkPointStmt(_p?: CheckPointStmt): CheckPointStmt {
+  checkPointStmt(_p?: CheckPointStmt): {
+    CheckPointStmt: CheckPointStmt;
+  } {
     const _j = {} as CheckPointStmt;
-    return _j;
+    return {
+      CheckPointStmt: _j
+    };
   },
-  discardStmt(_p?: DiscardStmt): DiscardStmt {
+  discardStmt(_p?: DiscardStmt): {
+    DiscardStmt: DiscardStmt;
+  } {
     const _j = {} as DiscardStmt;
     _o.set(_j, "target", _p?.target);
-    return _j;
+    return {
+      DiscardStmt: _j
+    };
   },
-  lockStmt(_p?: LockStmt): LockStmt {
+  lockStmt(_p?: LockStmt): {
+    LockStmt: LockStmt;
+  } {
     const _j = {} as LockStmt;
     _o.set(_j, "relations", _p?.relations);
     _o.set(_j, "mode", _p?.mode);
     _o.set(_j, "nowait", _p?.nowait);
-    return _j;
+    return {
+      LockStmt: _j
+    };
   },
-  constraintsSetStmt(_p?: ConstraintsSetStmt): ConstraintsSetStmt {
+  constraintsSetStmt(_p?: ConstraintsSetStmt): {
+    ConstraintsSetStmt: ConstraintsSetStmt;
+  } {
     const _j = {} as ConstraintsSetStmt;
     _o.set(_j, "constraints", _p?.constraints);
     _o.set(_j, "deferred", _p?.deferred);
-    return _j;
+    return {
+      ConstraintsSetStmt: _j
+    };
   },
-  reindexStmt(_p?: ReindexStmt): ReindexStmt {
+  reindexStmt(_p?: ReindexStmt): {
+    ReindexStmt: ReindexStmt;
+  } {
     const _j = {} as ReindexStmt;
     _o.set(_j, "kind", _p?.kind);
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "params", _p?.params);
-    return _j;
+    return {
+      ReindexStmt: _j
+    };
   },
-  createConversionStmt(_p?: CreateConversionStmt): CreateConversionStmt {
+  createConversionStmt(_p?: CreateConversionStmt): {
+    CreateConversionStmt: CreateConversionStmt;
+  } {
     const _j = {} as CreateConversionStmt;
     _o.set(_j, "conversion_name", _p?.conversion_name);
     _o.set(_j, "for_encoding_name", _p?.for_encoding_name);
     _o.set(_j, "to_encoding_name", _p?.to_encoding_name);
     _o.set(_j, "func_name", _p?.func_name);
     _o.set(_j, "def", _p?.def);
-    return _j;
+    return {
+      CreateConversionStmt: _j
+    };
   },
-  createCastStmt(_p?: CreateCastStmt): CreateCastStmt {
+  createCastStmt(_p?: CreateCastStmt): {
+    CreateCastStmt: CreateCastStmt;
+  } {
     const _j = {} as CreateCastStmt;
     _o.set(_j, "sourcetype", _p?.sourcetype);
     _o.set(_j, "targettype", _p?.targettype);
     _o.set(_j, "func", _p?.func);
     _o.set(_j, "context", _p?.context);
     _o.set(_j, "inout", _p?.inout);
-    return _j;
+    return {
+      CreateCastStmt: _j
+    };
   },
-  createTransformStmt(_p?: CreateTransformStmt): CreateTransformStmt {
+  createTransformStmt(_p?: CreateTransformStmt): {
+    CreateTransformStmt: CreateTransformStmt;
+  } {
     const _j = {} as CreateTransformStmt;
     _o.set(_j, "replace", _p?.replace);
     _o.set(_j, "type_name", _p?.type_name);
     _o.set(_j, "lang", _p?.lang);
     _o.set(_j, "fromsql", _p?.fromsql);
     _o.set(_j, "tosql", _p?.tosql);
-    return _j;
+    return {
+      CreateTransformStmt: _j
+    };
   },
-  prepareStmt(_p?: PrepareStmt): PrepareStmt {
+  prepareStmt(_p?: PrepareStmt): {
+    PrepareStmt: PrepareStmt;
+  } {
     const _j = {} as PrepareStmt;
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "argtypes", _p?.argtypes);
     _o.set(_j, "query", _p?.query);
-    return _j;
+    return {
+      PrepareStmt: _j
+    };
   },
-  executeStmt(_p?: ExecuteStmt): ExecuteStmt {
+  executeStmt(_p?: ExecuteStmt): {
+    ExecuteStmt: ExecuteStmt;
+  } {
     const _j = {} as ExecuteStmt;
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "params", _p?.params);
-    return _j;
+    return {
+      ExecuteStmt: _j
+    };
   },
-  deallocateStmt(_p?: DeallocateStmt): DeallocateStmt {
+  deallocateStmt(_p?: DeallocateStmt): {
+    DeallocateStmt: DeallocateStmt;
+  } {
     const _j = {} as DeallocateStmt;
     _o.set(_j, "name", _p?.name);
-    return _j;
+    return {
+      DeallocateStmt: _j
+    };
   },
-  dropOwnedStmt(_p?: DropOwnedStmt): DropOwnedStmt {
+  dropOwnedStmt(_p?: DropOwnedStmt): {
+    DropOwnedStmt: DropOwnedStmt;
+  } {
     const _j = {} as DropOwnedStmt;
     _o.set(_j, "roles", _p?.roles);
     _o.set(_j, "behavior", _p?.behavior);
-    return _j;
+    return {
+      DropOwnedStmt: _j
+    };
   },
-  reassignOwnedStmt(_p?: ReassignOwnedStmt): ReassignOwnedStmt {
+  reassignOwnedStmt(_p?: ReassignOwnedStmt): {
+    ReassignOwnedStmt: ReassignOwnedStmt;
+  } {
     const _j = {} as ReassignOwnedStmt;
     _o.set(_j, "roles", _p?.roles);
     _o.set(_j, "newrole", _p?.newrole);
-    return _j;
+    return {
+      ReassignOwnedStmt: _j
+    };
   },
-  altertsDictionaryStmt(_p?: AlterTSDictionaryStmt): AlterTSDictionaryStmt {
+  altertsDictionaryStmt(_p?: AlterTSDictionaryStmt): {
+    AlterTSDictionaryStmt: AlterTSDictionaryStmt;
+  } {
     const _j = {} as AlterTSDictionaryStmt;
     _o.set(_j, "dictname", _p?.dictname);
     _o.set(_j, "options", _p?.options);
-    return _j;
+    return {
+      AlterTSDictionaryStmt: _j
+    };
   },
-  altertsConfigurationStmt(_p?: AlterTSConfigurationStmt): AlterTSConfigurationStmt {
+  altertsConfigurationStmt(_p?: AlterTSConfigurationStmt): {
+    AlterTSConfigurationStmt: AlterTSConfigurationStmt;
+  } {
     const _j = {} as AlterTSConfigurationStmt;
     _o.set(_j, "kind", _p?.kind);
     _o.set(_j, "cfgname", _p?.cfgname);
@@ -2261,70 +3247,104 @@ export default {
     _o.set(_j, "override", _p?.override);
     _o.set(_j, "replace", _p?.replace);
     _o.set(_j, "missing_ok", _p?.missing_ok);
-    return _j;
+    return {
+      AlterTSConfigurationStmt: _j
+    };
   },
-  publicationTable(_p?: PublicationTable): PublicationTable {
+  publicationTable(_p?: PublicationTable): {
+    PublicationTable: PublicationTable;
+  } {
     const _j = {} as PublicationTable;
     _o.set(_j, "relation", _p?.relation);
     _o.set(_j, "whereClause", _p?.whereClause);
     _o.set(_j, "columns", _p?.columns);
-    return _j;
+    return {
+      PublicationTable: _j
+    };
   },
-  publicationObjSpec(_p?: PublicationObjSpec): PublicationObjSpec {
+  publicationObjSpec(_p?: PublicationObjSpec): {
+    PublicationObjSpec: PublicationObjSpec;
+  } {
     const _j = {} as PublicationObjSpec;
     _o.set(_j, "pubobjtype", _p?.pubobjtype);
     _o.set(_j, "name", _p?.name);
     _o.set(_j, "pubtable", _p?.pubtable);
     _o.set(_j, "location", _p?.location);
-    return _j;
+    return {
+      PublicationObjSpec: _j
+    };
   },
-  createPublicationStmt(_p?: CreatePublicationStmt): CreatePublicationStmt {
+  createPublicationStmt(_p?: CreatePublicationStmt): {
+    CreatePublicationStmt: CreatePublicationStmt;
+  } {
     const _j = {} as CreatePublicationStmt;
     _o.set(_j, "pubname", _p?.pubname);
     _o.set(_j, "options", _p?.options);
     _o.set(_j, "pubobjects", _p?.pubobjects);
     _o.set(_j, "for_all_tables", _p?.for_all_tables);
-    return _j;
+    return {
+      CreatePublicationStmt: _j
+    };
   },
-  alterPublicationStmt(_p?: AlterPublicationStmt): AlterPublicationStmt {
+  alterPublicationStmt(_p?: AlterPublicationStmt): {
+    AlterPublicationStmt: AlterPublicationStmt;
+  } {
     const _j = {} as AlterPublicationStmt;
     _o.set(_j, "pubname", _p?.pubname);
     _o.set(_j, "options", _p?.options);
     _o.set(_j, "pubobjects", _p?.pubobjects);
     _o.set(_j, "for_all_tables", _p?.for_all_tables);
     _o.set(_j, "action", _p?.action);
-    return _j;
+    return {
+      AlterPublicationStmt: _j
+    };
   },
-  createSubscriptionStmt(_p?: CreateSubscriptionStmt): CreateSubscriptionStmt {
+  createSubscriptionStmt(_p?: CreateSubscriptionStmt): {
+    CreateSubscriptionStmt: CreateSubscriptionStmt;
+  } {
     const _j = {} as CreateSubscriptionStmt;
     _o.set(_j, "subname", _p?.subname);
     _o.set(_j, "conninfo", _p?.conninfo);
     _o.set(_j, "publication", _p?.publication);
     _o.set(_j, "options", _p?.options);
-    return _j;
+    return {
+      CreateSubscriptionStmt: _j
+    };
   },
-  alterSubscriptionStmt(_p?: AlterSubscriptionStmt): AlterSubscriptionStmt {
+  alterSubscriptionStmt(_p?: AlterSubscriptionStmt): {
+    AlterSubscriptionStmt: AlterSubscriptionStmt;
+  } {
     const _j = {} as AlterSubscriptionStmt;
     _o.set(_j, "kind", _p?.kind);
     _o.set(_j, "subname", _p?.subname);
     _o.set(_j, "conninfo", _p?.conninfo);
     _o.set(_j, "publication", _p?.publication);
     _o.set(_j, "options", _p?.options);
-    return _j;
+    return {
+      AlterSubscriptionStmt: _j
+    };
   },
-  dropSubscriptionStmt(_p?: DropSubscriptionStmt): DropSubscriptionStmt {
+  dropSubscriptionStmt(_p?: DropSubscriptionStmt): {
+    DropSubscriptionStmt: DropSubscriptionStmt;
+  } {
     const _j = {} as DropSubscriptionStmt;
     _o.set(_j, "subname", _p?.subname);
     _o.set(_j, "missing_ok", _p?.missing_ok);
     _o.set(_j, "behavior", _p?.behavior);
-    return _j;
+    return {
+      DropSubscriptionStmt: _j
+    };
   },
-  scanToken(_p?: ScanToken): ScanToken {
+  scanToken(_p?: ScanToken): {
+    ScanToken: ScanToken;
+  } {
     const _j = {} as ScanToken;
     _o.set(_j, "start", _p?.start);
     _o.set(_j, "end", _p?.end);
     _o.set(_j, "token", _p?.token);
     _o.set(_j, "keywordKind", _p?.keywordKind);
-    return _j;
+    return {
+      ScanToken: _j
+    };
   }
 };

@@ -1,5 +1,5 @@
 import { Service, Type, Field, Enum, Namespace, ReflectionObject } from '@launchql/protobufjs';
-import { generateEnumImports, generateAstHelperMethods, generateTypeImportSpecifiers, generateEnumValueFunctions, generateEnumToIntFunctions, generateEnumToStringFunctions, generateEnumToIntFunctionsNested, generateEnumToStringFunctionsNested, convertEnumToTsUnionType, convertEnumToTsEnumDeclaration, generateNodeUnionType, convertTypeToTsInterface } from './ast';
+import { generateEnumImports, generateAstHelperMethods, generateWrappedAstHelperMethods, generateTypeImportSpecifiers, generateEnumValueFunctions, generateEnumToIntFunctions, generateEnumToStringFunctions, generateEnumToIntFunctionsNested, generateEnumToStringFunctionsNested, convertEnumToTsUnionType, convertEnumToTsEnumDeclaration, generateNodeUnionType, convertTypeToTsInterface } from './ast';
 import { RuntimeSchemaGenerator } from './runtime-schema';
 import { generateEnum2IntJSON, generateEnum2StrJSON } from './ast/enums/enums-json';
 import { jsStringify } from 'strfy-js';
@@ -97,6 +97,7 @@ export class ProtoStore implements IProtoStore {
     this.writeEnums();
     this.writeUtilsEnums();
     this.writeAstHelpers();
+    this.writeWrappedAstHelpers();
     this.writeRuntimeSchema();
   }
 
@@ -220,6 +221,21 @@ export class ProtoStore implements IProtoStore {
       if (this.options.utils.astHelpers.inlineNestedObj) {
         this.writeFile(this.options.utils.astHelpers.nestedObjFile, nestedObjCode);
       }
+    }
+  }
+
+  writeWrappedAstHelpers() {
+    if (this.options.utils.wrappedAstHelpers?.enabled) {
+      const imports = createDefaultImport('_o', 'nested-obj');
+
+      const typesToProcess = this.typesToProcess();
+      const code = convertAstToCode([
+        imports,
+        generateTypeImportSpecifiers(typesToProcess, this.options),
+        generateWrappedAstHelperMethods(typesToProcess)
+      ]);
+
+      this.writeFile(this.options.utils.wrappedAstHelpers.filename, code);
     }
   }
 
