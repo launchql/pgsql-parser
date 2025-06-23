@@ -66,13 +66,14 @@ console.log(JSON.stringify(ast, null, 2));
 ```typescript
 import { deparse } from 'pgsql-deparser';
 
-const sql = deparse(ast);
+const sql = await deparse(ast);
 console.log(sql); // SELECT * FROM users WHERE id = 1
 ```
 
 #### Build AST Programmatically
 ```typescript
 import * as t from '@pgsql/utils';
+import { deparse } from 'pgsql-deparser';
 import { SelectStmt } from '@pgsql/types';
 
 const stmt: { SelectStmt: SelectStmt } = t.nodes.selectStmt({
@@ -93,10 +94,14 @@ const stmt: { SelectStmt: SelectStmt } = t.nodes.selectStmt({
   limitOption: 'LIMIT_OPTION_DEFAULT',
   op: 'SETOP_NONE'
 });
+
+await deparse(stmt);
 ```
 
 #### Use the CLI
 ```bash
+npm install -g @pgsql/cli
+
 # Parse SQL file
 pgsql parse query.sql
 
@@ -107,17 +112,9 @@ pgsql deparse ast.json
 pgsql proto-gen --inFile pg_query.proto --outDir out --types --enums
 ```
 
-### Package Relationships
-
-- **pgsql-parser** provides full parsing and deparsing capabilities using the actual PostgreSQL parser
-- **pgsql-deparser** offers a lightweight alternative for just converting AST to SQL
-- **@pgsql/utils** helps construct ASTs programmatically with type safety
-- **pg-proto-parser** generates TypeScript definitions from PostgreSQL protobuf files
-- **@pgsql/cli** unifies all functionality into a single command-line tool
-
 ## 🛠️ Development
 
-This project uses Yarn workspaces and Lerna for monorepo management.
+This project uses Yarn workspaces and Lerna for monorepo management. See [DEVELOPMENT.md](DEVELOPMENT.md) for more info.
 
 ### Setup
 ```bash
@@ -134,17 +131,8 @@ cd packages/parser
 npm run build
 ```
 
-## Documentation
 
-Each package has its own detailed README:
-
-- [`pgsql-parser`](./packages/parser/README.md)
-- [`pgsql-deparser`](./packages/deparser/README.md)
-- [`@pgsql/cli`](./packages/pgsql-cli/README.md)
-- [`@pgsql/utils`](./packages/utils/README.md)
-- [`pg-proto-parser`](./packages/proto-parser/README.md)
-
-## Examples
+## More Examples
 
 ### Transform a Query
 
