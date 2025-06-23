@@ -17,3 +17,11 @@ CREATE TABLE new_style (
   val2 TEXT NULL
 );
 ALTER TABLE new_style ADD CONSTRAINT uq_val1_val2_new UNIQUE NULLS NOT DISTINCT (val1, val2);
+
+-- https://github.com/launchql/pgsql-parser/issues/128
+INSERT INTO
+  public.people (id, name, epithet, is_great, gender, type_id, date_of_birth, date_of_death, place_of_birth, place_of_death, biography, canonical_status_id, image_url, source_url)
+VALUES
+  (1, 'Asterius', 'of Amasea', FALSE, 'M', 1, '0350-01-01', '0410-01-01', 'Cappadocia', 'Amasea', NULL, 1, NULL, NULL),
+  (2, 'Ausonius', NULL, FALSE, 'M', 1, '0310-01-01', '0395-01-01', 'Burdigala', NULL, NULL, NULL, NULL, NULL)
+ON CONFLICT DO NOTHING;
