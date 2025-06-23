@@ -91,7 +91,7 @@ Here's how you can use the deparser in your TypeScript code, using [`@pgsql/util
 ```ts
 import * as t from '@pgsql/utils';
 import { RangeVar, SelectStmt } from '@pgsql/types';
-import { deparseSync as deparse } from 'pgsql-deparser';
+import { deparse } from 'pgsql-deparser';
 
 // This could have been obtained from any JSON or AST, not necessarily @pgsql/utils
 const stmt: { SelectStmt: SelectStmt } = t.nodes.selectStmt({
@@ -117,7 +117,7 @@ const stmt: { SelectStmt: SelectStmt } = t.nodes.selectStmt({
 (stmt.SelectStmt.fromClause[0] as {RangeVar: RangeVar}).RangeVar.relname = 'another_table';
 
 // Deparse the modified AST back to a SQL string
-console.log(deparse(stmt));
+console.log(await deparse(stmt));
 
 // Output: SELECT * FROM another_table
 ```

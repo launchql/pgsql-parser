@@ -1,0 +1,12 @@
+
+import { FixtureTestUtils } from '../../test-utils';
+const fixtures = new FixtureTestUtils();
+
+it('pretty-constraints', async () => {
+  await fixtures.runFixtureTests([
+  "pretty/constraints-1.sql",
+  "pretty/constraints-2.sql",
+  "pretty/constraints-3.sql",
+  "pretty/constraints-4.sql"
+]);
+});

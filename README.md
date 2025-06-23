@@ -14,12 +14,11 @@
    <a href="https://github.com/launchql/pgsql-parser/blob/main/LICENSE-MIT"><img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
 </p>
 
-## PostgreSQL AST Tools
-
+## PostgreSQL Parsing, Deparsing & AST Tools
 
 A comprehensive monorepo for PostgreSQL Abstract Syntax Tree (AST) parsing, manipulation, and code generation. This collection of packages provides everything you need to work with PostgreSQL at the AST level, from parsing SQL queries to generating type-safe TypeScript definitions.
 
-## 📦 Packages Overview
+## 📦 Packages 
 
 | Package | Description | Key Features |
 |---------|-------------|--------------|
@@ -36,7 +35,7 @@ A comprehensive monorepo for PostgreSQL Abstract Syntax Tree (AST) parsing, mani
 Choose the packages you need:
 
 ```bash
-# For parsing SQL to AST and back
+# For parsing SQL to AST and back (includes deparser)
 npm install pgsql-parser
 
 # For only converting AST to SQL (lighter weight)
@@ -74,7 +73,7 @@ console.log(sql); // SELECT * FROM users WHERE id = 1
 #### Build AST Programmatically
 ```typescript
 import * as t from '@pgsql/utils';
-import { RangeVar, SelectStmt } from '@pgsql/types';
+import { SelectStmt } from '@pgsql/types';
 
 const stmt: { SelectStmt: SelectStmt } = t.nodes.selectStmt({
   targetList: [
@@ -127,9 +126,6 @@ yarn install
 
 # Build all packages
 yarn build
-
-# Run tests
-yarn test
 ```
 
 ### Building Individual Packages
@@ -163,7 +159,7 @@ const ast = await parse('SELECT * FROM users WHERE active = true');
 ast[0].RawStmt.stmt.SelectStmt.fromClause[0].RangeVar.relname = 'customers';
 
 // Generate the modified SQL
-const newSql = deparse(ast);
+const newSql = await deparse(ast);
 console.log(newSql); // SELECT * FROM customers WHERE active = TRUE
 ```
 
@@ -171,7 +167,7 @@ console.log(newSql); // SELECT * FROM customers WHERE active = TRUE
 
 ```typescript
 import ast from '@pgsql/utils';
-import { deparse as deparseSync } from 'pgsql-deparser';
+import { deparse } from 'pgsql-deparser';
 
 const query: { SelectStmt: SelectStmt } = t.nodes.selectStmt({
   targetList: [
@@ -207,7 +203,7 @@ const query: { SelectStmt: SelectStmt } = t.nodes.selectStmt({
   op: 'SETOP_NONE'
 });
 
-console.log(deparse(query));
+console.log(await deparse(query));
 // SELECT name, email FROM users WHERE age > 18
 ```
 

@@ -61,7 +61,7 @@ Explore the PostgreSQL Abstract Syntax Tree (AST) as JSON objects with ease usin
 ```ts
 import * as t from '@pgsql/utils';
 import { SelectStmt } from '@pgsql/types';
-import { deparseSync as deparse } from 'pgsql-deparser';
+import { deparse } from 'pgsql-deparser';
 
 const selectStmt: { SelectStmt: SelectStmt } = t.nodes.selectStmt({
   targetList: [
@@ -83,7 +83,7 @@ const selectStmt: { SelectStmt: SelectStmt } = t.nodes.selectStmt({
 });
 console.log(selectStmt);
 // Output: { "SelectStmt": { "targetList": [ { "ResTarget": { "val": { "ColumnRef": { "fields": [ { "A_Star": {} } ] } } } } ], "fromClause": [ { "RangeVar": { "relname": "some_amazing_table", "inh": true, "relpersistence": "p" } } ], "limitOption": "LIMIT_OPTION_DEFAULT", "op": "SETOP_NONE" } }
-console.log(deparse(stmt))
+console.log(await deparse(stmt))
 // Output: SELECT * FROM some_amazing_table
 ```
 
@@ -91,8 +91,8 @@ console.log(deparse(stmt))
 
 ```ts
 import * as t from '@pgsql/utils';
-import { RangeVar, SelectStmt } from '@pgsql/types';
-import { deparseSync as deparse } from 'pgsql-deparser';
+import { SelectStmt } from '@pgsql/types';
+import { deparse } from 'pgsql-deparser';
 
 const query: { SelectStmt: SelectStmt } = t.nodes.selectStmt({
   targetList: [
@@ -128,7 +128,7 @@ const query: { SelectStmt: SelectStmt } = t.nodes.selectStmt({
   op: 'SETOP_NONE'
 });
 
-deparse(createStmt, {});
+await deparse(createStmt);
 // SELECT name, email FROM users WHERE age > 18
 ```
 
@@ -167,7 +167,7 @@ const createStmt = t.nodes.createStmt({
 });
 
 // `deparse` function converts AST to SQL string
-const sql = deparse(createStmt);
+const sql = await deparse(createStmt, { pretty: true });
 
 console.log(sql);
 // OUTPUT: 

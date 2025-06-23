@@ -108,6 +108,75 @@ const options = {
 const sql = deparse(parseResult, options);
 ```
 
+### Pretty Formatting Options
+
+The deparser supports pretty formatting to make SQL output more readable with proper indentation and line breaks:
+
+```typescript
+const options = {
+  pretty: true,           // Enable pretty formatting (default: false)
+  newline: '\n',         // Newline character (default: '\n')
+  tab: '  ',             // Tab/indentation character (default: '  ')
+  functionDelimiter: '$$', // Function body delimiter (default: '$$')
+  functionDelimiterFallback: '$EOFCODE$' // Fallback delimiter (default: '$EOFCODE$')
+};
+
+const sql = deparse(parseResult, options);
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `pretty` | `boolean` | `false` | Enable pretty formatting with indentation and line breaks |
+| `newline` | `string` | `'\n'` | Character(s) used for line breaks |
+| `tab` | `string` | `'  '` | Character(s) used for indentation (2 spaces by default) |
+| `functionDelimiter` | `string` | `'$$'` | Delimiter used for function bodies |
+| `functionDelimiterFallback` | `string` | `'$EOFCODE$'` | Alternative delimiter when default is found in function body |
+
+#### Pretty Formatting Examples
+
+**Basic SELECT with pretty formatting:**
+```typescript
+// Without pretty formatting
+const sql1 = deparse(selectAst, { pretty: false });
+// Output: "SELECT id, name, email FROM users WHERE active = true;"
+
+// With pretty formatting
+const sql2 = deparse(selectAst, { pretty: true });
+// Output:
+// SELECT
+//   id,
+//   name,
+//   email
+// FROM users
+// WHERE
+//   active = true;
+```
+
+**Custom formatting characters:**
+```typescript
+const options = {
+  pretty: true,
+  newline: '\r\n',    // Windows line endings
+  tab: '    '         // 4-space indentation
+};
+
+const sql = deparse(parseResult, options);
+```
+
+**Supported Statements:**
+Pretty formatting is supported for:
+- `SELECT` statements with proper clause alignment
+- `CREATE TABLE` statements with column definitions
+- `CREATE POLICY` statements with clause formatting
+- Common Table Expressions (CTEs)
+- Constraint definitions
+- JOIN operations with proper alignment
+
+**Important Notes:**
+- Pretty formatting preserves SQL semantics - the formatted SQL parses to the same AST
+- Multi-line string literals are preserved without indentation to maintain their content
+- Complex expressions maintain proper parentheses and operator precedence
+
 ## Instance Usage
 
 You can also create a deparser instance:
@@ -149,15 +218,15 @@ These ensure proper handling of different input formats automatically.
 ### Complete Example
 
 ```typescript
-import deparse from 'pgsql-deparser';
+import { deparse } from 'pgsql-deparser';
 import { parse } from 'pgsql-parser';
 
 // Parse SQL
 const sql = 'SELECT * FROM users; INSERT INTO logs (action) VALUES ($1);';
-const parseResult = parse(sql);
+const parseResult = await parse(sql);
 
 // Deparse back to SQL
-const regeneratedSql = deparse(parseResult);
+const regeneratedSql = await deparse(parseResult);
 console.log(regeneratedSql);
 // Output: "SELECT * FROM users;\n\nINSERT INTO logs (action) VALUES ($1);"
 ```
@@ -183,6 +252,6 @@ const customSelect = {
   }
 };
 
-const sql = deparse(customSelect);
+const sql = await deparse(customSelect);
 // Output: "SELECT * FROM users"
 ```

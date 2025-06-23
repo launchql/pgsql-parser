@@ -12,6 +12,7 @@ export interface DeparserOptions {
   functionDelimiter?: string;  // Default: '$$'
   // Alternative delimiter when the default is found in the body
   functionDelimiterFallback?: string;  // Default: '$EOFCODE$'
+  pretty?: boolean;  // Default: false
 }
 
 // Type guards for better type safety
@@ -64,7 +65,7 @@ export class Deparser implements DeparserVisitor {
   private options: DeparserOptions;
 
   constructor(tree: Node | Node[] | t.ParseResult, opts: DeparserOptions = {}) {
-    this.formatter = new SqlFormatter(opts.newline, opts.tab);
+    this.formatter = new SqlFormatter(opts.newline, opts.tab, opts.pretty);
     
     // Set default options
     this.options = {
@@ -218,9 +219,11 @@ export class Deparser implements DeparserVisitor {
 
     if (!node.op || node.op === 'SETOP_NONE') {
       if (node.valuesLists == null) {
-        output.push('SELECT');
+        if (!this.formatter.isPretty() || !node.targetList) {
+          output.push('SELECT');
+        }
       }
-    } else {
+    }else {
       const leftStmt = this.SelectStmt(node.larg as t.SelectStmt, context);
       const rightStmt = this.SelectStmt(node.rarg as t.SelectStmt, context);
       
@@ -271,25 +274,52 @@ export class Deparser implements DeparserVisitor {
       }
     }
 
+    // Handle DISTINCT clause - in pretty mode, we'll include it in the SELECT clause
+    let distinctPart = '';
     if (node.distinctClause) {
       const distinctClause = ListUtils.unwrapList(node.distinctClause);
       if (distinctClause.length > 0 && Object.keys(distinctClause[0]).length > 0) {
-        output.push('DISTINCT ON');
         const clause = distinctClause
           .map(e => this.visit(e as Node, { ...context, select: true }))
           .join(', ');
-        output.push(this.formatter.parens(clause));
+        distinctPart = ' DISTINCT ON ' + this.formatter.parens(clause);
       } else {
-        output.push('DISTINCT');
+        distinctPart = ' DISTINCT';
+      }
+      
+      if (!this.formatter.isPretty()) {
+        if (distinctClause.length > 0 && Object.keys(distinctClause[0]).length > 0) {
+          output.push('DISTINCT ON');
+          const clause = distinctClause
+            .map(e => this.visit(e as Node, { ...context, select: true }))
+            .join(', ');
+          output.push(this.formatter.parens(clause));
+        } else {
+          output.push('DISTINCT');
+        }
       }
     }
 
     if (node.targetList) {
       const targetList = ListUtils.unwrapList(node.targetList);
-      const targets = targetList
-        .map(e => this.visit(e as Node, { ...context, select: true }))
-        .join(', ');
-      output.push(targets);
+      if (this.formatter.isPretty()) {
+        const targetStrings = targetList
+          .map(e => {
+            const targetStr = this.visit(e as Node, { ...context, select: true });
+            if (this.containsMultilineStringLiteral(targetStr)) {
+              return targetStr;
+            }
+            return this.formatter.indent(targetStr);
+          });
+        const formattedTargets = targetStrings.join(',' + this.formatter.newline());
+        output.push('SELECT' + distinctPart);
+        output.push(formattedTargets);
+      } else {
+        const targets = targetList
+          .map(e => this.visit(e as Node, { ...context, select: true }))
+          .join(', ');
+        output.push(targets);
+      }
     }
 
     if (node.intoClause) {
@@ -298,17 +328,29 @@ export class Deparser implements DeparserVisitor {
     }
 
     if (node.fromClause) {
-      output.push('FROM');
       const fromList = ListUtils.unwrapList(node.fromClause);
       const fromItems = fromList
         .map(e => this.deparse(e as Node, { ...context, from: true }))
         .join(', ');
-      output.push(fromItems);
+      output.push('FROM ' + fromItems.trim());
     }
 
     if (node.whereClause) {
-      output.push('WHERE');
-      output.push(this.visit(node.whereClause as Node, context));
+      if (this.formatter.isPretty()) {
+        output.push('WHERE');
+        const whereExpr = this.visit(node.whereClause as Node, context);
+        const lines = whereExpr.split(this.formatter.newline());
+        const indentedLines = lines.map((line, index) => {
+          if (index === 0) {
+            return this.formatter.indent(line);
+          }
+          return line;
+        });
+        output.push(indentedLines.join(this.formatter.newline()));
+      } else {
+        output.push('WHERE');
+        output.push(this.visit(node.whereClause as Node, context));
+      }
     }
 
     if (node.valuesLists) {
@@ -321,17 +363,41 @@ export class Deparser implements DeparserVisitor {
     }
 
     if (node.groupClause) {
-      output.push('GROUP BY');
       const groupList = ListUtils.unwrapList(node.groupClause);
-      const groupItems = groupList
-        .map(e => this.visit(e as Node, { ...context, group: true }))
-        .join(', ');
-      output.push(groupItems);
+      if (this.formatter.isPretty()) {
+        const groupItems = groupList
+          .map(e => {
+            const groupStr = this.visit(e as Node, { ...context, group: true });
+            if (this.containsMultilineStringLiteral(groupStr)) {
+              return groupStr;
+            }
+            return this.formatter.indent(groupStr);
+          })
+          .join(',' + this.formatter.newline());
+        output.push('GROUP BY');
+        output.push(groupItems);
+      } else {
+        output.push('GROUP BY');
+        const groupItems = groupList
+          .map(e => this.visit(e as Node, { ...context, group: true }))
+          .join(', ');
+        output.push(groupItems);
+      }
     }
 
     if (node.havingClause) {
-      output.push('HAVING');
-      output.push(this.visit(node.havingClause as Node, context));
+      if (this.formatter.isPretty()) {
+        output.push('HAVING');
+        const havingStr = this.visit(node.havingClause as Node, context);
+        if (this.containsMultilineStringLiteral(havingStr)) {
+          output.push(havingStr);
+        } else {
+          output.push(this.formatter.indent(havingStr));
+        }
+      } else {
+        output.push('HAVING');
+        output.push(this.visit(node.havingClause as Node, context));
+      }
     }
 
     if (node.windowClause) {
@@ -344,22 +410,34 @@ export class Deparser implements DeparserVisitor {
     }
 
     if (node.sortClause) {
-      output.push('ORDER BY');
       const sortList = ListUtils.unwrapList(node.sortClause);
-      const sortItems = sortList
-        .map(e => this.visit(e as Node, { ...context, sort: true }))
-        .join(', ');
-      output.push(sortItems);
+      if (this.formatter.isPretty()) {
+        const sortItems = sortList
+          .map(e => {
+            const sortStr = this.visit(e as Node, { ...context, sort: true });
+            if (this.containsMultilineStringLiteral(sortStr)) {
+              return sortStr;
+            }
+            return this.formatter.indent(sortStr);
+          })
+          .join(',' + this.formatter.newline());
+        output.push('ORDER BY');
+        output.push(sortItems);
+      } else {
+        output.push('ORDER BY');
+        const sortItems = sortList
+          .map(e => this.visit(e as Node, { ...context, sort: true }))
+          .join(', ');
+        output.push(sortItems);
+      }
     }
 
     if (node.limitCount) {
-      output.push('LIMIT');
-      output.push(this.visit(node.limitCount as Node, context));
+      output.push('LIMIT ' + this.visit(node.limitCount as Node, context));
     }
 
     if (node.limitOffset) {
-      output.push('OFFSET');
-      output.push(this.visit(node.limitOffset as Node, context));
+      output.push('OFFSET ' + this.visit(node.limitOffset as Node, context));
     }
 
     if (node.lockingClause) {
@@ -370,6 +448,10 @@ export class Deparser implements DeparserVisitor {
       output.push(lockingClauses);
     }
 
+    if (this.formatter.isPretty()) {
+      const filteredOutput = output.filter(item => item.trim() !== '');
+      return filteredOutput.join(this.formatter.newline());
+    }
     return output.join(' ');
   }
 
@@ -908,9 +990,22 @@ export class Deparser implements DeparserVisitor {
       output.push('RECURSIVE');
     }
     
-    const ctes = ListUtils.unwrapList(node.ctes);
-    const cteStrs = ctes.map(cte => this.visit(cte, context));
-    output.push(cteStrs.join(', '));
+    if (node.ctes && node.ctes.length > 0) {
+      const ctes = ListUtils.unwrapList(node.ctes);
+      if (this.formatter.isPretty()) {
+        const cteStrings = ctes.map(cte => {
+          const cteStr = this.visit(cte, context);
+          if (this.containsMultilineStringLiteral(cteStr)) {
+            return this.formatter.newline() + cteStr;
+          }
+          return this.formatter.newline() + this.formatter.indent(cteStr);
+        });
+        output.push(cteStrings.join(','));
+      } else {
+        const cteStrings = ctes.map(cte => this.visit(cte, context));
+        output.push(cteStrings.join(', '));
+      }
+    }
     
     return output.join(' ');
   }
@@ -1006,11 +1101,21 @@ export class Deparser implements DeparserVisitor {
 
     switch (boolop) {
       case 'AND_EXPR':
-        const andArgs = args.map(arg => this.visit(arg, boolContext)).join(' AND ');
-        return formatStr.replace('%s', () => andArgs);
+        if (this.formatter.isPretty() && args.length > 1) {
+          const andArgs = args.map(arg => this.visit(arg, boolContext)).join(this.formatter.newline() + '  AND ');
+          return formatStr.replace('%s', () => andArgs);
+        } else {
+          const andArgs = args.map(arg => this.visit(arg, boolContext)).join(' AND ');
+          return formatStr.replace('%s', () => andArgs);
+        }
       case 'OR_EXPR':
-        const orArgs = args.map(arg => this.visit(arg, boolContext)).join(' OR ');
-        return formatStr.replace('%s', () => orArgs);
+        if (this.formatter.isPretty() && args.length > 1) {
+          const orArgs = args.map(arg => this.visit(arg, boolContext)).join(this.formatter.newline() + '  OR ');
+          return formatStr.replace('%s', () => orArgs);
+        } else {
+          const orArgs = args.map(arg => this.visit(arg, boolContext)).join(' OR ');
+          return formatStr.replace('%s', () => orArgs);
+        }
       case 'NOT_EXPR':
         return `NOT (${this.visit(args[0], context)})`;
       default:
@@ -2139,7 +2244,15 @@ export class Deparser implements DeparserVisitor {
       const elementStrs = elements.map(el => {
         return this.deparse(el, context);
       });
-      output.push(this.formatter.parens(elementStrs.join(', ')));
+      
+      if (this.formatter.isPretty()) {
+        const formattedElements = elementStrs.map(el => 
+          this.formatter.indent(el)
+        ).join(',' + this.formatter.newline());
+        output.push('(' + this.formatter.newline() + formattedElements + this.formatter.newline() + ')');
+      } else {
+        output.push(this.formatter.parens(elementStrs.join(', ')));
+      }
     } else if (!node.partbound) {
       output.push(this.formatter.parens(''));
     }
@@ -2432,37 +2545,49 @@ export class Deparser implements DeparserVisitor {
           }
         }
         if (node.fk_upd_action && node.fk_upd_action !== 'a') {
-          output.push('ON UPDATE');
+          let updateClause = 'ON UPDATE ';
           switch (node.fk_upd_action) {
             case 'r':
-              output.push('RESTRICT');
+              updateClause += 'RESTRICT';
               break;
             case 'c':
-              output.push('CASCADE');
+              updateClause += 'CASCADE';
               break;
             case 'n':
-              output.push('SET NULL');
+              updateClause += 'SET NULL';
               break;
             case 'd':
-              output.push('SET DEFAULT');
+              updateClause += 'SET DEFAULT';
               break;
+          }
+          if (this.formatter.isPretty()) {
+            output.push('\n' + this.formatter.indent(updateClause));
+          } else {
+            output.push('ON UPDATE');
+            output.push(updateClause.replace('ON UPDATE ', ''));
           }
         }
         if (node.fk_del_action && node.fk_del_action !== 'a') {
-          output.push('ON DELETE');
+          let deleteClause = 'ON DELETE ';
           switch (node.fk_del_action) {
             case 'r':
-              output.push('RESTRICT');
+              deleteClause += 'RESTRICT';
               break;
             case 'c':
-              output.push('CASCADE');
+              deleteClause += 'CASCADE';
               break;
             case 'n':
-              output.push('SET NULL');
+              deleteClause += 'SET NULL';
               break;
             case 'd':
-              output.push('SET DEFAULT');
+              deleteClause += 'SET DEFAULT';
               break;
+          }
+          if (this.formatter.isPretty()) {
+            output.push('\n' + this.formatter.indent(deleteClause));
+          } else {
+            output.push('ON DELETE');
+            output.push(deleteClause.replace('ON DELETE ', ''));
           }
         }
         // Handle NOT VALID for foreign key constraints - only for table constraints, not domain constraints
@@ -2520,17 +2645,44 @@ export class Deparser implements DeparserVisitor {
     // Handle deferrable constraints for all constraint types that support it
     if (node.contype === 'CONSTR_PRIMARY' || node.contype === 'CONSTR_UNIQUE' || node.contype === 'CONSTR_FOREIGN') {
       if (node.deferrable) {
-        output.push('DEFERRABLE');
-        if (node.initdeferred === true) {
-          output.push('INITIALLY DEFERRED');
-        } else if (node.initdeferred === false) {
-          output.push('INITIALLY IMMEDIATE');
+        if (this.formatter.isPretty() && node.contype === 'CONSTR_FOREIGN') {
+          output.push('\n' + this.formatter.indent('DEFERRABLE'));
+          if (node.initdeferred === true) {
+            output.push('\n' + this.formatter.indent('INITIALLY DEFERRED'));
+          } else if (node.initdeferred === false) {
+            output.push('\n' + this.formatter.indent('INITIALLY IMMEDIATE'));
+          }
+        } else {
+          output.push('DEFERRABLE');
+          if (node.initdeferred === true) {
+            output.push('INITIALLY DEFERRED');
+          } else if (node.initdeferred === false) {
+            output.push('INITIALLY IMMEDIATE');
+          }
         }
       } else if (node.deferrable === false) {
-        output.push('NOT DEFERRABLE');
+        if (this.formatter.isPretty() && node.contype === 'CONSTR_FOREIGN') {
+          output.push('\n' + this.formatter.indent('NOT DEFERRABLE'));
+        } else {
+          output.push('NOT DEFERRABLE');
+        }
       }
     }
 
+    if (this.formatter.isPretty() && node.contype === 'CONSTR_FOREIGN') {
+      let result = '';
+      for (let i = 0; i < output.length; i++) {
+        if (output[i].startsWith('\n')) {
+          result += output[i];
+        } else {
+          if (i > 0 && !output[i-1].startsWith('\n')) {
+            result += ' ';
+          }
+          result += output[i];
+        }
+      }
+      return result;
+    }
     return output.join(' ');
   }
 
@@ -3352,11 +3504,9 @@ export class Deparser implements DeparserVisitor {
     
     switch (node.jointype) {
       case 'JOIN_INNER':
-        // Handle NATURAL JOIN first - it has isNatural=true (NATURAL already added above)
         if (node.isNatural) {
           joinStr += 'JOIN';
         }
-        // Handle CROSS JOIN case - when there's no quals, no usingClause, and not natural
         else if (!node.quals && (!node.usingClause || node.usingClause.length === 0)) {
           joinStr += 'CROSS JOIN';
         } else {
@@ -3376,8 +3526,6 @@ export class Deparser implements DeparserVisitor {
         joinStr += 'JOIN';
     }
     
-    output.push(joinStr);
-    
     if (node.rarg) {
       let rargStr = this.visit(node.rarg, context);
       
@@ -3385,22 +3533,42 @@ export class Deparser implements DeparserVisitor {
         rargStr = `(${rargStr})`;
       }
       
-      output.push(rargStr);
+      if (this.formatter.isPretty()) {
+        output.push(this.formatter.newline() + joinStr + ' ' + rargStr);
+      } else {
+        output.push(joinStr + ' ' + rargStr);
+      }
+    } else {
+      if (this.formatter.isPretty()) {
+        output.push(this.formatter.newline() + joinStr);
+      } else {
+        output.push(joinStr);
+      }
     }
     
     if (node.usingClause && node.usingClause.length > 0) {
-      output.push('USING');
       const usingList = ListUtils.unwrapList(node.usingClause);
       const columnNames = usingList.map(col => this.visit(col, context));
-      output.push(`(${columnNames.join(', ')})`);
+      if (this.formatter.isPretty()) {
+        output.push(` USING (${columnNames.join(', ')})`);
+      } else {
+        output.push(`USING (${columnNames.join(', ')})`);
+      }
     } else if (node.quals) {
-      output.push('ON');
-      output.push(this.visit(node.quals, context));
+      if (this.formatter.isPretty()) {
+        output.push(` ON ${this.visit(node.quals, context)}`);
+      } else {
+        output.push(`ON ${this.visit(node.quals, context)}`);
+      }
     }
     
-    let result = output.join(' ');
+    let result;
+    if (this.formatter.isPretty()) {
+      result = output.join('');
+    } else {
+      result = output.join(' ');
+    }
     
-    // Handle join_using_alias first (for USING clause aliases like "AS x")
     if (node.join_using_alias && node.join_using_alias.aliasname) {
       let aliasStr = node.join_using_alias.aliasname;
       if (node.join_using_alias.colnames && node.join_using_alias.colnames.length > 0) {
@@ -3411,7 +3579,6 @@ export class Deparser implements DeparserVisitor {
       result += ` AS ${aliasStr}`;
     }
     
-    // Handle regular alias (for outer table aliases like "y")
     if (node.alias && node.alias.aliasname) {
       let aliasStr = node.alias.aliasname;
       if (node.alias.colnames && node.alias.colnames.length > 0) {
@@ -6305,46 +6472,83 @@ export class Deparser implements DeparserVisitor {
   }
 
   CreatePolicyStmt(node: t.CreatePolicyStmt, context: DeparserContext): string {
-    const output: string[] = ['CREATE', 'POLICY'];
+    const output: string[] = [];
     
+    const initialParts = ['CREATE', 'POLICY'];
     if (node.policy_name) {
-      output.push(`"${node.policy_name}"`);
+      initialParts.push(`"${node.policy_name}"`);
     }
     
-    output.push('ON');
+    output.push(initialParts.join(' '));
     
+    // Add ON clause on new line in pretty mode
     if (node.table) {
-      output.push(this.RangeVar(node.table, context));
+      if (this.formatter.isPretty()) {
+        output.push(this.formatter.newline() + this.formatter.indent(`ON ${this.RangeVar(node.table, context)}`));
+      } else {
+        output.push('ON');
+        output.push(this.RangeVar(node.table, context));
+      }
     }
     
     // Handle AS RESTRICTIVE/PERMISSIVE clause
     if (node.permissive === undefined) {
-      output.push('AS', 'RESTRICTIVE');
+      if (this.formatter.isPretty()) {
+        output.push(this.formatter.newline() + this.formatter.indent('AS RESTRICTIVE'));
+      } else {
+        output.push('AS', 'RESTRICTIVE');
+      }
     } else if (node.permissive === true) {
-      output.push('AS', 'PERMISSIVE');
+      if (this.formatter.isPretty()) {
+        output.push(this.formatter.newline() + this.formatter.indent('AS PERMISSIVE'));
+      } else {
+        output.push('AS', 'PERMISSIVE');
+      }
     }
     
     if (node.cmd_name) {
-      output.push('FOR', node.cmd_name.toUpperCase());
+      if (this.formatter.isPretty()) {
+        output.push(this.formatter.newline() + this.formatter.indent(`FOR ${node.cmd_name.toUpperCase()}`));
+      } else {
+        output.push('FOR', node.cmd_name.toUpperCase());
+      }
     }
     
     if (node.roles && node.roles.length > 0) {
-      output.push('TO');
       const roles = ListUtils.unwrapList(node.roles).map(role => this.visit(role, context));
-      output.push(roles.join(', '));
+      if (this.formatter.isPretty()) {
+        output.push(this.formatter.newline() + this.formatter.indent(`TO ${roles.join(', ')}`));
+      } else {
+        output.push('TO');
+        output.push(roles.join(', '));
+      }
     }
     
     if (node.qual) {
-      output.push('USING');
-      output.push(`(${this.visit(node.qual, context)})`);
+      if (this.formatter.isPretty()) {
+        const qualExpr = this.visit(node.qual, context);
+        output.push(this.formatter.newline() + this.formatter.indent('USING ('));
+        output.push(this.formatter.newline() + this.formatter.indent(this.formatter.indent(qualExpr)));
+        output.push(this.formatter.newline() + this.formatter.indent(')'));
+      } else {
+        output.push('USING');
+        output.push(`(${this.visit(node.qual, context)})`);
+      }
     }
-    
+
     if (node.with_check) {
-      output.push('WITH CHECK');
-      output.push(`(${this.visit(node.with_check, context)})`);
+      if (this.formatter.isPretty()) {
+        const checkExpr = this.visit(node.with_check, context);
+        output.push(this.formatter.newline() + this.formatter.indent('WITH CHECK ('));
+        output.push(this.formatter.newline() + this.formatter.indent(this.formatter.indent(checkExpr)));
+        output.push(this.formatter.newline() + this.formatter.indent(')'));
+      } else {
+        output.push('WITH CHECK');
+        output.push(`(${this.visit(node.with_check, context)})`);
+      }
     }
     
-    return output.join(' ');
+    return this.formatter.isPretty() ? output.join('') : output.join(' ');
   }
 
   AlterPolicyStmt(node: t.AlterPolicyStmt, context: DeparserContext): string {
@@ -10722,6 +10926,8 @@ export class Deparser implements DeparserVisitor {
     return output.join(' ');
   }
 
-
-
+  private containsMultilineStringLiteral(content: string): boolean {
+    const stringLiteralRegex = /'[^']*\n[^']*'/g;
+    return stringLiteralRegex.test(content);
+  }
 }

@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Pretty CREATE TABLE formatting should format basic CREATE TABLE with pretty option enabled 1`] = `
+"CREATE TABLE users (
+  id serial PRIMARY KEY,
+  name text NOT NULL,
+  email text UNIQUE
+);"
+`;
+
+exports[`Pretty CREATE TABLE formatting should format complex CREATE TABLE with pretty option enabled 1`] = `
+"CREATE TABLE orders (
+  id serial PRIMARY KEY,
+  user_id int NOT NULL,
+  total numeric(10, 2) CHECK (total > 0),
+  status varchar(20) DEFAULT 'pending',
+  created_at pg_catalog.timestamp DEFAULT now(),
+  FOREIGN KEY (user_id) REFERENCES users (id)
+);"
+`;
+
+exports[`Pretty CREATE TABLE formatting should maintain single-line format for complex table when pretty disabled 1`] = `"CREATE TABLE orders (id serial PRIMARY KEY, user_id int NOT NULL, total numeric(10, 2) CHECK (total > 0), status varchar(20) DEFAULT 'pending', created_at pg_catalog.timestamp DEFAULT now(), FOREIGN KEY (user_id) REFERENCES users (id));"`;
+
+exports[`Pretty CREATE TABLE formatting should maintain single-line format when pretty option disabled 1`] = `"CREATE TABLE users (id serial PRIMARY KEY, name text NOT NULL, email text UNIQUE);"`;
+
+exports[`Pretty CREATE TABLE formatting should use custom newline and tab characters in pretty mode 1`] = `
+"CREATE TABLE users (
+    id serial PRIMARY KEY,
+    name text NOT NULL,
+    email text UNIQUE
+);"
+`;
