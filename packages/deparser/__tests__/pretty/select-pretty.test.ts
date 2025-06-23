@@ -7,6 +7,8 @@ describe('Pretty SELECT formatting', () => {
   
   const complexSelectSql = `SELECT u.id, u.name, u.email, p.title FROM users u JOIN profiles p ON u.id = p.user_id WHERE u.active = true AND u.created_at > '2023-01-01' GROUP BY u.id, u.name, u.email, p.title HAVING COUNT(*) > 1 ORDER BY u.created_at DESC, u.name ASC LIMIT 10 OFFSET 5;`;
 
+  const multipleJoinsSql = `SELECT u.id, u.name, u.email, p.title FROM users AS u JOIN profiles AS p ON u.id = p.user_id LEFT JOIN orders AS o ON u.id = o.user_id RIGHT JOIN addresses AS a ON u.id = a.user_id WHERE u.active = true;`;
+
   const selectWithSubquerySql = `SELECT id, name FROM users WHERE id IN (SELECT user_id FROM orders WHERE total > 100);`;
 
   const selectUnionSql = `SELECT name FROM customers UNION ALL SELECT name FROM suppliers ORDER BY name;`;
@@ -38,6 +40,11 @@ describe('Pretty SELECT formatting', () => {
 
   it('should format SELECT with UNION with pretty option enabled', async () => {
     const result = await expectParseDeparse(selectUnionSql, { pretty: true });
+    expect(result).toMatchSnapshot();
+  });
+
+  it('should format SELECT with multiple JOINs with pretty option enabled', async () => {
+    const result = await expectParseDeparse(multipleJoinsSql, { pretty: true });
     expect(result).toMatchSnapshot();
   });
 
