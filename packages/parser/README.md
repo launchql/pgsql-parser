@@ -34,7 +34,7 @@ npm install pgsql-parser
 
 The package exports both async and sync methods. Async methods handle initialization automatically, while sync methods require explicit initialization.
 
-⚠️ If you don't need the parser functionality, consider using the TS-only (no WASM, zero dependencies) [`pgsql-deparser`](https://github.com/launchql/pgsql-parser/tree/main/packages/deparser) for a super fast, lightweight deparser. Battle-tested with 23,000+ SQL statements 🚀
+⚠️ If you don't need the parser functionality, consider using the TS-only (no WASM, zero runtime dependencies) [`pgsql-deparser`](https://github.com/launchql/pgsql-parser/tree/main/packages/deparser) for a super fast, lightweight deparser. Battle-tested with 23,000+ SQL statements 🚀
 
 ### Async Methods (Recommended)
 
