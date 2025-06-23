@@ -438,18 +438,42 @@ export class Deparser implements DeparserVisitor {
           'ALL',
           this.formatter.parens(this.visit(rexpr, context))
         ]);
-      case 'AEXPR_DISTINCT':
+      case 'AEXPR_DISTINCT': {
+        let leftExpr = this.visit(lexpr, context);
+        let rightExpr = this.visit(rexpr, context);
+        
+        // Add parentheses for complex expressions
+        if (lexpr && this.isComplexExpression(lexpr)) {
+          leftExpr = this.formatter.parens(leftExpr);
+        }
+        if (rexpr && this.isComplexExpression(rexpr)) {
+          rightExpr = this.formatter.parens(rightExpr);
+        }
+        
         return this.formatter.format([
-          this.visit(lexpr, context),
+          leftExpr,
           'IS DISTINCT FROM',
-          this.visit(rexpr, context)
+          rightExpr
         ]);
-      case 'AEXPR_NOT_DISTINCT':
+      }
+      case 'AEXPR_NOT_DISTINCT': {
+        let leftExpr = this.visit(lexpr, context);
+        let rightExpr = this.visit(rexpr, context);
+        
+        // Add parentheses for complex expressions
+        if (lexpr && this.isComplexExpression(lexpr)) {
+          leftExpr = this.formatter.parens(leftExpr);
+        }
+        if (rexpr && this.isComplexExpression(rexpr)) {
+          rightExpr = this.formatter.parens(rightExpr);
+        }
+        
         return this.formatter.format([
-          this.visit(lexpr, context),
+          leftExpr,
           'IS NOT DISTINCT FROM',
-          this.visit(rexpr, context)
+          rightExpr
         ]);
+      }
       case 'AEXPR_NULLIF':
         return this.formatter.format([
           'NULLIF',
