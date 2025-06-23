@@ -30,3 +30,6 @@ ON CONFLICT DO NOTHING;
 COMMENT ON COLUMN "foo"."whatever" IS $$
 Something blah, this data may have chars like '\n' and '\r' in it.
 $$;
+
+-- https://github.com/launchql/pgsql-parser/issues/62
+SELECT (1 IS NOT NULL) IS DISTINCT FROM (2 IS NOT NULL);
