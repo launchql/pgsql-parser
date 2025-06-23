@@ -49,3 +49,1236 @@ exports[`AST to AST to create AST — meta 🤯 2`] = `
   op: "SETOP_NONE"
 })"
 `;
+
+exports[`Complex AST — Advanced SQL with CTEs, Window Functions, Joins, and Subqueries 1`] = `
+{
+  "SelectStmt": {
+    "fromClause": [
+      {
+        "JoinExpr": {
+          "jointype": "JOIN_INNER",
+          "larg": {
+            "RangeVar": {
+              "alias": {
+                "aliasname": "c",
+              },
+              "inh": true,
+              "relname": "customers",
+              "relpersistence": "p",
+            },
+          },
+          "quals": {
+            "A_Expr": {
+              "kind": "AEXPR_OP",
+              "lexpr": {
+                "ColumnRef": {
+                  "fields": [
+                    {
+                      "String": {
+                        "sval": "c",
+                      },
+                    },
+                    {
+                      "String": {
+                        "sval": "id",
+                      },
+                    },
+                  ],
+                },
+              },
+              "name": [
+                {
+                  "String": {
+                    "sval": "=",
+                  },
+                },
+              ],
+              "rexpr": {
+                "ColumnRef": {
+                  "fields": [
+                    {
+                      "String": {
+                        "sval": "cr",
+                      },
+                    },
+                    {
+                      "String": {
+                        "sval": "customer_id",
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          },
+          "rarg": {
+            "RangeVar": {
+              "alias": {
+                "aliasname": "cr",
+              },
+              "inh": true,
+              "relname": "customer_rankings",
+              "relpersistence": "p",
+            },
+          },
+        },
+      },
+    ],
+    "limitCount": {
+      "A_Const": {
+        "ival": {
+          "ival": 50,
+        },
+      },
+    },
+    "limitOption": "LIMIT_OPTION_COUNT",
+    "op": "SETOP_NONE",
+    "sortClause": [
+      {
+        "SortBy": {
+          "node": {
+            "ColumnRef": {
+              "fields": [
+                {
+                  "String": {
+                    "sval": "cr",
+                  },
+                },
+                {
+                  "String": {
+                    "sval": "sales_rank",
+                  },
+                },
+              ],
+            },
+          },
+          "sortby_dir": "SORTBY_ASC",
+          "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+        },
+      },
+    ],
+    "targetList": [
+      {
+        "ResTarget": {
+          "name": "customer_name",
+          "val": {
+            "ColumnRef": {
+              "fields": [
+                {
+                  "String": {
+                    "sval": "c",
+                  },
+                },
+                {
+                  "String": {
+                    "sval": "name",
+                  },
+                },
+              ],
+            },
+          },
+        },
+      },
+      {
+        "ResTarget": {
+          "name": "total_sales",
+          "val": {
+            "ColumnRef": {
+              "fields": [
+                {
+                  "String": {
+                    "sval": "cr",
+                  },
+                },
+                {
+                  "String": {
+                    "sval": "total_sales",
+                  },
+                },
+              ],
+            },
+          },
+        },
+      },
+      {
+        "ResTarget": {
+          "name": "sales_rank",
+          "val": {
+            "ColumnRef": {
+              "fields": [
+                {
+                  "String": {
+                    "sval": "cr",
+                  },
+                },
+                {
+                  "String": {
+                    "sval": "sales_rank",
+                  },
+                },
+              ],
+            },
+          },
+        },
+      },
+      {
+        "ResTarget": {
+          "name": "customer_tier",
+          "val": {
+            "CaseExpr": {
+              "args": [
+                {
+                  "CaseWhen": {
+                    "expr": {
+                      "A_Expr": {
+                        "kind": "AEXPR_OP",
+                        "lexpr": {
+                          "ColumnRef": {
+                            "fields": [
+                              {
+                                "String": {
+                                  "sval": "cr",
+                                },
+                              },
+                              {
+                                "String": {
+                                  "sval": "sales_rank",
+                                },
+                              },
+                            ],
+                          },
+                        },
+                        "name": [
+                          {
+                            "String": {
+                              "sval": "<=",
+                            },
+                          },
+                        ],
+                        "rexpr": {
+                          "A_Const": {
+                            "ival": {
+                              "ival": 10,
+                            },
+                          },
+                        },
+                      },
+                    },
+                    "result": {
+                      "A_Const": {
+                        "sval": {
+                          "sval": "Premium",
+                        },
+                      },
+                    },
+                  },
+                },
+                {
+                  "CaseWhen": {
+                    "expr": {
+                      "A_Expr": {
+                        "kind": "AEXPR_OP",
+                        "lexpr": {
+                          "ColumnRef": {
+                            "fields": [
+                              {
+                                "String": {
+                                  "sval": "cr",
+                                },
+                              },
+                              {
+                                "String": {
+                                  "sval": "sales_rank",
+                                },
+                              },
+                            ],
+                          },
+                        },
+                        "name": [
+                          {
+                            "String": {
+                              "sval": "<=",
+                            },
+                          },
+                        ],
+                        "rexpr": {
+                          "A_Const": {
+                            "ival": {
+                              "ival": 50,
+                            },
+                          },
+                        },
+                      },
+                    },
+                    "result": {
+                      "A_Const": {
+                        "sval": {
+                          "sval": "Gold",
+                        },
+                      },
+                    },
+                  },
+                },
+                {
+                  "CaseWhen": {
+                    "expr": {
+                      "A_Expr": {
+                        "kind": "AEXPR_OP",
+                        "lexpr": {
+                          "ColumnRef": {
+                            "fields": [
+                              {
+                                "String": {
+                                  "sval": "cr",
+                                },
+                              },
+                              {
+                                "String": {
+                                  "sval": "sales_rank",
+                                },
+                              },
+                            ],
+                          },
+                        },
+                        "name": [
+                          {
+                            "String": {
+                              "sval": "<=",
+                            },
+                          },
+                        ],
+                        "rexpr": {
+                          "A_Const": {
+                            "ival": {
+                              "ival": 100,
+                            },
+                          },
+                        },
+                      },
+                    },
+                    "result": {
+                      "A_Const": {
+                        "sval": {
+                          "sval": "Silver",
+                        },
+                      },
+                    },
+                  },
+                },
+              ],
+              "defresult": {
+                "A_Const": {
+                  "sval": {
+                    "sval": "Bronze",
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      {
+        "ResTarget": {
+          "name": "recent_order_count",
+          "val": {
+            "SubLink": {
+              "subLinkType": "EXPR_SUBLINK",
+              "subselect": {
+                "SelectStmt": {
+                  "fromClause": [
+                    {
+                      "RangeVar": {
+                        "alias": {
+                          "aliasname": "o2",
+                        },
+                        "inh": true,
+                        "relname": "orders",
+                        "relpersistence": "p",
+                      },
+                    },
+                  ],
+                  "limitOption": "LIMIT_OPTION_DEFAULT",
+                  "op": "SETOP_NONE",
+                  "targetList": [
+                    {
+                      "ResTarget": {
+                        "val": {
+                          "FuncCall": {
+                            "args": [
+                              {
+                                "A_Star": {},
+                              },
+                            ],
+                            "funcname": [
+                              {
+                                "String": {
+                                  "sval": "count",
+                                },
+                              },
+                            ],
+                          },
+                        },
+                      },
+                    },
+                  ],
+                  "whereClause": {
+                    "BoolExpr": {
+                      "args": [
+                        {
+                          "A_Expr": {
+                            "kind": "AEXPR_OP",
+                            "lexpr": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "sval": "o2",
+                                    },
+                                  },
+                                  {
+                                    "String": {
+                                      "sval": "customer_id",
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                            "name": [
+                              {
+                                "String": {
+                                  "sval": "=",
+                                },
+                              },
+                            ],
+                            "rexpr": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "sval": "c",
+                                    },
+                                  },
+                                  {
+                                    "String": {
+                                      "sval": "id",
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          },
+                        },
+                        {
+                          "A_Expr": {
+                            "kind": "AEXPR_OP",
+                            "lexpr": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "sval": "o2",
+                                    },
+                                  },
+                                  {
+                                    "String": {
+                                      "sval": "order_date",
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                            "name": [
+                              {
+                                "String": {
+                                  "sval": ">=",
+                                },
+                              },
+                            ],
+                            "rexpr": {
+                              "FuncCall": {
+                                "args": [],
+                                "funcname": [
+                                  {
+                                    "String": {
+                                      "sval": "current_date",
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          },
+                        },
+                      ],
+                      "boolop": "AND_EXPR",
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    ],
+    "whereClause": {
+      "BoolExpr": {
+        "args": [
+          {
+            "A_Expr": {
+              "kind": "AEXPR_OP",
+              "lexpr": {
+                "ColumnRef": {
+                  "fields": [
+                    {
+                      "String": {
+                        "sval": "cr",
+                      },
+                    },
+                    {
+                      "String": {
+                        "sval": "total_sales",
+                      },
+                    },
+                  ],
+                },
+              },
+              "name": [
+                {
+                  "String": {
+                    "sval": ">",
+                  },
+                },
+              ],
+              "rexpr": {
+                "A_Const": {
+                  "ival": {
+                    "ival": 1000,
+                  },
+                },
+              },
+            },
+          },
+          {
+            "A_Expr": {
+              "kind": "AEXPR_OP",
+              "lexpr": {
+                "ColumnRef": {
+                  "fields": [
+                    {
+                      "String": {
+                        "sval": "c",
+                      },
+                    },
+                    {
+                      "String": {
+                        "sval": "status",
+                      },
+                    },
+                  ],
+                },
+              },
+              "name": [
+                {
+                  "String": {
+                    "sval": "IS NOT",
+                  },
+                },
+              ],
+              "rexpr": {
+                "A_Const": {
+                  "sval": {
+                    "sval": "inactive",
+                  },
+                },
+              },
+            },
+          },
+        ],
+        "boolop": "AND_EXPR",
+      },
+    },
+    "withClause": {
+      "ctes": [
+        {
+          "CommonTableExpr": {
+            "ctename": "sales_summary",
+            "ctequery": {
+              "SelectStmt": {
+                "fromClause": [
+                  {
+                    "RangeVar": {
+                      "inh": true,
+                      "relname": "orders",
+                      "relpersistence": "p",
+                    },
+                  },
+                ],
+                "groupClause": [
+                  {
+                    "ColumnRef": {
+                      "fields": [
+                        {
+                          "String": {
+                            "sval": "customer_id",
+                          },
+                        },
+                      ],
+                    },
+                  },
+                ],
+                "limitOption": "LIMIT_OPTION_DEFAULT",
+                "op": "SETOP_NONE",
+                "targetList": [
+                  {
+                    "ResTarget": {
+                      "name": "customer_id",
+                      "val": {
+                        "ColumnRef": {
+                          "fields": [
+                            {
+                              "String": {
+                                "sval": "customer_id",
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    },
+                  },
+                  {
+                    "ResTarget": {
+                      "name": "total_sales",
+                      "val": {
+                        "FuncCall": {
+                          "args": [
+                            {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "sval": "amount",
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                          "funcname": [
+                            {
+                              "String": {
+                                "sval": "sum",
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    },
+                  },
+                  {
+                    "ResTarget": {
+                      "name": "avg_order_value",
+                      "val": {
+                        "FuncCall": {
+                          "args": [
+                            {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "sval": "amount",
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                          "funcname": [
+                            {
+                              "String": {
+                                "sval": "avg",
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    },
+                  },
+                ],
+                "whereClause": {
+                  "A_Expr": {
+                    "kind": "AEXPR_OP",
+                    "lexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "sval": "order_date",
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    "name": [
+                      {
+                        "String": {
+                          "sval": ">=",
+                        },
+                      },
+                    ],
+                    "rexpr": {
+                      "A_Const": {
+                        "sval": {
+                          "sval": "2023-01-01",
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        {
+          "CommonTableExpr": {
+            "ctename": "customer_rankings",
+            "ctequery": {
+              "SelectStmt": {
+                "fromClause": [
+                  {
+                    "RangeVar": {
+                      "inh": true,
+                      "relname": "sales_summary",
+                      "relpersistence": "p",
+                    },
+                  },
+                ],
+                "limitOption": "LIMIT_OPTION_DEFAULT",
+                "op": "SETOP_NONE",
+                "targetList": [
+                  {
+                    "ResTarget": {
+                      "name": "customer_id",
+                      "val": {
+                        "ColumnRef": {
+                          "fields": [
+                            {
+                              "String": {
+                                "sval": "customer_id",
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    },
+                  },
+                  {
+                    "ResTarget": {
+                      "name": "total_sales",
+                      "val": {
+                        "ColumnRef": {
+                          "fields": [
+                            {
+                              "String": {
+                                "sval": "total_sales",
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    },
+                  },
+                  {
+                    "ResTarget": {
+                      "name": "sales_rank",
+                      "val": {
+                        "WindowFunc": {
+                          "args": [],
+                          "winagg": false,
+                          "winfnoid": 3133,
+                          "winref": 1,
+                          "winstar": false,
+                          "wintype": 20,
+                        },
+                      },
+                    },
+                  },
+                  {
+                    "ResTarget": {
+                      "name": "sales_percentile",
+                      "val": {
+                        "WindowFunc": {
+                          "args": [],
+                          "winagg": false,
+                          "winfnoid": 3974,
+                          "winref": 2,
+                          "winstar": false,
+                          "wintype": 701,
+                        },
+                      },
+                    },
+                  },
+                ],
+                "windowClause": [
+                  {
+                    "WindowDef": {
+                      "name": "sales_window",
+                      "orderClause": [
+                        {
+                          "SortBy": {
+                            "node": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "sval": "total_sales",
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                            "sortby_dir": "SORTBY_DESC",
+                            "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                          },
+                        },
+                      ],
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        },
+      ],
+      "recursive": false,
+    },
+  },
+}
+`;
+
+exports[`Complex AST — Advanced SQL with CTEs, Window Functions, Joins, and Subqueries 2`] = `
+"ast.selectStmt({
+  targetList: [ast.resTarget({
+    name: "customer_name",
+    val: ast.columnRef({
+      fields: [ast.string({
+        sval: "c"
+      }), ast.string({
+        sval: "name"
+      })]
+    })
+  }), ast.resTarget({
+    name: "total_sales",
+    val: ast.columnRef({
+      fields: [ast.string({
+        sval: "cr"
+      }), ast.string({
+        sval: "total_sales"
+      })]
+    })
+  }), ast.resTarget({
+    name: "sales_rank",
+    val: ast.columnRef({
+      fields: [ast.string({
+        sval: "cr"
+      }), ast.string({
+        sval: "sales_rank"
+      })]
+    })
+  }), ast.resTarget({
+    name: "customer_tier",
+    val: ast.caseExpr({
+      args: [ast.caseWhen({
+        expr: ast.aExpr({
+          kind: "AEXPR_OP",
+          name: [ast.string({
+            sval: "<="
+          })],
+          lexpr: ast.columnRef({
+            fields: [ast.string({
+              sval: "cr"
+            }), ast.string({
+              sval: "sales_rank"
+            })]
+          }),
+          rexpr: ast.aConst({
+            ival: ast.ival({})
+          })
+        }),
+        result: ast.aConst({
+          sval: ast.sval({
+            0: "P",
+            1: "r",
+            2: "e",
+            3: "m",
+            4: "i",
+            5: "u",
+            6: "m"
+          })
+        })
+      }), ast.caseWhen({
+        expr: ast.aExpr({
+          kind: "AEXPR_OP",
+          name: [ast.string({
+            sval: "<="
+          })],
+          lexpr: ast.columnRef({
+            fields: [ast.string({
+              sval: "cr"
+            }), ast.string({
+              sval: "sales_rank"
+            })]
+          }),
+          rexpr: ast.aConst({
+            ival: ast.ival({})
+          })
+        }),
+        result: ast.aConst({
+          sval: ast.sval({
+            0: "G",
+            1: "o",
+            2: "l",
+            3: "d"
+          })
+        })
+      }), ast.caseWhen({
+        expr: ast.aExpr({
+          kind: "AEXPR_OP",
+          name: [ast.string({
+            sval: "<="
+          })],
+          lexpr: ast.columnRef({
+            fields: [ast.string({
+              sval: "cr"
+            }), ast.string({
+              sval: "sales_rank"
+            })]
+          }),
+          rexpr: ast.aConst({
+            ival: ast.ival({})
+          })
+        }),
+        result: ast.aConst({
+          sval: ast.sval({
+            0: "S",
+            1: "i",
+            2: "l",
+            3: "v",
+            4: "e",
+            5: "r"
+          })
+        })
+      })],
+      defresult: ast.aConst({
+        sval: ast.sval({
+          0: "B",
+          1: "r",
+          2: "o",
+          3: "n",
+          4: "z",
+          5: "e"
+        })
+      })
+    })
+  }), ast.resTarget({
+    name: "recent_order_count",
+    val: ast.subLink({
+      subLinkType: "EXPR_SUBLINK",
+      subselect: ast.selectStmt({
+        targetList: [ast.resTarget({
+          val: ast.funcCall({
+            funcname: [ast.string({
+              sval: "count"
+            })],
+            args: [ast.aStar({})]
+          })
+        })],
+        fromClause: [ast.rangeVar({
+          relname: "orders",
+          inh: true,
+          relpersistence: "p",
+          alias: ast.aliasname({
+            0: "o",
+            1: "2"
+          })
+        })],
+        whereClause: ast.boolExpr({
+          boolop: "AND_EXPR",
+          args: [ast.aExpr({
+            kind: "AEXPR_OP",
+            name: [ast.string({
+              sval: "="
+            })],
+            lexpr: ast.columnRef({
+              fields: [ast.string({
+                sval: "o2"
+              }), ast.string({
+                sval: "customer_id"
+              })]
+            }),
+            rexpr: ast.columnRef({
+              fields: [ast.string({
+                sval: "c"
+              }), ast.string({
+                sval: "id"
+              })]
+            })
+          }), ast.aExpr({
+            kind: "AEXPR_OP",
+            name: [ast.string({
+              sval: ">="
+            })],
+            lexpr: ast.columnRef({
+              fields: [ast.string({
+                sval: "o2"
+              }), ast.string({
+                sval: "order_date"
+              })]
+            }),
+            rexpr: ast.funcCall({
+              funcname: [ast.string({
+                sval: "current_date"
+              })],
+              args: []
+            })
+          })]
+        }),
+        limitOption: "LIMIT_OPTION_DEFAULT",
+        op: "SETOP_NONE"
+      })
+    })
+  })],
+  fromClause: [ast.joinExpr({
+    jointype: "JOIN_INNER",
+    larg: ast.rangeVar({
+      relname: "customers",
+      inh: true,
+      relpersistence: "p",
+      alias: ast.aliasname({
+        0: "c"
+      })
+    }),
+    rarg: ast.rangeVar({
+      relname: "customer_rankings",
+      inh: true,
+      relpersistence: "p",
+      alias: ast.aliasname({
+        0: "c",
+        1: "r"
+      })
+    }),
+    quals: ast.aExpr({
+      kind: "AEXPR_OP",
+      name: [ast.string({
+        sval: "="
+      })],
+      lexpr: ast.columnRef({
+        fields: [ast.string({
+          sval: "c"
+        }), ast.string({
+          sval: "id"
+        })]
+      }),
+      rexpr: ast.columnRef({
+        fields: [ast.string({
+          sval: "cr"
+        }), ast.string({
+          sval: "customer_id"
+        })]
+      })
+    })
+  })],
+  whereClause: ast.boolExpr({
+    boolop: "AND_EXPR",
+    args: [ast.aExpr({
+      kind: "AEXPR_OP",
+      name: [ast.string({
+        sval: ">"
+      })],
+      lexpr: ast.columnRef({
+        fields: [ast.string({
+          sval: "cr"
+        }), ast.string({
+          sval: "total_sales"
+        })]
+      }),
+      rexpr: ast.aConst({
+        ival: ast.ival({})
+      })
+    }), ast.aExpr({
+      kind: "AEXPR_OP",
+      name: [ast.string({
+        sval: "IS NOT"
+      })],
+      lexpr: ast.columnRef({
+        fields: [ast.string({
+          sval: "c"
+        }), ast.string({
+          sval: "status"
+        })]
+      }),
+      rexpr: ast.aConst({
+        sval: ast.sval({
+          0: "i",
+          1: "n",
+          2: "a",
+          3: "c",
+          4: "t",
+          5: "i",
+          6: "v",
+          7: "e"
+        })
+      })
+    })]
+  }),
+  sortClause: [ast.sortBy({
+    node: ast.columnRef({
+      fields: [ast.string({
+        sval: "cr"
+      }), ast.string({
+        sval: "sales_rank"
+      })]
+    }),
+    sortby_dir: "SORTBY_ASC",
+    sortby_nulls: "SORTBY_NULLS_DEFAULT"
+  })],
+  limitCount: ast.aConst({
+    ival: ast.ival({})
+  }),
+  limitOption: "LIMIT_OPTION_COUNT",
+  withClause: ast.ctes({
+    0: ast.commonTableExpr({
+      ctename: "sales_summary",
+      ctequery: ast.selectStmt({
+        targetList: [ast.resTarget({
+          name: "customer_id",
+          val: ast.columnRef({
+            fields: [ast.string({
+              sval: "customer_id"
+            })]
+          })
+        }), ast.resTarget({
+          name: "total_sales",
+          val: ast.funcCall({
+            funcname: [ast.string({
+              sval: "sum"
+            })],
+            args: [ast.columnRef({
+              fields: [ast.string({
+                sval: "amount"
+              })]
+            })]
+          })
+        }), ast.resTarget({
+          name: "avg_order_value",
+          val: ast.funcCall({
+            funcname: [ast.string({
+              sval: "avg"
+            })],
+            args: [ast.columnRef({
+              fields: [ast.string({
+                sval: "amount"
+              })]
+            })]
+          })
+        })],
+        fromClause: [ast.rangeVar({
+          relname: "orders",
+          inh: true,
+          relpersistence: "p"
+        })],
+        whereClause: ast.aExpr({
+          kind: "AEXPR_OP",
+          name: [ast.string({
+            sval: ">="
+          })],
+          lexpr: ast.columnRef({
+            fields: [ast.string({
+              sval: "order_date"
+            })]
+          }),
+          rexpr: ast.aConst({
+            sval: ast.sval({
+              0: "2",
+              1: "0",
+              2: "2",
+              3: "3",
+              4: "-",
+              5: "0",
+              6: "1",
+              7: "-",
+              8: "0",
+              9: "1"
+            })
+          })
+        }),
+        groupClause: [ast.columnRef({
+          fields: [ast.string({
+            sval: "customer_id"
+          })]
+        })],
+        limitOption: "LIMIT_OPTION_DEFAULT",
+        op: "SETOP_NONE"
+      })
+    }),
+    1: ast.commonTableExpr({
+      ctename: "customer_rankings",
+      ctequery: ast.selectStmt({
+        targetList: [ast.resTarget({
+          name: "customer_id",
+          val: ast.columnRef({
+            fields: [ast.string({
+              sval: "customer_id"
+            })]
+          })
+        }), ast.resTarget({
+          name: "total_sales",
+          val: ast.columnRef({
+            fields: [ast.string({
+              sval: "total_sales"
+            })]
+          })
+        }), ast.resTarget({
+          name: "sales_rank",
+          val: ast.windowFunc({
+            winfnoid: 3133,
+            wintype: 20,
+            args: [],
+            winref: 1,
+            winstar: false,
+            winagg: false
+          })
+        }), ast.resTarget({
+          name: "sales_percentile",
+          val: ast.windowFunc({
+            winfnoid: 3974,
+            wintype: 701,
+            args: [],
+            winref: 2,
+            winstar: false,
+            winagg: false
+          })
+        })],
+        fromClause: [ast.rangeVar({
+          relname: "sales_summary",
+          inh: true,
+          relpersistence: "p"
+        })],
+        windowClause: [ast.windowDef({
+          name: "sales_window",
+          orderClause: [ast.sortBy({
+            node: ast.columnRef({
+              fields: [ast.string({
+                sval: "total_sales"
+              })]
+            }),
+            sortby_dir: "SORTBY_DESC",
+            sortby_nulls: "SORTBY_NULLS_DEFAULT"
+          })]
+        })],
+        limitOption: "LIMIT_OPTION_DEFAULT",
+        op: "SETOP_NONE"
+      })
+    })
+  }),
+  op: "SETOP_NONE"
+})"
+`;
