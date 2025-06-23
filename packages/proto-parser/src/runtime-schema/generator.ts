@@ -53,7 +53,6 @@ export class RuntimeSchemaGenerator {
 
     return {
       name: type.name,
-      isNode: this.nodeTypes.has(type.name),
       fields: fields.sort((a, b) => a.name.localeCompare(b.name))
     };
   }
@@ -63,12 +62,10 @@ export class RuntimeSchemaGenerator {
     const isArray = field.repeated || false;
     const optional = !field.required;
     const fieldType = field.type;
-    const isNode = fieldType === 'Node' || this.nodeTypes.has(fieldType);
 
     return {
       name: fieldName,
       type: fieldType,
-      isNode,
       isArray,
       optional
     };
