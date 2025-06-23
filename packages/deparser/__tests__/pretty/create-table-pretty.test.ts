@@ -15,47 +15,31 @@ describe('Pretty CREATE TABLE formatting', () => {
   );`;
 
   it('should format basic CREATE TABLE with pretty option enabled', async () => {
-    const parsed = await parse(basicTableSql);
-    const result = deparseSync(parsed, { pretty: true });
+    const result = await expectParseDeparse(basicTableSql, { pretty: true });
     expect(result).toMatchSnapshot();
   });
 
   it('should maintain single-line format when pretty option disabled', async () => {
-    const parsed = await parse(basicTableSql);
-    const result = deparseSync(parsed, { pretty: false });
+    const result = await expectParseDeparse(basicTableSql, { pretty: false });
     expect(result).toMatchSnapshot();
   });
 
   it('should format complex CREATE TABLE with pretty option enabled', async () => {
-    const parsed = await parse(complexTableSql);
-    const result = deparseSync(parsed, { pretty: true });
+    const result = await expectParseDeparse(complexTableSql, { pretty: true });
     expect(result).toMatchSnapshot();
   });
 
   it('should maintain single-line format for complex table when pretty disabled', async () => {
-    const parsed = await parse(complexTableSql);
-    const result = deparseSync(parsed, { pretty: false });
+    const result = await expectParseDeparse(complexTableSql, { pretty: false });
     expect(result).toMatchSnapshot();
   });
 
   it('should use custom newline and tab characters in pretty mode', async () => {
-    const parsed = await parse(basicTableSql);
-    const result = deparseSync(parsed, { 
+    const result = await expectParseDeparse(basicTableSql, { 
       pretty: true, 
       newline: '\r\n', 
       tab: '    ' 
     });
     expect(result).toMatchSnapshot();
-  });
-
-  it('should validate AST equivalence between original and pretty-formatted SQL', async () => {
-    const testCases = [
-      basicTableSql,
-      complexTableSql
-    ];
-
-    for (const sql of testCases) {
-      await expectParseDeparse(sql, { pretty: true });
-    }
   });
 });
