@@ -12,6 +12,7 @@ export interface DeparserOptions {
   functionDelimiter?: string;  // Default: '$$'
   // Alternative delimiter when the default is found in the body
   functionDelimiterFallback?: string;  // Default: '$EOFCODE$'
+  pretty?: boolean;  // Default: false
 }
 
 // Type guards for better type safety
@@ -64,7 +65,7 @@ export class Deparser implements DeparserVisitor {
   private options: DeparserOptions;
 
   constructor(tree: Node | Node[] | t.ParseResult, opts: DeparserOptions = {}) {
-    this.formatter = new SqlFormatter(opts.newline, opts.tab);
+    this.formatter = new SqlFormatter(opts.newline, opts.tab, opts.pretty);
     
     // Set default options
     this.options = {
@@ -2139,7 +2140,15 @@ export class Deparser implements DeparserVisitor {
       const elementStrs = elements.map(el => {
         return this.deparse(el, context);
       });
-      output.push(this.formatter.parens(elementStrs.join(', ')));
+      
+      if (this.formatter.isPretty()) {
+        const formattedElements = elementStrs.map(el => 
+          this.formatter.indent(el)
+        ).join(',' + this.formatter.newline());
+        output.push('(' + this.formatter.newline() + formattedElements + this.formatter.newline() + ')');
+      } else {
+        output.push(this.formatter.parens(elementStrs.join(', ')));
+      }
     } else if (!node.partbound) {
       output.push(this.formatter.parens(''));
     }
