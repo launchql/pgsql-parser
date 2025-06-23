@@ -1,12 +1,12 @@
 import { parse } from 'libpg-query';
-import { deparseSync as deparse } from '../src';
+import { deparseSync as deparse, DeparserOptions } from '../src';
 import { cleanTree } from '../src/utils';
 import { readFileSync } from 'fs';
 import * as path from 'path';
 import { expect } from '@jest/globals';
 import { diff } from 'jest-diff'
 
-export async function expectParseDeparse(sql1: string, options = { pretty: false }) {
+export async function expectParseDeparse(sql1: string, options: DeparserOptions = { pretty: false }) {
   const parsed = await parse(sql1);
   
   const sql2 = deparse(parsed, options);
@@ -15,6 +15,8 @@ export async function expectParseDeparse(sql1: string, options = { pretty: false
   const ast2 = cleanTree(await parse(sql2));
   
   expect(ast2).toEqual(ast1);
+  
+  return sql2;
 }
 
 type ParseErrorType = 

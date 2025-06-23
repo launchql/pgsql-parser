@@ -12,61 +12,41 @@ describe('Pretty SELECT formatting', () => {
   const selectUnionSql = `SELECT name FROM customers UNION ALL SELECT name FROM suppliers ORDER BY name;`;
 
   it('should format basic SELECT with pretty option enabled', async () => {
-    const parsed = await parse(basicSelectSql);
-    const result = deparseSync(parsed, { pretty: true });
+    const result = await expectParseDeparse(basicSelectSql, { pretty: true });
     expect(result).toMatchSnapshot();
   });
 
   it('should maintain single-line format when pretty option disabled', async () => {
-    const parsed = await parse(basicSelectSql);
-    const result = deparseSync(parsed, { pretty: false });
+    const result = await expectParseDeparse(basicSelectSql, { pretty: false });
     expect(result).toMatchSnapshot();
   });
 
   it('should format complex SELECT with pretty option enabled', async () => {
-    const parsed = await parse(complexSelectSql);
-    const result = deparseSync(parsed, { pretty: true });
+    const result = await expectParseDeparse(complexSelectSql, { pretty: true });
     expect(result).toMatchSnapshot();
   });
 
   it('should maintain single-line format for complex SELECT when pretty disabled', async () => {
-    const parsed = await parse(complexSelectSql);
-    const result = deparseSync(parsed, { pretty: false });
+    const result = await expectParseDeparse(complexSelectSql, { pretty: false });
     expect(result).toMatchSnapshot();
   });
 
   it('should format SELECT with subquery with pretty option enabled', async () => {
-    const parsed = await parse(selectWithSubquerySql);
-    const result = deparseSync(parsed, { pretty: true });
+    const result = await expectParseDeparse(selectWithSubquerySql, { pretty: true });
     expect(result).toMatchSnapshot();
   });
 
   it('should format SELECT with UNION with pretty option enabled', async () => {
-    const parsed = await parse(selectUnionSql);
-    const result = deparseSync(parsed, { pretty: true });
+    const result = await expectParseDeparse(selectUnionSql, { pretty: true });
     expect(result).toMatchSnapshot();
   });
 
   it('should use custom newline and tab characters in pretty mode', async () => {
-    const parsed = await parse(basicSelectSql);
-    const result = deparseSync(parsed, { 
+    const result = await expectParseDeparse(basicSelectSql, { 
       pretty: true, 
       newline: '\r\n', 
       tab: '    ' 
     });
     expect(result).toMatchSnapshot();
-  });
-
-  it('should validate AST equivalence between original and pretty-formatted SQL', async () => {
-    const testCases = [
-      basicSelectSql,
-      complexSelectSql,
-      selectWithSubquerySql,
-      selectUnionSql
-    ];
-
-    for (const sql of testCases) {
-      await expectParseDeparse(sql, { pretty: true });
-    }
   });
 });

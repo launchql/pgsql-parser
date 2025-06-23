@@ -16,54 +16,36 @@ describe('Pretty constraint formatting', () => {
   );`;
 
   it('should format foreign key constraint with pretty option enabled', async () => {
-    const parsed = await parse(foreignKeyConstraintSql);
-    const result = deparseSync(parsed, { pretty: true });
+    const result = await expectParseDeparse(foreignKeyConstraintSql, { pretty: true });
     expect(result).toMatchSnapshot();
   });
 
   it('should maintain single-line format when pretty option disabled', async () => {
-    const parsed = await parse(foreignKeyConstraintSql);
-    const result = deparseSync(parsed, { pretty: false });
+    const result = await expectParseDeparse(foreignKeyConstraintSql, { pretty: false });
     expect(result).toMatchSnapshot();
   });
 
   it('should format check constraint with pretty option enabled', async () => {
-    const parsed = await parse(checkConstraintSql);
-    const result = deparseSync(parsed, { pretty: true });
+    const result = await expectParseDeparse(checkConstraintSql, { pretty: true });
     expect(result).toMatchSnapshot();
   });
 
   it('should format complex table with constraints with pretty option enabled', async () => {
-    const parsed = await parse(complexTableSql);
-    const result = deparseSync(parsed, { pretty: true });
+    const result = await expectParseDeparse(complexTableSql, { pretty: true });
     expect(result).toMatchSnapshot();
   });
 
   it('should maintain single-line format for complex table when pretty disabled', async () => {
-    const parsed = await parse(complexTableSql);
-    const result = deparseSync(parsed, { pretty: false });
+    const result = await expectParseDeparse(complexTableSql, { pretty: false });
     expect(result).toMatchSnapshot();
   });
 
   it('should use custom newline and tab characters in pretty mode', async () => {
-    const parsed = await parse(foreignKeyConstraintSql);
-    const result = deparseSync(parsed, { 
+    const result = await expectParseDeparse(foreignKeyConstraintSql, { 
       pretty: true, 
       newline: '\r\n', 
       tab: '    ' 
     });
     expect(result).toMatchSnapshot();
-  });
-
-  it('should validate AST equivalence between original and pretty-formatted SQL', async () => {
-    const testCases = [
-      foreignKeyConstraintSql,
-      checkConstraintSql,
-      complexTableSql
-    ];
-
-    for (const sql of testCases) {
-      await expectParseDeparse(sql, { pretty: true });
-    }
   });
 });
