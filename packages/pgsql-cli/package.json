@@ -1,12 +1,12 @@
 {
-  "name": "@launchql/proto-cli",
+  "name": "@pgsql/cli",
   "version": "1.29.2",
-  "description": "The LaunchQL PG Proto parser",
+  "description": "Unified CLI for PostgreSQL AST parsing, deparsing, and code generation",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
-  "homepage": "https://github.com/launchql/pgsql-parser/tree/master/packages/cli#readme",
+  "homepage": "https://github.com/launchql/pgsql-parser/tree/master/packages/pgsql-cli#readme",
   "license": "SEE LICENSE IN LICENSE",
   "publishConfig": {
     "access": "public"
@@ -19,7 +19,7 @@
     "url": "https://github.com/launchql/pgsql-parser/issues"
   },
   "bin": {
-    "pg-proto-parser": "index.js"
+    "pgsql": "index.js"
   },
   "scripts": {
     "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
@@ -49,10 +49,11 @@
     "@launchql/protobufjs-cli": "1.1.5",
     "chalk": "^4.1.0",
     "glob": "8.0.3",
-    "inquirerer": "1.9.0",
     "minimist": "1.2.8",
     "mkdirp": "3.0.1",
     "nested-obj": "^0.0.1",
-    "pg-proto-parser": "^1.28.2"
+    "pg-proto-parser": "^1.28.2",
+    "pgsql-parser": "^17.5.2",
+    "pgsql-deparser": "^17.6.2"
   }
 }

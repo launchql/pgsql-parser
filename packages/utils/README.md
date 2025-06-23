@@ -59,17 +59,20 @@ With the AST helper methods, creating complex SQL ASTs becomes straightforward a
 Explore the PostgreSQL Abstract Syntax Tree (AST) as JSON objects with ease using `@pgsql/utils`. Below is an example of how you can generate a JSON AST using TypeScript:
 
 ```ts
-import ast from '@pgsql/utils';
-const selectStmt = ast.selectStmt({
+import * as t from '@pgsql/utils';
+import { SelectStmt } from '@pgsql/types';
+import { deparseSync as deparse } from 'pgsql-deparser';
+
+const selectStmt: { SelectStmt: SelectStmt } = t.nodes.selectStmt({
   targetList: [
-    ast.resTarget({
-      val: ast.columnRef({
-        fields: [ast.aStar()]
+    t.nodes.resTarget({
+      val: t.nodes.columnRef({
+        fields: [t.nodes.aStar()]
       })
     })
   ],
   fromClause: [
-    ast.rangeVar({
+    t.nodes.rangeVar({
       relname: 'some_amazing_table',
       inh: true,
       relpersistence: 'p'
@@ -80,47 +83,45 @@ const selectStmt = ast.selectStmt({
 });
 console.log(selectStmt);
 // Output: { "SelectStmt": { "targetList": [ { "ResTarget": { "val": { "ColumnRef": { "fields": [ { "A_Star": {} } ] } } } } ], "fromClause": [ { "RangeVar": { "relname": "some_amazing_table", "inh": true, "relpersistence": "p" } } ], "limitOption": "LIMIT_OPTION_DEFAULT", "op": "SETOP_NONE" } }
+console.log(deparse(stmt))
+// Output: SELECT * FROM some_amazing_table
 ```
 
 #### Select Statement
 
 ```ts
-import ast, { CreateStmt, ColumnDef } from '@pgsql/utils';
-import { deparse } from 'pgsql-deparser';
+import * as t from '@pgsql/utils';
+import { RangeVar, SelectStmt } from '@pgsql/types';
+import { deparseSync as deparse } from 'pgsql-deparser';
 
-const selectStmt: SelectStmt = ast.selectStmt({
+const query: { SelectStmt: SelectStmt } = t.nodes.selectStmt({
   targetList: [
-    ast.resTarget({
-      val: ast.columnRef({
-        fields: [ast.aStar()]
+    t.nodes.resTarget({
+      val: t.nodes.columnRef({
+        fields: [t.nodes.string({ sval: 'name' })]
+      })
+    }),
+    t.nodes.resTarget({
+      val: t.nodes.columnRef({
+        fields: [t.nodes.string({ sval: 'email' })]
       })
     })
   ],
   fromClause: [
-    ast.rangeVar({
-      schemaname: 'myschema',
-      relname: 'mytable',
+    t.nodes.rangeVar({
+      relname: 'users',
       inh: true,
       relpersistence: 'p'
     })
   ],
-  whereClause: ast.aExpr({
+  whereClause: t.nodes.aExpr({
     kind: 'AEXPR_OP',
-    name: [ast.string({ str: '=' })],
-    lexpr: ast.columnRef({
-      fields: [ast.string({ str: 'a' })]
+    name: [t.nodes.string({ sval: '>' })],
+    lexpr: t.nodes.columnRef({
+      fields: [t.nodes.string({ sval: 'age' })]
     }),
-    rexpr: ast.typeCast({
-      arg: ast.aConst({
-        val: ast.string({ str: 't' })
-      }),
-      typeName: ast.typeName({
-        names: [
-          ast.string({ str: 'pg_catalog' }),
-          ast.string({ str: 'bool' })
-        ],
-        typemod: -1
-      })
+    rexpr: t.nodes.aConst({
+      ival: t.ast.integer({ ival: 18 })
     })
   }),
   limitOption: 'LIMIT_OPTION_DEFAULT',
@@ -128,7 +129,7 @@ const selectStmt: SelectStmt = ast.selectStmt({
 });
 
 deparse(createStmt, {});
-// SELECT * FROM myschema.mytable WHERE a = TRUE
+// SELECT name, email FROM users WHERE age > 18
 ```
 
 #### Creating Table Schemas Dynamically
@@ -139,26 +140,26 @@ const schema = {
   "tableName": "users",
   "columns": [
     { "name": "id", "type": "int", "constraints": ["PRIMARY KEY"] },
-    { "name": "username", "type": "string" },
-    { "name": "email", "type": "string", "constraints": ["UNIQUE"] },
+    { "name": "username", "type": "text" },
+    { "name": "email", "type": "text", "constraints": ["UNIQUE"] },
     { "name": "created_at", "type": "timestamp", "constraints": ["NOT NULL"] }
   ]
 };
 
 // Construct the CREATE TABLE statement
-const createStmt = ast.createStmt({
-  relation: ast.rangeVar({ 
+const createStmt = t.nodes.createStmt({
+  relation: t.ast.rangeVar({ 
     relname: schema.tableName,
     inh: true,
     relpersistence: 'p'
-  }).RangeVar as RangeVar, // special case due to PG AST
-  tableElts: schema.columns.map(column => ast.columnDef({
+  }),
+  tableElts: schema.columns.map(column => t.nodes.columnDef({
     colname: column.name,
-    typeName: ast.typeName({
-      names: [ast.string({ str: column.type })]
+    typeName: t.ast.typeName({
+      names: [t.nodes.string({ sval: column.type })]
     }),
     constraints: column.constraints?.map(constraint =>
-      ast.constraint({
+      t.nodes.constraint({
         contype: constraint === "PRIMARY KEY" ? "CONSTR_PRIMARY" : constraint === "UNIQUE" ? "CONSTR_UNIQUE" : "CONSTR_NOTNULL"
       })
     )
@@ -166,7 +167,7 @@ const createStmt = ast.createStmt({
 });
 
 // `deparse` function converts AST to SQL string
-const sql = deparse(createStmt, {});
+const sql = deparse(createStmt);
 
 console.log(sql);
 // OUTPUT: 
@@ -179,40 +180,11 @@ console.log(sql);
 // )
 ```
 
-### Enum Value Conversion
-
-`@pgsql/utils` provides the `getEnumValue` function to convert between the string and integer representations of enum values.
-
-Here are a couple of examples demonstrating how to use `@pgsql/utils` in real applications:
-
-#### Example 1: Converting Enum Name to Integer
-
-Suppose you are working with the A_Expr_Kind enum and you have the name of an enum value. You can get its integer representation like this:
-
-```ts
-import { getEnumValue } from '@pgsql/utils';
-
-const enumName = 'AEXPR_OP';
-const enumValue = getEnumValue('A_Expr_Kind', enumName);
-
-console.log(enumValue); // Outputs the integer value corresponding to 'AEXPR_OP'
-```
-
-#### Example 2: Converting Integer to Enum Name
-
-```ts
-import { getEnumValue } from '@pgsql/utils';
-
-const intValue = 1;
-const enumName = getEnumValue('SortByDir', intValue);
-
-console.log(enumName); // Outputs 'SORTBY_ASC' if 1 corresponds to 'SORTBY_ASC'
-```
-
 ## Related
 
 * [pgsql-parser](https://www.npmjs.com/package/pgsql-parser): The real PostgreSQL parser for Node.js, providing symmetric parsing and deparsing of SQL statements with actual PostgreSQL parser integration.
 * [pgsql-deparser](https://www.npmjs.com/package/pgsql-deparser): A streamlined tool designed for converting PostgreSQL ASTs back into SQL queries, focusing solely on deparser functionality to complement `pgsql-parser`.
+* [@pgsql/parser](https://www.npmjs.com/package/@pgsql/parser): Multi-version PostgreSQL parser with dynamic version selection at runtime, supporting PostgreSQL 15, 16, and 17 in a single package.
 * [@pgsql/types](https://www.npmjs.com/package/@pgsql/types): Offers TypeScript type definitions for PostgreSQL AST nodes, facilitating type-safe construction, analysis, and manipulation of ASTs.
 * [@pgsql/enums](https://www.npmjs.com/package/@pgsql/enums): Provides TypeScript enum definitions for PostgreSQL constants, enabling type-safe usage of PostgreSQL enums and constants in your applications.
 * [@pgsql/utils](https://www.npmjs.com/package/@pgsql/utils): A comprehensive utility library for PostgreSQL, offering type-safe AST node creation and enum value conversions, simplifying the construction and manipulation of PostgreSQL ASTs.

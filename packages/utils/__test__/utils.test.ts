@@ -71,6 +71,44 @@ it('SelectStmt with WHERE clause', () => {
   expect(deparse(selectStmt, {})).toEqual(`SELECT * FROM myschema.mytable WHERE a = CAST('t' AS boolean)`);
 });
 
+it('queries', () => {
+  const query: { SelectStmt: SelectStmt } = t.nodes.selectStmt({
+    targetList: [
+      t.nodes.resTarget({
+        val: t.nodes.columnRef({
+          fields: [t.nodes.string({ sval: 'name' })]
+        })
+      }),
+      t.nodes.resTarget({
+        val: t.nodes.columnRef({
+          fields: [t.nodes.string({ sval: 'email' })]
+        })
+      })
+    ],
+    fromClause: [
+      t.nodes.rangeVar({
+        relname: 'users',
+        inh: true,
+        relpersistence: 'p'
+      })
+    ],
+    whereClause: t.nodes.aExpr({
+      kind: 'AEXPR_OP',
+      name: [t.nodes.string({ sval: '>' })],
+      lexpr: t.nodes.columnRef({
+        fields: [t.nodes.string({ sval: 'age' })]
+      }),
+      rexpr: t.nodes.aConst({
+        ival: t.ast.integer({ ival: 18 })
+      })
+    }),
+    limitOption: 'LIMIT_OPTION_DEFAULT',
+    op: 'SETOP_NONE'
+  });
+
+  expect(deparse(query, {})).toEqual(`SELECT name, email FROM users WHERE age > 18`);
+  
+});
 it('dynamic creation of tables', () => {
   // Example JSON schema
   const schema = {
@@ -104,6 +142,6 @@ it('dynamic creation of tables', () => {
   });
 
   // `deparse` function converts AST to SQL string
-  const sql = deparse(createStmt, {});
+  const sql = deparse(createStmt);
   expect(sql).toMatchSnapshot();
 })

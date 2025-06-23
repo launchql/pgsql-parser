@@ -73,30 +73,13 @@ console.log(deparse(stmt));
 
 `pgsql-deparser` is particularly useful in development environments where native dependencies are problematic or in applications where only the deparser functionality is required. Its independence from the full `pgsql-parser` package allows for more focused and lightweight SQL generation tasks.
 
-## Versions
-
-As of PG 13, PG majors versions maintained will have a matching dedicated major npm version. Only the latest Postgres stable release receives active updates.
-
-Our latest is built with `17-latest` branch from libpg_query
-
-| PostgreSQL Major Version | libpg_query | Status              | npm tag |
-|--------------------------|-------------|---------------------|---------|
-| 17                       | 17-latest   | Active Development  | `latest` |
-| 16                       | (n/a)       | Not supported       |
-| 15                       | (n/a)       | Not supported       |
-| 14                       | (n/a)       | Not supported       |
-| 13                       | 13-latest   | Only Critical Fixes | `13.16.0` |
-| 12                       | (n/a)       | Not supported       |
-| 11                       | (n/a)       | Not supported       |
-| 10                       | 10-latest   | Not supported       | `@1.3.1` ([tree](https://github.com/launchql/pgsql-parser/tree/39b7b1adc8914253226e286a48105785219a81ca))      | 
-
 ## Credits
 
 Built on the excellent work of several contributors:
 
 * **[Dan Lynch](https://github.com/pyramation)** — official maintainer since 2018 and architect of the current implementation
 * **[Lukas Fittl](https://github.com/lfittl)** for [libpg_query](https://github.com/pganalyze/libpg_query) — the core PostgreSQL parser that powers this project
-* **[Greg Richardson](https://github.com/gregnr)** for AST guidance and pushing the transition to WASM for better interoperability
+* **[Greg Richardson](https://github.com/gregnr)** for AST guidance and pushing the transition to WASM and multiple PG runtimes for better interoperability
 * **[Ethan Resnick](https://github.com/ethanresnick)** for the original Node.js N-API bindings
 * **[Zac McCormick](https://github.com/zhm)** for the foundational [node-pg-query-native](https://github.com/zhm/node-pg-query-native) parser
 
@@ -104,6 +87,7 @@ Built on the excellent work of several contributors:
 
 * [pgsql-parser](https://www.npmjs.com/package/pgsql-parser): The real PostgreSQL parser for Node.js, providing symmetric parsing and deparsing of SQL statements with actual PostgreSQL parser integration.
 * [pgsql-deparser](https://www.npmjs.com/package/pgsql-deparser): A streamlined tool designed for converting PostgreSQL ASTs back into SQL queries, focusing solely on deparser functionality to complement `pgsql-parser`.
+* [@pgsql/parser](https://www.npmjs.com/package/@pgsql/parser): Multi-version PostgreSQL parser with dynamic version selection at runtime, supporting PostgreSQL 15, 16, and 17 in a single package.
 * [@pgsql/types](https://www.npmjs.com/package/@pgsql/types): Offers TypeScript type definitions for PostgreSQL AST nodes, facilitating type-safe construction, analysis, and manipulation of ASTs.
 * [@pgsql/enums](https://www.npmjs.com/package/@pgsql/enums): Provides TypeScript enum definitions for PostgreSQL constants, enabling type-safe usage of PostgreSQL enums and constants in your applications.
 * [@pgsql/utils](https://www.npmjs.com/package/@pgsql/utils): A comprehensive utility library for PostgreSQL, offering type-safe AST node creation and enum value conversions, simplifying the construction and manipulation of PostgreSQL ASTs.
