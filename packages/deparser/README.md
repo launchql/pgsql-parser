@@ -24,7 +24,7 @@ npm install pgsql-deparser
 
 ## Features
 
-* ⚡ **Pure TypeScript Performance** – Zero dependencies, no WASM, no compilation - just blazing fast SQL generation
+* ⚡ **Pure TypeScript Performance** – Zero runtime dependencies, no WASM, no compilation - just blazing fast SQL generation
 * 🪶 **Ultra Lightweight** – Minimal footprint with laser-focused functionality for AST-to-SQL conversion only
 * 🧪 **Battle-Tested Reliability** – Validated against 23,000+ SQL statements ensuring production-grade stability
 * 🌍 **Universal Compatibility** – Runs anywhere JavaScript does - browsers, Node.js, edge functions, you name it

@@ -14,12 +14,11 @@
    <a href="https://github.com/launchql/pgsql-parser/blob/main/LICENSE-MIT"><img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
 </p>
 
-## PostgreSQL AST Tools
-
+## PostgreSQL Parsing, Deparsing & AST Tools
 
 A comprehensive monorepo for PostgreSQL Abstract Syntax Tree (AST) parsing, manipulation, and code generation. This collection of packages provides everything you need to work with PostgreSQL at the AST level, from parsing SQL queries to generating type-safe TypeScript definitions.
 
-## 📦 Packages Overview
+## 📦 Packages 
 
 | Package | Description | Key Features |
 |---------|-------------|--------------|
@@ -36,7 +35,7 @@ A comprehensive monorepo for PostgreSQL Abstract Syntax Tree (AST) parsing, mani
 Choose the packages you need:
 
 ```bash
-# For parsing SQL to AST and back
+# For parsing SQL to AST and back (includes deparser)
 npm install pgsql-parser
 
 # For only converting AST to SQL (lighter weight)
