@@ -74,7 +74,7 @@ console.log(sql); // SELECT * FROM users WHERE id = 1
 #### Build AST Programmatically
 ```typescript
 import * as t from '@pgsql/utils';
-import { RangeVar, SelectStmt } from '@pgsql/types';
+import { SelectStmt } from '@pgsql/types';
 
 const stmt: { SelectStmt: SelectStmt } = t.nodes.selectStmt({
   targetList: [
@@ -127,9 +127,6 @@ yarn install
 
 # Build all packages
 yarn build
-
-# Run tests
-yarn test
 ```
 
 ### Building Individual Packages
@@ -163,7 +160,7 @@ const ast = await parse('SELECT * FROM users WHERE active = true');
 ast[0].RawStmt.stmt.SelectStmt.fromClause[0].RangeVar.relname = 'customers';
 
 // Generate the modified SQL
-const newSql = deparse(ast);
+const newSql = await deparse(ast);
 console.log(newSql); // SELECT * FROM customers WHERE active = TRUE
 ```
 
@@ -171,7 +168,7 @@ console.log(newSql); // SELECT * FROM customers WHERE active = TRUE
 
 ```typescript
 import ast from '@pgsql/utils';
-import { deparse as deparseSync } from 'pgsql-deparser';
+import { deparse } from 'pgsql-deparser';
 
 const query: { SelectStmt: SelectStmt } = t.nodes.selectStmt({
   targetList: [
@@ -207,7 +204,7 @@ const query: { SelectStmt: SelectStmt } = t.nodes.selectStmt({
   op: 'SETOP_NONE'
 });
 
-console.log(deparse(query));
+console.log(await deparse(query));
 // SELECT name, email FROM users WHERE age > 18
 ```
 

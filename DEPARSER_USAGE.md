@@ -218,15 +218,15 @@ These ensure proper handling of different input formats automatically.
 ### Complete Example
 
 ```typescript
-import deparse from 'pgsql-deparser';
+import { deparse } from 'pgsql-deparser';
 import { parse } from 'pgsql-parser';
 
 // Parse SQL
 const sql = 'SELECT * FROM users; INSERT INTO logs (action) VALUES ($1);';
-const parseResult = parse(sql);
+const parseResult = await parse(sql);
 
 // Deparse back to SQL
-const regeneratedSql = deparse(parseResult);
+const regeneratedSql = await deparse(parseResult);
 console.log(regeneratedSql);
 // Output: "SELECT * FROM users;\n\nINSERT INTO logs (action) VALUES ($1);"
 ```
@@ -252,6 +252,6 @@ const customSelect = {
   }
 };
 
-const sql = deparse(customSelect);
+const sql = await deparse(customSelect);
 // Output: "SELECT * FROM users"
 ```
