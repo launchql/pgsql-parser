@@ -1,6 +1,6 @@
 import * as t from '../src';
 import { RangeVar, SelectStmt } from '@pgsql/types';
-import { deparse } from 'pgsql-deparser';
+import { deparseSync as deparse } from 'pgsql-deparser';
 
 it('simple SelectStmt', () => {
   const stmt: { SelectStmt: SelectStmt } = t.nodes.selectStmt({
@@ -25,7 +25,7 @@ it('simple SelectStmt', () => {
   (stmt.SelectStmt.fromClause[0] as {RangeVar: RangeVar}).RangeVar.relname = 'another_table';
 
   expect(stmt).toMatchSnapshot();
-  expect(deparse(stmt, {})).toMatchSnapshot();
+  expect(deparse(stmt)).toMatchSnapshot();
 });
 
 it('SelectStmt with WHERE clause', () => {

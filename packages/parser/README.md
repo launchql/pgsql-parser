@@ -33,27 +33,18 @@ npm install pgsql-parser
 
 The package exports both async and sync methods. Async methods handle initialization automatically, while sync methods require explicit initialization.
 
-⚠️ We recommend using `@pgsql/deparser` instead of `deparse` from `pgsql-parser`. The deparser package is more complete, supports sub-expressions, and doesn't require the WebAssembly module, making it lighter and more flexible for most use cases. It will soon be deprecated, in a minor version bump.
+⚠️ If you don't need the parser functionality, consider using the TS-only (no WASM, zero dependencies) [`pgsql-deparser`](https://github.com/launchql/pgsql-parser/tree/main/packages/deparser) for a super fast, lightweight deparser. Battle-tested with 23,000+ SQL statements 🚀
 
 ### Async Methods (Recommended)
 
 ```typescript
-import { parse, deparse, parseFunction } from 'pgsql-parser';
+import { parse, deparse } from 'pgsql-parser';
 
 // Parse SQL to AST
 const stmts = await parse('SELECT * FROM test_table');
 
 // Deparse AST back to SQL
 const sql = await deparse(stmts);
-
-// Parse PL/pgSQL functions
-const funcAst = await parseFunction(`
-  CREATE FUNCTION get_count() RETURNS integer AS $$
-  BEGIN
-    RETURN (SELECT COUNT(*) FROM users);
-  END;
-  $$ LANGUAGE plpgsql;
-`);
 ```
 
 ### Sync Methods
@@ -97,20 +88,21 @@ The `pgsql-deparser` module serializes ASTs to SQL in pure TypeScript, avoiding 
 Here's how you can use the deparser in your TypeScript code, using [`@pgsql/utils`](https://github.com/launchql/pgsql-parser/tree/main/packages/utils) to create an AST for `deparse`:
 
 ```ts
-import ast from '@pgsql/utils';
-import { deparse } from 'pgsql-deparser';
+import * as t from '@pgsql/utils';
+import { RangeVar, SelectStmt } from '@pgsql/types';
+import { deparseSync as deparse } from 'pgsql-deparser';
 
 // This could have been obtained from any JSON or AST, not necessarily @pgsql/utils
-const stmt = ast.selectStmt({
+const stmt: { SelectStmt: SelectStmt } = t.nodes.selectStmt({
   targetList: [
-    ast.resTarget({
-      val: ast.columnRef({
-        fields: [ast.aStar()]
+    t.nodes.resTarget({
+      val: t.nodes.columnRef({
+        fields: [t.nodes.aStar()]
       })
     })
   ],
   fromClause: [
-    ast.rangeVar({
+    t.nodes.rangeVar({
       relname: 'some_table',
       inh: true,
       relpersistence: 'p'
@@ -120,11 +112,11 @@ const stmt = ast.selectStmt({
   op: 'SETOP_NONE'
 });
 
-// Modify the AST if needed
-stmt.SelectStmt.fromClause[0].RangeVar.relname = 'another_table';
+// Modify the AST if needed  
+(stmt.SelectStmt.fromClause[0] as {RangeVar: RangeVar}).RangeVar.relname = 'another_table';
 
 // Deparse the modified AST back to a SQL string
-console.log(deparse(stmts));
+console.log(deparse(stmt));
 
 // Output: SELECT * FROM another_table
 ```

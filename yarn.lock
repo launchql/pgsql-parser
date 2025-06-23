@@ -1227,10 +1227,15 @@
     node-addon-api "^3.2.1"
     node-gyp-build "^4.3.0"
 
-"@pgsql/types@^17.0.0", "@pgsql/types@^17.5.3":
+"@pgsql/types@^17.0.0":
   version "17.5.3"
   resolved "https://registry.yarnpkg.com/@pgsql/types/-/types-17.5.3.tgz#b4a53ba71a1bf111de744d01fc49a4e1576f3e31"
   integrity sha512-lRPdKcipoKLoovXw6tVwg9gdqV1fIvfjzqFDY1UFsJa8I+/yaVrGWCtmE+CeWU5e+imXd7X3fTWs8N8bK3R+AQ==
+
+"@pgsql/types@^17.6.0":
+  version "17.6.0"
+  resolved "https://registry.yarnpkg.com/@pgsql/types/-/types-17.6.0.tgz#ea2511d8ebf24ee821968532184058d4ebf4ecaa"
+  integrity sha512-WGVIne1kFm3pIHiCkUWGbv7vlhxCRT+61UigsYejhmEsl4Iyf8d2CBnt9muhi571mfuwvtkeD0sxo5y8oj0ijQ==
 
 "@pkgjs/parseargs@^0.11.0":
   version "0.11.0"
@@ -4578,6 +4583,13 @@ libpg-query@17.3.3:
   dependencies:
     "@launchql/protobufjs" "7.2.6"
     "@pgsql/types" "^17.0.0"
+
+libpg-query@17.5.0:
+  version "17.5.0"
+  resolved "https://registry.yarnpkg.com/libpg-query/-/libpg-query-17.5.0.tgz#1b60b950b5c8eae8dfed664a470c05f79f89634a"
+  integrity sha512-vFe0Lnneg/wIa5hsIIyJ2h1aExqLrn2qHVIC57bmyZE77Jk8G5S8qs7S94KYLJCk3i9TQZfkKTjViqJ+o6an4A==
+  dependencies:
+    "@pgsql/types" "^17.6.0"
 
 lines-and-columns@^1.1.6:
   version "1.2.4"

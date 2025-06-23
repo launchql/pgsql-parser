@@ -35,7 +35,7 @@
     "pgsql-deparser": "^17.6.2"
   },
   "dependencies": {
-    "@pgsql/types": "^17.5.3",
+    "@pgsql/types": "^17.6.0",
     "nested-obj": "0.0.1"
   },
   "keywords": []
