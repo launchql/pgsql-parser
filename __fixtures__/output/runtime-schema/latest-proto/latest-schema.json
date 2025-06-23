@@ -1,6 +1,7 @@
 [
   {
     "name": "A_ArrayExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "elements",
@@ -18,6 +19,7 @@
   },
   {
     "name": "A_Const",
+    "isNode": true,
     "fields": [
       {
         "name": "boolval",
@@ -65,6 +67,7 @@
   },
   {
     "name": "A_Expr",
+    "isNode": true,
     "fields": [
       {
         "name": "kind",
@@ -100,6 +103,7 @@
   },
   {
     "name": "A_Indices",
+    "isNode": true,
     "fields": [
       {
         "name": "is_slice",
@@ -123,6 +127,7 @@
   },
   {
     "name": "A_Indirection",
+    "isNode": true,
     "fields": [
       {
         "name": "arg",
@@ -140,10 +145,12 @@
   },
   {
     "name": "A_Star",
+    "isNode": true,
     "fields": []
   },
   {
     "name": "AccessPriv",
+    "isNode": true,
     "fields": [
       {
         "name": "cols",
@@ -161,6 +168,7 @@
   },
   {
     "name": "Aggref",
+    "isNode": true,
     "fields": [
       {
         "name": "aggargtypes",
@@ -280,6 +288,7 @@
   },
   {
     "name": "Alias",
+    "isNode": true,
     "fields": [
       {
         "name": "aliasname",
@@ -297,6 +306,7 @@
   },
   {
     "name": "AlterCollationStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "collname",
@@ -308,6 +318,7 @@
   },
   {
     "name": "AlterDatabaseRefreshCollStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "dbname",
@@ -319,6 +330,7 @@
   },
   {
     "name": "AlterDatabaseSetStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "dbname",
@@ -336,6 +348,7 @@
   },
   {
     "name": "AlterDatabaseStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "dbname",
@@ -353,6 +366,7 @@
   },
   {
     "name": "AlterDefaultPrivilegesStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "action",
@@ -370,6 +384,7 @@
   },
   {
     "name": "AlterDomainStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "behavior",
@@ -411,6 +426,7 @@
   },
   {
     "name": "AlterEnumStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "newVal",
@@ -452,6 +468,7 @@
   },
   {
     "name": "AlterEventTrigStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "tgenabled",
@@ -469,6 +486,7 @@
   },
   {
     "name": "AlterExtensionContentsStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "action",
@@ -498,6 +516,7 @@
   },
   {
     "name": "AlterExtensionStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "extname",
@@ -515,6 +534,7 @@
   },
   {
     "name": "AlterFdwStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "fdwname",
@@ -538,6 +558,7 @@
   },
   {
     "name": "AlterForeignServerStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "has_version",
@@ -567,6 +588,7 @@
   },
   {
     "name": "AlterFunctionStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "actions",
@@ -590,6 +612,7 @@
   },
   {
     "name": "AlternativeSubPlan",
+    "isNode": true,
     "fields": [
       {
         "name": "subplans",
@@ -607,6 +630,7 @@
   },
   {
     "name": "AlterObjectDependsStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "extname",
@@ -642,6 +666,7 @@
   },
   {
     "name": "AlterObjectSchemaStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "missing_ok",
@@ -677,6 +702,7 @@
   },
   {
     "name": "AlterOperatorStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "opername",
@@ -694,6 +720,7 @@
   },
   {
     "name": "AlterOpFamilyStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "amname",
@@ -723,6 +750,7 @@
   },
   {
     "name": "AlterOwnerStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "newowner",
@@ -752,6 +780,7 @@
   },
   {
     "name": "AlterPolicyStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "policy_name",
@@ -787,6 +816,7 @@
   },
   {
     "name": "AlterPublicationStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "action",
@@ -822,6 +852,7 @@
   },
   {
     "name": "AlterRoleSetStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "database",
@@ -845,6 +876,7 @@
   },
   {
     "name": "AlterRoleStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "action",
@@ -868,6 +900,7 @@
   },
   {
     "name": "AlterSeqStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "for_identity",
@@ -897,6 +930,7 @@
   },
   {
     "name": "AlterStatsStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "defnames",
@@ -920,6 +954,7 @@
   },
   {
     "name": "AlterSubscriptionStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "conninfo",
@@ -955,6 +990,7 @@
   },
   {
     "name": "AlterSystemStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "setstmt",
@@ -966,6 +1002,7 @@
   },
   {
     "name": "AlterTableCmd",
+    "isNode": true,
     "fields": [
       {
         "name": "behavior",
@@ -1019,6 +1056,7 @@
   },
   {
     "name": "AlterTableMoveAllStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "new_tablespacename",
@@ -1054,6 +1092,7 @@
   },
   {
     "name": "AlterTableSpaceOptionsStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "isReset",
@@ -1077,6 +1116,7 @@
   },
   {
     "name": "AlterTableStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "cmds",
@@ -1106,6 +1146,7 @@
   },
   {
     "name": "AlterTSConfigurationStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "cfgname",
@@ -1153,6 +1194,7 @@
   },
   {
     "name": "AlterTSDictionaryStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "dictname",
@@ -1170,6 +1212,7 @@
   },
   {
     "name": "AlterTypeStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "options",
@@ -1187,6 +1230,7 @@
   },
   {
     "name": "AlterUserMappingStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "options",
@@ -1210,6 +1254,7 @@
   },
   {
     "name": "ArrayCoerceExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "arg",
@@ -1263,6 +1308,7 @@
   },
   {
     "name": "ArrayExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "array_collid",
@@ -1310,6 +1356,7 @@
   },
   {
     "name": "BitString",
+    "isNode": true,
     "fields": [
       {
         "name": "bsval",
@@ -1321,6 +1368,7 @@
   },
   {
     "name": "Boolean",
+    "isNode": true,
     "fields": [
       {
         "name": "boolval",
@@ -1332,6 +1380,7 @@
   },
   {
     "name": "BooleanTest",
+    "isNode": true,
     "fields": [
       {
         "name": "arg",
@@ -1361,6 +1410,7 @@
   },
   {
     "name": "BoolExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "args",
@@ -1390,6 +1440,7 @@
   },
   {
     "name": "CallContext",
+    "isNode": true,
     "fields": [
       {
         "name": "atomic",
@@ -1401,6 +1452,7 @@
   },
   {
     "name": "CallStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "funccall",
@@ -1424,6 +1476,7 @@
   },
   {
     "name": "CaseExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "arg",
@@ -1471,6 +1524,7 @@
   },
   {
     "name": "CaseTestExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "collation",
@@ -1500,6 +1554,7 @@
   },
   {
     "name": "CaseWhen",
+    "isNode": true,
     "fields": [
       {
         "name": "expr",
@@ -1529,10 +1584,12 @@
   },
   {
     "name": "CheckPointStmt",
+    "isNode": true,
     "fields": []
   },
   {
     "name": "ClosePortalStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "portalname",
@@ -1544,6 +1601,7 @@
   },
   {
     "name": "ClusterStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "indexname",
@@ -1567,6 +1625,7 @@
   },
   {
     "name": "CoalesceExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "args",
@@ -1602,6 +1661,7 @@
   },
   {
     "name": "CoerceToDomain",
+    "isNode": true,
     "fields": [
       {
         "name": "arg",
@@ -1649,6 +1709,7 @@
   },
   {
     "name": "CoerceToDomainValue",
+    "isNode": true,
     "fields": [
       {
         "name": "collation",
@@ -1684,6 +1745,7 @@
   },
   {
     "name": "CoerceViaIO",
+    "isNode": true,
     "fields": [
       {
         "name": "arg",
@@ -1725,6 +1787,7 @@
   },
   {
     "name": "CollateClause",
+    "isNode": true,
     "fields": [
       {
         "name": "arg",
@@ -1748,6 +1811,7 @@
   },
   {
     "name": "CollateExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "arg",
@@ -1777,6 +1841,7 @@
   },
   {
     "name": "ColumnDef",
+    "isNode": true,
     "fields": [
       {
         "name": "collClause",
@@ -1896,6 +1961,7 @@
   },
   {
     "name": "ColumnRef",
+    "isNode": true,
     "fields": [
       {
         "name": "fields",
@@ -1913,6 +1979,7 @@
   },
   {
     "name": "CommentStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "comment",
@@ -1936,6 +2003,7 @@
   },
   {
     "name": "CommonTableExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "aliascolnames",
@@ -2019,6 +2087,7 @@
   },
   {
     "name": "CompositeTypeStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "coldeflist",
@@ -2036,6 +2105,7 @@
   },
   {
     "name": "Constraint",
+    "isNode": true,
     "fields": [
       {
         "name": "access_method",
@@ -2227,6 +2297,7 @@
   },
   {
     "name": "ConstraintsSetStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "constraints",
@@ -2244,6 +2315,7 @@
   },
   {
     "name": "ConvertRowtypeExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "arg",
@@ -2279,6 +2351,7 @@
   },
   {
     "name": "CopyStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "attlist",
@@ -2332,6 +2405,7 @@
   },
   {
     "name": "CreateAmStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "amname",
@@ -2355,6 +2429,7 @@
   },
   {
     "name": "CreateCastStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "context",
@@ -2390,6 +2465,7 @@
   },
   {
     "name": "CreateConversionStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "conversion_name",
@@ -2425,6 +2501,7 @@
   },
   {
     "name": "CreatedbStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "dbname",
@@ -2442,6 +2519,7 @@
   },
   {
     "name": "CreateDomainStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "collClause",
@@ -2471,6 +2549,7 @@
   },
   {
     "name": "CreateEnumStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "typeName",
@@ -2488,6 +2567,7 @@
   },
   {
     "name": "CreateEventTrigStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "eventname",
@@ -2517,6 +2597,7 @@
   },
   {
     "name": "CreateExtensionStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "extname",
@@ -2540,6 +2621,7 @@
   },
   {
     "name": "CreateFdwStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "fdwname",
@@ -2563,6 +2645,7 @@
   },
   {
     "name": "CreateForeignServerStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "fdwname",
@@ -2604,6 +2687,7 @@
   },
   {
     "name": "CreateForeignTableStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "base",
@@ -2627,6 +2711,7 @@
   },
   {
     "name": "CreateFunctionStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "funcname",
@@ -2674,6 +2759,7 @@
   },
   {
     "name": "CreateOpClassItem",
+    "isNode": true,
     "fields": [
       {
         "name": "class_args",
@@ -2715,6 +2801,7 @@
   },
   {
     "name": "CreateOpClassStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "amname",
@@ -2756,6 +2843,7 @@
   },
   {
     "name": "CreateOpFamilyStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "amname",
@@ -2773,6 +2861,7 @@
   },
   {
     "name": "CreatePLangStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "plhandler",
@@ -2814,6 +2903,7 @@
   },
   {
     "name": "CreatePolicyStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "cmd_name",
@@ -2861,6 +2951,7 @@
   },
   {
     "name": "CreatePublicationStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "for_all_tables",
@@ -2890,6 +2981,7 @@
   },
   {
     "name": "CreateRangeStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "params",
@@ -2907,6 +2999,7 @@
   },
   {
     "name": "CreateRoleStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "options",
@@ -2930,6 +3023,7 @@
   },
   {
     "name": "CreateSchemaStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "authrole",
@@ -2959,6 +3053,7 @@
   },
   {
     "name": "CreateSeqStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "for_identity",
@@ -2994,6 +3089,7 @@
   },
   {
     "name": "CreateStatsStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "defnames",
@@ -3041,6 +3137,7 @@
   },
   {
     "name": "CreateStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "accessMethod",
@@ -3118,6 +3215,7 @@
   },
   {
     "name": "CreateSubscriptionStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "conninfo",
@@ -3147,6 +3245,7 @@
   },
   {
     "name": "CreateTableAsStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "if_not_exists",
@@ -3182,6 +3281,7 @@
   },
   {
     "name": "CreateTableSpaceStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "location",
@@ -3211,6 +3311,7 @@
   },
   {
     "name": "CreateTransformStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "fromsql",
@@ -3246,6 +3347,7 @@
   },
   {
     "name": "CreateTrigStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "args",
@@ -3341,6 +3443,7 @@
   },
   {
     "name": "CreateUserMappingStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "if_not_exists",
@@ -3370,6 +3473,7 @@
   },
   {
     "name": "CTECycleClause",
+    "isNode": true,
     "fields": [
       {
         "name": "cycle_col_list",
@@ -3435,6 +3539,7 @@
   },
   {
     "name": "CTESearchClause",
+    "isNode": true,
     "fields": [
       {
         "name": "location",
@@ -3464,6 +3569,7 @@
   },
   {
     "name": "CurrentOfExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "cursor_name",
@@ -3493,6 +3599,7 @@
   },
   {
     "name": "DeallocateStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "isall",
@@ -3516,6 +3623,7 @@
   },
   {
     "name": "DeclareCursorStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "options",
@@ -3539,6 +3647,7 @@
   },
   {
     "name": "DefElem",
+    "isNode": true,
     "fields": [
       {
         "name": "arg",
@@ -3574,6 +3683,7 @@
   },
   {
     "name": "DefineStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "args",
@@ -3621,6 +3731,7 @@
   },
   {
     "name": "DeleteStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "relation",
@@ -3656,6 +3767,7 @@
   },
   {
     "name": "DiscardStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "target",
@@ -3667,6 +3779,7 @@
   },
   {
     "name": "DistinctExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "args",
@@ -3720,6 +3833,7 @@
   },
   {
     "name": "DoStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "args",
@@ -3731,6 +3845,7 @@
   },
   {
     "name": "DropdbStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "dbname",
@@ -3754,6 +3869,7 @@
   },
   {
     "name": "DropOwnedStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "behavior",
@@ -3771,6 +3887,7 @@
   },
   {
     "name": "DropRoleStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "missing_ok",
@@ -3788,6 +3905,7 @@
   },
   {
     "name": "DropStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "behavior",
@@ -3823,6 +3941,7 @@
   },
   {
     "name": "DropSubscriptionStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "behavior",
@@ -3846,6 +3965,7 @@
   },
   {
     "name": "DropTableSpaceStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "missing_ok",
@@ -3863,6 +3983,7 @@
   },
   {
     "name": "DropUserMappingStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "missing_ok",
@@ -3886,6 +4007,7 @@
   },
   {
     "name": "ExecuteStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "name",
@@ -3903,6 +4025,7 @@
   },
   {
     "name": "ExplainStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "options",
@@ -3920,6 +4043,7 @@
   },
   {
     "name": "FetchStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "direction",
@@ -3949,6 +4073,7 @@
   },
   {
     "name": "FieldSelect",
+    "isNode": true,
     "fields": [
       {
         "name": "arg",
@@ -3990,6 +4115,7 @@
   },
   {
     "name": "FieldStore",
+    "isNode": true,
     "fields": [
       {
         "name": "arg",
@@ -4025,6 +4151,7 @@
   },
   {
     "name": "Float",
+    "isNode": true,
     "fields": [
       {
         "name": "fval",
@@ -4036,6 +4163,7 @@
   },
   {
     "name": "FromExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "fromlist",
@@ -4053,6 +4181,7 @@
   },
   {
     "name": "FuncCall",
+    "isNode": true,
     "fields": [
       {
         "name": "agg_distinct",
@@ -4124,6 +4253,7 @@
   },
   {
     "name": "FuncExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "args",
@@ -4189,6 +4319,7 @@
   },
   {
     "name": "FunctionParameter",
+    "isNode": true,
     "fields": [
       {
         "name": "argType",
@@ -4218,6 +4349,7 @@
   },
   {
     "name": "GrantRoleStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "behavior",
@@ -4259,6 +4391,7 @@
   },
   {
     "name": "GrantStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "behavior",
@@ -4318,6 +4451,7 @@
   },
   {
     "name": "GroupingFunc",
+    "isNode": true,
     "fields": [
       {
         "name": "agglevelsup",
@@ -4353,6 +4487,7 @@
   },
   {
     "name": "GroupingSet",
+    "isNode": true,
     "fields": [
       {
         "name": "content",
@@ -4376,6 +4511,7 @@
   },
   {
     "name": "ImportForeignSchemaStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "list_type",
@@ -4417,6 +4553,7 @@
   },
   {
     "name": "IndexElem",
+    "isNode": true,
     "fields": [
       {
         "name": "collation",
@@ -4470,6 +4607,7 @@
   },
   {
     "name": "IndexStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "accessMethod",
@@ -4619,6 +4757,7 @@
   },
   {
     "name": "InferClause",
+    "isNode": true,
     "fields": [
       {
         "name": "conname",
@@ -4648,6 +4787,7 @@
   },
   {
     "name": "InferenceElem",
+    "isNode": true,
     "fields": [
       {
         "name": "expr",
@@ -4677,6 +4817,7 @@
   },
   {
     "name": "InlineCodeBlock",
+    "isNode": true,
     "fields": [
       {
         "name": "atomic",
@@ -4706,6 +4847,7 @@
   },
   {
     "name": "InsertStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "cols",
@@ -4753,6 +4895,7 @@
   },
   {
     "name": "Integer",
+    "isNode": true,
     "fields": [
       {
         "name": "ival",
@@ -4764,6 +4907,7 @@
   },
   {
     "name": "IntList",
+    "isNode": true,
     "fields": [
       {
         "name": "items",
@@ -4775,6 +4919,7 @@
   },
   {
     "name": "IntoClause",
+    "isNode": true,
     "fields": [
       {
         "name": "accessMethod",
@@ -4828,6 +4973,7 @@
   },
   {
     "name": "JoinExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "alias",
@@ -4887,6 +5033,7 @@
   },
   {
     "name": "JsonAggConstructor",
+    "isNode": true,
     "fields": [
       {
         "name": "agg_filter",
@@ -4922,6 +5069,7 @@
   },
   {
     "name": "JsonArgument",
+    "isNode": true,
     "fields": [
       {
         "name": "name",
@@ -4939,6 +5087,7 @@
   },
   {
     "name": "JsonArrayAgg",
+    "isNode": true,
     "fields": [
       {
         "name": "absent_on_null",
@@ -4962,6 +5111,7 @@
   },
   {
     "name": "JsonArrayConstructor",
+    "isNode": true,
     "fields": [
       {
         "name": "absent_on_null",
@@ -4991,6 +5141,7 @@
   },
   {
     "name": "JsonArrayQueryConstructor",
+    "isNode": true,
     "fields": [
       {
         "name": "absent_on_null",
@@ -5026,6 +5177,7 @@
   },
   {
     "name": "JsonBehavior",
+    "isNode": true,
     "fields": [
       {
         "name": "btype",
@@ -5055,6 +5207,7 @@
   },
   {
     "name": "JsonConstructorExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "absent_on_null",
@@ -5114,6 +5267,7 @@
   },
   {
     "name": "JsonExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "collation",
@@ -5221,6 +5375,7 @@
   },
   {
     "name": "JsonFormat",
+    "isNode": true,
     "fields": [
       {
         "name": "encoding",
@@ -5244,6 +5399,7 @@
   },
   {
     "name": "JsonFuncExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "column_name",
@@ -5315,6 +5471,7 @@
   },
   {
     "name": "JsonIsPredicate",
+    "isNode": true,
     "fields": [
       {
         "name": "expr",
@@ -5350,6 +5507,7 @@
   },
   {
     "name": "JsonKeyValue",
+    "isNode": true,
     "fields": [
       {
         "name": "key",
@@ -5367,6 +5525,7 @@
   },
   {
     "name": "JsonObjectAgg",
+    "isNode": true,
     "fields": [
       {
         "name": "absent_on_null",
@@ -5396,6 +5555,7 @@
   },
   {
     "name": "JsonObjectConstructor",
+    "isNode": true,
     "fields": [
       {
         "name": "absent_on_null",
@@ -5431,6 +5591,7 @@
   },
   {
     "name": "JsonOutput",
+    "isNode": true,
     "fields": [
       {
         "name": "returning",
@@ -5448,6 +5609,7 @@
   },
   {
     "name": "JsonParseExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "expr",
@@ -5477,6 +5639,7 @@
   },
   {
     "name": "JsonReturning",
+    "isNode": true,
     "fields": [
       {
         "name": "format",
@@ -5500,6 +5663,7 @@
   },
   {
     "name": "JsonScalarExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "expr",
@@ -5523,6 +5687,7 @@
   },
   {
     "name": "JsonSerializeExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "expr",
@@ -5546,6 +5711,7 @@
   },
   {
     "name": "JsonTable",
+    "isNode": true,
     "fields": [
       {
         "name": "alias",
@@ -5599,6 +5765,7 @@
   },
   {
     "name": "JsonTableColumn",
+    "isNode": true,
     "fields": [
       {
         "name": "coltype",
@@ -5670,6 +5837,7 @@
   },
   {
     "name": "JsonTablePath",
+    "isNode": true,
     "fields": [
       {
         "name": "name",
@@ -5681,6 +5849,7 @@
   },
   {
     "name": "JsonTablePathScan",
+    "isNode": true,
     "fields": [
       {
         "name": "child",
@@ -5722,6 +5891,7 @@
   },
   {
     "name": "JsonTablePathSpec",
+    "isNode": true,
     "fields": [
       {
         "name": "location",
@@ -5751,6 +5921,7 @@
   },
   {
     "name": "JsonTableSiblingJoin",
+    "isNode": true,
     "fields": [
       {
         "name": "lplan",
@@ -5774,6 +5945,7 @@
   },
   {
     "name": "JsonValueExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "format",
@@ -5797,6 +5969,7 @@
   },
   {
     "name": "List",
+    "isNode": true,
     "fields": [
       {
         "name": "items",
@@ -5808,6 +5981,7 @@
   },
   {
     "name": "ListenStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "conditionname",
@@ -5819,6 +5993,7 @@
   },
   {
     "name": "LoadStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "filename",
@@ -5830,6 +6005,7 @@
   },
   {
     "name": "LockingClause",
+    "isNode": true,
     "fields": [
       {
         "name": "lockedRels",
@@ -5853,6 +6029,7 @@
   },
   {
     "name": "LockStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "mode",
@@ -5876,6 +6053,7 @@
   },
   {
     "name": "MergeAction",
+    "isNode": true,
     "fields": [
       {
         "name": "commandType",
@@ -5917,6 +6095,7 @@
   },
   {
     "name": "MergeStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "joinCondition",
@@ -5958,6 +6137,7 @@
   },
   {
     "name": "MergeSupportFunc",
+    "isNode": true,
     "fields": [
       {
         "name": "location",
@@ -5987,6 +6167,7 @@
   },
   {
     "name": "MergeWhenClause",
+    "isNode": true,
     "fields": [
       {
         "name": "commandType",
@@ -6028,6 +6209,7 @@
   },
   {
     "name": "MinMaxExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "args",
@@ -6075,6 +6257,7 @@
   },
   {
     "name": "MultiAssignRef",
+    "isNode": true,
     "fields": [
       {
         "name": "colno",
@@ -6098,6 +6281,7 @@
   },
   {
     "name": "NamedArgExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "arg",
@@ -6133,6 +6317,7 @@
   },
   {
     "name": "NextValueExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "seqid",
@@ -6156,6 +6341,7 @@
   },
   {
     "name": "NotifyStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "conditionname",
@@ -6173,6 +6359,7 @@
   },
   {
     "name": "NullIfExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "args",
@@ -6226,6 +6413,7 @@
   },
   {
     "name": "NullTest",
+    "isNode": true,
     "fields": [
       {
         "name": "arg",
@@ -6261,6 +6449,7 @@
   },
   {
     "name": "ObjectWithArgs",
+    "isNode": true,
     "fields": [
       {
         "name": "args_unspecified",
@@ -6290,6 +6479,7 @@
   },
   {
     "name": "OidList",
+    "isNode": true,
     "fields": [
       {
         "name": "items",
@@ -6301,6 +6491,7 @@
   },
   {
     "name": "OnConflictClause",
+    "isNode": true,
     "fields": [
       {
         "name": "action",
@@ -6336,6 +6527,7 @@
   },
   {
     "name": "OnConflictExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "action",
@@ -6389,6 +6581,7 @@
   },
   {
     "name": "OpExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "args",
@@ -6442,6 +6635,7 @@
   },
   {
     "name": "Param",
+    "isNode": true,
     "fields": [
       {
         "name": "location",
@@ -6489,6 +6683,7 @@
   },
   {
     "name": "ParamRef",
+    "isNode": true,
     "fields": [
       {
         "name": "location",
@@ -6506,6 +6701,7 @@
   },
   {
     "name": "ParseResult",
+    "isNode": false,
     "fields": [
       {
         "name": "stmts",
@@ -6523,6 +6719,7 @@
   },
   {
     "name": "PartitionBoundSpec",
+    "isNode": true,
     "fields": [
       {
         "name": "is_default",
@@ -6576,6 +6773,7 @@
   },
   {
     "name": "PartitionCmd",
+    "isNode": true,
     "fields": [
       {
         "name": "bound",
@@ -6599,6 +6797,7 @@
   },
   {
     "name": "PartitionElem",
+    "isNode": true,
     "fields": [
       {
         "name": "collation",
@@ -6634,6 +6833,7 @@
   },
   {
     "name": "PartitionRangeDatum",
+    "isNode": true,
     "fields": [
       {
         "name": "kind",
@@ -6657,6 +6857,7 @@
   },
   {
     "name": "PartitionSpec",
+    "isNode": true,
     "fields": [
       {
         "name": "location",
@@ -6680,6 +6881,7 @@
   },
   {
     "name": "PLAssignStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "indirection",
@@ -6715,6 +6917,7 @@
   },
   {
     "name": "PrepareStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "argtypes",
@@ -6738,6 +6941,7 @@
   },
   {
     "name": "PublicationObjSpec",
+    "isNode": true,
     "fields": [
       {
         "name": "location",
@@ -6767,6 +6971,7 @@
   },
   {
     "name": "PublicationTable",
+    "isNode": true,
     "fields": [
       {
         "name": "columns",
@@ -6790,6 +6995,7 @@
   },
   {
     "name": "Query",
+    "isNode": true,
     "fields": [
       {
         "name": "canSetTag",
@@ -7047,6 +7253,7 @@
   },
   {
     "name": "RangeFunction",
+    "isNode": true,
     "fields": [
       {
         "name": "alias",
@@ -7088,6 +7295,7 @@
   },
   {
     "name": "RangeSubselect",
+    "isNode": true,
     "fields": [
       {
         "name": "alias",
@@ -7111,6 +7319,7 @@
   },
   {
     "name": "RangeTableFunc",
+    "isNode": true,
     "fields": [
       {
         "name": "alias",
@@ -7158,6 +7367,7 @@
   },
   {
     "name": "RangeTableFuncCol",
+    "isNode": true,
     "fields": [
       {
         "name": "coldefexpr",
@@ -7205,6 +7415,7 @@
   },
   {
     "name": "RangeTableSample",
+    "isNode": true,
     "fields": [
       {
         "name": "args",
@@ -7240,6 +7451,7 @@
   },
   {
     "name": "RangeTblEntry",
+    "isNode": true,
     "fields": [
       {
         "name": "alias",
@@ -7437,6 +7649,7 @@
   },
   {
     "name": "RangeTblFunction",
+    "isNode": true,
     "fields": [
       {
         "name": "funccolcollations",
@@ -7484,6 +7697,7 @@
   },
   {
     "name": "RangeTblRef",
+    "isNode": true,
     "fields": [
       {
         "name": "rtindex",
@@ -7495,6 +7709,7 @@
   },
   {
     "name": "RangeVar",
+    "isNode": true,
     "fields": [
       {
         "name": "alias",
@@ -7542,6 +7757,7 @@
   },
   {
     "name": "RawStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "stmt",
@@ -7565,6 +7781,7 @@
   },
   {
     "name": "ReassignOwnedStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "newrole",
@@ -7582,6 +7799,7 @@
   },
   {
     "name": "RefreshMatViewStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "concurrent",
@@ -7605,6 +7823,7 @@
   },
   {
     "name": "ReindexStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "kind",
@@ -7634,6 +7853,7 @@
   },
   {
     "name": "RelabelType",
+    "isNode": true,
     "fields": [
       {
         "name": "arg",
@@ -7681,6 +7901,7 @@
   },
   {
     "name": "RenameStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "behavior",
@@ -7734,6 +7955,7 @@
   },
   {
     "name": "ReplicaIdentityStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "identity_type",
@@ -7751,6 +7973,7 @@
   },
   {
     "name": "ResTarget",
+    "isNode": true,
     "fields": [
       {
         "name": "indirection",
@@ -7780,6 +8003,7 @@
   },
   {
     "name": "ReturnStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "returnval",
@@ -7791,6 +8015,7 @@
   },
   {
     "name": "RoleSpec",
+    "isNode": true,
     "fields": [
       {
         "name": "location",
@@ -7814,6 +8039,7 @@
   },
   {
     "name": "RowCompareExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "inputcollids",
@@ -7861,6 +8087,7 @@
   },
   {
     "name": "RowExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "args",
@@ -7902,6 +8129,7 @@
   },
   {
     "name": "RowMarkClause",
+    "isNode": true,
     "fields": [
       {
         "name": "pushedDown",
@@ -7931,6 +8159,7 @@
   },
   {
     "name": "RTEPermissionInfo",
+    "isNode": true,
     "fields": [
       {
         "name": "checkAsUser",
@@ -7978,6 +8207,7 @@
   },
   {
     "name": "RuleStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "actions",
@@ -8025,6 +8255,7 @@
   },
   {
     "name": "ScalarArrayOpExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "args",
@@ -8066,6 +8297,7 @@
   },
   {
     "name": "ScanResult",
+    "isNode": false,
     "fields": [
       {
         "name": "tokens",
@@ -8083,6 +8315,7 @@
   },
   {
     "name": "ScanToken",
+    "isNode": false,
     "fields": [
       {
         "name": "end",
@@ -8112,6 +8345,7 @@
   },
   {
     "name": "SecLabelStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "label",
@@ -8141,6 +8375,7 @@
   },
   {
     "name": "SelectStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "all",
@@ -8266,6 +8501,7 @@
   },
   {
     "name": "SetOperationStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "all",
@@ -8319,6 +8555,7 @@
   },
   {
     "name": "SetToDefault",
+    "isNode": true,
     "fields": [
       {
         "name": "collation",
@@ -8354,10 +8591,12 @@
   },
   {
     "name": "SinglePartitionSpec",
+    "isNode": true,
     "fields": []
   },
   {
     "name": "SortBy",
+    "isNode": true,
     "fields": [
       {
         "name": "location",
@@ -8393,6 +8632,7 @@
   },
   {
     "name": "SortGroupClause",
+    "isNode": true,
     "fields": [
       {
         "name": "eqop",
@@ -8428,6 +8668,7 @@
   },
   {
     "name": "SQLValueFunction",
+    "isNode": true,
     "fields": [
       {
         "name": "location",
@@ -8463,6 +8704,7 @@
   },
   {
     "name": "StatsElem",
+    "isNode": true,
     "fields": [
       {
         "name": "expr",
@@ -8480,6 +8722,7 @@
   },
   {
     "name": "String",
+    "isNode": true,
     "fields": [
       {
         "name": "sval",
@@ -8491,6 +8734,7 @@
   },
   {
     "name": "SubLink",
+    "isNode": true,
     "fields": [
       {
         "name": "location",
@@ -8538,6 +8782,7 @@
   },
   {
     "name": "SubPlan",
+    "isNode": true,
     "fields": [
       {
         "name": "args",
@@ -8645,6 +8890,7 @@
   },
   {
     "name": "SubscriptingRef",
+    "isNode": true,
     "fields": [
       {
         "name": "refassgnexpr",
@@ -8710,6 +8956,7 @@
   },
   {
     "name": "TableFunc",
+    "isNode": true,
     "fields": [
       {
         "name": "colcollations",
@@ -8817,6 +9064,7 @@
   },
   {
     "name": "TableLikeClause",
+    "isNode": true,
     "fields": [
       {
         "name": "options",
@@ -8840,6 +9088,7 @@
   },
   {
     "name": "TableSampleClause",
+    "isNode": true,
     "fields": [
       {
         "name": "args",
@@ -8863,6 +9112,7 @@
   },
   {
     "name": "TargetEntry",
+    "isNode": true,
     "fields": [
       {
         "name": "expr",
@@ -8916,6 +9166,7 @@
   },
   {
     "name": "TransactionStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "chain",
@@ -8957,6 +9208,7 @@
   },
   {
     "name": "TriggerTransition",
+    "isNode": true,
     "fields": [
       {
         "name": "isNew",
@@ -8980,6 +9232,7 @@
   },
   {
     "name": "TruncateStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "behavior",
@@ -9003,6 +9256,7 @@
   },
   {
     "name": "TypeCast",
+    "isNode": true,
     "fields": [
       {
         "name": "arg",
@@ -9026,6 +9280,7 @@
   },
   {
     "name": "TypeName",
+    "isNode": true,
     "fields": [
       {
         "name": "arrayBounds",
@@ -9079,6 +9334,7 @@
   },
   {
     "name": "UnlistenStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "conditionname",
@@ -9090,6 +9346,7 @@
   },
   {
     "name": "UpdateStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "fromClause",
@@ -9131,6 +9388,7 @@
   },
   {
     "name": "VacuumRelation",
+    "isNode": true,
     "fields": [
       {
         "name": "oid",
@@ -9154,6 +9412,7 @@
   },
   {
     "name": "VacuumStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "is_vacuumcmd",
@@ -9177,6 +9436,7 @@
   },
   {
     "name": "Var",
+    "isNode": true,
     "fields": [
       {
         "name": "location",
@@ -9236,6 +9496,7 @@
   },
   {
     "name": "VariableSetStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "args",
@@ -9265,6 +9526,7 @@
   },
   {
     "name": "VariableShowStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "name",
@@ -9276,6 +9538,7 @@
   },
   {
     "name": "ViewStmt",
+    "isNode": true,
     "fields": [
       {
         "name": "aliases",
@@ -9317,6 +9580,7 @@
   },
   {
     "name": "WindowClause",
+    "isNode": true,
     "fields": [
       {
         "name": "copiedOrder",
@@ -9406,6 +9670,7 @@
   },
   {
     "name": "WindowDef",
+    "isNode": true,
     "fields": [
       {
         "name": "endOffset",
@@ -9459,6 +9724,7 @@
   },
   {
     "name": "WindowFunc",
+    "isNode": true,
     "fields": [
       {
         "name": "aggfilter",
@@ -9536,6 +9802,7 @@
   },
   {
     "name": "WindowFuncRunCondition",
+    "isNode": true,
     "fields": [
       {
         "name": "arg",
@@ -9571,6 +9838,7 @@
   },
   {
     "name": "WithCheckOption",
+    "isNode": true,
     "fields": [
       {
         "name": "cascaded",
@@ -9606,6 +9874,7 @@
   },
   {
     "name": "WithClause",
+    "isNode": true,
     "fields": [
       {
         "name": "ctes",
@@ -9629,6 +9898,7 @@
   },
   {
     "name": "XmlExpr",
+    "isNode": true,
     "fields": [
       {
         "name": "arg_names",
@@ -9700,6 +9970,7 @@
   },
   {
     "name": "XmlSerialize",
+    "isNode": true,
     "fields": [
       {
         "name": "expr",

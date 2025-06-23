@@ -53,6 +53,7 @@ export class RuntimeSchemaGenerator {
 
     return {
       name: type.name,
+      isNode: this.nodeTypes.has(type.name),
       fields: fields.sort((a, b) => a.name.localeCompare(b.name))
     };
   }
