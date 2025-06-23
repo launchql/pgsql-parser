@@ -1,57 +1,50 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Pretty CTE (Common Table Expressions) formatting should format basic CTE with pretty option enabled 1`] = `
-"WITH
+"WITH 
   regional_sales AS (SELECT
     region,
     sum(sales_amount) AS total_sales
-  FROM
-  sales
+  FROM sales
   GROUP BY
     region)
 SELECT
   *
-FROM
-regional_sales;"
+FROM regional_sales;"
 `;
 
 exports[`Pretty CTE (Common Table Expressions) formatting should format complex CTE with multiple CTEs with pretty option enabled 1`] = `
-"WITH
+"WITH 
   regional_sales AS (SELECT
     region,
     sum(sales_amount) AS total_sales
-  FROM
-  sales
+  FROM sales
   GROUP BY
     region),
   top_regions AS (SELECT
     region
-  FROM
-  regional_sales
+  FROM regional_sales
   WHERE
     total_sales > 1000000)
 SELECT
   *
-FROM
-top_regions;"
+FROM top_regions;"
 `;
 
 exports[`Pretty CTE (Common Table Expressions) formatting should format nested CTE with complex joins with pretty option enabled 1`] = `
-"WITH
+"WITH 
   sales_summary AS (SELECT
     region,
     product_category,
     sum(amount) AS total
-  FROM
-  sales
+  FROM sales
   GROUP BY
     region,
     product_category),
   regional_totals AS (SELECT
     region,
     sum(total) AS region_total
-  FROM
-  sales_summary
+  FROM sales_summary
   GROUP BY
     region)
 SELECT
@@ -59,20 +52,18 @@ SELECT
   s.product_category,
   s.total,
   r.region_total
-FROM
-sales_summary AS s 
+FROM sales_summary AS s
 JOIN regional_totals AS r ON s.region = r.region;"
 `;
 
 exports[`Pretty CTE (Common Table Expressions) formatting should format recursive CTE with pretty option enabled 1`] = `
-"WITH RECURSIVE
+"WITH RECURSIVE 
   employee_hierarchy AS (SELECT
     id,
     name,
     manager_id,
     1 AS level
-  FROM
-  employees
+  FROM employees
   WHERE
     manager_id IS NULL
   UNION
@@ -82,28 +73,24 @@ exports[`Pretty CTE (Common Table Expressions) formatting should format recursiv
     e.name,
     e.manager_id,
     eh.level + 1
-  FROM
-  employees AS e 
+  FROM employees AS e
   JOIN employee_hierarchy AS eh ON e.manager_id = eh.id)
 SELECT
   *
-FROM
-employee_hierarchy;"
+FROM employee_hierarchy;"
 `;
 
 exports[`Pretty CTE (Common Table Expressions) formatting should maintain single-line format when pretty option disabled 1`] = `"WITH regional_sales AS (SELECT region, sum(sales_amount) AS total_sales FROM sales GROUP BY region) SELECT * FROM regional_sales;"`;
 
 exports[`Pretty CTE (Common Table Expressions) formatting should use custom newline and tab characters in pretty mode 1`] = `
-"WITH
+"WITH 
     regional_sales AS (SELECT
         region,
         sum(sales_amount) AS total_sales
-    FROM
-    sales
+    FROM sales
     GROUP BY
         region)
 SELECT
     *
-FROM
-regional_sales;"
+FROM regional_sales;"
 `;
