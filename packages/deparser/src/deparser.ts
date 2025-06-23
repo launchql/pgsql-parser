@@ -304,7 +304,13 @@ export class Deparser implements DeparserVisitor {
       const targetList = ListUtils.unwrapList(node.targetList);
       if (this.formatter.isPretty()) {
         const targetStrings = targetList
-          .map(e => this.formatter.indent(this.visit(e as Node, { ...context, select: true })));
+          .map(e => {
+            const targetStr = this.visit(e as Node, { ...context, select: true });
+            if (this.containsMultilineStringLiteral(targetStr)) {
+              return targetStr;
+            }
+            return this.formatter.indent(targetStr);
+          });
         const formattedTargets = targetStrings.join(',' + this.formatter.newline());
         output.push('SELECT' + distinctPart);
         output.push(formattedTargets);
@@ -360,7 +366,13 @@ export class Deparser implements DeparserVisitor {
       const groupList = ListUtils.unwrapList(node.groupClause);
       if (this.formatter.isPretty()) {
         const groupItems = groupList
-          .map(e => this.formatter.indent(this.visit(e as Node, { ...context, group: true })))
+          .map(e => {
+            const groupStr = this.visit(e as Node, { ...context, group: true });
+            if (this.containsMultilineStringLiteral(groupStr)) {
+              return groupStr;
+            }
+            return this.formatter.indent(groupStr);
+          })
           .join(',' + this.formatter.newline());
         output.push('GROUP BY');
         output.push(groupItems);
@@ -376,7 +388,12 @@ export class Deparser implements DeparserVisitor {
     if (node.havingClause) {
       if (this.formatter.isPretty()) {
         output.push('HAVING');
-        output.push(this.formatter.indent(this.visit(node.havingClause as Node, context)));
+        const havingStr = this.visit(node.havingClause as Node, context);
+        if (this.containsMultilineStringLiteral(havingStr)) {
+          output.push(havingStr);
+        } else {
+          output.push(this.formatter.indent(havingStr));
+        }
       } else {
         output.push('HAVING');
         output.push(this.visit(node.havingClause as Node, context));
@@ -396,7 +413,13 @@ export class Deparser implements DeparserVisitor {
       const sortList = ListUtils.unwrapList(node.sortClause);
       if (this.formatter.isPretty()) {
         const sortItems = sortList
-          .map(e => this.formatter.indent(this.visit(e as Node, { ...context, sort: true })))
+          .map(e => {
+            const sortStr = this.visit(e as Node, { ...context, sort: true });
+            if (this.containsMultilineStringLiteral(sortStr)) {
+              return sortStr;
+            }
+            return this.formatter.indent(sortStr);
+          })
           .join(',' + this.formatter.newline());
         output.push('ORDER BY');
         output.push(sortItems);
@@ -972,6 +995,9 @@ export class Deparser implements DeparserVisitor {
       if (this.formatter.isPretty()) {
         const cteStrings = ctes.map(cte => {
           const cteStr = this.visit(cte, context);
+          if (this.containsMultilineStringLiteral(cteStr)) {
+            return this.formatter.newline() + cteStr;
+          }
           return this.formatter.newline() + this.formatter.indent(cteStr);
         });
         output.push(cteStrings.join(','));
@@ -10900,6 +10926,8 @@ export class Deparser implements DeparserVisitor {
     return output.join(' ');
   }
 
-
-
+  private containsMultilineStringLiteral(content: string): boolean {
+    const stringLiteralRegex = /'[^']*\n[^']*'/g;
+    return stringLiteralRegex.test(content);
+  }
 }
