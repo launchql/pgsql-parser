@@ -46,9 +46,9 @@
     "database"
   ],
   "devDependencies": {
-    "libpg-query": "17.3.3"
+    "libpg-query": "17.5.2"
   },
   "dependencies": {
-    "@pgsql/types": "^17.6.0"
+    "@pgsql/types": "^17.6.1"
   }
 }

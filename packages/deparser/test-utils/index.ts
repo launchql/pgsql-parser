@@ -1,10 +1,10 @@
 import { parse } from 'libpg-query';
-import { deparse } from '../src';
+import { deparseSync as deparse } from '../src';
 import { cleanTree } from '../src/utils';
 import { readFileSync } from 'fs';
 import * as path from 'path';
 import { expect } from '@jest/globals';
-import {diff} from 'jest-diff'
+import { diff } from 'jest-diff'
 
 type ParseErrorType = 
   | 'PARSE_FAILED'
