@@ -134,6 +134,19 @@ Example failure:
 
 Fix: prevent accidental nested `FuncCall` by inspecting and unwrapping recursively.
 
+## Custom testing strategy
+
+Please review the test utilities — note that exact SQL string equality is not required. The focus is on comparing the resulting ASTs.
+
+Refer to `expectAstMatch` to understand how correctness is validated.
+
+The pipeline is:
+parse(sql1) → ast → deparse(ast) → sql2
+While sql2 !== sql1 (textually), a correct round-trip means:
+parse(sql1) === parse(sql2) (AST-level equality).
+
+You can see `expectAstMatch` here: packages/deparser/test-utils/index.ts
+
 ---
 
 ### Development Setup

@@ -10,6 +10,10 @@ it('misc-issues', async () => {
   "misc/issues-4.sql",
   "misc/issues-5.sql",
   "misc/issues-6.sql",
-  "misc/issues-7.sql"
+  "misc/issues-7.sql",
+  "misc/issues-8.sql",
+  "misc/issues-9.sql",
+  "misc/issues-10.sql",
+  "misc/issues-11.sql"
 ]);
 });

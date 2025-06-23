@@ -26,6 +26,30 @@ VALUES
   (2, 'Ausonius', NULL, FALSE, 'M', 1, '0310-01-01', '0395-01-01', 'Burdigala', NULL, NULL, NULL, NULL, NULL)
 ON CONFLICT DO NOTHING;
 
+-- https://github.com/launchql/pgsql-parser/issues/52
+CREATE TABLE public.ci_builds_runner_session (
+    id bigint NOT NULL,
+    build_id integer NOT NULL,
+    url character varying NOT NULL,
+    certificate character varying,
+    "authorization" character varying
+);
+
+-- https://github.com/launchql/pgsql-parser/issues/50
+COMMENT ON COLUMN public.posts.reply_to_post_number IS 'If this post is a reply to another, this column is the post_number of the post it''s replying to. [FKEY posts.topic_id, posts.post_number]';
+
+-- https://github.com/launchql/pgsql-parser/issues/48
+CREATE TABLE "Album"
+(
+  "AlbumId" INT NOT NULL,
+  "Title" VARCHAR(160) NOT NULL,
+  "ArtistId" INT NOT NULL,
+  CONSTRAINT "PK_Album" PRIMARY KEY  ("AlbumId")
+);
+
+-- https://github.com/launchql/pgsql-parser/issues/47
+CREATE INDEX "existing_undispatched_message" ON public.messages USING btree ("context_id", context_type, notification_name, "to", user_id);
+
 -- https://github.com/launchql/pgsql-parser/issues/124
 COMMENT ON COLUMN "foo"."whatever" IS $$
 Something blah, this data may have chars like '\n' and '\r' in it.
