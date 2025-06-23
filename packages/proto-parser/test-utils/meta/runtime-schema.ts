@@ -6721,7 +6721,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'ParseResult',
-    isNode: true,
+    isNode: false,
     fields: [
       {
         name: 'stmts',
@@ -8317,7 +8317,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'ScanResult',
-    isNode: true,
+    isNode: false,
     fields: [
       {
         name: 'tokens',
@@ -8335,7 +8335,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'ScanToken',
-    isNode: true,
+    isNode: false,
     fields: [
       {
         name: 'end',
