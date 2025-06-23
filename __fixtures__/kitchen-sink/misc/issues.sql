@@ -54,3 +54,6 @@ CREATE INDEX "existing_undispatched_message" ON public.messages USING btree ("co
 COMMENT ON COLUMN "foo"."whatever" IS $$
 Something blah, this data may have chars like '\n' and '\r' in it.
 $$;
+
+-- https://github.com/launchql/pgsql-parser/issues/127
+SELECT * from foo.bar.baz;
