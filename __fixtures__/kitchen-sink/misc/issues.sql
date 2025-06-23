@@ -57,3 +57,11 @@ $$;
 
 -- https://github.com/launchql/pgsql-parser/issues/127
 SELECT * from foo.bar.baz;
+
+-- https://github.com/launchql/pgsql-parser/issues/123
+CREATE AGGREGATE json_agg_strict(anyelement)(
+  SFUNC = json_agg_strict_sfunc,
+  STYPE = jsonb,
+  FINALFUNC = json_agg_strict_finalfunc,
+  INITCOND = '[]'
+);
