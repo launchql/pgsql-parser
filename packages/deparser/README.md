@@ -69,6 +69,48 @@ console.log(deparse(stmt));
 // Output: SELECT * FROM another_table
 ```
 
+## Options
+
+The deparser accepts optional configuration for formatting and output control:
+
+```ts
+import { deparseSync as deparse } from 'pgsql-deparser';
+
+const options = {
+  pretty: true,           // Enable pretty formatting (default: false)
+  newline: '\n',         // Newline character (default: '\n')
+  tab: '  ',             // Tab/indentation character (default: '  ')
+  semicolons: true       // Add semicolons to statements (default: true)
+};
+
+const sql = deparse(ast, options);
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `pretty` | `boolean` | `false` | Enable pretty formatting with indentation and line breaks |
+| `newline` | `string` | `'\n'` | Character(s) used for line breaks |
+| `tab` | `string` | `'  '` | Character(s) used for indentation |
+| `semicolons` | `boolean` | `true` | Add semicolons to SQL statements |
+
+**Pretty formatting example:**
+```ts
+// Without pretty formatting
+const sql1 = deparse(selectAst, { pretty: false });
+// "SELECT id, name FROM users WHERE active = true;"
+
+// With pretty formatting  
+const sql2 = deparse(selectAst, { pretty: true });
+// SELECT
+//   id,
+//   name
+// FROM users
+// WHERE
+//   active = true;
+```
+
+For complete documentation and advanced options, see [DEPARSER_USAGE.md](../../DEPARSER_USAGE.md).
+
 ## Why Use `pgsql-deparser`?
 
 `pgsql-deparser` is particularly useful in development environments where native dependencies are problematic or in applications where only the deparser functionality is required. Its independence from the full `pgsql-parser` package allows for more focused and lightweight SQL generation tasks.
