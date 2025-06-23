@@ -440,6 +440,6 @@ it('Complex AST with runtime schema — mixed wrapped/unwrapped patterns', () =>
     const generatedCode = generate(enhancedAst).code;
     
     expect(generatedCode).toMatchSnapshot();
-    expect(generatedCode).toContain('t.nodes.withClause');
+    expect(generatedCode).toContain('t.ast.withClause');
     expect(generatedCode).toContain('t.nodes.selectStmt');
 });

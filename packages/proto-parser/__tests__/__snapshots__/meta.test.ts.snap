@@ -58,7 +58,7 @@ exports[`Complex AST with runtime schema — mixed wrapped/unwrapped patterns 1`
     })
   })],
   limitOption: "LIMIT_OPTION_DEFAULT",
-  withClause: t.nodes.withClause({
+  withClause: t.ast.withClause({
     ctes: [t.nodes.commonTableExpr({
       ctename: "test_cte",
       ctequery: t.nodes.selectStmt({
