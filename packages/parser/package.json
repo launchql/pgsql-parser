@@ -19,9 +19,7 @@
   "bugs": {
     "url": "https://github.com/launchql/pgsql-parser/issues"
   },
-  "bin": {
-    "pgsql-parser": "main/cli.js"
-  },
+
   "scripts": {
     "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
     "clean": "rimraf dist",
@@ -44,7 +42,6 @@
   "dependencies": {
     "@pgsql/types": "^17.6.1",
     "libpg-query": "17.5.2",
-    "pgsql-deparser": "^17.6.2",
-    "minimist": "^1.2.6"
+    "pgsql-deparser": "^17.6.2"
   }
 }
