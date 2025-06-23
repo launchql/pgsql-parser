@@ -136,6 +136,8 @@ Fix: prevent accidental nested `FuncCall` by inspecting and unwrapping recursive
 
 ## Custom testing strategy
 
+Parse the any deparsed or pretty-formatted SQL back and verify the AST matches the original. This ensures the formatting doesn't break the SQL semantics.
+
 Please review the test utilities — note that exact SQL string equality is not required. The focus is on comparing the resulting ASTs.
 
 Refer to `expectAstMatch` to understand how correctness is validated.
@@ -146,6 +148,7 @@ While sql2 !== sql1 (textually), a correct round-trip means:
 parse(sql1) === parse(sql2) (AST-level equality).
 
 You can see `expectAstMatch` here: packages/deparser/test-utils/index.ts
+
 
 ---
 
