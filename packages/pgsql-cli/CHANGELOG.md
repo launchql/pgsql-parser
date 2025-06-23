@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.30.0 (2025-06-23)
+
+
+### Features
+
+* implement unified @pgsql/cli package ([b009a17](https://github.com/launchql/pgsql-parser/commit/b009a172c3c93033573745e80354a7dac973e2bf))
+
+
+### BREAKING CHANGES
+
+* Binary renamed from pg-proto-parser to pgsql. Command structure changed from subcommands to main commands.
+
+
+
+
+
 ## [1.29.2](https://github.com/launchql/pgsql-parser/compare/@launchql/proto-cli@1.29.1...@launchql/proto-cli@1.29.2) (2025-06-22)
 
 **Note:** Version bump only for package @launchql/proto-cli

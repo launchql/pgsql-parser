@@ -1,6 +1,6 @@
 {
   "name": "pgsql-parser",
-  "version": "17.5.2",
+  "version": "17.6.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "The real PostgreSQL query parser",
   "main": "index.js",
@@ -19,7 +19,6 @@
   "bugs": {
     "url": "https://github.com/launchql/pgsql-parser/issues"
   },
-
   "scripts": {
     "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
     "clean": "rimraf dist",
@@ -42,6 +41,6 @@
   "dependencies": {
     "@pgsql/types": "^17.6.1",
     "libpg-query": "17.5.2",
-    "pgsql-deparser": "^17.6.2"
+    "pgsql-deparser": "^17.7.0"
   }
 }
