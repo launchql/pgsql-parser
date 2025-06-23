@@ -68,3 +68,7 @@ CREATE AGGREGATE json_agg_strict(anyelement)(
 
 -- https://github.com/launchql/pgsql-parser/issues/62
 SELECT (1 IS NOT NULL) IS DISTINCT FROM (2 IS NOT NULL);
+
+-- https://github.com/launchql/pgsql-parser/issues/101
+select "A" from "table_name";
+select "AA" from "table_name";
