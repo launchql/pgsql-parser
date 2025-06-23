@@ -323,25 +323,24 @@ export class Deparser implements DeparserVisitor {
 
     if (node.fromClause) {
       const fromList = ListUtils.unwrapList(node.fromClause);
-      if (this.formatter.isPretty()) {
-        output.push('FROM');
-        const fromItems = fromList
-          .map(e => this.deparse(e as Node, { ...context, from: true }))
-          .join(', ');
-        output.push(fromItems);
-      } else {
-        output.push('FROM');
-        const fromItems = fromList
-          .map(e => this.deparse(e as Node, { ...context, from: true }))
-          .join(', ');
-        output.push(fromItems);
-      }
+      const fromItems = fromList
+        .map(e => this.deparse(e as Node, { ...context, from: true }))
+        .join(', ');
+      output.push('FROM ' + fromItems.trim());
     }
 
     if (node.whereClause) {
       if (this.formatter.isPretty()) {
         output.push('WHERE');
-        output.push(this.formatter.indent(this.visit(node.whereClause as Node, context)));
+        const whereExpr = this.visit(node.whereClause as Node, context);
+        const lines = whereExpr.split(this.formatter.newline());
+        const indentedLines = lines.map((line, index) => {
+          if (index === 0) {
+            return this.formatter.indent(line);
+          }
+          return line;
+        });
+        output.push(indentedLines.join(this.formatter.newline()));
       } else {
         output.push('WHERE');
         output.push(this.visit(node.whereClause as Node, context));
@@ -411,13 +410,11 @@ export class Deparser implements DeparserVisitor {
     }
 
     if (node.limitCount) {
-      output.push('LIMIT');
-      output.push(this.visit(node.limitCount as Node, context));
+      output.push('LIMIT ' + this.visit(node.limitCount as Node, context));
     }
 
     if (node.limitOffset) {
-      output.push('OFFSET');
-      output.push(this.visit(node.limitOffset as Node, context));
+      output.push('OFFSET ' + this.visit(node.limitOffset as Node, context));
     }
 
     if (node.lockingClause) {
@@ -977,11 +974,10 @@ export class Deparser implements DeparserVisitor {
           const cteStr = this.visit(cte, context);
           return this.formatter.newline() + this.formatter.indent(cteStr);
         });
-        return output.join(' ') + cteStrings.join(',');
+        output.push(cteStrings.join(','));
       } else {
         const cteStrings = ctes.map(cte => this.visit(cte, context));
         output.push(cteStrings.join(', '));
-        return output.join(' ');
       }
     }
     
@@ -1079,11 +1075,21 @@ export class Deparser implements DeparserVisitor {
 
     switch (boolop) {
       case 'AND_EXPR':
-        const andArgs = args.map(arg => this.visit(arg, boolContext)).join(' AND ');
-        return formatStr.replace('%s', () => andArgs);
+        if (this.formatter.isPretty() && args.length > 1) {
+          const andArgs = args.map(arg => this.visit(arg, boolContext)).join(this.formatter.newline() + '  AND ');
+          return formatStr.replace('%s', () => andArgs);
+        } else {
+          const andArgs = args.map(arg => this.visit(arg, boolContext)).join(' AND ');
+          return formatStr.replace('%s', () => andArgs);
+        }
       case 'OR_EXPR':
-        const orArgs = args.map(arg => this.visit(arg, boolContext)).join(' OR ');
-        return formatStr.replace('%s', () => orArgs);
+        if (this.formatter.isPretty() && args.length > 1) {
+          const orArgs = args.map(arg => this.visit(arg, boolContext)).join(this.formatter.newline() + '  OR ');
+          return formatStr.replace('%s', () => orArgs);
+        } else {
+          const orArgs = args.map(arg => this.visit(arg, boolContext)).join(' OR ');
+          return formatStr.replace('%s', () => orArgs);
+        }
       case 'NOT_EXPR':
         return `NOT (${this.visit(args[0], context)})`;
       default:
@@ -3494,12 +3500,6 @@ export class Deparser implements DeparserVisitor {
         joinStr += 'JOIN';
     }
     
-    if (this.formatter.isPretty()) {
-      output.push(this.formatter.newline() + joinStr);
-    } else {
-      output.push(joinStr);
-    }
-    
     if (node.rarg) {
       let rargStr = this.visit(node.rarg, context);
       
@@ -3507,28 +3507,41 @@ export class Deparser implements DeparserVisitor {
         rargStr = `(${rargStr})`;
       }
       
-      output.push(rargStr);
+      if (this.formatter.isPretty()) {
+        output.push(this.formatter.newline() + joinStr + ' ' + rargStr);
+      } else {
+        output.push(joinStr + ' ' + rargStr);
+      }
+    } else {
+      if (this.formatter.isPretty()) {
+        output.push(this.formatter.newline() + joinStr);
+      } else {
+        output.push(joinStr);
+      }
     }
     
     if (node.usingClause && node.usingClause.length > 0) {
       const usingList = ListUtils.unwrapList(node.usingClause);
       const columnNames = usingList.map(col => this.visit(col, context));
       if (this.formatter.isPretty()) {
-        output.push(`USING (${columnNames.join(', ')})`);
+        output.push(` USING (${columnNames.join(', ')})`);
       } else {
-        output.push('USING');
-        output.push(`(${columnNames.join(', ')})`);
+        output.push(`USING (${columnNames.join(', ')})`);
       }
     } else if (node.quals) {
       if (this.formatter.isPretty()) {
-        output.push(`ON ${this.visit(node.quals, context)}`);
+        output.push(` ON ${this.visit(node.quals, context)}`);
       } else {
-        output.push('ON');
-        output.push(this.visit(node.quals, context));
+        output.push(`ON ${this.visit(node.quals, context)}`);
       }
     }
     
-    let result = this.formatter.isPretty() ? output.join(' ') : output.join(' ');
+    let result;
+    if (this.formatter.isPretty()) {
+      result = output.join('');
+    } else {
+      result = output.join(' ');
+    }
     
     if (node.join_using_alias && node.join_using_alias.aliasname) {
       let aliasStr = node.join_using_alias.aliasname;
@@ -6433,16 +6446,23 @@ export class Deparser implements DeparserVisitor {
   }
 
   CreatePolicyStmt(node: t.CreatePolicyStmt, context: DeparserContext): string {
-    const output: string[] = ['CREATE', 'POLICY'];
+    const output: string[] = [];
     
+    const initialParts = ['CREATE', 'POLICY'];
     if (node.policy_name) {
-      output.push(`"${node.policy_name}"`);
+      initialParts.push(`"${node.policy_name}"`);
     }
     
-    output.push('ON');
+    output.push(initialParts.join(' '));
     
+    // Add ON clause on new line in pretty mode
     if (node.table) {
-      output.push(this.RangeVar(node.table, context));
+      if (this.formatter.isPretty()) {
+        output.push(this.formatter.newline() + this.formatter.indent(`ON ${this.RangeVar(node.table, context)}`));
+      } else {
+        output.push('ON');
+        output.push(this.RangeVar(node.table, context));
+      }
     }
     
     // Handle AS RESTRICTIVE/PERMISSIVE clause
@@ -6480,23 +6500,29 @@ export class Deparser implements DeparserVisitor {
     
     if (node.qual) {
       if (this.formatter.isPretty()) {
-        output.push(this.formatter.newline() + this.formatter.indent(`USING (${this.visit(node.qual, context)})`));
+        const qualExpr = this.visit(node.qual, context);
+        output.push(this.formatter.newline() + this.formatter.indent('USING ('));
+        output.push(this.formatter.newline() + this.formatter.indent(this.formatter.indent(qualExpr)));
+        output.push(this.formatter.newline() + this.formatter.indent(')'));
       } else {
         output.push('USING');
         output.push(`(${this.visit(node.qual, context)})`);
       }
     }
-    
+
     if (node.with_check) {
       if (this.formatter.isPretty()) {
-        output.push(this.formatter.newline() + this.formatter.indent(`WITH CHECK (${this.visit(node.with_check, context)})`));
+        const checkExpr = this.visit(node.with_check, context);
+        output.push(this.formatter.newline() + this.formatter.indent('WITH CHECK ('));
+        output.push(this.formatter.newline() + this.formatter.indent(this.formatter.indent(checkExpr)));
+        output.push(this.formatter.newline() + this.formatter.indent(')'));
       } else {
         output.push('WITH CHECK');
         output.push(`(${this.visit(node.with_check, context)})`);
       }
     }
     
-    return output.join(' ');
+    return this.formatter.isPretty() ? output.join('') : output.join(' ');
   }
 
   AlterPolicyStmt(node: t.AlterPolicyStmt, context: DeparserContext): string {

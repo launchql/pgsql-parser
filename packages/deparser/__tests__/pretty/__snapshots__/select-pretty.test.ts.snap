@@ -3,14 +3,12 @@
 exports[`Pretty SELECT formatting should format SELECT with UNION with pretty option enabled 1`] = `
 "SELECT
   name
-FROM
-customers
+FROM customers
 UNION
 ALL
 SELECT
   name
-FROM
-suppliers
+FROM suppliers
 ORDER BY
   name;"
 `;
@@ -21,10 +19,9 @@ exports[`Pretty SELECT formatting should format SELECT with multiple JOINs with 
   u.name,
   u.email,
   p.title
-FROM
-users AS u 
-JOIN profiles AS p ON u.id = p.user_id 
-LEFT JOIN orders AS o ON u.id = o.user_id 
+FROM users AS u
+JOIN profiles AS p ON u.id = p.user_id
+LEFT JOIN orders AS o ON u.id = o.user_id
 RIGHT JOIN addresses AS a ON u.id = a.user_id
 WHERE
   u.active = true;"
@@ -34,15 +31,13 @@ exports[`Pretty SELECT formatting should format SELECT with subquery with pretty
 "SELECT
   id,
   name
-FROM
-users
+FROM users
 WHERE
   id IN (SELECT
-    user_id
-  FROM
-  orders
-  WHERE
-    total > 100);"
+  user_id
+FROM orders
+WHERE
+  total > 100);"
 `;
 
 exports[`Pretty SELECT formatting should format basic SELECT with pretty option enabled 1`] = `
@@ -50,8 +45,7 @@ exports[`Pretty SELECT formatting should format basic SELECT with pretty option 
   id,
   name,
   email
-FROM
-users
+FROM users
 WHERE
   active = true;"
 `;
@@ -62,11 +56,11 @@ exports[`Pretty SELECT formatting should format complex SELECT with pretty optio
   u.name,
   u.email,
   p.title
-FROM
-users AS u 
+FROM users AS u
 JOIN profiles AS p ON u.id = p.user_id
 WHERE
-  u.active = true AND u.created_at > '2023-01-01'
+  u.active = true
+  AND u.created_at > '2023-01-01'
 GROUP BY
   u.id,
   u.name,
@@ -77,10 +71,8 @@ HAVING
 ORDER BY
   u.created_at DESC,
   u.name ASC
-LIMIT
-10
-OFFSET
-5;"
+LIMIT 10
+OFFSET 5;"
 `;
 
 exports[`Pretty SELECT formatting should maintain single-line format for complex SELECT when pretty disabled 1`] = `"SELECT u.id, u.name, u.email, p.title FROM users AS u JOIN profiles AS p ON u.id = p.user_id WHERE u.active = true AND u.created_at > '2023-01-01' GROUP BY u.id, u.name, u.email, p.title HAVING count(*) > 1 ORDER BY u.created_at DESC, u.name ASC LIMIT 10 OFFSET 5;"`;
@@ -92,8 +84,7 @@ exports[`Pretty SELECT formatting should use custom newline and tab characters i
     id,
     name,
     email
-FROM
-users
+FROM users
 WHERE
     active = true;"
 `;
