@@ -73,23 +73,6 @@ console.log(deparse(stmt));
 
 `pgsql-deparser` is particularly useful in development environments where native dependencies are problematic or in applications where only the deparser functionality is required. Its independence from the full `pgsql-parser` package allows for more focused and lightweight SQL generation tasks.
 
-## Versions
-
-As of PG 13, PG majors versions maintained will have a matching dedicated major npm version. Only the latest Postgres stable release receives active updates.
-
-Our latest is built with `17-latest` branch from libpg_query
-
-| PostgreSQL Major Version | libpg_query | Status              | npm tag |
-|--------------------------|-------------|---------------------|---------|
-| 17                       | 17-latest   | Active Development  | `latest` |
-| 16                       | (n/a)       | Not supported       |
-| 15                       | (n/a)       | Not supported       |
-| 14                       | (n/a)       | Not supported       |
-| 13                       | 13-latest   | Only Critical Fixes | `13.16.0` |
-| 12                       | (n/a)       | Not supported       |
-| 11                       | (n/a)       | Not supported       |
-| 10                       | 10-latest   | Not supported       | `@1.3.1` ([tree](https://github.com/launchql/pgsql-parser/tree/39b7b1adc8914253226e286a48105785219a81ca))      | 
-
 ## Credits
 
 Built on the excellent work of several contributors:
