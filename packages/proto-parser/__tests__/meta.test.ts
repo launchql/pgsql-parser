@@ -1,6 +1,7 @@
 import * as t from '../test-utils/meta';
 import { SelectStmt } from '@pgsql/types';
-import { generateTsAstCodeFromPgAst } from '../src/utils'
+import { generateTsAstCodeFromPgAst, generateTsAstCodeFromPgAstWithSchema } from '../src/utils'
+import { runtimeSchema } from '../test-utils/meta/runtime-schema';
 import generate from '@babel/generator';
 
 it('AST to AST to create AST — meta 🤯', () => {
@@ -371,4 +372,74 @@ it('Complex AST — Advanced SQL with CTEs, Window Functions, Joins, and Subquer
     
     const astForComplexAst = generateTsAstCodeFromPgAst(complexSelectStmt);
     expect(generate(astForComplexAst).code).toMatchSnapshot();
+});
+
+it('Enhanced AST generation with runtime schema — wrapped vs unwrapped nodes', () => {
+    const selectStmt = t.nodes.selectStmt({
+        targetList: [
+            t.nodes.resTarget({
+                val: t.nodes.columnRef({
+                    fields: [t.nodes.aStar()]
+                })
+            })
+        ],
+        fromClause: [
+            t.nodes.rangeVar({
+                relname: 'test_table',
+                inh: true,
+                relpersistence: 'p'
+            })
+        ],
+        limitOption: 'LIMIT_OPTION_DEFAULT',
+        op: 'SETOP_NONE'
+    });
+
+    expect(selectStmt).toMatchSnapshot();
+    
+    const enhancedAst = generateTsAstCodeFromPgAstWithSchema(selectStmt, runtimeSchema);
+    const generatedCode = generate(enhancedAst).code;
+    
+    expect(generatedCode).toMatchSnapshot();
+    
+    expect(generatedCode).toContain('t.nodes.selectStmt');
+    expect(generatedCode).toContain('t.nodes.resTarget');
+});
+
+it('Complex AST with runtime schema — mixed wrapped/unwrapped patterns', () => {
+    const complexStmt = t.nodes.selectStmt({
+        withClause: t.ast.withClause({
+            ctes: [
+                t.nodes.commonTableExpr({
+                    ctename: 'test_cte',
+                    ctequery: t.nodes.selectStmt({
+                        targetList: [
+                            t.nodes.resTarget({
+                                val: t.nodes.columnRef({
+                                    fields: [t.nodes.string({ sval: 'id' })]
+                                })
+                            })
+                        ],
+                        limitOption: 'LIMIT_OPTION_DEFAULT'
+                    })
+                })
+            ],
+            recursive: false
+        }),
+        targetList: [
+            t.nodes.resTarget({
+                val: t.nodes.columnRef({
+                    fields: [t.nodes.aStar()]
+                })
+            })
+        ],
+        limitOption: 'LIMIT_OPTION_DEFAULT',
+        op: 'SETOP_NONE'
+    });
+
+    const enhancedAst = generateTsAstCodeFromPgAstWithSchema(complexStmt, runtimeSchema);
+    const generatedCode = generate(enhancedAst).code;
+    
+    expect(generatedCode).toMatchSnapshot();
+    expect(generatedCode).toContain('t.nodes.withClause');
+    expect(generatedCode).toContain('t.nodes.selectStmt');
 });

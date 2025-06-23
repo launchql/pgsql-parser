@@ -50,6 +50,34 @@ exports[`AST to AST to create AST — meta 🤯 2`] = `
 })"
 `;
 
+exports[`Complex AST with runtime schema — mixed wrapped/unwrapped patterns 1`] = `
+"t.nodes.selectStmt({
+  targetList: [t.nodes.resTarget({
+    val: t.nodes.columnRef({
+      fields: [t.nodes.aStar({})]
+    })
+  })],
+  limitOption: "LIMIT_OPTION_DEFAULT",
+  withClause: t.nodes.withClause({
+    ctes: [t.nodes.commonTableExpr({
+      ctename: "test_cte",
+      ctequery: t.nodes.selectStmt({
+        targetList: [t.nodes.resTarget({
+          val: t.nodes.columnRef({
+            fields: [t.nodes.string({
+              sval: "id"
+            })]
+          })
+        })],
+        limitOption: "LIMIT_OPTION_DEFAULT"
+      })
+    })],
+    recursive: false
+  }),
+  op: "SETOP_NONE"
+})"
+`;
+
 exports[`Complex AST — Advanced SQL with CTEs, Window Functions, Joins, and Subqueries 1`] = `
 {
   "SelectStmt": {
@@ -1279,6 +1307,56 @@ exports[`Complex AST — Advanced SQL with CTEs, Window Functions, Joins, and Su
       })
     })
   }),
+  op: "SETOP_NONE"
+})"
+`;
+
+exports[`Enhanced AST generation with runtime schema — wrapped vs unwrapped nodes 1`] = `
+{
+  "SelectStmt": {
+    "fromClause": [
+      {
+        "RangeVar": {
+          "inh": true,
+          "relname": "test_table",
+          "relpersistence": "p",
+        },
+      },
+    ],
+    "limitOption": "LIMIT_OPTION_DEFAULT",
+    "op": "SETOP_NONE",
+    "targetList": [
+      {
+        "ResTarget": {
+          "val": {
+            "ColumnRef": {
+              "fields": [
+                {
+                  "A_Star": {},
+                },
+              ],
+            },
+          },
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`Enhanced AST generation with runtime schema — wrapped vs unwrapped nodes 2`] = `
+"t.nodes.selectStmt({
+  targetList: [t.nodes.resTarget({
+    val: t.nodes.columnRef({
+      fields: [t.nodes.aStar({})]
+    })
+  })],
+  fromClause: [t.nodes.rangeVar({
+    relname: "test_table",
+    inh: true,
+    relpersistence: "p"
+  })],
+  limitOption: "LIMIT_OPTION_DEFAULT",
   op: "SETOP_NONE"
 })"
 `;
