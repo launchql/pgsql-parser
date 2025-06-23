@@ -25,7 +25,10 @@ type ParseErrorType =
   | 'REPARSE_FAILED'
   | 'AST_MISMATCH'
   | 'UNEXPECTED_ERROR'
-  | 'INVALID_DEPARSED_SQL';
+  | 'INVALID_DEPARSED_SQL'
+  | 'PRETTY_INVALID_DEPARSED_SQL'
+  | 'PRETTY_REPARSE_FAILED'
+  | 'PRETTY_AST_MISMATCH';
 
 interface ParseError extends Error {
   type: ParseErrorType;
@@ -71,6 +74,12 @@ function getErrorMessage(type: ParseErrorType): string {
       return 'Unexpected error during parse/deparse cycle';
     case 'INVALID_DEPARSED_SQL':
       return 'Invalid deparsed SQL';
+    case 'PRETTY_INVALID_DEPARSED_SQL':
+      return 'Invalid deparsed SQL (pretty)';
+    case 'PRETTY_REPARSE_FAILED':
+      return 'Reparse failed - no statements returned (pretty)';
+    case 'PRETTY_AST_MISMATCH':
+      return 'AST mismatch after parse/deparse cycle (pretty)';
   }
 }
 
@@ -112,27 +121,30 @@ export class TestUtils {
       if (tree.stmts) {
         for (const stmt of tree.stmts) {
           if (stmt.stmt) {
-            const outSql = deparse(stmt.stmt);
+            const outSql1 = deparse(stmt.stmt, { pretty: false });
+            const outSql2 = deparse(stmt.stmt, { pretty: true });
             
             // console.log(`\n🔍 DEBUGGING SQL COMPARISON for test: ${testName}`);
             // console.log(`📥 INPUT SQL: ${sql}`);
             // console.log(`📤 DEPARSED SQL: ${outSql}`);
             // console.log(`🔄 SQL MATCH: ${sql.trim() === outSql.trim() ? '✅ EXACT MATCH' : '❌ DIFFERENT'}`);
             
+            // Test non-pretty version first
             let reparsed;
             try {
-              reparsed = await parse(outSql);
+              reparsed = await parse(outSql1);
             } catch (parseErr) {
               throw createParseError(
                 'INVALID_DEPARSED_SQL',
                 testName,
                 sql,
-                outSql,
+                outSql1,
                 cleanTree([stmt]),
                 undefined,
                 parseErr instanceof Error ? parseErr.message : String(parseErr)
               );
             }
+            
             const originalClean = cleanTree([stmt]);
             const reparsedClean = cleanTree(reparsed.stmts || []);
             
@@ -145,13 +157,41 @@ export class TestUtils {
             }
             
             if (!reparsed.stmts) {
-              throw createParseError('REPARSE_FAILED', testName, sql, outSql, originalClean);
+              throw createParseError('REPARSE_FAILED', testName, sql, outSql1, originalClean);
             }
             
             try {
               expect(reparsedClean).toEqual(originalClean);
             } catch (err) {
-              throw createParseError('AST_MISMATCH', testName, sql, outSql, originalClean, reparsedClean);
+              throw createParseError('AST_MISMATCH', testName, sql, outSql1, originalClean, reparsedClean);
+            }
+
+            // Test pretty version if non-pretty succeeded
+            let prettyReparsed;
+            try {
+              prettyReparsed = await parse(outSql2);
+            } catch (parseErr) {
+              throw createParseError(
+                'PRETTY_INVALID_DEPARSED_SQL',
+                testName,
+                sql,
+                outSql2,
+                cleanTree([stmt]),
+                undefined,
+                parseErr instanceof Error ? parseErr.message : String(parseErr)
+              );
+            }
+            
+            const prettyReparsedClean = cleanTree(prettyReparsed.stmts || []);
+            
+            if (!prettyReparsed.stmts) {
+              throw createParseError('PRETTY_REPARSE_FAILED', testName, sql, outSql2, originalClean);
+            }
+            
+            try {
+              expect(prettyReparsedClean).toEqual(originalClean);
+            } catch (err) {
+              throw createParseError('PRETTY_AST_MISMATCH', testName, sql, outSql2, originalClean, prettyReparsedClean);
             }
           }
         }
@@ -178,6 +218,23 @@ export class TestUtils {
         } else if (parseError.type === 'AST_MISMATCH') {
           errorMessages.push(
             `\n❌ AST COMPARISON:`,
+            `EXPECTED AST:`,
+            JSON.stringify(parseError.originalAst, null, 2),
+            `\nACTUAL AST:`,
+            JSON.stringify(parseError.reparsedAst, null, 2),
+            `\nDIFF (what's missing from actual vs expected):`,
+            diff(parseError.originalAst, parseError.reparsedAst) || 'No diff available'
+          );
+        } else if (parseError.type === 'PRETTY_INVALID_DEPARSED_SQL') {
+          errorMessages.push(
+            `\n❌ PRETTY DEPARSER GENERATED INVALID SQL:`,
+            `ORIGINAL AST:`,
+            JSON.stringify(parseError.originalAst, null, 2),
+            `\nPARSE ERROR: ${parseError.parseError}`
+          );
+        } else if (parseError.type === 'PRETTY_AST_MISMATCH') {
+          errorMessages.push(
+            `\n❌ PRETTY AST COMPARISON:`,
             `EXPECTED AST:`,
             JSON.stringify(parseError.originalAst, null, 2),
             `\nACTUAL AST:`,
