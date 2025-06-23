@@ -219,9 +219,11 @@ export class Deparser implements DeparserVisitor {
 
     if (!node.op || node.op === 'SETOP_NONE') {
       if (node.valuesLists == null) {
-        output.push('SELECT');
+        if (!this.formatter.isPretty() || !node.targetList) {
+          output.push('SELECT');
+        }
       }
-    } else {
+    }else {
       const leftStmt = this.SelectStmt(node.larg as t.SelectStmt, context);
       const rightStmt = this.SelectStmt(node.rarg as t.SelectStmt, context);
       
@@ -272,26 +274,40 @@ export class Deparser implements DeparserVisitor {
       }
     }
 
+    // Handle DISTINCT clause - in pretty mode, we'll include it in the SELECT clause
+    let distinctPart = '';
     if (node.distinctClause) {
       const distinctClause = ListUtils.unwrapList(node.distinctClause);
       if (distinctClause.length > 0 && Object.keys(distinctClause[0]).length > 0) {
-        output.push('DISTINCT ON');
         const clause = distinctClause
           .map(e => this.visit(e as Node, { ...context, select: true }))
           .join(', ');
-        output.push(this.formatter.parens(clause));
+        distinctPart = ' DISTINCT ON ' + this.formatter.parens(clause);
       } else {
-        output.push('DISTINCT');
+        distinctPart = ' DISTINCT';
+      }
+      
+      if (!this.formatter.isPretty()) {
+        if (distinctClause.length > 0 && Object.keys(distinctClause[0]).length > 0) {
+          output.push('DISTINCT ON');
+          const clause = distinctClause
+            .map(e => this.visit(e as Node, { ...context, select: true }))
+            .join(', ');
+          output.push(this.formatter.parens(clause));
+        } else {
+          output.push('DISTINCT');
+        }
       }
     }
 
     if (node.targetList) {
       const targetList = ListUtils.unwrapList(node.targetList);
-      if (this.formatter.isPretty() && targetList.length > 1) {
-        const targets = targetList
-          .map(e => this.formatter.indent(this.visit(e as Node, { ...context, select: true })))
-          .join(',' + this.formatter.newline());
-        output.push(this.formatter.newline() + targets);
+      if (this.formatter.isPretty()) {
+        const targetStrings = targetList
+          .map(e => this.formatter.indent(this.visit(e as Node, { ...context, select: true })));
+        const formattedTargets = targetStrings.join(',' + this.formatter.newline());
+        output.push('SELECT' + distinctPart);
+        output.push(formattedTargets);
       } else {
         const targets = targetList
           .map(e => this.visit(e as Node, { ...context, select: true }))
@@ -306,14 +322,15 @@ export class Deparser implements DeparserVisitor {
     }
 
     if (node.fromClause) {
-      output.push('FROM');
       const fromList = ListUtils.unwrapList(node.fromClause);
-      if (this.formatter.isPretty() && fromList.length > 1) {
+      if (this.formatter.isPretty()) {
+        output.push('FROM');
         const fromItems = fromList
-          .map(e => this.formatter.indent(this.deparse(e as Node, { ...context, from: true })))
-          .join(',' + this.formatter.newline());
-        output.push(this.formatter.newline() + fromItems);
+          .map(e => this.deparse(e as Node, { ...context, from: true }))
+          .join(', ');
+        output.push(fromItems);
       } else {
+        output.push('FROM');
         const fromItems = fromList
           .map(e => this.deparse(e as Node, { ...context, from: true }))
           .join(', ');
@@ -322,10 +339,11 @@ export class Deparser implements DeparserVisitor {
     }
 
     if (node.whereClause) {
-      output.push('WHERE');
       if (this.formatter.isPretty()) {
+        output.push('WHERE');
         output.push(this.formatter.indent(this.visit(node.whereClause as Node, context)));
       } else {
+        output.push('WHERE');
         output.push(this.visit(node.whereClause as Node, context));
       }
     }
@@ -340,14 +358,15 @@ export class Deparser implements DeparserVisitor {
     }
 
     if (node.groupClause) {
-      output.push('GROUP BY');
       const groupList = ListUtils.unwrapList(node.groupClause);
-      if (this.formatter.isPretty() && groupList.length > 1) {
+      if (this.formatter.isPretty()) {
         const groupItems = groupList
           .map(e => this.formatter.indent(this.visit(e as Node, { ...context, group: true })))
           .join(',' + this.formatter.newline());
-        output.push(this.formatter.newline() + groupItems);
+        output.push('GROUP BY');
+        output.push(groupItems);
       } else {
+        output.push('GROUP BY');
         const groupItems = groupList
           .map(e => this.visit(e as Node, { ...context, group: true }))
           .join(', ');
@@ -356,10 +375,11 @@ export class Deparser implements DeparserVisitor {
     }
 
     if (node.havingClause) {
-      output.push('HAVING');
       if (this.formatter.isPretty()) {
+        output.push('HAVING');
         output.push(this.formatter.indent(this.visit(node.havingClause as Node, context)));
       } else {
+        output.push('HAVING');
         output.push(this.visit(node.havingClause as Node, context));
       }
     }
@@ -374,14 +394,15 @@ export class Deparser implements DeparserVisitor {
     }
 
     if (node.sortClause) {
-      output.push('ORDER BY');
       const sortList = ListUtils.unwrapList(node.sortClause);
-      if (this.formatter.isPretty() && sortList.length > 1) {
+      if (this.formatter.isPretty()) {
         const sortItems = sortList
           .map(e => this.formatter.indent(this.visit(e as Node, { ...context, sort: true })))
           .join(',' + this.formatter.newline());
-        output.push(this.formatter.newline() + sortItems);
+        output.push('ORDER BY');
+        output.push(sortItems);
       } else {
+        output.push('ORDER BY');
         const sortItems = sortList
           .map(e => this.visit(e as Node, { ...context, sort: true }))
           .join(', ');
@@ -390,13 +411,23 @@ export class Deparser implements DeparserVisitor {
     }
 
     if (node.limitCount) {
-      output.push('LIMIT');
-      output.push(this.visit(node.limitCount as Node, context));
+      if (this.formatter.isPretty()) {
+        output.push('LIMIT');
+        output.push(this.visit(node.limitCount as Node, context));
+      } else {
+        output.push('LIMIT');
+        output.push(this.visit(node.limitCount as Node, context));
+      }
     }
 
     if (node.limitOffset) {
-      output.push('OFFSET');
-      output.push(this.visit(node.limitOffset as Node, context));
+      if (this.formatter.isPretty()) {
+        output.push('OFFSET');
+        output.push(this.visit(node.limitOffset as Node, context));
+      } else {
+        output.push('OFFSET');
+        output.push(this.visit(node.limitOffset as Node, context));
+      }
     }
 
     if (node.lockingClause) {
@@ -408,7 +439,8 @@ export class Deparser implements DeparserVisitor {
     }
 
     if (this.formatter.isPretty()) {
-      return output.join(this.formatter.newline());
+      const filteredOutput = output.filter(item => item.trim() !== '');
+      return filteredOutput.join(this.formatter.newline());
     }
     return output.join(' ');
   }

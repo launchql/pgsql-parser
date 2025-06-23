@@ -55,4 +55,34 @@ describe('Pretty SELECT formatting', () => {
     });
     expect(result).toMatchSnapshot();
   });
+
+  it('should validate AST equivalence between original and pretty-formatted SQL', async () => {
+    const testCases = [
+      basicSelectSql,
+      complexSelectSql,
+      selectWithSubquerySql,
+      selectUnionSql
+    ];
+
+    for (const sql of testCases) {
+      const originalParsed = await parse(sql);
+      const prettyFormatted = deparseSync(originalParsed, { pretty: true });
+      const reparsed = await parse(prettyFormatted);
+      
+      const removeLocations = (obj: any): any => {
+        if (obj === null || typeof obj !== 'object') return obj;
+        if (Array.isArray(obj)) return obj.map(removeLocations);
+        
+        const result: any = {};
+        for (const [key, value] of Object.entries(obj)) {
+          if (key !== 'location' && key !== 'stmt_location' && key !== 'stmt_len') {
+            result[key] = removeLocations(value);
+          }
+        }
+        return result;
+      };
+      
+      expect(removeLocations(reparsed)).toEqual(removeLocations(originalParsed));
+    }
+  });
 });
