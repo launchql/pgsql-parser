@@ -7,6 +7,8 @@ describe('Pretty CREATE POLICY formatting', () => {
   
   const complexPolicySql = `CREATE POLICY admin_policy ON sensitive_data AS RESTRICTIVE FOR SELECT TO admin_role USING (department = current_user_department()) WITH CHECK (approved = true);`;
 
+  const veryComplexPolicySql = `CREATE POLICY complex_policy ON sensitive_data AS RESTRICTIVE FOR SELECT TO admin_role USING (department = current_user_department() AND EXISTS (SELECT 1 FROM user_permissions WHERE user_id = current_user_id() AND permission = 'read_sensitive')) WITH CHECK (approved = true AND created_by = current_user_id());`;
+
   const simplePolicySql = `CREATE POLICY simple_policy ON posts FOR SELECT TO public USING (published = true);`;
 
   it('should format basic CREATE POLICY with pretty option enabled', async () => {
@@ -31,6 +33,11 @@ describe('Pretty CREATE POLICY formatting', () => {
 
   it('should format simple CREATE POLICY with pretty option enabled', async () => {
     const result = await expectParseDeparse(simplePolicySql, { pretty: true });
+    expect(result).toMatchSnapshot();
+  });
+
+  it('should format very complex CREATE POLICY with pretty option enabled', async () => {
+    const result = await expectParseDeparse(veryComplexPolicySql, { pretty: true });
     expect(result).toMatchSnapshot();
   });
 

@@ -15,6 +15,21 @@ ORDER BY
   name;"
 `;
 
+exports[`Pretty SELECT formatting should format SELECT with multiple JOINs with pretty option enabled 1`] = `
+"SELECT
+  u.id,
+  u.name,
+  u.email,
+  p.title
+FROM
+users AS u 
+JOIN profiles AS p ON u.id = p.user_id 
+LEFT JOIN orders AS o ON u.id = o.user_id 
+RIGHT JOIN addresses AS a ON u.id = a.user_id
+WHERE
+  u.active = true;"
+`;
+
 exports[`Pretty SELECT formatting should format SELECT with subquery with pretty option enabled 1`] = `
 "SELECT
   id,
@@ -48,7 +63,8 @@ exports[`Pretty SELECT formatting should format complex SELECT with pretty optio
   u.email,
   p.title
 FROM
-users AS u JOIN profiles AS p ON u.id = p.user_id
+users AS u 
+JOIN profiles AS p ON u.id = p.user_id
 WHERE
   u.active = true AND u.created_at > '2023-01-01'
 GROUP BY

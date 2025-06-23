@@ -970,9 +970,20 @@ export class Deparser implements DeparserVisitor {
       output.push('RECURSIVE');
     }
     
-    const ctes = ListUtils.unwrapList(node.ctes);
-    const cteStrs = ctes.map(cte => this.visit(cte, context));
-    output.push(cteStrs.join(', '));
+    if (node.ctes && node.ctes.length > 0) {
+      const ctes = ListUtils.unwrapList(node.ctes);
+      if (this.formatter.isPretty()) {
+        const cteStrings = ctes.map(cte => {
+          const cteStr = this.visit(cte, context);
+          return this.formatter.newline() + this.formatter.indent(cteStr);
+        });
+        return output.join(' ') + cteStrings.join(',');
+      } else {
+        const cteStrings = ctes.map(cte => this.visit(cte, context));
+        output.push(cteStrings.join(', '));
+        return output.join(' ');
+      }
+    }
     
     return output.join(' ');
   }
@@ -3461,11 +3472,9 @@ export class Deparser implements DeparserVisitor {
     
     switch (node.jointype) {
       case 'JOIN_INNER':
-        // Handle NATURAL JOIN first - it has isNatural=true (NATURAL already added above)
         if (node.isNatural) {
           joinStr += 'JOIN';
         }
-        // Handle CROSS JOIN case - when there's no quals, no usingClause, and not natural
         else if (!node.quals && (!node.usingClause || node.usingClause.length === 0)) {
           joinStr += 'CROSS JOIN';
         } else {
@@ -3485,7 +3494,11 @@ export class Deparser implements DeparserVisitor {
         joinStr += 'JOIN';
     }
     
-    output.push(joinStr);
+    if (this.formatter.isPretty()) {
+      output.push(this.formatter.newline() + joinStr);
+    } else {
+      output.push(joinStr);
+    }
     
     if (node.rarg) {
       let rargStr = this.visit(node.rarg, context);
@@ -3498,18 +3511,25 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.usingClause && node.usingClause.length > 0) {
-      output.push('USING');
       const usingList = ListUtils.unwrapList(node.usingClause);
       const columnNames = usingList.map(col => this.visit(col, context));
-      output.push(`(${columnNames.join(', ')})`);
+      if (this.formatter.isPretty()) {
+        output.push(`USING (${columnNames.join(', ')})`);
+      } else {
+        output.push('USING');
+        output.push(`(${columnNames.join(', ')})`);
+      }
     } else if (node.quals) {
-      output.push('ON');
-      output.push(this.visit(node.quals, context));
+      if (this.formatter.isPretty()) {
+        output.push(`ON ${this.visit(node.quals, context)}`);
+      } else {
+        output.push('ON');
+        output.push(this.visit(node.quals, context));
+      }
     }
     
-    let result = output.join(' ');
+    let result = this.formatter.isPretty() ? output.join(' ') : output.join(' ');
     
-    // Handle join_using_alias first (for USING clause aliases like "AS x")
     if (node.join_using_alias && node.join_using_alias.aliasname) {
       let aliasStr = node.join_using_alias.aliasname;
       if (node.join_using_alias.colnames && node.join_using_alias.colnames.length > 0) {
@@ -3520,7 +3540,6 @@ export class Deparser implements DeparserVisitor {
       result += ` AS ${aliasStr}`;
     }
     
-    // Handle regular alias (for outer table aliases like "y")
     if (node.alias && node.alias.aliasname) {
       let aliasStr = node.alias.aliasname;
       if (node.alias.colnames && node.alias.colnames.length > 0) {
