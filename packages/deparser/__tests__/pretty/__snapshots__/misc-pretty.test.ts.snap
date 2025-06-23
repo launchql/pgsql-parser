@@ -1,6 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Pretty Misc SQL formatting should format misc-1: Complex CTE with joins and aggregation 1`] = `
+exports[`Pretty Misc SQL formatting should format misc-1: Complex CTE with joins and aggregation (non-pretty) 1`] = `"WITH recent_orders AS (SELECT o.id, o.user_id, o.created_at FROM orders AS o WHERE o.created_at > (now() - '30 days'::interval)), high_value_orders AS (SELECT r.user_id, count(*) AS order_count, sum(oi.price * oi.quantity) AS total_spent FROM recent_orders AS r JOIN order_items AS oi ON r.id = oi.order_id GROUP BY r.user_id) SELECT u.id, u.name, h.total_spent FROM users AS u JOIN high_value_orders AS h ON u.id = h.user_id WHERE h.total_spent > 1000 ORDER BY h.total_spent DESC"`;
+
+exports[`Pretty Misc SQL formatting should format misc-1: Complex CTE with joins and aggregation (pretty) 1`] = `
 "WITH 
   recent_orders AS (SELECT
     o.id,
@@ -29,7 +31,9 @@ ORDER BY
   h.total_spent DESC"
 `;
 
-exports[`Pretty Misc SQL formatting should format misc-2: Window functions with FILTER and GROUPING SETS 1`] = `
+exports[`Pretty Misc SQL formatting should format misc-2: Window functions with FILTER and GROUPING SETS (non-pretty) 1`] = `"SELECT department, employee_id, count(*) FILTER (WHERE status = 'active') OVER (PARTITION BY department) AS active_count, rank() OVER (PARTITION BY department ORDER BY salary DESC) AS salary_rank FROM employee_status GROUP BY GROUPING SETS (department, (department, employee_id))"`;
+
+exports[`Pretty Misc SQL formatting should format misc-2: Window functions with FILTER and GROUPING SETS (pretty) 1`] = `
 "SELECT
   department,
   employee_id,
@@ -43,7 +47,9 @@ GROUP BY
   GROUPING SETS (department, (department, employee_id))"
 `;
 
-exports[`Pretty Misc SQL formatting should format misc-3: LATERAL joins with JSON functions 1`] = `
+exports[`Pretty Misc SQL formatting should format misc-3: LATERAL joins with JSON functions (non-pretty) 1`] = `"SELECT u.id, u.name, j.key, j.value FROM users AS u, LATERAL jsonb_each_text(u.preferences) AS j(key, value) WHERE j.key LIKE 'notif_%' AND CAST(j.value AS boolean) = true"`;
+
+exports[`Pretty Misc SQL formatting should format misc-3: LATERAL joins with JSON functions (pretty) 1`] = `
 "SELECT
   u.id,
   u.name,
@@ -55,7 +61,9 @@ WHERE
   AND CAST(j.value AS boolean) = true"
 `;
 
-exports[`Pretty Misc SQL formatting should format misc-4: EXISTS with nested subqueries and CASE 1`] = `
+exports[`Pretty Misc SQL formatting should format misc-4: EXISTS with nested subqueries and CASE (non-pretty) 1`] = `"SELECT p.id, p.title, CASE WHEN EXISTS (SELECT 1 FROM reviews AS r WHERE r.product_id = p.id AND r.rating >= 4) THEN 'Popular' ELSE 'Unrated' END AS status FROM products AS p WHERE p.archived = false"`;
+
+exports[`Pretty Misc SQL formatting should format misc-4: EXISTS with nested subqueries and CASE (pretty) 1`] = `
 "SELECT
   p.id,
   p.title,
@@ -73,7 +81,9 @@ WHERE
   p.archived = false"
 `;
 
-exports[`Pretty Misc SQL formatting should format misc-5: Nested CTEs with type casts and subqueries 1`] = `
+exports[`Pretty Misc SQL formatting should format misc-5: Nested CTEs with type casts and subqueries (non-pretty) 1`] = `"WITH logs AS (SELECT id, CAST(payload AS pg_catalog.json) ->> 'event' AS event, CAST(CAST(payload AS pg_catalog.json) ->> 'ts' AS pg_catalog.timestamp) AS ts FROM event_log WHERE ts > (now() - '7 days'::interval)) SELECT event, count(*) AS freq FROM ( SELECT DISTINCT event, ts::date AS event_day FROM logs ) AS d GROUP BY event ORDER BY freq DESC"`;
+
+exports[`Pretty Misc SQL formatting should format misc-5: Nested CTEs with type casts and subqueries (pretty) 1`] = `
 "WITH 
 logs AS (SELECT
   id,
@@ -95,7 +105,9 @@ ORDER BY
   freq DESC"
 `;
 
-exports[`Pretty Misc SQL formatting should format misc-6: Complex multi-table joins with nested conditions 1`] = `
+exports[`Pretty Misc SQL formatting should format misc-6: Complex multi-table joins with nested conditions (non-pretty) 1`] = `"SELECT o.id AS order_id, u.name AS user_name, p.name AS product_name, s.status, sh.shipped_at, r.refund_amount FROM orders AS o JOIN users AS u ON o.user_id = u.id JOIN order_items AS oi ON oi.order_id = o.id JOIN products AS p ON (p.id = oi.product_id AND p.available = true) OR (p.sku = oi.product_sku AND (p.discontinued = false OR p.replacement_id IS NOT NULL)) LEFT JOIN shipping AS sh ON sh.order_id = o.id AND ((sh.carrier = 'UPS' AND sh.tracking_number IS NOT NULL) OR (sh.carrier = 'FedEx' AND sh.shipped_at > (o.created_at + '1 day'::interval))) LEFT JOIN statuses AS s ON s.id = o.status_id AND (s.name <> 'cancelled' OR (s.name = 'cancelled' AND s.updated_at > (now() - '7 days'::interval))) LEFT JOIN refunds AS r ON r.order_id = o.id AND ((r.status = 'approved' AND r.processed_at IS NOT NULL) OR (r.status = 'pending' AND r.requested_at < (now() - '14 days'::interval))) WHERE o.created_at > (now() - '90 days'::interval) AND u.active = true AND (s.status = 'shipped' OR (s.status = 'processing' AND EXISTS (SELECT 1 FROM order_notes AS n WHERE (n.order_id = o.id AND n.note ILIKE '%expedite%')))) ORDER BY o.created_at DESC"`;
+
+exports[`Pretty Misc SQL formatting should format misc-6: Complex multi-table joins with nested conditions (pretty) 1`] = `
 "SELECT
   o.id AS order_id,
   u.name AS user_name,

@@ -109,33 +109,63 @@ WHERE o.created_at > NOW() - INTERVAL '90 days'
   )
 ORDER BY o.created_at DESC`;
 
-  it('should format misc-1: Complex CTE with joins and aggregation', async () => {
+  it('should format misc-1: Complex CTE with joins and aggregation (pretty)', async () => {
     const result = await expectParseDeparse(misc1Sql, { pretty: true });
     expect(result).toMatchSnapshot();
   });
 
-  it('should format misc-2: Window functions with FILTER and GROUPING SETS', async () => {
+  it('should format misc-1: Complex CTE with joins and aggregation (non-pretty)', async () => {
+    const result = await expectParseDeparse(misc1Sql, { pretty: false });
+    expect(result).toMatchSnapshot();
+  });
+
+  it('should format misc-2: Window functions with FILTER and GROUPING SETS (pretty)', async () => {
     const result = await expectParseDeparse(misc2Sql, { pretty: true });
     expect(result).toMatchSnapshot();
   });
 
-  it('should format misc-3: LATERAL joins with JSON functions', async () => {
+  it('should format misc-2: Window functions with FILTER and GROUPING SETS (non-pretty)', async () => {
+    const result = await expectParseDeparse(misc2Sql, { pretty: false });
+    expect(result).toMatchSnapshot();
+  });
+
+  it('should format misc-3: LATERAL joins with JSON functions (pretty)', async () => {
     const result = await expectParseDeparse(misc3Sql, { pretty: true });
     expect(result).toMatchSnapshot();
   });
 
-  it('should format misc-4: EXISTS with nested subqueries and CASE', async () => {
+  it('should format misc-3: LATERAL joins with JSON functions (non-pretty)', async () => {
+    const result = await expectParseDeparse(misc3Sql, { pretty: false });
+    expect(result).toMatchSnapshot();
+  });
+
+  it('should format misc-4: EXISTS with nested subqueries and CASE (pretty)', async () => {
     const result = await expectParseDeparse(misc4Sql, { pretty: true });
     expect(result).toMatchSnapshot();
   });
 
-  it('should format misc-5: Nested CTEs with type casts and subqueries', async () => {
+  it('should format misc-4: EXISTS with nested subqueries and CASE (non-pretty)', async () => {
+    const result = await expectParseDeparse(misc4Sql, { pretty: false });
+    expect(result).toMatchSnapshot();
+  });
+
+  it('should format misc-5: Nested CTEs with type casts and subqueries (pretty)', async () => {
     const result = await expectParseDeparse(misc5Sql, { pretty: true });
     expect(result).toMatchSnapshot();
   });
 
-  it('should format misc-6: Complex multi-table joins with nested conditions', async () => {
+  it('should format misc-5: Nested CTEs with type casts and subqueries (non-pretty)', async () => {
+    const result = await expectParseDeparse(misc5Sql, { pretty: false });
+    expect(result).toMatchSnapshot();
+  });
+
+  it('should format misc-6: Complex multi-table joins with nested conditions (pretty)', async () => {
     const result = await expectParseDeparse(misc6Sql, { pretty: true });
+    expect(result).toMatchSnapshot();
+  });
+
+  it('should format misc-6: Complex multi-table joins with nested conditions (non-pretty)', async () => {
+    const result = await expectParseDeparse(misc6Sql, { pretty: false });
     expect(result).toMatchSnapshot();
   });
 
