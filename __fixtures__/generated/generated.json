@@ -21094,6 +21094,7 @@
   "misc/issues-8.sql": "COMMENT ON COLUMN public.posts.reply_to_post_number IS 'If this post is a reply to another, this column is the post_number of the post it''s replying to. [FKEY posts.topic_id, posts.post_number]'",
   "misc/issues-9.sql": "CREATE TABLE \"Album\"\n(\n  \"AlbumId\" INT NOT NULL,\n  \"Title\" VARCHAR(160) NOT NULL,\n  \"ArtistId\" INT NOT NULL,\n  CONSTRAINT \"PK_Album\" PRIMARY KEY  (\"AlbumId\")\n)",
   "misc/issues-10.sql": "CREATE INDEX \"existing_undispatched_message\" ON public.messages USING btree (\"context_id\", context_type, notification_name, \"to\", user_id)",
+  "misc/issues-11.sql": "COMMENT ON COLUMN \"foo\".\"whatever\" IS $$\nSomething blah, this data may have chars like '\\n' and '\\r' in it.\n$$",
   "misc/inflection-1.sql": "CREATE SCHEMA inflection",
   "misc/inflection-2.sql": "GRANT USAGE ON SCHEMA inflection TO PUBLIC",
   "misc/inflection-3.sql": "ALTER DEFAULT PRIVILEGES IN SCHEMA inflection \n GRANT EXECUTE ON FUNCTIONS  TO PUBLIC",

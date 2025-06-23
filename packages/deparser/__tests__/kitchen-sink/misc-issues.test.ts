@@ -13,6 +13,7 @@ it('misc-issues', async () => {
   "misc/issues-7.sql",
   "misc/issues-8.sql",
   "misc/issues-9.sql",
-  "misc/issues-10.sql"
+  "misc/issues-10.sql",
+  "misc/issues-11.sql"
 ]);
 });
