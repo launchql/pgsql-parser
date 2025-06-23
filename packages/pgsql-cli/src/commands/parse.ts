@@ -28,14 +28,7 @@ export async function parseCommand(argv: any) {
     const content = readFileSync(filePath, 'utf-8');
     
     // Parse SQL
-    let ast;
-    if (argv.pl) {
-      // PL/pgSQL function parsing not yet supported in this version
-      console.error(chalk.red('Error: PL/pgSQL function parsing (--pl) is not yet supported'));
-      process.exit(1);
-    } else {
-      ast = await parse(content);
-    }
+    const ast = await parse(content);
     
     // Clean AST if requested
     if (argv.clean) {

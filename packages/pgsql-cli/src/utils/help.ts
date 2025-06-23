@@ -90,14 +90,12 @@ ${chalk.yellow('Usage:')}
 ${chalk.yellow('Options:')}
   -o, --output <file>    Output to file instead of stdout
   -f, --format <format>  Output format: json, pretty (default: pretty)
-  --pl                   Parse as PL/pgSQL function only
   --clean                Clean the AST tree (remove location info)
   -h, --help            Show help
 
 ${chalk.yellow('Examples:')}
   pgsql parse query.sql
   pgsql parse query.sql -o ast.json
-  pgsql parse function.sql --pl
   pgsql parse query.sql --format json --clean
 `);
 }
