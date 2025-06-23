@@ -411,23 +411,13 @@ export class Deparser implements DeparserVisitor {
     }
 
     if (node.limitCount) {
-      if (this.formatter.isPretty()) {
-        output.push('LIMIT');
-        output.push(this.visit(node.limitCount as Node, context));
-      } else {
-        output.push('LIMIT');
-        output.push(this.visit(node.limitCount as Node, context));
-      }
+      output.push('LIMIT');
+      output.push(this.visit(node.limitCount as Node, context));
     }
 
     if (node.limitOffset) {
-      if (this.formatter.isPretty()) {
-        output.push('OFFSET');
-        output.push(this.visit(node.limitOffset as Node, context));
-      } else {
-        output.push('OFFSET');
-        output.push(this.visit(node.limitOffset as Node, context));
-      }
+      output.push('OFFSET');
+      output.push(this.visit(node.limitOffset as Node, context));
     }
 
     if (node.lockingClause) {
