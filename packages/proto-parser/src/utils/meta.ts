@@ -66,6 +66,9 @@ export function generateTsAstCodeFromPgAstWithSchema(ast: any, runtimeSchema: No
 
     function createAstNode(functionName: string, properties: any, isWrapped: boolean = true) {
         const args = properties.map(([propKey, propValue]: [string, any]) => {
+            if (propValue && typeof propValue === 'object' && propValue.type) {
+                return t.objectProperty(t.identifier(propKey), propValue);
+            }
             return t.objectProperty(t.identifier(propKey), getValueNode(propValue));
         });
         
@@ -79,11 +82,21 @@ export function generateTsAstCodeFromPgAstWithSchema(ast: any, runtimeSchema: No
         );
     }
 
-    function getValueNode(value: any): t.Expression {
+    function getValueNode(value: any, parentNodeType?: string, fieldName?: string): t.Expression {
         if (Array.isArray(value)) {
-            return t.arrayExpression(value.map(item => getValueNode(item)));
+            return t.arrayExpression(value.map(item => getValueNode(item, parentNodeType, fieldName)));
         } else if (typeof value === 'object') {
-            return value === null ? t.nullLiteral() : traverse(value);
+            if (value === null) return t.nullLiteral();
+            
+            if (parentNodeType && fieldName) {
+                const parentSpec = schemaMap.get(parentNodeType);
+                if (parentSpec) {
+                    const fieldSpec = parentSpec.fields.find(f => f.name === fieldName);
+
+                }
+            }
+            
+            return traverse(value, parentNodeType, fieldName);
         }
         switch (typeof value) {
             case 'boolean':
@@ -117,9 +130,9 @@ export function generateTsAstCodeFromPgAstWithSchema(ast: any, runtimeSchema: No
         return null;
     }
 
-    function traverse(node: any): t.Expression {
+    function traverse(node: any, parentNodeType?: string, fieldName?: string): t.Expression {
         if (Array.isArray(node)) {
-            return t.arrayExpression(node.map(traverse));
+            return t.arrayExpression(node.map(item => traverse(item, parentNodeType, fieldName)));
         } else if (node && typeof node === 'object') {
             const entries = Object.entries(node);
             if (entries.length === 0) return t.objectExpression([]);
@@ -128,28 +141,56 @@ export function generateTsAstCodeFromPgAstWithSchema(ast: any, runtimeSchema: No
                 const [key, value] = entries[0];
                 const functionName = toSpecialCamelCase(key);
                 
-                const nodeSpec = schemaMap.get(key);
-                const isWrapped = nodeSpec ? nodeSpec.isNode : true; // Default to wrapped if not found
+                let isWrapped = true;
                 
-                return createAstNode(functionName, Object.entries(value), isWrapped);
+                if (parentNodeType && fieldName) {
+                    const parentSpec = schemaMap.get(parentNodeType);
+                    if (parentSpec) {
+                        const fieldSpec = parentSpec.fields.find(f => f.name === fieldName);
+                        if (fieldSpec && fieldSpec.isNode && fieldSpec.type !== 'Node') {
+                            isWrapped = false;
+                        }
+                    }
+                }
+                
+                const processedProperties = Object.entries(value).map(([propKey, propValue]) => {
+                    return [propKey, getValueNode(propValue, key, propKey)];
+                });
+                
+                return createAstNode(functionName, processedProperties, isWrapped);
             } else {
                 const fieldNames = entries.map(([key]) => key);
                 const matchingNodeSpec = findNodeTypeByFields(fieldNames);
                 
                 if (matchingNodeSpec) {
                     const functionName = toSpecialCamelCase(matchingNodeSpec.name);
-                    const isWrapped = matchingNodeSpec.isNode;
-                    return createAstNode(functionName, entries, isWrapped);
+                    
+                    let isWrapped = true;
+                    if (parentNodeType && fieldName) {
+                        const parentSpec = schemaMap.get(parentNodeType);
+                        if (parentSpec) {
+                            const parentFieldSpec = parentSpec.fields.find(f => f.name === fieldName);
+                            if (parentFieldSpec && parentFieldSpec.isNode && parentFieldSpec.type !== 'Node') {
+                                isWrapped = false;
+                            }
+                        }
+                    }
+                    
+                    const processedProperties = entries.map(([propKey, propValue]) => {
+                        return [propKey, traverse(propValue, matchingNodeSpec.name, propKey)];
+                    });
+                    
+                    return createAstNode(functionName, processedProperties, isWrapped);
                 } else {
                     const properties = entries.map(([propKey, propValue]) => {
-                        return t.objectProperty(t.identifier(propKey), getValueNode(propValue));
+                        return t.objectProperty(t.identifier(propKey), traverse(propValue, parentNodeType, propKey));
                     });
                     return t.objectExpression(properties);
                 }
             }
         }
 
-        return getValueNode(node);
+        return getValueNode(node, parentNodeType, fieldName);
     }
 
     return traverse(ast);
