@@ -97,20 +97,21 @@ The `pgsql-deparser` module serializes ASTs to SQL in pure TypeScript, avoiding 
 Here's how you can use the deparser in your TypeScript code, using [`@pgsql/utils`](https://github.com/launchql/pgsql-parser/tree/main/packages/utils) to create an AST for `deparse`:
 
 ```ts
-import ast from '@pgsql/utils';
-import { deparse } from 'pgsql-deparser';
+import * as t from '@pgsql/utils';
+import { RangeVar, SelectStmt } from '@pgsql/types';
+import { deparseSync as deparse } from 'pgsql-deparser';
 
 // This could have been obtained from any JSON or AST, not necessarily @pgsql/utils
-const stmt = ast.selectStmt({
+const stmt: { SelectStmt: SelectStmt } = t.nodes.selectStmt({
   targetList: [
-    ast.resTarget({
-      val: ast.columnRef({
-        fields: [ast.aStar()]
+    t.nodes.resTarget({
+      val: t.nodes.columnRef({
+        fields: [t.nodes.aStar()]
       })
     })
   ],
   fromClause: [
-    ast.rangeVar({
+    t.nodes.rangeVar({
       relname: 'some_table',
       inh: true,
       relpersistence: 'p'
@@ -120,11 +121,11 @@ const stmt = ast.selectStmt({
   op: 'SETOP_NONE'
 });
 
-// Modify the AST if needed
-stmt.SelectStmt.fromClause[0].RangeVar.relname = 'another_table';
+// Modify the AST if needed  
+(stmt.SelectStmt.fromClause[0] as {RangeVar: RangeVar}).RangeVar.relname = 'another_table';
 
 // Deparse the modified AST back to a SQL string
-console.log(deparse(stmts));
+console.log(deparse(stmt));
 
 // Output: SELECT * FROM another_table
 ```

@@ -14,7 +14,7 @@
    <a href="https://www.npmjs.com/package/pgsql-parser"><img height="20" src="https://img.shields.io/github/package-json/v/launchql/pgsql-parser?filename=packages%2Fparser%2Fpackage.json"/></a>
 </p>
 
-The real PostgreSQL parser for Node.js, `pgsql-parser` provides symmetric parsing and deparsing of SQL statements using the actual [PostgreSQL parser](https://github.com/pganalyze/libpg_query). It allows you to parse SQL queries into AST and modify or reconstruct SQL queries from the AST.
+The real PostgreSQL parser for Node.js. Built with the actual [PostgreSQL parser](https://github.com/pganalyze/libpg_query), `pgsql-parser` delivers true-to-spec SQL parsing and reconstruction. Transform SQL queries into ASTs, modify them programmatically, and convert them back to SQL with complete fidelity.
 
 ## Installation
 
@@ -22,38 +22,30 @@ The real PostgreSQL parser for Node.js, `pgsql-parser` provides symmetric parsin
 npm install pgsql-parser
 ```
 
-## Key Features
+## Features
 
-- **True PostgreSQL Parsing:** Utilizes the real PostgreSQL source code for accurate parsing.
-- **Symmetric Parsing and Deparsing:** Convert SQL to AST and back, enabling query manipulation.
-- **AST Manipulation:** Easily modify parts of a SQL statement through the AST.
-- **WebAssembly Powered:** Cross-platform compatibility without native dependencies.
+* 🔄 **Symmetric Parsing & Deparsing** – Parse SQL to AST and reconstruct it back to SQL with perfect round-trip accuracy
+* 🧪 **Battle-Tested Reliability** – Validated against 23,000+ SQL statements ensuring production-grade stability  
+* 🔧 **Direct from PostgreSQL** – Uses the official Postgres C parser compiled to WebAssembly for 100% spec compliance
+* 🚀 **WebAssembly Powered:** - Cross-platform compatibility without native dependencies.
+* 🛠️ **AST Manipulation:** - Easily modify parts of a SQL statement through the AST.
 
 ## API
 
 The package exports both async and sync methods. Async methods handle initialization automatically, while sync methods require explicit initialization.
 
-⚠️ We recommend using `@pgsql/deparser` instead of `deparse` from `pgsql-parser`. The deparser package is more complete, supports sub-expressions, and doesn't require the WebAssembly module, making it lighter and more flexible for most use cases. It will soon be deprecated, in a minor version bump.
+⚠️ If you don't need the parser functionality, consider using the TS-only (no WASM, zero dependencies) [`pgsql-deparser`](https://github.com/launchql/pgsql-parser/tree/main/packages/deparser) for a super fast, lightweight deparser. Battle-tested with 23,000+ SQL statements 🚀
 
 ### Async Methods (Recommended)
 
 ```typescript
-import { parse, deparse, parseFunction } from 'pgsql-parser';
+import { parse, deparse } from 'pgsql-parser';
 
 // Parse SQL to AST
 const stmts = await parse('SELECT * FROM test_table');
 
 // Deparse AST back to SQL
 const sql = await deparse(stmts);
-
-// Parse PL/pgSQL functions
-const funcAst = await parseFunction(`
-  CREATE FUNCTION get_count() RETURNS integer AS $$
-  BEGIN
-    RETURN (SELECT COUNT(*) FROM users);
-  END;
-  $$ LANGUAGE plpgsql;
-`);
 ```
 
 ### Sync Methods
@@ -97,20 +89,21 @@ The `pgsql-deparser` module serializes ASTs to SQL in pure TypeScript, avoiding 
 Here's how you can use the deparser in your TypeScript code, using [`@pgsql/utils`](https://github.com/launchql/pgsql-parser/tree/main/packages/utils) to create an AST for `deparse`:
 
 ```ts
-import ast from '@pgsql/utils';
-import { deparse } from 'pgsql-deparser';
+import * as t from '@pgsql/utils';
+import { RangeVar, SelectStmt } from '@pgsql/types';
+import { deparseSync as deparse } from 'pgsql-deparser';
 
 // This could have been obtained from any JSON or AST, not necessarily @pgsql/utils
-const stmt = ast.selectStmt({
+const stmt: { SelectStmt: SelectStmt } = t.nodes.selectStmt({
   targetList: [
-    ast.resTarget({
-      val: ast.columnRef({
-        fields: [ast.aStar()]
+    t.nodes.resTarget({
+      val: t.nodes.columnRef({
+        fields: [t.nodes.aStar()]
       })
     })
   ],
   fromClause: [
-    ast.rangeVar({
+    t.nodes.rangeVar({
       relname: 'some_table',
       inh: true,
       relpersistence: 'p'
@@ -120,11 +113,11 @@ const stmt = ast.selectStmt({
   op: 'SETOP_NONE'
 });
 
-// Modify the AST if needed
-stmt.SelectStmt.fromClause[0].RangeVar.relname = 'another_table';
+// Modify the AST if needed  
+(stmt.SelectStmt.fromClause[0] as {RangeVar: RangeVar}).RangeVar.relname = 'another_table';
 
 // Deparse the modified AST back to a SQL string
-console.log(deparse(stmts));
+console.log(deparse(stmt));
 
 // Output: SELECT * FROM another_table
 ```
@@ -158,27 +151,25 @@ Our latest is built with `17-latest` branch from libpg_query
 | 11                       | (n/a)       | Not supported       |
 | 10                       | 10-latest   | Not supported       | `@1.3.1` ([tree](https://github.com/launchql/pgsql-parser/tree/39b7b1adc8914253226e286a48105785219a81ca))      | 
 
+## Credits
+
+Built on the excellent work of several contributors:
+
+* **[Dan Lynch](https://github.com/pyramation)** — official maintainer since 2018 and architect of the current implementation
+* **[Lukas Fittl](https://github.com/lfittl)** for [libpg_query](https://github.com/pganalyze/libpg_query) — the core PostgreSQL parser that powers this project
+* **[Greg Richardson](https://github.com/gregnr)** for AST guidance and pushing the transition to WASM for better interoperability
+* **[Ethan Resnick](https://github.com/ethanresnick)** for the original Node.js N-API bindings
+* **[Zac McCormick](https://github.com/zhm)** for the foundational [node-pg-query-native](https://github.com/zhm/node-pg-query-native) parser
 
 ## Related
 
-* [pgsql-parser](https://github.com/launchql/pgsql-parser): The real PostgreSQL parser for Node.js, providing symmetric parsing and deparsing of SQL statements with actual PostgreSQL parser integration.
-* [pgsql-deparser](https://github.com/launchql/pgsql-parser/tree/main/packages/deparser): A streamlined tool designed for converting PostgreSQL ASTs back into SQL queries, focusing solely on deparser functionality to complement `pgsql-parser`.
-* [pgsql-enums](https://github.com/launchql/pgsql-parser/tree/main/packages/pgsql-enums): A utility package offering easy access to PostgreSQL enumeration types in JSON format, aiding in string and integer conversions of enums used within ASTs to compliment `pgsql-parser`
-* [@pgsql/enums](https://github.com/launchql/pgsql-parser/tree/main/packages/enums): Provides PostgreSQL AST enums in TypeScript, enhancing type safety and usability in projects interacting with PostgreSQL AST nodes.
-* [@pgsql/types](https://github.com/launchql/pgsql-parser/tree/main/packages/types): Offers TypeScript type definitions for PostgreSQL AST nodes, facilitating type-safe construction, analysis, and manipulation of ASTs.
-* [@pgsql/utils](https://github.com/launchql/pgsql-parser/tree/main/packages/utils): A comprehensive utility library for PostgreSQL, offering type-safe AST node creation and enum value conversions, simplifying the construction and manipulation of PostgreSQL ASTs.
-* [pg-proto-parser](https://github.com/launchql/pg-proto-parser): A TypeScript tool that parses PostgreSQL Protocol Buffers definitions to generate TypeScript interfaces, utility functions, and JSON mappings for enums.
+* [pgsql-parser](https://www.npmjs.com/package/pgsql-parser): The real PostgreSQL parser for Node.js, providing symmetric parsing and deparsing of SQL statements with actual PostgreSQL parser integration.
+* [pgsql-deparser](https://www.npmjs.com/package/pgsql-deparser): A streamlined tool designed for converting PostgreSQL ASTs back into SQL queries, focusing solely on deparser functionality to complement `pgsql-parser`.
+* [@pgsql/types](https://www.npmjs.com/package/@pgsql/types): Offers TypeScript type definitions for PostgreSQL AST nodes, facilitating type-safe construction, analysis, and manipulation of ASTs.
+* [@pgsql/enums](https://www.npmjs.com/package/@pgsql/enums): Provides TypeScript enum definitions for PostgreSQL constants, enabling type-safe usage of PostgreSQL enums and constants in your applications.
+* [@pgsql/utils](https://www.npmjs.com/package/@pgsql/utils): A comprehensive utility library for PostgreSQL, offering type-safe AST node creation and enum value conversions, simplifying the construction and manipulation of PostgreSQL ASTs.
+* [pg-proto-parser](https://www.npmjs.com/package/pg-proto-parser): A TypeScript tool that parses PostgreSQL Protocol Buffers definitions to generate TypeScript interfaces, utility functions, and JSON mappings for enums.
 * [libpg-query](https://github.com/launchql/libpg-query-node): The real PostgreSQL parser exposed for Node.js, used primarily in `pgsql-parser` for parsing and deparsing SQL queries.
-
-## Credits
-
-Thanks [@lfittl](https://github.com/lfittl) for building the core `libpg_query` suite:
-
-* [libpg_query](https://github.com/pganalyze/libpg_query)
-* [pg_query](https://github.com/lfittl/pg_query)
-* [pg_query.go](https://github.com/lfittl/pg_query.go)
-
-Thanks to [@zhm](https://github.com/zhm) for the [OG Parser](https://github.com/zhm/pg-query-parser/blob/master/LICENSE.md) that started it all.
 
 ## Disclaimer
 
