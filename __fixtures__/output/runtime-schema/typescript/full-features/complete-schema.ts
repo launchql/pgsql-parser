@@ -11,11 +11,13 @@ export interface FieldSpec {
 }
 export interface NodeSpec {
   name: string;
+  isNode: boolean;
   fields: FieldSpec[];
 }
 export const runtimeSchema: NodeSpec[] = [
   {
     name: 'A_ArrayExpr',
+    isNode: true,
     fields: [
       {
         name: 'elements',
@@ -33,6 +35,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'A_Const',
+    isNode: true,
     fields: [
       {
         name: 'boolval',
@@ -80,6 +83,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'A_Expr',
+    isNode: true,
     fields: [
       {
         name: 'kind',
@@ -115,6 +119,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'A_Indices',
+    isNode: true,
     fields: [
       {
         name: 'is_slice',
@@ -138,6 +143,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'A_Indirection',
+    isNode: true,
     fields: [
       {
         name: 'arg',
@@ -155,12 +161,14 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'A_Star',
+    isNode: true,
     fields: [
 
     ]
   },
   {
     name: 'AccessPriv',
+    isNode: true,
     fields: [
       {
         name: 'cols',
@@ -178,6 +186,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'Aggref',
+    isNode: true,
     fields: [
       {
         name: 'aggargtypes',
@@ -297,6 +306,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'Alias',
+    isNode: true,
     fields: [
       {
         name: 'aliasname',
@@ -314,6 +324,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterCollationStmt',
+    isNode: true,
     fields: [
       {
         name: 'collname',
@@ -325,6 +336,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterDatabaseRefreshCollStmt',
+    isNode: true,
     fields: [
       {
         name: 'dbname',
@@ -336,6 +348,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterDatabaseSetStmt',
+    isNode: true,
     fields: [
       {
         name: 'dbname',
@@ -353,6 +366,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterDatabaseStmt',
+    isNode: true,
     fields: [
       {
         name: 'dbname',
@@ -370,6 +384,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterDefaultPrivilegesStmt',
+    isNode: true,
     fields: [
       {
         name: 'action',
@@ -387,6 +402,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterDomainStmt',
+    isNode: true,
     fields: [
       {
         name: 'behavior',
@@ -428,6 +444,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterEnumStmt',
+    isNode: true,
     fields: [
       {
         name: 'newVal',
@@ -469,6 +486,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterEventTrigStmt',
+    isNode: true,
     fields: [
       {
         name: 'tgenabled',
@@ -486,6 +504,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterExtensionContentsStmt',
+    isNode: true,
     fields: [
       {
         name: 'action',
@@ -515,6 +534,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterExtensionStmt',
+    isNode: true,
     fields: [
       {
         name: 'extname',
@@ -532,6 +552,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterFdwStmt',
+    isNode: true,
     fields: [
       {
         name: 'fdwname',
@@ -555,6 +576,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterForeignServerStmt',
+    isNode: true,
     fields: [
       {
         name: 'has_version',
@@ -584,6 +606,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterFunctionStmt',
+    isNode: true,
     fields: [
       {
         name: 'actions',
@@ -607,6 +630,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlternativeSubPlan',
+    isNode: true,
     fields: [
       {
         name: 'subplans',
@@ -624,6 +648,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterObjectDependsStmt',
+    isNode: true,
     fields: [
       {
         name: 'extname',
@@ -659,6 +684,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterObjectSchemaStmt',
+    isNode: true,
     fields: [
       {
         name: 'missing_ok',
@@ -694,6 +720,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterOperatorStmt',
+    isNode: true,
     fields: [
       {
         name: 'opername',
@@ -711,6 +738,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterOpFamilyStmt',
+    isNode: true,
     fields: [
       {
         name: 'amname',
@@ -740,6 +768,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterOwnerStmt',
+    isNode: true,
     fields: [
       {
         name: 'newowner',
@@ -769,6 +798,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterPolicyStmt',
+    isNode: true,
     fields: [
       {
         name: 'policy_name',
@@ -804,6 +834,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterPublicationStmt',
+    isNode: true,
     fields: [
       {
         name: 'action',
@@ -839,6 +870,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterRoleSetStmt',
+    isNode: true,
     fields: [
       {
         name: 'database',
@@ -862,6 +894,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterRoleStmt',
+    isNode: true,
     fields: [
       {
         name: 'action',
@@ -885,6 +918,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterSeqStmt',
+    isNode: true,
     fields: [
       {
         name: 'for_identity',
@@ -914,6 +948,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterStatsStmt',
+    isNode: true,
     fields: [
       {
         name: 'defnames',
@@ -937,6 +972,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterSubscriptionStmt',
+    isNode: true,
     fields: [
       {
         name: 'conninfo',
@@ -972,6 +1008,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterSystemStmt',
+    isNode: true,
     fields: [
       {
         name: 'setstmt',
@@ -983,6 +1020,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterTableCmd',
+    isNode: true,
     fields: [
       {
         name: 'behavior',
@@ -1036,6 +1074,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterTableMoveAllStmt',
+    isNode: true,
     fields: [
       {
         name: 'new_tablespacename',
@@ -1071,6 +1110,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterTableSpaceOptionsStmt',
+    isNode: true,
     fields: [
       {
         name: 'isReset',
@@ -1094,6 +1134,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterTableStmt',
+    isNode: true,
     fields: [
       {
         name: 'cmds',
@@ -1123,6 +1164,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterTSConfigurationStmt',
+    isNode: true,
     fields: [
       {
         name: 'cfgname',
@@ -1170,6 +1212,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterTSDictionaryStmt',
+    isNode: true,
     fields: [
       {
         name: 'dictname',
@@ -1187,6 +1230,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterTypeStmt',
+    isNode: true,
     fields: [
       {
         name: 'options',
@@ -1204,6 +1248,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'AlterUserMappingStmt',
+    isNode: true,
     fields: [
       {
         name: 'options',
@@ -1227,6 +1272,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'ArrayCoerceExpr',
+    isNode: true,
     fields: [
       {
         name: 'arg',
@@ -1280,6 +1326,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'ArrayExpr',
+    isNode: true,
     fields: [
       {
         name: 'array_collid',
@@ -1327,6 +1374,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'BitString',
+    isNode: true,
     fields: [
       {
         name: 'bsval',
@@ -1338,6 +1386,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'Boolean',
+    isNode: true,
     fields: [
       {
         name: 'boolval',
@@ -1349,6 +1398,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'BooleanTest',
+    isNode: true,
     fields: [
       {
         name: 'arg',
@@ -1378,6 +1428,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'BoolExpr',
+    isNode: true,
     fields: [
       {
         name: 'args',
@@ -1407,6 +1458,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CallContext',
+    isNode: true,
     fields: [
       {
         name: 'atomic',
@@ -1418,6 +1470,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CallStmt',
+    isNode: true,
     fields: [
       {
         name: 'funccall',
@@ -1441,6 +1494,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CaseExpr',
+    isNode: true,
     fields: [
       {
         name: 'arg',
@@ -1488,6 +1542,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CaseTestExpr',
+    isNode: true,
     fields: [
       {
         name: 'collation',
@@ -1517,6 +1572,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CaseWhen',
+    isNode: true,
     fields: [
       {
         name: 'expr',
@@ -1546,12 +1602,14 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CheckPointStmt',
+    isNode: true,
     fields: [
 
     ]
   },
   {
     name: 'ClosePortalStmt',
+    isNode: true,
     fields: [
       {
         name: 'portalname',
@@ -1563,6 +1621,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'ClusterStmt',
+    isNode: true,
     fields: [
       {
         name: 'indexname',
@@ -1586,6 +1645,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CoalesceExpr',
+    isNode: true,
     fields: [
       {
         name: 'args',
@@ -1621,6 +1681,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CoerceToDomain',
+    isNode: true,
     fields: [
       {
         name: 'arg',
@@ -1668,6 +1729,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CoerceToDomainValue',
+    isNode: true,
     fields: [
       {
         name: 'collation',
@@ -1703,6 +1765,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CoerceViaIO',
+    isNode: true,
     fields: [
       {
         name: 'arg',
@@ -1744,6 +1807,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CollateClause',
+    isNode: true,
     fields: [
       {
         name: 'arg',
@@ -1767,6 +1831,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CollateExpr',
+    isNode: true,
     fields: [
       {
         name: 'arg',
@@ -1796,6 +1861,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'ColumnDef',
+    isNode: true,
     fields: [
       {
         name: 'collClause',
@@ -1915,6 +1981,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'ColumnRef',
+    isNode: true,
     fields: [
       {
         name: 'fields',
@@ -1932,6 +1999,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CommentStmt',
+    isNode: true,
     fields: [
       {
         name: 'comment',
@@ -1955,6 +2023,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CommonTableExpr',
+    isNode: true,
     fields: [
       {
         name: 'aliascolnames',
@@ -2038,6 +2107,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CompositeTypeStmt',
+    isNode: true,
     fields: [
       {
         name: 'coldeflist',
@@ -2055,6 +2125,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'Constraint',
+    isNode: true,
     fields: [
       {
         name: 'access_method',
@@ -2240,6 +2311,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'ConstraintsSetStmt',
+    isNode: true,
     fields: [
       {
         name: 'constraints',
@@ -2257,6 +2329,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'ConvertRowtypeExpr',
+    isNode: true,
     fields: [
       {
         name: 'arg',
@@ -2292,6 +2365,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CopyStmt',
+    isNode: true,
     fields: [
       {
         name: 'attlist',
@@ -2345,6 +2419,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CreateAmStmt',
+    isNode: true,
     fields: [
       {
         name: 'amname',
@@ -2368,6 +2443,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CreateCastStmt',
+    isNode: true,
     fields: [
       {
         name: 'context',
@@ -2403,6 +2479,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CreateConversionStmt',
+    isNode: true,
     fields: [
       {
         name: 'conversion_name',
@@ -2438,6 +2515,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CreatedbStmt',
+    isNode: true,
     fields: [
       {
         name: 'dbname',
@@ -2455,6 +2533,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CreateDomainStmt',
+    isNode: true,
     fields: [
       {
         name: 'collClause',
@@ -2484,6 +2563,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CreateEnumStmt',
+    isNode: true,
     fields: [
       {
         name: 'typeName',
@@ -2501,6 +2581,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CreateEventTrigStmt',
+    isNode: true,
     fields: [
       {
         name: 'eventname',
@@ -2530,6 +2611,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CreateExtensionStmt',
+    isNode: true,
     fields: [
       {
         name: 'extname',
@@ -2553,6 +2635,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CreateFdwStmt',
+    isNode: true,
     fields: [
       {
         name: 'fdwname',
@@ -2576,6 +2659,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CreateForeignServerStmt',
+    isNode: true,
     fields: [
       {
         name: 'fdwname',
@@ -2617,6 +2701,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CreateForeignTableStmt',
+    isNode: true,
     fields: [
       {
         name: 'base',
@@ -2640,6 +2725,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CreateFunctionStmt',
+    isNode: true,
     fields: [
       {
         name: 'funcname',
@@ -2687,6 +2773,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CreateOpClassItem',
+    isNode: true,
     fields: [
       {
         name: 'class_args',
@@ -2728,6 +2815,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CreateOpClassStmt',
+    isNode: true,
     fields: [
       {
         name: 'amname',
@@ -2769,6 +2857,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CreateOpFamilyStmt',
+    isNode: true,
     fields: [
       {
         name: 'amname',
@@ -2786,6 +2875,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CreatePLangStmt',
+    isNode: true,
     fields: [
       {
         name: 'plhandler',
@@ -2827,6 +2917,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CreatePolicyStmt',
+    isNode: true,
     fields: [
       {
         name: 'cmd_name',
@@ -2874,6 +2965,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CreatePublicationStmt',
+    isNode: true,
     fields: [
       {
         name: 'for_all_tables',
@@ -2903,6 +2995,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CreateRangeStmt',
+    isNode: true,
     fields: [
       {
         name: 'params',
@@ -2920,6 +3013,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CreateRoleStmt',
+    isNode: true,
     fields: [
       {
         name: 'options',
@@ -2943,6 +3037,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CreateSchemaStmt',
+    isNode: true,
     fields: [
       {
         name: 'authrole',
@@ -2972,6 +3067,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CreateSeqStmt',
+    isNode: true,
     fields: [
       {
         name: 'for_identity',
@@ -3007,6 +3103,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CreateStatsStmt',
+    isNode: true,
     fields: [
       {
         name: 'defnames',
@@ -3054,6 +3151,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CreateStmt',
+    isNode: true,
     fields: [
       {
         name: 'accessMethod',
@@ -3131,6 +3229,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CreateSubscriptionStmt',
+    isNode: true,
     fields: [
       {
         name: 'conninfo',
@@ -3160,6 +3259,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CreateTableAsStmt',
+    isNode: true,
     fields: [
       {
         name: 'if_not_exists',
@@ -3195,6 +3295,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CreateTableSpaceStmt',
+    isNode: true,
     fields: [
       {
         name: 'location',
@@ -3224,6 +3325,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CreateTransformStmt',
+    isNode: true,
     fields: [
       {
         name: 'fromsql',
@@ -3259,6 +3361,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CreateTrigStmt',
+    isNode: true,
     fields: [
       {
         name: 'args',
@@ -3354,6 +3457,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CreateUserMappingStmt',
+    isNode: true,
     fields: [
       {
         name: 'if_not_exists',
@@ -3383,6 +3487,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CTECycleClause',
+    isNode: true,
     fields: [
       {
         name: 'cycle_col_list',
@@ -3448,6 +3553,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CTESearchClause',
+    isNode: true,
     fields: [
       {
         name: 'location',
@@ -3477,6 +3583,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'CurrentOfExpr',
+    isNode: true,
     fields: [
       {
         name: 'cursor_name',
@@ -3506,6 +3613,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'DeallocateStmt',
+    isNode: true,
     fields: [
       {
         name: 'name',
@@ -3517,6 +3625,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'DeclareCursorStmt',
+    isNode: true,
     fields: [
       {
         name: 'options',
@@ -3540,6 +3649,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'DefElem',
+    isNode: true,
     fields: [
       {
         name: 'arg',
@@ -3575,6 +3685,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'DefineStmt',
+    isNode: true,
     fields: [
       {
         name: 'args',
@@ -3622,6 +3733,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'DeleteStmt',
+    isNode: true,
     fields: [
       {
         name: 'relation',
@@ -3657,6 +3769,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'DiscardStmt',
+    isNode: true,
     fields: [
       {
         name: 'target',
@@ -3668,6 +3781,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'DistinctExpr',
+    isNode: true,
     fields: [
       {
         name: 'args',
@@ -3721,6 +3835,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'DoStmt',
+    isNode: true,
     fields: [
       {
         name: 'args',
@@ -3732,6 +3847,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'DropdbStmt',
+    isNode: true,
     fields: [
       {
         name: 'dbname',
@@ -3755,6 +3871,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'DropOwnedStmt',
+    isNode: true,
     fields: [
       {
         name: 'behavior',
@@ -3772,6 +3889,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'DropRoleStmt',
+    isNode: true,
     fields: [
       {
         name: 'missing_ok',
@@ -3789,6 +3907,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'DropStmt',
+    isNode: true,
     fields: [
       {
         name: 'behavior',
@@ -3824,6 +3943,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'DropSubscriptionStmt',
+    isNode: true,
     fields: [
       {
         name: 'behavior',
@@ -3847,6 +3967,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'DropTableSpaceStmt',
+    isNode: true,
     fields: [
       {
         name: 'missing_ok',
@@ -3864,6 +3985,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'DropUserMappingStmt',
+    isNode: true,
     fields: [
       {
         name: 'missing_ok',
@@ -3887,6 +4009,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'ExecuteStmt',
+    isNode: true,
     fields: [
       {
         name: 'name',
@@ -3904,6 +4027,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'ExplainStmt',
+    isNode: true,
     fields: [
       {
         name: 'options',
@@ -3921,6 +4045,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'FetchStmt',
+    isNode: true,
     fields: [
       {
         name: 'direction',
@@ -3950,6 +4075,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'FieldSelect',
+    isNode: true,
     fields: [
       {
         name: 'arg',
@@ -3991,6 +4117,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'FieldStore',
+    isNode: true,
     fields: [
       {
         name: 'arg',
@@ -4026,6 +4153,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'Float',
+    isNode: true,
     fields: [
       {
         name: 'fval',
@@ -4037,6 +4165,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'FromExpr',
+    isNode: true,
     fields: [
       {
         name: 'fromlist',
@@ -4054,6 +4183,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'FuncCall',
+    isNode: true,
     fields: [
       {
         name: 'agg_distinct',
@@ -4125,6 +4255,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'FuncExpr',
+    isNode: true,
     fields: [
       {
         name: 'args',
@@ -4190,6 +4321,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'FunctionParameter',
+    isNode: true,
     fields: [
       {
         name: 'argType',
@@ -4219,6 +4351,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'GrantRoleStmt',
+    isNode: true,
     fields: [
       {
         name: 'behavior',
@@ -4260,6 +4393,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'GrantStmt',
+    isNode: true,
     fields: [
       {
         name: 'behavior',
@@ -4319,6 +4453,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'GroupingFunc',
+    isNode: true,
     fields: [
       {
         name: 'agglevelsup',
@@ -4354,6 +4489,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'GroupingSet',
+    isNode: true,
     fields: [
       {
         name: 'content',
@@ -4377,6 +4513,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'ImportForeignSchemaStmt',
+    isNode: true,
     fields: [
       {
         name: 'list_type',
@@ -4418,6 +4555,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'IndexElem',
+    isNode: true,
     fields: [
       {
         name: 'collation',
@@ -4471,6 +4609,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'IndexStmt',
+    isNode: true,
     fields: [
       {
         name: 'accessMethod',
@@ -4620,6 +4759,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'InferClause',
+    isNode: true,
     fields: [
       {
         name: 'conname',
@@ -4649,6 +4789,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'InferenceElem',
+    isNode: true,
     fields: [
       {
         name: 'expr',
@@ -4678,6 +4819,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'InlineCodeBlock',
+    isNode: true,
     fields: [
       {
         name: 'atomic',
@@ -4707,6 +4849,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'InsertStmt',
+    isNode: true,
     fields: [
       {
         name: 'cols',
@@ -4754,6 +4897,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'Integer',
+    isNode: true,
     fields: [
       {
         name: 'ival',
@@ -4765,6 +4909,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'IntList',
+    isNode: true,
     fields: [
       {
         name: 'items',
@@ -4776,6 +4921,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'IntoClause',
+    isNode: true,
     fields: [
       {
         name: 'accessMethod',
@@ -4829,6 +4975,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'JoinExpr',
+    isNode: true,
     fields: [
       {
         name: 'alias',
@@ -4888,6 +5035,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'JsonAggConstructor',
+    isNode: true,
     fields: [
       {
         name: 'agg_filter',
@@ -4923,6 +5071,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'JsonArrayAgg',
+    isNode: true,
     fields: [
       {
         name: 'absent_on_null',
@@ -4946,6 +5095,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'JsonArrayConstructor',
+    isNode: true,
     fields: [
       {
         name: 'absent_on_null',
@@ -4975,6 +5125,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'JsonArrayQueryConstructor',
+    isNode: true,
     fields: [
       {
         name: 'absent_on_null',
@@ -5010,6 +5161,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'JsonConstructorExpr',
+    isNode: true,
     fields: [
       {
         name: 'absent_on_null',
@@ -5069,6 +5221,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'JsonFormat',
+    isNode: true,
     fields: [
       {
         name: 'encoding',
@@ -5092,6 +5245,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'JsonIsPredicate',
+    isNode: true,
     fields: [
       {
         name: 'expr',
@@ -5127,6 +5281,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'JsonKeyValue',
+    isNode: true,
     fields: [
       {
         name: 'key',
@@ -5144,6 +5299,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'JsonObjectAgg',
+    isNode: true,
     fields: [
       {
         name: 'absent_on_null',
@@ -5173,6 +5329,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'JsonObjectConstructor',
+    isNode: true,
     fields: [
       {
         name: 'absent_on_null',
@@ -5208,6 +5365,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'JsonOutput',
+    isNode: true,
     fields: [
       {
         name: 'returning',
@@ -5225,6 +5383,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'JsonReturning',
+    isNode: true,
     fields: [
       {
         name: 'format',
@@ -5248,6 +5407,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'JsonValueExpr',
+    isNode: true,
     fields: [
       {
         name: 'format',
@@ -5271,6 +5431,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'List',
+    isNode: true,
     fields: [
       {
         name: 'items',
@@ -5282,6 +5443,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'ListenStmt',
+    isNode: true,
     fields: [
       {
         name: 'conditionname',
@@ -5293,6 +5455,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'LoadStmt',
+    isNode: true,
     fields: [
       {
         name: 'filename',
@@ -5304,6 +5467,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'LockingClause',
+    isNode: true,
     fields: [
       {
         name: 'lockedRels',
@@ -5327,6 +5491,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'LockStmt',
+    isNode: true,
     fields: [
       {
         name: 'mode',
@@ -5350,6 +5515,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'MergeAction',
+    isNode: true,
     fields: [
       {
         name: 'commandType',
@@ -5391,6 +5557,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'MergeStmt',
+    isNode: true,
     fields: [
       {
         name: 'joinCondition',
@@ -5426,6 +5593,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'MergeWhenClause',
+    isNode: true,
     fields: [
       {
         name: 'commandType',
@@ -5467,6 +5635,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'MinMaxExpr',
+    isNode: true,
     fields: [
       {
         name: 'args',
@@ -5514,6 +5683,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'MultiAssignRef',
+    isNode: true,
     fields: [
       {
         name: 'colno',
@@ -5537,6 +5707,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'NamedArgExpr',
+    isNode: true,
     fields: [
       {
         name: 'arg',
@@ -5572,6 +5743,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'NextValueExpr',
+    isNode: true,
     fields: [
       {
         name: 'seqid',
@@ -5595,6 +5767,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'NotifyStmt',
+    isNode: true,
     fields: [
       {
         name: 'conditionname',
@@ -5612,6 +5785,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'NullIfExpr',
+    isNode: true,
     fields: [
       {
         name: 'args',
@@ -5665,6 +5839,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'NullTest',
+    isNode: true,
     fields: [
       {
         name: 'arg',
@@ -5700,6 +5875,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'ObjectWithArgs',
+    isNode: true,
     fields: [
       {
         name: 'args_unspecified',
@@ -5729,6 +5905,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'OidList',
+    isNode: true,
     fields: [
       {
         name: 'items',
@@ -5740,6 +5917,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'OnConflictClause',
+    isNode: true,
     fields: [
       {
         name: 'action',
@@ -5775,6 +5953,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'OnConflictExpr',
+    isNode: true,
     fields: [
       {
         name: 'action',
@@ -5828,6 +6007,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'OpExpr',
+    isNode: true,
     fields: [
       {
         name: 'args',
@@ -5881,6 +6061,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'Param',
+    isNode: true,
     fields: [
       {
         name: 'location',
@@ -5928,6 +6109,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'ParamRef',
+    isNode: true,
     fields: [
       {
         name: 'location',
@@ -5945,6 +6127,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'ParseResult',
+    isNode: false,
     fields: [
       {
         name: 'stmts',
@@ -5962,6 +6145,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'PartitionBoundSpec',
+    isNode: true,
     fields: [
       {
         name: 'is_default',
@@ -6015,6 +6199,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'PartitionCmd',
+    isNode: true,
     fields: [
       {
         name: 'bound',
@@ -6038,6 +6223,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'PartitionElem',
+    isNode: true,
     fields: [
       {
         name: 'collation',
@@ -6073,6 +6259,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'PartitionRangeDatum',
+    isNode: true,
     fields: [
       {
         name: 'kind',
@@ -6096,6 +6283,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'PartitionSpec',
+    isNode: true,
     fields: [
       {
         name: 'location',
@@ -6119,6 +6307,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'PLAssignStmt',
+    isNode: true,
     fields: [
       {
         name: 'indirection',
@@ -6154,6 +6343,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'PrepareStmt',
+    isNode: true,
     fields: [
       {
         name: 'argtypes',
@@ -6177,6 +6367,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'PublicationObjSpec',
+    isNode: true,
     fields: [
       {
         name: 'location',
@@ -6206,6 +6397,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'PublicationTable',
+    isNode: true,
     fields: [
       {
         name: 'columns',
@@ -6229,6 +6421,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'Query',
+    isNode: true,
     fields: [
       {
         name: 'canSetTag',
@@ -6480,6 +6673,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'RangeFunction',
+    isNode: true,
     fields: [
       {
         name: 'alias',
@@ -6521,6 +6715,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'RangeSubselect',
+    isNode: true,
     fields: [
       {
         name: 'alias',
@@ -6544,6 +6739,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'RangeTableFunc',
+    isNode: true,
     fields: [
       {
         name: 'alias',
@@ -6591,6 +6787,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'RangeTableFuncCol',
+    isNode: true,
     fields: [
       {
         name: 'coldefexpr',
@@ -6638,6 +6835,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'RangeTableSample',
+    isNode: true,
     fields: [
       {
         name: 'args',
@@ -6673,6 +6871,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'RangeTblEntry',
+    isNode: true,
     fields: [
       {
         name: 'alias',
@@ -6870,6 +7069,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'RangeTblFunction',
+    isNode: true,
     fields: [
       {
         name: 'funccolcollations',
@@ -6917,6 +7117,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'RangeTblRef',
+    isNode: true,
     fields: [
       {
         name: 'rtindex',
@@ -6928,6 +7129,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'RangeVar',
+    isNode: true,
     fields: [
       {
         name: 'alias',
@@ -6975,6 +7177,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'RawStmt',
+    isNode: true,
     fields: [
       {
         name: 'stmt',
@@ -6998,6 +7201,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'ReassignOwnedStmt',
+    isNode: true,
     fields: [
       {
         name: 'newrole',
@@ -7015,6 +7219,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'RefreshMatViewStmt',
+    isNode: true,
     fields: [
       {
         name: 'concurrent',
@@ -7038,6 +7243,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'ReindexStmt',
+    isNode: true,
     fields: [
       {
         name: 'kind',
@@ -7067,6 +7273,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'RelabelType',
+    isNode: true,
     fields: [
       {
         name: 'arg',
@@ -7114,6 +7321,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'RenameStmt',
+    isNode: true,
     fields: [
       {
         name: 'behavior',
@@ -7167,6 +7375,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'ReplicaIdentityStmt',
+    isNode: true,
     fields: [
       {
         name: 'identity_type',
@@ -7184,6 +7393,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'ResTarget',
+    isNode: true,
     fields: [
       {
         name: 'indirection',
@@ -7213,6 +7423,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'ReturnStmt',
+    isNode: true,
     fields: [
       {
         name: 'returnval',
@@ -7224,6 +7435,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'RoleSpec',
+    isNode: true,
     fields: [
       {
         name: 'location',
@@ -7247,6 +7459,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'RowCompareExpr',
+    isNode: true,
     fields: [
       {
         name: 'inputcollids',
@@ -7294,6 +7507,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'RowExpr',
+    isNode: true,
     fields: [
       {
         name: 'args',
@@ -7335,6 +7549,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'RowMarkClause',
+    isNode: true,
     fields: [
       {
         name: 'pushedDown',
@@ -7364,6 +7579,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'RTEPermissionInfo',
+    isNode: true,
     fields: [
       {
         name: 'checkAsUser',
@@ -7411,6 +7627,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'RuleStmt',
+    isNode: true,
     fields: [
       {
         name: 'actions',
@@ -7458,6 +7675,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'ScalarArrayOpExpr',
+    isNode: true,
     fields: [
       {
         name: 'args',
@@ -7499,6 +7717,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'ScanResult',
+    isNode: false,
     fields: [
       {
         name: 'tokens',
@@ -7516,6 +7735,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'ScanToken',
+    isNode: false,
     fields: [
       {
         name: 'end',
@@ -7545,6 +7765,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'SecLabelStmt',
+    isNode: true,
     fields: [
       {
         name: 'label',
@@ -7574,6 +7795,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'SelectStmt',
+    isNode: true,
     fields: [
       {
         name: 'all',
@@ -7699,6 +7921,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'SetOperationStmt',
+    isNode: true,
     fields: [
       {
         name: 'all',
@@ -7752,6 +7975,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'SetToDefault',
+    isNode: true,
     fields: [
       {
         name: 'collation',
@@ -7787,6 +8011,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'SortBy',
+    isNode: true,
     fields: [
       {
         name: 'location',
@@ -7822,6 +8047,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'SortGroupClause',
+    isNode: true,
     fields: [
       {
         name: 'eqop',
@@ -7857,6 +8083,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'SQLValueFunction',
+    isNode: true,
     fields: [
       {
         name: 'location',
@@ -7892,6 +8119,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'StatsElem',
+    isNode: true,
     fields: [
       {
         name: 'expr',
@@ -7909,6 +8137,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'String',
+    isNode: true,
     fields: [
       {
         name: 'sval',
@@ -7920,6 +8149,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'SubLink',
+    isNode: true,
     fields: [
       {
         name: 'location',
@@ -7967,6 +8197,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'SubPlan',
+    isNode: true,
     fields: [
       {
         name: 'args',
@@ -8074,6 +8305,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'SubscriptingRef',
+    isNode: true,
     fields: [
       {
         name: 'refassgnexpr',
@@ -8139,6 +8371,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'TableFunc',
+    isNode: true,
     fields: [
       {
         name: 'colcollations',
@@ -8222,6 +8455,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'TableLikeClause',
+    isNode: true,
     fields: [
       {
         name: 'options',
@@ -8245,6 +8479,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'TableSampleClause',
+    isNode: true,
     fields: [
       {
         name: 'args',
@@ -8268,6 +8503,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'TargetEntry',
+    isNode: true,
     fields: [
       {
         name: 'expr',
@@ -8321,6 +8557,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'TransactionStmt',
+    isNode: true,
     fields: [
       {
         name: 'chain',
@@ -8356,6 +8593,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'TriggerTransition',
+    isNode: true,
     fields: [
       {
         name: 'isNew',
@@ -8379,6 +8617,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'TruncateStmt',
+    isNode: true,
     fields: [
       {
         name: 'behavior',
@@ -8402,6 +8641,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'TypeCast',
+    isNode: true,
     fields: [
       {
         name: 'arg',
@@ -8425,6 +8665,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'TypeName',
+    isNode: true,
     fields: [
       {
         name: 'arrayBounds',
@@ -8478,6 +8719,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'UnlistenStmt',
+    isNode: true,
     fields: [
       {
         name: 'conditionname',
@@ -8489,6 +8731,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'UpdateStmt',
+    isNode: true,
     fields: [
       {
         name: 'fromClause',
@@ -8530,6 +8773,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'VacuumRelation',
+    isNode: true,
     fields: [
       {
         name: 'oid',
@@ -8553,6 +8797,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'VacuumStmt',
+    isNode: true,
     fields: [
       {
         name: 'is_vacuumcmd',
@@ -8576,6 +8821,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'Var',
+    isNode: true,
     fields: [
       {
         name: 'location',
@@ -8635,6 +8881,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'VariableSetStmt',
+    isNode: true,
     fields: [
       {
         name: 'args',
@@ -8664,6 +8911,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'VariableShowStmt',
+    isNode: true,
     fields: [
       {
         name: 'name',
@@ -8675,6 +8923,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'ViewStmt',
+    isNode: true,
     fields: [
       {
         name: 'aliases',
@@ -8716,6 +8965,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'WindowClause',
+    isNode: true,
     fields: [
       {
         name: 'copiedOrder',
@@ -8811,6 +9061,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'WindowDef',
+    isNode: true,
     fields: [
       {
         name: 'endOffset',
@@ -8864,6 +9115,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'WindowFunc',
+    isNode: true,
     fields: [
       {
         name: 'aggfilter',
@@ -8935,6 +9187,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'WithCheckOption',
+    isNode: true,
     fields: [
       {
         name: 'cascaded',
@@ -8970,6 +9223,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'WithClause',
+    isNode: true,
     fields: [
       {
         name: 'ctes',
@@ -8993,6 +9247,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'XmlExpr',
+    isNode: true,
     fields: [
       {
         name: 'arg_names',
@@ -9064,6 +9319,7 @@ export const runtimeSchema: NodeSpec[] = [
   },
   {
     name: 'XmlSerialize',
+    isNode: true,
     fields: [
       {
         name: 'expr',

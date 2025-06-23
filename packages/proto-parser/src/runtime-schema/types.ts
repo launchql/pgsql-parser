@@ -7,6 +7,7 @@ export interface FieldSpec {
 
 export interface NodeSpec {
   name: string;
+  isNode: boolean;
   fields: FieldSpec[];
 }
 

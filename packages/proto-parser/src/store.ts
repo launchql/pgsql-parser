@@ -281,6 +281,7 @@ export class ProtoStore implements IProtoStore {
       '',
       'export interface NodeSpec {',
       '  name: string;',
+      '  isNode: boolean;',
       '  fields: FieldSpec[];',
       '}',
       ''
