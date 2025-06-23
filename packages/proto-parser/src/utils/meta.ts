@@ -1,5 +1,6 @@
 import { toSpecialCamelCase } from './index';
 import * as t from '@babel/types';
+import { NodeSpec, FieldSpec } from '../runtime-schema/types';
 
 /**
  * Converts an AST (Abstract Syntax Tree) representation of a SQL query into
@@ -56,4 +57,101 @@ export function generateTsAstCodeFromPgAst(ast: any): any {
   
     return traverse(ast);
   }
+
+export function generateTsAstCodeFromPgAstWithSchema(ast: any, runtimeSchema: NodeSpec[]): any {
+    const schemaMap = new Map<string, NodeSpec>();
+    runtimeSchema.forEach(spec => {
+        schemaMap.set(spec.name, spec);
+    });
+
+    function createAstNode(functionName: string, properties: any, isWrapped: boolean = true) {
+        const args = properties.map(([propKey, propValue]: [string, any]) => {
+            return t.objectProperty(t.identifier(propKey), getValueNode(propValue));
+        });
+        
+        const builderPath = isWrapped ? 'nodes' : 'ast';
+        return t.callExpression(
+            t.memberExpression(
+                t.memberExpression(t.identifier('t'), t.identifier(builderPath)),
+                t.identifier(functionName)
+            ),
+            [t.objectExpression(args)]
+        );
+    }
+
+    function getValueNode(value: any): t.Expression {
+        if (Array.isArray(value)) {
+            return t.arrayExpression(value.map(item => getValueNode(item)));
+        } else if (typeof value === 'object') {
+            return value === null ? t.nullLiteral() : traverse(value);
+        }
+        switch (typeof value) {
+            case 'boolean':
+                return t.booleanLiteral(value);
+            case 'number':
+                return t.numericLiteral(value);
+            case 'string':
+                return t.stringLiteral(value);
+            default:
+                return t.stringLiteral(String(value)); // Fallback for other types
+        }
+    }
+
+    function findNodeTypeByFields(fieldNames: string[]): NodeSpec | null {
+        for (const nodeSpec of runtimeSchema) {
+            const specFieldNames = nodeSpec.fields.map(f => f.name).sort();
+            const sortedFieldNames = [...fieldNames].sort();
+            
+            const hasAllRequiredFields = specFieldNames.every(fieldName => 
+                sortedFieldNames.includes(fieldName) || 
+                nodeSpec.fields.find(f => f.name === fieldName)?.optional
+            );
+            const hasOnlyValidFields = sortedFieldNames.every(fieldName => 
+                specFieldNames.includes(fieldName)
+            );
+            
+            if (hasAllRequiredFields && hasOnlyValidFields && sortedFieldNames.length > 0) {
+                return nodeSpec;
+            }
+        }
+        return null;
+    }
+
+    function traverse(node: any): t.Expression {
+        if (Array.isArray(node)) {
+            return t.arrayExpression(node.map(traverse));
+        } else if (node && typeof node === 'object') {
+            const entries = Object.entries(node);
+            if (entries.length === 0) return t.objectExpression([]);
+
+            if (entries.length === 1) {
+                const [key, value] = entries[0];
+                const functionName = toSpecialCamelCase(key);
+                
+                const nodeSpec = schemaMap.get(key);
+                const isWrapped = nodeSpec ? nodeSpec.isNode : true; // Default to wrapped if not found
+                
+                return createAstNode(functionName, Object.entries(value), isWrapped);
+            } else {
+                const fieldNames = entries.map(([key]) => key);
+                const matchingNodeSpec = findNodeTypeByFields(fieldNames);
+                
+                if (matchingNodeSpec) {
+                    const functionName = toSpecialCamelCase(matchingNodeSpec.name);
+                    const isWrapped = matchingNodeSpec.isNode;
+                    return createAstNode(functionName, entries, isWrapped);
+                } else {
+                    const properties = entries.map(([propKey, propValue]) => {
+                        return t.objectProperty(t.identifier(propKey), getValueNode(propValue));
+                    });
+                    return t.objectExpression(properties);
+                }
+            }
+        }
+
+        return getValueNode(node);
+    }
+
+    return traverse(ast);
+}
   
