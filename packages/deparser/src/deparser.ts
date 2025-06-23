@@ -1577,7 +1577,13 @@ export class Deparser implements DeparserVisitor {
     }
     
     let tableName = '';
-    if (node.schemaname) {
+    if (node.catalogname) {
+      tableName = QuoteUtils.quote(node.catalogname);
+      if (node.schemaname) {
+        tableName += '.' + QuoteUtils.quote(node.schemaname);
+      }
+      tableName += '.' + QuoteUtils.quote(node.relname);
+    } else if (node.schemaname) {
       tableName = QuoteUtils.quote(node.schemaname) + '.' + QuoteUtils.quote(node.relname);
     } else {
       tableName = QuoteUtils.quote(node.relname);
