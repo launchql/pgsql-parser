@@ -1,5 +1,3 @@
-import { deparseSync } from '../../src';
-import { parse } from 'libpg-query';
 import { expectParseDeparse } from '../../test-utils';
 
 describe('Pretty CREATE POLICY formatting', () => {
