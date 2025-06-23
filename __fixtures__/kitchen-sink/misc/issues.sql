@@ -65,3 +65,6 @@ CREATE AGGREGATE json_agg_strict(anyelement)(
   FINALFUNC = json_agg_strict_finalfunc,
   INITCOND = '[]'
 );
+
+-- https://github.com/launchql/pgsql-parser/issues/62
+SELECT (1 IS NOT NULL) IS DISTINCT FROM (2 IS NOT NULL);
