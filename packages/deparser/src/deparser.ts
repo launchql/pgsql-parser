@@ -2356,6 +2356,9 @@ export class Deparser implements DeparserVisitor {
         break;
       case 'CONSTR_UNIQUE':
         output.push('UNIQUE');
+        if (node.nulls_not_distinct) {
+          output.push('NULLS NOT DISTINCT');
+        }
         if (node.keys && node.keys.length > 0) {
           const keyList = ListUtils.unwrapList(node.keys)
             .map(key => this.visit(key, context))
