@@ -6487,9 +6487,6 @@ export class Deparser implements DeparserVisitor {
       }
     }
     
-    if (this.formatter.isPretty()) {
-      return output.join('');
-    }
     return output.join(' ');
   }
 
