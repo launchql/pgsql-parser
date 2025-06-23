@@ -1,5 +1,6 @@
 -- https://github.com/launchql/pgsql-parser/issues/131
 select from test_table WHERE status = 'complete'::text;
+select from test_table WHERE status = 'complete';
 
 -- https://github.com/supabase/supabase/issues/13267
 CREATE TABLE new_style (
