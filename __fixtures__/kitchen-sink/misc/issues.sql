@@ -25,3 +25,8 @@ VALUES
   (1, 'Asterius', 'of Amasea', FALSE, 'M', 1, '0350-01-01', '0410-01-01', 'Cappadocia', 'Amasea', NULL, 1, NULL, NULL),
   (2, 'Ausonius', NULL, FALSE, 'M', 1, '0310-01-01', '0395-01-01', 'Burdigala', NULL, NULL, NULL, NULL, NULL)
 ON CONFLICT DO NOTHING;
+
+-- https://github.com/launchql/pgsql-parser/issues/124
+COMMENT ON COLUMN "foo"."whatever" IS $$
+Something blah, this data may have chars like '\n' and '\r' in it.
+$$;
