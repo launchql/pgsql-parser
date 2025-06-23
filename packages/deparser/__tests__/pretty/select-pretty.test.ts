@@ -1,5 +1,6 @@
 import { deparseSync } from '../../src';
 import { parse } from 'libpg-query';
+import { TestUtils } from '../../test-utils';
 
 describe('Pretty SELECT formatting', () => {
   const basicSelectSql = `SELECT id, name, email FROM users WHERE active = true;`;
@@ -57,32 +58,18 @@ describe('Pretty SELECT formatting', () => {
   });
 
   it('should validate AST equivalence between original and pretty-formatted SQL', async () => {
+    const testUtils = new TestUtils();
     const testCases = [
-      basicSelectSql,
-      complexSelectSql,
-      selectWithSubquerySql,
-      selectUnionSql
+      { name: 'basic SELECT', sql: basicSelectSql },
+      { name: 'complex SELECT', sql: complexSelectSql },
+      { name: 'SELECT with subquery', sql: selectWithSubquerySql },
+      { name: 'SELECT with UNION', sql: selectUnionSql }
     ];
 
-    for (const sql of testCases) {
-      const originalParsed = await parse(sql);
+    for (const testCase of testCases) {
+      const originalParsed = await parse(testCase.sql);
       const prettyFormatted = deparseSync(originalParsed, { pretty: true });
-      const reparsed = await parse(prettyFormatted);
-      
-      const removeLocations = (obj: any): any => {
-        if (obj === null || typeof obj !== 'object') return obj;
-        if (Array.isArray(obj)) return obj.map(removeLocations);
-        
-        const result: any = {};
-        for (const [key, value] of Object.entries(obj)) {
-          if (key !== 'location' && key !== 'stmt_location' && key !== 'stmt_len') {
-            result[key] = removeLocations(value);
-          }
-        }
-        return result;
-      };
-      
-      expect(removeLocations(reparsed)).toEqual(removeLocations(originalParsed));
+      await testUtils.expectAstMatch(`pretty-${testCase.name}`, prettyFormatted);
     }
   });
 });

@@ -1,5 +1,6 @@
 import { deparseSync } from '../../src';
 import { parse } from 'libpg-query';
+import { TestUtils } from '../../test-utils';
 
 describe('Pretty constraint formatting', () => {
   const foreignKeyConstraintSql = `ALTER TABLE products ADD CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories(id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;`;
@@ -52,5 +53,20 @@ describe('Pretty constraint formatting', () => {
       tab: '    ' 
     });
     expect(result).toMatchSnapshot();
+  });
+
+  it('should validate AST equivalence between original and pretty-formatted SQL', async () => {
+    const testUtils = new TestUtils();
+    const testCases = [
+      { name: 'foreign key constraint', sql: foreignKeyConstraintSql },
+      { name: 'check constraint', sql: checkConstraintSql },
+      { name: 'complex table with constraints', sql: complexTableSql }
+    ];
+
+    for (const testCase of testCases) {
+      const originalParsed = await parse(testCase.sql);
+      const prettyFormatted = deparseSync(originalParsed, { pretty: true });
+      await testUtils.expectAstMatch(`pretty-${testCase.name}`, prettyFormatted);
+    }
   });
 });

@@ -1,5 +1,6 @@
 import { deparseSync } from '../../src';
 import { parse } from 'libpg-query';
+import { TestUtils } from '../../test-utils';
 
 describe('Pretty CREATE TABLE formatting', () => {
   const basicTableSql = `CREATE TABLE users (id SERIAL PRIMARY KEY, name TEXT NOT NULL, email TEXT UNIQUE);`;
@@ -45,5 +46,19 @@ describe('Pretty CREATE TABLE formatting', () => {
       tab: '    ' 
     });
     expect(result).toMatchSnapshot();
+  });
+
+  it('should validate AST equivalence between original and pretty-formatted SQL', async () => {
+    const testUtils = new TestUtils();
+    const testCases = [
+      { name: 'basic CREATE TABLE', sql: basicTableSql },
+      { name: 'complex CREATE TABLE', sql: complexTableSql }
+    ];
+
+    for (const testCase of testCases) {
+      const originalParsed = await parse(testCase.sql);
+      const prettyFormatted = deparseSync(originalParsed, { pretty: true });
+      await testUtils.expectAstMatch(`pretty-${testCase.name}`, prettyFormatted);
+    }
   });
 });
