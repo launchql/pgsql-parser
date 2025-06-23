@@ -2,10 +2,11 @@
 import { FixtureTestUtils } from '../../test-utils';
 const fixtures = new FixtureTestUtils();
 
-it('misc-booleans-cast', async () => {
+it('misc-issues', async () => {
   await fixtures.runFixtureTests([
-  "misc/booleans-cast-1.sql",
-  "misc/booleans-cast-2.sql",
-  "misc/booleans-cast-3.sql"
+  "misc/issues-1.sql",
+  "misc/issues-2.sql",
+  "misc/issues-3.sql",
+  "misc/issues-4.sql"
 ]);
 });
