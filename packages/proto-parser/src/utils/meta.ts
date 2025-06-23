@@ -147,7 +147,7 @@ export function generateTsAstCodeFromPgAstWithSchema(ast: any, runtimeSchema: No
                     const parentSpec = schemaMap.get(parentNodeType);
                     if (parentSpec) {
                         const fieldSpec = parentSpec.fields.find(f => f.name === fieldName);
-                        if (fieldSpec && fieldSpec.isNode && fieldSpec.type !== 'Node') {
+                        if (fieldSpec && fieldSpec.type !== 'Node' && schemaMap.has(fieldSpec.type)) {
                             isWrapped = false;
                         }
                     }
@@ -170,7 +170,7 @@ export function generateTsAstCodeFromPgAstWithSchema(ast: any, runtimeSchema: No
                         const parentSpec = schemaMap.get(parentNodeType);
                         if (parentSpec) {
                             const parentFieldSpec = parentSpec.fields.find(f => f.name === fieldName);
-                            if (parentFieldSpec && parentFieldSpec.isNode && parentFieldSpec.type !== 'Node') {
+                            if (parentFieldSpec && parentFieldSpec.type !== 'Node' && schemaMap.has(parentFieldSpec.type)) {
                                 isWrapped = false;
                             }
                         }
