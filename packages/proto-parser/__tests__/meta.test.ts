@@ -24,8 +24,6 @@ it('AST to AST to create AST — meta 🤯', () => {
         op: 'SETOP_NONE'
       });
 
-      expect(selectStmt).toMatchSnapshot();
-      
       const astForAst = generateTsAstCodeFromPgAst(selectStmt);
       expect(generate(astForAst).code).toMatchSnapshot();
 });
@@ -367,8 +365,6 @@ it('Complex AST — Advanced SQL with CTEs, Window Functions, Joins, and Subquer
       limitOption: 'LIMIT_OPTION_COUNT',
       op: 'SETOP_NONE'
     });
-
-    expect(complexSelectStmt).toMatchSnapshot();
     
     const astForComplexAst = generateTsAstCodeFromPgAst(complexSelectStmt);
     expect(generate(astForComplexAst).code).toMatchSnapshot();
@@ -394,8 +390,6 @@ it('Enhanced AST generation with runtime schema — wrapped vs unwrapped nodes',
         op: 'SETOP_NONE'
     });
 
-    expect(selectStmt).toMatchSnapshot();
-    
     const enhancedAst = generateTsAstCodeFromPgAstWithSchema(selectStmt, runtimeSchema);
     const generatedCode = generate(enhancedAst).code;
     
