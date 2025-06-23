@@ -2,29 +2,28 @@
 
 exports[`Pretty SELECT formatting should format SELECT with UNION with pretty option enabled 1`] = `
 "SELECT
-name
+  name
 FROM
 customers
 UNION
 ALL
 SELECT
-name
+  name
 FROM
 suppliers
 ORDER BY
-name;"
+  name;"
 `;
 
 exports[`Pretty SELECT formatting should format SELECT with subquery with pretty option enabled 1`] = `
 "SELECT
-
   id,
   name
 FROM
 users
 WHERE
   id IN (SELECT
-  user_id
+    user_id
   FROM
   orders
   WHERE
@@ -33,7 +32,6 @@ WHERE
 
 exports[`Pretty SELECT formatting should format basic SELECT with pretty option enabled 1`] = `
 "SELECT
-
   id,
   name,
   email
@@ -45,7 +43,6 @@ WHERE
 
 exports[`Pretty SELECT formatting should format complex SELECT with pretty option enabled 1`] = `
 "SELECT
-
   u.id,
   u.name,
   u.email,
@@ -55,7 +52,6 @@ users AS u JOIN profiles AS p ON u.id = p.user_id
 WHERE
   u.active = true AND u.created_at > '2023-01-01'
 GROUP BY
-
   u.id,
   u.name,
   u.email,
@@ -63,7 +59,6 @@ GROUP BY
 HAVING
   count(*) > 1
 ORDER BY
-
   u.created_at DESC,
   u.name ASC
 LIMIT
@@ -78,7 +73,6 @@ exports[`Pretty SELECT formatting should maintain single-line format when pretty
 
 exports[`Pretty SELECT formatting should use custom newline and tab characters in pretty mode 1`] = `
 "SELECT
-
     id,
     name,
     email
