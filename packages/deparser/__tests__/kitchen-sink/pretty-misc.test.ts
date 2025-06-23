@@ -9,6 +9,13 @@ it('pretty-misc', async () => {
   "pretty/misc-3.sql",
   "pretty/misc-4.sql",
   "pretty/misc-5.sql",
-  "pretty/misc-6.sql"
+  "pretty/misc-6.sql",
+  "pretty/misc-7.sql",
+  "pretty/misc-8.sql",
+  "pretty/misc-9.sql",
+  "pretty/misc-10.sql",
+  "pretty/misc-11.sql",
+  "pretty/misc-12.sql",
+  "pretty/misc-13.sql"
 ]);
 });

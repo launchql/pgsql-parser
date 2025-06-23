@@ -993,14 +993,15 @@ export class Deparser implements DeparserVisitor {
     if (node.ctes && node.ctes.length > 0) {
       const ctes = ListUtils.unwrapList(node.ctes);
       if (this.formatter.isPretty()) {
-        const cteStrings = ctes.map(cte => {
+        const cteStrings = ctes.map((cte, index) => {
           const cteStr = this.visit(cte, context);
+          const prefix = index === 0 ? this.formatter.newline() : ',' + this.formatter.newline();
           if (this.containsMultilineStringLiteral(cteStr)) {
-            return this.formatter.newline() + cteStr;
+            return prefix + cteStr;
           }
-          return this.formatter.newline() + this.formatter.indent(cteStr);
+          return prefix + this.formatter.indent(cteStr);
         });
-        output.push(cteStrings.join(','));
+        output.push(cteStrings.join(''));
       } else {
         const cteStrings = ctes.map(cte => this.visit(cte, context));
         output.push(cteStrings.join(', '));
@@ -1333,7 +1334,12 @@ export class Deparser implements DeparserVisitor {
         }
         
         if (windowParts.length > 0) {
-          result += ` OVER (${windowParts.join(' ')})`;
+          if (this.formatter.isPretty() && windowParts.length > 1) {
+            const formattedParts = windowParts.map(part => this.formatter.indent(part));
+            result += ` OVER (${this.formatter.newline()}${formattedParts.join(this.formatter.newline())}${this.formatter.newline()})`;
+          } else {
+            result += ` OVER (${windowParts.join(' ')})`;
+          }
         } else {
           result += ` OVER ()`;
         }
@@ -1977,17 +1983,41 @@ export class Deparser implements DeparserVisitor {
     }
 
     const args = ListUtils.unwrapList(node.args);
-    for (const arg of args) {
-      output.push(this.visit(arg, context));
-    }
+    
+    if (this.formatter.isPretty() && args.length > 0) {
+      for (const arg of args) {
+        const whenClause = this.visit(arg, context);
+        if (this.containsMultilineStringLiteral(whenClause)) {
+          output.push(this.formatter.newline() + whenClause);
+        } else {
+          output.push(this.formatter.newline() + this.formatter.indent(whenClause));
+        }
+      }
 
-    if (node.defresult) {
-      output.push('ELSE');
-      output.push(this.visit(node.defresult, context));
-    }
+      if (node.defresult) {
+        const elseResult = this.visit(node.defresult, context);
+        if (this.containsMultilineStringLiteral(elseResult)) {
+          output.push(this.formatter.newline() + 'ELSE ' + elseResult);
+        } else {
+          output.push(this.formatter.newline() + this.formatter.indent('ELSE ' + elseResult));
+        }
+      }
 
-    output.push('END');
-    return output.join(' ');
+      output.push(this.formatter.newline() + 'END');
+      return output.join(' ');
+    } else {
+      for (const arg of args) {
+        output.push(this.visit(arg, context));
+      }
+
+      if (node.defresult) {
+        output.push('ELSE');
+        output.push(this.visit(node.defresult, context));
+      }
+
+      output.push('END');
+      return output.join(' ');
+    }
   }
 
   CoalesceExpr(node: t.CoalesceExpr, context: DeparserContext): string {
@@ -3555,10 +3585,20 @@ export class Deparser implements DeparserVisitor {
         output.push(`USING (${columnNames.join(', ')})`);
       }
     } else if (node.quals) {
+      const qualsStr = this.visit(node.quals, context);
       if (this.formatter.isPretty()) {
-        output.push(` ON ${this.visit(node.quals, context)}`);
+        // For complex JOIN conditions, format with proper indentation
+        if (qualsStr.includes('AND') || qualsStr.includes('OR') || qualsStr.length > 50) {
+          if (this.containsMultilineStringLiteral(qualsStr)) {
+            output.push(` ON ${qualsStr}`);
+          } else {
+            output.push(` ON${this.formatter.newline()}${this.formatter.indent(qualsStr)}`);
+          }
+        } else {
+          output.push(` ON ${qualsStr}`);
+        }
       } else {
-        output.push(`ON ${this.visit(node.quals, context)}`);
+        output.push(`ON ${qualsStr}`);
       }
     }
     

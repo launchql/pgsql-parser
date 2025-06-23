@@ -110,3 +110,105 @@ WHERE o.created_at > NOW() - INTERVAL '90 days'
     )
   )
 ORDER BY o.created_at DESC;
+
+-- 7. A case
+
+select (CASE 
+WHEN ( n = 2 ) THEN ARRAY[ 'month' ]
+WHEN ( n = 4 ) THEN ARRAY[ 'year' ]
+WHEN ( n = 6 ) THEN ARRAY[ 'year', 'month' ]
+WHEN ( n = 8 ) THEN ARRAY[ 'day' ]
+WHEN ( n = 1024 ) THEN ARRAY[ 'hour' ]
+WHEN ( n = 1032 ) THEN ARRAY[ 'day', 'hour' ]
+WHEN ( n = 2048 ) THEN ARRAY[ 'minute' ]
+WHEN ( n = 3072 ) THEN ARRAY[ 'hour', 'minute' ]
+WHEN ( n = 3080 ) THEN ARRAY[ 'day', 'minute' ]
+WHEN ( n = 4096 ) THEN ARRAY[ 'second' ]
+WHEN ( n = 6144 ) THEN ARRAY[ 'minute', 'second' ]
+WHEN ( n = 7168 ) THEN ARRAY[ 'hour', 'second' ]
+WHEN ( n = 7176 ) THEN ARRAY[ 'day', 'second' ]
+WHEN ( n = 32767 ) THEN ARRAY[]::text[]
+END);
+
+-- 8. A case
+
+SELECT (
+  CASE 
+    WHEN n = 2 OR n = 3 THEN ARRAY['month', COALESCE(extra_label, 'unknown')]
+    WHEN n IN (4, 5) THEN 
+      CASE 
+        WHEN is_leap_year THEN ARRAY['year', 'leap']
+        ELSE ARRAY['year']
+      END
+    WHEN n = 6 THEN ARRAY['year', 'month', 'quarter']
+    WHEN n = 8 THEN ARRAY['day', 'week', compute_label(n)]
+    WHEN n = 1024 THEN ARRAY['hour', format('%s-hour', extra_label)]
+    WHEN n = 1032 AND flag = true THEN ARRAY['day', 'hour', 'flagged']
+    WHEN n BETWEEN 2048 AND 2049 THEN ARRAY['minute', 'tick']
+    WHEN n = 3072 THEN ARRAY['hour', 'minute', current_setting('timezone')]
+    WHEN n = 3080 THEN ARRAY['day', 'minute', to_char(now(), 'HH24:MI')]
+    WHEN n IN (4096, 4097, 4098) THEN ARRAY['second', 'millisecond']
+    WHEN n = 6144 THEN ARRAY['minute', 'second', CASE WHEN use_micro = true THEN 'microsecond' ELSE 'none' END]
+    WHEN n = 7168 OR (n > 7170 AND n < 7180) THEN ARRAY['hour', 'second', 'buffered']
+    WHEN n = 7176 THEN ARRAY['day', 'second', extra_info::text]
+    WHEN n = 32767 THEN ARRAY[]::text[]
+    ELSE ARRAY['undefined', 'unknown', 'fallback']
+  END
+);
+
+
+-- 9. A case with select 
+
+SELECT 
+  user_id,
+  (CASE 
+    WHEN EXISTS (SELECT 1 FROM logins WHERE logins.user_id = users.user_id AND success = false) 
+    THEN 'risky'
+    ELSE 'safe'
+  END) AS risk_status
+FROM users;
+
+-- 10. A case in where clause
+
+SELECT * 
+FROM orders
+WHERE 
+  status = (CASE 
+              WHEN shipped_at IS NOT NULL THEN 'shipped'
+              WHEN canceled_at IS NOT NULL THEN 'canceled'
+              ELSE 'processing'
+            END);
+
+-- 11. A case in lateral join
+
+SELECT *
+FROM users u,
+LATERAL (
+  SELECT 
+    (CASE 
+      WHEN u.is_admin THEN 'admin_dashboard'
+      ELSE 'user_dashboard'
+    END) AS dashboard_view
+) AS derived;
+
+-- 12. A CASE used inside a scalar subquery in SELECT
+
+SELECT 
+  id,
+  (SELECT 
+     CASE 
+       WHEN COUNT(*) > 5 THEN 'frequent'
+       ELSE 'occasional'
+     END
+   FROM purchases p WHERE p.user_id = u.id) AS purchase_freq
+FROM users u;
+
+-- 13. A case in window function
+
+SELECT 
+  id,
+  CASE 
+    WHEN rank() OVER (ORDER BY score DESC) = 1 THEN 'top'
+    ELSE 'normal'
+  END AS tier
+FROM players;
