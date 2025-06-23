@@ -1,18 +1,18 @@
-import ast from '../test-utils/utils/asts';
+import wrapped from '../test-utils/meta/wrapped';
 import { generateTsAstCodeFromPgAst } from '../src/utils'
 import generate from '@babel/generator';
 
 it('AST to AST to create AST — meta 🤯', () => {
-    const selectStmt = ast.selectStmt({
+    const selectStmt = wrapped.selectStmt({
         targetList: [
-          ast.resTarget({
-            val: ast.columnRef({
-              fields: [ast.aStar()]
+          wrapped.resTarget({
+            val: wrapped.columnRef({
+              fields: [wrapped.aStar()]
             })
           })
         ],
         fromClause: [
-          ast.rangeVar({
+          wrapped.rangeVar({
             relname: 'some_amazing_table',
             inh: true,
             relpersistence: 'p'

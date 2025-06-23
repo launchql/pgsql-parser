@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST to AST with runtime schema should generate t.ast.* for wrapped nodes and t.nodes.* for non-wrapped nodes 1`] = `
+"t.ast.selectStmt({
+  targetList: [t.ast.resTarget({
+    val: t.ast.columnRef({
+      fields: [t.ast.aStar({})]
+    })
+  })],
+  fromClause: [t.ast.rangeVar({
+    relname: "users_table",
+    inh: true,
+    relpersistence: "p"
+  })],
+  limitOption: "LIMIT_OPTION_DEFAULT",
+  op: "SETOP_NONE"
+})"
+`;
+
+exports[`AST to AST with runtime schema should handle arrays of nodes 1`] = `
+"t.ast.list({
+  items: [t.ast.string({
+    sval: "first"
+  }), t.ast.string({
+    sval: "second"
+  }), t.ast.string({
+    sval: "third"
+  })]
+})"
+`;
+
+exports[`AST to AST with runtime schema should handle empty objects and null values 1`] = `
+"t.ast.resTarget({
+  name: null,
+  val: t.ast.columnRef({
+    fields: [t.ast.aStar({})]
+  })
+})"
+`;
+
+exports[`AST to AST with runtime schema should handle mixed wrapped and non-wrapped nodes 1`] = `
+"t.ast.aExpr({
+  kind: "AEXPR_OP",
+  name: [t.ast.string({
+    sval: "="
+  })],
+  lexpr: t.ast.columnRef({
+    fields: [t.ast.string({
+      sval: "id"
+    })]
+  }),
+  rexpr: t.ast.aConst({
+    ival: t.nodes.aConst({
+      ival: 42
+    })
+  })
+})"
+`;
+
+exports[`AST to AST with runtime schema should use t.nodes.* for non-wrapped nodes 1`] = `
+"t.nodes.parseResult({
+  version: 160001,
+  stmts: [t.ast.rawStmt({
+    stmt: t.nodes.selectStmt({
+      targetList: [t.nodes.resTarget({
+        val: t.nodes.columnRef({
+          fields: [t.nodes.aStar({})]
+        })
+      })],
+      limitOption: "LIMIT_OPTION_DEFAULT",
+      op: "SETOP_NONE"
+    })
+  })]
+})"
+`;
