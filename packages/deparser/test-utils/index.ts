@@ -6,6 +6,17 @@ import * as path from 'path';
 import { expect } from '@jest/globals';
 import { diff } from 'jest-diff'
 
+export async function expectParseDeparse(sql1: string, options = { pretty: false }) {
+  const parsed = await parse(sql1);
+  
+  const sql2 = deparse(parsed, options);
+  
+  const ast1 = cleanTree(parsed);
+  const ast2 = cleanTree(await parse(sql2));
+  
+  expect(ast2).toEqual(ast1);
+}
+
 type ParseErrorType = 
   | 'PARSE_FAILED'
   | 'INVALID_STATEMENT'
