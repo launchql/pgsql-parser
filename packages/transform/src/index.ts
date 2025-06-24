@@ -9,6 +9,10 @@ import * as PG14Enums from './14/enums';
 import * as PG15Types from './15/types';
 import * as PG16Types from './16/types';
 import * as PG17Types from './17/types';
+import { getEnumInt as getEnum13Int, EnumType as Enum13Type } from './13/enum-to-int';
+import { getEnumString as getEnum13String } from './13/enum-to-str';
+import { getEnumInt as getEnum14Int, EnumType as Enum14Type } from './14/enum-to-int';
+import { getEnumString as getEnum14String } from './14/enum-to-str';
 
 
 export function transform13To14(node: PG13Node): PG14Node {
@@ -86,15 +90,57 @@ export function transform13To14(node: PG13Node): PG14Node {
 }
 
 export function transform14To15(node: PG14Node): PG15Node {
+  if ('ParseResult' in node) {
+    return { ParseResult: transform14To15ParseResult(node.ParseResult) };
+  }
+  if ('ScanResult' in node) {
+    return { ScanResult: transform14To15ScanResult(node.ScanResult) };
+  }
   return node as any;
 }
 
 export function transform15To16(node: PG15Node): PG16Node {
+  if ('ParseResult' in node) {
+    return { ParseResult: transform15To16ParseResult(node.ParseResult) };
+  }
+  if ('ScanResult' in node) {
+    return { ScanResult: transform15To16ScanResult(node.ScanResult) };
+  }
   return node as any;
 }
 
 export function transform16To17(node: PG16Node): PG17Node {
+  if ('ParseResult' in node) {
+    return { ParseResult: transform16To17ParseResult(node.ParseResult) };
+  }
+  if ('ScanResult' in node) {
+    return { ScanResult: transform16To17ScanResult(node.ScanResult) };
+  }
   return node as any;
+}
+
+function transform14To15ParseResult(parseResult: any): any {
+  return parseResult;
+}
+
+function transform14To15ScanResult(scanResult: any): any {
+  return scanResult;
+}
+
+function transform15To16ParseResult(parseResult: any): any {
+  return parseResult;
+}
+
+function transform15To16ScanResult(scanResult: any): any {
+  return scanResult;
+}
+
+function transform16To17ParseResult(parseResult: any): any {
+  return parseResult;
+}
+
+function transform16To17ScanResult(scanResult: any): any {
+  return scanResult;
 }
 
 export function transformToLatest(node: PG13Node): PG17Node {
@@ -395,6 +441,17 @@ function transform13To14RawStmt(rawStmt: PG13Types.RawStmt): PG14Types.RawStmt {
     stmt_location: rawStmt.stmt_location,
     stmt_len: rawStmt.stmt_len
   };
+}
+
+function convertEnum13To14(enumType: string, value: any): any {
+  if (typeof value === 'number' && enumType in getEnum13String) {
+    try {
+      return getEnum13String(enumType as Enum13Type, value);
+    } catch (error) {
+      return value;
+    }
+  }
+  return value;
 }
 
 export { Node as PG13Node } from './13/types';
