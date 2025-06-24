@@ -1,11 +1,6 @@
 import { expectSqlTransform } from '../test-utils/full-transform-flow';
 
 describe('Full Transform Integration - PG13 to PG17', () => {
-  // Scaffold: This test maps out the complete workflow
-  // 1. Parse SQL with PG13 parser
-  // 2. Transform PG13 AST → PG17 AST using composite transformer
-  // 3. Deparse PG17 AST back to SQL using PG17 deparser
-
   describe('Basic SQL Operations', () => {
     it('should handle simple SELECT statement', async () => {
       const sql = 'SELECT 1';
