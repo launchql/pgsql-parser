@@ -366,7 +366,7 @@ it('Complex AST — Advanced SQL with CTEs, Window Functions, Joins, and Subquer
       op: 'SETOP_NONE'
     });
     
-    const astForComplexAst = generateTsAstCodeFromPgAst(complexSelectStmt);
+    const astForComplexAst = generateTsAstCodeFromPgAstWithSchema(complexSelectStmt, runtimeSchema);
     expect(generate(astForComplexAst).code).toMatchSnapshot();
 });
 

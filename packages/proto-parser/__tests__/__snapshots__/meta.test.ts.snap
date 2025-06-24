@@ -46,56 +46,56 @@ exports[`Complex AST with runtime schema — mixed wrapped/unwrapped patterns 1`
 `;
 
 exports[`Complex AST — Advanced SQL with CTEs, Window Functions, Joins, and Subqueries 1`] = `
-"ast.selectStmt({
-  targetList: [ast.resTarget({
+"t.nodes.selectStmt({
+  targetList: [t.nodes.resTarget({
     name: "customer_name",
-    val: ast.columnRef({
-      fields: [ast.string({
+    val: t.nodes.columnRef({
+      fields: [t.nodes.string({
         sval: "c"
-      }), ast.string({
+      }), t.nodes.string({
         sval: "name"
       })]
     })
-  }), ast.resTarget({
+  }), t.nodes.resTarget({
     name: "total_sales",
-    val: ast.columnRef({
-      fields: [ast.string({
+    val: t.nodes.columnRef({
+      fields: [t.nodes.string({
         sval: "cr"
-      }), ast.string({
+      }), t.nodes.string({
         sval: "total_sales"
       })]
     })
-  }), ast.resTarget({
+  }), t.nodes.resTarget({
     name: "sales_rank",
-    val: ast.columnRef({
-      fields: [ast.string({
+    val: t.nodes.columnRef({
+      fields: [t.nodes.string({
         sval: "cr"
-      }), ast.string({
+      }), t.nodes.string({
         sval: "sales_rank"
       })]
     })
-  }), ast.resTarget({
+  }), t.nodes.resTarget({
     name: "customer_tier",
-    val: ast.caseExpr({
-      args: [ast.caseWhen({
-        expr: ast.aExpr({
+    val: t.nodes.caseExpr({
+      args: [t.nodes.caseWhen({
+        expr: t.nodes.aExpr({
           kind: "AEXPR_OP",
-          name: [ast.string({
+          name: [t.nodes.string({
             sval: "<="
           })],
-          lexpr: ast.columnRef({
-            fields: [ast.string({
+          lexpr: t.nodes.columnRef({
+            fields: [t.nodes.string({
               sval: "cr"
-            }), ast.string({
+            }), t.nodes.string({
               sval: "sales_rank"
             })]
           }),
-          rexpr: ast.aConst({
-            ival: ast.ival({})
+          rexpr: t.nodes.aConst({
+            ival: t.ast.ival({})
           })
         }),
-        result: ast.aConst({
-          sval: ast.sval({
+        result: t.nodes.aConst({
+          sval: t.ast.sval({
             0: "P",
             1: "r",
             2: "e",
@@ -105,50 +105,50 @@ exports[`Complex AST — Advanced SQL with CTEs, Window Functions, Joins, and Su
             6: "m"
           })
         })
-      }), ast.caseWhen({
-        expr: ast.aExpr({
+      }), t.nodes.caseWhen({
+        expr: t.nodes.aExpr({
           kind: "AEXPR_OP",
-          name: [ast.string({
+          name: [t.nodes.string({
             sval: "<="
           })],
-          lexpr: ast.columnRef({
-            fields: [ast.string({
+          lexpr: t.nodes.columnRef({
+            fields: [t.nodes.string({
               sval: "cr"
-            }), ast.string({
+            }), t.nodes.string({
               sval: "sales_rank"
             })]
           }),
-          rexpr: ast.aConst({
-            ival: ast.ival({})
+          rexpr: t.nodes.aConst({
+            ival: t.ast.ival({})
           })
         }),
-        result: ast.aConst({
-          sval: ast.sval({
+        result: t.nodes.aConst({
+          sval: t.ast.sval({
             0: "G",
             1: "o",
             2: "l",
             3: "d"
           })
         })
-      }), ast.caseWhen({
-        expr: ast.aExpr({
+      }), t.nodes.caseWhen({
+        expr: t.nodes.aExpr({
           kind: "AEXPR_OP",
-          name: [ast.string({
+          name: [t.nodes.string({
             sval: "<="
           })],
-          lexpr: ast.columnRef({
-            fields: [ast.string({
+          lexpr: t.nodes.columnRef({
+            fields: [t.nodes.string({
               sval: "cr"
-            }), ast.string({
+            }), t.nodes.string({
               sval: "sales_rank"
             })]
           }),
-          rexpr: ast.aConst({
-            ival: ast.ival({})
+          rexpr: t.nodes.aConst({
+            ival: t.ast.ival({})
           })
         }),
-        result: ast.aConst({
-          sval: ast.sval({
+        result: t.nodes.aConst({
+          sval: t.ast.sval({
             0: "S",
             1: "i",
             2: "l",
@@ -158,8 +158,8 @@ exports[`Complex AST — Advanced SQL with CTEs, Window Functions, Joins, and Su
           })
         })
       })],
-      defresult: ast.aConst({
-        sval: ast.sval({
+      defresult: t.nodes.aConst({
+        sval: t.ast.sval({
           0: "B",
           1: "r",
           2: "o",
@@ -169,63 +169,63 @@ exports[`Complex AST — Advanced SQL with CTEs, Window Functions, Joins, and Su
         })
       })
     })
-  }), ast.resTarget({
+  }), t.nodes.resTarget({
     name: "recent_order_count",
-    val: ast.subLink({
+    val: t.nodes.subLink({
       subLinkType: "EXPR_SUBLINK",
-      subselect: ast.selectStmt({
-        targetList: [ast.resTarget({
-          val: ast.funcCall({
-            funcname: [ast.string({
+      subselect: t.nodes.selectStmt({
+        targetList: [t.nodes.resTarget({
+          val: t.nodes.funcCall({
+            funcname: [t.nodes.string({
               sval: "count"
             })],
-            args: [ast.aStar({})]
+            args: [t.nodes.aStar({})]
           })
         })],
-        fromClause: [ast.rangeVar({
+        fromClause: [t.nodes.rangeVar({
           relname: "orders",
           inh: true,
           relpersistence: "p",
-          alias: ast.aliasname({
+          alias: t.ast.aliasname({
             0: "o",
             1: "2"
           })
         })],
-        whereClause: ast.boolExpr({
+        whereClause: t.nodes.boolExpr({
           boolop: "AND_EXPR",
-          args: [ast.aExpr({
+          args: [t.nodes.aExpr({
             kind: "AEXPR_OP",
-            name: [ast.string({
+            name: [t.nodes.string({
               sval: "="
             })],
-            lexpr: ast.columnRef({
-              fields: [ast.string({
+            lexpr: t.nodes.columnRef({
+              fields: [t.nodes.string({
                 sval: "o2"
-              }), ast.string({
+              }), t.nodes.string({
                 sval: "customer_id"
               })]
             }),
-            rexpr: ast.columnRef({
-              fields: [ast.string({
+            rexpr: t.nodes.columnRef({
+              fields: [t.nodes.string({
                 sval: "c"
-              }), ast.string({
+              }), t.nodes.string({
                 sval: "id"
               })]
             })
-          }), ast.aExpr({
+          }), t.nodes.aExpr({
             kind: "AEXPR_OP",
-            name: [ast.string({
+            name: [t.nodes.string({
               sval: ">="
             })],
-            lexpr: ast.columnRef({
-              fields: [ast.string({
+            lexpr: t.nodes.columnRef({
+              fields: [t.nodes.string({
                 sval: "o2"
-              }), ast.string({
+              }), t.nodes.string({
                 sval: "order_date"
               })]
             }),
-            rexpr: ast.funcCall({
-              funcname: [ast.string({
+            rexpr: t.nodes.funcCall({
+              funcname: [t.nodes.string({
                 sval: "current_date"
               })],
               args: []
@@ -237,77 +237,77 @@ exports[`Complex AST — Advanced SQL with CTEs, Window Functions, Joins, and Su
       })
     })
   })],
-  fromClause: [ast.joinExpr({
+  fromClause: [t.nodes.joinExpr({
     jointype: "JOIN_INNER",
-    larg: ast.rangeVar({
+    larg: t.nodes.rangeVar({
       relname: "customers",
       inh: true,
       relpersistence: "p",
-      alias: ast.aliasname({
+      alias: t.ast.aliasname({
         0: "c"
       })
     }),
-    rarg: ast.rangeVar({
+    rarg: t.nodes.rangeVar({
       relname: "customer_rankings",
       inh: true,
       relpersistence: "p",
-      alias: ast.aliasname({
+      alias: t.ast.aliasname({
         0: "c",
         1: "r"
       })
     }),
-    quals: ast.aExpr({
+    quals: t.nodes.aExpr({
       kind: "AEXPR_OP",
-      name: [ast.string({
+      name: [t.nodes.string({
         sval: "="
       })],
-      lexpr: ast.columnRef({
-        fields: [ast.string({
+      lexpr: t.nodes.columnRef({
+        fields: [t.nodes.string({
           sval: "c"
-        }), ast.string({
+        }), t.nodes.string({
           sval: "id"
         })]
       }),
-      rexpr: ast.columnRef({
-        fields: [ast.string({
+      rexpr: t.nodes.columnRef({
+        fields: [t.nodes.string({
           sval: "cr"
-        }), ast.string({
+        }), t.nodes.string({
           sval: "customer_id"
         })]
       })
     })
   })],
-  whereClause: ast.boolExpr({
+  whereClause: t.nodes.boolExpr({
     boolop: "AND_EXPR",
-    args: [ast.aExpr({
+    args: [t.nodes.aExpr({
       kind: "AEXPR_OP",
-      name: [ast.string({
+      name: [t.nodes.string({
         sval: ">"
       })],
-      lexpr: ast.columnRef({
-        fields: [ast.string({
+      lexpr: t.nodes.columnRef({
+        fields: [t.nodes.string({
           sval: "cr"
-        }), ast.string({
+        }), t.nodes.string({
           sval: "total_sales"
         })]
       }),
-      rexpr: ast.aConst({
-        ival: ast.ival({})
+      rexpr: t.nodes.aConst({
+        ival: t.ast.ival({})
       })
-    }), ast.aExpr({
+    }), t.nodes.aExpr({
       kind: "AEXPR_OP",
-      name: [ast.string({
+      name: [t.nodes.string({
         sval: "IS NOT"
       })],
-      lexpr: ast.columnRef({
-        fields: [ast.string({
+      lexpr: t.nodes.columnRef({
+        fields: [t.nodes.string({
           sval: "c"
-        }), ast.string({
+        }), t.nodes.string({
           sval: "status"
         })]
       }),
-      rexpr: ast.aConst({
-        sval: ast.sval({
+      rexpr: t.nodes.aConst({
+        sval: t.ast.sval({
           0: "i",
           1: "n",
           2: "a",
@@ -320,74 +320,74 @@ exports[`Complex AST — Advanced SQL with CTEs, Window Functions, Joins, and Su
       })
     })]
   }),
-  sortClause: [ast.sortBy({
-    node: ast.columnRef({
-      fields: [ast.string({
+  sortClause: [t.nodes.sortBy({
+    node: t.nodes.columnRef({
+      fields: [t.nodes.string({
         sval: "cr"
-      }), ast.string({
+      }), t.nodes.string({
         sval: "sales_rank"
       })]
     }),
     sortby_dir: "SORTBY_ASC",
     sortby_nulls: "SORTBY_NULLS_DEFAULT"
   })],
-  limitCount: ast.aConst({
-    ival: ast.ival({})
+  limitCount: t.nodes.aConst({
+    ival: t.ast.ival({})
   }),
   limitOption: "LIMIT_OPTION_COUNT",
-  withClause: ast.ctes({
-    0: ast.commonTableExpr({
+  withClause: t.ast.withClause({
+    ctes: [t.nodes.commonTableExpr({
       ctename: "sales_summary",
-      ctequery: ast.selectStmt({
-        targetList: [ast.resTarget({
+      ctequery: t.nodes.selectStmt({
+        targetList: [t.nodes.resTarget({
           name: "customer_id",
-          val: ast.columnRef({
-            fields: [ast.string({
+          val: t.nodes.columnRef({
+            fields: [t.nodes.string({
               sval: "customer_id"
             })]
           })
-        }), ast.resTarget({
+        }), t.nodes.resTarget({
           name: "total_sales",
-          val: ast.funcCall({
-            funcname: [ast.string({
+          val: t.nodes.funcCall({
+            funcname: [t.nodes.string({
               sval: "sum"
             })],
-            args: [ast.columnRef({
-              fields: [ast.string({
+            args: [t.nodes.columnRef({
+              fields: [t.nodes.string({
                 sval: "amount"
               })]
             })]
           })
-        }), ast.resTarget({
+        }), t.nodes.resTarget({
           name: "avg_order_value",
-          val: ast.funcCall({
-            funcname: [ast.string({
+          val: t.nodes.funcCall({
+            funcname: [t.nodes.string({
               sval: "avg"
             })],
-            args: [ast.columnRef({
-              fields: [ast.string({
+            args: [t.nodes.columnRef({
+              fields: [t.nodes.string({
                 sval: "amount"
               })]
             })]
           })
         })],
-        fromClause: [ast.rangeVar({
+        fromClause: [t.nodes.rangeVar({
           relname: "orders",
           inh: true,
           relpersistence: "p"
         })],
-        whereClause: ast.aExpr({
+        whereClause: t.nodes.aExpr({
           kind: "AEXPR_OP",
-          name: [ast.string({
+          name: [t.nodes.string({
             sval: ">="
           })],
-          lexpr: ast.columnRef({
-            fields: [ast.string({
+          lexpr: t.nodes.columnRef({
+            fields: [t.nodes.string({
               sval: "order_date"
             })]
           }),
-          rexpr: ast.aConst({
-            sval: ast.sval({
+          rexpr: t.nodes.aConst({
+            sval: t.ast.sval({
               0: "2",
               1: "0",
               2: "2",
@@ -401,35 +401,34 @@ exports[`Complex AST — Advanced SQL with CTEs, Window Functions, Joins, and Su
             })
           })
         }),
-        groupClause: [ast.columnRef({
-          fields: [ast.string({
+        groupClause: [t.nodes.columnRef({
+          fields: [t.nodes.string({
             sval: "customer_id"
           })]
         })],
         limitOption: "LIMIT_OPTION_DEFAULT",
         op: "SETOP_NONE"
       })
-    }),
-    1: ast.commonTableExpr({
+    }), t.nodes.commonTableExpr({
       ctename: "customer_rankings",
-      ctequery: ast.selectStmt({
-        targetList: [ast.resTarget({
+      ctequery: t.nodes.selectStmt({
+        targetList: [t.nodes.resTarget({
           name: "customer_id",
-          val: ast.columnRef({
-            fields: [ast.string({
+          val: t.nodes.columnRef({
+            fields: [t.nodes.string({
               sval: "customer_id"
             })]
           })
-        }), ast.resTarget({
+        }), t.nodes.resTarget({
           name: "total_sales",
-          val: ast.columnRef({
-            fields: [ast.string({
+          val: t.nodes.columnRef({
+            fields: [t.nodes.string({
               sval: "total_sales"
             })]
           })
-        }), ast.resTarget({
+        }), t.nodes.resTarget({
           name: "sales_rank",
-          val: ast.windowFunc({
+          val: t.nodes.windowFunc({
             winfnoid: 3133,
             wintype: 20,
             args: [],
@@ -437,9 +436,9 @@ exports[`Complex AST — Advanced SQL with CTEs, Window Functions, Joins, and Su
             winstar: false,
             winagg: false
           })
-        }), ast.resTarget({
+        }), t.nodes.resTarget({
           name: "sales_percentile",
-          val: ast.windowFunc({
+          val: t.nodes.windowFunc({
             winfnoid: 3974,
             wintype: 701,
             args: [],
@@ -448,16 +447,16 @@ exports[`Complex AST — Advanced SQL with CTEs, Window Functions, Joins, and Su
             winagg: false
           })
         })],
-        fromClause: [ast.rangeVar({
+        fromClause: [t.nodes.rangeVar({
           relname: "sales_summary",
           inh: true,
           relpersistence: "p"
         })],
-        windowClause: [ast.windowDef({
+        windowClause: [t.nodes.windowDef({
           name: "sales_window",
-          orderClause: [ast.sortBy({
-            node: ast.columnRef({
-              fields: [ast.string({
+          orderClause: [t.nodes.sortBy({
+            node: t.nodes.columnRef({
+              fields: [t.nodes.string({
                 sval: "total_sales"
               })]
             }),
@@ -468,7 +467,8 @@ exports[`Complex AST — Advanced SQL with CTEs, Window Functions, Joins, and Su
         limitOption: "LIMIT_OPTION_DEFAULT",
         op: "SETOP_NONE"
       })
-    })
+    })],
+    recursive: false
   }),
   op: "SETOP_NONE"
 })"
