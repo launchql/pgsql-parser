@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AST to AST to create AST — meta 🤯 1`] = `
-"ast.selectStmt({
-  targetList: [ast.resTarget({
-    val: ast.columnRef({
-      fields: [ast.aStar({})]
+"t.nodes.selectStmt({
+  targetList: [t.nodes.resTarget({
+    val: t.nodes.columnRef({
+      fields: [t.nodes.aStar({})]
     })
   })],
-  fromClause: [ast.rangeVar({
+  fromClause: [t.nodes.rangeVar({
     relname: "some_amazing_table",
     inh: true,
     relpersistence: "p"
