@@ -10,7 +10,7 @@ import * as PG15Types from './15/types';
 import * as PG16Types from './16/types';
 import * as PG17Types from './17/types';
 
-export { ASTTransformer } from './transformer';
+export { ASTTransformer, PG13ToPG17Transformer } from './transformer';
 export { V13ToV14Transformer } from './transformers/v13-to-v14';
 export { V14ToV15Transformer } from './transformers/v14-to-v15';
 export { V15ToV16Transformer } from './transformers/v15-to-v16';

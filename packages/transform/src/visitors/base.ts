@@ -33,11 +33,16 @@ export abstract class BaseTransformer implements TransformerVisitor {
   }
 
   protected transformDefault(node: any, nodeType: string, nodeData: any, context?: TransformerContext): any {
-    if (!nodeData || typeof nodeData !== 'object' || Array.isArray(nodeData)) {
+    if (!nodeData || typeof nodeData !== 'object') {
       return node;
     }
 
+    if (Array.isArray(nodeData)) {
+      return { [nodeType]: nodeData.map(item => this.transform(item, context)) };
+    }
+
     const result: any = {};
+    
     for (const [key, value] of Object.entries(nodeData)) {
       if (Array.isArray(value)) {
         result[key] = value.map(item => this.transform(item, context));
@@ -47,7 +52,80 @@ export abstract class BaseTransformer implements TransformerVisitor {
         result[key] = value;
       }
     }
+    
+    this.ensureCriticalFields(result, nodeType);
+    
     return { [nodeType]: result };
+  }
+
+  protected ensureCriticalFields(nodeData: any, nodeType: string): void {
+    if (!nodeData || typeof nodeData !== 'object') return;
+
+    if (nodeType === 'RangeVar') {
+      if (!('location' in nodeData)) {
+        nodeData.location = undefined;
+      }
+      if (!('relpersistence' in nodeData)) {
+        nodeData.relpersistence = 'p';
+      }
+      if (!('inh' in nodeData)) {
+        nodeData.inh = true;
+      }
+    }
+
+    if (nodeType === 'TypeName') {
+      if (!('location' in nodeData)) {
+        nodeData.location = undefined;
+      }
+      if (!('typemod' in nodeData)) {
+        nodeData.typemod = -1;
+      }
+    }
+
+    if (nodeData.relation && typeof nodeData.relation === 'object' && nodeData.relation.relname) {
+      if (!('location' in nodeData.relation)) {
+        nodeData.relation.location = undefined;
+      }
+      if (!('relpersistence' in nodeData.relation)) {
+        nodeData.relation.relpersistence = 'p';
+      }
+      if (!('inh' in nodeData.relation)) {
+        nodeData.relation.inh = true;
+      }
+    }
+
+    if (nodeData.typeName && typeof nodeData.typeName === 'object') {
+      if (!('location' in nodeData.typeName)) {
+        nodeData.typeName.location = undefined;
+      }
+      if (!('typemod' in nodeData.typeName)) {
+        nodeData.typeName.typemod = -1;
+      }
+    }
+  }
+
+  protected ensureTypeNameFieldsRecursively(obj: any): void {
+    if (!obj || typeof obj !== 'object') return;
+
+    if (Array.isArray(obj)) {
+      obj.forEach(item => this.ensureTypeNameFieldsRecursively(item));
+      return;
+    }
+
+    if (obj.typeName && typeof obj.typeName === 'object') {
+      if (!('location' in obj.typeName)) {
+        obj.typeName.location = undefined;
+      }
+      if (!('typemod' in obj.typeName)) {
+        obj.typeName.typemod = -1;
+      }
+    }
+
+    Object.values(obj).forEach(value => {
+      if (value && typeof value === 'object') {
+        this.ensureTypeNameFieldsRecursively(value);
+      }
+    });
   }
 
   protected transformArray(items: any[], context?: TransformerContext): any[] {

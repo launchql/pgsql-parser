@@ -101,7 +101,14 @@ export class V14ToV15Transformer extends BaseTransformer {
             }
           };
         }
-        return table;
+        return {
+          PublicationObjSpec: {
+            pubobjtype: "PUBLICATIONOBJ_TABLE",
+            pubtable: {
+              relation: table
+            }
+          }
+        };
       });
       delete transformedData.tables;
     }
@@ -179,60 +186,42 @@ export class V14ToV15Transformer extends BaseTransformer {
   }
 
   SelectStmt(node: any, context?: TransformerContext): any {
-    const transformedData: any = {};
+    const transformedData: any = { ...node };
     
-    transformedData.limitOption = "LIMIT_OPTION_DEFAULT";
-    transformedData.op = "SETOP_NONE";
+    if (!('limitOption' in transformedData)) {
+      transformedData.limitOption = "LIMIT_OPTION_DEFAULT";
+    }
+    if (!('op' in transformedData)) {
+      transformedData.op = "SETOP_NONE";
+    }
     
     for (const [key, value] of Object.entries(node)) {
-      if (Array.isArray(value)) {
+      if (key === 'limitOption' || key === 'op') {
+        continue;
+      } else if (key === 'withClause' && value && typeof value === 'object') {
+        transformedData[key] = { ...value };
+        if (transformedData[key].ctes && Array.isArray(transformedData[key].ctes)) {
+          transformedData[key].ctes = transformedData[key].ctes.map((cte: any) => this.transform(cte, context));
+        }
+      } else if (key === 'larg' || key === 'rarg') {
+        if (value && typeof value === 'object') {
+          transformedData[key] = this.SelectStmt(value, context);
+        } else {
+          transformedData[key] = value;
+        }
+      } else if (Array.isArray(value)) {
         transformedData[key] = value.map(item => this.transform(item, context));
       } else if (value && typeof value === 'object') {
-        const transformed = this.transform(value, context);
-        transformedData[key] = transformed;
+        transformedData[key] = this.transform(value, context);
       } else {
         transformedData[key] = value;
       }
     }
     
-    if (transformedData.larg) {
-      if (transformedData.larg.SelectStmt) {
-        if (!('limitOption' in transformedData.larg.SelectStmt)) {
-          transformedData.larg.SelectStmt.limitOption = "LIMIT_OPTION_DEFAULT";
-        }
-        if (!('op' in transformedData.larg.SelectStmt)) {
-          transformedData.larg.SelectStmt.op = "SETOP_NONE";
-        }
-      } else if (transformedData.larg.targetList) {
-        if (!('limitOption' in transformedData.larg)) {
-          transformedData.larg.limitOption = "LIMIT_OPTION_DEFAULT";
-        }
-        if (!('op' in transformedData.larg)) {
-          transformedData.larg.op = "SETOP_NONE";
-        }
-      }
-    }
-    
-    if (transformedData.rarg) {
-      if (transformedData.rarg.SelectStmt) {
-        if (!('limitOption' in transformedData.rarg.SelectStmt)) {
-          transformedData.rarg.SelectStmt.limitOption = "LIMIT_OPTION_DEFAULT";
-        }
-        if (!('op' in transformedData.rarg.SelectStmt)) {
-          transformedData.rarg.SelectStmt.op = "SETOP_NONE";
-        }
-      } else if (transformedData.rarg.targetList) {
-        if (!('limitOption' in transformedData.rarg)) {
-          transformedData.rarg.limitOption = "LIMIT_OPTION_DEFAULT";
-        }
-        if (!('op' in transformedData.rarg)) {
-          transformedData.rarg.op = "SETOP_NONE";
-        }
-      }
-    }
-    
     return transformedData;
   }
+
+
 
   RangeVar(node: any, context?: TransformerContext): any {
     return node;
