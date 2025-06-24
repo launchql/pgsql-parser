@@ -1,21 +1,60 @@
 import { Node as PG16Node } from '../src/16/types';
 import { Node as PG17Node } from '../src/17/types';
+import { V16ToV17Transformer } from '../src/transformers/v16-to-v17';
 
 describe('PG16 to PG17 transformer', () => {
-  // TODO: Implement transformer tests
-  // Key changes in v16 → v17:
-  // - No changes for basic queries (pass-through transformer)
-  // - Maintained for compatibility
-  
+  const transformer = new V16ToV17Transformer();
+
   it('should pass through all nodes unchanged', () => {
-    // v16 → v17 is a pass-through transformer with no changes
+    const input: PG16Node = {
+      SelectStmt: {
+        targetList: [
+          {
+            ResTarget: {
+              val: { A_Const: { sval: { sval: 'test' } } }
+            }
+          }
+        ]
+      }
+    };
+
+    const result = transformer.transform(input);
+    expect(result).toEqual(input);
   });
 
   it('should maintain AST structure integrity', () => {
-    // Test that the transformer preserves the exact AST structure
+    const input: PG16Node = {
+      InsertStmt: {
+        relation: { relname: 'users' },
+        selectStmt: {
+          SelectStmt: {
+            targetList: []
+          }
+        }
+      }
+    };
+
+    const result = transformer.transform(input);
+    expect(result).toEqual(input);
   });
 
   it('should handle complex queries without modification', () => {
-    // Test that even complex queries pass through unchanged
+    const input: PG16Node = {
+      SelectStmt: {
+        targetList: [],
+        fromClause: [
+          {
+            JoinExpr: {
+              jointype: 'JOIN_INNER',
+              larg: { RangeVar: { relname: 'table1' } },
+              rarg: { RangeVar: { relname: 'table2' } }
+            }
+          }
+        ]
+      }
+    };
+
+    const result = transformer.transform(input);
+    expect(result).toEqual(input);
   });
-}); 
+});         

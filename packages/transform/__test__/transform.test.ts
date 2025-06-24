@@ -1,25 +1,75 @@
-// PostgreSQL AST Transformer Tests
-//
-// Individual transformer tests have been split into separate files:
-// - v13-to-v14.test.ts - PG13 → PG14 transformer tests
-// - v14-to-v15.test.ts - PG14 → PG15 transformer tests  
-// - v15-to-v16.test.ts - PG15 → PG16 transformer tests
-// - v16-to-v17.test.ts - PG16 → PG17 transformer tests
-//
-// This file can be used for integration tests or cross-version testing
-
+import { ASTTransformer } from '../src/transformer';
 import { Node as PG13Node } from '../src/13/types';
-import { Node as PG14Node } from '../src/14/types';
-import { Node as PG15Node } from '../src/15/types';
-import { Node as PG16Node } from '../src/16/types';
 import { Node as PG17Node } from '../src/17/types';
 
 describe('AST Transformer Integration', () => {
+  const transformer = new ASTTransformer();
+
   it('should handle multi-version transformations', () => {
-    // Test chaining multiple transformers (e.g., PG13 → PG14 → PG15)
+    const pg13Ast: PG13Node = {
+      SelectStmt: {
+        targetList: [
+          {
+            ResTarget: {
+              val: {
+                A_Const: {
+                  ival: { ival: 42 }
+                }
+              }
+            }
+          }
+        ]
+      }
+    };
+
+    const pg17Ast = transformer.transform13To17(pg13Ast);
+    
+    expect(pg17Ast).toBeDefined();
+    expect(pg17Ast.SelectStmt).toBeDefined();
   });
 
   it('should maintain AST validity across all transformations', () => {
-    // Test that transformed ASTs are valid for their target version
+    const simpleAst: PG13Node = {
+      SelectStmt: {
+        targetList: []
+      }
+    };
+
+    const pg14Ast = transformer.transform(simpleAst, 13, 14);
+    const pg15Ast = transformer.transform(pg14Ast, 14, 15);
+    const pg16Ast = transformer.transform(pg15Ast, 15, 16);
+    const pg17Ast = transformer.transform(pg16Ast, 16, 17);
+
+    expect(pg17Ast).toBeDefined();
+    expect(pg17Ast.SelectStmt).toBeDefined();
+  });
+
+  it('should handle same-version transformation', () => {
+    const ast: PG13Node = { SelectStmt: { targetList: [] } };
+    const result = transformer.transform(ast, 13, 13);
+    expect(result).toBe(ast);
+  });
+
+  it('should throw error for backwards transformation', () => {
+    const ast: PG13Node = { SelectStmt: { targetList: [] } };
+    expect(() => transformer.transform(ast, 15, 13)).toThrow('Cannot transform backwards');
+  });
+
+  it('should handle A_Const transformation through multiple versions', () => {
+    const pg13Ast: PG13Node = {
+      A_Const: {
+        ival: { ival: 123 },
+        location: 0
+      }
+    };
+
+    const pg17Ast = transformer.transform(pg13Ast, 13, 17);
+    
+    expect(pg17Ast).toEqual({
+      A_Const: {
+        ival: { ival: 123 },
+        location: 0
+      }
+    });
   });
 });
