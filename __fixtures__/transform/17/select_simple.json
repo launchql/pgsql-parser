@@ -1,0 +1,109 @@
+[
+  {
+    "query": "SELECT 1",
+    "ast": {
+      "version": 170004,
+      "stmts": [
+        {
+          "stmt": {
+            "SelectStmt": {
+              "targetList": [
+                {
+                  "ResTarget": {
+                    "val": {
+                      "A_Const": {
+                        "ival": {
+                          "ival": 1
+                        },
+                        "location": 7
+                      }
+                    },
+                    "location": 7
+                  }
+                }
+              ],
+              "limitOption": "LIMIT_OPTION_DEFAULT",
+              "op": "SETOP_NONE"
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": "SELECT NULL",
+    "ast": {
+      "version": 170004,
+      "stmts": [
+        {
+          "stmt": {
+            "SelectStmt": {
+              "targetList": [
+                {
+                  "ResTarget": {
+                    "val": {
+                      "A_Const": {
+                        "isnull": true,
+                        "location": 7
+                      }
+                    },
+                    "location": 7
+                  }
+                }
+              ],
+              "limitOption": "LIMIT_OPTION_DEFAULT",
+              "op": "SETOP_NONE"
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": "SELECT 'hello'::text",
+    "ast": {
+      "version": 170004,
+      "stmts": [
+        {
+          "stmt": {
+            "SelectStmt": {
+              "targetList": [
+                {
+                  "ResTarget": {
+                    "val": {
+                      "TypeCast": {
+                        "arg": {
+                          "A_Const": {
+                            "sval": {
+                              "sval": "hello"
+                            },
+                            "location": 7
+                          }
+                        },
+                        "typeName": {
+                          "names": [
+                            {
+                              "String": {
+                                "sval": "text"
+                              }
+                            }
+                          ],
+                          "typemod": -1,
+                          "location": 16
+                        },
+                        "location": 14
+                      }
+                    },
+                    "location": 7
+                  }
+                }
+              ],
+              "limitOption": "LIMIT_OPTION_DEFAULT",
+              "op": "SETOP_NONE"
+            }
+          }
+        }
+      ]
+    }
+  }
+]

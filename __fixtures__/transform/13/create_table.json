@@ -1,0 +1,112 @@
+[
+  {
+    "query": "CREATE TABLE users (id SERIAL PRIMARY KEY, name TEXT NOT NULL, email VARCHAR(255))",
+    "ast": {
+      "version": 130008,
+      "stmts": [
+        {
+          "stmt": {
+            "CreateStmt": {
+              "relation": {
+                "relname": "users",
+                "inh": true,
+                "relpersistence": "p",
+                "location": 13
+              },
+              "tableElts": [
+                {
+                  "ColumnDef": {
+                    "colname": "id",
+                    "typeName": {
+                      "names": [
+                        {
+                          "String": {
+                            "str": "serial"
+                          }
+                        }
+                      ],
+                      "typemod": -1,
+                      "location": 23
+                    },
+                    "is_local": true,
+                    "constraints": [
+                      {
+                        "Constraint": {
+                          "contype": "CONSTR_PRIMARY",
+                          "location": 30
+                        }
+                      }
+                    ],
+                    "location": 20
+                  }
+                },
+                {
+                  "ColumnDef": {
+                    "colname": "name",
+                    "typeName": {
+                      "names": [
+                        {
+                          "String": {
+                            "str": "text"
+                          }
+                        }
+                      ],
+                      "typemod": -1,
+                      "location": 48
+                    },
+                    "is_local": true,
+                    "constraints": [
+                      {
+                        "Constraint": {
+                          "contype": "CONSTR_NOTNULL",
+                          "location": 53
+                        }
+                      }
+                    ],
+                    "location": 43
+                  }
+                },
+                {
+                  "ColumnDef": {
+                    "colname": "email",
+                    "typeName": {
+                      "names": [
+                        {
+                          "String": {
+                            "str": "pg_catalog"
+                          }
+                        },
+                        {
+                          "String": {
+                            "str": "varchar"
+                          }
+                        }
+                      ],
+                      "typmods": [
+                        {
+                          "A_Const": {
+                            "val": {
+                              "Integer": {
+                                "ival": 255
+                              }
+                            },
+                            "location": 77
+                          }
+                        }
+                      ],
+                      "typemod": -1,
+                      "location": 69
+                    },
+                    "is_local": true,
+                    "location": 63
+                  }
+                }
+              ],
+              "oncommit": "ONCOMMIT_NOOP"
+            }
+          }
+        }
+      ]
+    }
+  }
+]

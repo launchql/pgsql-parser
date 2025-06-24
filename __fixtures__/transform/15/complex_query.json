@@ -1,0 +1,369 @@
+[
+  {
+    "query": "WITH user_orders AS (\n      SELECT u.id, u.name, COUNT(o.id) as order_count\n      FROM users u\n      LEFT JOIN orders o ON u.id = o.user_id\n      GROUP BY u.id, u.name\n    )\n    SELECT \n      id,\n      name,\n      order_count,\n      RANK() OVER (ORDER BY order_count DESC) as rank\n    FROM user_orders\n    WHERE order_count > 0",
+    "ast": {
+      "version": 150001,
+      "stmts": [
+        {
+          "stmt": {
+            "SelectStmt": {
+              "targetList": [
+                {
+                  "ResTarget": {
+                    "val": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "sval": "id"
+                            }
+                          }
+                        ],
+                        "location": 192
+                      }
+                    },
+                    "location": 192
+                  }
+                },
+                {
+                  "ResTarget": {
+                    "val": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "sval": "name"
+                            }
+                          }
+                        ],
+                        "location": 202
+                      }
+                    },
+                    "location": 202
+                  }
+                },
+                {
+                  "ResTarget": {
+                    "val": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "sval": "order_count"
+                            }
+                          }
+                        ],
+                        "location": 214
+                      }
+                    },
+                    "location": 214
+                  }
+                },
+                {
+                  "ResTarget": {
+                    "name": "rank",
+                    "val": {
+                      "FuncCall": {
+                        "funcname": [
+                          {
+                            "String": {
+                              "sval": "rank"
+                            }
+                          }
+                        ],
+                        "over": {
+                          "orderClause": [
+                            {
+                              "SortBy": {
+                                "node": {
+                                  "ColumnRef": {
+                                    "fields": [
+                                      {
+                                        "String": {
+                                          "sval": "order_count"
+                                        }
+                                      }
+                                    ],
+                                    "location": 255
+                                  }
+                                },
+                                "sortby_dir": "SORTBY_DESC",
+                                "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                                "location": -1
+                              }
+                            }
+                          ],
+                          "frameOptions": 1058,
+                          "location": 245
+                        },
+                        "funcformat": "COERCE_EXPLICIT_CALL",
+                        "location": 233
+                      }
+                    },
+                    "location": 233
+                  }
+                }
+              ],
+              "fromClause": [
+                {
+                  "RangeVar": {
+                    "relname": "user_orders",
+                    "inh": true,
+                    "relpersistence": "p",
+                    "location": 290
+                  }
+                }
+              ],
+              "whereClause": {
+                "A_Expr": {
+                  "kind": "AEXPR_OP",
+                  "name": [
+                    {
+                      "String": {
+                        "sval": ">"
+                      }
+                    }
+                  ],
+                  "lexpr": {
+                    "ColumnRef": {
+                      "fields": [
+                        {
+                          "String": {
+                            "sval": "order_count"
+                          }
+                        }
+                      ],
+                      "location": 312
+                    }
+                  },
+                  "rexpr": {
+                    "A_Const": {
+                      "ival": {},
+                      "location": 326
+                    }
+                  },
+                  "location": 324
+                }
+              },
+              "limitOption": "LIMIT_OPTION_DEFAULT",
+              "withClause": {
+                "ctes": [
+                  {
+                    "CommonTableExpr": {
+                      "ctename": "user_orders",
+                      "ctematerialized": "CTEMaterializeDefault",
+                      "ctequery": {
+                        "SelectStmt": {
+                          "targetList": [
+                            {
+                              "ResTarget": {
+                                "val": {
+                                  "ColumnRef": {
+                                    "fields": [
+                                      {
+                                        "String": {
+                                          "sval": "u"
+                                        }
+                                      },
+                                      {
+                                        "String": {
+                                          "sval": "id"
+                                        }
+                                      }
+                                    ],
+                                    "location": 35
+                                  }
+                                },
+                                "location": 35
+                              }
+                            },
+                            {
+                              "ResTarget": {
+                                "val": {
+                                  "ColumnRef": {
+                                    "fields": [
+                                      {
+                                        "String": {
+                                          "sval": "u"
+                                        }
+                                      },
+                                      {
+                                        "String": {
+                                          "sval": "name"
+                                        }
+                                      }
+                                    ],
+                                    "location": 41
+                                  }
+                                },
+                                "location": 41
+                              }
+                            },
+                            {
+                              "ResTarget": {
+                                "name": "order_count",
+                                "val": {
+                                  "FuncCall": {
+                                    "funcname": [
+                                      {
+                                        "String": {
+                                          "sval": "count"
+                                        }
+                                      }
+                                    ],
+                                    "args": [
+                                      {
+                                        "ColumnRef": {
+                                          "fields": [
+                                            {
+                                              "String": {
+                                                "sval": "o"
+                                              }
+                                            },
+                                            {
+                                              "String": {
+                                                "sval": "id"
+                                              }
+                                            }
+                                          ],
+                                          "location": 55
+                                        }
+                                      }
+                                    ],
+                                    "funcformat": "COERCE_EXPLICIT_CALL",
+                                    "location": 49
+                                  }
+                                },
+                                "location": 49
+                              }
+                            }
+                          ],
+                          "fromClause": [
+                            {
+                              "JoinExpr": {
+                                "jointype": "JOIN_LEFT",
+                                "larg": {
+                                  "RangeVar": {
+                                    "relname": "users",
+                                    "inh": true,
+                                    "relpersistence": "p",
+                                    "alias": {
+                                      "aliasname": "u"
+                                    },
+                                    "location": 87
+                                  }
+                                },
+                                "rarg": {
+                                  "RangeVar": {
+                                    "relname": "orders",
+                                    "inh": true,
+                                    "relpersistence": "p",
+                                    "alias": {
+                                      "aliasname": "o"
+                                    },
+                                    "location": 111
+                                  }
+                                },
+                                "quals": {
+                                  "A_Expr": {
+                                    "kind": "AEXPR_OP",
+                                    "name": [
+                                      {
+                                        "String": {
+                                          "sval": "="
+                                        }
+                                      }
+                                    ],
+                                    "lexpr": {
+                                      "ColumnRef": {
+                                        "fields": [
+                                          {
+                                            "String": {
+                                              "sval": "u"
+                                            }
+                                          },
+                                          {
+                                            "String": {
+                                              "sval": "id"
+                                            }
+                                          }
+                                        ],
+                                        "location": 123
+                                      }
+                                    },
+                                    "rexpr": {
+                                      "ColumnRef": {
+                                        "fields": [
+                                          {
+                                            "String": {
+                                              "sval": "o"
+                                            }
+                                          },
+                                          {
+                                            "String": {
+                                              "sval": "user_id"
+                                            }
+                                          }
+                                        ],
+                                        "location": 130
+                                      }
+                                    },
+                                    "location": 128
+                                  }
+                                }
+                              }
+                            }
+                          ],
+                          "groupClause": [
+                            {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "sval": "u"
+                                    }
+                                  },
+                                  {
+                                    "String": {
+                                      "sval": "id"
+                                    }
+                                  }
+                                ],
+                                "location": 155
+                              }
+                            },
+                            {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "sval": "u"
+                                    }
+                                  },
+                                  {
+                                    "String": {
+                                      "sval": "name"
+                                    }
+                                  }
+                                ],
+                                "location": 161
+                              }
+                            }
+                          ],
+                          "limitOption": "LIMIT_OPTION_DEFAULT",
+                          "op": "SETOP_NONE"
+                        }
+                      },
+                      "location": 5
+                    }
+                  }
+                ]
+              },
+              "op": "SETOP_NONE"
+            }
+          }
+        }
+      ]
+    }
+  }
+]

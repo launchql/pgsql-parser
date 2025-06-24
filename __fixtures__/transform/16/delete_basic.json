@@ -1,0 +1,55 @@
+[
+  {
+    "query": "DELETE FROM users WHERE id = 1",
+    "ast": {
+      "version": 160001,
+      "stmts": [
+        {
+          "stmt": {
+            "DeleteStmt": {
+              "relation": {
+                "relname": "users",
+                "inh": true,
+                "relpersistence": "p",
+                "location": 12
+              },
+              "whereClause": {
+                "A_Expr": {
+                  "kind": "AEXPR_OP",
+                  "name": [
+                    {
+                      "String": {
+                        "sval": "="
+                      }
+                    }
+                  ],
+                  "lexpr": {
+                    "ColumnRef": {
+                      "fields": [
+                        {
+                          "String": {
+                            "sval": "id"
+                          }
+                        }
+                      ],
+                      "location": 24
+                    }
+                  },
+                  "rexpr": {
+                    "A_Const": {
+                      "ival": {
+                        "ival": 1
+                      },
+                      "location": 29
+                    }
+                  },
+                  "location": 27
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+]

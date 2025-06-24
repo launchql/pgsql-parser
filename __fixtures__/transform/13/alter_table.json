@@ -1,0 +1,104 @@
+[
+  {
+    "query": "ALTER TABLE users ADD COLUMN email TEXT",
+    "ast": {
+      "version": 130008,
+      "stmts": [
+        {
+          "stmt": {
+            "AlterTableStmt": {
+              "relation": {
+                "relname": "users",
+                "inh": true,
+                "relpersistence": "p",
+                "location": 12
+              },
+              "cmds": [
+                {
+                  "AlterTableCmd": {
+                    "subtype": "AT_AddColumn",
+                    "def": {
+                      "ColumnDef": {
+                        "colname": "email",
+                        "typeName": {
+                          "names": [
+                            {
+                              "String": {
+                                "str": "text"
+                              }
+                            }
+                          ],
+                          "typemod": -1,
+                          "location": 35
+                        },
+                        "is_local": true,
+                        "location": 29
+                      }
+                    },
+                    "behavior": "DROP_RESTRICT"
+                  }
+                }
+              ],
+              "relkind": "OBJECT_TABLE"
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": "ALTER TABLE users DROP COLUMN email",
+    "ast": {
+      "version": 130008,
+      "stmts": [
+        {
+          "stmt": {
+            "AlterTableStmt": {
+              "relation": {
+                "relname": "users",
+                "inh": true,
+                "relpersistence": "p",
+                "location": 12
+              },
+              "cmds": [
+                {
+                  "AlterTableCmd": {
+                    "subtype": "AT_DropColumn",
+                    "name": "email",
+                    "behavior": "DROP_RESTRICT"
+                  }
+                }
+              ],
+              "relkind": "OBJECT_TABLE"
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": "ALTER TABLE users RENAME COLUMN name TO full_name",
+    "ast": {
+      "version": 130008,
+      "stmts": [
+        {
+          "stmt": {
+            "RenameStmt": {
+              "renameType": "OBJECT_COLUMN",
+              "relationType": "OBJECT_TABLE",
+              "relation": {
+                "relname": "users",
+                "inh": true,
+                "relpersistence": "p",
+                "location": 12
+              },
+              "subname": "name",
+              "newname": "full_name",
+              "behavior": "DROP_RESTRICT"
+            }
+          }
+        }
+      ]
+    }
+  }
+]
