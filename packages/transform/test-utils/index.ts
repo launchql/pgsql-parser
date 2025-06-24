@@ -56,6 +56,53 @@ export function getTransformerForVersion(versionPrevious: number, versionNext: n
 }
 
 /**
+ * Helper function to find the first difference between two objects
+ */
+function findFirstDifference(obj1: any, obj2: any, path: string = ''): { path: string; expected: any; actual: any } | null {
+  // Handle primitive values
+  if (obj1 === obj2) return null;
+  if (typeof obj1 !== 'object' || typeof obj2 !== 'object' || obj1 === null || obj2 === null) {
+    return { path, expected: obj1, actual: obj2 };
+  }
+  
+  // Handle arrays
+  if (Array.isArray(obj1) && Array.isArray(obj2)) {
+    if (obj1.length !== obj2.length) {
+      return { path: `${path}.length`, expected: obj1.length, actual: obj2.length };
+    }
+    for (let i = 0; i < obj1.length; i++) {
+      const diff = findFirstDifference(obj1[i], obj2[i], `${path}[${i}]`);
+      if (diff) return diff;
+    }
+    return null;
+  }
+  
+  // Handle objects
+  const keys1 = Object.keys(obj1).sort();
+  const keys2 = Object.keys(obj2).sort();
+  
+  // Check for missing/extra keys
+  if (keys1.length !== keys2.length || keys1.some((k, i) => k !== keys2[i])) {
+    const missingInObj2 = keys1.filter(k => !keys2.includes(k));
+    const extraInObj2 = keys2.filter(k => !keys1.includes(k));
+    if (missingInObj2.length > 0) {
+      return { path: `${path}.${missingInObj2[0]}`, expected: obj1[missingInObj2[0]], actual: undefined };
+    }
+    if (extraInObj2.length > 0) {
+      return { path: `${path}.${extraInObj2[0]}`, expected: undefined, actual: obj2[extraInObj2[0]] };
+    }
+  }
+  
+  // Check values
+  for (const key of keys1) {
+    const diff = findFirstDifference(obj1[key], obj2[key], path ? `${path}.${key}` : key);
+    if (diff) return diff;
+  }
+  
+  return null;
+}
+
+/**
  * Perform the parse-transform-parse equality test
  */
 export async function expectTransformedAstToEqualParsedAst(
@@ -74,11 +121,27 @@ export async function expectTransformedAstToEqualParsedAst(
   
   // Transform the statements within the AST
   if (astToTransform.stmts && Array.isArray(astToTransform.stmts)) {
-    astToTransform.stmts = astToTransform.stmts.map((stmtWrapper: any) => {
+    astToTransform.stmts = astToTransform.stmts.map((stmtWrapper: any, index: number) => {
       if (stmtWrapper.stmt) {
-        // Transform the actual statement using the ASTTransformer
-        const transformedStmt = transformer.transform(stmtWrapper.stmt, versionPrevious, versionNext);
-        return { ...stmtWrapper, stmt: transformedStmt };
+        try {
+          // Transform the actual statement using the ASTTransformer
+          const transformedStmt = transformer.transform(stmtWrapper.stmt, versionPrevious, versionNext);
+          return { ...stmtWrapper, stmt: transformedStmt };
+        } catch (error: any) {
+          const errorMessage = [
+            `\n❌ TRANSFORMATION ERROR`,
+            `   Previous Version: ${versionPrevious}`,
+            `   Next Version: ${versionNext}`,
+            `   Statement Index: ${index}`,
+            `   Statement Type: ${Object.keys(stmtWrapper.stmt)[0]}`,
+            `   Error: ${error.message}`,
+            `\n   Original Statement:`,
+            JSON.stringify(stmtWrapper.stmt, null, 2)
+          ].join('\n');
+          
+          console.error(errorMessage);
+          throw error;
+        }
       }
       return stmtWrapper;
     });
@@ -94,7 +157,29 @@ export async function expectTransformedAstToEqualParsedAst(
   delete nextAst.version;
   delete previousTransformedAst.version;
   
-  expect(nextAst).toEqual(previousTransformedAst);
+  try {
+    expect(nextAst).toEqual(previousTransformedAst);
+  } catch (error: any) {
+    // Try to find the first difference
+    const diff = findFirstDifference(nextAst, previousTransformedAst);
+    
+    const errorMessage = [
+      `\n❌ TRANSFORMATION MISMATCH`,
+      `   Previous Version: ${versionPrevious}`,
+      `   Next Version: ${versionNext}`,
+      `   SQL: ${sql}`,
+      `\n   Expected (parsed with v${versionNext}):`,
+      JSON.stringify(nextAst, null, 2),
+      `\n   Actual (transformed from v${versionPrevious}):`,
+      JSON.stringify(previousTransformedAst, null, 2),
+      diff ? `\n   First difference at path: ${diff.path}` : '',
+      diff ? `   Expected: ${JSON.stringify(diff.expected)}` : '',
+      diff ? `   Actual: ${JSON.stringify(diff.actual)}` : ''
+    ].filter(line => line !== '').join('\n');
+    
+    console.error(errorMessage);
+    throw error;
+  }
 }
 
 /**
@@ -152,12 +237,14 @@ export class FixtureTestUtils {
       console.log('no filters provided, skipping tests.');
       return;
     }
+    
     const entries = this.getTestEntries(filters);
     for (const [relativePath, sql] of entries) {
       try {
         await this.expectParseTransformParseToBeEqual(relativePath, sql);
-      } catch (err) {
-        throw err;
+      } catch (error: any) {
+        console.error(`\n❌ FAILED: ${relativePath}`);
+        throw error;
       }
     }
   }
