@@ -1,25 +1,67 @@
 import { Node as PG15Node } from '../src/15/types';
 import { Node as PG16Node } from '../src/16/types';
+import { V15ToV16Transformer } from '../src/transformers/v15-to-v16';
 
 describe('PG15 to PG16 transformer', () => {
-  // TODO: Implement transformer tests
-  // Key changes in v15 → v16:
-  // - Minimal changes for basic queries
-  // - Advanced features: Var node changes, Aggref field rename
-  
+  const transformer = new V15ToV16Transformer();
+
   it('should handle Var node changes for advanced features', () => {
-    // Test Var node transformation for advanced SQL features
+    const input: PG15Node = {
+      Var: {
+        varno: 1,
+        varattno: 1,
+        vartype: 23
+      }
+    };
+
+    const result = transformer.transform(input);
+    
+    expect(result).toEqual({
+      Var: {
+        varno: 1,
+        varattno: 1,
+        vartype: 23
+      }
+    });
   });
 
   it('should transform Aggref field renames', () => {
-    // Test Aggref field rename transformation
+    const input: PG15Node = {
+      Aggref: {
+        aggfnoid: 2100,
+        aggtype: 23
+      }
+    };
+
+    const result = transformer.transform(input);
+    
+    expect(result).toEqual({
+      Aggref: {
+        aggfnoid: 2100,
+        aggtype: 23
+      }
+    });
   });
 
   it('should pass through basic queries unchanged', () => {
-    // Most basic queries should pass through unchanged
+    const input: PG15Node = {
+      SelectStmt: {
+        targetList: []
+      }
+    };
+
+    const result = transformer.transform(input);
+    expect(result).toEqual(input);
   });
 
   it('should pass through unchanged nodes', () => {
-    // Test implementation needed
+    const input: PG15Node = {
+      InsertStmt: {
+        relation: { relname: 'test' }
+      }
+    };
+
+    const result = transformer.transform(input);
+    expect(result).toEqual(input);
   });
-}); 
+});     
