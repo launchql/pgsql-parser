@@ -22,35 +22,7 @@ export class V13ToV14Transformer extends BaseTransformer {
     return super.transform(node, context);
   }
 
-  A_Const(nodeData: any, context?: TransformerContext): any {
-    const transformedData: any = { ...nodeData };
-    
-    if (nodeData.val) {
-      if (nodeData.val.String) {
-        transformedData.sval = { sval: nodeData.val.String.str };
-        delete transformedData.val;
-      } else if (nodeData.val.Float) {
-        transformedData.fval = { fval: nodeData.val.Float.str };
-        delete transformedData.val;
-      } else if (nodeData.val.BitString) {
-        transformedData.bsval = { bsval: nodeData.val.BitString.str };
-        delete transformedData.val;
-      } else if (nodeData.val.Integer) {
-        const intVal = nodeData.val.Integer.ival;
-        if (intVal === 0) {
-          transformedData.ival = {};
-        } else {
-          transformedData.ival = { ival: intVal };
-        }
-        delete transformedData.val;
-      } else if (nodeData.val.Boolean) {
-        transformedData.boolval = nodeData.val.Boolean.boolval;
-        delete transformedData.val;
-      }
-    }
-    
-    return transformedData;
-  }
+
 
   SelectStmt(nodeData: any, context?: TransformerContext): any {
     const transformedData: any = {};
@@ -123,14 +95,60 @@ export class V13ToV14Transformer extends BaseTransformer {
     return transformedData;
   }
 
-  TypeName(nodeData: any, context?: TransformerContext): any {
+
+
+  FuncCall(nodeData: any, context?: TransformerContext): any {
     const transformedData: any = { ...nodeData };
+    
+    if (!('funcformat' in transformedData)) {
+      transformedData.funcformat = "COERCE_EXPLICIT_CALL";
+    }
+    
+    if (transformedData.funcname && Array.isArray(transformedData.funcname)) {
+      transformedData.funcname = transformedData.funcname.map((item: any) => this.transform(item, context));
+    }
+    
+    if (transformedData.args && Array.isArray(transformedData.args)) {
+      transformedData.args = transformedData.args.map((item: any) => this.transform(item, context));
+    }
+    
+    return transformedData;
+  }
+
+  TypeName(nodeData: any, context?: TransformerContext): any {
+    const transformedData: any = {};
+    
+    for (const [key, value] of Object.entries(nodeData)) {
+      if (Array.isArray(value)) {
+        transformedData[key] = value.map(item => this.transform(item, context));
+      } else if (value && typeof value === 'object') {
+        transformedData[key] = this.transform(value, context);
+      } else {
+        transformedData[key] = value;
+      }
+    }
     
     if (!('location' in transformedData)) {
       transformedData.location = undefined;
     }
     if (!('typemod' in transformedData)) {
       transformedData.typemod = -1;
+    }
+    
+    return transformedData;
+  }
+
+  Alias(nodeData: any, context?: TransformerContext): any {
+    const transformedData: any = {};
+    
+    for (const [key, value] of Object.entries(nodeData)) {
+      if (Array.isArray(value)) {
+        transformedData[key] = value.map(item => this.transform(item, context));
+      } else if (value && typeof value === 'object') {
+        transformedData[key] = this.transform(value, context);
+      } else {
+        transformedData[key] = value;
+      }
     }
     
     return transformedData;
@@ -145,8 +163,9 @@ export class V13ToV14Transformer extends BaseTransformer {
       delete transformedData.relkind;
     }
     
-    if (transformedData && typeof transformedData === 'object') {
-      this.ensureTypeNameFields(transformedData);
+    if (nodeType === 'CreateTableAsStmt' && transformedData && 'relkind' in transformedData) {
+      transformedData.objtype = transformedData.relkind;
+      delete transformedData.relkind;
     }
     
     return { [nodeType]: transformedData };
