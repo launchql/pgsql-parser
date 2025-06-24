@@ -1,8 +1,9 @@
-import { Node as PG13Node } from './13/types';
-import { Node as PG17Node } from './17/types';
-import * as PG13Types from './13/types';
-import * as PG17Types from './17/types';
+import { Node as PG13Node } from '@pgsql/parser/wasm/v13';
+import { Node as PG17Node } from '@pgsql/parser/wasm/v17';
+import * as PG13Types from '@pgsql/parser/wasm/v13';
+import * as PG17Types from '@pgsql/parser/wasm/v17';
 
+// I think this file is likely trying to go too far, we should instead do 13-14, then 14-15, etc.
 export function transformPG13ToPG17(node: PG13Node): PG17Node {
   if ('ParseResult' in node) {
     return { ParseResult: transformParseResult(node.ParseResult) };
