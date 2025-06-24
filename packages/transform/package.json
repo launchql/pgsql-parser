@@ -28,7 +28,8 @@
     "build:proto": "ts-node scripts/pg-proto-parser",
     "lint": "eslint . --fix",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "kitchen-sink": "ts-node scripts/make-kitchen-sink.ts"
   },
   "devDependencies": {
     "@pgsql/parser": "^1.0.2",
