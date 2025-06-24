@@ -120,6 +120,108 @@ function transform13To14NodeArray(nodes?: PG13Node[]): PG14Node[] | undefined {
 
 function transform13To14OptionalNode(node?: PG13Node): PG14Node | undefined {
   return node ? transform13To14(node) : undefined;
+function transform13To14FromExpr(fromExpr?: PG13Types.FromExpr): PG14Types.FromExpr | undefined {
+  if (!fromExpr) return undefined;
+  return {
+    fromlist: transform13To14NodeArray(fromExpr.fromlist),
+    quals: transform13To14OptionalNode(fromExpr.quals)
+  };
+}
+
+function transform13To14OnConflictExpr(onConflict?: PG13Types.OnConflictExpr): PG14Types.OnConflictExpr | undefined {
+  if (!onConflict) return undefined;
+  return {
+    action: onConflict.action,
+    arbiterElems: transform13To14NodeArray(onConflict.arbiterElems),
+    arbiterWhere: transform13To14OptionalNode(onConflict.arbiterWhere),
+    constraint: onConflict.constraint,
+    onConflictSet: transform13To14NodeArray(onConflict.onConflictSet),
+    onConflictWhere: transform13To14OptionalNode(onConflict.onConflictWhere),
+    exclRelIndex: onConflict.exclRelIndex,
+    exclRelTlist: transform13To14NodeArray(onConflict.exclRelTlist)
+  };
+}
+
+function transform13To14IntoClause(intoClause?: PG13Types.IntoClause): PG14Types.IntoClause | undefined {
+  if (!intoClause) return undefined;
+  return {
+    rel: intoClause.rel ? transform13To14RangeVar(intoClause.rel) : undefined,
+    colNames: transform13To14NodeArray(intoClause.colNames),
+    accessMethod: intoClause.accessMethod,
+    options: transform13To14NodeArray(intoClause.options),
+    onCommit: intoClause.onCommit,
+    tableSpaceName: intoClause.tableSpaceName,
+    viewQuery: transform13To14OptionalNode(intoClause.viewQuery),
+    skipData: intoClause.skipData
+  };
+}
+
+function transform13To14WithClause(withClause?: PG13Types.WithClause): PG14Types.WithClause | undefined {
+  if (!withClause) return undefined;
+  return {
+    ctes: transform13To14NodeArray(withClause.ctes),
+    recursive: withClause.recursive,
+    location: withClause.location
+  };
+}
+
+function transform13To14SelectStmtNode(selectStmt?: PG13Types.SelectStmt): PG14Types.SelectStmt | undefined {
+  if (!selectStmt) return undefined;
+  return transform13To14SelectStmt(selectStmt);
+}
+
+
+function transform13To14FromExpr(fromExpr?: PG13Types.FromExpr): PG14Types.FromExpr | undefined {
+  if (!fromExpr) return undefined;
+  return {
+    fromlist: transform13To14NodeArray(fromExpr.fromlist),
+    quals: transform13To14OptionalNode(fromExpr.quals)
+  };
+}
+
+function transform13To14OnConflictExpr(onConflict?: PG13Types.OnConflictExpr): PG14Types.OnConflictExpr | undefined {
+  if (!onConflict) return undefined;
+  return {
+    action: onConflict.action,
+    arbiterElems: transform13To14NodeArray(onConflict.arbiterElems),
+    arbiterWhere: transform13To14OptionalNode(onConflict.arbiterWhere),
+    constraint: onConflict.constraint,
+    onConflictSet: transform13To14NodeArray(onConflict.onConflictSet),
+    onConflictWhere: transform13To14OptionalNode(onConflict.onConflictWhere),
+    exclRelIndex: onConflict.exclRelIndex,
+    exclRelTlist: transform13To14NodeArray(onConflict.exclRelTlist)
+  };
+}
+
+function transform13To14IntoClause(intoClause?: PG13Types.IntoClause): PG14Types.IntoClause | undefined {
+  if (!intoClause) return undefined;
+  return {
+    rel: intoClause.rel ? transform13To14RangeVar(intoClause.rel) : undefined,
+    colNames: transform13To14NodeArray(intoClause.colNames),
+    accessMethod: intoClause.accessMethod,
+    options: transform13To14NodeArray(intoClause.options),
+    onCommit: intoClause.onCommit,
+    tableSpaceName: intoClause.tableSpaceName,
+    viewQuery: transform13To14OptionalNode(intoClause.viewQuery),
+    skipData: intoClause.skipData
+  };
+}
+
+function transform13To14WithClause(withClause?: PG13Types.WithClause): PG14Types.WithClause | undefined {
+  if (!withClause) return undefined;
+  return {
+    ctes: transform13To14NodeArray(withClause.ctes),
+    recursive: withClause.recursive,
+    location: withClause.location
+  };
+}
+
+function transform13To14SelectStmtNode(selectStmt?: PG13Types.SelectStmt): PG14Types.SelectStmt | undefined {
+  if (!selectStmt) return undefined;
+  return transform13To14SelectStmt(selectStmt);
+}
+
+
 }
 
 function transform13To14ParseResult(result: PG13Types.ParseResult): PG14Types.ParseResult {
@@ -267,7 +369,7 @@ function transform13To14Aggref(aggref: PG13Types.Aggref): PG14Types.Aggref {
 
 function transform13To14Query(query: PG13Types.Query): PG14Types.Query {
   return {
-    commandType: query.commandType,
+    commandType: query.commandType as any, // Handle enum conversion
     querySource: query.querySource,
     canSetTag: query.canSetTag,
     utilityStmt: transform13To14OptionalNode(query.utilityStmt),
@@ -284,10 +386,10 @@ function transform13To14Query(query: PG13Types.Query): PG14Types.Query {
     isReturn: query.isReturn,
     cteList: transform13To14NodeArray(query.cteList),
     rtable: transform13To14NodeArray(query.rtable),
-    jointree: transform13To14OptionalNode(query.jointree),
+    jointree: transform13To14FromExpr(query.jointree),
     targetList: transform13To14NodeArray(query.targetList),
     override: query.override,
-    onConflict: transform13To14OptionalNode(query.onConflict),
+    onConflict: transform13To14OnConflictExpr(query.onConflict),
     returningList: transform13To14NodeArray(query.returningList),
     groupClause: transform13To14NodeArray(query.groupClause),
     groupingSets: transform13To14NodeArray(query.groupingSets),
@@ -310,7 +412,7 @@ function transform13To14Query(query: PG13Types.Query): PG14Types.Query {
 function transform13To14SelectStmt(selectStmt: PG13Types.SelectStmt): PG14Types.SelectStmt {
   return {
     distinctClause: transform13To14NodeArray(selectStmt.distinctClause),
-    intoClause: transform13To14OptionalNode(selectStmt.intoClause) as PG14Types.IntoClause | undefined,
+    intoClause: transform13To14IntoClause(selectStmt.intoClause),
     targetList: transform13To14NodeArray(selectStmt.targetList),
     fromClause: transform13To14NodeArray(selectStmt.fromClause),
     whereClause: transform13To14OptionalNode(selectStmt.whereClause),
@@ -324,11 +426,11 @@ function transform13To14SelectStmt(selectStmt: PG13Types.SelectStmt): PG14Types.
     limitCount: transform13To14OptionalNode(selectStmt.limitCount),
     limitOption: selectStmt.limitOption,
     lockingClause: transform13To14NodeArray(selectStmt.lockingClause),
-    withClause: transform13To14OptionalNode(selectStmt.withClause) as PG14Types.WithClause | undefined,
+    withClause: transform13To14WithClause(selectStmt.withClause),
     op: selectStmt.op,
     all: selectStmt.all,
-    larg: transform13To14OptionalNode(selectStmt.larg) as PG14Types.SelectStmt | undefined,
-    rarg: transform13To14OptionalNode(selectStmt.rarg) as PG14Types.SelectStmt | undefined
+    larg: transform13To14SelectStmtNode(selectStmt.larg),
+    rarg: transform13To14SelectStmtNode(selectStmt.rarg)
   };
 }
 
@@ -364,6 +466,57 @@ function transform13To14RawStmt(rawStmt: PG13Types.RawStmt): PG14Types.RawStmt {
     stmt_location: rawStmt.stmt_location,
     stmt_len: rawStmt.stmt_len
   };
+function transform13To14FromExpr(fromExpr?: PG13Types.FromExpr): PG14Types.FromExpr | undefined {
+  if (!fromExpr) return undefined;
+  return {
+    fromlist: transform13To14NodeArray(fromExpr.fromlist),
+    quals: transform13To14OptionalNode(fromExpr.quals)
+  };
+}
+
+function transform13To14OnConflictExpr(onConflict?: PG13Types.OnConflictExpr): PG14Types.OnConflictExpr | undefined {
+  if (!onConflict) return undefined;
+  return {
+    action: onConflict.action,
+    arbiterElems: transform13To14NodeArray(onConflict.arbiterElems),
+    arbiterWhere: transform13To14OptionalNode(onConflict.arbiterWhere),
+    constraint: onConflict.constraint,
+    onConflictSet: transform13To14NodeArray(onConflict.onConflictSet),
+    onConflictWhere: transform13To14OptionalNode(onConflict.onConflictWhere),
+    exclRelIndex: onConflict.exclRelIndex,
+    exclRelTlist: transform13To14NodeArray(onConflict.exclRelTlist)
+  };
+}
+
+function transform13To14IntoClause(intoClause?: PG13Types.IntoClause): PG14Types.IntoClause | undefined {
+  if (!intoClause) return undefined;
+  return {
+    rel: intoClause.rel ? transform13To14RangeVar(intoClause.rel) : undefined,
+    colNames: transform13To14NodeArray(intoClause.colNames),
+    accessMethod: intoClause.accessMethod,
+    options: transform13To14NodeArray(intoClause.options),
+    onCommit: intoClause.onCommit,
+    tableSpaceName: intoClause.tableSpaceName,
+    viewQuery: transform13To14OptionalNode(intoClause.viewQuery),
+    skipData: intoClause.skipData
+  };
+}
+
+function transform13To14WithClause(withClause?: PG13Types.WithClause): PG14Types.WithClause | undefined {
+  if (!withClause) return undefined;
+  return {
+    ctes: transform13To14NodeArray(withClause.ctes),
+    recursive: withClause.recursive,
+    location: withClause.location
+  };
+}
+
+function transform13To14SelectStmtNode(selectStmt?: PG13Types.SelectStmt): PG14Types.SelectStmt | undefined {
+  if (!selectStmt) return undefined;
+  return transform13To14SelectStmt(selectStmt);
+}
+
+
 }
 
 function transformA_Const(aConst: PG13Types.A_Const): PG17Types.A_Const {
