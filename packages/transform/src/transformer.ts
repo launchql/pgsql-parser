@@ -64,3 +64,31 @@ export class ASTTransformer {
     return this.transform(ast, 16, 17);
   }
 }
+
+/**
+ * Composite transformer that handles the complete PG13 → PG17 transformation
+ * including proper handling of parse result structure with stmts array
+ */
+export class PG13ToPG17Transformer {
+  private astTransformer = new ASTTransformer();
+
+  transform(parseResult: any): any {
+    if (!parseResult || !parseResult.stmts) {
+      return parseResult;
+    }
+
+    const transformedStmts = parseResult.stmts.map((stmtWrapper: any) => {
+      if (stmtWrapper.stmt) {
+        const transformedStmt = this.astTransformer.transform13To17(stmtWrapper.stmt);
+        return { ...stmtWrapper, stmt: transformedStmt };
+      }
+      return stmtWrapper;
+    });
+
+    return {
+      ...parseResult,
+      version: 170004,
+      stmts: transformedStmts
+    };
+  }
+}
