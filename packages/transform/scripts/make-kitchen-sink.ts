@@ -14,8 +14,6 @@ function ensureDir(dir: string) {
   }
 }
 
-ensureDir(OUT_DIR);
-
 const generateTestFile = (name: string, tests: string[], versionPrevious: number, versionNext: number) => {
   return `
 import { FixtureTestUtils } from '../../../test-utils';
@@ -55,6 +53,7 @@ async function main() {
 
       const testFileName = relPath.replace(/\//g, '-').replace(/\.sql$/, '');
       const testFile = generateTestFile(testFileName, names, version.split('-')[0] as any, version.split('-')[1] as any);
+      ensureDir(path.join(OUT_DIR, version));
       fs.writeFileSync(path.join(OUT_DIR, version, `${testFileName}.test.ts`), testFile);
     }
   }
