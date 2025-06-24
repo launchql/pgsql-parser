@@ -1,364 +1,368 @@
-import { Node as PG13Node } from '@pgsql/parser/wasm/v13';
-import { Node as PG17Node } from '@pgsql/parser/wasm/v17';
-import * as PG13Types from '@pgsql/parser/wasm/v13';
-import * as PG17Types from '@pgsql/parser/wasm/v17';
+import { Node as PG13Node } from './13/types';
+import { Node as PG14Node } from './14/types';
+import { Node as PG15Node } from './15/types';
+import { Node as PG16Node } from './16/types';
+import { Node as PG17Node } from './17/types';
+import * as PG13Types from './13/types';
+import * as PG14Types from './14/types';
+import * as PG15Types from './15/types';
+import * as PG16Types from './16/types';
+import * as PG17Types from './17/types';
 
-// I think this file is likely trying to go too far, we should instead do 13-14, then 14-15, etc.
-export function transformPG13ToPG17(node: PG13Node): PG17Node {
+export function transform13To14(node: PG13Node): PG14Node {
   if ('ParseResult' in node) {
-    return { ParseResult: transformParseResult(node.ParseResult) };
+    return { ParseResult: transform13To14ParseResult(node.ParseResult) };
   }
   if ('ScanResult' in node) {
-    return { ScanResult: transformScanResult(node.ScanResult) };
+    return { ScanResult: transform13To14ScanResult(node.ScanResult) };
   }
   if ('Integer' in node) {
     return { Integer: node.Integer };
   }
   if ('Float' in node) {
-    return { Float: node.Float };
-  }
-  if ('Boolean' in node) {
-    return { Boolean: node.Boolean };
+    return { Float: { str: node.Float.fval } };
   }
   if ('String' in node) {
-    return { String: node.String };
+    return { String: { str: node.String.sval } };
   }
   if ('BitString' in node) {
-    return { BitString: node.BitString };
+    return { BitString: { str: node.BitString.bsval } };
+  }
+  if ('Boolean' in node) {
+    return { A_Const: { val: { String: { str: node.Boolean.boolval ? 't' : 'f' } } } };
   }
   if ('List' in node) {
-    return { List: transformList(node.List) };
+    return { List: transform13To14List(node.List) };
   }
   if ('OidList' in node) {
-    return { OidList: transformOidList(node.OidList) };
+    return { OidList: transform13To14OidList(node.OidList) };
   }
   if ('IntList' in node) {
-    return { IntList: transformIntList(node.IntList) };
+    return { IntList: transform13To14IntList(node.IntList) };
   }
   if ('A_Const' in node) {
-    return { A_Const: transformA_Const(node.A_Const) };
+    return { A_Const: transform13To14A_Const(node.A_Const) };
   }
   if ('Alias' in node) {
-    return { Alias: transformAlias(node.Alias) };
+    return { Alias: transform13To14Alias(node.Alias) };
   }
   if ('RangeVar' in node) {
-    return { RangeVar: transformRangeVar(node.RangeVar) };
+    return { RangeVar: transform13To14RangeVar(node.RangeVar) };
   }
   if ('TableFunc' in node) {
-    return { TableFunc: transformTableFunc(node.TableFunc) };
-  }
-  if ('IntoClause' in node) {
-    return { IntoClause: transformIntoClause(node.IntoClause) };
+    return { TableFunc: transform13To14TableFunc(node.TableFunc) };
   }
   if ('Var' in node) {
-    return { Var: transformVar(node.Var) };
+    return { Var: transform13To14Var(node.Var) };
   }
   if ('Param' in node) {
-    return { Param: transformParam(node.Param) };
+    return { Param: transform13To14Param(node.Param) };
   }
   if ('Aggref' in node) {
-    return { Aggref: transformAggref(node.Aggref) };
-  }
-  if ('GroupingFunc' in node) {
-    return { GroupingFunc: transformGroupingFunc(node.GroupingFunc) };
-  }
-  if ('WindowFunc' in node) {
-    return { WindowFunc: transformWindowFunc(node.WindowFunc) };
-  }
-  if ('SubscriptingRef' in node) {
-    return { SubscriptingRef: transformSubscriptingRef(node.SubscriptingRef) };
-  }
-  if ('FuncExpr' in node) {
-    return { FuncExpr: transformFuncExpr(node.FuncExpr) };
-  }
-  if ('NamedArgExpr' in node) {
-    return { NamedArgExpr: transformNamedArgExpr(node.NamedArgExpr) };
-  }
-  if ('OpExpr' in node) {
-    return { OpExpr: transformOpExpr(node.OpExpr) };
-  }
-  if ('DistinctExpr' in node) {
-    return { DistinctExpr: transformDistinctExpr(node.DistinctExpr) };
-  }
-  if ('NullIfExpr' in node) {
-    return { NullIfExpr: transformNullIfExpr(node.NullIfExpr) };
-  }
-  if ('ScalarArrayOpExpr' in node) {
-    return { ScalarArrayOpExpr: transformScalarArrayOpExpr(node.ScalarArrayOpExpr) };
-  }
-  if ('BoolExpr' in node) {
-    return { BoolExpr: transformBoolExpr(node.BoolExpr) };
-  }
-  if ('SubLink' in node) {
-    return { SubLink: transformSubLink(node.SubLink) };
-  }
-  if ('SubPlan' in node) {
-    return { SubPlan: transformSubPlan(node.SubPlan) };
-  }
-  if ('AlternativeSubPlan' in node) {
-    return { AlternativeSubPlan: transformAlternativeSubPlan(node.AlternativeSubPlan) };
-  }
-  if ('FieldSelect' in node) {
-    return { FieldSelect: transformFieldSelect(node.FieldSelect) };
-  }
-  if ('FieldStore' in node) {
-    return { FieldStore: transformFieldStore(node.FieldStore) };
-  }
-  if ('RelabelType' in node) {
-    return { RelabelType: transformRelabelType(node.RelabelType) };
-  }
-  if ('CoerceViaIO' in node) {
-    return { CoerceViaIO: transformCoerceViaIO(node.CoerceViaIO) };
-  }
-  if ('ArrayCoerceExpr' in node) {
-    return { ArrayCoerceExpr: transformArrayCoerceExpr(node.ArrayCoerceExpr) };
-  }
-  if ('ConvertRowtypeExpr' in node) {
-    return { ConvertRowtypeExpr: transformConvertRowtypeExpr(node.ConvertRowtypeExpr) };
-  }
-  if ('CollateExpr' in node) {
-    return { CollateExpr: transformCollateExpr(node.CollateExpr) };
-  }
-  if ('CaseExpr' in node) {
-    return { CaseExpr: transformCaseExpr(node.CaseExpr) };
-  }
-  if ('CaseWhen' in node) {
-    return { CaseWhen: transformCaseWhen(node.CaseWhen) };
-  }
-  if ('CaseTestExpr' in node) {
-    return { CaseTestExpr: transformCaseTestExpr(node.CaseTestExpr) };
-  }
-  if ('ArrayExpr' in node) {
-    return { ArrayExpr: transformArrayExpr(node.ArrayExpr) };
-  }
-  if ('RowExpr' in node) {
-    return { RowExpr: transformRowExpr(node.RowExpr) };
-  }
-  if ('RowCompareExpr' in node) {
-    return { RowCompareExpr: transformRowCompareExpr(node.RowCompareExpr) };
-  }
-  if ('CoalesceExpr' in node) {
-    return { CoalesceExpr: transformCoalesceExpr(node.CoalesceExpr) };
-  }
-  if ('MinMaxExpr' in node) {
-    return { MinMaxExpr: transformMinMaxExpr(node.MinMaxExpr) };
-  }
-  if ('SQLValueFunction' in node) {
-    return { SQLValueFunction: transformSQLValueFunction(node.SQLValueFunction) };
-  }
-  if ('XmlExpr' in node) {
-    return { XmlExpr: transformXmlExpr(node.XmlExpr) };
-  }
-  if ('JsonFormat' in node) {
-    return { JsonFormat: transformJsonFormat(node.JsonFormat) };
-  }
-  if ('JsonReturning' in node) {
-    return { JsonReturning: transformJsonReturning(node.JsonReturning) };
-  }
-  if ('JsonValueExpr' in node) {
-    return { JsonValueExpr: transformJsonValueExpr(node.JsonValueExpr) };
-  }
-  if ('JsonConstructorExpr' in node) {
-    return { JsonConstructorExpr: transformJsonConstructorExpr(node.JsonConstructorExpr) };
-  }
-  if ('JsonIsPredicate' in node) {
-    return { JsonIsPredicate: transformJsonIsPredicate(node.JsonIsPredicate) };
-  }
-  if ('NullTest' in node) {
-    return { NullTest: transformNullTest(node.NullTest) };
-  }
-  if ('BooleanTest' in node) {
-    return { BooleanTest: transformBooleanTest(node.BooleanTest) };
-  }
-  if ('CoerceToDomain' in node) {
-    return { CoerceToDomain: transformCoerceToDomain(node.CoerceToDomain) };
-  }
-  if ('CoerceToDomainValue' in node) {
-    return { CoerceToDomainValue: transformCoerceToDomainValue(node.CoerceToDomainValue) };
-  }
-  if ('SetToDefault' in node) {
-    return { SetToDefault: transformSetToDefault(node.SetToDefault) };
-  }
-  if ('CurrentOfExpr' in node) {
-    return { CurrentOfExpr: transformCurrentOfExpr(node.CurrentOfExpr) };
-  }
-  if ('NextValueExpr' in node) {
-    return { NextValueExpr: transformNextValueExpr(node.NextValueExpr) };
-  }
-  if ('InferenceElem' in node) {
-    return { InferenceElem: transformInferenceElem(node.InferenceElem) };
-  }
-  if ('TargetEntry' in node) {
-    return { TargetEntry: transformTargetEntry(node.TargetEntry) };
-  }
-  if ('RangeTblRef' in node) {
-    return { RangeTblRef: transformRangeTblRef(node.RangeTblRef) };
-  }
-  if ('JoinExpr' in node) {
-    return { JoinExpr: transformJoinExpr(node.JoinExpr) };
-  }
-  if ('FromExpr' in node) {
-    return { FromExpr: transformFromExpr(node.FromExpr) };
-  }
-  if ('OnConflictExpr' in node) {
-    return { OnConflictExpr: transformOnConflictExpr(node.OnConflictExpr) };
+    return { Aggref: transform13To14Aggref(node.Aggref) };
   }
   if ('Query' in node) {
-    return { Query: transformQuery(node.Query) };
+    return { Query: transform13To14Query(node.Query) };
   }
-  if ('TypeName' in node) {
-    return { TypeName: transformTypeName(node.TypeName) };
-  }
-  if ('ColumnRef' in node) {
-    return { ColumnRef: transformColumnRef(node.ColumnRef) };
-  }
-  if ('ParamRef' in node) {
-    return { ParamRef: transformParamRef(node.ParamRef) };
+  if ('SelectStmt' in node) {
+    return { SelectStmt: transform13To14SelectStmt(node.SelectStmt) };
   }
   if ('A_Expr' in node) {
-    return { A_Expr: transformA_Expr(node.A_Expr) };
-  }
-  if ('TypeCast' in node) {
-    return { TypeCast: transformTypeCast(node.TypeCast) };
-  }
-  if ('CollateClause' in node) {
-    return { CollateClause: transformCollateClause(node.CollateClause) };
-  }
-  if ('RoleSpec' in node) {
-    return { RoleSpec: transformRoleSpec(node.RoleSpec) };
-  }
-  if ('FuncCall' in node) {
-    return { FuncCall: transformFuncCall(node.FuncCall) };
-  }
-  if ('A_Star' in node) {
-    return { A_Star: node.A_Star };
-  }
-  if ('A_Indices' in node) {
-    return { A_Indices: transformA_Indices(node.A_Indices) };
-  }
-  if ('A_Indirection' in node) {
-    return { A_Indirection: transformA_Indirection(node.A_Indirection) };
-  }
-  if ('A_ArrayExpr' in node) {
-    return { A_ArrayExpr: transformA_ArrayExpr(node.A_ArrayExpr) };
+    return { A_Expr: transform13To14A_Expr(node.A_Expr) };
   }
   if ('ResTarget' in node) {
-    return { ResTarget: transformResTarget(node.ResTarget) };
+    return { ResTarget: transform13To14ResTarget(node.ResTarget) };
   }
-  if ('MultiAssignRef' in node) {
-    return { MultiAssignRef: transformMultiAssignRef(node.MultiAssignRef) };
+  if ('ColumnRef' in node) {
+    return { ColumnRef: transform13To14ColumnRef(node.ColumnRef) };
   }
-  if ('SortBy' in node) {
-    return { SortBy: transformSortBy(node.SortBy) };
-  }
-  if ('WindowDef' in node) {
-    return { WindowDef: transformWindowDef(node.WindowDef) };
-  }
-  if ('RangeSubselect' in node) {
-    return { RangeSubselect: transformRangeSubselect(node.RangeSubselect) };
-  }
-  if ('RangeFunction' in node) {
-    return { RangeFunction: transformRangeFunction(node.RangeFunction) };
-  }
-  if ('RangeTableFunc' in node) {
-    return { RangeTableFunc: transformRangeTableFunc(node.RangeTableFunc) };
-  }
-  if ('RangeTableFuncCol' in node) {
-    return { RangeTableFuncCol: transformRangeTableFuncCol(node.RangeTableFuncCol) };
-  }
-  if ('RangeTableSample' in node) {
-    return { RangeTableSample: transformRangeTableSample(node.RangeTableSample) };
-  }
-  if ('ColumnDef' in node) {
-    return { ColumnDef: transformColumnDef(node.ColumnDef) };
-  }
-  if ('TableLikeClause' in node) {
-    return { TableLikeClause: transformTableLikeClause(node.TableLikeClause) };
-  }
-  if ('IndexElem' in node) {
-    return { IndexElem: transformIndexElem(node.IndexElem) };
-  }
-  if ('DefElem' in node) {
-    return { DefElem: transformDefElem(node.DefElem) };
-  }
-  if ('LockingClause' in node) {
-    return { LockingClause: transformLockingClause(node.LockingClause) };
-  }
-  if ('XmlSerialize' in node) {
-    return { XmlSerialize: transformXmlSerialize(node.XmlSerialize) };
-  }
-  if ('PartitionElem' in node) {
-    return { PartitionElem: transformPartitionElem(node.PartitionElem) };
-  }
-  if ('PartitionSpec' in node) {
-    return { PartitionSpec: transformPartitionSpec(node.PartitionSpec) };
-  }
-  if ('PartitionBoundSpec' in node) {
-    return { PartitionBoundSpec: transformPartitionBoundSpec(node.PartitionBoundSpec) };
-  }
-  if ('PartitionRangeDatum' in node) {
-    return { PartitionRangeDatum: transformPartitionRangeDatum(node.PartitionRangeDatum) };
-  }
-  if ('PartitionCmd' in node) {
-    return { PartitionCmd: transformPartitionCmd(node.PartitionCmd) };
-  }
-  if ('RangeTblEntry' in node) {
-    return { RangeTblEntry: transformRangeTblEntry(node.RangeTblEntry) };
+  if ('RawStmt' in node) {
+    return { RawStmt: transform13To14RawStmt(node.RawStmt) };
   }
 
-  if ('WindowFuncRunCondition' in node) {
-    return node;
-  }
-  if ('MergeSupportFunc' in node) {
-    return node;
-  }
-  if ('JsonBehavior' in node) {
-    return node;
-  }
-  if ('JsonExpr' in node) {
-    return node;
-  }
-  if ('JsonTablePath' in node) {
-    return node;
-  }
-  if ('JsonTablePathScan' in node) {
-    return node;
-  }
-  if ('JsonTableSiblingJoin' in node) {
-    return node;
-  }
-  if ('MergeAction' in node) {
-    return { MergeAction: transformMergeAction(node.MergeAction) };
-  }
-
-  throw new Error(`Unknown node type: ${JSON.stringify(node)}`);
+  throw new Error(`Unsupported node type in 13->14 transformation: ${JSON.stringify(Object.keys(node))}`);
 }
 
-function transformNodeArray(nodes?: PG13Node[]): PG17Node[] | undefined {
-  return nodes?.map(node => transformPG13ToPG17(node));
+export function transform14To15(node: PG14Node): PG15Node {
+  throw new Error('14->15 transformation not yet implemented');
 }
 
-function transformOptionalNode(node?: PG13Node): PG17Node | undefined {
-  return node ? transformPG13ToPG17(node) : undefined;
+export function transform15To16(node: PG15Node): PG16Node {
+  throw new Error('15->16 transformation not yet implemented');
 }
 
-function transformParseResult(result: PG13Types.ParseResult): PG17Types.ParseResult {
+export function transform16To17(node: PG16Node): PG17Node {
+  throw new Error('16->17 transformation not yet implemented');
+}
+
+export function transformToLatest(node: PG13Node | PG14Node | PG15Node | PG16Node, fromVersion: 13 | 14 | 15 | 16): PG17Node {
+  let currentNode: any = node;
+  
+  if (fromVersion <= 13) {
+    currentNode = transform13To14(currentNode);
+  }
+  if (fromVersion <= 14) {
+    currentNode = transform14To15(currentNode);
+  }
+  if (fromVersion <= 15) {
+    currentNode = transform15To16(currentNode);
+  }
+  if (fromVersion <= 16) {
+    currentNode = transform16To17(currentNode);
+  }
+  
+  return currentNode;
+}
+
+function transform13To14NodeArray(nodes?: PG13Node[]): PG14Node[] | undefined {
+  return nodes?.map(node => transform13To14(node));
+}
+
+function transform13To14OptionalNode(node?: PG13Node): PG14Node | undefined {
+  return node ? transform13To14(node) : undefined;
+}
+
+function transform13To14ParseResult(result: PG13Types.ParseResult): PG14Types.ParseResult {
   return {
     version: result.version,
-    stmts: result.stmts?.map(stmt => transformRawStmt(stmt))
+    stmts: result.stmts?.map(stmt => transform13To14RawStmt(stmt))
   };
 }
 
-function transformScanResult(result: PG13Types.ScanResult): PG17Types.ScanResult {
+function transform13To14ScanResult(result: PG13Types.ScanResult): PG14Types.ScanResult {
   return {
     version: result.version,
     tokens: result.tokens
   };
 }
 
-function transformList(list: PG13Types.List): PG17Types.List {
+function transform13To14List(list: PG13Types.List): PG14Types.List {
   return {
-    items: transformNodeArray(list.items)
+    items: transform13To14NodeArray(list.items)
+  };
+}
+
+function transform13To14OidList(list: PG13Types.OidList): PG14Types.OidList {
+  return {
+    items: transform13To14NodeArray(list.items)
+  };
+}
+
+function transform13To14IntList(list: PG13Types.IntList): PG14Types.IntList {
+  return {
+    items: transform13To14NodeArray(list.items)
+  };
+}
+
+function transform13To14A_Const(aConst: PG13Types.A_Const): PG14Types.A_Const {
+  const result: PG14Types.A_Const = {
+    location: aConst.location
+  };
+
+  if (aConst.ival) {
+    result.val = { Integer: aConst.ival };
+  } else if (aConst.fval) {
+    result.val = { Float: { str: aConst.fval.fval } };
+  } else if (aConst.sval) {
+    result.val = { String: { str: aConst.sval.sval } };
+  } else if (aConst.bsval) {
+    result.val = { BitString: { str: aConst.bsval.bsval } };
+  } else if (aConst.boolval) {
+    result.val = { String: { str: aConst.boolval.boolval ? 't' : 'f' } };
+  } else if (aConst.isnull) {
+    result.val = { Null: {} };
+  }
+
+  return result;
+}
+
+function transform13To14Alias(alias: PG13Types.Alias): PG14Types.Alias {
+  return {
+    aliasname: alias.aliasname,
+    colnames: transform13To14NodeArray(alias.colnames)
+  };
+}
+
+function transform13To14RangeVar(rangeVar: PG13Types.RangeVar): PG14Types.RangeVar {
+  return {
+    catalogname: rangeVar.catalogname,
+    schemaname: rangeVar.schemaname,
+    relname: rangeVar.relname,
+    inh: rangeVar.inh,
+    relpersistence: rangeVar.relpersistence,
+    alias: rangeVar.alias ? transform13To14Alias(rangeVar.alias) : undefined,
+    location: rangeVar.location
+  };
+}
+
+function transform13To14TableFunc(tableFunc: PG13Types.TableFunc): PG14Types.TableFunc {
+  return {
+    ns_uris: transform13To14NodeArray(tableFunc.ns_uris),
+    ns_names: transform13To14NodeArray(tableFunc.ns_names),
+    docexpr: transform13To14OptionalNode(tableFunc.docexpr),
+    rowexpr: transform13To14OptionalNode(tableFunc.rowexpr),
+    colnames: transform13To14NodeArray(tableFunc.colnames),
+    coltypes: transform13To14NodeArray(tableFunc.coltypes),
+    coltypmods: transform13To14NodeArray(tableFunc.coltypmods),
+    colcollations: transform13To14NodeArray(tableFunc.colcollations),
+    colexprs: transform13To14NodeArray(tableFunc.colexprs),
+    coldefexprs: transform13To14NodeArray(tableFunc.coldefexprs),
+    notnulls: tableFunc.notnulls,
+    ordinalitycol: tableFunc.ordinalitycol,
+    location: tableFunc.location
+  };
+}
+
+function transform13To14Var(varNode: PG13Types.Var): PG14Types.Var {
+  return {
+    xpr: transform13To14OptionalNode(varNode.xpr),
+    varno: varNode.varno,
+    varattno: varNode.varattno,
+    vartype: varNode.vartype,
+    vartypmod: varNode.vartypmod,
+    varcollid: varNode.varcollid,
+    varlevelsup: varNode.varlevelsup,
+    varnosyn: varNode.varno,
+    varattnosyn: varNode.varattno,
+    location: varNode.location
+  };
+}
+
+function transform13To14Param(param: PG13Types.Param): PG14Types.Param {
+  return {
+    xpr: transform13To14OptionalNode(param.xpr),
+    paramkind: param.paramkind,
+    paramid: param.paramid,
+    paramtype: param.paramtype,
+    paramtypmod: param.paramtypmod,
+    paramcollid: param.paramcollid,
+    location: param.location
+  };
+}
+
+function transform13To14Aggref(aggref: PG13Types.Aggref): PG14Types.Aggref {
+  return {
+    xpr: transform13To14OptionalNode(aggref.xpr),
+    aggfnoid: aggref.aggfnoid,
+    aggtype: aggref.aggtype,
+    aggcollid: aggref.aggcollid,
+    inputcollid: aggref.inputcollid,
+    aggtranstype: aggref.aggtransno,
+    aggargtypes: transform13To14NodeArray(aggref.aggargtypes),
+    aggdirectargs: transform13To14NodeArray(aggref.aggdirectargs),
+    args: transform13To14NodeArray(aggref.args),
+    aggorder: transform13To14NodeArray(aggref.aggorder),
+    aggdistinct: transform13To14NodeArray(aggref.aggdistinct),
+    aggfilter: transform13To14OptionalNode(aggref.aggfilter),
+    aggstar: aggref.aggstar,
+    aggvariadic: aggref.aggvariadic,
+    aggkind: aggref.aggkind,
+    agglevelsup: aggref.agglevelsup,
+    aggsplit: aggref.aggsplit,
+    aggno: aggref.aggno,
+    aggtransno: aggref.aggtransno,
+    location: aggref.location
+  };
+}
+
+function transform13To14Query(query: PG13Types.Query): PG14Types.Query {
+  return {
+    commandType: query.commandType,
+    querySource: query.querySource,
+    canSetTag: query.canSetTag,
+    utilityStmt: transform13To14OptionalNode(query.utilityStmt),
+    resultRelation: query.resultRelation,
+    hasAggs: query.hasAggs,
+    hasWindowFuncs: query.hasWindowFuncs,
+    hasTargetSRFs: query.hasTargetSRFs,
+    hasSubLinks: query.hasSubLinks,
+    hasDistinctOn: query.hasDistinctOn,
+    hasRecursive: query.hasRecursive,
+    hasModifyingCTE: query.hasModifyingCTE,
+    hasForUpdate: query.hasForUpdate,
+    hasRowSecurity: query.hasRowSecurity,
+    isReturn: query.isReturn,
+    cteList: transform13To14NodeArray(query.cteList),
+    rtable: transform13To14NodeArray(query.rtable),
+    jointree: transform13To14OptionalNode(query.jointree),
+    targetList: transform13To14NodeArray(query.targetList),
+    override: query.override,
+    onConflict: transform13To14OptionalNode(query.onConflict),
+    returningList: transform13To14NodeArray(query.returningList),
+    groupClause: transform13To14NodeArray(query.groupClause),
+    groupingSets: transform13To14NodeArray(query.groupingSets),
+    havingQual: transform13To14OptionalNode(query.havingQual),
+    windowClause: transform13To14NodeArray(query.windowClause),
+    distinctClause: transform13To14NodeArray(query.distinctClause),
+    sortClause: transform13To14NodeArray(query.sortClause),
+    limitOffset: transform13To14OptionalNode(query.limitOffset),
+    limitCount: transform13To14OptionalNode(query.limitCount),
+    limitOption: query.limitOption,
+    rowMarks: transform13To14NodeArray(query.rowMarks),
+    setOperations: transform13To14OptionalNode(query.setOperations),
+    constraintDeps: transform13To14NodeArray(query.constraintDeps),
+    withCheckOptions: transform13To14NodeArray(query.withCheckOptions),
+    stmt_location: query.stmt_location,
+    stmt_len: query.stmt_len
+  };
+}
+
+function transform13To14SelectStmt(selectStmt: PG13Types.SelectStmt): PG14Types.SelectStmt {
+  return {
+    distinctClause: transform13To14NodeArray(selectStmt.distinctClause),
+    intoClause: transform13To14OptionalNode(selectStmt.intoClause) as PG14Types.IntoClause | undefined,
+    targetList: transform13To14NodeArray(selectStmt.targetList),
+    fromClause: transform13To14NodeArray(selectStmt.fromClause),
+    whereClause: transform13To14OptionalNode(selectStmt.whereClause),
+    groupClause: transform13To14NodeArray(selectStmt.groupClause),
+    groupDistinct: selectStmt.groupDistinct,
+    havingClause: transform13To14OptionalNode(selectStmt.havingClause),
+    windowClause: transform13To14NodeArray(selectStmt.windowClause),
+    valuesLists: transform13To14NodeArray(selectStmt.valuesLists),
+    sortClause: transform13To14NodeArray(selectStmt.sortClause),
+    limitOffset: transform13To14OptionalNode(selectStmt.limitOffset),
+    limitCount: transform13To14OptionalNode(selectStmt.limitCount),
+    limitOption: selectStmt.limitOption,
+    lockingClause: transform13To14NodeArray(selectStmt.lockingClause),
+    withClause: transform13To14OptionalNode(selectStmt.withClause) as PG14Types.WithClause | undefined,
+    op: selectStmt.op,
+    all: selectStmt.all,
+    larg: transform13To14OptionalNode(selectStmt.larg) as PG14Types.SelectStmt | undefined,
+    rarg: transform13To14OptionalNode(selectStmt.rarg) as PG14Types.SelectStmt | undefined
+  };
+}
+
+function transform13To14A_Expr(aExpr: PG13Types.A_Expr): PG14Types.A_Expr {
+  return {
+    kind: aExpr.kind,
+    name: transform13To14NodeArray(aExpr.name),
+    lexpr: transform13To14OptionalNode(aExpr.lexpr),
+    rexpr: transform13To14OptionalNode(aExpr.rexpr),
+    location: aExpr.location
+  };
+}
+
+function transform13To14ResTarget(resTarget: PG13Types.ResTarget): PG14Types.ResTarget {
+  return {
+    name: resTarget.name,
+    indirection: transform13To14NodeArray(resTarget.indirection),
+    val: transform13To14OptionalNode(resTarget.val),
+    location: resTarget.location
+  };
+}
+
+function transform13To14ColumnRef(columnRef: PG13Types.ColumnRef): PG14Types.ColumnRef {
+  return {
+    fields: transform13To14NodeArray(columnRef.fields),
+    location: columnRef.location
+  };
+}
+
+function transform13To14RawStmt(rawStmt: PG13Types.RawStmt): PG14Types.RawStmt {
+  return {
+    stmt: transform13To14OptionalNode(rawStmt.stmt),
+    stmt_location: rawStmt.stmt_location,
+    stmt_len: rawStmt.stmt_len
   };
 }
 
