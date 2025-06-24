@@ -82,7 +82,7 @@ export abstract class BaseTransformer implements TransformerVisitor {
       }
     }
 
-    if (nodeData.relation && typeof nodeData.relation === 'object' && nodeData.relation.relname) {
+    if (nodeData.relation && typeof nodeData.relation === 'object') {
       if (!('location' in nodeData.relation)) {
         nodeData.relation.location = undefined;
       }
@@ -102,6 +102,8 @@ export abstract class BaseTransformer implements TransformerVisitor {
         nodeData.typeName.typemod = -1;
       }
     }
+
+    this.ensureTypeNameFieldsRecursively(nodeData);
   }
 
   protected ensureTypeNameFieldsRecursively(obj: any): void {

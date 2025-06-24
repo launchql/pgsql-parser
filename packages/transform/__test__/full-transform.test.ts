@@ -1,4 +1,4 @@
-import { expectSqlTransform } from '../test-utils/full-transform-flow';
+import { expectSqlTransform, fullTransformFlow } from '../test-utils/full-transform-flow';
 
 describe('Full Transform Integration - PG13 to PG17', () => {
   describe('Basic SQL Operations', () => {
@@ -126,8 +126,12 @@ describe('Full Transform Integration - PG13 to PG17', () => {
         ORDER BY level, name
         LIMIT 100
       `;
-      const result = await expectSqlTransform(sql);
+      const result = await fullTransformFlow(sql, { validateRoundTrip: true });
       expect(result.deparsedSql).toBeTruthy();
+      expect(result.deparsedSql.toLowerCase()).toContain('with recursive');
+      expect(result.deparsedSql.toLowerCase()).toContain('union all');
+      expect(result.deparsedSql.toLowerCase()).toContain('count(*) over');
+      expect(result.deparsedSql.toLowerCase()).toContain('limit 100');
     });
 
     it('should handle PostgreSQL-specific features', async () => {

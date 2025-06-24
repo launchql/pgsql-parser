@@ -3,36 +3,55 @@ import { Node as PG14Node } from '../14/types';
 import { Node as PG15Node } from '../15/types';
 
 export class V14ToV15Transformer extends BaseTransformer {
-  A_Const(node: any, context?: TransformerContext): any {
-    const transformedData: any = { ...node };
+  transform(node: any, context?: TransformerContext): any {
+    if (node && typeof node === 'object' && 'version' in node && 'stmts' in node) {
+      return {
+        version: 150004, // PG15 version
+        stmts: node.stmts.map((stmt: any) => {
+          if (stmt && typeof stmt === 'object' && 'stmt' in stmt) {
+            return {
+              ...stmt,
+              stmt: this.transform(stmt.stmt, context)
+            };
+          }
+          return this.transform(stmt, context);
+        })
+      };
+    }
     
-    if (node.val) {
-      if (node.val.String) {
-        transformedData.sval = { sval: node.val.String.str };
+    return super.transform(node, context);
+  }
+
+  A_Const(nodeData: any, context?: TransformerContext): any {
+    const transformedData: any = { ...nodeData };
+    
+    if (nodeData.val) {
+      if (nodeData.val.String) {
+        transformedData.sval = { sval: nodeData.val.String.str };
         delete transformedData.val;
-      } else if (node.val.Float) {
-        transformedData.fval = { fval: node.val.Float.str };
+      } else if (nodeData.val.Float) {
+        transformedData.fval = { fval: nodeData.val.Float.str };
         delete transformedData.val;
-      } else if (node.val.BitString) {
-        transformedData.bsval = { bsval: node.val.BitString.str };
+      } else if (nodeData.val.BitString) {
+        transformedData.bsval = { bsval: nodeData.val.BitString.str };
         delete transformedData.val;
-      } else if (node.val.Integer) {
-        const intVal = node.val.Integer.ival;
+      } else if (nodeData.val.Integer) {
+        const intVal = nodeData.val.Integer.ival;
         if (intVal === 0 || intVal === undefined) {
           transformedData.ival = {};
         } else {
           transformedData.ival = { ival: intVal };
         }
         delete transformedData.val;
-      } else if (node.val.Boolean) {
-        transformedData.boolval = node.val.Boolean.boolval;
+      } else if (nodeData.val.Boolean) {
+        transformedData.boolval = nodeData.val.Boolean.boolval;
         delete transformedData.val;
       }
     }
     
-    if (node.ival && typeof node.ival === 'object') {
-      if ('ival' in node.ival) {
-        transformedData.ival = node.ival;
+    if (nodeData.ival && typeof nodeData.ival === 'object') {
+      if ('ival' in nodeData.ival) {
+        transformedData.ival = nodeData.ival;
       } else {
         transformedData.ival = {};
       }
@@ -185,37 +204,68 @@ export class V14ToV15Transformer extends BaseTransformer {
     return transformedData;
   }
 
-  SelectStmt(node: any, context?: TransformerContext): any {
-    const transformedData: any = { ...node };
+  SelectStmt(nodeData: any, context?: TransformerContext): any {
+    const transformedData: any = {};
     
-    if (!('limitOption' in transformedData)) {
-      transformedData.limitOption = "LIMIT_OPTION_DEFAULT";
-    }
-    if (!('op' in transformedData)) {
-      transformedData.op = "SETOP_NONE";
+    for (const [key, value] of Object.entries(nodeData)) {
+      transformedData[key] = value;
     }
     
-    for (const [key, value] of Object.entries(node)) {
-      if (key === 'limitOption' || key === 'op') {
-        continue;
-      } else if (key === 'withClause' && value && typeof value === 'object') {
-        transformedData[key] = { ...value };
-        if (transformedData[key].ctes && Array.isArray(transformedData[key].ctes)) {
-          transformedData[key].ctes = transformedData[key].ctes.map((cte: any) => this.transform(cte, context));
-        }
-      } else if (key === 'larg' || key === 'rarg') {
-        if (value && typeof value === 'object') {
-          transformedData[key] = this.SelectStmt(value, context);
-        } else {
-          transformedData[key] = value;
-        }
-      } else if (Array.isArray(value)) {
-        transformedData[key] = value.map(item => this.transform(item, context));
-      } else if (value && typeof value === 'object') {
-        transformedData[key] = this.transform(value, context);
-      } else {
-        transformedData[key] = value;
+    const hasContent = (nodeData.targetList && nodeData.targetList.length > 0) || 
+                      nodeData.fromClause || nodeData.whereClause || 
+                      nodeData.groupClause || nodeData.havingClause || nodeData.orderClause ||
+                      nodeData.limitClause || nodeData.withClause || nodeData.larg || nodeData.rarg;
+    
+    if (hasContent) {
+      if (!('limitOption' in transformedData)) {
+        transformedData.limitOption = "LIMIT_OPTION_DEFAULT";
       }
+      if (!('op' in transformedData)) {
+        transformedData.op = "SETOP_NONE";
+      }
+    }
+    
+    if (transformedData.withClause && typeof transformedData.withClause === 'object') {
+      transformedData.withClause = { ...transformedData.withClause };
+      if (transformedData.withClause.ctes && Array.isArray(transformedData.withClause.ctes)) {
+        transformedData.withClause.ctes = transformedData.withClause.ctes.map((cte: any) => this.transform(cte, context));
+      }
+    }
+    
+    if (transformedData.larg && typeof transformedData.larg === 'object') {
+      transformedData.larg = this.SelectStmt(transformedData.larg, context);
+    }
+    
+    if (transformedData.rarg && typeof transformedData.rarg === 'object') {
+      transformedData.rarg = this.SelectStmt(transformedData.rarg, context);
+    }
+    
+    if (transformedData.targetList && Array.isArray(transformedData.targetList)) {
+      transformedData.targetList = transformedData.targetList.map((item: any) => this.transform(item, context));
+    }
+    
+    if (transformedData.fromClause && Array.isArray(transformedData.fromClause)) {
+      transformedData.fromClause = transformedData.fromClause.map((item: any) => this.transform(item, context));
+    }
+    
+    if (transformedData.whereClause && typeof transformedData.whereClause === 'object') {
+      transformedData.whereClause = this.transform(transformedData.whereClause, context);
+    }
+    
+    if (transformedData.groupClause && Array.isArray(transformedData.groupClause)) {
+      transformedData.groupClause = transformedData.groupClause.map((item: any) => this.transform(item, context));
+    }
+    
+    if (transformedData.havingClause && typeof transformedData.havingClause === 'object') {
+      transformedData.havingClause = this.transform(transformedData.havingClause, context);
+    }
+    
+    if (transformedData.orderClause && Array.isArray(transformedData.orderClause)) {
+      transformedData.orderClause = transformedData.orderClause.map((item: any) => this.transform(item, context));
+    }
+    
+    if (transformedData.limitClause && typeof transformedData.limitClause === 'object') {
+      transformedData.limitClause = this.transform(transformedData.limitClause, context);
     }
     
     return transformedData;
