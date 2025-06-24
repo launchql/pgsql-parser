@@ -256,11 +256,9 @@ Each of these options can be set when initializing the `PgProtoParser` to custom
 It generates code with syntax for [@pgsql/utils](https://github.com/launchql/pgsql-parser/tree/main/packages/utils), using runtime schema information to determine whether nodes should be wrapped (`t.nodes.*`) or unwrapped (`t.ast.*`).
 
 ```ts
-import { 
-  generateTsAstCodeFromPgAst
-} from 'pg-proto-parser';
+import { generateTsAstCodeFromPgAst } from 'pg-proto-parser';
+import { runtimeSchema } from './path/to/your/generated/runtime-schema';
 import { parse } from 'pgsql-parser';
-import { runtimeSchema } from 'pg-proto-parser/runtime-schema';
 
 // Example SQL query
 const sql = 'SELECT * FROM my_table WHERE id = 1';
@@ -279,33 +277,33 @@ console.log(tsAstBuilderCode);
 // make sure to use this import when using
 // import ast from '@pgsql/utils';
 
-ast.selectStmt({
-  targetList: [ast.resTarget({
-    val: ast.columnRef({
-      fields: [ast.aStar({})],
+t.nodes.selectStmt({
+  targetList: [t.nodes.resTarget({
+    val: t.nodes.columnRef({
+      fields: [t.nodes.aStar({})],
       location: 7
     }),
     location: 7
   })],
-  fromClause: [ast.rangeVar({
+  fromClause: [t.nodes.rangeVar({
     relname: "my_table",
     inh: true,
     relpersistence: "p",
     location: 14
   })],
-  whereClause: ast.aExpr({
+  whereClause: t.nodes.aExpr({
     kind: "AEXPR_OP",
-    name: [ast.string({
-      str: "="
+    name: [t.nodes.string({
+      sval: "="
     })],
-    lexpr: ast.columnRef({
-      fields: [ast.string({
-        str: "id"
+    lexpr: t.nodes.columnRef({
+      fields: [t.nodes.string({
+        sval: "id"
       })],
       location: 29
     }),
-    rexpr: ast.aConst({
-      val: ast.integer({
+    rexpr: t.nodes.aConst({
+      ival: t.ast.integer({
         ival: 1
       }),
       location: 34
