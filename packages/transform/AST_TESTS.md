@@ -12,6 +12,7 @@ then, create a series of example .json files that are the resulting output of a 
 
 This will be the basis for how we can do our testing, and understand, truly understand the differences in the ASTs.
 
+IMPORANT: update, improve, and leverage `expectOldAstToTransformToNewAst` in packages/transform/test-utils/expect-ast.ts
 
 ## 1. Baseline Parsing
 
