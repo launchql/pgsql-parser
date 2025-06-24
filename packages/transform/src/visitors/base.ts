@@ -47,7 +47,13 @@ export abstract class BaseTransformer implements TransformerVisitor {
       if (Array.isArray(value)) {
         result[key] = value.map(item => this.transform(item, context));
       } else if (value && typeof value === 'object') {
-        result[key] = this.transform(value, context);
+        if (key === 'typeName') {
+          const wrappedTypeName = { TypeName: value };
+          const transformedTypeName = this.transform(wrappedTypeName, context);
+          result[key] = transformedTypeName.TypeName;
+        } else {
+          result[key] = this.transform(value, context);
+        }
       } else {
         result[key] = value;
       }
@@ -62,9 +68,6 @@ export abstract class BaseTransformer implements TransformerVisitor {
     if (!nodeData || typeof nodeData !== 'object') return;
 
     if (nodeType === 'RangeVar') {
-      if (!('location' in nodeData)) {
-        nodeData.location = undefined;
-      }
       if (!('relpersistence' in nodeData)) {
         nodeData.relpersistence = 'p';
       }
@@ -74,18 +77,12 @@ export abstract class BaseTransformer implements TransformerVisitor {
     }
 
     if (nodeType === 'TypeName') {
-      if (!('location' in nodeData)) {
-        nodeData.location = undefined;
-      }
       if (!('typemod' in nodeData)) {
         nodeData.typemod = -1;
       }
     }
 
     if (nodeData.relation && typeof nodeData.relation === 'object') {
-      if (!('location' in nodeData.relation)) {
-        nodeData.relation.location = undefined;
-      }
       if (!('relpersistence' in nodeData.relation)) {
         nodeData.relation.relpersistence = 'p';
       }
@@ -95,9 +92,6 @@ export abstract class BaseTransformer implements TransformerVisitor {
     }
 
     if (nodeData.typeName && typeof nodeData.typeName === 'object') {
-      if (!('location' in nodeData.typeName)) {
-        nodeData.typeName.location = undefined;
-      }
       if (!('typemod' in nodeData.typeName)) {
         nodeData.typeName.typemod = -1;
       }
@@ -115,9 +109,6 @@ export abstract class BaseTransformer implements TransformerVisitor {
     }
 
     if (obj.typeName && typeof obj.typeName === 'object') {
-      if (!('location' in obj.typeName)) {
-        obj.typeName.location = undefined;
-      }
       if (!('typemod' in obj.typeName)) {
         obj.typeName.typemod = -1;
       }
