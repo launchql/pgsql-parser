@@ -17,6 +17,19 @@ for (const version of versions) {
     enums: {
       enabled: true,
       enumsAsTypeUnion: true
+    },
+    utils: {
+      enums: {
+        enabled: true,
+        unidirectional: true,
+        toIntFilename: 'enum-to-int.ts',
+        toStringFilename: 'enum-to-str.ts'
+      }
+    },
+    runtimeSchema: {
+      enabled: true,
+      filename: 'runtime-schema.ts',
+      format: 'typescript'
     }
   };
 
