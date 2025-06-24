@@ -3,6 +3,16 @@ import { Node as PG13Node } from '../13/types';
 import { Node as PG14Node } from '../14/types';
 
 export class V13ToV14Transformer extends BaseTransformer {
+  transform(node: any, context?: TransformerContext): any {
+    if (node && typeof node === 'object' && 'version' in node && 'stmts' in node) {
+      return {
+        version: 140004, // PG14 version
+        stmts: node.stmts.map((stmt: any) => super.transform(stmt, context))
+      };
+    }
+    
+    return super.transform(node, context);
+  }
   A_Const(node: any, context?: TransformerContext): any {
     const transformedData: any = { ...node };
     
@@ -27,6 +37,42 @@ export class V13ToV14Transformer extends BaseTransformer {
       } else if (node.val.Boolean) {
         transformedData.boolval = node.val.Boolean.boolval;
         delete transformedData.val;
+      }
+    }
+    
+    return transformedData;
+  }
+
+  SelectStmt(node: any, context?: TransformerContext): any {
+    const transformedData: any = { ...node };
+    
+    if (!('limitOption' in transformedData)) {
+      transformedData.limitOption = "LIMIT_OPTION_DEFAULT";
+    }
+    if (!('op' in transformedData)) {
+      transformedData.op = "SETOP_NONE";
+    }
+    
+    for (const [key, value] of Object.entries(node)) {
+      if (key === 'limitOption' || key === 'op') {
+        continue;
+      } else if (key === 'withClause' && value && typeof value === 'object') {
+        transformedData[key] = { ...value };
+        if (transformedData[key].ctes && Array.isArray(transformedData[key].ctes)) {
+          transformedData[key].ctes = transformedData[key].ctes.map((cte: any) => this.transform(cte, context));
+        }
+      } else if (key === 'larg' || key === 'rarg') {
+        if (value && typeof value === 'object') {
+          transformedData[key] = this.SelectStmt(value, context);
+        } else {
+          transformedData[key] = value;
+        }
+      } else if (Array.isArray(value)) {
+        transformedData[key] = value.map(item => this.transform(item, context));
+      } else if (value && typeof value === 'object') {
+        transformedData[key] = this.transform(value, context);
+      } else {
+        transformedData[key] = value;
       }
     }
     
@@ -61,6 +107,8 @@ export class V13ToV14Transformer extends BaseTransformer {
     
     return { [nodeType]: transformedData };
   }
+
+
 
   private ensureTypeNameFields(obj: any): void {
     if (!obj || typeof obj !== 'object') return;
