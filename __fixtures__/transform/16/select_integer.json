@@ -1,0 +1,30 @@
+{
+  "version": 160004,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "targetList": [
+            {
+              "ResTarget": {
+                "val": {
+                  "A_Const": {
+                    "val": {
+                      "Integer": {
+                        "ival": 1
+                      }
+                    },
+                    "location": 7
+                  }
+                },
+                "location": 7
+              }
+            }
+          ],
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE"
+        }
+      }
+    }
+  ]
+}
