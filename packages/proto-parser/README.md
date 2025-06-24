@@ -253,13 +253,14 @@ Each of these options can be set when initializing the `PgProtoParser` to custom
 
 `generateTsAstCodeFromPgAst` is a method that transforms a PostgreSQL Abstract Syntax Tree (AST) into TypeScript code capable of generating an equivalent AST. This function facilitates the dynamic creation of ASTs, allowing for programmable query construction and manipulation in TypeScript.
 
-It generates code with syntax for [@pgsql/utils](https://github.com/launchql/pgsql-parser/tree/main/packages/utils), assuming you import the `ast` as as default import from `@pgsql/utils`:
+It generates code with syntax for [@pgsql/utils](https://github.com/launchql/pgsql-parser/tree/main/packages/utils), using runtime schema information to determine whether nodes should be wrapped (`t.nodes.*`) or unwrapped (`t.ast.*`).
 
 ```ts
 import { 
   generateTsAstCodeFromPgAst
 } from 'pg-proto-parser';
 import { parse } from 'pgsql-parser';
+import { runtimeSchema } from 'pg-proto-parser/runtime-schema';
 
 // Example SQL query
 const sql = 'SELECT * FROM my_table WHERE id = 1';
@@ -267,9 +268,10 @@ const sql = 'SELECT * FROM my_table WHERE id = 1';
 // Parse the SQL query to get the PostgreSQL AST
 const pgAst = parse(sql);
 
-// Generate TypeScript AST builder code from the PostgreSQL AST
+// Generate TypeScript AST builder code from the PostgreSQL AST using runtime schema
 const tsAstBuilderCode = generateTsAstCodeFromPgAst(
-  pgAst[0].RawStmt.stmt
+  pgAst[0].RawStmt.stmt,
+  runtimeSchema
 );
 
 console.log(tsAstBuilderCode);

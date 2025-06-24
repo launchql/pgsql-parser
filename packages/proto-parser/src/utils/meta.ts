@@ -13,52 +13,9 @@ import { NodeSpec, FieldSpec } from '../runtime-schema/types';
 
 // TODO — handle TypeName and SPECIAL_TYPES cases
 
-export function generateTsAstCodeFromPgAst(ast: any): any {
-    function createAstNode(functionName: string, properties: any) {
-      const args = properties.map(([propKey, propValue]: [string, any]) => {
-        return t.objectProperty(t.identifier(propKey), getValueNode(propValue));
-      });
-      return t.callExpression(
-        t.memberExpression(t.identifier('ast'), t.identifier(functionName)),
-        [t.objectExpression(args)]
-      );
-    }
-  
-    function getValueNode(value: any): t.Expression {
-      if (typeof value === 'object') {
-        return value === null ? t.nullLiteral() : traverse(value);
-      }
-      switch (typeof value) {
-        case 'boolean':
-          return t.booleanLiteral(value);
-        case 'number':
-          return t.numericLiteral(value);
-        case 'string':
-          return t.stringLiteral(value);
-        default:
-          return t.stringLiteral(String(value)); // Fallback for other types
-      }
-    }
-  
-    function traverse(node: any): t.Expression {
-      if (Array.isArray(node)) {
-        return t.arrayExpression(node.map(traverse));
-      } else if (node && typeof node === 'object') {
-        const entries = Object.entries(node);
-        if (entries.length === 0) return t.objectExpression([]);
-  
-        const [key, value] = entries[0]; // Processing one key-value pair per object
-        const functionName = toSpecialCamelCase(key);
-        return createAstNode(functionName, Object.entries(value));
-      }
-  
-      return getValueNode(node);
-    }
-  
-    return traverse(ast);
-  }
 
-export function generateTsAstCodeFromPgAstWithSchema(ast: any, runtimeSchema: NodeSpec[]): any {
+
+export function generateTsAstCodeFromPgAst(ast: any, runtimeSchema: NodeSpec[]): any {
     const schemaMap = new Map<string, NodeSpec>();
     runtimeSchema.forEach(spec => {
         schemaMap.set(spec.name, spec);

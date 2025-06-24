@@ -1,6 +1,6 @@
 import * as t from '../test-utils/meta';
 import { SelectStmt } from '@pgsql/types';
-import { generateTsAstCodeFromPgAst, generateTsAstCodeFromPgAstWithSchema } from '../src/utils'
+import { generateTsAstCodeFromPgAst } from '../src/utils'
 import { runtimeSchema } from '../test-utils/meta/runtime-schema';
 import generate from '@babel/generator';
 
@@ -24,7 +24,7 @@ it('AST to AST to create AST — meta 🤯', () => {
         op: 'SETOP_NONE'
       });
 
-      const astForAst = generateTsAstCodeFromPgAst(selectStmt);
+      const astForAst = generateTsAstCodeFromPgAst(selectStmt, runtimeSchema);
       expect(generate(astForAst).code).toMatchSnapshot();
 });
 
@@ -366,7 +366,7 @@ it('Complex AST — Advanced SQL with CTEs, Window Functions, Joins, and Subquer
       op: 'SETOP_NONE'
     });
     
-    const astForComplexAst = generateTsAstCodeFromPgAstWithSchema(complexSelectStmt, runtimeSchema);
+    const astForComplexAst = generateTsAstCodeFromPgAst(complexSelectStmt, runtimeSchema);
     expect(generate(astForComplexAst).code).toMatchSnapshot();
 });
 
@@ -390,7 +390,7 @@ it('Enhanced AST generation with runtime schema — wrapped vs unwrapped nodes',
         op: 'SETOP_NONE'
     });
 
-    const enhancedAst = generateTsAstCodeFromPgAstWithSchema(selectStmt, runtimeSchema);
+    const enhancedAst = generateTsAstCodeFromPgAst(selectStmt, runtimeSchema);
     const generatedCode = generate(enhancedAst).code;
     
     expect(generatedCode).toMatchSnapshot();
@@ -430,7 +430,7 @@ it('Complex AST with runtime schema — mixed wrapped/unwrapped patterns', () =>
         op: 'SETOP_NONE'
     });
 
-    const enhancedAst = generateTsAstCodeFromPgAstWithSchema(complexStmt, runtimeSchema);
+    const enhancedAst = generateTsAstCodeFromPgAst(complexStmt, runtimeSchema);
     const generatedCode = generate(enhancedAst).code;
     
     expect(generatedCode).toMatchSnapshot();
