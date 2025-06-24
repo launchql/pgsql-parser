@@ -63,12 +63,10 @@ export class RuntimeSchemaGenerator {
     const isArray = field.repeated || false;
     const optional = !field.required;
     const fieldType = field.type;
-    const isNode = fieldType === 'Node' || this.nodeTypes.has(fieldType);
 
     return {
       name: fieldName,
       type: fieldType,
-      isNode,
       isArray,
       optional
     };

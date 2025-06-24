@@ -1,7 +1,6 @@
 export interface FieldSpec {
   name: string;
   type: string;
-  isNode: boolean;
   isArray: boolean;
   optional: boolean;
 }

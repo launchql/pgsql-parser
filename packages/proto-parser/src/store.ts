@@ -114,10 +114,12 @@ export class ProtoStore implements IProtoStore {
     if (format === 'json') {
       // Write plain JSON files
       if (this.options.enums.enumMap.toIntOutFile) {
-        this.writeFile(this.options.enums.enumMap.toIntOutFile, JSON.stringify(enums2int, null, 2));
+        const filename = this.ensureCorrectExtension(this.options.enums.enumMap.toIntOutFile, '.json');
+        this.writeFile(filename, JSON.stringify(enums2int, null, 2));
       }
       if (this.options.enums.enumMap.toStrOutFile) {
-        this.writeFile(this.options.enums.enumMap.toStrOutFile, JSON.stringify(enums2str, null, 2));
+        const filename = this.ensureCorrectExtension(this.options.enums.enumMap.toStrOutFile, '.json');
+        this.writeFile(filename, JSON.stringify(enums2str, null, 2));
       }
     } else if (format === 'ts') {
       // Write TypeScript files with exports
@@ -158,7 +160,8 @@ export class ProtoStore implements IProtoStore {
       const types = typesToProcess.reduce((m, type) => {
         return [...m, convertTypeToTsInterface(type, this.options)]
       }, []);
-      this.writeCodeToFile(this.options.types.filename, [
+      const filename = this.ensureCorrectExtension(this.options.types.filename, '.ts');
+      this.writeCodeToFile(filename, [
         enumImports,
         node,
         ...types
@@ -170,7 +173,8 @@ export class ProtoStore implements IProtoStore {
 
   writeEnums() {
     if (this.options.enums.enabled) {
-      this.writeCodeToFile(this.options.enums.filename, 
+      const filename = this.ensureCorrectExtension(this.options.enums.filename, '.ts');
+      this.writeCodeToFile(filename, 
         this.enumsToProcess().map(enm => this.options.enums.enumsAsTypeUnion ?
           convertEnumToTsUnionType(enm) :
           convertEnumToTsEnumDeclaration(enm)
@@ -190,15 +194,18 @@ export class ProtoStore implements IProtoStore {
         const toStringGenerator = useNestedObjects ? generateEnumToStringFunctionsNested : generateEnumToStringFunctions;
         
         const toIntCode = convertAstToCode(toIntGenerator(enumsToProcess));
-        this.writeFile(this.options.utils.enums.toIntFilename, toIntCode);
+        const toIntFilename = this.ensureCorrectExtension(this.options.utils.enums.toIntFilename, '.ts');
+        this.writeFile(toIntFilename, toIntCode);
         
         const toStringCode = convertAstToCode(toStringGenerator(enumsToProcess));
-        this.writeFile(this.options.utils.enums.toStringFilename, toStringCode);
+        const toStringFilename = this.ensureCorrectExtension(this.options.utils.enums.toStringFilename, '.ts');
+        this.writeFile(toStringFilename, toStringCode);
       } else {
         // Generate bidirectional function (original behavior)
         // Note: Nested objects format only supported for unidirectional functions
         const code = convertAstToCode(generateEnumValueFunctions(enumsToProcess));
-        this.writeFile(this.options.utils.enums.filename, code);
+        const filename = this.ensureCorrectExtension(this.options.utils.enums.filename, '.ts');
+        this.writeFile(filename, code);
       }
     }
   }
@@ -216,10 +223,12 @@ export class ProtoStore implements IProtoStore {
         generateAstHelperMethods(typesToProcess)
       ]);
 
-      this.writeFile(this.options.utils.astHelpers.filename, code);
+      const filename = this.ensureCorrectExtension(this.options.utils.astHelpers.filename, '.ts');
+      this.writeFile(filename, code);
 
       if (this.options.utils.astHelpers.inlineNestedObj) {
-        this.writeFile(this.options.utils.astHelpers.nestedObjFile, nestedObjCode);
+        const nestedObjFilename = this.ensureCorrectExtension(this.options.utils.astHelpers.nestedObjFile, '.ts');
+        this.writeFile(nestedObjFilename, nestedObjCode);
       }
     }
   }
@@ -235,7 +244,8 @@ export class ProtoStore implements IProtoStore {
         generateWrappedAstHelperMethods(typesToProcess)
       ]);
 
-      this.writeFile(this.options.utils.wrappedAstHelpers.filename, code);
+      const filename = this.ensureCorrectExtension(this.options.utils.wrappedAstHelpers.filename, '.ts');
+      this.writeFile(filename, code);
     }
   }
 
@@ -251,11 +261,13 @@ export class ProtoStore implements IProtoStore {
 
     if (format === 'json') {
       const jsonContent = JSON.stringify(nodeSpecs, null, 2);
-      const outFile = join(this.options.outDir, `${filename}.json`);
+      const correctedFilename = this.ensureCorrectExtension(filename, '.json');
+      const outFile = join(this.options.outDir, correctedFilename);
       writeFileToDisk(outFile, jsonContent, this.options);
     } else if (format === 'typescript') {
       const tsContent = this.generateRuntimeSchemaTypeScript(nodeSpecs);
-      const outFile = join(this.options.outDir, `${filename}.ts`);
+      const correctedFilename = this.ensureCorrectExtension(filename, '.ts');
+      const outFile = join(this.options.outDir, correctedFilename);
       writeFileToDisk(outFile, tsContent, this.options);
     }
   }
@@ -275,7 +287,6 @@ export class ProtoStore implements IProtoStore {
       'export interface FieldSpec {',
       '  name: string;',
       '  type: string;',
-      '  isNode: boolean;',
       '  isArray: boolean;',
       '  optional: boolean;',
       '}',
@@ -317,7 +328,18 @@ export class ProtoStore implements IProtoStore {
   }
 
   ensureCorrectExtension(filename: string, expectedExt: string): string {
-    const currentExt = filename.match(/\.[^.]+$/)?.[0] || '';
+    if (!filename || !expectedExt) {
+      return filename || '';
+    }
+    
+    // Ensure expectedExt starts with a dot
+    if (!expectedExt.startsWith('.')) {
+      expectedExt = '.' + expectedExt;
+    }
+    
+    const extMatch = filename.match(/(\.[^./\\]+)+$/);
+    const currentExt = extMatch ? extMatch[0] : '';
+    
     if (currentExt && currentExt !== expectedExt) {
       // Replace the current extension with the expected one
       return filename.slice(0, -currentExt.length) + expectedExt;
@@ -338,7 +360,8 @@ export class ProtoStore implements IProtoStore {
 
   writeCodeToFile(filename: string, nodes: t.Node[]) {
     const code = convertAstToCode(nodes);
-    const filePath = join(this.options.outDir, filename);
+    const correctedFilename = this.ensureCorrectExtension(filename, '.ts');
+    const filePath = join(this.options.outDir, correctedFilename);
     writeFileToDisk(filePath, code, this.options);
   }
 

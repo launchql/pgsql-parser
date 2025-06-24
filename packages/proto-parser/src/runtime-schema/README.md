@@ -8,7 +8,7 @@ The runtime schema system extracts metadata from protobuf definitions to create 
 - All AST node types and their structure
 - Which types are wrapped (listed in Node.oneof)
 - Field specifications including type, optionality, and array status
-- Node field detection for AST references
+- Node type detection based on field type information
 
 ## Usage
 
@@ -62,11 +62,12 @@ Each field within a node is represented by a FieldSpec:
 interface FieldSpec {
   name: string;        // field name
   type: string;        // field type (e.g. "RangeVar", "string", "Node")
-  isNode: boolean;     // true if field references AST nodes
   isArray: boolean;    // true if field is repeated
   optional: boolean;   // true if field is optional
 }
 ```
+
+To determine if a field references AST nodes, check if the `type` is a specific node type (exists in the runtime schema) rather than the generic "Node" type.
 
 ## CLI Tool
 
