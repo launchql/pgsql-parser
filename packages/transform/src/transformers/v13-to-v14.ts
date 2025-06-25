@@ -105,6 +105,24 @@ export class V13ToV14Transformer extends BaseTransformer {
 
 
 
+  CallStmt(nodeData: PG13.CallStmt, context?: TransformerContext): any {
+    const transformedData: any = {};
+    
+    for (const [key, value] of Object.entries(nodeData)) {
+      if (key === 'funccall' && value && typeof value === 'object') {
+        transformedData[key] = this.FuncCall(value, context);
+      } else if (Array.isArray(value)) {
+        transformedData[key] = value.map(item => this.transform(item, context));
+      } else if (value && typeof value === 'object') {
+        transformedData[key] = this.transform(value, context);
+      } else {
+        transformedData[key] = value;
+      }
+    }
+    
+    return transformedData;
+  }
+
   FuncCall(nodeData: PG13.FuncCall, context?: TransformerContext): any {
     const transformedData: any = { ...nodeData };
     
@@ -186,17 +204,19 @@ export class V13ToV14Transformer extends BaseTransformer {
     const transformedData: any = {};
     
     for (const [key, value] of Object.entries(nodeData)) {
-      if (Array.isArray(value)) {
+      if (key === 'options') {
+        if (value === 32) {
+          transformedData[key] = 256;
+        } else {
+          transformedData[key] = value;
+        }
+      } else if (Array.isArray(value)) {
         transformedData[key] = value.map(item => this.transform(item, context));
       } else if (value && typeof value === 'object') {
         transformedData[key] = this.transform(value, context);
       } else {
         transformedData[key] = value;
       }
-    }
-    
-    if ('options' in nodeData) {
-      transformedData.options = nodeData.options;
     }
     
     return transformedData;
@@ -215,18 +235,24 @@ export class V13ToV14Transformer extends BaseTransformer {
       }
     }
     
-    if (transformedData.objargs && Array.isArray(transformedData.objargs)) {
-      transformedData.objfuncargs = transformedData.objargs.map((arg: any) => {
-        if (arg && typeof arg === 'object' && arg.TypeName) {
-          return {
-            FunctionParameter: {
-              argType: arg.TypeName,
-              mode: "FUNC_PARAM_DEFAULT"
-            }
-          };
-        }
-        return arg;
-      });
+    if (transformedData.objargs && Array.isArray(transformedData.objargs) && transformedData.objname) {
+      const hasTypeNameArgs = transformedData.objargs.some((arg: any) => 
+        arg && typeof arg === 'object' && arg.TypeName
+      );
+      
+      if (hasTypeNameArgs) {
+        transformedData.objfuncargs = transformedData.objargs.map((arg: any) => {
+          if (arg && typeof arg === 'object' && arg.TypeName) {
+            return {
+              FunctionParameter: {
+                argType: arg.TypeName,
+                mode: "FUNC_PARAM_DEFAULT"
+              }
+            };
+          }
+          return arg;
+        });
+      }
     }
     
     return transformedData;
