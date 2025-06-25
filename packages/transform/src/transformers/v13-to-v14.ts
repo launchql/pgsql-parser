@@ -1,6 +1,10 @@
 import { BaseTransformer, TransformerContext } from '../visitors/base';
 import { Node as PG13Node } from '../13/types';
 import { Node as PG14Node } from '../14/types';
+import * as PG13 from '../13/types';
+import * as PG14 from '../14/types';
+import * as pg13RuntimeSchema from '../13/runtime-schema';
+import * as pg14RuntimeSchema from '../14/runtime-schema';
 
 export class V13ToV14Transformer extends BaseTransformer {
   transform(node: any, context?: TransformerContext): any {
@@ -24,7 +28,7 @@ export class V13ToV14Transformer extends BaseTransformer {
 
 
 
-  SelectStmt(nodeData: any, context?: TransformerContext): any {
+  SelectStmt(nodeData: PG13.SelectStmt, context?: TransformerContext): any {
     const transformedData: any = {};
     
     for (const [key, value] of Object.entries(nodeData)) {
@@ -33,8 +37,8 @@ export class V13ToV14Transformer extends BaseTransformer {
     
     const hasContent = (nodeData.targetList && nodeData.targetList.length > 0) || 
                       nodeData.fromClause || nodeData.whereClause || 
-                      nodeData.groupClause || nodeData.havingClause || nodeData.orderClause ||
-                      nodeData.limitClause || nodeData.withClause || nodeData.larg || nodeData.rarg;
+                      nodeData.groupClause || nodeData.havingClause || nodeData.sortClause ||
+                      nodeData.limitOffset || nodeData.limitCount || nodeData.withClause || nodeData.larg || nodeData.rarg;
     
     if (hasContent) {
       if (!('limitOption' in transformedData)) {
@@ -80,12 +84,16 @@ export class V13ToV14Transformer extends BaseTransformer {
       transformedData.havingClause = this.transform(transformedData.havingClause, context);
     }
     
-    if (transformedData.orderClause && Array.isArray(transformedData.orderClause)) {
-      transformedData.orderClause = transformedData.orderClause.map((item: any) => this.transform(item, context));
+    if (transformedData.sortClause && Array.isArray(transformedData.sortClause)) {
+      transformedData.sortClause = transformedData.sortClause.map((item: any) => this.transform(item, context));
     }
     
-    if (transformedData.limitClause && typeof transformedData.limitClause === 'object') {
-      transformedData.limitClause = this.transform(transformedData.limitClause, context);
+    if (transformedData.limitOffset && typeof transformedData.limitOffset === 'object') {
+      transformedData.limitOffset = this.transform(transformedData.limitOffset, context);
+    }
+    
+    if (transformedData.limitCount && typeof transformedData.limitCount === 'object') {
+      transformedData.limitCount = this.transform(transformedData.limitCount, context);
     }
     
     if (transformedData.valuesLists && Array.isArray(transformedData.valuesLists)) {
@@ -97,7 +105,7 @@ export class V13ToV14Transformer extends BaseTransformer {
 
 
 
-  FuncCall(nodeData: any, context?: TransformerContext): any {
+  FuncCall(nodeData: PG13.FuncCall, context?: TransformerContext): any {
     const transformedData: any = { ...nodeData };
     
     if (!('funcformat' in transformedData)) {
@@ -115,7 +123,7 @@ export class V13ToV14Transformer extends BaseTransformer {
     return transformedData;
   }
 
-  TypeName(nodeData: any, context?: TransformerContext): any {
+  TypeName(nodeData: PG13.TypeName, context?: TransformerContext): any {
     const transformedData: any = {};
     
     for (const [key, value] of Object.entries(nodeData)) {
@@ -138,7 +146,93 @@ export class V13ToV14Transformer extends BaseTransformer {
     return transformedData;
   }
 
-  Alias(nodeData: any, context?: TransformerContext): any {
+  Alias(nodeData: PG13.Alias, context?: TransformerContext): any {
+    const transformedData: any = {};
+    
+    for (const [key, value] of Object.entries(nodeData)) {
+      if (Array.isArray(value)) {
+        transformedData[key] = value.map(item => this.transform(item, context));
+      } else if (value && typeof value === 'object') {
+        transformedData[key] = this.transform(value, context);
+      } else {
+        transformedData[key] = value;
+      }
+    }
+    
+    return transformedData;
+  }
+
+  FunctionParameter(nodeData: PG13.FunctionParameter, context?: TransformerContext): any {
+    const transformedData: any = {};
+    
+    for (const [key, value] of Object.entries(nodeData)) {
+      if (Array.isArray(value)) {
+        transformedData[key] = value.map(item => this.transform(item, context));
+      } else if (value && typeof value === 'object') {
+        transformedData[key] = this.transform(value, context);
+      } else {
+        transformedData[key] = value;
+      }
+    }
+    
+    if ('mode' in nodeData && nodeData.mode === 'FUNC_PARAM_IN') {
+      transformedData.mode = 'FUNC_PARAM_DEFAULT';
+    }
+    
+    return transformedData;
+  }
+
+  DeclareCursorStmt(nodeData: PG13.DeclareCursorStmt, context?: TransformerContext): any {
+    const transformedData: any = {};
+    
+    for (const [key, value] of Object.entries(nodeData)) {
+      if (Array.isArray(value)) {
+        transformedData[key] = value.map(item => this.transform(item, context));
+      } else if (value && typeof value === 'object') {
+        transformedData[key] = this.transform(value, context);
+      } else {
+        transformedData[key] = value;
+      }
+    }
+    
+    if ('options' in nodeData) {
+      transformedData.options = nodeData.options;
+    }
+    
+    return transformedData;
+  }
+
+  ObjectWithArgs(nodeData: PG13.ObjectWithArgs, context?: TransformerContext): any {
+    const transformedData: any = {};
+    
+    for (const [key, value] of Object.entries(nodeData)) {
+      if (Array.isArray(value)) {
+        transformedData[key] = value.map(item => this.transform(item, context));
+      } else if (value && typeof value === 'object') {
+        transformedData[key] = this.transform(value, context);
+      } else {
+        transformedData[key] = value;
+      }
+    }
+    
+    if (transformedData.objargs && Array.isArray(transformedData.objargs)) {
+      transformedData.objfuncargs = transformedData.objargs.map((arg: any) => {
+        if (arg && typeof arg === 'object' && arg.TypeName) {
+          return {
+            FunctionParameter: {
+              argType: arg.TypeName,
+              mode: "FUNC_PARAM_DEFAULT"
+            }
+          };
+        }
+        return arg;
+      });
+    }
+    
+    return transformedData;
+  }
+
+  AlterFunctionStmt(nodeData: PG13.AlterFunctionStmt, context?: TransformerContext): any {
     const transformedData: any = {};
     
     for (const [key, value] of Object.entries(nodeData)) {
