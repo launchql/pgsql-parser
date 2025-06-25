@@ -8,12 +8,12 @@ and only work by testing like this to only run tests inside of the PG13 -> PG14 
 yarn test:watch __tests__/kitchen-sink/13-14
 
 More info:
-review packages/transform/AST_TEST_STRATEGY.md
 review packages/transform/AST_NOTES.md
 review packages/transform/AST_PLAN.md
 review packages/transform/AST_RESEARCH.md
+review packages/transform/AST_TEST_STRATEGY.md
+review packages/transform/AST_TESTS.md
 review packages/transform/AST_TRANSLATION.md
-review packages/transform/AST_PLAN.md
 
 to test first, in root
 
