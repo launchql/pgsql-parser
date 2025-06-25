@@ -2,7 +2,6 @@ import { V13ToV14Transformer } from './transformers/v13-to-v14';
 import { V14ToV15Transformer } from './transformers/v14-to-v15';
 import { V15ToV16Transformer } from './transformers/v15-to-v16';
 import { V16ToV17Transformer } from './transformers/v16-to-v17';
-import { TransformerContext } from './visitors/base';
 
 export class ASTTransformer {
   private transformers = {
@@ -26,18 +25,26 @@ export class ASTTransformer {
 
     while (currentVersion < toVersion) {
       const nextVersion = currentVersion + 1;
-      const transformerKey = `${currentVersion}-${nextVersion}` as keyof typeof this.transformers;
+      const transformerKey = `${currentVersion}-${nextVersion}`;
       
-      if (!this.transformers[transformerKey]) {
-        throw new Error(`No transformer available for v${currentVersion} to v${nextVersion}`);
+      // Use explicit switch to avoid complex union types
+      switch (transformerKey) {
+        case '13-14':
+          currentAst = this.transformers['13-14'].transform(currentAst, { parentNodeTypes: [] });
+          break;
+        case '14-15':
+          currentAst = this.transformers['14-15'].transform(currentAst, { parentNodeTypes: [] });
+          break;
+        case '15-16':
+          currentAst = this.transformers['15-16'].transform(currentAst, { parentNodeTypes: [] });
+          break;
+        case '16-17':
+          currentAst = this.transformers['16-17'].transform(currentAst, { parentNodeTypes: [] });
+          break;
+        default:
+          throw new Error(`No transformer available for v${currentVersion} to v${nextVersion}`);
       }
-
-      const context: TransformerContext = {
-        sourceVersion: currentVersion,
-        targetVersion: nextVersion,
-      };
-
-      currentAst = this.transformers[transformerKey].transform(currentAst, context);
+      
       currentVersion = nextVersion;
     }
 

@@ -68,6 +68,83 @@ These fixtures now serve as the foundation for:
 2. Testing our transformation logic
 3. Validating that transformations preserve semantic meaning
 
+## Version-Specific Type System
+
+Each PostgreSQL version (13-17) has its own directory under `src/` containing essential type information and utilities:
+
+### File Structure
+```
+src/
+├── 13/
+│   ├── enum-to-int.ts      # Convert enum strings to integer values
+│   ├── enum-to-str.ts      # Convert enum integers to string values
+│   ├── enums.ts            # Enum definitions for this version
+│   ├── runtime-schema.ts   # Runtime schema for node structure validation
+│   └── types.ts            # TypeScript type definitions
+├── 14/
+│   └── (same files)
+├── 15/
+│   └── (same files)
+├── 16/
+│   └── (same files)
+└── 17/
+    └── (same files)
+```
+
+### File Descriptions
+
+1. **types.ts** (PREFERRED)
+   - Contains TypeScript type definitions for all AST nodes in that version
+   - Should be used for type checking and IDE support
+   - Lightweight and doesn't increase bundle size
+   - Example: `PG13.SelectStmt`, `PG14.A_Const`
+
+2. **enums.ts**
+   - Defines all enum types used in the AST for that version
+   - Maps enum names to their possible values
+   - Critical for understanding valid values for enum fields
+
+3. **enum-to-int.ts** & **enum-to-str.ts**
+   - Utility functions for enum conversion
+   - `enum-to-int.ts`: Converts string enum values to integers (for v13/v14 compatibility)
+   - `enum-to-str.ts`: Converts integer enum values to strings (for v15+ compatibility)
+   - Essential for transforming between pre-v15 (integer enums) and v15+ (string enums)
+
+4. **runtime-schema.ts** (USE SPARINGLY)
+   - Contains runtime schema information about node structures
+   - Can detect if a node is wrapped or inline when it's a field of another node
+   - **WARNING**: Importing runtime schema increases memory usage and bundle size
+   - Only use when absolutely necessary for complex node structure validation
+
+### Best Practices
+
+1. **Prefer Static Types**: Always use `types.ts` over `runtime-schema.ts` when possible
+2. **Enum Conversions**: Use the enum conversion utilities when transforming between versions
+3. **Memory Efficiency**: Avoid importing runtime schemas unless required for specific validation
+4. **Type Safety**: Import version-specific types as namespaces (e.g., `import * as PG13 from '../13/types'`)
+
+### Usage in Transformers
+
+When implementing version transformers, these utilities are used as follows:
+
+```typescript
+// Example: v14-to-v15 transformer
+import * as PG14 from '../14/types';
+import * as PG15 from '../15/types';
+// Only import enum utilities if needed for specific transformations
+// import { enumToStr } from '../14/enum-to-str';
+
+export class V14ToV15Transformer extends BaseTransformer {
+  // Transform methods using the type definitions
+  A_Const(node: any, context?: TransformerContext): any {
+    // Use types for documentation, but 'any' where types don't match reality
+    // due to limitations in generated type definitions
+  }
+}
+```
+
+**Note**: The current transformers use `any` types in many places because the generated type definitions don't accurately reflect the actual parser output structure. This is documented in `TYPING_STATUS.md`.
+
 ## Phase 2: Implement Core Transformation Infrastructure
 
 ### Base Types and Interfaces
