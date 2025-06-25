@@ -302,7 +302,7 @@ export class V14ToV15Transformer extends BaseTransformer {
   DefElem(node: any, context?: TransformerContext): any {
     const transformedData = { ...node };
     
-    if (transformedData.arg && transformedData.arg.Integer && transformedData.defname === 'strict') {
+    if (transformedData.arg && transformedData.arg.Integer && (transformedData.defname === 'strict' || transformedData.defname === 'cycle')) {
       const intVal = transformedData.arg.Integer.ival;
       if (intVal === 1) {
         transformedData.arg = {
