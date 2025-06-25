@@ -9248,7 +9248,7 @@ export class Deparser implements DeparserVisitor {
     const output: string[] = [];
     
     if (node.priv_name) {
-      output.push(node.priv_name);
+      output.push(node.priv_name.toUpperCase());
     } else {
       output.push('ALL');
     }
