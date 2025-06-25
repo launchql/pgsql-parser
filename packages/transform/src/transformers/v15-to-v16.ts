@@ -100,4 +100,14 @@ export class V15ToV16Transformer extends BaseTransformer {
   Aggref(node: any, context?: TransformerContext): any {
     return node;
   }
+
+  Integer(node: any, context?: TransformerContext): any {
+    const transformedData = { ...node };
+    
+    if (!('ival' in transformedData)) {
+      transformedData.ival = -1;
+    }
+    
+    return transformedData;
+  }
 }
