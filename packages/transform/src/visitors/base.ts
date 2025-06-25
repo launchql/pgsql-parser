@@ -88,9 +88,6 @@ export abstract class BaseTransformer implements TransformerVisitor {
       if (!('relpersistence' in nodeData)) {
         nodeData.relpersistence = 'p';
       }
-      if (!('inh' in nodeData)) {
-        nodeData.inh = true;
-      }
     }
 
     if (nodeType === 'TypeName') {
@@ -102,9 +99,6 @@ export abstract class BaseTransformer implements TransformerVisitor {
     if (nodeData.relation && typeof nodeData.relation === 'object') {
       if (!('relpersistence' in nodeData.relation)) {
         nodeData.relation.relpersistence = 'p';
-      }
-      if (!('inh' in nodeData.relation)) {
-        nodeData.relation.inh = true;
       }
     }
 
