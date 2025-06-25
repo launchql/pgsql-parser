@@ -4,28 +4,25 @@ import { TransformerContext } from './context';
 export class V13ToV14Transformer {
   
   transform(node: PG13.Node, context: TransformerContext = { parentNodeTypes: [] }): any {
-    if (!context.parentNodeTypes || !Array.isArray(context.parentNodeTypes)) {
-      context = { ...context, parentNodeTypes: [] };
+    if (node == null) {
+      return null;
     }
-    if (node == null) return null;
-    if (typeof node === 'number' || node instanceof Number) return node;
-    if (typeof node === 'string') return node;
-    if (Array.isArray(node)) return node.map(item => this.transform(item, context));
 
-    if (typeof node === 'object' && node !== null) {
-      const keys = Object.keys(node);
-      if (keys.length === 1) {
-        const key = keys[0];
-        const value = (node as any)[key];
-        if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-          try {
-            return this.visit(node, context);
-          } catch (error) {
-            throw new Error(`Error transforming ${key}: ${(error as Error).message}`);
-          }
-        }
-      }
-      return this.transformGenericNode(node, context);
+    if (typeof node === 'number' || node instanceof Number) {
+      return node;
+    }
+
+    if (typeof node === 'string') {
+      return node;
+    }
+
+    if (Array.isArray(node)) {
+      return node.map(item => this.transform(item, context));
+    }
+
+    // Handle ParseResult objects specially
+    if (typeof node === 'object' && node !== null && 'version' in node && 'stmts' in node) {
+      return this.ParseResult(node as PG13.ParseResult, context);
     }
 
     try {
@@ -40,21 +37,29 @@ export class V13ToV14Transformer {
     if (!context.parentNodeTypes || !Array.isArray(context.parentNodeTypes)) {
       context = { ...context, parentNodeTypes: [] };
     }
+    
     const nodeType = this.getNodeType(node);
-    if (!nodeType) return {};
+    
+    // Handle empty objects
+    if (!nodeType) {
+      return {};
+    }
     
     const nodeData = this.getNodeData(node);
+
     const methodName = nodeType as keyof this;
-    
     if (typeof this[methodName] === 'function') {
       const childContext: TransformerContext = {
         ...context,
         parentNodeTypes: [...context.parentNodeTypes, nodeType]
       };
-      return (this[methodName] as any)(nodeData, childContext);
+      const result = (this[methodName] as any)(nodeData, childContext);
+      
+      return result;
     }
     
-    return { [nodeType]: this.transformGenericNode(nodeData, context) };
+    // If no specific method, return the node as-is
+    return node;
   }
 
   private transformGenericNode(node: any, context: TransformerContext): any {
@@ -325,7 +330,7 @@ export class V13ToV14Transformer {
     if (funcCall.funcname && Array.isArray(funcCall.funcname)) {
       const lastName = funcCall.funcname[funcCall.funcname.length - 1];
       if (lastName && typeof lastName === 'object' && 'String' in lastName) {
-        return lastName.String.str;
+        return lastName.String.str || lastName.String.sval;
       }
     }
     return null;
@@ -347,19 +352,13 @@ export class V13ToV14Transformer {
     }
     
     if (node.mode !== undefined) {
-      if (node.mode === "FUNC_PARAM_IN") {
-        result.mode = "FUNC_PARAM_DEFAULT";
-      } else {
-        result.mode = node.mode;
-      }
-    }
-    
-    if (node.name !== undefined) {
-      result.name = node.name;
+      result.mode = node.mode;
     }
     
     return { FunctionParameter: result };
   }
+
+
 
   AlterFunctionStmt(node: PG13.AlterFunctionStmt, context: TransformerContext): any {
     const result: any = {};
@@ -422,46 +421,40 @@ export class V13ToV14Transformer {
   }
 
   AlterTableStmt(node: PG13.AlterTableStmt, context: TransformerContext): any {
-    const result: any = {};
+    const result: any = { ...node };
     
-    if ('relkind' in node) {
-      result.objtype = node.relkind;
+    if ('relkind' in result) {
+      result.objtype = result.relkind;
+      delete result.relkind;
     }
     
-    if (node.relation !== undefined) {
-      result.relation = this.transform(node.relation as any, context);
+    if (result.relation !== undefined) {
+      result.relation = this.transform(result.relation as any, context);
     }
     
-    if (node.cmds !== undefined) {
-      result.cmds = Array.isArray(node.cmds)
-        ? node.cmds.map(item => this.transform(item as any, context))
-        : this.transform(node.cmds as any, context);
-    }
-    
-    if (node.missing_ok !== undefined) {
-      result.missing_ok = node.missing_ok;
+    if (result.cmds !== undefined) {
+      result.cmds = Array.isArray(result.cmds)
+        ? result.cmds.map((item: any) => this.transform(item as any, context))
+        : this.transform(result.cmds as any, context);
     }
     
     return { AlterTableStmt: result };
   }
 
   CreateTableAsStmt(node: PG13.CreateTableAsStmt, context: TransformerContext): any {
-    const result: any = {};
+    const result: any = { ...node };
     
-    if ('relkind' in node) {
-      result.objtype = node.relkind;
+    if ('relkind' in result) {
+      result.objtype = result.relkind;
+      delete result.relkind;
     }
     
-    if (node.query !== undefined) {
-      result.query = this.transform(node.query as any, context);
+    if (result.query !== undefined) {
+      result.query = this.transform(result.query as any, context);
     }
     
-    if (node.into !== undefined) {
-      result.into = this.transform(node.into as any, context);
-    }
-    
-    if (node.is_select_into !== undefined) {
-      result.is_select_into = node.is_select_into;
+    if (result.into !== undefined) {
+      result.into = this.transform(result.into as any, context);
     }
     
     return { CreateTableAsStmt: result };
@@ -956,8 +949,12 @@ export class V13ToV14Transformer {
     }
     
     if (node.func !== undefined) {
+      const childContext: TransformerContext = {
+        ...context,
+        parentNodeTypes: [...(context.parentNodeTypes || []), 'CreateCastStmt']
+      };
       const wrappedFunc = { ObjectWithArgs: node.func };
-      const transformedFunc = this.transform(wrappedFunc as any, context);
+      const transformedFunc = this.transform(wrappedFunc as any, childContext);
       result.func = transformedFunc.ObjectWithArgs;
     }
     
@@ -997,31 +994,29 @@ export class V13ToV14Transformer {
   }
 
   ObjectWithArgs(node: PG13.ObjectWithArgs, context: TransformerContext): any {
-    const result: any = {};
+    const result: any = { ...node };
 
-    if (node.objname !== undefined) {
-      result.objname = Array.isArray(node.objname) 
-        ? node.objname.map(item => this.transform(item, context))
-        : this.transform(node.objname, context);
+    if (result.objname !== undefined) {
+      result.objname = Array.isArray(result.objname) 
+        ? result.objname.map((item: any) => this.transform(item, context))
+        : this.transform(result.objname, context);
     }
     
-    if (node.objargs !== undefined) {
-      result.objargs = Array.isArray(node.objargs)
-        ? node.objargs.map(item => this.transform(item, context))
-        : [this.transform(node.objargs, context)];
+    if (result.objargs !== undefined) {
+      result.objargs = Array.isArray(result.objargs)
+        ? result.objargs.map((item: any) => this.transform(item, context))
+        : [this.transform(result.objargs, context)];
     }
     
-    if (node.objfuncargs !== undefined) {
+    if (result.objfuncargs !== undefined) {
       const shouldPreserveObjfuncargs = this.shouldPreserveObjfuncargs(context);
       if (shouldPreserveObjfuncargs) {
-        result.objfuncargs = Array.isArray(node.objfuncargs)
-          ? node.objfuncargs.map(item => this.transform(item, context))
-          : [this.transform(node.objfuncargs, context)];
+        result.objfuncargs = Array.isArray(result.objfuncargs)
+          ? result.objfuncargs.map((item: any) => this.transform(item, context))
+          : [this.transform(result.objfuncargs, context)];
+      } else {
+        delete result.objfuncargs;
       }
-    }
-    
-    if (node.args_unspecified !== undefined) {
-      result.args_unspecified = node.args_unspecified;
     }
     
     return { ObjectWithArgs: result };
@@ -1032,42 +1027,18 @@ export class V13ToV14Transformer {
   }
 
   private shouldPreserveObjfuncargs(context: TransformerContext): boolean {
-    let currentContext = context;
-    while (currentContext) {
-      if (currentContext.currentNode && typeof currentContext.currentNode === 'object') {
-        if ('CreateCastStmt' in currentContext.currentNode) {
-          return false;
-        }
-        if ('AlterFunctionStmt' in currentContext.currentNode) {
-          return false;
-        }
-      }
-      currentContext = currentContext.parent;
+    if (!context.parentNodeTypes || context.parentNodeTypes.length === 0) {
+      return true;
     }
     
-    if (context.rootNode && typeof context.rootNode === 'object') {
-      function hasStmtRequiringObjfuncargsRemoval(node: any): boolean {
-        if (!node || typeof node !== 'object') return false;
-        if ('CreateCastStmt' in node || 'AlterFunctionStmt' in node) {
-          return true;
-        }
-        
-        for (const value of Object.values(node)) {
-          if (Array.isArray(value)) {
-            for (const item of value) {
-              if (hasStmtRequiringObjfuncargsRemoval(item)) return true;
-            }
-          } else if (typeof value === 'object') {
-            if (hasStmtRequiringObjfuncargsRemoval(value)) return true;
-          }
-        }
-        return false;
-      }
-      
-      if (hasStmtRequiringObjfuncargsRemoval(context.rootNode)) {
-        return false;
-      }
+    if (context.parentNodeTypes.includes('CreateCastStmt')) {
+      return false;
     }
+    
+    if (context.parentNodeTypes.includes('AlterFunctionStmt')) {
+      return false;
+    }
+    
     return true;
   }
 
@@ -1090,9 +1061,7 @@ export class V13ToV14Transformer {
   }
 
   String(node: PG13.String, context: TransformerContext): any {
-    const result: any = { ...node };
-    
-    return { String: result };
+    return { String: node };
   }
 
   BitString(node: PG13.BitString, context: TransformerContext): any {
