@@ -46,6 +46,9 @@ export class V14ToV15Transformer extends BaseTransformer {
       } else if (nodeData.val.Boolean) {
         transformedData.boolval = nodeData.val.Boolean.boolval;
         delete transformedData.val;
+      } else if (nodeData.val.Null) {
+        transformedData.isnull = true;
+        delete transformedData.val;
       }
     }
     
