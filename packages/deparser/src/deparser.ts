@@ -5,6 +5,73 @@ import { QuoteUtils } from './utils/quote-utils';
 import { ListUtils } from './utils/list-utils';
 import * as t from '@pgsql/types';
 
+/**
+ * List of real PostgreSQL built-in types as they appear in pg_catalog.pg_type.typname.
+ * These are stored in lowercase in PostgreSQL system catalogs.
+ * Use these for lookups, validations, or introspection logic.
+ */
+
+const pgCatalogTypes = [
+  // Integers
+  'int2',        // smallint
+  'int4',        // integer
+  'int8',        // bigint
+
+  // Floating-point & numeric
+  'float4',      // real
+  'float8',      // double precision
+  'numeric',     // arbitrary precision (aka "decimal")
+
+  // Text & string
+  'varchar',     // variable-length string
+  'char',        // internal one-byte type (used in special cases)
+  'bpchar',      // blank-padded char(n)
+  'text',        // unlimited string
+  'bool',        // boolean
+
+  // Dates & times
+  'date',        // calendar date
+  'time',        // time without time zone
+  'timetz',      // time with time zone
+  'timestamp',   // timestamp without time zone
+  'timestamptz', // timestamp with time zone
+  'interval',    // duration
+
+  // Binary & structured
+  'bytea',       // binary data
+  'uuid',        // universally unique identifier
+
+  // JSON & XML
+  'json',        // textual JSON
+  'jsonb',       // binary JSON
+  'xml',         // XML format
+
+  // Money & bitstrings
+  'money',       // currency value
+  'bit',         // fixed-length bit string
+  'varbit',      // variable-length bit string
+
+  // Network types
+  'inet',        // IPv4 or IPv6 address
+  'cidr',        // network address
+  'macaddr',     // MAC address (6 bytes)
+  'macaddr8'     // MAC address (8 bytes)
+];
+
+
+/**
+ * Parser-level type aliases accepted by PostgreSQL SQL syntax,
+ * but not present in pg_catalog.pg_type. These are resolved to
+ * real types during parsing and never appear in introspection.
+ */
+const pgCatalogTypeAliases: [string, string[]][] = [
+  ['numeric', ['decimal', 'dec']],
+  ['int4', ['int', 'integer']],
+  ['float8', ['float']],
+  ['bpchar', ['character']],
+  ['varchar', ['character varying']]
+];
+
 export interface DeparserOptions {
   newline?: string;
   tab?: string;
@@ -1609,10 +1676,6 @@ export class Deparser implements DeparserVisitor {
       }
       
       if (catalog === 'pg_catalog') {
-        const builtinTypes = ['int2', 'int4', 'int8', 'float4', 'float8', 'numeric', 'decimal', 
-                             'varchar', 'char', 'bpchar', 'text', 'bool', 'date', 'time', 'timestamp', 
-                             'timestamptz', 'interval', 'bytea', 'uuid', 'json', 'jsonb'];
-        
         let typeName = `${catalog}.${type}`;
         
         if (type === 'bpchar' && args) {
