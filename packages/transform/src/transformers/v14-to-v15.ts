@@ -46,6 +46,9 @@ export class V14ToV15Transformer extends BaseTransformer {
       } else if (nodeData.val.Boolean) {
         transformedData.boolval = nodeData.val.Boolean.boolval;
         delete transformedData.val;
+      } else if (nodeData.val.Null) {
+        transformedData.isnull = true;
+        delete transformedData.val;
       }
     }
     
@@ -61,11 +64,14 @@ export class V14ToV15Transformer extends BaseTransformer {
   }
 
   String(node: any, context?: TransformerContext): any {
-    if ('str' in node) {
-      return { sval: node.str };
+    const transformedData = { ...node };
+    
+    if ('str' in transformedData) {
+      transformedData.sval = transformedData.str;
+      delete transformedData.str;
     }
     
-    return node;
+    return transformedData;
   }
 
   BitString(node: any, context?: TransformerContext): any {
@@ -162,6 +168,8 @@ export class V14ToV15Transformer extends BaseTransformer {
           transformedOver[key] = value.map((item: any) => this.transform(item, context));
         } else if (key === 'partitionClause' && Array.isArray(value)) {
           transformedOver[key] = value.map((item: any) => this.transform(item, context));
+        } else if (value && typeof value === 'object') {
+          transformedOver[key] = this.transform(value, context);
         } else {
           transformedOver[key] = value;
         }
@@ -272,6 +280,43 @@ export class V14ToV15Transformer extends BaseTransformer {
   }
 
 
+
+  Integer(node: any, context?: TransformerContext): any {
+    const transformedData = { ...node };
+    
+    if ('ival' in transformedData && transformedData.ival === -1) {
+      return {};
+    }
+    
+    return transformedData;
+  }
+
+  DefElem(node: any, context?: TransformerContext): any {
+    const transformedData = { ...node };
+    
+    if (transformedData.arg && transformedData.arg.Integer && transformedData.defname === 'strict') {
+      const intVal = transformedData.arg.Integer.ival;
+      if (intVal === 1) {
+        transformedData.arg = {
+          Boolean: {
+            boolval: true
+          }
+        };
+      } else if (intVal === 0) {
+        transformedData.arg = {
+          Boolean: {
+            boolval: false
+          }
+        };
+      }
+    }
+    
+    if (transformedData.arg && typeof transformedData.arg === 'object') {
+      transformedData.arg = this.transform(transformedData.arg, context);
+    }
+    
+    return transformedData;
+  }
 
   RangeVar(node: any, context?: TransformerContext): any {
     return node;
