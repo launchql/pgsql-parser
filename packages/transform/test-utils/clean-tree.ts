@@ -38,7 +38,11 @@ export const cleanLines = (sql: string) => {
         if (obj.hasOwnProperty(attr)) {
           if (props.hasOwnProperty(attr)) {
             if (typeof props[attr] === 'function') {
-              copy[attr] = props[attr](obj[attr]);
+              const transformedValue = props[attr](obj[attr]);
+              // Only add the property if the transformer doesn't return undefined
+              if (transformedValue !== undefined) {
+                copy[attr] = transformedValue;
+              }
             } else if (props[attr].hasOwnProperty(obj[attr])) {
               copy[attr] = props[attr][obj[attr]];
             } else {
