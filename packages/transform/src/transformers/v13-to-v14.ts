@@ -126,7 +126,17 @@ export class V13ToV14Transformer extends BaseTransformer {
   FuncCall(nodeData: PG13.FuncCall, context?: TransformerContext): any {
     const transformedData: any = { ...nodeData };
     
-    if (!('funcformat' in transformedData)) {
+    const isSqlSyntax = transformedData.funcname && 
+                       Array.isArray(transformedData.funcname) &&
+                       transformedData.funcname.length === 2 &&
+                       transformedData.funcname[0]?.String?.str === 'pg_catalog' &&
+                       (transformedData.funcname[1]?.String?.str === 'substring' ||
+                        transformedData.funcname[1]?.String?.str === 'position' ||
+                        transformedData.funcname[1]?.String?.str === 'overlay');
+    
+    if (isSqlSyntax && !('funcformat' in transformedData)) {
+      transformedData.funcformat = "COERCE_SQL_SYNTAX";
+    } else if (!('funcformat' in transformedData)) {
       transformedData.funcformat = "COERCE_EXPLICIT_CALL";
     }
     
