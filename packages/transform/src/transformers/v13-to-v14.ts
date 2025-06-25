@@ -341,6 +341,25 @@ export class V13ToV14Transformer extends BaseTransformer {
     return transformedData;
   }
 
+  GrantStmt(nodeData: PG13.GrantStmt, context?: TransformerContext): any {
+    const transformedData: any = {};
+    
+    for (const [key, value] of Object.entries(nodeData)) {
+      if (key === 'objects' && Array.isArray(value)) {
+        const grantContext = { ...context, statementType: 'GrantStmt', objtype: nodeData.objtype };
+        transformedData[key] = value.map(item => this.transform(item, grantContext));
+      } else if (Array.isArray(value)) {
+        transformedData[key] = value.map(item => this.transform(item, context));
+      } else if (value && typeof value === 'object') {
+        transformedData[key] = this.transform(value, context);
+      } else {
+        transformedData[key] = value;
+      }
+    }
+    
+    return transformedData;
+  }
+
 
 
   protected transformDefault(node: any, nodeType: string, nodeData: any, context?: TransformerContext): any {
