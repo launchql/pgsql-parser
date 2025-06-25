@@ -1,6 +1,6 @@
 import { BaseTransformer, TransformerContext } from '../visitors/base';
-import { Node as PG16Node } from '../16/types';
-import { Node as PG17Node } from '../17/types';
+import * as PG16 from '../16/types';
+import * as PG17 from '../17/types';
 
 export class V16ToV17Transformer extends BaseTransformer {
   transform(node: any, context?: TransformerContext): any {

@@ -1,6 +1,10 @@
 import { BaseTransformer, TransformerContext } from '../visitors/base';
-import { Node as PG14Node } from '../14/types';
-import { Node as PG15Node } from '../15/types';
+import * as PG14 from '../14/types';
+import * as PG15 from '../15/types';
+
+// Note: We use 'any' for some node types because the generated types don't accurately
+// reflect the actual parser output. For example, A_Const.val is typed as generic 'Node'
+// but actually contains specific node types like String, Integer, Float, etc.
 
 export class V14ToV15Transformer extends BaseTransformer {
   transform(node: any, context?: TransformerContext): any {
@@ -23,6 +27,7 @@ export class V14ToV15Transformer extends BaseTransformer {
   }
 
   A_Const(nodeData: any, context?: TransformerContext): any {
+    // Using 'any' because PG14.A_Const.val is typed as generic Node but contains specific types
     const transformedData: any = { ...nodeData };
     
     if (nodeData.val) {
@@ -64,6 +69,7 @@ export class V14ToV15Transformer extends BaseTransformer {
   }
 
   String(node: any, context?: TransformerContext): any {
+    // String node transformation: str -> sval
     const transformedData = { ...node };
     
     if ('str' in transformedData) {
@@ -75,6 +81,7 @@ export class V14ToV15Transformer extends BaseTransformer {
   }
 
   BitString(node: any, context?: TransformerContext): any {
+    // BitString node transformation: str -> bsval
     const transformedData = { ...node };
     
     if ('str' in transformedData) {
@@ -86,6 +93,7 @@ export class V14ToV15Transformer extends BaseTransformer {
   }
 
   Float(node: any, context?: TransformerContext): any {
+    // Float node transformation: str -> fval
     const transformedData = { ...node };
     
     if ('str' in transformedData) {
@@ -97,6 +105,7 @@ export class V14ToV15Transformer extends BaseTransformer {
   }
 
   AlterPublicationStmt(node: any, context?: TransformerContext): any {
+    // AlterPublicationStmt: tables -> pubobjects, tableAction -> action
     const transformedData = { ...node };
     
     if ('tables' in transformedData) {
@@ -112,6 +121,7 @@ export class V14ToV15Transformer extends BaseTransformer {
   }
 
   CreatePublicationStmt(node: any, context?: TransformerContext): any {
+    // CreatePublicationStmt: transform tables array to pubobjects with PublicationObjSpec
     const transformedData = { ...node };
     
     if ('tables' in transformedData && Array.isArray(transformedData.tables)) {
@@ -141,7 +151,7 @@ export class V14ToV15Transformer extends BaseTransformer {
     return transformedData;
   }
 
-  FuncCall(node: any, context?: TransformerContext): any {
+  FuncCall(node: PG14.FuncCall, context?: TransformerContext): any {
     const transformedData = { ...node };
     
     if (!('funcformat' in transformedData)) {
@@ -181,7 +191,7 @@ export class V14ToV15Transformer extends BaseTransformer {
     return transformedData;
   }
 
-  ColumnRef(node: any, context?: TransformerContext): any {
+  ColumnRef(node: PG14.ColumnRef, context?: TransformerContext): any {
     const transformedData = { ...node };
     
     if (transformedData.fields && Array.isArray(transformedData.fields)) {
@@ -191,7 +201,7 @@ export class V14ToV15Transformer extends BaseTransformer {
     return transformedData;
   }
 
-  WindowDef(node: any, context?: TransformerContext): any {
+  WindowDef(node: PG14.WindowDef, context?: TransformerContext): any {
     const transformedData = { ...node };
     
     if (!('frameOptions' in transformedData)) {
@@ -213,6 +223,7 @@ export class V14ToV15Transformer extends BaseTransformer {
   }
 
   SelectStmt(nodeData: any, context?: TransformerContext): any {
+    // SelectStmt: handle limitOption and op defaults, orderClause -> sortClause in some contexts
     const transformedData: any = {};
     
     for (const [key, value] of Object.entries(nodeData)) {
@@ -289,7 +300,7 @@ export class V14ToV15Transformer extends BaseTransformer {
 
 
 
-  Integer(node: any, context?: TransformerContext): any {
+  Integer(node: PG14.Integer, context?: TransformerContext): any {
     const transformedData = { ...node };
     
     if (!('ival' in transformedData)) {
@@ -300,6 +311,7 @@ export class V14ToV15Transformer extends BaseTransformer {
   }
 
   DefElem(node: any, context?: TransformerContext): any {
+    // DefElem: convert Integer(0/1) to Boolean for 'strict' and 'cycle' definitions
     const transformedData = { ...node };
     
     if (transformedData.arg && transformedData.arg.Integer && (transformedData.defname === 'strict' || transformedData.defname === 'cycle')) {
@@ -326,7 +338,7 @@ export class V14ToV15Transformer extends BaseTransformer {
     return transformedData;
   }
 
-  RangeVar(node: any, context?: TransformerContext): any {
+  RangeVar(node: PG14.RangeVar, context?: TransformerContext): any {
     return node;
   }
 }
