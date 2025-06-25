@@ -31,10 +31,12 @@ export class V13ToV14Transformer extends BaseTransformer {
       if (typeof nodeData.ival === 'object' && nodeData.ival.ival !== undefined) {
         transformedData.val = { Integer: { ival: nodeData.ival.ival } };
       } else if (nodeData.ival === 0 || (typeof nodeData.ival === 'object' && Object.keys(nodeData.ival).length === 0)) {
-        transformedData.val = { Integer: { ival: 0 } };
+        transformedData.val = { Integer: {} };
+      } else {
+        transformedData.val = { Integer: { ival: nodeData.ival } };
       }
       delete transformedData.ival;
-    } else if (nodeData.fval !== undefined) {
+    }else if (nodeData.fval !== undefined) {
       const fvalStr = typeof nodeData.fval === 'object' ? nodeData.fval.fval : nodeData.fval;
       transformedData.val = { Float: { str: fvalStr } };
       delete transformedData.fval;
@@ -70,6 +72,10 @@ export class V13ToV14Transformer extends BaseTransformer {
     
     if (transformedData.mode === "FUNC_PARAM_IN") {
       transformedData.mode = "FUNC_PARAM_DEFAULT";
+    }
+    
+    if (transformedData.argType && typeof transformedData.argType === 'object') {
+      transformedData.argType = this.transform(transformedData.argType, context);
     }
     
     return transformedData;
@@ -150,22 +156,13 @@ export class V13ToV14Transformer extends BaseTransformer {
     return transformedData;
   }
 
-  TypeName(nodeData: any, context?: TransformerContext): any {
-    const defaultResult = super.transformDefault({ TypeName: nodeData }, 'TypeName', nodeData, context);
-    const processedData = defaultResult.TypeName;
-    
-    if (!('typemod' in processedData)) {
-      processedData.typemod = -1;
-    }
-    
-    return processedData;
-  }
+
 
   TypeCast(nodeData: any, context?: TransformerContext): any {
     const transformedData: any = { ...nodeData };
     
     if (transformedData.typeName && typeof transformedData.typeName === 'object') {
-      transformedData.typeName = this.TypeName(transformedData.typeName, context);
+      transformedData.typeName = this.transform(transformedData.typeName, context);
     }
     
     if (transformedData.arg && typeof transformedData.arg === 'object') {
@@ -179,7 +176,7 @@ export class V13ToV14Transformer extends BaseTransformer {
     const transformedData: any = { ...nodeData };
     
     if (transformedData.typeName && typeof transformedData.typeName === 'object') {
-      transformedData.typeName = this.TypeName(transformedData.typeName, context);
+      transformedData.typeName = this.transform(transformedData.typeName, context);
     }
     
     if (transformedData.constraints && Array.isArray(transformedData.constraints)) {
@@ -203,28 +200,53 @@ export class V13ToV14Transformer extends BaseTransformer {
   }
 
   protected transformDefault(node: any, nodeType: string, nodeData: any, context?: TransformerContext): any {
-    const result = super.transformDefault(node, nodeType, nodeData, context);
-    const transformedData = result[nodeType];
+    if (!nodeData || typeof nodeData !== 'object') {
+      return node;
+    }
+
+    if (Array.isArray(nodeData)) {
+      return { [nodeType]: nodeData.map(item => this.transform(item, context)) };
+    }
+
+    const result: any = {};
     
-    if ((nodeType === 'AlterTableStmt' || nodeType === 'CreateTableAsStmt') && transformedData && 'relkind' in transformedData) {
-      transformedData.objtype = transformedData.relkind;
-      delete transformedData.relkind;
+    for (const [key, value] of Object.entries(nodeData)) {
+      if (Array.isArray(value)) {
+        result[key] = value.map(item => this.transform(item, context));
+      } else if (value && typeof value === 'object') {
+        result[key] = this.transform(value, context);
+      } else {
+        result[key] = value;
+      }
     }
     
-    if (nodeType === 'CreateTableAsStmt' && transformedData && transformedData.into && !('onCommit' in transformedData.into)) {
-      transformedData.into.onCommit = "ONCOMMIT_NOOP";
+    if (nodeType !== 'TypeName') {
+      this.ensureCriticalFields(result, nodeType);
     }
     
-    if (transformedData && typeof transformedData === 'object') {
-      this.applyRuntimeSchemaDefaults(nodeType, transformedData);
+    if ((nodeType === 'AlterTableStmt' || nodeType === 'CreateTableAsStmt') && result && 'relkind' in result) {
+      result.objtype = result.relkind;
+      delete result.relkind;
     }
     
-    return { [nodeType]: transformedData };
+    if (nodeType === 'CreateTableAsStmt' && result && result.into && !('onCommit' in result.into)) {
+      result.into.onCommit = "ONCOMMIT_NOOP";
+    }
+    
+    if (result && typeof result === 'object') {
+      this.applyRuntimeSchemaDefaults(nodeType, result);
+    }
+    
+    return { [nodeType]: result };
   }
 
 
 
   private ensureTypeNameFields(obj: any): void {
+    return;
+  }
+
+  protected ensureTypeNameFieldsRecursively(obj: any): void {
     return;
   }
 
@@ -252,7 +274,7 @@ export class V13ToV14Transformer extends BaseTransformer {
     const transformedData: any = { ...nodeData };
     
     if (transformedData.returnType && typeof transformedData.returnType === 'object') {
-      transformedData.returnType = this.TypeName(transformedData.returnType, context);
+      transformedData.returnType = this.transform(transformedData.returnType, context);
     }
     
     if (transformedData.parameters && Array.isArray(transformedData.parameters)) {
@@ -262,10 +284,44 @@ export class V13ToV14Transformer extends BaseTransformer {
     return transformedData;
   }
 
+  TypeName(nodeData: any, context?: TransformerContext): any {
+    const transformedData: any = { ...nodeData };
+    
+    if (transformedData.names && Array.isArray(transformedData.names)) {
+      transformedData.names = transformedData.names.map((name: any) => this.transform(name, context));
+    }
+    
+    return transformedData;
+  }
+
   private applyRuntimeSchemaDefaults(nodeType: string, nodeData: any): void {
   }
 
   protected ensureCriticalFields(nodeData: any, nodeType: string): void {
-    super.ensureCriticalFields(nodeData, nodeType);
+    if (!nodeData || typeof nodeData !== 'object') return;
+
+    if (nodeType === 'RangeVar') {
+      if (!('location' in nodeData)) {
+        nodeData.location = undefined;
+      }
+      if (!('relpersistence' in nodeData)) {
+        nodeData.relpersistence = 'p';
+      }
+      if (!('inh' in nodeData)) {
+        nodeData.inh = true;
+      }
+    }
+
+    if (nodeData.relation && typeof nodeData.relation === 'object') {
+      if (!('location' in nodeData.relation)) {
+        nodeData.relation.location = undefined;
+      }
+      if (!('relpersistence' in nodeData.relation)) {
+        nodeData.relation.relpersistence = 'p';
+      }
+      if (!('inh' in nodeData.relation)) {
+        nodeData.relation.inh = true;
+      }
+    }
   }
 }
