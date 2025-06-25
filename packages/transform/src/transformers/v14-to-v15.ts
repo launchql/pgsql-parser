@@ -290,13 +290,7 @@ export class V14ToV15Transformer extends BaseTransformer {
 
 
   Integer(node: any, context?: TransformerContext): any {
-    const transformedData = { ...node };
-    
-    if ('ival' in transformedData && transformedData.ival === -1) {
-      return {};
-    }
-    
-    return transformedData;
+    return { ...node };
   }
 
   DefElem(node: any, context?: TransformerContext): any {
