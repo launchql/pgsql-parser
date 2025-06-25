@@ -37,7 +37,7 @@ export class V14ToV15Transformer extends BaseTransformer {
         delete transformedData.val;
       } else if (nodeData.val.Integer) {
         const intVal = nodeData.val.Integer.ival;
-        if (intVal === 0 || intVal === undefined) {
+        if (intVal === 0 || intVal === undefined || intVal === -2147483647 || intVal === -32767) {
           transformedData.ival = {};
         } else {
           transformedData.ival = { ival: intVal };
@@ -290,7 +290,13 @@ export class V14ToV15Transformer extends BaseTransformer {
 
 
   Integer(node: any, context?: TransformerContext): any {
-    return { ...node };
+    const transformedData = { ...node };
+    
+    if (!('ival' in transformedData)) {
+      transformedData.ival = -1;
+    }
+    
+    return transformedData;
   }
 
   DefElem(node: any, context?: TransformerContext): any {
