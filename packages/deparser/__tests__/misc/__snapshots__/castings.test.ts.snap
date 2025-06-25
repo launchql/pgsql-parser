@@ -2,5 +2,5 @@
 
 exports[`should format foreign key constraint with pretty option enabled 1`] = `
 "SELECT
-  CAST('123' AS int);"
+  '123'::int;"
 `;

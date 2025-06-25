@@ -1985,6 +1985,22 @@ export class Deparser implements DeparserVisitor {
     }
   }
 
+  isPgCatalogType(typeName: string): boolean {
+    const cleanTypeName = typeName.replace(/^pg_catalog\./, '');
+    
+    if (pgCatalogTypes.includes(cleanTypeName)) {
+      return true;
+    }
+    
+    for (const [realType, aliases] of pgCatalogTypeAliases) {
+      if (aliases.includes(cleanTypeName)) {
+        return true;
+      }
+    }
+    
+    return false;
+  }
+
   A_ArrayExpr(node: t.A_ArrayExpr, context: DeparserContext): string {
     const elements = ListUtils.unwrapList(node.elements);
     const elementStrs = elements.map(el => this.visit(el, context));
@@ -2093,30 +2109,30 @@ export class Deparser implements DeparserVisitor {
     const arg = this.visit(node.arg, context);
     const typeName = this.TypeName(node.typeName, context);
     
-    // Check if this is a bpchar typecast that should use traditional char syntax
-    if (typeName === 'bpchar' && node.typeName && node.typeName.names) {
-      const names = ListUtils.unwrapList(node.typeName.names);
-      if (names.length === 2 && 
-          names[0].String?.sval === 'pg_catalog' && 
-          names[1].String?.sval === 'bpchar') {
-        return `char ${arg}`;
+    // Check if this is a bpchar typecast that should preserve original syntax for AST consistency
+    if (typeName === 'bpchar' || typeName === 'pg_catalog.bpchar') {
+      const names = node.typeName?.names;
+      const isQualifiedBpchar = names && names.length === 2 && 
+                               (names[0] as any)?.String?.sval === 'pg_catalog' && 
+                               (names[1] as any)?.String?.sval === 'bpchar';
+      
+      if (isQualifiedBpchar) {
+        return `CAST(${arg} AS ${typeName})`;
       }
     }
     
-    // Check if the argument is a complex expression that should preserve CAST syntax
-    const argType = this.getNodeType(node.arg);
-    const isComplexExpression = argType === 'A_Expr' || argType === 'FuncCall' || argType === 'OpExpr';
-    
-    if (!isComplexExpression && (typeName.startsWith('interval') || 
-        typeName.startsWith('char') || 
-        typeName === '"char"' ||
-        typeName.startsWith('bpchar') ||
-        typeName === 'bytea' ||
-        typeName === 'orderedarray' ||
-        typeName === 'date')) {
-      // Remove pg_catalog prefix for :: syntax
-      const cleanTypeName = typeName.replace('pg_catalog.', '');
-      return `${arg}::${cleanTypeName}`;
+    if (this.isPgCatalogType(typeName)) {
+      const argType = this.getNodeType(node.arg);
+      
+      // Avoid :: syntax for expressions that might need parentheses or complex structures
+      const isSimpleArgument = argType === 'A_Const' || argType === 'ColumnRef';
+      
+      if (isSimpleArgument) {
+        if (!arg.includes('(') && !arg.startsWith('-')) {
+          const cleanTypeName = typeName.replace('pg_catalog.', '');
+          return `${arg}::${cleanTypeName}`;
+        }
+      }
     }
     
     return `CAST(${arg} AS ${typeName})`;

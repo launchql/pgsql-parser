@@ -81,14 +81,14 @@ WHERE
   p.archived = false"
 `;
 
-exports[`Pretty Misc SQL formatting should format misc-5: Nested CTEs with type casts and subqueries (non-pretty) 1`] = `"WITH logs AS (SELECT id, CAST(payload AS pg_catalog.json) ->> 'event' AS event, CAST(CAST(payload AS pg_catalog.json) ->> 'ts' AS pg_catalog.timestamp) AS ts FROM event_log WHERE ts > (now() - '7 days'::interval)) SELECT event, count(*) AS freq FROM ( SELECT DISTINCT event, ts::date AS event_day FROM logs ) AS d GROUP BY event ORDER BY freq DESC"`;
+exports[`Pretty Misc SQL formatting should format misc-5: Nested CTEs with type casts and subqueries (non-pretty) 1`] = `"WITH logs AS (SELECT id, payload::json ->> 'event' AS event, CAST(payload::json ->> 'ts' AS pg_catalog.timestamp) AS ts FROM event_log WHERE ts > (now() - '7 days'::interval)) SELECT event, count(*) AS freq FROM ( SELECT DISTINCT event, ts::date AS event_day FROM logs ) AS d GROUP BY event ORDER BY freq DESC"`;
 
 exports[`Pretty Misc SQL formatting should format misc-5: Nested CTEs with type casts and subqueries (pretty) 1`] = `
 "WITH 
 logs AS (SELECT
   id,
-  CAST(payload AS pg_catalog.json) ->> 'event' AS event,
-  CAST(CAST(payload AS pg_catalog.json) ->> 'ts' AS pg_catalog.timestamp) AS ts
+  payload::json ->> 'event' AS event,
+  CAST(payload::json ->> 'ts' AS pg_catalog.timestamp) AS ts
 FROM event_log
 WHERE
   ts > (now() - '7 days'::interval))
@@ -175,7 +175,7 @@ CASE
 END"
 `;
 
-exports[`Pretty Misc SQL formatting should format misc-8: Large Case Stmt (non-pretty) 1`] = `"SELECT CASE WHEN n = 2 OR n = 3 THEN ARRAY['month', COALESCE(extra_label, 'unknown')] WHEN n IN (4, 5) THEN CASE WHEN is_leap_year THEN ARRAY['year', 'leap'] ELSE ARRAY['year'] END WHEN n = 6 THEN ARRAY['year', 'month', 'quarter'] WHEN n = 8 THEN ARRAY['day', 'week', compute_label(n)] WHEN n = 1024 THEN ARRAY['hour', format('%s-hour', extra_label)] WHEN n = 1032 AND flag = true THEN ARRAY['day', 'hour', 'flagged'] WHEN n BETWEEN 2048 AND 2049 THEN ARRAY['minute', 'tick'] WHEN n = 3072 THEN ARRAY['hour', 'minute', current_setting('timezone')] WHEN n = 3080 THEN ARRAY['day', 'minute', to_char(now(), 'HH24:MI')] WHEN n IN (4096, 4097, 4098) THEN ARRAY['second', 'millisecond'] WHEN n = 6144 THEN ARRAY['minute', 'second', CASE WHEN use_micro = true THEN 'microsecond' ELSE 'none' END] WHEN n = 7168 OR (n > 7170 AND n < 7180) THEN ARRAY['hour', 'second', 'buffered'] WHEN n = 7176 THEN ARRAY['day', 'second', CAST(extra_info AS text)] WHEN n = 32767 THEN CAST(ARRAY[] AS text[]) ELSE ARRAY['undefined', 'unknown', 'fallback'] END"`;
+exports[`Pretty Misc SQL formatting should format misc-8: Large Case Stmt (non-pretty) 1`] = `"SELECT CASE WHEN n = 2 OR n = 3 THEN ARRAY['month', COALESCE(extra_label, 'unknown')] WHEN n IN (4, 5) THEN CASE WHEN is_leap_year THEN ARRAY['year', 'leap'] ELSE ARRAY['year'] END WHEN n = 6 THEN ARRAY['year', 'month', 'quarter'] WHEN n = 8 THEN ARRAY['day', 'week', compute_label(n)] WHEN n = 1024 THEN ARRAY['hour', format('%s-hour', extra_label)] WHEN n = 1032 AND flag = true THEN ARRAY['day', 'hour', 'flagged'] WHEN n BETWEEN 2048 AND 2049 THEN ARRAY['minute', 'tick'] WHEN n = 3072 THEN ARRAY['hour', 'minute', current_setting('timezone')] WHEN n = 3080 THEN ARRAY['day', 'minute', to_char(now(), 'HH24:MI')] WHEN n IN (4096, 4097, 4098) THEN ARRAY['second', 'millisecond'] WHEN n = 6144 THEN ARRAY['minute', 'second', CASE WHEN use_micro = true THEN 'microsecond' ELSE 'none' END] WHEN n = 7168 OR (n > 7170 AND n < 7180) THEN ARRAY['hour', 'second', 'buffered'] WHEN n = 7176 THEN ARRAY['day', 'second', extra_info::text] WHEN n = 32767 THEN CAST(ARRAY[] AS text[]) ELSE ARRAY['undefined', 'unknown', 'fallback'] END"`;
 
 exports[`Pretty Misc SQL formatting should format misc-8: Large Case Stmt (pretty) 1`] = `
 "SELECT
@@ -202,7 +202,7 @@ END]
   WHEN n = 7168
     OR (n > 7170
     AND n < 7180) THEN ARRAY['hour', 'second', 'buffered'] 
-  WHEN n = 7176 THEN ARRAY['day', 'second', CAST(extra_info AS text)] 
+  WHEN n = 7176 THEN ARRAY['day', 'second', extra_info::text] 
   WHEN n = 32767 THEN CAST(ARRAY[] AS text[]) 
   ELSE ARRAY['undefined', 'unknown', 'fallback'] 
 END"
