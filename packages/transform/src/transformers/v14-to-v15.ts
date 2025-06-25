@@ -272,8 +272,16 @@ export class V14ToV15Transformer extends BaseTransformer {
       transformedData.orderClause = transformedData.orderClause.map((item: any) => this.transform(item, context));
     }
     
+    if (transformedData.sortClause && Array.isArray(transformedData.sortClause)) {
+      transformedData.sortClause = transformedData.sortClause.map((item: any) => this.transform(item, context));
+    }
+    
     if (transformedData.limitClause && typeof transformedData.limitClause === 'object') {
       transformedData.limitClause = this.transform(transformedData.limitClause, context);
+    }
+    
+    if (transformedData.valuesLists && Array.isArray(transformedData.valuesLists)) {
+      transformedData.valuesLists = transformedData.valuesLists.map((item: any) => this.transform(item, context));
     }
     
     return transformedData;
