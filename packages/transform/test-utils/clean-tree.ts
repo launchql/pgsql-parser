@@ -58,12 +58,14 @@ export const cleanLines = (sql: string) => {
   };
   
   const noop = (): undefined => undefined;
+  const removeUndefined = (value: any): undefined => undefined;
   
   export const cleanTree = (tree: any) => {
     return transform(tree, {
       stmt_len: noop,
       stmt_location: noop,
-      location: noop
+      location: removeUndefined,
+      typemod: removeUndefined
     });
   };
   

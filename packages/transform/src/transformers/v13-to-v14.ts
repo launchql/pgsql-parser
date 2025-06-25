@@ -21,7 +21,33 @@ export class V13ToV14Transformer extends BaseTransformer {
       };
     }
     
-    return super.transform(node, context);
+    const result = super.transform(node, context);
+    
+    return this.cleanTypeNameFields(result);
+  }
+
+  private cleanTypeNameFields(node: any): any {
+    if (!node || typeof node !== 'object') {
+      return node;
+    }
+
+    if (Array.isArray(node)) {
+      return node.map(item => this.cleanTypeNameFields(item));
+    }
+
+    if (node.TypeName && typeof node.TypeName === 'object') {
+      const cleanedTypeName = { ...node.TypeName };
+      delete cleanedTypeName.location;
+      delete cleanedTypeName.typemod;
+      return { TypeName: this.cleanTypeNameFields(cleanedTypeName) };
+    }
+
+    const result: any = {};
+    for (const [key, value] of Object.entries(node)) {
+      result[key] = this.cleanTypeNameFields(value);
+    }
+    
+    return result;
   }
 
   A_Const(nodeData: any, context?: TransformerContext): any {
@@ -31,12 +57,12 @@ export class V13ToV14Transformer extends BaseTransformer {
       if (typeof nodeData.ival === 'object' && nodeData.ival.ival !== undefined) {
         transformedData.val = { Integer: { ival: nodeData.ival.ival } };
       } else if (nodeData.ival === 0 || (typeof nodeData.ival === 'object' && Object.keys(nodeData.ival).length === 0)) {
-        transformedData.val = { Integer: {} };
+        transformedData.val = { Integer: { ival: -1 } };
       } else {
         transformedData.val = { Integer: { ival: nodeData.ival } };
       }
       delete transformedData.ival;
-    }else if (nodeData.fval !== undefined) {
+    } else if (nodeData.fval !== undefined) {
       const fvalStr = typeof nodeData.fval === 'object' ? nodeData.fval.fval : nodeData.fval;
       transformedData.val = { Float: { str: fvalStr } };
       delete transformedData.fval;
@@ -53,12 +79,27 @@ export class V13ToV14Transformer extends BaseTransformer {
       delete transformedData.boolval;
     }
     
+    if (nodeData.val && nodeData.val.Integer && Object.keys(nodeData.val.Integer).length === 0) {
+      transformedData.val = { Integer: { ival: -1 } };
+    }
+    
     return transformedData;
   }
 
   FuncCall(nodeData: any, context?: TransformerContext): any {
-    const defaultResult = super.transformDefault({ FuncCall: nodeData }, 'FuncCall', nodeData, context);
-    const transformedData = defaultResult.FuncCall;
+    const transformedData: any = { ...nodeData };
+    
+    if (transformedData.funcname && Array.isArray(transformedData.funcname)) {
+      transformedData.funcname = transformedData.funcname.map((item: any) => this.transform(item, context));
+    }
+    
+    if (transformedData.args && Array.isArray(transformedData.args)) {
+      transformedData.args = transformedData.args.map((item: any) => this.transform(item, context));
+    }
+    
+    if (transformedData.over && typeof transformedData.over === 'object') {
+      transformedData.over = this.transform(transformedData.over, context);
+    }
     
     if (!('funcformat' in transformedData)) {
       transformedData.funcformat = "COERCE_EXPLICIT_CALL";
@@ -220,8 +261,29 @@ export class V13ToV14Transformer extends BaseTransformer {
       }
     }
     
-    if (nodeType !== 'TypeName') {
-      this.ensureCriticalFields(result, nodeType);
+    
+    if (nodeType === 'RangeVar') {
+      if (!('location' in result)) {
+        result.location = undefined;
+      }
+      if (!('relpersistence' in result)) {
+        result.relpersistence = 'p';
+      }
+      if (!('inh' in result)) {
+        result.inh = true;
+      }
+    }
+
+    if (result.relation && typeof result.relation === 'object') {
+      if (!('location' in result.relation)) {
+        result.relation.location = undefined;
+      }
+      if (!('relpersistence' in result.relation)) {
+        result.relation.relpersistence = 'p';
+      }
+      if (!('inh' in result.relation)) {
+        result.relation.inh = true;
+      }
     }
     
     if ((nodeType === 'AlterTableStmt' || nodeType === 'CreateTableAsStmt') && result && 'relkind' in result) {
@@ -284,12 +346,25 @@ export class V13ToV14Transformer extends BaseTransformer {
     return transformedData;
   }
 
+  DefElem(nodeData: any, context?: TransformerContext): any {
+    const transformedData: any = { ...nodeData };
+    
+    if (transformedData.arg && typeof transformedData.arg === 'object') {
+      transformedData.arg = this.transform(transformedData.arg, context);
+    }
+    
+    return transformedData;
+  }
+
   TypeName(nodeData: any, context?: TransformerContext): any {
     const transformedData: any = { ...nodeData };
     
     if (transformedData.names && Array.isArray(transformedData.names)) {
       transformedData.names = transformedData.names.map((name: any) => this.transform(name, context));
     }
+    
+    delete transformedData.location;
+    delete transformedData.typemod;
     
     return transformedData;
   }
@@ -300,6 +375,10 @@ export class V13ToV14Transformer extends BaseTransformer {
   protected ensureCriticalFields(nodeData: any, nodeType: string): void {
     if (!nodeData || typeof nodeData !== 'object') return;
 
+    if (nodeType === 'TypeName') {
+      return;
+    }
+    
     if (nodeType === 'RangeVar') {
       if (!('location' in nodeData)) {
         nodeData.location = undefined;
@@ -323,5 +402,6 @@ export class V13ToV14Transformer extends BaseTransformer {
         nodeData.relation.inh = true;
       }
     }
+
   }
 }

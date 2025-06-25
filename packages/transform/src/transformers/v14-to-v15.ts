@@ -60,6 +60,13 @@ export class V14ToV15Transformer extends BaseTransformer {
     return transformedData;
   }
 
+  Integer(nodeData: any, context?: TransformerContext): any {
+    if (nodeData.ival === -1 || nodeData.ival === 0 || nodeData.ival === undefined) {
+      return {};
+    }
+    return nodeData;
+  }
+
   String(node: any, context?: TransformerContext): any {
     if ('str' in node) {
       return { sval: node.str };
