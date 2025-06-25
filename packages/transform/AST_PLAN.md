@@ -16,7 +16,7 @@ We have implemented a series of AST transformers that can upgrade ASTs sequentia
 
 The approach will be functional and composable, allowing us to chain transformations to go from any older version to version 17.
 
-## Phase 1: Generate Example ASTs (Current Task)
+## Phase 1: Generate Example ASTs ✅ COMPLETED
 
 ### Directory Structure
 ```
@@ -53,6 +53,20 @@ We'll use these SQL queries to generate ASTs for each version:
 6. **create_table.json**: `CREATE TABLE users (id SERIAL PRIMARY KEY, name TEXT NOT NULL)`
 7. **alter_table.json**: `ALTER TABLE users ADD COLUMN email TEXT`
 8. **complex_query.json**: A more complex query with CTEs, window functions, etc.
+
+### Generated Fixtures
+
+The AST fixtures have been successfully generated in `__fixtures__/transform/` with the following structure:
+
+- Each version (13-17) has its own directory
+- Each directory contains 8 JSON files with ASTs for the test queries
+- The script used: `packages/transform/scripts/generate-ast-fixtures.js`
+- Generation summary available at: `__fixtures__/transform/generation-summary.json`
+
+These fixtures now serve as the foundation for:
+1. Understanding AST differences between versions
+2. Testing our transformation logic
+3. Validating that transformations preserve semantic meaning
 
 ## Phase 2: Implement Core Transformation Infrastructure
 
@@ -153,7 +167,7 @@ Key changes:
 
 ## Implementation Order
 
-1. **Step 0** (Current): Generate example ASTs for testing
+1. **Step 0** ✅ COMPLETED: Generate example ASTs for testing
 2. **Step 1**: Build core infrastructure and base types
 3. **Step 2**: Implement 14→15 transformer (most critical due to enum format change)
 4. **Step 3**: Implement 13→14 transformer

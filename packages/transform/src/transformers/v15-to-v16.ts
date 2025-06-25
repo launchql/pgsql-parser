@@ -1,6 +1,10 @@
 import { BaseTransformer, TransformerContext } from '../visitors/base';
-import { Node as PG15Node } from '../15/types';
-import { Node as PG16Node } from '../16/types';
+import * as PG15 from '../15/types';
+import * as PG16 from '../16/types';
+
+// Note: We use 'any' for some node types because the generated types don't accurately
+// reflect the actual parser output structure, particularly for fields that exist in
+// the parser output but not in the generated types.
 
 export class V15ToV16Transformer extends BaseTransformer {
   transform(node: any, context?: TransformerContext): any {
@@ -25,6 +29,7 @@ export class V15ToV16Transformer extends BaseTransformer {
 
 
   SelectStmt(nodeData: any, context?: TransformerContext): any {
+    // SelectStmt: handle limitOption and op defaults
     const transformedData: any = {};
     
     for (const [key, value] of Object.entries(nodeData)) {
@@ -93,15 +98,15 @@ export class V15ToV16Transformer extends BaseTransformer {
 
 
 
-  Var(node: any, context?: TransformerContext): any {
+  Var(node: PG15.Var, context?: TransformerContext): any {
     return node;
   }
 
-  Aggref(node: any, context?: TransformerContext): any {
+  Aggref(node: PG15.Aggref, context?: TransformerContext): any {
     return node;
   }
 
-  Integer(node: any, context?: TransformerContext): any {
+  Integer(node: PG15.Integer, context?: TransformerContext): any {
     const transformedData = { ...node };
     
     if (!('ival' in transformedData)) {
