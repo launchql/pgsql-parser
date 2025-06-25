@@ -241,17 +241,27 @@ export class V13ToV14Transformer extends BaseTransformer {
       );
       
       if (hasTypeNameArgs) {
-        transformedData.objfuncargs = transformedData.objargs.map((arg: any) => {
-          if (arg && typeof arg === 'object' && arg.TypeName) {
-            return {
-              FunctionParameter: {
-                argType: arg.TypeName,
-                mode: "FUNC_PARAM_DEFAULT"
-              }
-            };
-          }
-          return arg;
-        });
+        const isFunction = context?.removeType === 'OBJECT_FUNCTION' || 
+                          context?.removeType === 'OBJECT_PROCEDURE' ||
+                          context?.removeType === 'OBJECT_AGGREGATE' ||
+                          context?.statementType === 'AlterFunctionStmt' ||
+                          context?.statementType === 'CreateCastStmt' ||
+                          context?.isFunction ||
+                          (context?.objtype && context.objtype !== 'OBJECT_OPERATOR');
+        
+        if (isFunction) {
+          transformedData.objfuncargs = transformedData.objargs.map((arg: any) => {
+            if (arg && typeof arg === 'object' && arg.TypeName) {
+              return {
+                FunctionParameter: {
+                  argType: arg.TypeName,
+                  mode: "FUNC_PARAM_DEFAULT"
+                }
+              };
+            }
+            return arg;
+          });
+        }
       }
     }
     
@@ -273,6 +283,65 @@ export class V13ToV14Transformer extends BaseTransformer {
     
     return transformedData;
   }
+
+  DropStmt(nodeData: PG13.DropStmt, context?: TransformerContext): any {
+    const transformedData: any = {};
+    
+    for (const [key, value] of Object.entries(nodeData)) {
+      if (key === 'objects' && Array.isArray(value)) {
+        const dropContext = { ...context, removeType: nodeData.removeType };
+        transformedData[key] = value.map(item => this.transform(item, dropContext));
+      } else if (Array.isArray(value)) {
+        transformedData[key] = value.map(item => this.transform(item, context));
+      } else if (value && typeof value === 'object') {
+        transformedData[key] = this.transform(value, context);
+      } else {
+        transformedData[key] = value;
+      }
+    }
+    
+    return transformedData;
+  }
+
+  CommentStmt(nodeData: PG13.CommentStmt, context?: TransformerContext): any {
+    const transformedData: any = {};
+    
+    for (const [key, value] of Object.entries(nodeData)) {
+      if (key === 'object' && value && typeof value === 'object') {
+        const commentContext = { ...context, objtype: nodeData.objtype };
+        transformedData[key] = this.transform(value, commentContext);
+      } else if (Array.isArray(value)) {
+        transformedData[key] = value.map(item => this.transform(item, context));
+      } else if (value && typeof value === 'object') {
+        transformedData[key] = this.transform(value, context);
+      } else {
+        transformedData[key] = value;
+      }
+    }
+    
+    return transformedData;
+  }
+
+  CreateCastStmt(nodeData: PG13.CreateCastStmt, context?: TransformerContext): any {
+    const transformedData: any = {};
+    
+    for (const [key, value] of Object.entries(nodeData)) {
+      if (key === 'func' && value && typeof value === 'object') {
+        const funcContext = { ...context, statementType: 'CreateCastStmt', isFunction: true };
+        transformedData[key] = this.ObjectWithArgs(value, funcContext);
+      } else if (Array.isArray(value)) {
+        transformedData[key] = value.map(item => this.transform(item, context));
+      } else if (value && typeof value === 'object') {
+        transformedData[key] = this.transform(value, context);
+      } else {
+        transformedData[key] = value;
+      }
+    }
+    
+    return transformedData;
+  }
+
+
 
   protected transformDefault(node: any, nodeType: string, nodeData: any, context?: TransformerContext): any {
     const result = super.transformDefault(node, nodeType, nodeData, context);
