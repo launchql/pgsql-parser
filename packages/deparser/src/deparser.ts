@@ -2124,11 +2124,13 @@ export class Deparser implements DeparserVisitor {
     if (this.isPgCatalogType(typeName)) {
       const argType = this.getNodeType(node.arg);
       
-      // Avoid :: syntax for expressions that might need parentheses or complex structures
       const isSimpleArgument = argType === 'A_Const' || argType === 'ColumnRef';
+      const isFunctionCall = argType === 'FuncCall';
       
-      if (isSimpleArgument) {
-        if (!arg.includes('(') && !arg.startsWith('-')) {
+      if (isSimpleArgument || isFunctionCall) {
+        // For simple arguments, avoid :: syntax if they have complex structure
+        if (isSimpleArgument && (arg.includes('(') || arg.startsWith('-'))) {
+        } else {
           const cleanTypeName = typeName.replace('pg_catalog.', '');
           return `${arg}::${cleanTypeName}`;
         }
