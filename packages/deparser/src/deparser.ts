@@ -195,7 +195,7 @@ export class Deparser implements DeparserVisitor {
     return delimiter;
   }
 
-  deparse(node: Node, context: DeparserContext = { parentNodeTypes: [] }): string | null {
+  deparse(node: Node, context: DeparserContext = new DeparserContext({})): string | null {
     if (node == null) {
       return null;
     }
@@ -212,7 +212,7 @@ export class Deparser implements DeparserVisitor {
     }
   }
 
-  visit(node: Node, context: DeparserContext = { parentNodeTypes: [] }): string {
+  visit(node: Node, context: DeparserContext = new DeparserContext({})): string {
     const nodeType = this.getNodeType(node);
     
     // Handle empty objects
@@ -224,11 +224,7 @@ export class Deparser implements DeparserVisitor {
 
     const methodName = nodeType as keyof this;
     if (typeof this[methodName] === 'function') {
-      const childContext: DeparserContext = {
-        ...context,
-        parentNodeTypes: [...context.parentNodeTypes, nodeType]
-      };
-      const result = (this[methodName] as any)(nodeData, childContext);
+      const result = (this[methodName] as any)(nodeData, context);
       
       return result;
     }
@@ -347,7 +343,7 @@ export class Deparser implements DeparserVisitor {
       const distinctClause = ListUtils.unwrapList(node.distinctClause);
       if (distinctClause.length > 0 && Object.keys(distinctClause[0]).length > 0) {
         const clause = distinctClause
-          .map(e => this.visit(e as Node, { ...context, select: true }))
+          .map(e => this.visit(e as Node, context.spawn('SelectStmt', { select: true })))
           .join(', ');
         distinctPart = ' DISTINCT ON ' + this.formatter.parens(clause);
       } else {
@@ -358,7 +354,7 @@ export class Deparser implements DeparserVisitor {
         if (distinctClause.length > 0 && Object.keys(distinctClause[0]).length > 0) {
           output.push('DISTINCT ON');
           const clause = distinctClause
-            .map(e => this.visit(e as Node, { ...context, select: true }))
+            .map(e => this.visit(e as Node, context.spawn('SelectStmt', { select: true })))
             .join(', ');
           output.push(this.formatter.parens(clause));
         } else {
@@ -372,7 +368,7 @@ export class Deparser implements DeparserVisitor {
       if (this.formatter.isPretty()) {
         if (targetList.length === 1) {
           const targetNode = targetList[0] as Node;
-          const target = this.visit(targetNode, { ...context, select: true });
+          const target = this.visit(targetNode, context.spawn('SelectStmt', { select: true }));
           
           // Check if single target is complex - if so, use multiline format
           if (this.isComplexSelectTarget(targetNode)) {
@@ -388,7 +384,7 @@ export class Deparser implements DeparserVisitor {
         } else {
           const targetStrings = targetList
             .map(e => {
-              const targetStr = this.visit(e as Node, { ...context, select: true });
+              const targetStr = this.visit(e as Node, context.spawn('SelectStmt', { select: true }));
               if (this.containsMultilineStringLiteral(targetStr)) {
                 return targetStr;
               }
@@ -400,7 +396,7 @@ export class Deparser implements DeparserVisitor {
         }
       } else {
         const targets = targetList
-          .map(e => this.visit(e as Node, { ...context, select: true }))
+          .map(e => this.visit(e as Node, context.spawn('SelectStmt', { select: true })))
           .join(', ');
         output.push(targets);
       }
@@ -414,7 +410,7 @@ export class Deparser implements DeparserVisitor {
     if (node.fromClause) {
       const fromList = ListUtils.unwrapList(node.fromClause);
       const fromItems = fromList
-        .map(e => this.deparse(e as Node, { ...context, from: true }))
+        .map(e => this.deparse(e as Node, context.spawn('SelectStmt', { from: true })))
         .join(', ');
       output.push('FROM ' + fromItems.trim());
     }
@@ -466,7 +462,7 @@ export class Deparser implements DeparserVisitor {
       if (this.formatter.isPretty()) {
         const groupItems = groupList
           .map(e => {
-            const groupStr = this.visit(e as Node, { ...context, group: true });
+            const groupStr = this.visit(e as Node, context.spawn('SelectStmt', { group: true }));
             if (this.containsMultilineStringLiteral(groupStr)) {
               return groupStr;
             }
@@ -478,7 +474,7 @@ export class Deparser implements DeparserVisitor {
       } else {
         output.push('GROUP BY');
         const groupItems = groupList
-          .map(e => this.visit(e as Node, { ...context, group: true }))
+          .map(e => this.visit(e as Node, context.spawn('SelectStmt', { group: true })))
           .join(', ');
         output.push(groupItems);
       }
@@ -513,7 +509,7 @@ export class Deparser implements DeparserVisitor {
       if (this.formatter.isPretty()) {
         const sortItems = sortList
           .map(e => {
-            const sortStr = this.visit(e as Node, { ...context, sort: true });
+            const sortStr = this.visit(e as Node, context.spawn('SelectStmt', { sort: true }));
             if (this.containsMultilineStringLiteral(sortStr)) {
               return sortStr;
             }
@@ -525,7 +521,7 @@ export class Deparser implements DeparserVisitor {
       } else {
         output.push('ORDER BY');
         const sortItems = sortList
-          .map(e => this.visit(e as Node, { ...context, sort: true }))
+          .map(e => this.visit(e as Node, context.spawn('SelectStmt', { sort: true })))
           .join(', ');
         output.push(sortItems);
       }
@@ -776,7 +772,7 @@ export class Deparser implements DeparserVisitor {
       if (n.String) {
         return n.String.sval || n.String.str;
       }
-      return this.visit(n, { parentNodeTypes: [] });
+      return this.visit(n, new DeparserContext({}));
     });
     
     if (parts.length > 1) {
@@ -938,7 +934,7 @@ export class Deparser implements DeparserVisitor {
 
     if (node.cols) {
       const cols = ListUtils.unwrapList(node.cols);
-      const insertContext = { ...context, insertColumns: true };
+      const insertContext = context.spawn('InsertStmt', { insertColumns: true });
       const columnNames = cols.map(col => this.visit(col as Node, insertContext));
       
       if (this.formatter.isPretty()) {
@@ -993,7 +989,7 @@ export class Deparser implements DeparserVisitor {
             output.push('=');
             output.push(this.visit(firstTarget.ResTarget.val.MultiAssignRef.source, context));
           } else {
-            const updateContext = { ...context, update: true };
+            const updateContext = context.spawn('UpdateStmt', { update: true });
             const targets = targetList.map(target => this.visit(target as Node, updateContext));
             output.push(targets.join(', '));
           }
@@ -1062,7 +1058,7 @@ export class Deparser implements DeparserVisitor {
           assignmentParts.push(multiAssignment);
         } else {
           // Handle regular single-column assignment
-          assignmentParts.push(this.visit(target, { ...context, update: true }));
+          assignmentParts.push(this.visit(target, context.spawn('UpdateStmt', { update: true })));
           processedTargets.add(i);
         }
       }
@@ -1267,7 +1263,7 @@ export class Deparser implements DeparserVisitor {
       formatStr = '(%s)';
     }
     
-    const boolContext = { ...context, bool: true };
+    const boolContext = context.spawn('BoolExpr', { bool: true });
 
     // explanation of our syntax/fix below:
     // return formatStr.replace('%s', andArgs); // ❌ Interprets $ as special syntax
@@ -2272,7 +2268,7 @@ export class Deparser implements DeparserVisitor {
 
   BooleanTest(node: t.BooleanTest, context: DeparserContext): string {
     const output: string[] = [];
-    const boolContext = { ...context, bool: true };
+    const boolContext = context.spawn('BooleanTest', { bool: true });
     
     output.push(this.visit(node.arg, boolContext));
     
@@ -2558,7 +2554,7 @@ export class Deparser implements DeparserVisitor {
 
     // Handle table options like WITH (fillfactor=10)
     if (node.options && node.options.length > 0) {
-      const createStmtContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'CreateStmt'] };
+      const createStmtContext = context.spawn('CreateStmt');
       const optionStrs = node.options.map((option: any) => {
         return this.deparse(option, createStmtContext);
       });
@@ -2587,7 +2583,7 @@ export class Deparser implements DeparserVisitor {
 
     if (node.fdwoptions && node.fdwoptions.length > 0) {
       output.push('OPTIONS');
-      const columnContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'ColumnDef'] };
+      const columnContext = context.spawn('ColumnDef');
       const options = ListUtils.unwrapList(node.fdwoptions).map(opt => this.visit(opt, columnContext));
       output.push(`(${options.join(', ')})`);
     }
@@ -2599,7 +2595,7 @@ export class Deparser implements DeparserVisitor {
     if (node.constraints) {
       const constraints = ListUtils.unwrapList(node.constraints);
       const constraintStrs = constraints.map(constraint => {
-        const columnConstraintContext = { ...context, isColumnConstraint: true };
+        const columnConstraintContext = context.spawn('ColumnDef', { isColumnConstraint: true });
         return this.visit(constraint, columnConstraintContext);
       });
       output.push(...constraintStrs);
@@ -3086,8 +3082,8 @@ export class Deparser implements DeparserVisitor {
       boundsParts.push('AND CURRENT ROW');
     } else if (frameOptions === 18453) {
       if (node.startOffset && node.endOffset) {
-        boundsParts.push(`${this.visit(node.startOffset, { parentNodeTypes: [] })} PRECEDING`);
-        boundsParts.push(`AND ${this.visit(node.endOffset, { parentNodeTypes: [] })} FOLLOWING`);
+        boundsParts.push(`${this.visit(node.startOffset, new DeparserContext({}))} PRECEDING`);
+        boundsParts.push(`AND ${this.visit(node.endOffset, new DeparserContext({}))} FOLLOWING`);
       }
     } else if (frameOptions === 1557) {
       boundsParts.push('CURRENT ROW');
@@ -3095,7 +3091,7 @@ export class Deparser implements DeparserVisitor {
     } else if (frameOptions === 16917) {
       boundsParts.push('CURRENT ROW');
       if (node.endOffset) {
-        boundsParts.push(`AND ${this.visit(node.endOffset, { parentNodeTypes: [] })} FOLLOWING`);
+        boundsParts.push(`AND ${this.visit(node.endOffset, new DeparserContext({}))} FOLLOWING`);
       }
     } else if (frameOptions === 1058) {
       return null;
@@ -3103,11 +3099,11 @@ export class Deparser implements DeparserVisitor {
       // Handle start bound - prioritize explicit offset values over bit flags
       if (node.startOffset) {
         if (frameOptions & 0x400) { // FRAMEOPTION_START_VALUE_PRECEDING
-          boundsParts.push(`${this.visit(node.startOffset, { parentNodeTypes: [] })} PRECEDING`);
+          boundsParts.push(`${this.visit(node.startOffset, new DeparserContext({}))} PRECEDING`);
         } else if (frameOptions & 0x800) { // FRAMEOPTION_START_VALUE_FOLLOWING
-          boundsParts.push(`${this.visit(node.startOffset, { parentNodeTypes: [] })} FOLLOWING`);
+          boundsParts.push(`${this.visit(node.startOffset, new DeparserContext({}))} FOLLOWING`);
         } else {
-          boundsParts.push(`${this.visit(node.startOffset, { parentNodeTypes: [] })} PRECEDING`);
+          boundsParts.push(`${this.visit(node.startOffset, new DeparserContext({}))} PRECEDING`);
         }
       } else if (frameOptions & 0x10) { // FRAMEOPTION_START_UNBOUNDED_PRECEDING
         boundsParts.push('UNBOUNDED PRECEDING');
@@ -3119,11 +3115,11 @@ export class Deparser implements DeparserVisitor {
       if (node.endOffset) {
         if (boundsParts.length > 0) {
           if (frameOptions & 0x1000) { // FRAMEOPTION_END_VALUE_PRECEDING
-            boundsParts.push(`AND ${this.visit(node.endOffset, { parentNodeTypes: [] })} PRECEDING`);
+            boundsParts.push(`AND ${this.visit(node.endOffset, new DeparserContext({}))} PRECEDING`);
           } else if (frameOptions & 0x2000) { // FRAMEOPTION_END_VALUE_FOLLOWING
-            boundsParts.push(`AND ${this.visit(node.endOffset, { parentNodeTypes: [] })} FOLLOWING`);
+            boundsParts.push(`AND ${this.visit(node.endOffset, new DeparserContext({}))} FOLLOWING`);
           } else {
-            boundsParts.push(`AND ${this.visit(node.endOffset, { parentNodeTypes: [] })} FOLLOWING`);
+            boundsParts.push(`AND ${this.visit(node.endOffset, new DeparserContext({}))} FOLLOWING`);
           }
         }
       } else if (frameOptions & 0x80) { // FRAMEOPTION_END_UNBOUNDED_FOLLOWING
@@ -3313,7 +3309,7 @@ export class Deparser implements DeparserVisitor {
   DistinctExpr(node: t.DistinctExpr, context: DeparserContext): string {
     const args = ListUtils.unwrapList(node.args);
     if (args.length === 2) {
-      const literalContext = { ...context, isStringLiteral: true };
+      const literalContext = context.spawn('DistinctExpr', { isStringLiteral: true });
       const left = this.visit(args[0], literalContext);
       const right = this.visit(args[1], literalContext);
       return `${left} IS DISTINCT FROM ${right}`;
@@ -3324,7 +3320,7 @@ export class Deparser implements DeparserVisitor {
   NullIfExpr(node: t.NullIfExpr, context: DeparserContext): string {
     const args = ListUtils.unwrapList(node.args);
     if (args.length === 2) {
-      const literalContext = { ...context, isStringLiteral: true };
+      const literalContext = context.spawn('NullIfExpr', { isStringLiteral: true });
       const left = this.visit(args[0], literalContext);
       const right = this.visit(args[1], literalContext);
       return `NULLIF(${left}, ${right})`;
@@ -3420,7 +3416,7 @@ export class Deparser implements DeparserVisitor {
 
   RelabelType(node: t.RelabelType, context: DeparserContext): string {
     if (node.arg) {
-      const literalContext = { ...context, isStringLiteral: true };
+      const literalContext = context.spawn('RelabelType', { isStringLiteral: true });
       return this.visit(node.arg, literalContext);
     }
     return '';
@@ -3442,7 +3438,7 @@ export class Deparser implements DeparserVisitor {
 
   ConvertRowtypeExpr(node: t.ConvertRowtypeExpr, context: DeparserContext): string {
     if (node.arg) {
-      const literalContext = { ...context, isStringLiteral: true };
+      const literalContext = context.spawn('ConvertRowtypeExpr', { isStringLiteral: true });
       return this.visit(node.arg, literalContext);
     }
     return '';
@@ -3488,7 +3484,7 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.options && node.options.length > 0) {
-      const viewContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'ViewStmt'] };
+      const viewContext = context.spawn('ViewStmt');
       const optionStrs = ListUtils.unwrapList(node.options)
         .map(option => this.visit(option, viewContext));
       output.push(`WITH (${optionStrs.join(', ')})`);
@@ -3565,7 +3561,7 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.options && node.options.length > 0) {
-      const indexContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'IndexStmt'] };
+      const indexContext = context.spawn('IndexStmt');
       const optionStrs = ListUtils.unwrapList(node.options).map(option => this.visit(option, indexContext));
       output.push('WITH');
       output.push(this.formatter.parens(optionStrs.join(', ')));
@@ -3609,7 +3605,7 @@ export class Deparser implements DeparserVisitor {
             const stringData = this.getNodeData(opt.DefElem.arg);
             return `${opt.DefElem.defname}='${stringData.sval}'`;
           }
-          return this.visit(opt, context);
+          return this.visit(opt, context.spawn('IndexElem'));
         });
         opclassStr += `(${opclassOpts.join(', ')})`;
       }
@@ -4477,7 +4473,7 @@ export class Deparser implements DeparserVisitor {
             return items.join('.');
           }
           
-          const objContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'DropStmt'], objtype: node.removeType };
+          const objContext = context.spawn('DropStmt', { objtype: node.removeType });
           const objName = this.visit(objList, objContext);
           return objName;
         }).filter((name: string) => name && name.trim()).join(', ');
@@ -4597,7 +4593,7 @@ export class Deparser implements DeparserVisitor {
     if (node.options && node.options.length > 0) {
       output.push('WITH');
       const optionsStr = ListUtils.unwrapList(node.options)
-        .map(opt => this.visit(opt, context))
+        .map(opt => this.visit(opt, context.spawn('CopyStmt')))
         .join(', ');
       output.push(`(${optionsStr})`);
     }
@@ -4649,7 +4645,7 @@ export class Deparser implements DeparserVisitor {
     }
 
     const alterContext = node.objtype === 'OBJECT_TYPE' 
-      ? { ...context, parentNodeTypes: [...context.parentNodeTypes, 'AlterTypeStmt'] }
+      ? context.spawn('AlterTypeStmt')
       : context;
 
     if (node.relation) {
@@ -4709,7 +4705,7 @@ export class Deparser implements DeparserVisitor {
             
             if (colDefData.fdwoptions && colDefData.fdwoptions.length > 0) {
               parts.push('OPTIONS');
-              const columnContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'ColumnDef'] };
+              const columnContext = context.spawn('ColumnDef');
               const options = ListUtils.unwrapList(colDefData.fdwoptions).map(opt => this.visit(opt, columnContext));
               parts.push(`(${options.join(', ')})`);
             }
@@ -4717,7 +4713,7 @@ export class Deparser implements DeparserVisitor {
             if (colDefData.constraints) {
               const constraints = ListUtils.unwrapList(colDefData.constraints);
               const constraintStrs = constraints.map(constraint => {
-                const columnConstraintContext = { ...context, isColumnConstraint: true };
+                const columnConstraintContext = context.spawn('ColumnDef', { isColumnConstraint: true });
                 return this.visit(constraint, columnConstraintContext);
               });
               parts.push(...constraintStrs);
@@ -4822,7 +4818,7 @@ export class Deparser implements DeparserVisitor {
         case 'AT_SetRelOptions':
           output.push('SET');
           if (node.def) {
-            const alterTableContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'AlterTableCmd'], subtype: 'AT_SetRelOptions' };
+            const alterTableContext = context.spawn('AlterTableCmd', { subtype: 'AT_SetRelOptions' });
             const options = ListUtils.unwrapList(node.def)
               .map(option => this.visit(option, alterTableContext))
               .join(', ');
@@ -4834,7 +4830,7 @@ export class Deparser implements DeparserVisitor {
         case 'AT_ResetRelOptions':
           output.push('RESET');
           if (node.def) {
-            const alterTableContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'AlterTableCmd'], subtype: 'AT_ResetRelOptions' };
+            const alterTableContext = context.spawn('AlterTableCmd', { subtype: 'AT_ResetRelOptions' });
             const options = ListUtils.unwrapList(node.def)
               .map(option => this.visit(option, alterTableContext))
               .join(', ');
@@ -4926,7 +4922,7 @@ export class Deparser implements DeparserVisitor {
           }
           output.push('SET');
           if (node.def) {
-            const alterTableContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'AlterTableCmd'], subtype: 'AT_SetOptions' };
+            const alterTableContext = context.spawn('AlterTableCmd', { subtype: 'AT_SetOptions' });
             const options = ListUtils.unwrapList(node.def)
               .map(option => this.visit(option, alterTableContext))
               .join(', ');
@@ -4942,7 +4938,7 @@ export class Deparser implements DeparserVisitor {
           }
           output.push('RESET');
           if (node.def) {
-            const alterTableContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'AlterTableCmd'], subtype: 'AT_ResetOptions' };
+            const alterTableContext = context.spawn('AlterTableCmd', { subtype: 'AT_ResetOptions' });
             const options = ListUtils.unwrapList(node.def)
               .map(option => this.visit(option, alterTableContext))
               .join(', ');
@@ -5179,7 +5175,7 @@ export class Deparser implements DeparserVisitor {
           }
           output.push('OPTIONS');
           if (node.def) {
-            const alterColumnContext = { ...context, alterColumnOptions: true };
+            const alterColumnContext = context.spawn('AlterTableCmd', { alterColumnOptions: true });
             const options = ListUtils.unwrapList(node.def)
               .map(option => this.visit(option, alterColumnContext))
               .join(', ');
@@ -5218,7 +5214,7 @@ export class Deparser implements DeparserVisitor {
         case 'AT_GenericOptions':
           output.push('OPTIONS');
           if (node.def) {
-            const alterTableContext = { ...context, alterTableOptions: true };
+            const alterTableContext = context.spawn('AlterTableCmd', { alterTableOptions: true });
             const options = ListUtils.unwrapList(node.def)
               .map(option => this.visit(option, alterTableContext))
               .join(', ');
@@ -5327,7 +5323,7 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.options && node.options.length > 0) {
-      const funcContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'CreateFunctionStmt'] };
+      const funcContext = context.spawn('CreateFunctionStmt');
       const options = node.options.map((opt: any) => this.visit(opt, funcContext));
       output.push(...options);
     }
@@ -5425,7 +5421,7 @@ export class Deparser implements DeparserVisitor {
     output.push('AS', 'ENUM');
     
     if (node.vals && node.vals.length > 0) {
-      const enumContext = { ...context, isEnumValue: true };
+      const enumContext = context.spawn('CreateEnumStmt', { isEnumValue: true });
       const values = ListUtils.unwrapList(node.vals)
         .map(val => this.visit(val, enumContext))
         .join(', ');
@@ -5487,9 +5483,8 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.options) {
-      const roleContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'CreateRoleStmt'] };
       const options = ListUtils.unwrapList(node.options)
-        .map(option => this.visit(option, roleContext))
+        .map(option => this.visit(option, context.spawn('CreateRoleStmt')))
         .join(' ');
       if (options) {
         output.push('WITH');
@@ -5524,7 +5519,7 @@ export class Deparser implements DeparserVisitor {
         const stringData = this.getNodeData(node.arg);
         return `${node.defname}='${stringData.sval}'`;
       }
-      return `${node.defname}=${this.visit(node.arg, { ...context, parentNodeTypes: [...context.parentNodeTypes, 'DefElem'] })}`;
+      return `${node.defname}=${this.visit(node.arg, context.spawn('DefElem'))}`;
     }
     
     // Handle CREATE OPERATOR boolean flags - MUST be first to preserve case
@@ -5542,13 +5537,13 @@ export class Deparser implements DeparserVisitor {
         if (!node.arg) {
           return `NO ${node.defname.toUpperCase()}`;
         }
-        const defElemContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'DefElem'] };
+        const defElemContext = context.spawn('DefElem');
         const argValue = this.visit(node.arg, defElemContext);
         return `${node.defname.toUpperCase()} ${argValue}`;
       }
       // Handle OPTIONS clause - use space format, not equals format
       if (node.arg) {
-        const defElemContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'DefElem'] };
+        const defElemContext = context.spawn('DefElem');
         const argValue = this.visit(node.arg, defElemContext);
         
         if (context.parentNodeTypes.includes('CreateFdwStmt') || context.parentNodeTypes.includes('AlterFdwStmt')) {
@@ -5606,7 +5601,7 @@ export class Deparser implements DeparserVisitor {
         if (!node.arg) {
           return 'PASSWORD NULL';
         }
-        const defElemContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'DefElem'] };
+        const defElemContext = context.spawn('DefElem');
         const argValue = this.visit(node.arg, defElemContext);
         const quotedValue = typeof argValue === 'string' && !argValue.startsWith("'") 
           ? `'${argValue}'` 
@@ -5616,7 +5611,7 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.arg) {
-      const defElemContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'DefElem'] };
+      const defElemContext = context.spawn('DefElem');
       const argValue = this.visit(node.arg, defElemContext);
       
       if (context.parentNodeTypes.includes('AlterOperatorStmt')) {
@@ -5704,7 +5699,7 @@ export class Deparser implements DeparserVisitor {
           return `SYSID ${argValue}`;
         }
         
-        if (argValue === 'true') {
+        if (String(argValue) === 'true') {
           // Handle special cases where the positive form has a different name
           if (node.defname === 'isreplication') {
             return 'REPLICATION';
@@ -5713,7 +5708,7 @@ export class Deparser implements DeparserVisitor {
             return 'LOGIN';
           }
           return node.defname.toUpperCase();
-        } else if (argValue === 'false') {
+        } else if (String(argValue) === 'false') {
           // Handle special cases where the negative form has a different name
           if (node.defname === 'canlogin') {
             return 'NOLOGIN';
@@ -5781,7 +5776,7 @@ export class Deparser implements DeparserVisitor {
       
       if (context.parentNodeTypes.includes('DoStmt')) {
         if (node.defname === 'as') {
-          const defElemContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'DefElem'] };
+          const defElemContext = context.spawn('DefElem');
           const argValue = node.arg ? this.visit(node.arg, defElemContext) : '';
           
           if (Array.isArray(argValue)) {
@@ -6100,7 +6095,7 @@ export class Deparser implements DeparserVisitor {
     
     if (node.options && node.options.length > 0) {
       output.push('WITH');
-      const tsContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'CreateTableSpaceStmt'] };
+      const tsContext = context.spawn('CreateTableSpaceStmt');
       const options = ListUtils.unwrapList(node.options)
         .map(option => this.visit(option, tsContext))
         .join(', ');
@@ -6138,7 +6133,7 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.options && node.options.length > 0) {
-      const tablespaceContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'AlterTableSpaceOptionsStmt'] };
+      const tablespaceContext = context.spawn('AlterTableSpaceOptionsStmt');
       const options = ListUtils.unwrapList(node.options)
         .map(option => this.visit(option, tablespaceContext))
         .join(', ');
@@ -6160,7 +6155,7 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.options && node.options.length > 0) {
-      const extContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'CreateExtensionStmt'] };
+      const extContext = context.spawn('CreateExtensionStmt');
       const options = ListUtils.unwrapList(node.options)
         .map(option => this.visit(option, extContext))
         .join(' ');
@@ -6178,7 +6173,7 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.options && node.options.length > 0) {
-      const extContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'AlterExtensionStmt'] };
+      const extContext = context.spawn('AlterExtensionStmt');
       const options = ListUtils.unwrapList(node.options)
         .map(option => this.visit(option, extContext))
         .join(' ');
@@ -6196,7 +6191,7 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.func_options && node.func_options.length > 0) {
-      const fdwContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'CreateFdwStmt'] };
+      const fdwContext = context.spawn('CreateFdwStmt');
       const funcOptions = ListUtils.unwrapList(node.func_options)
         .map(option => this.visit(option, fdwContext))
         .join(' ');
@@ -6205,7 +6200,7 @@ export class Deparser implements DeparserVisitor {
     
     if (node.options && node.options.length > 0) {
       output.push('OPTIONS');
-      const fdwContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'CreateFdwStmt'] };
+      const fdwContext = context.spawn('CreateFdwStmt');
       const options = ListUtils.unwrapList(node.options)
         .map(option => this.visit(option, fdwContext))
         .join(', ');
@@ -6323,7 +6318,7 @@ export class Deparser implements DeparserVisitor {
           output.push('ADD');
           if (node.def) {
             // Pass domain context to avoid adding constraint names for domain constraints
-            const domainContext = { ...context, isDomainConstraint: true };
+            const domainContext = context.spawn('CreateDomainStmt', { isDomainConstraint: true });
             output.push(this.visit(node.def, domainContext));
           }
           break;
@@ -6349,7 +6344,7 @@ export class Deparser implements DeparserVisitor {
           output.push('ADD');
           if (node.def) {
             // Pass domain context to avoid adding constraint names for domain constraints
-            const domainContext = { ...context, isDomainConstraint: true };
+            const domainContext = context.spawn('CreateDomainStmt', { isDomainConstraint: true });
             output.push(this.visit(node.def, domainContext));
           }
           break;
@@ -6724,7 +6719,7 @@ export class Deparser implements DeparserVisitor {
         
         output.push(`${operatorName}(${args.join(', ')})`);
       } else {
-        const objContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'CommentStmt'], objtype: node.objtype };
+        const objContext = context.spawn('CommentStmt', { objtype: node.objtype });
         output.push(this.visit(node.object, objContext));
       }
     }
@@ -6911,7 +6906,7 @@ export class Deparser implements DeparserVisitor {
     
     if (node.options && node.options.length > 0) {
       output.push('OPTIONS');
-      const userMappingContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'CreateUserMappingStmt'] };
+      const userMappingContext = context.spawn('CreateUserMappingStmt');
       const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, userMappingContext));
       output.push(`(${options.join(', ')})`);
     }
@@ -7133,7 +7128,7 @@ export class Deparser implements DeparserVisitor {
     const output: string[] = ['DO'];
     
     if (node.args && node.args.length > 0) {
-      const doContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'DoStmt'] };
+      const doContext = context.spawn('DoStmt');
       const args = ListUtils.unwrapList(node.args);
       
       const processedArgs: string[] = [];
@@ -7484,7 +7479,7 @@ export class Deparser implements DeparserVisitor {
     let result = '';
     
     if (node.objname && node.objname.length > 0) {
-      const objContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'ObjectWithArgs'] };
+      const objContext = context.spawn('ObjectWithArgs');
       const names = ListUtils.unwrapList(node.objname).map(name => this.visit(name, objContext));
       result = names.join('.');
     }
@@ -7527,7 +7522,7 @@ export class Deparser implements DeparserVisitor {
     output.push('SET');
     
     if (node.options && node.options.length > 0) {
-      const alterOpContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'AlterOperatorStmt'] };
+      const alterOpContext = context.spawn('AlterOperatorStmt');
       const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, alterOpContext));
       output.push(`(${options.join(', ')})`);
     }
@@ -7543,14 +7538,14 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.func_options && node.func_options.length > 0) {
-      const fdwContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'AlterFdwStmt'] };
+      const fdwContext = context.spawn('AlterFdwStmt');
       const funcOptions = ListUtils.unwrapList(node.func_options).map(opt => this.visit(opt, fdwContext));
       output.push(funcOptions.join(' '));
     }
     
     if (node.options && node.options.length > 0) {
       output.push('OPTIONS');
-      const fdwContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'AlterFdwStmt'] };
+      const fdwContext = context.spawn('AlterFdwStmt');
       const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, fdwContext));
       output.push(`(${options.join(', ')})`);
     }
@@ -7584,7 +7579,7 @@ export class Deparser implements DeparserVisitor {
     if (node.options && node.options.length > 0) {
       output.push('OPTIONS');
       output.push('(');
-      const optionsContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'CreateForeignServerStmt'] };
+      const optionsContext = context.spawn('CreateForeignServerStmt');
       const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, optionsContext));
       output.push(options.join(', '));
       output.push(')');
@@ -7607,7 +7602,7 @@ export class Deparser implements DeparserVisitor {
     if (node.options && node.options.length > 0) {
       output.push('OPTIONS');
       output.push('(');
-      const optionsContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'AlterForeignServerStmt'] };
+      const optionsContext = context.spawn('AlterForeignServerStmt');
       const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, optionsContext));
       output.push(options.join(', '));
       output.push(')');
@@ -7633,7 +7628,7 @@ export class Deparser implements DeparserVisitor {
     
     if (node.options && node.options.length > 0) {
       output.push('OPTIONS');
-      const userMappingContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'AlterUserMappingStmt'] };
+      const userMappingContext = context.spawn('AlterUserMappingStmt');
       const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, userMappingContext));
       output.push(`(${options.join(', ')})`);
     }
@@ -7708,7 +7703,7 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.options && node.options.length > 0) {
-      const importSchemaContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'ImportForeignSchemaStmt'] };
+      const importSchemaContext = context.spawn('ImportForeignSchemaStmt');
       const options = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, importSchemaContext));
       output.push(`OPTIONS (${options.join(', ')})`);
     }
@@ -7755,7 +7750,7 @@ export class Deparser implements DeparserVisitor {
     const output: string[] = ['EXPLAIN'];
     
     if (node.options && node.options.length > 0) {
-      const explainContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'ExplainStmt'] };
+      const explainContext = context.spawn('ExplainStmt');
       const options = ListUtils.unwrapList(node.options).map(option => this.visit(option, explainContext));
       output.push(`(${options.join(', ')})`);
     }
@@ -8037,7 +8032,7 @@ export class Deparser implements DeparserVisitor {
       output.push(this.RangeVar(node.relation, context));
     } else if (node.relation) {
       const rangeVarContext = node.relationType === 'OBJECT_TYPE' 
-        ? { ...context, parentNodeTypes: [...context.parentNodeTypes, 'AlterTypeStmt'] }
+        ? context.spawn('AlterTypeStmt')
         : context;
       
       // Add ON keyword for policy operations
@@ -8222,7 +8217,7 @@ export class Deparser implements DeparserVisitor {
     }
 
     if (node.privileges && node.privileges.length > 0) {
-      const privilegeContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'GrantStmt'] };
+      const privilegeContext = context.spawn('GrantStmt');
       const privileges = ListUtils.unwrapList(node.privileges)
         .map(priv => this.visit(priv, privilegeContext))
         .join(', ');
@@ -8806,7 +8801,7 @@ export class Deparser implements DeparserVisitor {
       }
       
       if (node.args && node.args.length > 0) {
-        const argContext = { ...context, isStringLiteral: true };
+        const argContext = context.spawn('CreateTrigStmt', { isStringLiteral: true });
         const args = ListUtils.unwrapList(node.args)
           .map(arg => this.visit(arg, argContext))
           .join(', ');
@@ -8889,7 +8884,7 @@ export class Deparser implements DeparserVisitor {
 
       if (node.args && node.args.length > 0) {
         output.push('(');
-        const argContext = { ...context, isStringLiteral: true };
+        const argContext = context.spawn('CreateTrigStmt', { isStringLiteral: true });
         const args = ListUtils.unwrapList(node.args)
           .map(arg => this.visit(arg, argContext))
           .join(', ');
@@ -8934,7 +8929,7 @@ export class Deparser implements DeparserVisitor {
 
     if (node.whenclause && node.whenclause.length > 0) {
       output.push('WHEN');
-      const eventTriggerContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'CreateEventTrigStmt'] };
+      const eventTriggerContext = context.spawn('CreateEventTrigStmt');
       const conditions = ListUtils.unwrapList(node.whenclause)
         .map(condition => this.visit(condition, eventTriggerContext))
         .join(' AND ');
@@ -9172,7 +9167,7 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.options && node.options.length > 0) {
-      const seqContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'CreateSeqStmt'] };
+      const seqContext = context.spawn('CreateSeqStmt');
       const optionStrs = ListUtils.unwrapList(node.options)
         .filter(option => option != null && this.getNodeType(option) !== 'undefined')
         .map(option => {
@@ -9213,7 +9208,7 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.options && node.options.length > 0) {
-      const seqContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'AlterSeqStmt'] };
+      const seqContext = context.spawn('AlterSeqStmt');
       const optionStrs = ListUtils.unwrapList(node.options)
         .filter(option => option && option !== undefined)
         .map(option => {
@@ -9245,7 +9240,7 @@ export class Deparser implements DeparserVisitor {
     const output: string[] = ['CREATE', 'TYPE'];
     
     if (node.typevar) {
-      const typeContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'CompositeTypeStmt'] };
+      const typeContext = context.spawn('CompositeTypeStmt');
       output.push(this.RangeVar(node.typevar, typeContext));
     }
     
@@ -9366,7 +9361,7 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.options) {
-      const roleContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'AlterRoleStmt'] };
+      const roleContext = context.spawn('AlterRoleStmt');
       
       // Handle GROUP operations specially based on action value
       if (isGroupStatement) {
@@ -9601,7 +9596,7 @@ export class Deparser implements DeparserVisitor {
     
     if (node.cols && node.cols.length > 0) {
       output.push('(');
-      const colContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'AccessPriv'] };
+      const colContext = context.spawn('AccessPriv');
       const columns = ListUtils.unwrapList(node.cols).map(col => this.visit(col, colContext));
       output.push(columns.join(', '));
       output.push(')');
@@ -9691,7 +9686,7 @@ export class Deparser implements DeparserVisitor {
         }
         
         if (node.definition && node.definition.length > 0) {
-          const defineStmtContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'DefineStmt'] };
+          const defineStmtContext = context.spawn('DefineStmt');
           const definitions = ListUtils.unwrapList(node.definition).map(def => {
             return this.visit(def, defineStmtContext);
           });
@@ -10248,7 +10243,7 @@ export class Deparser implements DeparserVisitor {
       const operatorNumber = node.number !== undefined ? node.number : 0;
       output.push(operatorNumber.toString());
       if (node.name) {
-        const opClassContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'CreateOpClassItem'] };
+        const opClassContext = context.spawn('CreateOpClassItem');
         output.push(this.ObjectWithArgs(node.name, opClassContext));
       }
     } else if (node.itemtype === 2) {
@@ -10257,7 +10252,7 @@ export class Deparser implements DeparserVisitor {
       const functionNumber = node.number !== undefined ? node.number : 0;
       output.push(functionNumber.toString());
       if (node.name) {
-        const opClassContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'CreateOpClassItem'] };
+        const opClassContext = context.spawn('CreateOpClassItem');
         output.push(this.ObjectWithArgs(node.name, opClassContext));
       }
     }else if (node.itemtype === 3) {
@@ -11035,7 +11030,7 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.actions && node.actions.length > 0) {
-      const alterFunctionContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'AlterFunctionStmt'] };
+      const alterFunctionContext = context.spawn('AlterFunctionStmt');
       const actionStrs = ListUtils.unwrapList(node.actions).map(action => this.visit(action, alterFunctionContext));
       output.push(actionStrs.join(' '));
     }
@@ -11272,7 +11267,7 @@ export class Deparser implements DeparserVisitor {
     const output: string[] = ['CREATE FOREIGN TABLE'];
     
     if (node.base && node.base.relation) {
-      const relationContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'CreateForeignTableStmt'] };
+      const relationContext = context.spawn('CreateForeignTableStmt');
       // Handle relation node directly as RangeVar since it contains the RangeVar properties
       output.push(this.RangeVar(node.base.relation as any, relationContext));
     }
@@ -11304,7 +11299,7 @@ export class Deparser implements DeparserVisitor {
     }
     
     if (node.options && node.options.length > 0) {
-      const foreignTableContext = { ...context, parentNodeTypes: [...context.parentNodeTypes, 'CreateForeignTableStmt'] };
+      const foreignTableContext = context.spawn('CreateForeignTableStmt');
       const optionStrs = ListUtils.unwrapList(node.options).map(opt => this.visit(opt, foreignTableContext));
       output.push(`OPTIONS (${optionStrs.join(', ')})`);
     }
