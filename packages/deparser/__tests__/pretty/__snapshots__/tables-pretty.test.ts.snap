@@ -73,7 +73,8 @@ exports[`pretty: pretty/tables-5.sql 1`] = `
 "CREATE TABLE "Orders"."OrderLines" (
   id serial PRIMARY KEY,
   order_id int,
-  CONSTRAINT "FK Order Reference" FOREIGN KEY (order_id) REFERENCES "Orders"."Order" ("OrderID")
+  CONSTRAINT "FK Order Reference" FOREIGN KEY (order_id)
+    REFERENCES "Orders"."Order" ("OrderID")
 )"
 `;
 
@@ -126,7 +127,8 @@ exports[`pretty: pretty/tables-12.sql 1`] = `
 "CREATE TABLE secure.sessions (
   session_id uuid PRIMARY KEY,
   user_id uuid,
-  CONSTRAINT "fk-user->session" FOREIGN KEY (user_id) REFERENCES users (id)
+  CONSTRAINT "fk-user->session" FOREIGN KEY (user_id)
+    REFERENCES users (id)
 )"
 `;
 
@@ -150,7 +152,8 @@ exports[`pretty: pretty/tables-15.sql 1`] = `
 "CREATE TABLE "Billing"."Invoices" (
   invoice_id uuid PRIMARY KEY,
   "Client ID" uuid,
-  CONSTRAINT "FK_Client" FOREIGN KEY ("Client ID") REFERENCES "Clients"."ClientBase" ("Client ID")
+  CONSTRAINT "FK_Client" FOREIGN KEY ("Client ID")
+    REFERENCES "Clients"."ClientBase" ("Client ID")
 )"
 `;
 

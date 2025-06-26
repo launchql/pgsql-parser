@@ -2619,7 +2619,16 @@ export class Deparser implements DeparserVisitor {
       case 'CONSTR_CHECK':
         output.push('CHECK');
         if (node.raw_expr) {
-          output.push(this.formatter.parens(this.visit(node.raw_expr, context)));
+          if (this.formatter.isPretty()) {
+            const checkExpr = this.visit(node.raw_expr, context);
+            if (checkExpr.includes('\n')) {
+              output.push('(\n' + this.formatter.indent(checkExpr) + '\n)');
+            } else {
+              output.push(`(${checkExpr})`);
+            }
+          } else {
+            output.push(this.formatter.parens(this.visit(node.raw_expr, context)));
+          }
         }
         // Handle NOT VALID for check constraints
         if (node.skip_validation) {
@@ -2709,32 +2718,69 @@ export class Deparser implements DeparserVisitor {
       case 'CONSTR_FOREIGN':
         // Only add "FOREIGN KEY" for table-level constraints, not column-level constraints
         if (!context.isColumnConstraint) {
-          output.push('FOREIGN KEY');
-          if (node.fk_attrs && node.fk_attrs.length > 0) {
-            const fkAttrs = ListUtils.unwrapList(node.fk_attrs)
-              .map(attr => this.visit(attr, context))
-              .join(', ');
-            output.push(`(${fkAttrs})`);
+          if (this.formatter.isPretty()) {
+            output.push('FOREIGN KEY');
+            if (node.fk_attrs && node.fk_attrs.length > 0) {
+              const fkAttrs = ListUtils.unwrapList(node.fk_attrs)
+                .map(attr => this.visit(attr, context))
+                .join(', ');
+              output.push(`(${fkAttrs})`);
+            }
+            output.push('\n' + this.formatter.indent('REFERENCES'));
+          } else {
+            output.push('FOREIGN KEY');
+            if (node.fk_attrs && node.fk_attrs.length > 0) {
+              const fkAttrs = ListUtils.unwrapList(node.fk_attrs)
+                .map(attr => this.visit(attr, context))
+                .join(', ');
+              output.push(`(${fkAttrs})`);
+            }
+            output.push('REFERENCES');
           }
+        } else {
+          output.push('REFERENCES');
         }
-        output.push('REFERENCES');
         if (node.pktable) {
-          output.push(this.RangeVar(node.pktable, context));
+          if (this.formatter.isPretty() && !context.isColumnConstraint) {
+            const lastIndex = output.length - 1;
+            if (lastIndex >= 0 && output[lastIndex].includes('REFERENCES')) {
+              output[lastIndex] += ' ' + this.RangeVar(node.pktable, context);
+            } else {
+              output.push(this.RangeVar(node.pktable, context));
+            }
+          } else {
+            output.push(this.RangeVar(node.pktable, context));
+          }
         }
         if (node.pk_attrs && node.pk_attrs.length > 0) {
           const pkAttrs = ListUtils.unwrapList(node.pk_attrs)
             .map(attr => this.visit(attr, context))
             .join(', ');
-          output.push(`(${pkAttrs})`);
+          if (this.formatter.isPretty() && !context.isColumnConstraint) {
+            const lastIndex = output.length - 1;
+            if (lastIndex >= 0) {
+              output[lastIndex] += ` (${pkAttrs})`;
+            } else {
+              output.push(`(${pkAttrs})`);
+            }
+          } else {
+            output.push(`(${pkAttrs})`);
+          }
         }
         if (node.fk_matchtype && node.fk_matchtype !== 's') {
+          let matchClause = '';
           switch (node.fk_matchtype) {
             case 'f':
-              output.push('MATCH FULL');
+              matchClause = 'MATCH FULL';
               break;
             case 'p':
-              output.push('MATCH PARTIAL');
+              matchClause = 'MATCH PARTIAL';
               break;
+          }
+          if (this.formatter.isPretty() && !context.isColumnConstraint) {
+            output.push('\n' + this.formatter.indent(matchClause));
+          } else {
+            output.push(matchClause);
           }
         }
         if (node.fk_upd_action && node.fk_upd_action !== 'a') {
@@ -2785,7 +2831,11 @@ export class Deparser implements DeparserVisitor {
         }
         // Handle NOT VALID for foreign key constraints - only for table constraints, not domain constraints
         if (node.skip_validation && !context.isDomainConstraint) {
-          output.push('NOT VALID');
+          if (this.formatter.isPretty() && !context.isColumnConstraint) {
+            output.push('\n' + this.formatter.indent('NOT VALID'));
+          } else {
+            output.push('NOT VALID');
+          }
         }
         break;
       case 'CONSTR_ATTR_DEFERRABLE':

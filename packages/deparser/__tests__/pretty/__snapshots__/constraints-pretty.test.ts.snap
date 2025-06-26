@@ -51,7 +51,8 @@ exports[`pretty: pretty/constraints-3.sql 1`] = `
 
 exports[`pretty: pretty/constraints-4.sql 1`] = `
 "ALTER TABLE "Orders"."OrderLines" 
-  ADD CONSTRAINT "FK_Order_Ref" FOREIGN KEY (order_id) REFERENCES "Orders"."Order" ("OrderID")"
+  ADD CONSTRAINT "FK_Order_Ref" FOREIGN KEY (order_id)
+    REFERENCES "Orders"."Order" ("OrderID")"
 `;
 
 exports[`pretty: pretty/constraints-5.sql 1`] = `
@@ -66,7 +67,8 @@ exports[`pretty: pretty/constraints-6.sql 1`] = `
 
 exports[`pretty: pretty/constraints-7.sql 1`] = `
 "ALTER TABLE "Billing"."Invoices" 
-  ADD CONSTRAINT "FK_Client_ID" FOREIGN KEY ("Client ID") REFERENCES "Clients"."ClientBase" ("Client ID")"
+  ADD CONSTRAINT "FK_Client_ID" FOREIGN KEY ("Client ID")
+    REFERENCES "Clients"."ClientBase" ("Client ID")"
 `;
 
 exports[`pretty: pretty/constraints-8.sql 1`] = `
@@ -76,13 +78,16 @@ exports[`pretty: pretty/constraints-8.sql 1`] = `
 
 exports[`pretty: pretty/constraints-9.sql 1`] = `
 "ALTER TABLE finance.transactions 
-  ADD CONSTRAINT tax_rate_range CHECK (tax_rate >= 0
-    AND tax_rate <= 1)"
+  ADD CONSTRAINT tax_rate_range CHECK (
+    tax_rate >= 0
+      AND tax_rate <= 1
+  )"
 `;
 
 exports[`pretty: pretty/constraints-10.sql 1`] = `
 "ALTER TABLE school.enrollments 
-  ADD CONSTRAINT fk_student_course FOREIGN KEY (student_id, course_id) REFERENCES school.courses_students (student_id, course_id)"
+  ADD CONSTRAINT fk_student_course FOREIGN KEY (student_id, course_id)
+    REFERENCES school.courses_students (student_id, course_id)"
 `;
 
 exports[`pretty: pretty/constraints-11.sql 1`] = `
@@ -92,7 +97,8 @@ exports[`pretty: pretty/constraints-11.sql 1`] = `
   total numeric(10, 2) CHECK (total > 0),
   status varchar(20) DEFAULT 'pending',
   created_at pg_catalog.timestamp DEFAULT now(),
-  CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id)
+  CONSTRAINT fk_user FOREIGN KEY (user_id)
+    REFERENCES users (id)
     ON DELETE CASCADE,
   CONSTRAINT unique_user_date UNIQUE (user_id, created_at),
   CONSTRAINT check_status CHECK (status IN ('pending', 'completed', 'cancelled'))
@@ -101,7 +107,8 @@ exports[`pretty: pretty/constraints-11.sql 1`] = `
 
 exports[`pretty: pretty/constraints-12.sql 1`] = `
 "ALTER TABLE products 
-  ADD CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories (id)
+  ADD CONSTRAINT fk_category FOREIGN KEY (category_id)
+    REFERENCES categories (id)
     ON UPDATE CASCADE
     ON DELETE SET NULL
     DEFERRABLE
@@ -120,13 +127,16 @@ exports[`pretty: pretty/constraints-14.sql 1`] = `
 
 exports[`pretty: pretty/constraints-15.sql 1`] = `
 "ALTER TABLE school.enrollments 
-  ADD CONSTRAINT fk_student_course FOREIGN KEY (student_id, course_id) REFERENCES school.courses_students (student_id, course_id)"
+  ADD CONSTRAINT fk_student_course FOREIGN KEY (student_id, course_id)
+    REFERENCES school.courses_students (student_id, course_id)"
 `;
 
 exports[`pretty: pretty/constraints-16.sql 1`] = `
 "ALTER TABLE school.enrollments 
-  ADD CONSTRAINT chk_enrollment_date CHECK (enrollment_date <= CURRENT_DATE
-    AND status IN ('active', 'completed', 'withdrawn'))"
+  ADD CONSTRAINT chk_enrollment_date CHECK (
+    enrollment_date <= CURRENT_DATE
+      AND status IN ('active', 'completed', 'withdrawn')
+  )"
 `;
 
 exports[`pretty: pretty/constraints-17.sql 1`] = `
