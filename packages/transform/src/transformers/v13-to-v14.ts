@@ -109,8 +109,6 @@ export class V13ToV14Transformer {
   FuncCall(node: PG13.FuncCall, context: TransformerContext): any {
     const result: any = { ...node };
     
-    delete result.funcformat;
-    
     if (node.funcname !== undefined) {
       result.funcname = Array.isArray(node.funcname)
         ? node.funcname.map(item => this.transform(item as any, context))
