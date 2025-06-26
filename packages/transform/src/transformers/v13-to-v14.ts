@@ -107,7 +107,7 @@ export class V13ToV14Transformer {
   }
 
   FuncCall(node: PG13.FuncCall, context: TransformerContext): any {
-    const result: any = { ...node };
+    const result: any = {};
     
     if (node.funcname !== undefined) {
       result.funcname = Array.isArray(node.funcname)
@@ -153,10 +153,6 @@ export class V13ToV14Transformer {
     
     if (node.location !== undefined) {
       result.location = node.location;
-    }
-    
-    if (result.funcformat !== undefined) {
-      delete result.funcformat;
     }
     
     return { FuncCall: result };
