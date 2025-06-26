@@ -1037,7 +1037,7 @@ export class V13ToV14Transformer {
     }
     
     for (const parentType of context.parentNodeTypes) {
-      if (parentType === 'AlterFunctionStmt') {
+      if (parentType === 'AlterFunctionStmt' || parentType === 'DropStmt') {
         return false;
       }
     }
