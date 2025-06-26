@@ -254,13 +254,7 @@ export class V13ToV14Transformer {
     }
     
     if (node.mode !== undefined) {
-      if (node.mode === 'FUNC_PARAM_VARIADIC') {
-        result.mode = 'FUNC_PARAM_VARIADIC';
-      } else if (node.mode === 'FUNC_PARAM_IN') {
-        result.mode = 'FUNC_PARAM_DEFAULT';
-      } else {
-        result.mode = node.mode;
-      }
+      result.mode = node.mode;
     }
     
     return { FunctionParameter: result };
@@ -916,17 +910,7 @@ export class V13ToV14Transformer {
     }
     
     if (node.options !== undefined) {
-      let transformedOptions = 0;
-      
-      if (node.options & 1) transformedOptions |= 1;  // COMMENTS (unchanged)
-      if (node.options & 4) transformedOptions |= 2;  // CONSTRAINTS: 4 → 2 (reverse direction)
-      if (node.options & 8) transformedOptions |= 4;  // DEFAULTS: 8 → 4 (reverse direction)
-      if (node.options & 16) transformedOptions |= 8; // IDENTITY: 16 → 8 (reverse direction)
-      if (node.options & 32) transformedOptions |= 16; // INDEXES: 32 → 16 (reverse direction)
-      if (node.options & 64) transformedOptions |= 32; // STATISTICS: 64 → 32 (reverse direction)
-      if (node.options & 128) transformedOptions |= 64; // STORAGE: 128 → 64 (reverse direction)
-      
-      result.options = transformedOptions;
+      result.options = node.options >> 1;
     }
     
     return { TableLikeClause: result };
@@ -988,10 +972,7 @@ export class V13ToV14Transformer {
     }
     
     for (const parentType of context.parentNodeTypes) {
-      if (parentType === 'AlterFunctionStmt' || 
-          parentType === 'DropStmt' ||
-          parentType === 'RenameStmt' ||
-          parentType === 'CommentStmt') {
+      if (parentType === 'AlterFunctionStmt') {
         return false;
       }
     }
@@ -1061,5 +1042,17 @@ export class V13ToV14Transformer {
     const result: any = { ...node };
     
     return { Float: result };
+  }
+
+  Integer(node: PG13.Integer, context: TransformerContext): any {
+    const result: any = { ...node };
+    
+    return { Integer: result };
+  }
+
+  Null(node: PG13.Null, context: TransformerContext): any {
+    const result: any = { ...node };
+    
+    return { Null: result };
   }
 }
