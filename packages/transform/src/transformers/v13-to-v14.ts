@@ -928,9 +928,6 @@ export class V13ToV14Transformer {
     }
     
     for (const parentType of context.parentNodeTypes) {
-      if (parentType === 'CreateCastStmt') {
-        return false;
-      }
       if (parentType === 'AlterFunctionStmt') {
         return false;
       }
