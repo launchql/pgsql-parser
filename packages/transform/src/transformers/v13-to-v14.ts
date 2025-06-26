@@ -157,7 +157,7 @@ export class V13ToV14Transformer {
     
     // Only add funcformat in specific contexts where it's expected in PG14
     if (this.shouldAddFuncformat(context)) {
-      result.funcformat = "COERCE_EXPLICIT_CALL";
+      result.funcformat = this.getFuncformatValue(node, context);
     }
     
     return { FuncCall: result };
@@ -353,6 +353,28 @@ export class V13ToV14Transformer {
       }
     }
     return null;
+  }
+
+  private getFuncformatValue(node: any, context: TransformerContext): string {
+    const funcname = this.getFunctionName(node);
+    
+    if (!funcname) {
+      return 'COERCE_EXPLICIT_CALL';
+    }
+    
+    const sqlSyntaxFunctions = [
+      'btrim', 'trim', 'ltrim', 'rtrim',
+      'substring', 'substr', 'position', 'overlay',
+      'extract', 'date_part', 'date_trunc',
+      'current_date', 'current_time', 'current_timestamp',
+      'localtime', 'localtimestamp'
+    ];
+    
+    if (sqlSyntaxFunctions.includes(funcname.toLowerCase())) {
+      return 'COERCE_SQL_SYNTAX';
+    }
+    
+    return 'COERCE_EXPLICIT_CALL';
   }
 
   FunctionParameter(node: PG13.FunctionParameter, context: TransformerContext): any {
