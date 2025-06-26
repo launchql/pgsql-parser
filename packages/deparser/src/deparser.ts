@@ -2465,8 +2465,7 @@ export class Deparser implements DeparserVisitor {
     } else if (node.tableElts) {
       const elements = ListUtils.unwrapList(node.tableElts);
       const elementStrs = elements.map(el => {
-        const tableElementContext = context.spawn('CreateStmt', { indentLevel: context.indentLevel + 1 });
-        return this.deparse(el, tableElementContext);
+        return this.deparse(el, context.spawn('CreateStmt'));
       });
 
       if (context.isPretty()) {
@@ -2474,9 +2473,9 @@ export class Deparser implements DeparserVisitor {
           const trimmedEl = el.trim();
           // Remove leading newlines from constraint elements to avoid extra blank lines
           if (trimmedEl.startsWith('\n')) {
-            return '  ' + trimmedEl.substring(1);
+            return context.indent(trimmedEl.substring(1));
           }
-          return '  ' + trimmedEl;
+          return context.indent(trimmedEl);
         }).join(',' + context.newline());
         output.push('(' + context.newline() + formattedElements + context.newline() + ')');
       } else {
