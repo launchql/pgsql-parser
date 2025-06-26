@@ -1658,4 +1658,130 @@ export class V13ToV14Transformer {
     return { StatsElem: result };
   }
 
+  CreateStmt(node: any, context: TransformerContext): any {
+    const result: any = {};
+    
+    if (node.relation !== undefined) {
+      result.relation = this.transform(node.relation as any, context);
+    }
+    
+    if (node.tableElts !== undefined) {
+      result.tableElts = Array.isArray(node.tableElts)
+        ? node.tableElts.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.tableElts as any, context);
+    }
+    
+    if (node.inhRelations !== undefined) {
+      result.inhRelations = Array.isArray(node.inhRelations)
+        ? node.inhRelations.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.inhRelations as any, context);
+    }
+    
+    if (node.partbound !== undefined) {
+      result.partbound = this.transform(node.partbound as any, context);
+    }
+    
+    if (node.partspec !== undefined) {
+      result.partspec = this.transform(node.partspec as any, context);
+    }
+    
+    if (node.ofTypename !== undefined) {
+      result.ofTypename = this.transform(node.ofTypename as any, context);
+    }
+    
+    if (node.constraints !== undefined) {
+      result.constraints = Array.isArray(node.constraints)
+        ? node.constraints.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.constraints as any, context);
+    }
+    
+    if (node.options !== undefined) {
+      result.options = Array.isArray(node.options)
+        ? node.options.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.options as any, context);
+    }
+    
+    if (node.oncommit !== undefined) {
+      result.oncommit = node.oncommit;
+    }
+    
+    if (node.tablespacename !== undefined) {
+      result.tablespacename = node.tablespacename;
+    }
+    
+    if (node.accessMethod !== undefined) {
+      result.accessMethod = node.accessMethod;
+    }
+    
+    if (node.if_not_exists !== undefined) {
+      result.if_not_exists = node.if_not_exists;
+    }
+    
+    return { CreateStmt: result };
+  }
+
+  CreatePolicyStmt(node: any, context: TransformerContext): any {
+    const result: any = {};
+    
+    if (node.policy_name !== undefined) {
+      result.policy_name = node.policy_name;
+    }
+    
+    if (node.table !== undefined) {
+      result.table = this.transform(node.table as any, context);
+    }
+    
+    if (node.cmd_name !== undefined) {
+      result.cmd_name = node.cmd_name;
+    }
+    
+    if (node.permissive !== undefined) {
+      result.permissive = node.permissive;
+    }
+    
+    if (node.roles !== undefined) {
+      result.roles = Array.isArray(node.roles)
+        ? node.roles.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.roles as any, context);
+    }
+    
+    if (node.qual !== undefined) {
+      result.qual = this.transform(node.qual as any, context);
+    }
+    
+    if (node.with_check !== undefined) {
+      result.with_check = this.transform(node.with_check as any, context);
+    }
+    
+    return { CreatePolicyStmt: result };
+  }
+
+  DropStmt(node: any, context: TransformerContext): any {
+    const result: any = {};
+    
+    if (node.objects !== undefined) {
+      result.objects = Array.isArray(node.objects)
+        ? node.objects.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.objects as any, context);
+    }
+    
+    if (node.removeType !== undefined) {
+      result.removeType = node.removeType;
+    }
+    
+    if (node.behavior !== undefined) {
+      result.behavior = node.behavior;
+    }
+    
+    if (node.missing_ok !== undefined) {
+      result.missing_ok = node.missing_ok;
+    }
+    
+    if (node.concurrent !== undefined) {
+      result.concurrent = node.concurrent;
+    }
+    
+    return { DropStmt: result };
+  }
+
 }
