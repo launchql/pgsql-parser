@@ -155,6 +155,22 @@ export class V13ToV14Transformer {
       result.location = node.location;
     }
     
+    if (result.funcformat === undefined) {
+      const hasPgCatalogPrefix = result.funcname && 
+        Array.isArray(result.funcname) && 
+        result.funcname.length >= 2 &&
+        result.funcname[0] && 
+        typeof result.funcname[0] === 'object' && 
+        'String' in result.funcname[0] &&
+        result.funcname[0].String.str === 'pg_catalog';
+      
+      if (hasPgCatalogPrefix) {
+        result.funcformat = "COERCE_SQL_SYNTAX";
+      } else {
+        result.funcformat = "COERCE_EXPLICIT_CALL";
+      }
+    }
+    
     return { FuncCall: result };
   }
 
@@ -220,7 +236,11 @@ export class V13ToV14Transformer {
     }
     
     if (node.mode !== undefined) {
-      result.mode = node.mode;
+      if (node.mode === 'FUNC_PARAM_IN') {
+        result.mode = 'FUNC_PARAM_DEFAULT';
+      } else {
+        result.mode = node.mode;
+      }
     }
     
     return { FunctionParameter: result };
@@ -924,16 +944,19 @@ export class V13ToV14Transformer {
 
   private shouldPreserveObjfuncargs(context: TransformerContext): boolean {
     if (!context.parentNodeTypes || context.parentNodeTypes.length === 0) {
-      return true;
+      return false; // Default to not preserving objfuncargs
     }
     
     for (const parentType of context.parentNodeTypes) {
+      if (parentType === 'CreateCastStmt') {
+        return true; // CreateCastStmt needs objfuncargs preserved
+      }
       if (parentType === 'AlterFunctionStmt') {
-        return false;
+        return false; // AlterFunctionStmt should not have objfuncargs
       }
     }
     
-    return true;
+    return false; // Default to removing objfuncargs unless specifically needed
   }
 
   private isVariadicAggregateContext(context: TransformerContext): boolean {
