@@ -164,7 +164,30 @@ export class V13ToV14Transformer {
   }
 
   private shouldAddFuncformat(context: TransformerContext): boolean {
+    if (this.isInCheckConstraintContext(context)) {
+      return false;
+    }
+    
+    if (this.isInCommentContext(context)) {
+      return false;
+    }
+    
     return true;
+  }
+
+  private isInCheckConstraintContext(context: TransformerContext): boolean {
+    const path = context.path || [];
+    return path.some((node: any) => 
+      node && typeof node === 'object' && 
+      ('Constraint' in node && node.Constraint?.contype === 'CONSTR_CHECK')
+    );
+  }
+
+  private isInCommentContext(context: TransformerContext): boolean {
+    const path = context.path || [];
+    return path.some((node: any) => 
+      node && typeof node === 'object' && 'CommentStmt' in node
+    );
   }
 
   CallStmt(node: PG13.CallStmt, context: TransformerContext): any {
