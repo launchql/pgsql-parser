@@ -124,6 +124,13 @@ export class DeparserContext {
     return this.formatter.indent(text, indentCount);
   }
 
+  indentToCurrentLevel(text: string): string {
+    if (!this.prettyMode) {
+      return text;
+    }
+    return this.formatter.indent(text, this.indentLevel);
+  }
+
   newline(): string {
     return this.formatter.newline();
   }
