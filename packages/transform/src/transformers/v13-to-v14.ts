@@ -202,7 +202,27 @@ export class V13ToV14Transformer {
       return false;
     }
     
+    if (this.isInUpdateContext(context)) {
+      return false;
+    }
+    
     if (this.isInRangeFunctionContext(context)) {
+      return false;
+    }
+    
+    if (this.isInSortByContext(context)) {
+      return false;
+    }
+    
+    if (this.isInDefaultConstraintContext(context)) {
+      return false;
+    }
+    
+    if (this.isInPolicyContext(context)) {
+      return false;
+    }
+    
+    if (this.isInSelectFromContext(context)) {
       return false;
     }
     
@@ -291,6 +311,39 @@ export class V13ToV14Transformer {
     return path.some((node: any) => 
       node && typeof node === 'object' && 'RangeFunction' in node
     );
+  }
+
+  private isInSortByContext(context: TransformerContext): boolean {
+    const path = context.path || [];
+    return path.some((node: any) => 
+      node && typeof node === 'object' && 'SortBy' in node
+    );
+  }
+
+  private isInDefaultConstraintContext(context: TransformerContext): boolean {
+    const path = context.path || [];
+    return path.some((node: any) => 
+      node && typeof node === 'object' && 'Constraint' in node && 
+      node.Constraint && node.Constraint.contype === 'CONSTR_DEFAULT'
+    );
+  }
+
+  private isInPolicyContext(context: TransformerContext): boolean {
+    const path = context.path || [];
+    return path.some((node: any) => 
+      node && typeof node === 'object' && 'CreatePolicyStmt' in node
+    );
+  }
+
+  private isInSelectFromContext(context: TransformerContext): boolean {
+    const path = context.path || [];
+    return path.some((node: any, index: number) => {
+      if (node && typeof node === 'object' && 'SelectStmt' in node) {
+        const nextNode = path[index + 1];
+        return nextNode && typeof nextNode === 'string' && nextNode === 'fromClause';
+      }
+      return false;
+    });
   }
 
   CallStmt(node: PG13.CallStmt, context: TransformerContext): any {
