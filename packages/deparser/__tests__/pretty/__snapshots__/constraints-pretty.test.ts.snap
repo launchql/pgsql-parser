@@ -161,7 +161,6 @@ exports[`pretty: pretty/constraints-17.sql 1`] = `
   course_id int NOT NULL,
   enrollment_date date NOT NULL,
   status text CHECK (status IN ('active', 'completed', 'withdrawn')),
-
-    CHECK (enrollment_date <= CURRENT_DATE)
+  CHECK (enrollment_date <= CURRENT_DATE)
 )"
 `;

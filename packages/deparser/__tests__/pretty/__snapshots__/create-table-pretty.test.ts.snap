@@ -29,10 +29,8 @@ exports[`pretty: pretty/create_table-2.sql 1`] = `
   description text,
   created_at pg_catalog.timestamp DEFAULT now(),
   updated_at pg_catalog.timestamp,
-
-    UNIQUE (name, category_id),
-
-    FOREIGN KEY(category_id)
+  UNIQUE (name, category_id),
+  FOREIGN KEY(category_id)
     REFERENCES categories (id)
 )"
 `;
@@ -71,8 +69,7 @@ exports[`pretty: pretty/create_table-6.sql 1`] = `
   total numeric(10, 2) CHECK (total > 0),
   status varchar(20) DEFAULT 'pending',
   created_at pg_catalog.timestamp DEFAULT now(),
-
-    FOREIGN KEY(user_id)
+  FOREIGN KEY(user_id)
     REFERENCES users (id)
 )"
 `;

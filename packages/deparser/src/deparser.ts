@@ -2439,14 +2439,19 @@ export class Deparser implements DeparserVisitor {
       });
       
       if (this.formatter.isPretty()) {
-        const formattedElements = elementStrs.map(el => 
-          this.formatter.indent(el)
-        ).join(',' + this.formatter.newline());
+        const formattedElements = elementStrs.map(el => {
+          const trimmedEl = el.trim();
+          // Remove leading newlines from constraint elements to avoid extra blank lines
+          if (trimmedEl.startsWith('\n')) {
+            return this.formatter.indent(trimmedEl.substring(1));
+          }
+          return this.formatter.indent(trimmedEl);
+        }).join(',' + this.formatter.newline());
         output.push('(' + this.formatter.newline() + formattedElements + this.formatter.newline() + ')');
       } else {
         output.push(this.formatter.parens(elementStrs.join(', ')));
       }
-    } else if (!node.partbound) {
+    }else if (!node.partbound) {
       output.push(this.formatter.parens(''));
     }
 

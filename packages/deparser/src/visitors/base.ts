@@ -3,6 +3,7 @@ import { Node } from '@pgsql/types';
 export interface DeparserContext {
   isStringLiteral?: boolean;
   parentNodeTypes: string[];
+  indentLevel?: number;
   [key: string]: any;
 }
 

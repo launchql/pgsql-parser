@@ -14,17 +14,11 @@ exports[`should format pg_catalog.char with pretty option enabled 1`] = `
   last_error text,
   locked_at timestamptz,
   locked_by text,
-
-    CHECK (length(key) < 513),
-
-    CHECK (length(task_identifier) < 127),
-
-    CHECK (max_attempts > 0),
-
-    CHECK (length(queue_name) < 127),
-
-    CHECK (length(locked_by) > 3),
-
-    UNIQUE (key)
+  CHECK (length(key) < 513),
+  CHECK (length(task_identifier) < 127),
+  CHECK (max_attempts > 0),
+  CHECK (length(queue_name) < 127),
+  CHECK (length(locked_by) > 3),
+  UNIQUE (key)
 );"
 `;
