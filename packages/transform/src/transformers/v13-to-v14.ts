@@ -94,7 +94,7 @@ export class V13ToV14Transformer {
   ParseResult(node: PG13.ParseResult, context: TransformerContext): any {
     if (node && typeof node === 'object' && 'version' in node && 'stmts' in node) {
       return {
-        version: 140000,
+        version: 170004,
         stmts: node.stmts.map((stmt: any) => {
           if (stmt && typeof stmt === 'object' && 'stmt' in stmt) {
             return { ...stmt, stmt: this.transform(stmt.stmt, context) };
