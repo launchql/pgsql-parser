@@ -1,8 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`should format constraints-1: pretty/constraints-1.sql (non-pretty) 1`] = `"CREATE TABLE orders (id serial PRIMARY KEY, user_id int NOT NULL, total numeric(10, 2) CHECK (total > 0), status varchar(20) DEFAULT 'pending', created_at pg_catalog.timestamp DEFAULT now(), CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE, CONSTRAINT unique_user_date UNIQUE (user_id, created_at), CONSTRAINT check_status CHECK (status IN ('pending', 'completed', 'cancelled')))"`;
+exports[`non-pretty: pretty/constraints-1.sql 1`] = `"CREATE TABLE orders (id serial PRIMARY KEY, user_id int NOT NULL, total numeric(10, 2) CHECK (total > 0), status varchar(20) DEFAULT 'pending', created_at pg_catalog.timestamp DEFAULT now(), CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE, CONSTRAINT unique_user_date UNIQUE (user_id, created_at), CONSTRAINT check_status CHECK (status IN ('pending', 'completed', 'cancelled')))"`;
 
-exports[`should format constraints-1: pretty/constraints-1.sql (pretty) 1`] = `
+exports[`non-pretty: pretty/constraints-2.sql 1`] = `"ALTER TABLE products ADD CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories (id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED"`;
+
+exports[`non-pretty: pretty/constraints-3.sql 1`] = `"ALTER TABLE products ADD CONSTRAINT check_price CHECK (price > 0)"`;
+
+exports[`non-pretty: pretty/constraints-4.sql 1`] = `"ALTER TABLE users ADD CONSTRAINT unique_email UNIQUE (email)"`;
+
+exports[`pretty: pretty/constraints-1.sql 1`] = `
 "CREATE TABLE orders (
   id serial PRIMARY KEY,
   user_id int NOT NULL,
@@ -16,9 +22,7 @@ exports[`should format constraints-1: pretty/constraints-1.sql (pretty) 1`] = `
 )"
 `;
 
-exports[`should format constraints-2: pretty/constraints-2.sql (non-pretty) 1`] = `"ALTER TABLE products ADD CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories (id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED"`;
-
-exports[`should format constraints-2: pretty/constraints-2.sql (pretty) 1`] = `
+exports[`pretty: pretty/constraints-2.sql 1`] = `
 "ALTER TABLE products ADD CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories (id)
   ON UPDATE CASCADE
   ON DELETE SET NULL
@@ -26,10 +30,6 @@ exports[`should format constraints-2: pretty/constraints-2.sql (pretty) 1`] = `
   INITIALLY DEFERRED"
 `;
 
-exports[`should format constraints-3: pretty/constraints-3.sql (non-pretty) 1`] = `"ALTER TABLE products ADD CONSTRAINT check_price CHECK (price > 0)"`;
+exports[`pretty: pretty/constraints-3.sql 1`] = `"ALTER TABLE products ADD CONSTRAINT check_price CHECK (price > 0)"`;
 
-exports[`should format constraints-3: pretty/constraints-3.sql (pretty) 1`] = `"ALTER TABLE products ADD CONSTRAINT check_price CHECK (price > 0)"`;
-
-exports[`should format constraints-4: pretty/constraints-4.sql (non-pretty) 1`] = `"ALTER TABLE users ADD CONSTRAINT unique_email UNIQUE (email)"`;
-
-exports[`should format constraints-4: pretty/constraints-4.sql (pretty) 1`] = `"ALTER TABLE users ADD CONSTRAINT unique_email UNIQUE (email)"`;
+exports[`pretty: pretty/constraints-4.sql 1`] = `"ALTER TABLE users ADD CONSTRAINT unique_email UNIQUE (email)"`;

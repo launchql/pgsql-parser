@@ -7,5 +7,5 @@ const testCases = [
   'pretty/cte-4.sql',
 ];
 
-const prettyTest = new PrettyTest(testCases, 'cte');
+const prettyTest = new PrettyTest(testCases);
 prettyTest.generateTests();

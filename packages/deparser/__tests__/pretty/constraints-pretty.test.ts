@@ -4,6 +4,6 @@ const prettyTest = new PrettyTest([
   'pretty/constraints-2.sql',
   'pretty/constraints-3.sql',
   'pretty/constraints-4.sql',
-], 'constraints');
+]);
 
 prettyTest.generateTests();

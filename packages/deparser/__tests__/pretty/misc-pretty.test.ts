@@ -19,5 +19,5 @@ const testCases = [
   'pretty/misc-16.sql'
 ];
 
-const prettyTest = new PrettyTest(testCases, 'misc');
+const prettyTest = new PrettyTest(testCases);
 prettyTest.generateTests();

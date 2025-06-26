@@ -9,5 +9,5 @@ const testCases = [
   'pretty/create_table-6.sql'
 ];
 
-const prettyTest = new PrettyTest(testCases, 'create_table');
+const prettyTest = new PrettyTest(testCases);
 prettyTest.generateTests();

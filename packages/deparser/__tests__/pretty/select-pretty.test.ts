@@ -16,6 +16,6 @@ const prettyTest = new PrettyTest([
   'pretty/selects-13.sql',
   'pretty/selects-14.sql',
   'pretty/selects-15.sql',
-], 'select');
+]);
 
 prettyTest.generateTests();

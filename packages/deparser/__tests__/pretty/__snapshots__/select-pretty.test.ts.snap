@@ -1,28 +1,48 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`should format select-1: pretty/selects-1.sql (non-pretty) 1`] = `"SELECT 1"`;
+exports[`non-pretty: pretty/selects-1.sql 1`] = `"SELECT 1"`;
 
-exports[`should format select-1: pretty/selects-1.sql (pretty) 1`] = `"SELECT 1"`;
+exports[`non-pretty: pretty/selects-2.sql 1`] = `"SELECT 'abc'::text"`;
 
-exports[`should format select-2: pretty/selects-2.sql (non-pretty) 1`] = `"SELECT 'abc'::text"`;
+exports[`non-pretty: pretty/selects-3.sql 1`] = `"SELECT now() AT TIME ZONE 'UTC'"`;
 
-exports[`should format select-2: pretty/selects-2.sql (pretty) 1`] = `"SELECT 'abc'::text"`;
+exports[`non-pretty: pretty/selects-4.sql 1`] = `"SELECT 1, 2"`;
 
-exports[`should format select-3: pretty/selects-3.sql (non-pretty) 1`] = `"SELECT now() AT TIME ZONE 'UTC'"`;
+exports[`non-pretty: pretty/selects-5.sql 1`] = `"SELECT id, name, email FROM users"`;
 
-exports[`should format select-3: pretty/selects-3.sql (pretty) 1`] = `"SELECT now() AT TIME ZONE 'UTC'"`;
+exports[`non-pretty: pretty/selects-6.sql 1`] = `"SELECT DISTINCT id FROM users"`;
 
-exports[`should format select-4: pretty/selects-4.sql (non-pretty) 1`] = `"SELECT 1, 2"`;
+exports[`non-pretty: pretty/selects-7.sql 1`] = `"SELECT DISTINCT id, name FROM users"`;
 
-exports[`should format select-4: pretty/selects-4.sql (pretty) 1`] = `
+exports[`non-pretty: pretty/selects-8.sql 1`] = `"SELECT id, upper(name) AS name_upper, created_at + '1 day'::interval AS expires_at FROM accounts"`;
+
+exports[`non-pretty: pretty/selects-9.sql 1`] = `"SELECT (SELECT max(score) FROM results)"`;
+
+exports[`non-pretty: pretty/selects-10.sql 1`] = `"SELECT count(*) OVER (), u.id FROM users AS u"`;
+
+exports[`non-pretty: pretty/selects-11.sql 1`] = `"SELECT name FROM customers UNION ALL SELECT name FROM suppliers ORDER BY name"`;
+
+exports[`non-pretty: pretty/selects-12.sql 1`] = `"SELECT u.id, u.name, u.email, p.title FROM users AS u JOIN profiles AS p ON u.id = p.user_id LEFT JOIN orders AS o ON u.id = o.user_id RIGHT JOIN addresses AS a ON u.id = a.user_id WHERE u.active = true"`;
+
+exports[`non-pretty: pretty/selects-13.sql 1`] = `"SELECT id, name FROM users WHERE id IN (SELECT user_id FROM orders WHERE total > 100)"`;
+
+exports[`non-pretty: pretty/selects-14.sql 1`] = `"SELECT id, name, email FROM users WHERE active = true"`;
+
+exports[`non-pretty: pretty/selects-15.sql 1`] = `"SELECT u.id, u.name, u.email, p.title FROM users AS u JOIN profiles AS p ON u.id = p.user_id WHERE u.active = true AND u.created_at > '2023-01-01' GROUP BY u.id, u.name, u.email, p.title HAVING count(*) > 1 ORDER BY u.created_at DESC, u.name ASC LIMIT 10 OFFSET 5"`;
+
+exports[`pretty: pretty/selects-1.sql 1`] = `"SELECT 1"`;
+
+exports[`pretty: pretty/selects-2.sql 1`] = `"SELECT 'abc'::text"`;
+
+exports[`pretty: pretty/selects-3.sql 1`] = `"SELECT now() AT TIME ZONE 'UTC'"`;
+
+exports[`pretty: pretty/selects-4.sql 1`] = `
 "SELECT
   1,
   2"
 `;
 
-exports[`should format select-5: pretty/selects-5.sql (non-pretty) 1`] = `"SELECT id, name, email FROM users"`;
-
-exports[`should format select-5: pretty/selects-5.sql (pretty) 1`] = `
+exports[`pretty: pretty/selects-5.sql 1`] = `
 "SELECT
   id,
   name,
@@ -30,25 +50,19 @@ exports[`should format select-5: pretty/selects-5.sql (pretty) 1`] = `
 FROM users"
 `;
 
-exports[`should format select-6: pretty/selects-6.sql (non-pretty) 1`] = `"SELECT DISTINCT id FROM users"`;
-
-exports[`should format select-6: pretty/selects-6.sql (pretty) 1`] = `
+exports[`pretty: pretty/selects-6.sql 1`] = `
 "SELECT DISTINCT id
 FROM users"
 `;
 
-exports[`should format select-7: pretty/selects-7.sql (non-pretty) 1`] = `"SELECT DISTINCT id, name FROM users"`;
-
-exports[`should format select-7: pretty/selects-7.sql (pretty) 1`] = `
+exports[`pretty: pretty/selects-7.sql 1`] = `
 "SELECT DISTINCT
   id,
   name
 FROM users"
 `;
 
-exports[`should format select-8: pretty/selects-8.sql (non-pretty) 1`] = `"SELECT id, upper(name) AS name_upper, created_at + '1 day'::interval AS expires_at FROM accounts"`;
-
-exports[`should format select-8: pretty/selects-8.sql (pretty) 1`] = `
+exports[`pretty: pretty/selects-8.sql 1`] = `
 "SELECT
   id,
   upper(name) AS name_upper,
@@ -56,26 +70,20 @@ exports[`should format select-8: pretty/selects-8.sql (pretty) 1`] = `
 FROM accounts"
 `;
 
-exports[`should format select-9: pretty/selects-9.sql (non-pretty) 1`] = `"SELECT (SELECT max(score) FROM results)"`;
-
-exports[`should format select-9: pretty/selects-9.sql (pretty) 1`] = `
+exports[`pretty: pretty/selects-9.sql 1`] = `
 "SELECT
   (SELECT max(score)
   FROM results)"
 `;
 
-exports[`should format select-10: pretty/selects-10.sql (non-pretty) 1`] = `"SELECT count(*) OVER (), u.id FROM users AS u"`;
-
-exports[`should format select-10: pretty/selects-10.sql (pretty) 1`] = `
+exports[`pretty: pretty/selects-10.sql 1`] = `
 "SELECT
   count(*) OVER (),
   u.id
 FROM users AS u"
 `;
 
-exports[`should format select-11: pretty/selects-11.sql (non-pretty) 1`] = `"SELECT name FROM customers UNION ALL SELECT name FROM suppliers ORDER BY name"`;
-
-exports[`should format select-11: pretty/selects-11.sql (pretty) 1`] = `
+exports[`pretty: pretty/selects-11.sql 1`] = `
 "SELECT name
 FROM customers
 UNION
@@ -86,9 +94,7 @@ ORDER BY
   name"
 `;
 
-exports[`should format select-12: pretty/selects-12.sql (non-pretty) 1`] = `"SELECT u.id, u.name, u.email, p.title FROM users AS u JOIN profiles AS p ON u.id = p.user_id LEFT JOIN orders AS o ON u.id = o.user_id RIGHT JOIN addresses AS a ON u.id = a.user_id WHERE u.active = true"`;
-
-exports[`should format select-12: pretty/selects-12.sql (pretty) 1`] = `
+exports[`pretty: pretty/selects-12.sql 1`] = `
 "SELECT
   u.id,
   u.name,
@@ -102,9 +108,7 @@ WHERE
   u.active = true"
 `;
 
-exports[`should format select-13: pretty/selects-13.sql (non-pretty) 1`] = `"SELECT id, name FROM users WHERE id IN (SELECT user_id FROM orders WHERE total > 100)"`;
-
-exports[`should format select-13: pretty/selects-13.sql (pretty) 1`] = `
+exports[`pretty: pretty/selects-13.sql 1`] = `
 "SELECT
   id,
   name
@@ -116,9 +120,7 @@ WHERE
   total > 100)"
 `;
 
-exports[`should format select-14: pretty/selects-14.sql (non-pretty) 1`] = `"SELECT id, name, email FROM users WHERE active = true"`;
-
-exports[`should format select-14: pretty/selects-14.sql (pretty) 1`] = `
+exports[`pretty: pretty/selects-14.sql 1`] = `
 "SELECT
   id,
   name,
@@ -128,9 +130,7 @@ WHERE
   active = true"
 `;
 
-exports[`should format select-15: pretty/selects-15.sql (non-pretty) 1`] = `"SELECT u.id, u.name, u.email, p.title FROM users AS u JOIN profiles AS p ON u.id = p.user_id WHERE u.active = true AND u.created_at > '2023-01-01' GROUP BY u.id, u.name, u.email, p.title HAVING count(*) > 1 ORDER BY u.created_at DESC, u.name ASC LIMIT 10 OFFSET 5"`;
-
-exports[`should format select-15: pretty/selects-15.sql (pretty) 1`] = `
+exports[`pretty: pretty/selects-15.sql 1`] = `
 "SELECT
   u.id,
   u.name,

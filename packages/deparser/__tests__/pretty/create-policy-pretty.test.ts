@@ -7,6 +7,6 @@ const prettyTest = new PrettyTest([
   'pretty/create_policy-5.sql',
   'pretty/create_policy-6.sql',
   'pretty/create_policy-7.sql',
-], 'create_policy');
+]);
 
 prettyTest.generateTests();
