@@ -1,10 +1,12 @@
 import { Node } from '@pgsql/types';
+import { SqlFormatter } from '../utils/sql-formatter';
 
 export interface DeparserContextOptions {
   isStringLiteral?: boolean;
   parentNodeTypes?: string[];
   indentLevel?: number;
   prettyMode?: boolean;
+  formatter?: SqlFormatter;
   select?: boolean;
   from?: boolean;
   group?: boolean;
@@ -27,6 +29,7 @@ export class DeparserContext {
   readonly prettyMode: boolean;
   readonly isStringLiteral?: boolean;
   readonly parentNodeTypes: string[];
+  readonly formatter: SqlFormatter;
   readonly select?: boolean;
   readonly from?: boolean;
   readonly group?: boolean;
@@ -48,6 +51,7 @@ export class DeparserContext {
     prettyMode = false,
     isStringLiteral,
     parentNodeTypes = [],
+    formatter,
     select,
     from,
     group,
@@ -68,6 +72,7 @@ export class DeparserContext {
     this.prettyMode = prettyMode;
     this.isStringLiteral = isStringLiteral;
     this.parentNodeTypes = parentNodeTypes;
+    this.formatter = formatter || new SqlFormatter('\n', '  ', prettyMode);
     this.select = select;
     this.from = from;
     this.group = group;
@@ -92,6 +97,7 @@ export class DeparserContext {
       prettyMode: this.prettyMode,
       isStringLiteral: this.isStringLiteral,
       parentNodeTypes: [...this.parentNodeTypes, nodeType],
+      formatter: this.formatter,
       select: this.select,
       from: this.from,
       group: this.group,
