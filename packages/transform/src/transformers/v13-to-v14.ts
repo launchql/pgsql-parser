@@ -180,6 +180,10 @@ export class V13ToV14Transformer {
       return false;
     }
     
+    if (this.isInInsertContext(context)) {
+      return false;
+    }
+    
     return true;
   }
 
