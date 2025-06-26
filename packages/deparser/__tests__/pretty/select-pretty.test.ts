@@ -1,57 +1,48 @@
 import { expectParseDeparse } from '../../test-utils';
 
-describe('Pretty SELECT formatting', () => {
-  const basicSelectSql = `SELECT id, name, email FROM users WHERE active = true;`;
-  
-  const complexSelectSql = `SELECT u.id, u.name, u.email, p.title FROM users u JOIN profiles p ON u.id = p.user_id WHERE u.active = true AND u.created_at > '2023-01-01' GROUP BY u.id, u.name, u.email, p.title HAVING COUNT(*) > 1 ORDER BY u.created_at DESC, u.name ASC LIMIT 10 OFFSET 5;`;
+const generateCoded = require('../../../../__fixtures__/generated/generated.json');
 
-  const multipleJoinsSql = `SELECT u.id, u.name, u.email, p.title FROM users AS u JOIN profiles AS p ON u.id = p.user_id LEFT JOIN orders AS o ON u.id = o.user_id RIGHT JOIN addresses AS a ON u.id = a.user_id WHERE u.active = true;`;
+describe('Pretty Misc SQL formatting', () => {
+  const testCases = [
+    'pretty/selects-1.sql',
+    'pretty/selects-2.sql',
+    'pretty/selects-3.sql',
+    'pretty/selects-4.sql',
+    'pretty/selects-5.sql',
+    'pretty/selects-6.sql',
+    'pretty/selects-7.sql',
+    'pretty/selects-8.sql',
+    'pretty/selects-9.sql',
+    'pretty/selects-10.sql',
+    'pretty/selects-11.sql',
+    'pretty/selects-12.sql',
+    'pretty/selects-13.sql',
+    'pretty/selects-14.sql',
+    'pretty/selects-15.sql'
+  ];
 
-  const selectWithSubquerySql = `SELECT id, name FROM users WHERE id IN (SELECT user_id FROM orders WHERE total > 100);`;
+  // Generate individual tests for each case and format type
+  testCases.forEach((key, index) => {
+    const sql = generateCoded[key];
+    const testName = `misc-${index + 1}`;
 
-  const selectUnionSql = `SELECT name FROM customers UNION ALL SELECT name FROM suppliers ORDER BY name;`;
-
-  it('should format basic SELECT with pretty option enabled', async () => {
-    const result = await expectParseDeparse(basicSelectSql, { pretty: true });
-    expect(result).toMatchSnapshot();
-  });
-
-  it('should maintain single-line format when pretty option disabled', async () => {
-    const result = await expectParseDeparse(basicSelectSql, { pretty: false });
-    expect(result).toMatchSnapshot();
-  });
-
-  it('should format complex SELECT with pretty option enabled', async () => {
-    const result = await expectParseDeparse(complexSelectSql, { pretty: true });
-    expect(result).toMatchSnapshot();
-  });
-
-  it('should maintain single-line format for complex SELECT when pretty disabled', async () => {
-    const result = await expectParseDeparse(complexSelectSql, { pretty: false });
-    expect(result).toMatchSnapshot();
-  });
-
-  it('should format SELECT with subquery with pretty option enabled', async () => {
-    const result = await expectParseDeparse(selectWithSubquerySql, { pretty: true });
-    expect(result).toMatchSnapshot();
-  });
-
-  it('should format SELECT with UNION with pretty option enabled', async () => {
-    const result = await expectParseDeparse(selectUnionSql, { pretty: true });
-    expect(result).toMatchSnapshot();
-  });
-
-  it('should format SELECT with multiple JOINs with pretty option enabled', async () => {
-    const result = await expectParseDeparse(multipleJoinsSql, { pretty: true });
-    expect(result).toMatchSnapshot();
-  });
-
-  it('should use custom newline and tab characters in pretty mode', async () => {
-    const result = await expectParseDeparse(basicSelectSql, { 
-      pretty: true, 
-      newline: '\r\n', 
-      tab: '    ' 
+    it(`should format ${testName}: ${key} (pretty)`, async () => {
+      const result = await expectParseDeparse(sql, { pretty: true });
+      expect(result).toMatchSnapshot();
     });
-    expect(result).toMatchSnapshot();
+
+    it(`should format ${testName}: ${key} (non-pretty)`, async () => {
+      const result = await expectParseDeparse(sql, { pretty: false });
+      expect(result).toMatchSnapshot();
+    });
+  });
+
+  it('should validate AST equivalence for all misc cases', async () => {
+    const allSql = testCases.map((key) => generateCoded[key]);
+    
+    for (const sql of allSql) {
+      await expectParseDeparse(sql, { pretty: false });
+      await expectParseDeparse(sql, { pretty: true });
+    }
   });
 });

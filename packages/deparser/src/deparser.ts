@@ -3981,7 +3981,7 @@ export class Deparser implements DeparserVisitor {
     
     switch (node.roletype) {
       case 'ROLESPEC_PUBLIC':
-        return 'public';
+        return 'PUBLIC';
       case 'ROLESPEC_CURRENT_USER':
         return 'CURRENT_USER';
       case 'ROLESPEC_SESSION_USER':
@@ -3989,7 +3989,7 @@ export class Deparser implements DeparserVisitor {
       case 'ROLESPEC_CURRENT_ROLE':
         return 'CURRENT_ROLE';
       default:
-        return 'public';
+        return 'PUBLIC';
     }
   }
 

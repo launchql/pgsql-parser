@@ -30,7 +30,7 @@ exports[`Pretty CREATE POLICY formatting should format simple CREATE POLICY with
   ON posts
   AS PERMISSIVE
   FOR SELECT
-  TO public
+  TO PUBLIC
   USING (
     published = true
   );"

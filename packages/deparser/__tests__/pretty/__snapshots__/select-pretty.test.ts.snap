@@ -1,6 +1,92 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Pretty SELECT formatting should format SELECT with UNION with pretty option enabled 1`] = `
+exports[`Pretty Misc SQL formatting should format misc-1: pretty/selects-1.sql (non-pretty) 1`] = `"SELECT 1"`;
+
+exports[`Pretty Misc SQL formatting should format misc-1: pretty/selects-1.sql (pretty) 1`] = `
+"SELECT
+  1"
+`;
+
+exports[`Pretty Misc SQL formatting should format misc-2: pretty/selects-2.sql (non-pretty) 1`] = `"SELECT 'abc'::text"`;
+
+exports[`Pretty Misc SQL formatting should format misc-2: pretty/selects-2.sql (pretty) 1`] = `
+"SELECT
+  'abc'::text"
+`;
+
+exports[`Pretty Misc SQL formatting should format misc-3: pretty/selects-3.sql (non-pretty) 1`] = `"SELECT now() AT TIME ZONE 'UTC'"`;
+
+exports[`Pretty Misc SQL formatting should format misc-3: pretty/selects-3.sql (pretty) 1`] = `
+"SELECT
+  now() AT TIME ZONE 'UTC'"
+`;
+
+exports[`Pretty Misc SQL formatting should format misc-4: pretty/selects-4.sql (non-pretty) 1`] = `"SELECT 1, 2"`;
+
+exports[`Pretty Misc SQL formatting should format misc-4: pretty/selects-4.sql (pretty) 1`] = `
+"SELECT
+  1,
+  2"
+`;
+
+exports[`Pretty Misc SQL formatting should format misc-5: pretty/selects-5.sql (non-pretty) 1`] = `"SELECT id, name, email FROM users"`;
+
+exports[`Pretty Misc SQL formatting should format misc-5: pretty/selects-5.sql (pretty) 1`] = `
+"SELECT
+  id,
+  name,
+  email
+FROM users"
+`;
+
+exports[`Pretty Misc SQL formatting should format misc-6: pretty/selects-6.sql (non-pretty) 1`] = `"SELECT DISTINCT id FROM users"`;
+
+exports[`Pretty Misc SQL formatting should format misc-6: pretty/selects-6.sql (pretty) 1`] = `
+"SELECT DISTINCT
+  id
+FROM users"
+`;
+
+exports[`Pretty Misc SQL formatting should format misc-7: pretty/selects-7.sql (non-pretty) 1`] = `"SELECT DISTINCT id, name FROM users"`;
+
+exports[`Pretty Misc SQL formatting should format misc-7: pretty/selects-7.sql (pretty) 1`] = `
+"SELECT DISTINCT
+  id,
+  name
+FROM users"
+`;
+
+exports[`Pretty Misc SQL formatting should format misc-8: pretty/selects-8.sql (non-pretty) 1`] = `"SELECT id, upper(name) AS name_upper, created_at + '1 day'::interval AS expires_at FROM accounts"`;
+
+exports[`Pretty Misc SQL formatting should format misc-8: pretty/selects-8.sql (pretty) 1`] = `
+"SELECT
+  id,
+  upper(name) AS name_upper,
+  created_at + '1 day'::interval AS expires_at
+FROM accounts"
+`;
+
+exports[`Pretty Misc SQL formatting should format misc-9: pretty/selects-9.sql (non-pretty) 1`] = `"SELECT (SELECT max(score) FROM results)"`;
+
+exports[`Pretty Misc SQL formatting should format misc-9: pretty/selects-9.sql (pretty) 1`] = `
+"SELECT
+  (SELECT
+    max(score)
+  FROM results)"
+`;
+
+exports[`Pretty Misc SQL formatting should format misc-10: pretty/selects-10.sql (non-pretty) 1`] = `"SELECT count(*) OVER (), u.id FROM users AS u"`;
+
+exports[`Pretty Misc SQL formatting should format misc-10: pretty/selects-10.sql (pretty) 1`] = `
+"SELECT
+  count(*) OVER (),
+  u.id
+FROM users AS u"
+`;
+
+exports[`Pretty Misc SQL formatting should format misc-11: pretty/selects-11.sql (non-pretty) 1`] = `"SELECT name FROM customers UNION ALL SELECT name FROM suppliers ORDER BY name"`;
+
+exports[`Pretty Misc SQL formatting should format misc-11: pretty/selects-11.sql (pretty) 1`] = `
 "SELECT
   name
 FROM customers
@@ -10,10 +96,12 @@ SELECT
   name
 FROM suppliers
 ORDER BY
-  name;"
+  name"
 `;
 
-exports[`Pretty SELECT formatting should format SELECT with multiple JOINs with pretty option enabled 1`] = `
+exports[`Pretty Misc SQL formatting should format misc-12: pretty/selects-12.sql (non-pretty) 1`] = `"SELECT u.id, u.name, u.email, p.title FROM users AS u JOIN profiles AS p ON u.id = p.user_id LEFT JOIN orders AS o ON u.id = o.user_id RIGHT JOIN addresses AS a ON u.id = a.user_id WHERE u.active = true"`;
+
+exports[`Pretty Misc SQL formatting should format misc-12: pretty/selects-12.sql (pretty) 1`] = `
 "SELECT
   u.id,
   u.name,
@@ -24,10 +112,12 @@ JOIN profiles AS p ON u.id = p.user_id
 LEFT JOIN orders AS o ON u.id = o.user_id
 RIGHT JOIN addresses AS a ON u.id = a.user_id
 WHERE
-  u.active = true;"
+  u.active = true"
 `;
 
-exports[`Pretty SELECT formatting should format SELECT with subquery with pretty option enabled 1`] = `
+exports[`Pretty Misc SQL formatting should format misc-13: pretty/selects-13.sql (non-pretty) 1`] = `"SELECT id, name FROM users WHERE id IN (SELECT user_id FROM orders WHERE total > 100)"`;
+
+exports[`Pretty Misc SQL formatting should format misc-13: pretty/selects-13.sql (pretty) 1`] = `
 "SELECT
   id,
   name
@@ -37,20 +127,24 @@ WHERE
   user_id
 FROM orders
 WHERE
-  total > 100);"
+  total > 100)"
 `;
 
-exports[`Pretty SELECT formatting should format basic SELECT with pretty option enabled 1`] = `
+exports[`Pretty Misc SQL formatting should format misc-14: pretty/selects-14.sql (non-pretty) 1`] = `"SELECT id, name, email FROM users WHERE active = true"`;
+
+exports[`Pretty Misc SQL formatting should format misc-14: pretty/selects-14.sql (pretty) 1`] = `
 "SELECT
   id,
   name,
   email
 FROM users
 WHERE
-  active = true;"
+  active = true"
 `;
 
-exports[`Pretty SELECT formatting should format complex SELECT with pretty option enabled 1`] = `
+exports[`Pretty Misc SQL formatting should format misc-15: pretty/selects-15.sql (non-pretty) 1`] = `"SELECT u.id, u.name, u.email, p.title FROM users AS u JOIN profiles AS p ON u.id = p.user_id WHERE u.active = true AND u.created_at > '2023-01-01' GROUP BY u.id, u.name, u.email, p.title HAVING count(*) > 1 ORDER BY u.created_at DESC, u.name ASC LIMIT 10 OFFSET 5"`;
+
+exports[`Pretty Misc SQL formatting should format misc-15: pretty/selects-15.sql (pretty) 1`] = `
 "SELECT
   u.id,
   u.name,
@@ -72,19 +166,5 @@ ORDER BY
   u.created_at DESC,
   u.name ASC
 LIMIT 10
-OFFSET 5;"
-`;
-
-exports[`Pretty SELECT formatting should maintain single-line format for complex SELECT when pretty disabled 1`] = `"SELECT u.id, u.name, u.email, p.title FROM users AS u JOIN profiles AS p ON u.id = p.user_id WHERE u.active = true AND u.created_at > '2023-01-01' GROUP BY u.id, u.name, u.email, p.title HAVING count(*) > 1 ORDER BY u.created_at DESC, u.name ASC LIMIT 10 OFFSET 5;"`;
-
-exports[`Pretty SELECT formatting should maintain single-line format when pretty option disabled 1`] = `"SELECT id, name, email FROM users WHERE active = true;"`;
-
-exports[`Pretty SELECT formatting should use custom newline and tab characters in pretty mode 1`] = `
-"SELECT
-    id,
-    name,
-    email
-FROM users
-WHERE
-    active = true;"
+OFFSET 5"
 `;
