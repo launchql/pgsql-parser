@@ -220,7 +220,6 @@ export class V13ToV14Transformer {
     }
     
     if (node.mode !== undefined) {
-      // Handle PG13->PG14 transformation: Convert FUNC_PARAM_IN to FUNC_PARAM_DEFAULT
       if (node.mode === 'FUNC_PARAM_IN') {
         result.mode = 'FUNC_PARAM_DEFAULT';
       } else {
@@ -445,6 +444,8 @@ export class V13ToV14Transformer {
     if (node.rarg !== undefined) {
       result.rarg = this.transform(node.rarg as any, context);
     }
+    
+
     
     return { SelectStmt: result };
   }
@@ -753,8 +754,11 @@ export class V13ToV14Transformer {
       result.relname = node.relname;
     }
     
+    // Handle PG13->PG14 inh field transformation
     if (node.inh !== undefined) {
       result.inh = node.inh;
+    } else {
+      result.inh = true;
     }
     
     if (node.relpersistence !== undefined) {
@@ -951,14 +955,21 @@ export class V13ToV14Transformer {
     
     for (const parentType of context.parentNodeTypes) {
       if (parentType === 'AlterFunctionStmt' || 
-          parentType === 'CreateCastStmt' ||
           parentType === 'DropStmt' ||
           parentType === 'CommentStmt') {
         return false; // These contexts should not have objfuncargs
       }
     }
     
-    return false; // Default to removing objfuncargs in all cases for now
+    for (const parentType of context.parentNodeTypes) {
+      if (parentType === 'CreateAggregateStmt' ||
+          parentType === 'AlterAggregateStmt' ||
+          parentType === 'RenameStmt') {
+        return true; // These contexts should preserve objfuncargs
+      }
+    }
+    
+    return false; // Default to removing objfuncargs in most cases
   }
 
   private isVariadicAggregateContext(context: TransformerContext): boolean {
@@ -976,6 +987,21 @@ export class V13ToV14Transformer {
       }
       parent = parent.parent;
     }
+    return false;
+  }
+
+  private isVariadicParameterContext(context: TransformerContext): boolean {
+    if (!context.parentNodeTypes || context.parentNodeTypes.length === 0) {
+      return false;
+    }
+    
+    for (const parentType of context.parentNodeTypes) {
+      if (parentType === 'CreateAggregateStmt' || 
+          parentType === 'AlterAggregateStmt') {
+        return true;
+      }
+    }
+    
     return false;
   }
 
