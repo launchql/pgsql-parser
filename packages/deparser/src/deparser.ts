@@ -1871,7 +1871,7 @@ export class Deparser implements DeparserVisitor {
     // Handle ONLY keyword for inheritance control (but not for type definitions, ALTER TYPE, or CREATE FOREIGN TABLE)
     if (node && (!('inh' in node) || node.inh === undefined) && 
         !context.parentNodeTypes.includes('CompositeTypeStmt') && 
-        !context.parentNodeTypes.includes('AlterTypeStmt') &&
+        context.objtype !== 'OBJECT_TYPE' &&
         !context.parentNodeTypes.includes('CreateForeignTableStmt')) {
       output.push('ONLY');
     }
@@ -4644,9 +4644,7 @@ export class Deparser implements DeparserVisitor {
       output.push('IF EXISTS');
     }
 
-    const alterContext = node.objtype === 'OBJECT_TYPE' 
-      ? context.spawn('AlterTypeStmt')
-      : context;
+    const alterContext = context.spawn('AlterTableStmt', { objtype: node.objtype });
 
     if (node.relation) {
       const relationStr = this.RangeVar(node.relation, alterContext);
@@ -4683,7 +4681,7 @@ export class Deparser implements DeparserVisitor {
     if (node.subtype) {
       switch (node.subtype) {
         case 'AT_AddColumn':
-          if (context.parentNodeTypes.includes('AlterTypeStmt')) {
+          if (context.objtype === 'OBJECT_TYPE') {
             output.push('ADD ATTRIBUTE');
           } else {
             output.push('ADD COLUMN');
@@ -4736,13 +4734,13 @@ export class Deparser implements DeparserVisitor {
           break;
         case 'AT_DropColumn':
           if (node.missing_ok) {
-            if (context.parentNodeTypes.includes('AlterTypeStmt')) {
+            if (context.objtype === 'OBJECT_TYPE') {
               output.push('DROP ATTRIBUTE IF EXISTS');
             } else {
               output.push('DROP COLUMN IF EXISTS');
             }
           } else {
-            if (context.parentNodeTypes.includes('AlterTypeStmt')) {
+            if (context.objtype === 'OBJECT_TYPE') {
               output.push('DROP ATTRIBUTE');
             } else {
               output.push('DROP COLUMN');
@@ -4758,7 +4756,7 @@ export class Deparser implements DeparserVisitor {
           }
           break;
         case 'AT_AlterColumnType':
-          if (context.parentNodeTypes.includes('AlterTypeStmt')) {
+          if (context.objtype === 'OBJECT_TYPE') {
             output.push('ALTER ATTRIBUTE');
           } else {
             output.push('ALTER COLUMN');
@@ -8032,7 +8030,7 @@ export class Deparser implements DeparserVisitor {
       output.push(this.RangeVar(node.relation, context));
     } else if (node.relation) {
       const rangeVarContext = node.relationType === 'OBJECT_TYPE' 
-        ? context.spawn('AlterTypeStmt')
+        ? context.spawn('AlterTypeStmt', { objtype: 'OBJECT_TYPE' })
         : context;
       
       // Add ON keyword for policy operations
