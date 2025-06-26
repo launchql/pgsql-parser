@@ -1069,4 +1069,275 @@ export class V13ToV14Transformer {
     
     return { List: result };
   }
+
+  A_Expr(node: any, context: TransformerContext): any {
+    const result: any = {};
+    
+    if (node.kind !== undefined) {
+      if (node.kind === "AEXPR_OF") {
+        result.kind = "AEXPR_IN";
+      } else if (node.kind === "AEXPR_PAREN") {
+        result.kind = "AEXPR_OP";
+      } else {
+        result.kind = node.kind;
+      }
+    }
+    
+    if (node.name !== undefined) {
+      result.name = Array.isArray(node.name)
+        ? node.name.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.name as any, context);
+    }
+    
+    if (node.lexpr !== undefined) {
+      result.lexpr = this.transform(node.lexpr as any, context);
+    }
+    
+    if (node.rexpr !== undefined) {
+      result.rexpr = this.transform(node.rexpr as any, context);
+    }
+    
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+    
+    return { A_Expr: result };
+  }
+
+  RoleSpec(node: any, context: TransformerContext): any {
+    const result: any = {};
+    
+    if (node.roletype !== undefined) {
+      result.roletype = node.roletype;
+    }
+    
+    if (node.rolename !== undefined) {
+      result.rolename = node.rolename;
+    }
+    
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+    
+    return { RoleSpec: result };
+  }
+
+  AlterTableCmd(node: any, context: TransformerContext): any {
+    const result: any = {};
+    
+    if (node.subtype !== undefined) {
+      result.subtype = node.subtype;
+    }
+    
+    if (node.name !== undefined) {
+      result.name = node.name;
+    }
+    
+    if (node.num !== undefined) {
+      result.num = node.num;
+    }
+    
+    if (node.newowner !== undefined) {
+      result.newowner = this.transform(node.newowner as any, context);
+    }
+    
+    if (node.def !== undefined) {
+      result.def = this.transform(node.def as any, context);
+    }
+    
+    if (node.behavior !== undefined) {
+      result.behavior = node.behavior;
+    }
+    
+    if (node.missing_ok !== undefined) {
+      result.missing_ok = node.missing_ok;
+    }
+    
+    return { AlterTableCmd: result };
+  }
+
+  TypeName(node: any, context: TransformerContext): any {
+    const result: any = {};
+    
+    if (node.names !== undefined) {
+      result.names = Array.isArray(node.names)
+        ? node.names.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.names as any, context);
+    }
+    
+    if (node.typeOid !== undefined) {
+      result.typeOid = node.typeOid;
+    }
+    
+    if (node.setof !== undefined) {
+      result.setof = node.setof;
+    }
+    
+    if (node.pct_type !== undefined) {
+      result.pct_type = node.pct_type;
+    }
+    
+    if (node.typmods !== undefined) {
+      result.typmods = Array.isArray(node.typmods)
+        ? node.typmods.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.typmods as any, context);
+    }
+    
+    if (node.typemod !== undefined) {
+      result.typemod = node.typemod;
+    }
+    
+    if (node.arrayBounds !== undefined) {
+      result.arrayBounds = Array.isArray(node.arrayBounds)
+        ? node.arrayBounds.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.arrayBounds as any, context);
+    }
+    
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+    
+    return { TypeName: result };
+  }
+
+  ColumnRef(node: any, context: TransformerContext): any {
+    const result: any = {};
+    
+    if (node.fields !== undefined) {
+      result.fields = Array.isArray(node.fields)
+        ? node.fields.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.fields as any, context);
+    }
+    
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+    
+    return { ColumnRef: result };
+  }
+
+  A_Const(node: any, context: TransformerContext): any {
+    const result: any = {};
+    
+    if (node.val !== undefined) {
+      result.val = this.transform(node.val as any, context);
+    }
+    
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+    
+    return { A_Const: result };
+  }
+
+  A_Star(node: any, context: TransformerContext): any {
+    const result: any = { ...node };
+    return { A_Star: result };
+  }
+
+  SortBy(node: any, context: TransformerContext): any {
+    const result: any = {};
+    
+    if (node.node !== undefined) {
+      result.node = this.transform(node.node as any, context);
+    }
+    
+    if (node.sortby_dir !== undefined) {
+      result.sortby_dir = node.sortby_dir;
+    }
+    
+    if (node.sortby_nulls !== undefined) {
+      result.sortby_nulls = node.sortby_nulls;
+    }
+    
+    if (node.useOp !== undefined) {
+      result.useOp = Array.isArray(node.useOp)
+        ? node.useOp.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.useOp as any, context);
+    }
+    
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+    
+    return { SortBy: result };
+  }
+
+  CreateDomainStmt(node: any, context: TransformerContext): any {
+    const result: any = {};
+    
+    if (node.domainname !== undefined) {
+      result.domainname = Array.isArray(node.domainname)
+        ? node.domainname.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.domainname as any, context);
+    }
+    
+    if (node.typeName !== undefined) {
+      result.typeName = this.transform(node.typeName as any, context);
+    }
+    
+    if (node.collClause !== undefined) {
+      result.collClause = this.transform(node.collClause as any, context);
+    }
+    
+    if (node.constraints !== undefined) {
+      result.constraints = Array.isArray(node.constraints)
+        ? node.constraints.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.constraints as any, context);
+    }
+    
+    return { CreateDomainStmt: result };
+  }
+
+  CreateSeqStmt(node: any, context: TransformerContext): any {
+    const result: any = {};
+    
+    if (node.sequence !== undefined) {
+      result.sequence = this.transform(node.sequence as any, context);
+    }
+    
+    if (node.options !== undefined) {
+      result.options = Array.isArray(node.options)
+        ? node.options.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.options as any, context);
+    }
+    
+    if (node.ownerId !== undefined) {
+      result.ownerId = node.ownerId;
+    }
+    
+    if (node.for_identity !== undefined) {
+      result.for_identity = node.for_identity;
+    }
+    
+    if (node.if_not_exists !== undefined) {
+      result.if_not_exists = node.if_not_exists;
+    }
+    
+    return { CreateSeqStmt: result };
+  }
+
+  AlterSeqStmt(node: any, context: TransformerContext): any {
+    const result: any = {};
+    
+    if (node.sequence !== undefined) {
+      result.sequence = this.transform(node.sequence as any, context);
+    }
+    
+    if (node.options !== undefined) {
+      result.options = Array.isArray(node.options)
+        ? node.options.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.options as any, context);
+    }
+    
+    if (node.for_identity !== undefined) {
+      result.for_identity = node.for_identity;
+    }
+    
+    if (node.missing_ok !== undefined) {
+      result.missing_ok = node.missing_ok;
+    }
+    
+    return { AlterSeqStmt: result };
+  }
 }
