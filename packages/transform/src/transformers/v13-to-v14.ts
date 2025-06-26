@@ -173,9 +173,7 @@ export class V13ToV14Transformer {
   InsertStmt(node: PG13.InsertStmt, context: TransformerContext): any {
     const result: any = { ...node };
     
-    if (result.override !== undefined) {
-      result.override = result.override;
-    }
+
     
     if (result.relation !== undefined) {
       result.relation = this.transform(result.relation, context);
