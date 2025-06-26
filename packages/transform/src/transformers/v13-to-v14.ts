@@ -155,6 +155,8 @@ export class V13ToV14Transformer {
       result.location = node.location;
     }
     
+    result.funcformat = "COERCE_EXPLICIT_CALL";
+    
     return { FuncCall: result };
   }
 
@@ -254,7 +256,7 @@ export class V13ToV14Transformer {
     }
     
     if (node.mode !== undefined) {
-      result.mode = node.mode;
+      result.mode = node.mode === "FUNC_PARAM_IN" ? "FUNC_PARAM_DEFAULT" : node.mode;
     }
     
     return { FunctionParameter: result };
