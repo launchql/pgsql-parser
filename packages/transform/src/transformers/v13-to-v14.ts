@@ -1001,7 +1001,7 @@ export class V13ToV14Transformer {
     const shouldPreserveObjfuncargs = this.shouldPreserveObjfuncargs(context);
     
     if (shouldCreateObjfuncargs) {
-      // For CreateCastStmt contexts, always set empty objfuncargs
+      // For CreateCastStmt contexts, always set empty objfuncargs (override any existing content)
       result.objfuncargs = [];
     } else if (result.objfuncargs !== undefined) {
       if (shouldPreserveObjfuncargs) {
@@ -1011,6 +1011,8 @@ export class V13ToV14Transformer {
       } else {
         delete result.objfuncargs;
       }
+    } else if (!shouldPreserveObjfuncargs) {
+      delete result.objfuncargs;
     }
     
     return { ObjectWithArgs: result };
