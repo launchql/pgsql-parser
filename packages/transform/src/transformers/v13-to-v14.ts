@@ -256,7 +256,11 @@ export class V13ToV14Transformer {
     }
     
     if (node.mode !== undefined) {
-      result.mode = node.mode;
+      if (node.mode === 'FUNC_PARAM_IN') {
+        result.mode = 'FUNC_PARAM_DEFAULT';
+      } else {
+        result.mode = node.mode;
+      }
     }
     
     return { FunctionParameter: result };
