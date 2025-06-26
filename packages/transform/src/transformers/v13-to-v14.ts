@@ -177,10 +177,44 @@ export class V13ToV14Transformer {
 
   private isInCheckConstraintContext(context: TransformerContext): boolean {
     const path = context.path || [];
-    return path.some((node: any) => 
+    
+    const hasDirectConstraint = path.some((node: any) => 
       node && typeof node === 'object' && 
       ('Constraint' in node && node.Constraint?.contype === 'CONSTR_CHECK')
     );
+    
+    if (hasDirectConstraint) {
+      return true;
+    }
+    
+    const hasAlterTableConstraint = path.some((node: any) => 
+      node && typeof node === 'object' && 
+      ('AlterTableCmd' in node && 
+       node.AlterTableCmd?.def?.Constraint?.contype === 'CONSTR_CHECK')
+    );
+    
+    if (hasAlterTableConstraint) {
+      return true;
+    }
+    
+    if (context.parentNodeTypes) {
+      const hasConstraintParent = context.parentNodeTypes.some((parentType: string) =>
+        parentType === 'Constraint' || parentType === 'AlterTableCmd'
+      );
+      
+      if (hasConstraintParent && context.parent?.currentNode) {
+        const parentNode = context.parent.currentNode;
+        if ('Constraint' in parentNode && parentNode.Constraint?.contype === 'CONSTR_CHECK') {
+          return true;
+        }
+        if ('AlterTableCmd' in parentNode && 
+            parentNode.AlterTableCmd?.def?.Constraint?.contype === 'CONSTR_CHECK') {
+          return true;
+        }
+      }
+    }
+    
+    return false;
   }
 
   private isInCommentContext(context: TransformerContext): boolean {
