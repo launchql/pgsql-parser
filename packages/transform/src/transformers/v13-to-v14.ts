@@ -988,26 +988,17 @@ export class V13ToV14Transformer {
 
   private shouldPreserveObjfuncargs(context: TransformerContext): boolean {
     if (!context.parentNodeTypes || context.parentNodeTypes.length === 0) {
-      return false; // Default to not preserving objfuncargs
+      return true; // Default to preserving objfuncargs when no context
     }
     
     for (const parentType of context.parentNodeTypes) {
       if (parentType === 'AlterFunctionStmt' || 
-          parentType === 'DropStmt' ||
-          parentType === 'CommentStmt' ||
-          parentType === 'RenameStmt') {
+          parentType === 'CreateCastStmt') {
         return false; // These contexts should not have objfuncargs
       }
     }
     
-    for (const parentType of context.parentNodeTypes) {
-      if (parentType === 'CreateAggregateStmt' ||
-          parentType === 'AlterAggregateStmt') {
-        return true; // These contexts should preserve objfuncargs
-      }
-    }
-    
-    return false; // Default to removing objfuncargs in most cases
+    return true;
   }
 
   private isVariadicAggregateContext(context: TransformerContext): boolean {
