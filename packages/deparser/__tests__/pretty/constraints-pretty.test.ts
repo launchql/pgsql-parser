@@ -14,6 +14,9 @@ const prettyTest = new PrettyTest([
   'pretty/constraints-12.sql',
   'pretty/constraints-13.sql',
   'pretty/constraints-14.sql',
+  'pretty/constraints-15.sql',
+  'pretty/constraints-16.sql',
+  'pretty/constraints-17.sql',
 ]);
 
 prettyTest.generateTests();

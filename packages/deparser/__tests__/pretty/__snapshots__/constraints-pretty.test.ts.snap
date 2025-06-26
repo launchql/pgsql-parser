@@ -28,6 +28,12 @@ exports[`non-pretty: pretty/constraints-13.sql 1`] = `"ALTER TABLE products ADD 
 
 exports[`non-pretty: pretty/constraints-14.sql 1`] = `"ALTER TABLE users ADD CONSTRAINT unique_email UNIQUE (email)"`;
 
+exports[`non-pretty: pretty/constraints-15.sql 1`] = `"ALTER TABLE school.enrollments ADD CONSTRAINT fk_student_course FOREIGN KEY (student_id, course_id) REFERENCES school.courses_students (student_id, course_id)"`;
+
+exports[`non-pretty: pretty/constraints-16.sql 1`] = `"ALTER TABLE school.enrollments ADD CONSTRAINT chk_enrollment_date CHECK (enrollment_date <= CURRENT_DATE AND status IN ('active', 'completed', 'withdrawn'))"`;
+
+exports[`non-pretty: pretty/constraints-17.sql 1`] = `"CREATE TABLE school.enrollments (student_id int NOT NULL, course_id int NOT NULL, enrollment_date date NOT NULL, status text CHECK (status IN ('active', 'completed', 'withdrawn')), CHECK (enrollment_date <= CURRENT_DATE))"`;
+
 exports[`pretty: pretty/constraints-1.sql 1`] = `
 "ALTER TABLE public.users 
   ADD CONSTRAINT users_pkey PRIMARY KEY (id)"
@@ -110,4 +116,25 @@ exports[`pretty: pretty/constraints-13.sql 1`] = `
 exports[`pretty: pretty/constraints-14.sql 1`] = `
 "ALTER TABLE users 
   ADD CONSTRAINT unique_email UNIQUE (email)"
+`;
+
+exports[`pretty: pretty/constraints-15.sql 1`] = `
+"ALTER TABLE school.enrollments 
+  ADD CONSTRAINT fk_student_course FOREIGN KEY (student_id, course_id) REFERENCES school.courses_students (student_id, course_id)"
+`;
+
+exports[`pretty: pretty/constraints-16.sql 1`] = `
+"ALTER TABLE school.enrollments 
+  ADD CONSTRAINT chk_enrollment_date CHECK (enrollment_date <= CURRENT_DATE
+    AND status IN ('active', 'completed', 'withdrawn'))"
+`;
+
+exports[`pretty: pretty/constraints-17.sql 1`] = `
+"CREATE TABLE school.enrollments (
+  student_id int NOT NULL,
+  course_id int NOT NULL,
+  enrollment_date date NOT NULL,
+  status text CHECK (status IN ('active', 'completed', 'withdrawn')),
+  CHECK (enrollment_date <= CURRENT_DATE)
+)"
 `;

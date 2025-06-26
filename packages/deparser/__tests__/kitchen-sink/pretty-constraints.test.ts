@@ -17,6 +17,9 @@ it('pretty-constraints', async () => {
   "pretty/constraints-11.sql",
   "pretty/constraints-12.sql",
   "pretty/constraints-13.sql",
-  "pretty/constraints-14.sql"
+  "pretty/constraints-14.sql",
+  "pretty/constraints-15.sql",
+  "pretty/constraints-16.sql",
+  "pretty/constraints-17.sql"
 ]);
 });

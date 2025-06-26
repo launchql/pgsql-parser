@@ -71,3 +71,32 @@ ALTER TABLE products ADD CONSTRAINT check_price CHECK (price > 0);
 ALTER TABLE users ADD CONSTRAINT unique_email UNIQUE (email);
 
 
+-- 15 
+
+ALTER TABLE school.enrollments
+  ADD CONSTRAINT fk_student_course
+  FOREIGN KEY (student_id, course_id)
+  REFERENCES school.courses_students (student_id, course_id);
+
+-- 16 
+
+ALTER TABLE school.enrollments
+  ADD CONSTRAINT chk_enrollment_date
+  CHECK (
+    enrollment_date <= CURRENT_DATE
+    AND status IN ('active', 'completed', 'withdrawn')
+  );
+
+-- 17
+
+CREATE TABLE school.enrollments (
+  student_id INT NOT NULL,
+  course_id INT NOT NULL,
+  enrollment_date DATE NOT NULL,
+  status TEXT CHECK (
+    status IN ('active', 'completed', 'withdrawn')
+  ),
+  CHECK (
+    enrollment_date <= CURRENT_DATE
+  )
+);
