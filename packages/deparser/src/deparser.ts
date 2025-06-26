@@ -5,6 +5,73 @@ import { QuoteUtils } from './utils/quote-utils';
 import { ListUtils } from './utils/list-utils';
 import * as t from '@pgsql/types';
 
+/**
+ * List of real PostgreSQL built-in types as they appear in pg_catalog.pg_type.typname.
+ * These are stored in lowercase in PostgreSQL system catalogs.
+ * Use these for lookups, validations, or introspection logic.
+ */
+
+const pgCatalogTypes = [
+  // Integers
+  'int2',        // smallint
+  'int4',        // integer
+  'int8',        // bigint
+
+  // Floating-point & numeric
+  'float4',      // real
+  'float8',      // double precision
+  'numeric',     // arbitrary precision (aka "decimal")
+
+  // Text & string
+  'varchar',     // variable-length string
+  'char',        // internal one-byte type (used in special cases)
+  'bpchar',      // blank-padded char(n)
+  'text',        // unlimited string
+  'bool',        // boolean
+
+  // Dates & times
+  'date',        // calendar date
+  'time',        // time without time zone
+  'timetz',      // time with time zone
+  'timestamp',   // timestamp without time zone
+  'timestamptz', // timestamp with time zone
+  'interval',    // duration
+
+  // Binary & structured
+  'bytea',       // binary data
+  'uuid',        // universally unique identifier
+
+  // JSON & XML
+  'json',        // textual JSON
+  'jsonb',       // binary JSON
+  'xml',         // XML format
+
+  // Money & bitstrings
+  'money',       // currency value
+  'bit',         // fixed-length bit string
+  'varbit',      // variable-length bit string
+
+  // Network types
+  'inet',        // IPv4 or IPv6 address
+  'cidr',        // network address
+  'macaddr',     // MAC address (6 bytes)
+  'macaddr8'     // MAC address (8 bytes)
+];
+
+
+/**
+ * Parser-level type aliases accepted by PostgreSQL SQL syntax,
+ * but not present in pg_catalog.pg_type. These are resolved to
+ * real types during parsing and never appear in introspection.
+ */
+const pgCatalogTypeAliases: [string, string[]][] = [
+  ['numeric', ['decimal', 'dec']],
+  ['int4', ['int', 'integer']],
+  ['float8', ['float']],
+  ['bpchar', ['character']],
+  ['varchar', ['character varying']]
+];
+
 export interface DeparserOptions {
   newline?: string;
   tab?: string;
@@ -303,17 +370,34 @@ export class Deparser implements DeparserVisitor {
     if (node.targetList) {
       const targetList = ListUtils.unwrapList(node.targetList);
       if (this.formatter.isPretty()) {
-        const targetStrings = targetList
-          .map(e => {
-            const targetStr = this.visit(e as Node, { ...context, select: true });
-            if (this.containsMultilineStringLiteral(targetStr)) {
-              return targetStr;
+        if (targetList.length === 1) {
+          const targetNode = targetList[0] as Node;
+          const target = this.visit(targetNode, { ...context, select: true });
+          
+          // Check if single target is complex - if so, use multiline format
+          if (this.isComplexSelectTarget(targetNode)) {
+            output.push('SELECT' + distinctPart);
+            if (this.containsMultilineStringLiteral(target)) {
+              output.push(target);
+            } else {
+              output.push(this.formatter.indent(target));
             }
-            return this.formatter.indent(targetStr);
-          });
-        const formattedTargets = targetStrings.join(',' + this.formatter.newline());
-        output.push('SELECT' + distinctPart);
-        output.push(formattedTargets);
+          } else {
+            output.push('SELECT' + distinctPart + ' ' + target);
+          }
+        } else {
+          const targetStrings = targetList
+            .map(e => {
+              const targetStr = this.visit(e as Node, { ...context, select: true });
+              if (this.containsMultilineStringLiteral(targetStr)) {
+                return targetStr;
+              }
+              return this.formatter.indent(targetStr);
+            });
+          const formattedTargets = targetStrings.join(',' + this.formatter.newline());
+          output.push('SELECT' + distinctPart);
+          output.push(formattedTargets);
+        }
       } else {
         const targets = targetList
           .map(e => this.visit(e as Node, { ...context, select: true }))
@@ -354,12 +438,27 @@ export class Deparser implements DeparserVisitor {
     }
 
     if (node.valuesLists) {
-      output.push('VALUES');
-      const lists = ListUtils.unwrapList(node.valuesLists).map(list => {
-        const values = ListUtils.unwrapList(list).map(val => this.visit(val as Node, context));
-        return this.formatter.parens(values.join(', '));
-      });
-      output.push(lists.join(', '));
+      if (this.formatter.isPretty()) {
+        output.push('VALUES');
+        const lists = ListUtils.unwrapList(node.valuesLists).map(list => {
+          const values = ListUtils.unwrapList(list).map(val => this.visit(val as Node, context));
+          return this.formatter.parens(values.join(', '));
+        });
+        const indentedTuples = lists.map(tuple => {
+          if (this.containsMultilineStringLiteral(tuple)) {
+            return tuple;
+          }
+          return this.formatter.indent(tuple);
+        });
+        output.push(indentedTuples.join(',\n'));
+      } else {
+        output.push('VALUES');
+        const lists = ListUtils.unwrapList(node.valuesLists).map(list => {
+          const values = ListUtils.unwrapList(list).map(val => this.visit(val as Node, context));
+          return this.formatter.parens(values.join(', '));
+        });
+        output.push(lists.join(', '));
+      }
     }
 
     if (node.groupClause) {
@@ -752,6 +851,71 @@ export class Deparser implements DeparserVisitor {
     );
   }
 
+  private isComplexSelectTarget(node: any): boolean {
+    if (!node) return false;
+
+    if (node.ResTarget?.val) {
+      return this.isComplexExpression(node.ResTarget.val);
+    }
+
+    // Always complex: CASE expressions
+    if (node.CaseExpr) return true;
+    
+    // Always complex: Subqueries and subselects
+    if (node.SubLink) return true;
+    
+    // Always complex: Boolean tests and expressions
+    if (node.NullTest || node.BooleanTest || node.BoolExpr) return true;
+    
+    // COALESCE and similar functions - complex if multiple arguments
+    if (node.CoalesceExpr) {
+      const args = node.CoalesceExpr.args;
+      if (args && Array.isArray(args) && args.length > 1) return true;
+    }
+    
+    // Function calls - complex if multiple args or has clauses
+    if (node.FuncCall) {
+      const funcCall = node.FuncCall;
+      const args = funcCall.args ? (Array.isArray(funcCall.args) ? funcCall.args : [funcCall.args]) : [];
+      
+      // Complex if has window clause, filter, order by, etc.
+      if (funcCall.over || funcCall.agg_filter || funcCall.agg_order || funcCall.agg_distinct) {
+        return true;
+      }
+      
+      // Complex if multiple arguments
+      if (args.length > 1) return true;
+      
+      if (args.length === 1) {
+        return this.isComplexSelectTarget(args[0]);
+      }
+    }
+    
+    if (node.A_Expr) {
+      const expr = node.A_Expr;
+      // Check if operands are complex
+      if (expr.lexpr && this.isComplexSelectTarget(expr.lexpr)) return true;
+      if (expr.rexpr && this.isComplexSelectTarget(expr.rexpr)) return true;
+      return false;
+    }
+    
+    if (node.TypeCast) {
+      return this.isComplexSelectTarget(node.TypeCast.arg);
+    }
+    
+    if (node.A_ArrayExpr) return true;
+    
+    if (node.A_Indirection) {
+      return this.isComplexSelectTarget(node.A_Indirection.arg);
+    }
+    
+    if (node.A_Const || node.ColumnRef || node.ParamRef || node.A_Star) {
+      return false;
+    }
+    
+    return false;
+  }
+
   visitBetweenRange(rexpr: any, context: DeparserContext): string {
     if (rexpr && 'List' in rexpr && rexpr.List?.items) {
       const items = rexpr.List.items.map((item: any) => this.visit(item, context));
@@ -759,6 +923,8 @@ export class Deparser implements DeparserVisitor {
     }
     return this.visit(rexpr, context);
   }
+
+
 
   InsertStmt(node: t.InsertStmt, context: DeparserContext): string {
     const output: string[] = [];
@@ -774,7 +940,14 @@ export class Deparser implements DeparserVisitor {
       const cols = ListUtils.unwrapList(node.cols);
       const insertContext = { ...context, insertColumns: true };
       const columnNames = cols.map(col => this.visit(col as Node, insertContext));
-      output.push(this.formatter.parens(columnNames.join(', ')));
+      
+      if (this.formatter.isPretty()) {
+        // Always format columns in multiline parentheses for pretty printing
+        const indentedColumns = columnNames.map(col => this.formatter.indent(col));
+        output.push('(\n' + indentedColumns.join(',\n') + '\n)');
+      } else {
+        output.push(this.formatter.parens(columnNames.join(', ')));
+      }
     }
 
     if (node.selectStmt) {
@@ -1609,10 +1782,6 @@ export class Deparser implements DeparserVisitor {
       }
       
       if (catalog === 'pg_catalog') {
-        const builtinTypes = ['int2', 'int4', 'int8', 'float4', 'float8', 'numeric', 'decimal', 
-                             'varchar', 'char', 'bpchar', 'text', 'bool', 'date', 'time', 'timestamp', 
-                             'timestamptz', 'interval', 'bytea', 'uuid', 'json', 'jsonb'];
-        
         let typeName = `${catalog}.${type}`;
         
         if (type === 'bpchar' && args) {
@@ -1922,6 +2091,22 @@ export class Deparser implements DeparserVisitor {
     }
   }
 
+  isPgCatalogType(typeName: string): boolean {
+    const cleanTypeName = typeName.replace(/^pg_catalog\./, '');
+    
+    if (pgCatalogTypes.includes(cleanTypeName)) {
+      return true;
+    }
+    
+    for (const [realType, aliases] of pgCatalogTypeAliases) {
+      if (aliases.includes(cleanTypeName)) {
+        return true;
+      }
+    }
+    
+    return false;
+  }
+
   A_ArrayExpr(node: t.A_ArrayExpr, context: DeparserContext): string {
     const elements = ListUtils.unwrapList(node.elements);
     const elementStrs = elements.map(el => this.visit(el, context));
@@ -2030,30 +2215,32 @@ export class Deparser implements DeparserVisitor {
     const arg = this.visit(node.arg, context);
     const typeName = this.TypeName(node.typeName, context);
     
-    // Check if this is a bpchar typecast that should use traditional char syntax
-    if (typeName === 'bpchar' && node.typeName && node.typeName.names) {
-      const names = ListUtils.unwrapList(node.typeName.names);
-      if (names.length === 2 && 
-          names[0].String?.sval === 'pg_catalog' && 
-          names[1].String?.sval === 'bpchar') {
-        return `char ${arg}`;
+    // Check if this is a bpchar typecast that should preserve original syntax for AST consistency
+    if (typeName === 'bpchar' || typeName === 'pg_catalog.bpchar') {
+      const names = node.typeName?.names;
+      const isQualifiedBpchar = names && names.length === 2 && 
+                               (names[0] as any)?.String?.sval === 'pg_catalog' && 
+                               (names[1] as any)?.String?.sval === 'bpchar';
+      
+      if (isQualifiedBpchar) {
+        return `CAST(${arg} AS ${typeName})`;
       }
     }
     
-    // Check if the argument is a complex expression that should preserve CAST syntax
-    const argType = this.getNodeType(node.arg);
-    const isComplexExpression = argType === 'A_Expr' || argType === 'FuncCall' || argType === 'OpExpr';
-    
-    if (!isComplexExpression && (typeName.startsWith('interval') || 
-        typeName.startsWith('char') || 
-        typeName === '"char"' ||
-        typeName.startsWith('bpchar') ||
-        typeName === 'bytea' ||
-        typeName === 'orderedarray' ||
-        typeName === 'date')) {
-      // Remove pg_catalog prefix for :: syntax
-      const cleanTypeName = typeName.replace('pg_catalog.', '');
-      return `${arg}::${cleanTypeName}`;
+    if (this.isPgCatalogType(typeName)) {
+      const argType = this.getNodeType(node.arg);
+      
+      const isSimpleArgument = argType === 'A_Const' || argType === 'ColumnRef';
+      const isFunctionCall = argType === 'FuncCall';
+      
+      if (isSimpleArgument || isFunctionCall) {
+        // For simple arguments, avoid :: syntax if they have complex structure
+        if (isSimpleArgument && (arg.includes('(') || arg.startsWith('-'))) {
+        } else {
+          const cleanTypeName = typeName.replace('pg_catalog.', '');
+          return `${arg}::${cleanTypeName}`;
+        }
+      }
     }
     
     return `CAST(${arg} AS ${typeName})`;
@@ -2276,14 +2463,19 @@ export class Deparser implements DeparserVisitor {
       });
       
       if (this.formatter.isPretty()) {
-        const formattedElements = elementStrs.map(el => 
-          this.formatter.indent(el)
-        ).join(',' + this.formatter.newline());
+        const formattedElements = elementStrs.map(el => {
+          const trimmedEl = el.trim();
+          // Remove leading newlines from constraint elements to avoid extra blank lines
+          if (trimmedEl.startsWith('\n')) {
+            return this.formatter.indent(trimmedEl.substring(1));
+          }
+          return this.formatter.indent(trimmedEl);
+        }).join(',' + this.formatter.newline());
         output.push('(' + this.formatter.newline() + formattedElements + this.formatter.newline() + ')');
       } else {
         output.push(this.formatter.parens(elementStrs.join(', ')));
       }
-    } else if (!node.partbound) {
+    }else if (!node.partbound) {
       output.push(this.formatter.parens(''));
     }
 
@@ -2454,9 +2646,22 @@ export class Deparser implements DeparserVisitor {
         }
         break;
       case 'CONSTR_CHECK':
-        output.push('CHECK');
+        if (this.formatter.isPretty() && !context.isColumnConstraint) {
+          output.push('\n' + this.formatter.indent('CHECK'));
+        } else {
+          output.push('CHECK');
+        }
         if (node.raw_expr) {
-          output.push(this.formatter.parens(this.visit(node.raw_expr, context)));
+          if (this.formatter.isPretty()) {
+            const checkExpr = this.visit(node.raw_expr, context);
+            if (checkExpr.includes('\n')) {
+              output.push('(\n' + this.formatter.indent(checkExpr) + '\n)');
+            } else {
+              output.push(`(${checkExpr})`);
+            }
+          } else {
+            output.push(this.formatter.parens(this.visit(node.raw_expr, context)));
+          }
         }
         // Handle NOT VALID for check constraints
         if (node.skip_validation) {
@@ -2528,7 +2733,11 @@ export class Deparser implements DeparserVisitor {
         }
         break;
       case 'CONSTR_UNIQUE':
-        output.push('UNIQUE');
+        if (this.formatter.isPretty() && !context.isColumnConstraint) {
+          output.push('\n' + this.formatter.indent('UNIQUE'));
+        } else {
+          output.push('UNIQUE');
+        }
         if (node.nulls_not_distinct) {
           output.push('NULLS NOT DISTINCT');
         }
@@ -2546,32 +2755,69 @@ export class Deparser implements DeparserVisitor {
       case 'CONSTR_FOREIGN':
         // Only add "FOREIGN KEY" for table-level constraints, not column-level constraints
         if (!context.isColumnConstraint) {
-          output.push('FOREIGN KEY');
-          if (node.fk_attrs && node.fk_attrs.length > 0) {
-            const fkAttrs = ListUtils.unwrapList(node.fk_attrs)
-              .map(attr => this.visit(attr, context))
-              .join(', ');
-            output.push(`(${fkAttrs})`);
+          if (this.formatter.isPretty()) {
+            output.push('\n' + this.formatter.indent('FOREIGN KEY'));
+            if (node.fk_attrs && node.fk_attrs.length > 0) {
+              const fkAttrs = ListUtils.unwrapList(node.fk_attrs)
+                .map(attr => this.visit(attr, context))
+                .join(', ');
+              output.push(`(${fkAttrs})`);
+            }
+            output.push('\n' + this.formatter.indent('REFERENCES'));
+          } else {
+            output.push('FOREIGN KEY');
+            if (node.fk_attrs && node.fk_attrs.length > 0) {
+              const fkAttrs = ListUtils.unwrapList(node.fk_attrs)
+                .map(attr => this.visit(attr, context))
+                .join(', ');
+              output.push(`(${fkAttrs})`);
+            }
+            output.push('REFERENCES');
           }
+        } else {
+          output.push('REFERENCES');
         }
-        output.push('REFERENCES');
         if (node.pktable) {
-          output.push(this.RangeVar(node.pktable, context));
+          if (this.formatter.isPretty() && !context.isColumnConstraint) {
+            const lastIndex = output.length - 1;
+            if (lastIndex >= 0 && output[lastIndex].includes('REFERENCES')) {
+              output[lastIndex] += ' ' + this.RangeVar(node.pktable, context);
+            } else {
+              output.push(this.RangeVar(node.pktable, context));
+            }
+          } else {
+            output.push(this.RangeVar(node.pktable, context));
+          }
         }
         if (node.pk_attrs && node.pk_attrs.length > 0) {
           const pkAttrs = ListUtils.unwrapList(node.pk_attrs)
             .map(attr => this.visit(attr, context))
             .join(', ');
-          output.push(`(${pkAttrs})`);
+          if (this.formatter.isPretty() && !context.isColumnConstraint) {
+            const lastIndex = output.length - 1;
+            if (lastIndex >= 0) {
+              output[lastIndex] += ` (${pkAttrs})`;
+            } else {
+              output.push(`(${pkAttrs})`);
+            }
+          } else {
+            output.push(`(${pkAttrs})`);
+          }
         }
         if (node.fk_matchtype && node.fk_matchtype !== 's') {
+          let matchClause = '';
           switch (node.fk_matchtype) {
             case 'f':
-              output.push('MATCH FULL');
+              matchClause = 'MATCH FULL';
               break;
             case 'p':
-              output.push('MATCH PARTIAL');
+              matchClause = 'MATCH PARTIAL';
               break;
+          }
+          if (this.formatter.isPretty() && !context.isColumnConstraint) {
+            output.push('\n' + this.formatter.indent(matchClause));
+          } else {
+            output.push(matchClause);
           }
         }
         if (node.fk_upd_action && node.fk_upd_action !== 'a') {
@@ -2622,7 +2868,11 @@ export class Deparser implements DeparserVisitor {
         }
         // Handle NOT VALID for foreign key constraints - only for table constraints, not domain constraints
         if (node.skip_validation && !context.isDomainConstraint) {
-          output.push('NOT VALID');
+          if (this.formatter.isPretty() && !context.isColumnConstraint) {
+            output.push('\n' + this.formatter.indent('NOT VALID'));
+          } else {
+            output.push('NOT VALID');
+          }
         }
         break;
       case 'CONSTR_ATTR_DEFERRABLE':
@@ -3718,8 +3968,8 @@ export class Deparser implements DeparserVisitor {
               } else if (nodeData.sval !== undefined) {
                 // Handle nested sval structure: { sval: { sval: "value" } }
                 const svalValue = typeof nodeData.sval === 'object' ? nodeData.sval.sval : nodeData.sval;
-                const stringValue = svalValue.replace(/'/g, '').toLowerCase();
-                boolValue = stringValue === 'on' || stringValue === 'true';
+                const stringValue = svalValue.replace(/'/g, '');
+                boolValue = stringValue.toLowerCase() === 'on' || stringValue.toLowerCase() === 'true';
               }
             }
             return boolValue ? 'READ ONLY' : 'READ WRITE';
@@ -3739,8 +3989,8 @@ export class Deparser implements DeparserVisitor {
               } else if (nodeData.sval !== undefined) {
                 // Handle nested sval structure: { sval: { sval: "value" } }
                 const svalValue = typeof nodeData.sval === 'object' ? nodeData.sval.sval : nodeData.sval;
-                const stringValue = svalValue.replace(/'/g, '').toLowerCase();
-                boolValue = stringValue === 'on' || stringValue === 'true';
+                const stringValue = svalValue.replace(/'/g, '');
+                boolValue = stringValue.toLowerCase() === 'on' || stringValue.toLowerCase() === 'true';
               }
             }
             return boolValue ? 'DEFERRABLE' : 'NOT DEFERRABLE';
@@ -3809,8 +4059,8 @@ export class Deparser implements DeparserVisitor {
                     } else if (nodeData.sval !== undefined) {
                       // Handle nested sval structure: { sval: { sval: "value" } }
                       const svalValue = typeof nodeData.sval === 'object' ? nodeData.sval.sval : nodeData.sval;
-                      const stringValue = svalValue.replace(/'/g, '').toLowerCase();
-                      boolValue = stringValue === 'on' || stringValue === 'true';
+                      const stringValue = svalValue.replace(/'/g, '');
+                      boolValue = stringValue.toLowerCase() === 'on' || stringValue.toLowerCase() === 'true';
                     }
                   }
                   transactionOptions.push(boolValue ? 'READ ONLY' : 'READ WRITE');
@@ -3826,8 +4076,8 @@ export class Deparser implements DeparserVisitor {
                     } else if (nodeData.sval !== undefined) {
                       // Handle nested sval structure: { sval: { sval: "value" } }
                       const svalValue = typeof nodeData.sval === 'object' ? nodeData.sval.sval : nodeData.sval;
-                      const stringValue = svalValue.replace(/'/g, '').toLowerCase();
-                      boolValue = stringValue === 'on' || stringValue === 'true';
+                      const stringValue = svalValue.replace(/'/g, '');
+                      boolValue = stringValue.toLowerCase() === 'on' || stringValue.toLowerCase() === 'true';
                     }
                   }
                   transactionOptions.push(boolValue ? 'DEFERRABLE' : 'NOT DEFERRABLE');
@@ -3900,7 +4150,7 @@ export class Deparser implements DeparserVisitor {
     
     switch (node.roletype) {
       case 'ROLESPEC_PUBLIC':
-        return 'public';
+        return 'PUBLIC';
       case 'ROLESPEC_CURRENT_USER':
         return 'CURRENT_USER';
       case 'ROLESPEC_SESSION_USER':
@@ -3908,7 +4158,7 @@ export class Deparser implements DeparserVisitor {
       case 'ROLESPEC_CURRENT_ROLE':
         return 'CURRENT_ROLE';
       default:
-        return 'public';
+        return 'PUBLIC';
     }
   }
 
@@ -4408,10 +4658,24 @@ export class Deparser implements DeparserVisitor {
     }
 
     if (node.cmds && node.cmds.length > 0) {
-      const commandsStr = ListUtils.unwrapList(node.cmds)
-        .map(cmd => this.visit(cmd, alterContext))
-        .join(', ');
-      output.push(commandsStr);
+      const commands = ListUtils.unwrapList(node.cmds);
+      if (this.formatter.isPretty()) {
+        const commandsStr = commands
+          .map(cmd => {
+            const cmdStr = this.visit(cmd, alterContext);
+            if (cmdStr.startsWith('ADD CONSTRAINT') || cmdStr.startsWith('ADD ')) {
+              return this.formatter.newline() + this.formatter.indent(cmdStr);
+            }
+            return cmdStr;
+          })
+          .join(',');
+        output.push(commandsStr);
+      } else {
+        const commandsStr = commands
+          .map(cmd => this.visit(cmd, alterContext))
+          .join(', ');
+        output.push(commandsStr);
+      }
     }
 
     return output.join(' ');
@@ -6516,7 +6780,7 @@ export class Deparser implements DeparserVisitor {
     
     const initialParts = ['CREATE', 'POLICY'];
     if (node.policy_name) {
-      initialParts.push(`"${node.policy_name}"`);
+      initialParts.push(QuoteUtils.quote(node.policy_name));
     }
     
     output.push(initialParts.join(' '));
@@ -6595,7 +6859,7 @@ export class Deparser implements DeparserVisitor {
     const output: string[] = ['ALTER', 'POLICY'];
     
     if (node.policy_name) {
-      output.push(`"${node.policy_name}"`);
+      output.push(QuoteUtils.quote(node.policy_name));
     }
     
     if (node.table) {
@@ -8290,7 +8554,11 @@ export class Deparser implements DeparserVisitor {
 
     if (node.action) {
       const actionStr = this.GrantStmt(node.action, context);
-      output.push(actionStr);
+      if (this.formatter.isPretty()) {
+        return output.join(' ') + this.formatter.newline() + this.formatter.indent(actionStr);
+      } else {
+        output.push(actionStr);
+      }
     }
 
     return output.join(' ');
@@ -8474,87 +8742,165 @@ export class Deparser implements DeparserVisitor {
       output.push(QuoteUtils.quote(node.trigname));
     }
 
-    const timing: string[] = [];
-    if (node.timing & 2) timing.push('BEFORE');
-    else if (node.timing & 64) timing.push('INSTEAD OF');
-    else timing.push('AFTER'); // Default timing when no specific timing is set
-    output.push(timing.join(' '));
-
-    const events: string[] = [];
-    if (node.events & 4) events.push('INSERT');
-    if (node.events & 8) events.push('DELETE');
-    if (node.events & 16) events.push('UPDATE');
-    if (node.events & 32) events.push('TRUNCATE');
-    output.push(events.join(' OR '));
-
-    if (node.columns && node.columns.length > 0) {
-      output.push('OF');
-      const columnNames = ListUtils.unwrapList(node.columns)
-        .map(col => this.visit(col, context))
-        .join(', ');
-      output.push(columnNames);
-    }
-
-    output.push('ON');
-    if (node.relation) {
-      output.push(this.RangeVar(node.relation, context));
-    }
-
-    if (node.constrrel) {
-      output.push('FROM');
-      output.push(this.RangeVar(node.constrrel, context));
-    }
-
-    if (node.deferrable) {
-      output.push('DEFERRABLE');
-    }
-
-    if (node.initdeferred) {
-      output.push('INITIALLY DEFERRED');
-    }
-
-    // Handle REFERENCING clauses
-    if (node.transitionRels && node.transitionRels.length > 0) {
-      output.push('REFERENCING');
-      const transitionClauses = ListUtils.unwrapList(node.transitionRels)
-        .map(rel => this.visit(rel, context))
-        .join(' ');
-      output.push(transitionClauses);
-    }
-
-    if (node.row) {
-      output.push('FOR EACH ROW');
+    if (this.formatter.isPretty()) {
+      const components: string[] = [];
+      
+      const timing: string[] = [];
+      if (node.timing & 2) timing.push('BEFORE');
+      else if (node.timing & 64) timing.push('INSTEAD OF');
+      else timing.push('AFTER');
+      
+      const events: string[] = [];
+      if (node.events & 4) events.push('INSERT');
+      if (node.events & 8) events.push('DELETE');
+      if (node.events & 16) {
+        let updateStr = 'UPDATE';
+        if (node.columns && node.columns.length > 0) {
+          const columnNames = ListUtils.unwrapList(node.columns)
+            .map(col => this.visit(col, context))
+            .join(', ');
+          updateStr += ' OF ' + columnNames;
+        }
+        events.push(updateStr);
+      }
+      if (node.events & 32) events.push('TRUNCATE');
+      
+      components.push(this.formatter.indent(timing.join(' ') + ' ' + events.join(' OR ')));
+      
+      if (node.relation) {
+        components.push(this.formatter.indent('ON ' + this.RangeVar(node.relation, context)));
+      }
+      
+      if (node.transitionRels && node.transitionRels.length > 0) {
+        const transitionClauses = ListUtils.unwrapList(node.transitionRels)
+          .map(rel => this.visit(rel, context))
+          .join(' ');
+        components.push(this.formatter.indent('REFERENCING ' + transitionClauses));
+      }
+      
+      if (node.deferrable) {
+        components.push(this.formatter.indent('DEFERRABLE'));
+      }
+      
+      if (node.initdeferred) {
+        components.push(this.formatter.indent('INITIALLY DEFERRED'));
+      }
+      
+      if (node.row) {
+        components.push(this.formatter.indent('FOR EACH ROW'));
+      } else {
+        components.push(this.formatter.indent('FOR EACH STATEMENT'));
+      }
+      
+      if (node.whenClause) {
+        const whenStr = 'WHEN (' + this.visit(node.whenClause, context) + ')';
+        components.push(this.formatter.indent(whenStr));
+      }
+      
+      let executeStr = 'EXECUTE';
+      if (node.funcname && node.funcname.length > 0) {
+        const funcName = ListUtils.unwrapList(node.funcname)
+          .map(name => this.visit(name, context))
+          .join('.');
+        executeStr += ' PROCEDURE ' + funcName;
+      }
+      
+      if (node.args && node.args.length > 0) {
+        const argContext = { ...context, isStringLiteral: true };
+        const args = ListUtils.unwrapList(node.args)
+          .map(arg => this.visit(arg, argContext))
+          .join(', ');
+        executeStr += '(' + args + ')';
+      } else {
+        executeStr += '()';
+      }
+      
+      components.push(this.formatter.indent(executeStr));
+      
+      return output.join(' ') + this.formatter.newline() + components.join(this.formatter.newline());
     } else {
-      output.push('FOR EACH STATEMENT');
-    }
+      const timing: string[] = [];
+      if (node.timing & 2) timing.push('BEFORE');
+      else if (node.timing & 64) timing.push('INSTEAD OF');
+      else timing.push('AFTER');
+      output.push(timing.join(' '));
 
-    if (node.whenClause) {
-      output.push('WHEN');
-      output.push('(');
-      output.push(this.visit(node.whenClause, context));
-      output.push(')');
-    }
+      const events: string[] = [];
+      if (node.events & 4) events.push('INSERT');
+      if (node.events & 8) events.push('DELETE');
+      if (node.events & 16) events.push('UPDATE');
+      if (node.events & 32) events.push('TRUNCATE');
+      output.push(events.join(' OR '));
 
-    output.push('EXECUTE');
-    if (node.funcname && node.funcname.length > 0) {
-      const funcName = ListUtils.unwrapList(node.funcname)
-        .map(name => this.visit(name, context))
-        .join('.');
-      output.push('FUNCTION', funcName);
-    }
+      if (node.columns && node.columns.length > 0) {
+        output.push('OF');
+        const columnNames = ListUtils.unwrapList(node.columns)
+          .map(col => this.visit(col, context))
+          .join(', ');
+        output.push(columnNames);
+      }
 
-    if (node.args && node.args.length > 0) {
-      output.push('(');
-      const args = ListUtils.unwrapList(node.args)
-        .map(arg => this.visit(arg, context))
-        .join(', ');
-      output.push(args);
-      output.push(')');
-    } else {
-      output.push('()');
-    }
+      output.push('ON');
+      if (node.relation) {
+        output.push(this.RangeVar(node.relation, context));
+      }
 
-    return output.join(' ');
+      if (node.constrrel) {
+        output.push('FROM');
+        output.push(this.RangeVar(node.constrrel, context));
+      }
+
+      if (node.deferrable) {
+        output.push('DEFERRABLE');
+      }
+
+      if (node.initdeferred) {
+        output.push('INITIALLY DEFERRED');
+      }
+
+      if (node.transitionRels && node.transitionRels.length > 0) {
+        output.push('REFERENCING');
+        const transitionClauses = ListUtils.unwrapList(node.transitionRels)
+          .map(rel => this.visit(rel, context))
+          .join(' ');
+        output.push(transitionClauses);
+      }
+
+      if (node.row) {
+        output.push('FOR EACH ROW');
+      } else {
+        output.push('FOR EACH STATEMENT');
+      }
+
+      if (node.whenClause) {
+        output.push('WHEN');
+        output.push('(');
+        output.push(this.visit(node.whenClause, context));
+        output.push(')');
+      }
+
+      output.push('EXECUTE');
+      if (node.funcname && node.funcname.length > 0) {
+        const funcName = ListUtils.unwrapList(node.funcname)
+          .map(name => this.visit(name, context))
+          .join('.');
+        output.push('FUNCTION', funcName);
+      }
+
+      if (node.args && node.args.length > 0) {
+        output.push('(');
+        const argContext = { ...context, isStringLiteral: true };
+        const args = ListUtils.unwrapList(node.args)
+          .map(arg => this.visit(arg, argContext))
+          .join(', ');
+        output.push(args);
+        output.push(')');
+      } else {
+        output.push('()');
+      }
+
+      return output.join(' ');
+    }
   }
 
   TriggerTransition(node: t.TriggerTransition, context: DeparserContext): string {

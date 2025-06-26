@@ -37,3 +37,12 @@ CREATE TEMPORARY TABLE temp_calculations (
   value DECIMAL(15,5),
   result TEXT
 );
+
+CREATE TABLE orders (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL,
+  total DECIMAL(10,2) CHECK (total > 0),
+  status VARCHAR(20) DEFAULT 'pending',
+  created_at TIMESTAMP DEFAULT now(),
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
