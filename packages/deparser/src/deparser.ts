@@ -559,14 +559,14 @@ export class Deparser implements DeparserVisitor {
     switch (kind) {
       case 'AEXPR_OP':
         if (lexpr && rexpr) {
-          const operator = this.deparseOperatorName(name);
+          const operator = this.deparseOperatorName(name, context);
           let leftExpr = this.visit(lexpr, context);
           let rightExpr = this.visit(rexpr, context);
 
           // Check if left expression needs parentheses
           let leftNeedsParens = false;
           if (lexpr && 'A_Expr' in lexpr && lexpr.A_Expr?.kind === 'AEXPR_OP') {
-            const leftOp = this.deparseOperatorName(ListUtils.unwrapList(lexpr.A_Expr.name));
+            const leftOp = this.deparseOperatorName(ListUtils.unwrapList(lexpr.A_Expr.name), context);
             if (this.needsParentheses(leftOp, operator, 'left')) {
               leftNeedsParens = true;
             }
@@ -581,7 +581,7 @@ export class Deparser implements DeparserVisitor {
           // Check if right expression needs parentheses
           let rightNeedsParens = false;
           if (rexpr && 'A_Expr' in rexpr && rexpr.A_Expr?.kind === 'AEXPR_OP') {
-            const rightOp = this.deparseOperatorName(ListUtils.unwrapList(rexpr.A_Expr.name));
+            const rightOp = this.deparseOperatorName(ListUtils.unwrapList(rexpr.A_Expr.name), context);
             if (this.needsParentheses(rightOp, operator, 'right')) {
               rightNeedsParens = true;
             }
@@ -596,7 +596,7 @@ export class Deparser implements DeparserVisitor {
           return this.formatter.format([leftExpr, operator, rightExpr]);
         }else if (rexpr) {
           return this.formatter.format([
-            this.deparseOperatorName(name),
+            this.deparseOperatorName(name, context),
             this.visit(rexpr, context)
           ]);
         }
@@ -604,14 +604,14 @@ export class Deparser implements DeparserVisitor {
       case 'AEXPR_OP_ANY':
         return this.formatter.format([
           this.visit(lexpr, context),
-          this.deparseOperatorName(name),
+          this.deparseOperatorName(name, context),
           'ANY',
           this.formatter.parens(this.visit(rexpr, context))
         ]);
       case 'AEXPR_OP_ALL':
         return this.formatter.format([
           this.visit(lexpr, context),
-          this.deparseOperatorName(name),
+          this.deparseOperatorName(name, context),
           'ALL',
           this.formatter.parens(this.visit(rexpr, context))
         ]);
@@ -660,7 +660,7 @@ export class Deparser implements DeparserVisitor {
           ].join(', '))
         ]);
       case 'AEXPR_IN':
-        const inOperator = this.deparseOperatorName(name);
+        const inOperator = this.deparseOperatorName(name, context);
         if (inOperator === '<>' || inOperator === '!=') {
           return this.formatter.format([
             this.visit(lexpr, context),
@@ -675,7 +675,7 @@ export class Deparser implements DeparserVisitor {
           ]);
         }
       case 'AEXPR_LIKE':
-        const likeOp = this.deparseOperatorName(name);
+        const likeOp = this.deparseOperatorName(name, context);
         if (likeOp === '!~~') {
           return this.formatter.format([
             this.visit(lexpr, context),
@@ -690,7 +690,7 @@ export class Deparser implements DeparserVisitor {
           ]);
         }
       case 'AEXPR_ILIKE':
-        const ilikeOp = this.deparseOperatorName(name);
+        const ilikeOp = this.deparseOperatorName(name, context);
         if (ilikeOp === '!~~*') {
           return this.formatter.format([
             this.visit(lexpr, context),
@@ -705,7 +705,7 @@ export class Deparser implements DeparserVisitor {
           ]);
         }
       case 'AEXPR_SIMILAR':
-        const similarOp = this.deparseOperatorName(name);
+        const similarOp = this.deparseOperatorName(name, context);
         let rightExpr: string;
 
         if (rexpr && 'FuncCall' in rexpr &&
@@ -763,7 +763,7 @@ export class Deparser implements DeparserVisitor {
     throw new Error(`Unhandled A_Expr kind: ${kind}`);
   }
 
-  deparseOperatorName(name: t.Node[]): string {
+  deparseOperatorName(name: t.Node[], context: DeparserContext): string {
     if (!name || name.length === 0) {
       return '';
     }
@@ -772,7 +772,7 @@ export class Deparser implements DeparserVisitor {
       if (n.String) {
         return n.String.sval || n.String.str;
       }
-      return this.visit(n, new DeparserContext({}));
+      return this.visit(n, context);
     });
 
     if (parts.length > 1) {
@@ -1420,7 +1420,7 @@ export class Deparser implements DeparserVisitor {
 
       // Add parentheses around timestamp if it contains arithmetic operations
       if (args[1] && 'A_Expr' in args[1] && args[1].A_Expr?.kind === 'AEXPR_OP') {
-        const op = this.deparseOperatorName(ListUtils.unwrapList(args[1].A_Expr.name));
+        const op = this.deparseOperatorName(ListUtils.unwrapList(args[1].A_Expr.name), context);
         if (op === '+' || op === '-' || op === '*' || op === '/') {
           timestamp = this.formatter.parens(timestamp);
         }
@@ -1497,7 +1497,7 @@ export class Deparser implements DeparserVisitor {
         }
 
         // Handle window frame specifications using the dedicated formatWindowFrame method
-        const frameClause = this.formatWindowFrame(node.over);
+        const frameClause = this.formatWindowFrame(node.over, context.spawn('FuncCall'));
         if (frameClause) {
           windowParts.push(frameClause);
         }
@@ -2969,7 +2969,7 @@ export class Deparser implements DeparserVisitor {
       case 'ANY_SUBLINK':
         if (node.testexpr && node.operName) {
           const testExpr = this.visit(node.testexpr, context);
-          const operator = this.deparseOperatorName(node.operName);
+          const operator = this.deparseOperatorName(node.operName, context);
           return `${testExpr} ${operator} ANY ${subselect}`;
         } else if (node.testexpr) {
           const testExpr = this.visit(node.testexpr, context);
@@ -2979,7 +2979,7 @@ export class Deparser implements DeparserVisitor {
       case 'ALL_SUBLINK':
         if (node.testexpr && node.operName) {
           const testExpr = this.visit(node.testexpr, context);
-          const operator = this.deparseOperatorName(node.operName);
+          const operator = this.deparseOperatorName(node.operName, context);
           return `${testExpr} ${operator} ALL ${subselect}`;
         }
         return subselect;
@@ -3032,7 +3032,7 @@ export class Deparser implements DeparserVisitor {
 
     // Only add frame clause if frameOptions indicates non-default framing
     if (node.frameOptions && node.frameOptions !== 1058) {
-      const frameClause = this.formatWindowFrame(node);
+      const frameClause = this.formatWindowFrame(node, context.spawn('WindowDef'));
       if (frameClause) {
         windowParts.push(frameClause);
       }
@@ -3053,7 +3053,7 @@ export class Deparser implements DeparserVisitor {
     return output.join(' ');
   }
 
-  formatWindowFrame(node: any): string | null {
+  formatWindowFrame(node: any, context: DeparserContext): string | null {
     if (!node.frameOptions) return null;
 
     const frameOptions = node.frameOptions;
@@ -3082,8 +3082,8 @@ export class Deparser implements DeparserVisitor {
       boundsParts.push('AND CURRENT ROW');
     } else if (frameOptions === 18453) {
       if (node.startOffset && node.endOffset) {
-        boundsParts.push(`${this.visit(node.startOffset, new DeparserContext({}))} PRECEDING`);
-        boundsParts.push(`AND ${this.visit(node.endOffset, new DeparserContext({}))} FOLLOWING`);
+        boundsParts.push(`${this.visit(node.startOffset, context)} PRECEDING`);
+        boundsParts.push(`AND ${this.visit(node.endOffset, context)} FOLLOWING`);
       }
     } else if (frameOptions === 1557) {
       boundsParts.push('CURRENT ROW');
@@ -3091,7 +3091,7 @@ export class Deparser implements DeparserVisitor {
     } else if (frameOptions === 16917) {
       boundsParts.push('CURRENT ROW');
       if (node.endOffset) {
-        boundsParts.push(`AND ${this.visit(node.endOffset, new DeparserContext({}))} FOLLOWING`);
+        boundsParts.push(`AND ${this.visit(node.endOffset, context)} FOLLOWING`);
       }
     } else if (frameOptions === 1058) {
       return null;
@@ -3099,11 +3099,11 @@ export class Deparser implements DeparserVisitor {
       // Handle start bound - prioritize explicit offset values over bit flags
       if (node.startOffset) {
         if (frameOptions & 0x400) { // FRAMEOPTION_START_VALUE_PRECEDING
-          boundsParts.push(`${this.visit(node.startOffset, new DeparserContext({}))} PRECEDING`);
+          boundsParts.push(`${this.visit(node.startOffset, context)} PRECEDING`);
         } else if (frameOptions & 0x800) { // FRAMEOPTION_START_VALUE_FOLLOWING
-          boundsParts.push(`${this.visit(node.startOffset, new DeparserContext({}))} FOLLOWING`);
+          boundsParts.push(`${this.visit(node.startOffset, context)} FOLLOWING`);
         } else {
-          boundsParts.push(`${this.visit(node.startOffset, new DeparserContext({}))} PRECEDING`);
+          boundsParts.push(`${this.visit(node.startOffset, context)} PRECEDING`);
         }
       } else if (frameOptions & 0x10) { // FRAMEOPTION_START_UNBOUNDED_PRECEDING
         boundsParts.push('UNBOUNDED PRECEDING');
@@ -3115,11 +3115,11 @@ export class Deparser implements DeparserVisitor {
       if (node.endOffset) {
         if (boundsParts.length > 0) {
           if (frameOptions & 0x1000) { // FRAMEOPTION_END_VALUE_PRECEDING
-            boundsParts.push(`AND ${this.visit(node.endOffset, new DeparserContext({}))} PRECEDING`);
+            boundsParts.push(`AND ${this.visit(node.endOffset, context)} PRECEDING`);
           } else if (frameOptions & 0x2000) { // FRAMEOPTION_END_VALUE_FOLLOWING
-            boundsParts.push(`AND ${this.visit(node.endOffset, new DeparserContext({}))} FOLLOWING`);
+            boundsParts.push(`AND ${this.visit(node.endOffset, context)} FOLLOWING`);
           } else {
-            boundsParts.push(`AND ${this.visit(node.endOffset, new DeparserContext({}))} FOLLOWING`);
+            boundsParts.push(`AND ${this.visit(node.endOffset, context)} FOLLOWING`);
           }
         }
       } else if (frameOptions & 0x80) { // FRAMEOPTION_END_UNBOUNDED_FOLLOWING
