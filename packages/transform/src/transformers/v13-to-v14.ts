@@ -110,9 +110,24 @@ export class V13ToV14Transformer {
     const result: any = {};
     
     if (node.funcname !== undefined) {
-      result.funcname = Array.isArray(node.funcname)
+      let funcname = Array.isArray(node.funcname)
         ? node.funcname.map(item => this.transform(item as any, context))
         : this.transform(node.funcname as any, context);
+      
+      if (Array.isArray(funcname) && funcname.length >= 2) {
+        const lastName = funcname[funcname.length - 1];
+        if (lastName && typeof lastName === 'object' && 'String' in lastName) {
+          const funcName = lastName.String.str || lastName.String.sval;
+          if (funcName === 'date_part') {
+            funcname = [...funcname];
+            funcname[funcname.length - 1] = {
+              String: { str: 'extract' }
+            };
+          }
+        }
+      }
+      
+      result.funcname = funcname;
     }
     
     if (node.args !== undefined) {
