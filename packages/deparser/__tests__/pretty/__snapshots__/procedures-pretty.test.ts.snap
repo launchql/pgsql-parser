@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`non-pretty: pretty/procedures-1.sql 1`] = `"SELECT handle_insert('TYPE_A')"`;
+
+exports[`non-pretty: pretty/procedures-2.sql 1`] = `"SELECT "HandleInsert"('TYPE_A', 'Region-1')"`;
+
+exports[`non-pretty: pretty/procedures-3.sql 1`] = `"SELECT compute_score(42, true)"`;
+
+exports[`non-pretty: pretty/procedures-4.sql 1`] = `"SELECT metrics.get_total('2025-01-01', '2025-01-31')"`;
+
+exports[`non-pretty: pretty/procedures-5.sql 1`] = `"SELECT * FROM users WHERE is_active(user_id)"`;
+
+exports[`non-pretty: pretty/procedures-6.sql 1`] = `"SELECT * FROM get_user_details(1001)"`;
+
+exports[`non-pretty: pretty/procedures-7.sql 1`] = `"SELECT * FROM get_recent_events('login') AS events"`;
+
+exports[`non-pretty: pretty/procedures-8.sql 1`] = `"SELECT "Analytics"."RunQuery"('Q-123', '2025-06')"`;
+
+exports[`non-pretty: pretty/procedures-9.sql 1`] = `"SELECT calculate_discount(price * quantity, customer_tier)"`;
+
+exports[`non-pretty: pretty/procedures-10.sql 1`] = `"SELECT perform_backup('daily', false)"`;
+
+exports[`pretty: pretty/procedures-1.sql 1`] = `"SELECT handle_insert('TYPE_A')"`;
+
+exports[`pretty: pretty/procedures-2.sql 1`] = `"SELECT "HandleInsert"('TYPE_A', 'Region-1')"`;
+
+exports[`pretty: pretty/procedures-3.sql 1`] = `"SELECT compute_score(42, true)"`;
+
+exports[`pretty: pretty/procedures-4.sql 1`] = `"SELECT metrics.get_total('2025-01-01', '2025-01-31')"`;
+
+exports[`pretty: pretty/procedures-5.sql 1`] = `
+"SELECT *
+FROM users
+WHERE
+  is_active(user_id)"
+`;
+
+exports[`pretty: pretty/procedures-6.sql 1`] = `
+"SELECT *
+FROM get_user_details(1001)"
+`;
+
+exports[`pretty: pretty/procedures-7.sql 1`] = `
+"SELECT *
+FROM get_recent_events('login') AS events"
+`;
+
+exports[`pretty: pretty/procedures-8.sql 1`] = `"SELECT "Analytics"."RunQuery"('Q-123', '2025-06')"`;
+
+exports[`pretty: pretty/procedures-9.sql 1`] = `"SELECT calculate_discount(price * quantity, customer_tier)"`;
+
+exports[`pretty: pretty/procedures-10.sql 1`] = `"SELECT perform_backup('daily', false)"`;

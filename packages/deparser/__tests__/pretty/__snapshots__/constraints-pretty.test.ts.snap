@@ -1,14 +1,57 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`non-pretty: pretty/constraints-1.sql 1`] = `"CREATE TABLE orders (id serial PRIMARY KEY, user_id int NOT NULL, total numeric(10, 2) CHECK (total > 0), status varchar(20) DEFAULT 'pending', created_at pg_catalog.timestamp DEFAULT now(), CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE, CONSTRAINT unique_user_date UNIQUE (user_id, created_at), CONSTRAINT check_status CHECK (status IN ('pending', 'completed', 'cancelled')))"`;
+exports[`non-pretty: pretty/constraints-1.sql 1`] = `"ALTER TABLE public.users ADD CONSTRAINT users_pkey PRIMARY KEY (id)"`;
 
-exports[`non-pretty: pretty/constraints-2.sql 1`] = `"ALTER TABLE products ADD CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories (id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED"`;
+exports[`non-pretty: pretty/constraints-2.sql 1`] = `"ALTER TABLE "App"."User Data" ADD CONSTRAINT "Unique_Full Name" UNIQUE ("Full Name")"`;
 
-exports[`non-pretty: pretty/constraints-3.sql 1`] = `"ALTER TABLE products ADD CONSTRAINT check_price CHECK (price > 0)"`;
+exports[`non-pretty: pretty/constraints-3.sql 1`] = `"ALTER TABLE school.attendance ADD CONSTRAINT attendance_unique UNIQUE ("Student ID", "Class ID")"`;
 
-exports[`non-pretty: pretty/constraints-4.sql 1`] = `"ALTER TABLE users ADD CONSTRAINT unique_email UNIQUE (email)"`;
+exports[`non-pretty: pretty/constraints-4.sql 1`] = `"ALTER TABLE "Orders"."OrderLines" ADD CONSTRAINT "FK_Order_Ref" FOREIGN KEY (order_id) REFERENCES "Orders"."Order" ("OrderID")"`;
 
-exports[`pretty: pretty/constraints-1.sql 1`] = `
+exports[`non-pretty: pretty/constraints-5.sql 1`] = `"ALTER TABLE "x-Schema"."z-Table" ADD CONSTRAINT "zNameFormatCheck" CHECK ("Z-Name" ~ '^[A-Z]')"`;
+
+exports[`non-pretty: pretty/constraints-6.sql 1`] = `"ALTER TABLE data.snapshots ADD CONSTRAINT metadata_has_key CHECK (metadata ? 'type')"`;
+
+exports[`non-pretty: pretty/constraints-7.sql 1`] = `"ALTER TABLE "Billing"."Invoices" ADD CONSTRAINT "FK_Client_ID" FOREIGN KEY ("Client ID") REFERENCES "Clients"."ClientBase" ("Client ID")"`;
+
+exports[`non-pretty: pretty/constraints-8.sql 1`] = `"ALTER TABLE "API Keys" ADD CONSTRAINT "PK_KeyID" PRIMARY KEY ("KeyID")"`;
+
+exports[`non-pretty: pretty/constraints-9.sql 1`] = `"ALTER TABLE finance.transactions ADD CONSTRAINT tax_rate_range CHECK (tax_rate >= 0 AND tax_rate <= 1)"`;
+
+exports[`non-pretty: pretty/constraints-10.sql 1`] = `"ALTER TABLE school.enrollments ADD CONSTRAINT fk_student_course FOREIGN KEY (student_id, course_id) REFERENCES school.courses_students (student_id, course_id)"`;
+
+exports[`non-pretty: pretty/constraints-11.sql 1`] = `"CREATE TABLE orders (id serial PRIMARY KEY, user_id int NOT NULL, total numeric(10, 2) CHECK (total > 0), status varchar(20) DEFAULT 'pending', created_at pg_catalog.timestamp DEFAULT now(), CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE, CONSTRAINT unique_user_date UNIQUE (user_id, created_at), CONSTRAINT check_status CHECK (status IN ('pending', 'completed', 'cancelled')))"`;
+
+exports[`non-pretty: pretty/constraints-12.sql 1`] = `"ALTER TABLE products ADD CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories (id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED"`;
+
+exports[`non-pretty: pretty/constraints-13.sql 1`] = `"ALTER TABLE products ADD CONSTRAINT check_price CHECK (price > 0)"`;
+
+exports[`non-pretty: pretty/constraints-14.sql 1`] = `"ALTER TABLE users ADD CONSTRAINT unique_email UNIQUE (email)"`;
+
+exports[`pretty: pretty/constraints-1.sql 1`] = `"ALTER TABLE public.users ADD CONSTRAINT users_pkey PRIMARY KEY (id)"`;
+
+exports[`pretty: pretty/constraints-2.sql 1`] = `"ALTER TABLE "App"."User Data" ADD CONSTRAINT "Unique_Full Name" UNIQUE ("Full Name")"`;
+
+exports[`pretty: pretty/constraints-3.sql 1`] = `"ALTER TABLE school.attendance ADD CONSTRAINT attendance_unique UNIQUE ("Student ID", "Class ID")"`;
+
+exports[`pretty: pretty/constraints-4.sql 1`] = `"ALTER TABLE "Orders"."OrderLines" ADD CONSTRAINT "FK_Order_Ref" FOREIGN KEY (order_id) REFERENCES "Orders"."Order" ("OrderID")"`;
+
+exports[`pretty: pretty/constraints-5.sql 1`] = `"ALTER TABLE "x-Schema"."z-Table" ADD CONSTRAINT "zNameFormatCheck" CHECK ("Z-Name" ~ '^[A-Z]')"`;
+
+exports[`pretty: pretty/constraints-6.sql 1`] = `"ALTER TABLE data.snapshots ADD CONSTRAINT metadata_has_key CHECK (metadata ? 'type')"`;
+
+exports[`pretty: pretty/constraints-7.sql 1`] = `"ALTER TABLE "Billing"."Invoices" ADD CONSTRAINT "FK_Client_ID" FOREIGN KEY ("Client ID") REFERENCES "Clients"."ClientBase" ("Client ID")"`;
+
+exports[`pretty: pretty/constraints-8.sql 1`] = `"ALTER TABLE "API Keys" ADD CONSTRAINT "PK_KeyID" PRIMARY KEY ("KeyID")"`;
+
+exports[`pretty: pretty/constraints-9.sql 1`] = `
+"ALTER TABLE finance.transactions ADD CONSTRAINT tax_rate_range CHECK (tax_rate >= 0
+  AND tax_rate <= 1)"
+`;
+
+exports[`pretty: pretty/constraints-10.sql 1`] = `"ALTER TABLE school.enrollments ADD CONSTRAINT fk_student_course FOREIGN KEY (student_id, course_id) REFERENCES school.courses_students (student_id, course_id)"`;
+
+exports[`pretty: pretty/constraints-11.sql 1`] = `
 "CREATE TABLE orders (
   id serial PRIMARY KEY,
   user_id int NOT NULL,
@@ -22,7 +65,7 @@ exports[`pretty: pretty/constraints-1.sql 1`] = `
 )"
 `;
 
-exports[`pretty: pretty/constraints-2.sql 1`] = `
+exports[`pretty: pretty/constraints-12.sql 1`] = `
 "ALTER TABLE products ADD CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories (id)
   ON UPDATE CASCADE
   ON DELETE SET NULL
@@ -30,6 +73,6 @@ exports[`pretty: pretty/constraints-2.sql 1`] = `
   INITIALLY DEFERRED"
 `;
 
-exports[`pretty: pretty/constraints-3.sql 1`] = `"ALTER TABLE products ADD CONSTRAINT check_price CHECK (price > 0)"`;
+exports[`pretty: pretty/constraints-13.sql 1`] = `"ALTER TABLE products ADD CONSTRAINT check_price CHECK (price > 0)"`;
 
-exports[`pretty: pretty/constraints-4.sql 1`] = `"ALTER TABLE users ADD CONSTRAINT unique_email UNIQUE (email)"`;
+exports[`pretty: pretty/constraints-14.sql 1`] = `"ALTER TABLE users ADD CONSTRAINT unique_email UNIQUE (email)"`;
