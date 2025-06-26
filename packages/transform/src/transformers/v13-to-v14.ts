@@ -1057,4 +1057,16 @@ export class V13ToV14Transformer {
     
     return { Null: result };
   }
+
+  List(node: any, context: TransformerContext): any {
+    const result: any = {};
+    
+    if (node.items !== undefined) {
+      result.items = Array.isArray(node.items)
+        ? node.items.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.items as any, context);
+    }
+    
+    return { List: result };
+  }
 }
