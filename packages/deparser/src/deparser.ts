@@ -1,6 +1,6 @@
 import { Node } from '@pgsql/types';
-import { SqlFormatter } from './utils/sql-formatter';
 import { DeparserContext, DeparserVisitor } from './visitors/base';
+import { SqlFormatter } from './utils/sql-formatter';
 import { QuoteUtils } from './utils/quote-utils';
 import { ListUtils } from './utils/list-utils';
 import * as t from '@pgsql/types';
@@ -127,12 +127,10 @@ function isWrappedParseResult(obj: any): obj is { ParseResult: t.ParseResult } {
  * compatibility and wraps them internally for consistent processing.
  */
 export class Deparser implements DeparserVisitor {
-  private formatter: SqlFormatter;
   private tree: Node[];
   private options: DeparserOptions;
 
   constructor(tree: Node | Node[] | t.ParseResult, opts: DeparserOptions = {}) {
-    this.formatter = new SqlFormatter(opts.newline, opts.tab, opts.pretty);
 
     // Set default options
     this.options = {
@@ -171,15 +169,17 @@ export class Deparser implements DeparserVisitor {
   }
 
   deparseQuery(): string {
+    const formatter = new SqlFormatter(this.options.newline, this.options.tab, this.options.pretty);
+    const context = new DeparserContext({ formatter });
     return this.tree
       .map(node => {
         // All nodes should go through the standard deparse method
         // which will route to the appropriate handler
-        const result = this.deparse(node);
+        const result = this.deparse(node, context);
         return result || '';
       })
       .filter(result => result !== '')
-      .join(this.formatter.newline() + this.formatter.newline());
+      .join(context.formatter.newline() + context.formatter.newline());
   }
 
   /**
@@ -195,9 +195,14 @@ export class Deparser implements DeparserVisitor {
     return delimiter;
   }
 
-  deparse(node: Node, context: DeparserContext = new DeparserContext({})): string | null {
+  deparse(node: Node, context?: DeparserContext): string | null {
     if (node == null) {
       return null;
+    }
+    
+    if (!context) {
+      const formatter = new SqlFormatter(this.options.newline, this.options.tab, this.options.pretty);
+      context = new DeparserContext({ formatter });
     }
 
     if (typeof node === 'number' || node instanceof Number) {
@@ -212,7 +217,12 @@ export class Deparser implements DeparserVisitor {
     }
   }
 
-  visit(node: Node, context: DeparserContext = new DeparserContext({})): string {
+  visit(node: Node, context?: DeparserContext): string {
+    if (!context) {
+      const formatter = new SqlFormatter(this.options.newline, this.options.tab, this.options.pretty);
+      context = new DeparserContext({ formatter });
+    }
+    
     const nodeType = this.getNodeType(node);
     
     // Handle empty objects
@@ -256,7 +266,7 @@ export class Deparser implements DeparserVisitor {
       .filter((rawStmt: t.RawStmt) => rawStmt != null)
       .map((rawStmt: t.RawStmt) => this.RawStmt(rawStmt, context))
       .filter((result: string) => result !== '')
-      .join(this.formatter.newline() + this.formatter.newline());
+      .join(context.formatter.newline() + context.formatter.newline());
   }
 
   RawStmt(node: t.RawStmt, context: DeparserContext): string {
@@ -282,7 +292,7 @@ export class Deparser implements DeparserVisitor {
 
     if (!node.op || node.op === 'SETOP_NONE') {
       if (node.valuesLists == null) {
-        if (!this.formatter.isPretty() || !node.targetList) {
+        if (!context.formatter.isPretty() || !node.targetList) {
           output.push('SELECT');
         }
       }
@@ -307,7 +317,7 @@ export class Deparser implements DeparserVisitor {
       );
 
       if (leftNeedsParens) {
-        output.push(this.formatter.parens(leftStmt));
+        output.push(context.formatter.parens(leftStmt));
       } else {
         output.push(leftStmt);
       }
@@ -331,7 +341,7 @@ export class Deparser implements DeparserVisitor {
       }
 
       if (rightNeedsParens) {
-        output.push(this.formatter.parens(rightStmt));
+        output.push(context.formatter.parens(rightStmt));
       } else {
         output.push(rightStmt);
       }
@@ -345,18 +355,18 @@ export class Deparser implements DeparserVisitor {
         const clause = distinctClause
           .map(e => this.visit(e as Node, context.spawn('SelectStmt', { select: true })))
           .join(', ');
-        distinctPart = ' DISTINCT ON ' + this.formatter.parens(clause);
+        distinctPart = ' DISTINCT ON ' + context.formatter.parens(clause);
       } else {
         distinctPart = ' DISTINCT';
       }
 
-      if (!this.formatter.isPretty()) {
+      if (!context.formatter.isPretty()) {
         if (distinctClause.length > 0 && Object.keys(distinctClause[0]).length > 0) {
           output.push('DISTINCT ON');
           const clause = distinctClause
             .map(e => this.visit(e as Node, context.spawn('SelectStmt', { select: true })))
             .join(', ');
-          output.push(this.formatter.parens(clause));
+          output.push(context.formatter.parens(clause));
         } else {
           output.push('DISTINCT');
         }
@@ -365,7 +375,7 @@ export class Deparser implements DeparserVisitor {
 
     if (node.targetList) {
       const targetList = ListUtils.unwrapList(node.targetList);
-      if (this.formatter.isPretty()) {
+      if (context.formatter.isPretty()) {
         if (targetList.length === 1) {
           const targetNode = targetList[0] as Node;
           const target = this.visit(targetNode, context.spawn('SelectStmt', { select: true }));
@@ -376,7 +386,7 @@ export class Deparser implements DeparserVisitor {
             if (this.containsMultilineStringLiteral(target)) {
               output.push(target);
             } else {
-              output.push(this.formatter.indent(target));
+              output.push(context.formatter.indent(target));
             }
           } else {
             output.push('SELECT' + distinctPart + ' ' + target);
@@ -388,9 +398,9 @@ export class Deparser implements DeparserVisitor {
               if (this.containsMultilineStringLiteral(targetStr)) {
                 return targetStr;
               }
-              return this.formatter.indent(targetStr);
+              return context.formatter.indent(targetStr);
             });
-          const formattedTargets = targetStrings.join(',' + this.formatter.newline());
+          const formattedTargets = targetStrings.join(',' + context.formatter.newline());
           output.push('SELECT' + distinctPart);
           output.push(formattedTargets);
         }
@@ -416,17 +426,17 @@ export class Deparser implements DeparserVisitor {
     }
 
     if (node.whereClause) {
-      if (this.formatter.isPretty()) {
+      if (context.formatter.isPretty()) {
         output.push('WHERE');
         const whereExpr = this.visit(node.whereClause as Node, context);
-        const lines = whereExpr.split(this.formatter.newline());
+        const lines = whereExpr.split(context.formatter.newline());
         const indentedLines = lines.map((line, index) => {
           if (index === 0) {
-            return this.formatter.indent(line);
+            return context.formatter.indent(line);
           }
           return line;
         });
-        output.push(indentedLines.join(this.formatter.newline()));
+        output.push(indentedLines.join(context.formatter.newline()));
       } else {
         output.push('WHERE');
         output.push(this.visit(node.whereClause as Node, context));
@@ -434,24 +444,24 @@ export class Deparser implements DeparserVisitor {
     }
 
     if (node.valuesLists) {
-      if (this.formatter.isPretty()) {
+      if (context.formatter.isPretty()) {
         output.push('VALUES');
         const lists = ListUtils.unwrapList(node.valuesLists).map(list => {
           const values = ListUtils.unwrapList(list).map(val => this.visit(val as Node, context));
-          return this.formatter.parens(values.join(', '));
+          return context.formatter.parens(values.join(', '));
         });
         const indentedTuples = lists.map(tuple => {
           if (this.containsMultilineStringLiteral(tuple)) {
             return tuple;
           }
-          return this.formatter.indent(tuple);
+          return context.formatter.indent(tuple);
         });
         output.push(indentedTuples.join(',\n'));
       } else {
         output.push('VALUES');
         const lists = ListUtils.unwrapList(node.valuesLists).map(list => {
           const values = ListUtils.unwrapList(list).map(val => this.visit(val as Node, context));
-          return this.formatter.parens(values.join(', '));
+          return context.formatter.parens(values.join(', '));
         });
         output.push(lists.join(', '));
       }
@@ -459,16 +469,16 @@ export class Deparser implements DeparserVisitor {
 
     if (node.groupClause) {
       const groupList = ListUtils.unwrapList(node.groupClause);
-      if (this.formatter.isPretty()) {
+      if (context.formatter.isPretty()) {
         const groupItems = groupList
           .map(e => {
             const groupStr = this.visit(e as Node, context.spawn('SelectStmt', { group: true }));
             if (this.containsMultilineStringLiteral(groupStr)) {
               return groupStr;
             }
-            return this.formatter.indent(groupStr);
+            return context.formatter.indent(groupStr);
           })
-          .join(',' + this.formatter.newline());
+          .join(',' + context.formatter.newline());
         output.push('GROUP BY');
         output.push(groupItems);
       } else {
@@ -481,13 +491,13 @@ export class Deparser implements DeparserVisitor {
     }
 
     if (node.havingClause) {
-      if (this.formatter.isPretty()) {
+      if (context.formatter.isPretty()) {
         output.push('HAVING');
         const havingStr = this.visit(node.havingClause as Node, context);
         if (this.containsMultilineStringLiteral(havingStr)) {
           output.push(havingStr);
         } else {
-          output.push(this.formatter.indent(havingStr));
+          output.push(context.formatter.indent(havingStr));
         }
       } else {
         output.push('HAVING');
@@ -506,16 +516,16 @@ export class Deparser implements DeparserVisitor {
 
     if (node.sortClause) {
       const sortList = ListUtils.unwrapList(node.sortClause);
-      if (this.formatter.isPretty()) {
+      if (context.formatter.isPretty()) {
         const sortItems = sortList
           .map(e => {
             const sortStr = this.visit(e as Node, context.spawn('SelectStmt', { sort: true }));
             if (this.containsMultilineStringLiteral(sortStr)) {
               return sortStr;
             }
-            return this.formatter.indent(sortStr);
+            return context.formatter.indent(sortStr);
           })
-          .join(',' + this.formatter.newline());
+          .join(',' + context.formatter.newline());
         output.push('ORDER BY');
         output.push(sortItems);
       } else {
@@ -543,9 +553,9 @@ export class Deparser implements DeparserVisitor {
       output.push(lockingClauses);
     }
 
-    if (this.formatter.isPretty()) {
+    if (context.formatter.isPretty()) {
       const filteredOutput = output.filter(item => item.trim() !== '');
-      return filteredOutput.join(this.formatter.newline());
+      return filteredOutput.join(context.formatter.newline());
     }
     return output.join(' ');
   }
@@ -575,7 +585,7 @@ export class Deparser implements DeparserVisitor {
             leftNeedsParens = true;
           }
           if (leftNeedsParens) {
-            leftExpr = this.formatter.parens(leftExpr);
+            leftExpr = context.formatter.parens(leftExpr);
           }
 
           // Check if right expression needs parentheses
@@ -590,30 +600,30 @@ export class Deparser implements DeparserVisitor {
             rightNeedsParens = true;
           }
           if (rightNeedsParens) {
-            rightExpr = this.formatter.parens(rightExpr);
+            rightExpr = context.formatter.parens(rightExpr);
           }
 
-          return this.formatter.format([leftExpr, operator, rightExpr]);
+          return context.formatter.format([leftExpr, operator, rightExpr]);
         }else if (rexpr) {
-          return this.formatter.format([
+          return context.formatter.format([
             this.deparseOperatorName(name, context),
             this.visit(rexpr, context)
           ]);
         }
         break;
       case 'AEXPR_OP_ANY':
-        return this.formatter.format([
+        return context.formatter.format([
           this.visit(lexpr, context),
           this.deparseOperatorName(name, context),
           'ANY',
-          this.formatter.parens(this.visit(rexpr, context))
+          context.formatter.parens(this.visit(rexpr, context))
         ]);
       case 'AEXPR_OP_ALL':
-        return this.formatter.format([
+        return context.formatter.format([
           this.visit(lexpr, context),
           this.deparseOperatorName(name, context),
           'ALL',
-          this.formatter.parens(this.visit(rexpr, context))
+          context.formatter.parens(this.visit(rexpr, context))
         ]);
       case 'AEXPR_DISTINCT': {
         let leftExpr = this.visit(lexpr, context);
@@ -621,13 +631,13 @@ export class Deparser implements DeparserVisitor {
 
         // Add parentheses for complex expressions
         if (lexpr && this.isComplexExpression(lexpr)) {
-          leftExpr = this.formatter.parens(leftExpr);
+          leftExpr = context.formatter.parens(leftExpr);
         }
         if (rexpr && this.isComplexExpression(rexpr)) {
-          rightExpr = this.formatter.parens(rightExpr);
+          rightExpr = context.formatter.parens(rightExpr);
         }
 
-        return this.formatter.format([
+        return context.formatter.format([
           leftExpr,
           'IS DISTINCT FROM',
           rightExpr
@@ -639,22 +649,22 @@ export class Deparser implements DeparserVisitor {
 
         // Add parentheses for complex expressions
         if (lexpr && this.isComplexExpression(lexpr)) {
-          leftExpr = this.formatter.parens(leftExpr);
+          leftExpr = context.formatter.parens(leftExpr);
         }
         if (rexpr && this.isComplexExpression(rexpr)) {
-          rightExpr = this.formatter.parens(rightExpr);
+          rightExpr = context.formatter.parens(rightExpr);
         }
 
-        return this.formatter.format([
+        return context.formatter.format([
           leftExpr,
           'IS NOT DISTINCT FROM',
           rightExpr
         ]);
       }
       case 'AEXPR_NULLIF':
-        return this.formatter.format([
+        return context.formatter.format([
           'NULLIF',
-          this.formatter.parens([
+          context.formatter.parens([
             this.visit(lexpr, context),
             this.visit(rexpr, context)
           ].join(', '))
@@ -662,28 +672,28 @@ export class Deparser implements DeparserVisitor {
       case 'AEXPR_IN':
         const inOperator = this.deparseOperatorName(name, context);
         if (inOperator === '<>' || inOperator === '!=') {
-          return this.formatter.format([
+          return context.formatter.format([
             this.visit(lexpr, context),
             'NOT IN',
-            this.formatter.parens(this.visit(rexpr, context))
+            context.formatter.parens(this.visit(rexpr, context))
           ]);
         } else {
-          return this.formatter.format([
+          return context.formatter.format([
             this.visit(lexpr, context),
             'IN',
-            this.formatter.parens(this.visit(rexpr, context))
+            context.formatter.parens(this.visit(rexpr, context))
           ]);
         }
       case 'AEXPR_LIKE':
         const likeOp = this.deparseOperatorName(name, context);
         if (likeOp === '!~~') {
-          return this.formatter.format([
+          return context.formatter.format([
             this.visit(lexpr, context),
             'NOT LIKE',
             this.visit(rexpr, context)
           ]);
         } else {
-          return this.formatter.format([
+          return context.formatter.format([
             this.visit(lexpr, context),
             'LIKE',
             this.visit(rexpr, context)
@@ -692,13 +702,13 @@ export class Deparser implements DeparserVisitor {
       case 'AEXPR_ILIKE':
         const ilikeOp = this.deparseOperatorName(name, context);
         if (ilikeOp === '!~~*') {
-          return this.formatter.format([
+          return context.formatter.format([
             this.visit(lexpr, context),
             'NOT ILIKE',
             this.visit(rexpr, context)
           ]);
         } else {
-          return this.formatter.format([
+          return context.formatter.format([
             this.visit(lexpr, context),
             'ILIKE',
             this.visit(rexpr, context)
@@ -722,38 +732,38 @@ export class Deparser implements DeparserVisitor {
         }
 
         if (similarOp === '!~') {
-          return this.formatter.format([
+          return context.formatter.format([
             this.visit(lexpr, context),
             'NOT SIMILAR TO',
             rightExpr
           ]);
         } else {
-          return this.formatter.format([
+          return context.formatter.format([
             this.visit(lexpr, context),
             'SIMILAR TO',
             rightExpr
           ]);
         }
       case 'AEXPR_BETWEEN':
-        return this.formatter.format([
+        return context.formatter.format([
           this.visit(lexpr, context),
           'BETWEEN',
           this.visitBetweenRange(rexpr, context)
         ]);
       case 'AEXPR_NOT_BETWEEN':
-        return this.formatter.format([
+        return context.formatter.format([
           this.visit(lexpr, context),
           'NOT BETWEEN',
           this.visitBetweenRange(rexpr, context)
         ]);
       case 'AEXPR_BETWEEN_SYM':
-        return this.formatter.format([
+        return context.formatter.format([
           this.visit(lexpr, context),
           'BETWEEN SYMMETRIC',
           this.visitBetweenRange(rexpr, context)
         ]);
       case 'AEXPR_NOT_BETWEEN_SYM':
-        return this.formatter.format([
+        return context.formatter.format([
           this.visit(lexpr, context),
           'NOT BETWEEN SYMMETRIC',
           this.visitBetweenRange(rexpr, context)
@@ -937,12 +947,12 @@ export class Deparser implements DeparserVisitor {
       const insertContext = context.spawn('InsertStmt', { insertColumns: true });
       const columnNames = cols.map(col => this.visit(col as Node, insertContext));
 
-      if (this.formatter.isPretty()) {
+      if (context.formatter.isPretty()) {
         // Always format columns in multiline parentheses for pretty printing
-        const indentedColumns = columnNames.map(col => this.formatter.indent(col));
+        const indentedColumns = columnNames.map(col => context.formatter.indent(col));
         output.push('(\n' + indentedColumns.join(',\n') + '\n)');
       } else {
-        output.push(this.formatter.parens(columnNames.join(', ')));
+        output.push(context.formatter.parens(columnNames.join(', ')));
       }
     }
 
@@ -965,7 +975,7 @@ export class Deparser implements DeparserVisitor {
         } else if (infer.indexElems) {
           const elems = ListUtils.unwrapList(infer.indexElems);
           const indexElems = elems.map(elem => this.visit(elem as Node, context));
-          output.push(this.formatter.parens(indexElems.join(', ')));
+          output.push(context.formatter.parens(indexElems.join(', ')));
         }
 
         // Handle WHERE clause for conflict detection
@@ -985,7 +995,7 @@ export class Deparser implements DeparserVisitor {
           if (firstTarget.ResTarget?.val?.MultiAssignRef && targetList.every(target => target.ResTarget?.val?.MultiAssignRef)) {
             const sortedTargets = targetList.sort((a, b) => a.ResTarget.val.MultiAssignRef.colno - b.ResTarget.val.MultiAssignRef.colno);
             const names = sortedTargets.map(target => target.ResTarget.name);
-            output.push(this.formatter.parens(names.join(', ')));
+            output.push(context.formatter.parens(names.join(', ')));
             output.push('=');
             output.push(this.visit(firstTarget.ResTarget.val.MultiAssignRef.source, context));
           } else {
@@ -1054,7 +1064,7 @@ export class Deparser implements DeparserVisitor {
           }
 
           const names = relatedTargets.map(t => t.ResTarget.name);
-          const multiAssignment = `${this.formatter.parens(names.join(', '))} = ${this.visit(multiAssignRef.source, context)}`;
+          const multiAssignment = `${context.formatter.parens(names.join(', '))} = ${this.visit(multiAssignRef.source, context)}`;
           assignmentParts.push(multiAssignment);
         } else {
           // Handle regular single-column assignment
@@ -1161,14 +1171,14 @@ export class Deparser implements DeparserVisitor {
 
     if (node.ctes && node.ctes.length > 0) {
       const ctes = ListUtils.unwrapList(node.ctes);
-      if (this.formatter.isPretty()) {
+      if (context.formatter.isPretty()) {
         const cteStrings = ctes.map((cte, index) => {
           const cteStr = this.visit(cte, context);
-          const prefix = index === 0 ? this.formatter.newline() : ',' + this.formatter.newline();
+          const prefix = index === 0 ? context.formatter.newline() : ',' + context.formatter.newline();
           if (this.containsMultilineStringLiteral(cteStr)) {
             return prefix + cteStr;
           }
-          return prefix + this.formatter.indent(cteStr);
+          return prefix + context.formatter.indent(cteStr);
         });
         output.push(cteStrings.join(''));
       } else {
@@ -1271,16 +1281,16 @@ export class Deparser implements DeparserVisitor {
 
     switch (boolop) {
       case 'AND_EXPR':
-        if (this.formatter.isPretty() && args.length > 1) {
-          const andArgs = args.map(arg => this.visit(arg, boolContext)).join(this.formatter.newline() + '  AND ');
+        if (context.formatter.isPretty() && args.length > 1) {
+          const andArgs = args.map(arg => this.visit(arg, boolContext)).join(context.formatter.newline() + '  AND ');
           return formatStr.replace('%s', () => andArgs);
         } else {
           const andArgs = args.map(arg => this.visit(arg, boolContext)).join(' AND ');
           return formatStr.replace('%s', () => andArgs);
         }
       case 'OR_EXPR':
-        if (this.formatter.isPretty() && args.length > 1) {
-          const orArgs = args.map(arg => this.visit(arg, boolContext)).join(this.formatter.newline() + '  OR ');
+        if (context.formatter.isPretty() && args.length > 1) {
+          const orArgs = args.map(arg => this.visit(arg, boolContext)).join(context.formatter.newline() + '  OR ');
           return formatStr.replace('%s', () => orArgs);
         } else {
           const orArgs = args.map(arg => this.visit(arg, boolContext)).join(' OR ');
@@ -1422,7 +1432,7 @@ export class Deparser implements DeparserVisitor {
       if (args[1] && 'A_Expr' in args[1] && args[1].A_Expr?.kind === 'AEXPR_OP') {
         const op = this.deparseOperatorName(ListUtils.unwrapList(args[1].A_Expr.name), context);
         if (op === '+' || op === '-' || op === '*' || op === '/') {
-          timestamp = this.formatter.parens(timestamp);
+          timestamp = context.formatter.parens(timestamp);
         }
       }
 
@@ -1503,9 +1513,9 @@ export class Deparser implements DeparserVisitor {
         }
 
         if (windowParts.length > 0) {
-          if (this.formatter.isPretty() && windowParts.length > 1) {
-            const formattedParts = windowParts.map(part => this.formatter.indent(part));
-            result += ` OVER (${this.formatter.newline()}${formattedParts.join(this.formatter.newline())}${this.formatter.newline()})`;
+          if (context.formatter.isPretty() && windowParts.length > 1) {
+            const formattedParts = windowParts.map(part => context.formatter.indent(part));
+            result += ` OVER (${context.formatter.newline()}${formattedParts.join(context.formatter.newline())}${context.formatter.newline()})`;
           } else {
             result += ` OVER (${windowParts.join(' ')})`;
           }
@@ -1858,7 +1868,7 @@ export class Deparser implements DeparserVisitor {
         }
         return this.quoteIfNeeded(colStr);
       });
-      output.push('AS', this.quoteIfNeeded(name) + this.formatter.parens(quotedColnames.join(', ')));
+      output.push('AS', this.quoteIfNeeded(name) + context.formatter.parens(quotedColnames.join(', ')));
     } else {
       output.push('AS', this.quoteIfNeeded(name));
     }
@@ -2165,26 +2175,26 @@ export class Deparser implements DeparserVisitor {
 
     const args = ListUtils.unwrapList(node.args);
 
-    if (this.formatter.isPretty() && args.length > 0) {
+    if (context.formatter.isPretty() && args.length > 0) {
       for (const arg of args) {
         const whenClause = this.visit(arg, context);
         if (this.containsMultilineStringLiteral(whenClause)) {
-          output.push(this.formatter.newline() + whenClause);
+          output.push(context.formatter.newline() + whenClause);
         } else {
-          output.push(this.formatter.newline() + this.formatter.indent(whenClause));
+          output.push(context.formatter.newline() + context.formatter.indent(whenClause));
         }
       }
 
       if (node.defresult) {
         const elseResult = this.visit(node.defresult, context);
         if (this.containsMultilineStringLiteral(elseResult)) {
-          output.push(this.formatter.newline() + 'ELSE ' + elseResult);
+          output.push(context.formatter.newline() + 'ELSE ' + elseResult);
         } else {
-          output.push(this.formatter.newline() + this.formatter.indent('ELSE ' + elseResult));
+          output.push(context.formatter.newline() + context.formatter.indent('ELSE ' + elseResult));
         }
       }
 
-      output.push(this.formatter.newline() + 'END');
+      output.push(context.formatter.newline() + 'END');
       return output.join(' ');
     } else {
       for (const arg of args) {
@@ -2450,7 +2460,7 @@ export class Deparser implements DeparserVisitor {
         const elementStrs = elements.map(el => {
           return this.deparse(el, context);
         });
-        output.push(this.formatter.parens(elementStrs.join(', ')));
+        output.push(context.formatter.parens(elementStrs.join(', ')));
       }
     } else if (node.tableElts) {
       const elements = ListUtils.unwrapList(node.tableElts);
@@ -2458,21 +2468,21 @@ export class Deparser implements DeparserVisitor {
         return this.deparse(el, context);
       });
 
-      if (this.formatter.isPretty()) {
+      if (context.formatter.isPretty()) {
         const formattedElements = elementStrs.map(el => {
           const trimmedEl = el.trim();
           // Remove leading newlines from constraint elements to avoid extra blank lines
           if (trimmedEl.startsWith('\n')) {
-            return this.formatter.indent(trimmedEl.substring(1));
+            return context.formatter.indent(trimmedEl.substring(1));
           }
-          return this.formatter.indent(trimmedEl);
-        }).join(',' + this.formatter.newline());
-        output.push('(' + this.formatter.newline() + formattedElements + this.formatter.newline() + ')');
+          return context.formatter.indent(trimmedEl);
+        }).join(',' + context.formatter.newline());
+        output.push('(' + context.formatter.newline() + formattedElements + context.formatter.newline() + ')');
       } else {
-        output.push(this.formatter.parens(elementStrs.join(', ')));
+        output.push(context.formatter.parens(elementStrs.join(', ')));
       }
     }else if (!node.partbound) {
-      output.push(this.formatter.parens(''));
+      output.push(context.formatter.parens(''));
     }
 
     if (node.partbound && node.inhRelations && node.inhRelations.length > 0) {
@@ -2513,7 +2523,7 @@ export class Deparser implements DeparserVisitor {
       output.push('INHERITS');
       const inherits = ListUtils.unwrapList(node.inhRelations);
       const inheritStrs = inherits.map(rel => this.visit(rel, context));
-      output.push(this.formatter.parens(inheritStrs.join(', ')));
+      output.push(context.formatter.parens(inheritStrs.join(', ')));
     }
 
     if (node.partspec) {
@@ -2642,21 +2652,21 @@ export class Deparser implements DeparserVisitor {
         }
         break;
       case 'CONSTR_CHECK':
-        if (this.formatter.isPretty() && !context.isColumnConstraint) {
-          output.push('\n' + this.formatter.indent('CHECK'));
+        if (context.formatter.isPretty() && !context.isColumnConstraint) {
+          output.push('\n' + context.formatter.indent('CHECK'));
         } else {
           output.push('CHECK');
         }
         if (node.raw_expr) {
-          if (this.formatter.isPretty()) {
+          if (context.formatter.isPretty()) {
             const checkExpr = this.visit(node.raw_expr, context);
             if (checkExpr.includes('\n')) {
-              output.push('(\n' + this.formatter.indent(checkExpr) + '\n)');
+              output.push('(\n' + context.formatter.indent(checkExpr) + '\n)');
             } else {
               output.push(`(${checkExpr})`);
             }
           } else {
-            output.push(this.formatter.parens(this.visit(node.raw_expr, context)));
+            output.push(context.formatter.parens(this.visit(node.raw_expr, context)));
           }
         }
         // Handle NOT VALID for check constraints
@@ -2677,7 +2687,7 @@ export class Deparser implements DeparserVisitor {
         }
         output.push('AS');
         if (node.raw_expr) {
-          output.push(this.formatter.parens(this.visit(node.raw_expr, context)));
+          output.push(context.formatter.parens(this.visit(node.raw_expr, context)));
         }
         output.push('STORED');
         break;
@@ -2729,8 +2739,8 @@ export class Deparser implements DeparserVisitor {
         }
         break;
       case 'CONSTR_UNIQUE':
-        if (this.formatter.isPretty() && !context.isColumnConstraint) {
-          output.push('\n' + this.formatter.indent('UNIQUE'));
+        if (context.formatter.isPretty() && !context.isColumnConstraint) {
+          output.push('\n' + context.formatter.indent('UNIQUE'));
         } else {
           output.push('UNIQUE');
         }
@@ -2751,15 +2761,15 @@ export class Deparser implements DeparserVisitor {
       case 'CONSTR_FOREIGN':
         // Only add "FOREIGN KEY" for table-level constraints, not column-level constraints
         if (!context.isColumnConstraint) {
-          if (this.formatter.isPretty()) {
-            output.push('\n' + this.formatter.indent('FOREIGN KEY'));
+          if (context.formatter.isPretty()) {
+            output.push('\n' + context.formatter.indent('FOREIGN KEY'));
             if (node.fk_attrs && node.fk_attrs.length > 0) {
               const fkAttrs = ListUtils.unwrapList(node.fk_attrs)
                 .map(attr => this.visit(attr, context))
                 .join(', ');
               output.push(`(${fkAttrs})`);
             }
-            output.push('\n' + this.formatter.indent('REFERENCES'));
+            output.push('\n' + context.formatter.indent('REFERENCES'));
           } else {
             output.push('FOREIGN KEY');
             if (node.fk_attrs && node.fk_attrs.length > 0) {
@@ -2774,7 +2784,7 @@ export class Deparser implements DeparserVisitor {
           output.push('REFERENCES');
         }
         if (node.pktable) {
-          if (this.formatter.isPretty() && !context.isColumnConstraint) {
+          if (context.formatter.isPretty() && !context.isColumnConstraint) {
             const lastIndex = output.length - 1;
             if (lastIndex >= 0 && output[lastIndex].includes('REFERENCES')) {
               output[lastIndex] += ' ' + this.RangeVar(node.pktable, context);
@@ -2789,7 +2799,7 @@ export class Deparser implements DeparserVisitor {
           const pkAttrs = ListUtils.unwrapList(node.pk_attrs)
             .map(attr => this.visit(attr, context))
             .join(', ');
-          if (this.formatter.isPretty() && !context.isColumnConstraint) {
+          if (context.formatter.isPretty() && !context.isColumnConstraint) {
             const lastIndex = output.length - 1;
             if (lastIndex >= 0) {
               output[lastIndex] += ` (${pkAttrs})`;
@@ -2810,8 +2820,8 @@ export class Deparser implements DeparserVisitor {
               matchClause = 'MATCH PARTIAL';
               break;
           }
-          if (this.formatter.isPretty() && !context.isColumnConstraint) {
-            output.push('\n' + this.formatter.indent(matchClause));
+          if (context.formatter.isPretty() && !context.isColumnConstraint) {
+            output.push('\n' + context.formatter.indent(matchClause));
           } else {
             output.push(matchClause);
           }
@@ -2832,8 +2842,8 @@ export class Deparser implements DeparserVisitor {
               updateClause += 'SET DEFAULT';
               break;
           }
-          if (this.formatter.isPretty()) {
-            output.push('\n' + this.formatter.indent(updateClause));
+          if (context.formatter.isPretty()) {
+            output.push('\n' + context.formatter.indent(updateClause));
           } else {
             output.push('ON UPDATE');
             output.push(updateClause.replace('ON UPDATE ', ''));
@@ -2855,8 +2865,8 @@ export class Deparser implements DeparserVisitor {
               deleteClause += 'SET DEFAULT';
               break;
           }
-          if (this.formatter.isPretty()) {
-            output.push('\n' + this.formatter.indent(deleteClause));
+          if (context.formatter.isPretty()) {
+            output.push('\n' + context.formatter.indent(deleteClause));
           } else {
             output.push('ON DELETE');
             output.push(deleteClause.replace('ON DELETE ', ''));
@@ -2864,8 +2874,8 @@ export class Deparser implements DeparserVisitor {
         }
         // Handle NOT VALID for foreign key constraints - only for table constraints, not domain constraints
         if (node.skip_validation && !context.isDomainConstraint) {
-          if (this.formatter.isPretty() && !context.isColumnConstraint) {
-            output.push('\n' + this.formatter.indent('NOT VALID'));
+          if (context.formatter.isPretty() && !context.isColumnConstraint) {
+            output.push('\n' + context.formatter.indent('NOT VALID'));
           } else {
             output.push('NOT VALID');
           }
@@ -2921,12 +2931,12 @@ export class Deparser implements DeparserVisitor {
     // Handle deferrable constraints for all constraint types that support it
     if (node.contype === 'CONSTR_PRIMARY' || node.contype === 'CONSTR_UNIQUE' || node.contype === 'CONSTR_FOREIGN') {
       if (node.deferrable) {
-        if (this.formatter.isPretty() && node.contype === 'CONSTR_FOREIGN') {
-          output.push('\n' + this.formatter.indent('DEFERRABLE'));
+        if (context.formatter.isPretty() && node.contype === 'CONSTR_FOREIGN') {
+          output.push('\n' + context.formatter.indent('DEFERRABLE'));
           if (node.initdeferred === true) {
-            output.push('\n' + this.formatter.indent('INITIALLY DEFERRED'));
+            output.push('\n' + context.formatter.indent('INITIALLY DEFERRED'));
           } else if (node.initdeferred === false) {
-            output.push('\n' + this.formatter.indent('INITIALLY IMMEDIATE'));
+            output.push('\n' + context.formatter.indent('INITIALLY IMMEDIATE'));
           }
         } else {
           output.push('DEFERRABLE');
@@ -2937,15 +2947,15 @@ export class Deparser implements DeparserVisitor {
           }
         }
       } else if (node.deferrable === false) {
-        if (this.formatter.isPretty() && node.contype === 'CONSTR_FOREIGN') {
-          output.push('\n' + this.formatter.indent('NOT DEFERRABLE'));
+        if (context.formatter.isPretty() && node.contype === 'CONSTR_FOREIGN') {
+          output.push('\n' + context.formatter.indent('NOT DEFERRABLE'));
         } else {
           output.push('NOT DEFERRABLE');
         }
       }
     }
 
-    if (this.formatter.isPretty() && node.contype === 'CONSTR_FOREIGN') {
+    if (context.formatter.isPretty() && node.contype === 'CONSTR_FOREIGN') {
       let result = '';
       for (let i = 0; i < output.length; i++) {
         if (output[i].startsWith('\n')) {
@@ -2963,7 +2973,7 @@ export class Deparser implements DeparserVisitor {
   }
 
   SubLink(node: t.SubLink, context: DeparserContext): string {
-    const subselect = this.formatter.parens(this.visit(node.subselect, context));
+    const subselect = context.formatter.parens(this.visit(node.subselect, context));
 
     switch (node.subLinkType) {
       case 'ANY_SUBLINK':
@@ -3209,7 +3219,7 @@ export class Deparser implements DeparserVisitor {
       const colnames = ListUtils.unwrapList(node.aliascolnames);
       const colnameStrs = colnames.map(col => this.visit(col, context));
       // Don't add space before column list parentheses to match original formatting
-      output[output.length - 1] += this.formatter.parens(colnameStrs.join(', '));
+      output[output.length - 1] += context.formatter.parens(colnameStrs.join(', '));
     }
 
     output.push('AS');
@@ -3222,7 +3232,7 @@ export class Deparser implements DeparserVisitor {
     }
 
     if (node.ctequery) {
-      output.push(this.formatter.parens(this.visit(node.ctequery, context)));
+      output.push(context.formatter.parens(this.visit(node.ctequery, context)));
     }
 
     return output.join(' ');
@@ -3480,7 +3490,7 @@ export class Deparser implements DeparserVisitor {
 
     if (node.aliases && node.aliases.length > 0) {
       const aliasStrs = ListUtils.unwrapList(node.aliases).map(alias => this.visit(alias, context));
-      output.push(this.formatter.parens(aliasStrs.join(', ')));
+      output.push(context.formatter.parens(aliasStrs.join(', ')));
     }
 
     if (node.options && node.options.length > 0) {
@@ -3546,13 +3556,13 @@ export class Deparser implements DeparserVisitor {
 
     if (node.indexParams && node.indexParams.length > 0) {
       const paramStrs = ListUtils.unwrapList(node.indexParams).map(param => this.visit(param, context));
-      output.push(this.formatter.parens(paramStrs.join(', ')));
+      output.push(context.formatter.parens(paramStrs.join(', ')));
     }
 
     if (node.indexIncludingParams && node.indexIncludingParams.length > 0) {
       const includeStrs = ListUtils.unwrapList(node.indexIncludingParams).map(param => this.visit(param, context));
       output.push('INCLUDE');
-      output.push(this.formatter.parens(includeStrs.join(', ')));
+      output.push(context.formatter.parens(includeStrs.join(', ')));
     }
 
     if (node.whereClause) {
@@ -3564,7 +3574,7 @@ export class Deparser implements DeparserVisitor {
       const indexContext = context.spawn('IndexStmt');
       const optionStrs = ListUtils.unwrapList(node.options).map(option => this.visit(option, indexContext));
       output.push('WITH');
-      output.push(this.formatter.parens(optionStrs.join(', ')));
+      output.push(context.formatter.parens(optionStrs.join(', ')));
     }
 
     if (node.nulls_not_distinct) {
@@ -3585,7 +3595,7 @@ export class Deparser implements DeparserVisitor {
     if (node.name) {
       output.push(QuoteUtils.quote(node.name));
     } else if (node.expr) {
-      output.push(this.formatter.parens(this.visit(node.expr, context)));
+      output.push(context.formatter.parens(this.visit(node.expr, context)));
     }
 
     if (node.collation && node.collation.length > 0) {
@@ -3644,7 +3654,7 @@ export class Deparser implements DeparserVisitor {
     if (node.name) {
       output.push(QuoteUtils.quote(node.name));
     } else if (node.expr) {
-      output.push(this.formatter.parens(this.visit(node.expr, context)));
+      output.push(context.formatter.parens(this.visit(node.expr, context)));
     }
 
     if (node.collation && node.collation.length > 0) {
@@ -3809,14 +3819,14 @@ export class Deparser implements DeparserVisitor {
         rargStr = `(${rargStr})`;
       }
 
-      if (this.formatter.isPretty()) {
-        output.push(this.formatter.newline() + joinStr + ' ' + rargStr);
+      if (context.formatter.isPretty()) {
+        output.push(context.formatter.newline() + joinStr + ' ' + rargStr);
       } else {
         output.push(joinStr + ' ' + rargStr);
       }
     } else {
-      if (this.formatter.isPretty()) {
-        output.push(this.formatter.newline() + joinStr);
+      if (context.formatter.isPretty()) {
+        output.push(context.formatter.newline() + joinStr);
       } else {
         output.push(joinStr);
       }
@@ -3825,20 +3835,20 @@ export class Deparser implements DeparserVisitor {
     if (node.usingClause && node.usingClause.length > 0) {
       const usingList = ListUtils.unwrapList(node.usingClause);
       const columnNames = usingList.map(col => this.visit(col, context));
-      if (this.formatter.isPretty()) {
+      if (context.formatter.isPretty()) {
         output.push(` USING (${columnNames.join(', ')})`);
       } else {
         output.push(`USING (${columnNames.join(', ')})`);
       }
     } else if (node.quals) {
       const qualsStr = this.visit(node.quals, context);
-      if (this.formatter.isPretty()) {
+      if (context.formatter.isPretty()) {
         // For complex JOIN conditions, format with proper indentation
         if (qualsStr.includes('AND') || qualsStr.includes('OR') || qualsStr.length > 50) {
           if (this.containsMultilineStringLiteral(qualsStr)) {
             output.push(` ON ${qualsStr}`);
           } else {
-            output.push(` ON${this.formatter.newline()}${this.formatter.indent(qualsStr)}`);
+            output.push(` ON${context.formatter.newline()}${context.formatter.indent(qualsStr)}`);
           }
         } else {
           output.push(` ON ${qualsStr}`);
@@ -3849,7 +3859,7 @@ export class Deparser implements DeparserVisitor {
     }
 
     let result;
-    if (this.formatter.isPretty()) {
+    if (context.formatter.isPretty()) {
       result = output.join('');
     } else {
       result = output.join(' ');
@@ -4653,12 +4663,12 @@ export class Deparser implements DeparserVisitor {
 
     if (node.cmds && node.cmds.length > 0) {
       const commands = ListUtils.unwrapList(node.cmds);
-      if (this.formatter.isPretty()) {
+      if (context.formatter.isPretty()) {
         const commandsStr = commands
           .map(cmd => {
             const cmdStr = this.visit(cmd, alterContext);
             if (cmdStr.startsWith('ADD CONSTRAINT') || cmdStr.startsWith('ADD ')) {
-              return this.formatter.newline() + this.formatter.indent(cmdStr);
+              return context.formatter.newline() + context.formatter.indent(cmdStr);
             }
             return cmdStr;
           })
@@ -6780,8 +6790,8 @@ export class Deparser implements DeparserVisitor {
 
     // Add ON clause on new line in pretty mode
     if (node.table) {
-      if (this.formatter.isPretty()) {
-        output.push(this.formatter.newline() + this.formatter.indent(`ON ${this.RangeVar(node.table, context)}`));
+      if (context.formatter.isPretty()) {
+        output.push(context.formatter.newline() + context.formatter.indent(`ON ${this.RangeVar(node.table, context)}`));
       } else {
         output.push('ON');
         output.push(this.RangeVar(node.table, context));
@@ -6790,22 +6800,22 @@ export class Deparser implements DeparserVisitor {
 
     // Handle AS RESTRICTIVE/PERMISSIVE clause
     if (node.permissive === undefined) {
-      if (this.formatter.isPretty()) {
-        output.push(this.formatter.newline() + this.formatter.indent('AS RESTRICTIVE'));
+      if (context.formatter.isPretty()) {
+        output.push(context.formatter.newline() + context.formatter.indent('AS RESTRICTIVE'));
       } else {
         output.push('AS', 'RESTRICTIVE');
       }
     } else if (node.permissive === true) {
-      if (this.formatter.isPretty()) {
-        output.push(this.formatter.newline() + this.formatter.indent('AS PERMISSIVE'));
+      if (context.formatter.isPretty()) {
+        output.push(context.formatter.newline() + context.formatter.indent('AS PERMISSIVE'));
       } else {
         output.push('AS', 'PERMISSIVE');
       }
     }
 
     if (node.cmd_name) {
-      if (this.formatter.isPretty()) {
-        output.push(this.formatter.newline() + this.formatter.indent(`FOR ${node.cmd_name.toUpperCase()}`));
+      if (context.formatter.isPretty()) {
+        output.push(context.formatter.newline() + context.formatter.indent(`FOR ${node.cmd_name.toUpperCase()}`));
       } else {
         output.push('FOR', node.cmd_name.toUpperCase());
       }
@@ -6813,8 +6823,8 @@ export class Deparser implements DeparserVisitor {
 
     if (node.roles && node.roles.length > 0) {
       const roles = ListUtils.unwrapList(node.roles).map(role => this.visit(role, context));
-      if (this.formatter.isPretty()) {
-        output.push(this.formatter.newline() + this.formatter.indent(`TO ${roles.join(', ')}`));
+      if (context.formatter.isPretty()) {
+        output.push(context.formatter.newline() + context.formatter.indent(`TO ${roles.join(', ')}`));
       } else {
         output.push('TO');
         output.push(roles.join(', '));
@@ -6822,11 +6832,11 @@ export class Deparser implements DeparserVisitor {
     }
 
     if (node.qual) {
-      if (this.formatter.isPretty()) {
+      if (context.formatter.isPretty()) {
         const qualExpr = this.visit(node.qual, context);
-        output.push(this.formatter.newline() + this.formatter.indent('USING ('));
-        output.push(this.formatter.newline() + this.formatter.indent(this.formatter.indent(qualExpr)));
-        output.push(this.formatter.newline() + this.formatter.indent(')'));
+        output.push(context.formatter.newline() + context.formatter.indent('USING ('));
+        output.push(context.formatter.newline() + context.formatter.indent(context.formatter.indent(qualExpr)));
+        output.push(context.formatter.newline() + context.formatter.indent(')'));
       } else {
         output.push('USING');
         output.push(`(${this.visit(node.qual, context)})`);
@@ -6834,18 +6844,18 @@ export class Deparser implements DeparserVisitor {
     }
 
     if (node.with_check) {
-      if (this.formatter.isPretty()) {
+      if (context.formatter.isPretty()) {
         const checkExpr = this.visit(node.with_check, context);
-        output.push(this.formatter.newline() + this.formatter.indent('WITH CHECK ('));
-        output.push(this.formatter.newline() + this.formatter.indent(this.formatter.indent(checkExpr)));
-        output.push(this.formatter.newline() + this.formatter.indent(')'));
+        output.push(context.formatter.newline() + context.formatter.indent('WITH CHECK ('));
+        output.push(context.formatter.newline() + context.formatter.indent(context.formatter.indent(checkExpr)));
+        output.push(context.formatter.newline() + context.formatter.indent(')'));
       } else {
         output.push('WITH CHECK');
         output.push(`(${this.visit(node.with_check, context)})`);
       }
     }
 
-    return this.formatter.isPretty() ? output.join('') : output.join(' ');
+    return context.formatter.isPretty() ? output.join('') : output.join(' ');
   }
 
   AlterPolicyStmt(node: t.AlterPolicyStmt, context: DeparserContext): string {
@@ -8545,8 +8555,8 @@ export class Deparser implements DeparserVisitor {
 
     if (node.action) {
       const actionStr = this.GrantStmt(node.action, context);
-      if (this.formatter.isPretty()) {
-        return output.join(' ') + this.formatter.newline() + this.formatter.indent(actionStr);
+      if (context.formatter.isPretty()) {
+        return output.join(' ') + context.formatter.newline() + context.formatter.indent(actionStr);
       } else {
         output.push(actionStr);
       }
@@ -8733,7 +8743,7 @@ export class Deparser implements DeparserVisitor {
       output.push(QuoteUtils.quote(node.trigname));
     }
 
-    if (this.formatter.isPretty()) {
+    if (context.formatter.isPretty()) {
       const components: string[] = [];
 
       const timing: string[] = [];
@@ -8756,36 +8766,36 @@ export class Deparser implements DeparserVisitor {
       }
       if (node.events & 32) events.push('TRUNCATE');
 
-      components.push(this.formatter.indent(timing.join(' ') + ' ' + events.join(' OR ')));
+      components.push(context.formatter.indent(timing.join(' ') + ' ' + events.join(' OR ')));
 
       if (node.relation) {
-        components.push(this.formatter.indent('ON ' + this.RangeVar(node.relation, context)));
+        components.push(context.formatter.indent('ON ' + this.RangeVar(node.relation, context)));
       }
 
       if (node.transitionRels && node.transitionRels.length > 0) {
         const transitionClauses = ListUtils.unwrapList(node.transitionRels)
           .map(rel => this.visit(rel, context))
           .join(' ');
-        components.push(this.formatter.indent('REFERENCING ' + transitionClauses));
+        components.push(context.formatter.indent('REFERENCING ' + transitionClauses));
       }
 
       if (node.deferrable) {
-        components.push(this.formatter.indent('DEFERRABLE'));
+        components.push(context.formatter.indent('DEFERRABLE'));
       }
 
       if (node.initdeferred) {
-        components.push(this.formatter.indent('INITIALLY DEFERRED'));
+        components.push(context.formatter.indent('INITIALLY DEFERRED'));
       }
 
       if (node.row) {
-        components.push(this.formatter.indent('FOR EACH ROW'));
+        components.push(context.formatter.indent('FOR EACH ROW'));
       } else {
-        components.push(this.formatter.indent('FOR EACH STATEMENT'));
+        components.push(context.formatter.indent('FOR EACH STATEMENT'));
       }
 
       if (node.whenClause) {
         const whenStr = 'WHEN (' + this.visit(node.whenClause, context) + ')';
-        components.push(this.formatter.indent(whenStr));
+        components.push(context.formatter.indent(whenStr));
       }
 
       let executeStr = 'EXECUTE';
@@ -8806,9 +8816,9 @@ export class Deparser implements DeparserVisitor {
         executeStr += '()';
       }
 
-      components.push(this.formatter.indent(executeStr));
+      components.push(context.formatter.indent(executeStr));
 
-      return output.join(' ') + this.formatter.newline() + components.join(this.formatter.newline());
+      return output.join(' ') + context.formatter.newline() + components.join(context.formatter.newline());
     } else {
       const timing: string[] = [];
       if (node.timing & 2) timing.push('BEFORE');
