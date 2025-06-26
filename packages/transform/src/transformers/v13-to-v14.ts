@@ -239,7 +239,7 @@ export class V13ToV14Transformer {
   }
 
   FunctionParameter(node: PG13.FunctionParameter, context: TransformerContext): any {
-    const result: any = { ...node };
+    const result: any = {};
     
     if (node.name !== undefined) {
       result.name = node.name;
@@ -983,8 +983,20 @@ export class V13ToV14Transformer {
   }
 
   private shouldPreserveObjfuncargs(context: TransformerContext): boolean {
-    // Based on test evidence, objfuncargs should be preserved in almost all contexts
-    return true; // Always preserve objfuncargs to match test expectations
+    if (!context.parentNodeTypes || context.parentNodeTypes.length === 0) {
+      return true;
+    }
+    
+    for (const parentType of context.parentNodeTypes) {
+      if (parentType === 'AlterFunctionStmt' || 
+          parentType === 'DropStmt' ||
+          parentType === 'RenameStmt' ||
+          parentType === 'CommentStmt') {
+        return false;
+      }
+    }
+    
+    return true;
   }
 
   private isVariadicAggregateContext(context: TransformerContext): boolean {
