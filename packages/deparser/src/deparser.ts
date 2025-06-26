@@ -371,8 +371,20 @@ export class Deparser implements DeparserVisitor {
       const targetList = ListUtils.unwrapList(node.targetList);
       if (this.formatter.isPretty()) {
         if (targetList.length === 1) {
-          const target = this.visit(targetList[0] as Node, { ...context, select: true });
-          output.push('SELECT' + distinctPart + ' ' + target);
+          const targetNode = targetList[0] as Node;
+          const target = this.visit(targetNode, { ...context, select: true });
+          
+          // Check if single target is complex - if so, use multiline format
+          if (this.isComplexSelectTarget(targetNode)) {
+            output.push('SELECT' + distinctPart);
+            if (this.containsMultilineStringLiteral(target)) {
+              output.push(target);
+            } else {
+              output.push(this.formatter.indent(target));
+            }
+          } else {
+            output.push('SELECT' + distinctPart + ' ' + target);
+          }
         } else {
           const targetStrings = targetList
             .map(e => {
@@ -822,6 +834,67 @@ export class Deparser implements DeparserVisitor {
       node.SubLink ||
       node.A_Expr
     );
+  }
+
+  private isComplexSelectTarget(node: any): boolean {
+    if (!node) return false;
+
+    // Always complex: CASE expressions
+    if (node.CaseExpr) return true;
+    
+    // Always complex: Subqueries and subselects
+    if (node.SubLink) return true;
+    
+    // Always complex: Boolean tests and expressions
+    if (node.NullTest || node.BooleanTest || node.BoolExpr) return true;
+    
+    // COALESCE and similar functions - complex if multiple arguments
+    if (node.CoalesceExpr) {
+      const args = node.CoalesceExpr.args;
+      if (args && Array.isArray(args) && args.length > 1) return true;
+    }
+    
+    // Function calls - complex if multiple args or has clauses
+    if (node.FuncCall) {
+      const funcCall = node.FuncCall;
+      const args = funcCall.args ? (Array.isArray(funcCall.args) ? funcCall.args : [funcCall.args]) : [];
+      
+      // Complex if has window clause, filter, order by, etc.
+      if (funcCall.over || funcCall.agg_filter || funcCall.agg_order || funcCall.agg_distinct) {
+        return true;
+      }
+      
+      // Complex if multiple arguments
+      if (args.length > 1) return true;
+      
+      if (args.length === 1) {
+        return this.isComplexSelectTarget(args[0]);
+      }
+    }
+    
+    if (node.A_Expr) {
+      const expr = node.A_Expr;
+      // Check if operands are complex
+      if (expr.lexpr && this.isComplexSelectTarget(expr.lexpr)) return true;
+      if (expr.rexpr && this.isComplexSelectTarget(expr.rexpr)) return true;
+      return false;
+    }
+    
+    if (node.TypeCast) {
+      return this.isComplexSelectTarget(node.TypeCast.arg);
+    }
+    
+    if (node.A_ArrayExpr) return true;
+    
+    if (node.A_Indirection) {
+      return this.isComplexSelectTarget(node.A_Indirection.arg);
+    }
+    
+    if (node.A_Const || node.ColumnRef || node.ParamRef || node.A_Star) {
+      return false;
+    }
+    
+    return false;
   }
 
   visitBetweenRange(rexpr: any, context: DeparserContext): string {
