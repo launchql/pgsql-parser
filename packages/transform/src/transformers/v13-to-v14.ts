@@ -956,15 +956,15 @@ export class V13ToV14Transformer {
     for (const parentType of context.parentNodeTypes) {
       if (parentType === 'AlterFunctionStmt' || 
           parentType === 'DropStmt' ||
-          parentType === 'CommentStmt') {
+          parentType === 'CommentStmt' ||
+          parentType === 'RenameStmt') {
         return false; // These contexts should not have objfuncargs
       }
     }
     
     for (const parentType of context.parentNodeTypes) {
       if (parentType === 'CreateAggregateStmt' ||
-          parentType === 'AlterAggregateStmt' ||
-          parentType === 'RenameStmt') {
+          parentType === 'AlterAggregateStmt') {
         return true; // These contexts should preserve objfuncargs
       }
     }
