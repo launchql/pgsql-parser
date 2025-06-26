@@ -989,14 +989,14 @@ export class V13ToV14Transformer {
       return true; // Default to preserving objfuncargs when no context
     }
     
+    // Based on test evidence, most contexts should preserve objfuncargs
     for (const parentType of context.parentNodeTypes) {
-      if (parentType === 'AlterFunctionStmt' || 
-          parentType === 'CreateCastStmt') {
-        return false; // These contexts should not have objfuncargs
+      if (parentType === 'CreateCastStmt') {
+        return false; // CreateCastStmt should not have objfuncargs in PG14
       }
     }
     
-    return true;
+    return true; // Preserve objfuncargs in all other contexts including AlterFunctionStmt
   }
 
   private isVariadicAggregateContext(context: TransformerContext): boolean {
