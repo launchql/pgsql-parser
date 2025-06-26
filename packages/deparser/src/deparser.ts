@@ -6679,7 +6679,7 @@ export class Deparser implements DeparserVisitor {
     
     const initialParts = ['CREATE', 'POLICY'];
     if (node.policy_name) {
-      initialParts.push(`"${node.policy_name}"`);
+      initialParts.push(QuoteUtils.quote(node.policy_name));
     }
     
     output.push(initialParts.join(' '));
@@ -6758,7 +6758,7 @@ export class Deparser implements DeparserVisitor {
     const output: string[] = ['ALTER', 'POLICY'];
     
     if (node.policy_name) {
-      output.push(`"${node.policy_name}"`);
+      output.push(QuoteUtils.quote(node.policy_name));
     }
     
     if (node.table) {
