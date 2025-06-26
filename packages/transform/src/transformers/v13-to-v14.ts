@@ -155,6 +155,10 @@ export class V13ToV14Transformer {
       result.location = node.location;
     }
     
+    if (result.funcformat !== undefined) {
+      delete result.funcformat;
+    }
+    
     return { FuncCall: result };
   }
 
