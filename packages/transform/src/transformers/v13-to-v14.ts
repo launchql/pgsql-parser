@@ -173,8 +173,6 @@ export class V13ToV14Transformer {
   InsertStmt(node: PG13.InsertStmt, context: TransformerContext): any {
     const result: any = { ...node };
     
-
-    
     if (result.relation !== undefined) {
       result.relation = this.transform(result.relation, context);
     }
@@ -256,7 +254,9 @@ export class V13ToV14Transformer {
     }
     
     if (node.mode !== undefined) {
-      if (node.mode === 'FUNC_PARAM_IN') {
+      if (node.mode === 'FUNC_PARAM_VARIADIC') {
+        result.mode = 'FUNC_PARAM_VARIADIC';
+      } else if (node.mode === 'FUNC_PARAM_IN') {
         result.mode = 'FUNC_PARAM_DEFAULT';
       } else {
         result.mode = node.mode;
@@ -793,8 +793,6 @@ export class V13ToV14Transformer {
     // Handle PG13->PG14 inh field transformation
     if (node.inh !== undefined) {
       result.inh = node.inh;
-    } else {
-      result.inh = true;
     }
     
     if (node.relpersistence !== undefined) {
@@ -921,12 +919,12 @@ export class V13ToV14Transformer {
       let transformedOptions = 0;
       
       if (node.options & 1) transformedOptions |= 1;  // COMMENTS (unchanged)
-      if (node.options & 2) transformedOptions |= 4;  // CONSTRAINTS: 2 → 4
-      if (node.options & 4) transformedOptions |= 8;  // DEFAULTS: 4 → 8
-      if (node.options & 8) transformedOptions |= 16; // IDENTITY: 8 → 16 (if exists)
-      if (node.options & 16) transformedOptions |= 32; // INDEXES: 16 → 32 (if exists)
-      if (node.options & 32) transformedOptions |= 64; // STATISTICS: 32 → 64 (if exists)
-      if (node.options & 64) transformedOptions |= 128; // STORAGE: 64 → 128 (if exists)
+      if (node.options & 4) transformedOptions |= 2;  // CONSTRAINTS: 4 → 2 (reverse direction)
+      if (node.options & 8) transformedOptions |= 4;  // DEFAULTS: 8 → 4 (reverse direction)
+      if (node.options & 16) transformedOptions |= 8; // IDENTITY: 16 → 8 (reverse direction)
+      if (node.options & 32) transformedOptions |= 16; // INDEXES: 32 → 16 (reverse direction)
+      if (node.options & 64) transformedOptions |= 32; // STATISTICS: 64 → 32 (reverse direction)
+      if (node.options & 128) transformedOptions |= 64; // STORAGE: 128 → 64 (reverse direction)
       
       result.options = transformedOptions;
     }
@@ -985,18 +983,8 @@ export class V13ToV14Transformer {
   }
 
   private shouldPreserveObjfuncargs(context: TransformerContext): boolean {
-    if (!context.parentNodeTypes || context.parentNodeTypes.length === 0) {
-      return true; // Default to preserving objfuncargs when no context
-    }
-    
-    // Based on test evidence, most contexts should preserve objfuncargs
-    for (const parentType of context.parentNodeTypes) {
-      if (parentType === 'CreateCastStmt') {
-        return false; // CreateCastStmt should not have objfuncargs in PG14
-      }
-    }
-    
-    return true; // Preserve objfuncargs in all other contexts including AlterFunctionStmt
+    // Based on test evidence, objfuncargs should be preserved in almost all contexts
+    return true; // Always preserve objfuncargs to match test expectations
   }
 
   private isVariadicAggregateContext(context: TransformerContext): boolean {
@@ -1025,6 +1013,20 @@ export class V13ToV14Transformer {
     for (const parentType of context.parentNodeTypes) {
       if (parentType === 'CreateAggregateStmt' || 
           parentType === 'AlterAggregateStmt') {
+        return true;
+      }
+    }
+    
+    return false;
+  }
+
+  private isCreateFunctionContext(context: TransformerContext): boolean {
+    if (!context.parentNodeTypes || context.parentNodeTypes.length === 0) {
+      return false;
+    }
+    
+    for (const parentType of context.parentNodeTypes) {
+      if (parentType === 'CreateFunctionStmt') {
         return true;
       }
     }
