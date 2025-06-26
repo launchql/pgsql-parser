@@ -726,7 +726,7 @@ export class V13ToV14Transformer {
       if (node.options === 48) {
         result.options = 288;
       } else {
-        result.options = node.options;
+        result.options = (node.options & ~32) | 256;
       }
     }
     
