@@ -23,9 +23,7 @@ INSERT INTO data.snapshots (metadata) VALUES ('{"Type": "Full", "Status": "OK"}'
 INSERT INTO "AppSchema"."User Data" ("Full Name") VALUES ('Jane Smith');
 
 -- 9. Insert multiple values with mixed casing
--- FILE ISSUE FOR THIS upstream:
--- INSERT INTO logtable (message) VALUES ('Init'), ('Reboot'), ('ERROR'), ('Warning'), ('info');
-INSERT INTO logtable (message) VALUES ('Init');
+INSERT INTO logtable (message) VALUES ('Init'), ('Reboot'), ('ERROR'), ('Warning'), ('info');
 
 -- 10. Insert a string that looks like a function
 INSERT INTO metrics.logs (message) VALUES ('NOW()');

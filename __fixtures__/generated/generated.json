@@ -121,7 +121,7 @@
   "pretty/casing-6.sql": "INSERT INTO users (name) VALUES ('kebab-case-value')",
   "pretty/casing-7.sql": "INSERT INTO data.snapshots (metadata) VALUES ('{\"Type\": \"Full\", \"Status\": \"OK\"}')",
   "pretty/casing-8.sql": "INSERT INTO \"AppSchema\".\"User Data\" (\"Full Name\") VALUES ('Jane Smith')",
-  "pretty/casing-9.sql": "INSERT INTO logtable (message) VALUES ('Init')",
+  "pretty/casing-9.sql": "INSERT INTO logtable (message) VALUES ('Init'), ('Reboot'), ('ERROR'), ('Warning'), ('info')",
   "pretty/casing-10.sql": "INSERT INTO metrics.logs (message) VALUES ('NOW()')",
   "pretty/casing-11.sql": "INSERT INTO users (name) VALUES ('SELECT')",
   "pretty/casing-12.sql": "INSERT INTO users (name) VALUES ('john_doe@example.com')",

@@ -16,7 +16,7 @@ exports[`non-pretty: pretty/casing-7.sql 1`] = `"INSERT INTO data.snapshots (met
 
 exports[`non-pretty: pretty/casing-8.sql 1`] = `"INSERT INTO "AppSchema"."User Data" ("Full Name") VALUES ('Jane Smith')"`;
 
-exports[`non-pretty: pretty/casing-9.sql 1`] = `"INSERT INTO logtable (message) VALUES ('Init')"`;
+exports[`non-pretty: pretty/casing-9.sql 1`] = `"INSERT INTO logtable (message) VALUES ('Init'), ('Reboot'), ('ERROR'), ('Warning'), ('info')"`;
 
 exports[`non-pretty: pretty/casing-10.sql 1`] = `"INSERT INTO metrics.logs (message) VALUES ('NOW()')"`;
 
@@ -106,7 +106,7 @@ exports[`pretty: pretty/casing-8.sql 1`] = `
 
 exports[`pretty: pretty/casing-9.sql 1`] = `
 "INSERT INTO logtable (message) VALUES
-('Init')"
+('Init'), ('Reboot'), ('ERROR'), ('Warning'), ('info')"
 `;
 
 exports[`pretty: pretty/casing-10.sql 1`] = `
