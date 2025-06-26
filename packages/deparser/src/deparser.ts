@@ -3881,8 +3881,8 @@ export class Deparser implements DeparserVisitor {
               } else if (nodeData.sval !== undefined) {
                 // Handle nested sval structure: { sval: { sval: "value" } }
                 const svalValue = typeof nodeData.sval === 'object' ? nodeData.sval.sval : nodeData.sval;
-                const stringValue = svalValue.replace(/'/g, '').toLowerCase();
-                boolValue = stringValue === 'on' || stringValue === 'true';
+                const stringValue = svalValue.replace(/'/g, '');
+                boolValue = stringValue.toLowerCase() === 'on' || stringValue.toLowerCase() === 'true';
               }
             }
             return boolValue ? 'READ ONLY' : 'READ WRITE';
@@ -3902,8 +3902,8 @@ export class Deparser implements DeparserVisitor {
               } else if (nodeData.sval !== undefined) {
                 // Handle nested sval structure: { sval: { sval: "value" } }
                 const svalValue = typeof nodeData.sval === 'object' ? nodeData.sval.sval : nodeData.sval;
-                const stringValue = svalValue.replace(/'/g, '').toLowerCase();
-                boolValue = stringValue === 'on' || stringValue === 'true';
+                const stringValue = svalValue.replace(/'/g, '');
+                boolValue = stringValue.toLowerCase() === 'on' || stringValue.toLowerCase() === 'true';
               }
             }
             return boolValue ? 'DEFERRABLE' : 'NOT DEFERRABLE';
@@ -3972,8 +3972,8 @@ export class Deparser implements DeparserVisitor {
                     } else if (nodeData.sval !== undefined) {
                       // Handle nested sval structure: { sval: { sval: "value" } }
                       const svalValue = typeof nodeData.sval === 'object' ? nodeData.sval.sval : nodeData.sval;
-                      const stringValue = svalValue.replace(/'/g, '').toLowerCase();
-                      boolValue = stringValue === 'on' || stringValue === 'true';
+                      const stringValue = svalValue.replace(/'/g, '');
+                      boolValue = stringValue.toLowerCase() === 'on' || stringValue.toLowerCase() === 'true';
                     }
                   }
                   transactionOptions.push(boolValue ? 'READ ONLY' : 'READ WRITE');
@@ -3989,8 +3989,8 @@ export class Deparser implements DeparserVisitor {
                     } else if (nodeData.sval !== undefined) {
                       // Handle nested sval structure: { sval: { sval: "value" } }
                       const svalValue = typeof nodeData.sval === 'object' ? nodeData.sval.sval : nodeData.sval;
-                      const stringValue = svalValue.replace(/'/g, '').toLowerCase();
-                      boolValue = stringValue === 'on' || stringValue === 'true';
+                      const stringValue = svalValue.replace(/'/g, '');
+                      boolValue = stringValue.toLowerCase() === 'on' || stringValue.toLowerCase() === 'true';
                     }
                   }
                   transactionOptions.push(boolValue ? 'DEFERRABLE' : 'NOT DEFERRABLE');
@@ -8705,8 +8705,9 @@ export class Deparser implements DeparserVisitor {
       }
       
       if (node.args && node.args.length > 0) {
+        const argContext = { ...context, isStringLiteral: true };
         const args = ListUtils.unwrapList(node.args)
-          .map(arg => this.visit(arg, context))
+          .map(arg => this.visit(arg, argContext))
           .join(', ');
         executeStr += '(' + args + ')';
       } else {
@@ -8787,8 +8788,9 @@ export class Deparser implements DeparserVisitor {
 
       if (node.args && node.args.length > 0) {
         output.push('(');
+        const argContext = { ...context, isStringLiteral: true };
         const args = ListUtils.unwrapList(node.args)
-          .map(arg => this.visit(arg, context))
+          .map(arg => this.visit(arg, argContext))
           .join(', ');
         output.push(args);
         output.push(')');
