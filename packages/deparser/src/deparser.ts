@@ -224,7 +224,7 @@ export class Deparser implements DeparserVisitor {
 
     const methodName = nodeType as keyof this;
     if (typeof this[methodName] === 'function') {
-      const result = (this[methodName] as any)(nodeData, context);
+      const result = (this[methodName] as any)(nodeData, context.spawn(nodeType));
       
       return result;
     }
