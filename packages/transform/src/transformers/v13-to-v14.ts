@@ -1242,6 +1242,40 @@ export class V13ToV14Transformer {
     return false;
   }
 
+  private transformA_Expr_Kind(kind: string): string {
+    const pg13ToP14Map: { [key: string]: string } = {
+      'AEXPR_OP': 'AEXPR_OP',
+      'AEXPR_OP_ANY': 'AEXPR_OP_ANY', 
+      'AEXPR_OP_ALL': 'AEXPR_OP_ALL',
+      'AEXPR_DISTINCT': 'AEXPR_DISTINCT',
+      'AEXPR_NOT_DISTINCT': 'AEXPR_NOT_DISTINCT',
+      'AEXPR_NULLIF': 'AEXPR_NULLIF',
+      'AEXPR_OF': 'AEXPR_IN', // AEXPR_OF removed, map to AEXPR_IN
+      'AEXPR_IN': 'AEXPR_IN',
+      'AEXPR_LIKE': 'AEXPR_LIKE',
+      'AEXPR_ILIKE': 'AEXPR_ILIKE',
+      'AEXPR_SIMILAR': 'AEXPR_SIMILAR',
+      'AEXPR_BETWEEN': 'AEXPR_BETWEEN',
+      'AEXPR_NOT_BETWEEN': 'AEXPR_NOT_BETWEEN',
+      'AEXPR_BETWEEN_SYM': 'AEXPR_BETWEEN_SYM',
+      'AEXPR_NOT_BETWEEN_SYM': 'AEXPR_NOT_BETWEEN_SYM',
+      'AEXPR_PAREN': 'AEXPR_OP' // AEXPR_PAREN removed, map to AEXPR_OP
+    };
+    
+    return pg13ToP14Map[kind] || kind;
+  }
+
+  private transformRoleSpecType(type: string): string {
+    const pg13ToP14Map: { [key: string]: string } = {
+      'ROLESPEC_CSTRING': 'ROLESPEC_CSTRING',
+      'ROLESPEC_CURRENT_USER': 'ROLESPEC_CURRENT_USER',
+      'ROLESPEC_SESSION_USER': 'ROLESPEC_SESSION_USER', 
+      'ROLESPEC_PUBLIC': 'ROLESPEC_PUBLIC'
+    };
+    
+    return pg13ToP14Map[type] || type;
+  }
+
   private isVariadicParameterContext(context: TransformerContext): boolean {
     if (!context.parentNodeTypes || context.parentNodeTypes.length === 0) {
       return false;
@@ -1343,6 +1377,10 @@ export class V13ToV14Transformer {
       result.location = node.location;
     }
     
+    if (node.kind !== undefined) {
+      result.kind = this.transformA_Expr_Kind(node.kind);
+    }
+    
     return { A_Expr: result };
   }
 
@@ -1364,25 +1402,6 @@ export class V13ToV14Transformer {
     return { RoleSpec: result };
   }
 
-  private transformRoleSpecType(pg13RoleType: any): any {
-    // Handle both string and numeric enum values
-    if (typeof pg13RoleType === 'string') {
-      return pg13RoleType;
-    }
-    
-    // Handle numeric enum values - map PG13 indices to PG14 indices
-    if (typeof pg13RoleType === 'number') {
-      switch (pg13RoleType) {
-        case 0: return 'ROLESPEC_CSTRING'; // Stays at case 0
-        case 1: return 'ROLESPEC_CURRENT_USER'; // Shifts from 1 to 2 in PG14
-        case 2: return 'ROLESPEC_SESSION_USER'; // Shifts from 2 to 3 in PG14
-        case 3: return 'ROLESPEC_PUBLIC'; // Shifts from 3 to 4 in PG14
-        default: return 'ROLESPEC_CSTRING';
-      }
-    }
-    
-    return pg13RoleType;
-  }
 
   AlterTableCmd(node: any, context: TransformerContext): any {
     const result: any = {};
