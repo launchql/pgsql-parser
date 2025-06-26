@@ -29,7 +29,7 @@ export class DeparserContext {
   readonly prettyMode: boolean;
   readonly isStringLiteral?: boolean;
   readonly parentNodeTypes: string[];
-  readonly formatter: SqlFormatter;
+  private readonly formatter: SqlFormatter;
   readonly select?: boolean;
   readonly from?: boolean;
   readonly group?: boolean;
@@ -114,6 +114,30 @@ export class DeparserContext {
       subtype: this.subtype,
       ...overrides,
     });
+  }
+
+  indent(text: string, count?: number): string {
+    if (!this.prettyMode) {
+      return text;
+    }
+    const indentCount = count !== undefined ? count : this.indentLevel + 1;
+    return this.formatter.indent(text, indentCount);
+  }
+
+  newline(): string {
+    return this.formatter.newline();
+  }
+
+  parens(content: string): string {
+    return this.formatter.parens(content);
+  }
+
+  format(parts: string[], separator?: string): string {
+    return this.formatter.format(parts, separator);
+  }
+
+  isPretty(): boolean {
+    return this.formatter.isPretty();
   }
 }
 
