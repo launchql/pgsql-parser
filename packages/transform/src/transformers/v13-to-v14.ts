@@ -1034,23 +1034,32 @@ export class V13ToV14Transformer {
   }
 
   String(node: PG13.String, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { String: result };
   }
 
   BitString(node: PG13.BitString, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    
+    return { BitString: result };
   }
 
   Float(node: PG13.Float, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    
+    return { Float: result };
   }
 
   Integer(node: PG13.Integer, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    
+    return { Integer: result };
   }
 
   Null(node: PG13.Null, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    
+    return { Null: result };
   }
 
   List(node: any, context: TransformerContext): any {
