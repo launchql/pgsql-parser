@@ -44,8 +44,7 @@ exports[`Pretty CREATE POLICY formatting should format very complex CREATE POLIC
   TO admin_role
   USING (
     department = current_user_department()
-      AND EXISTS (SELECT
-      1
+      AND EXISTS (SELECT 1
     FROM user_permissions
     WHERE
       (user_id = current_user_id()

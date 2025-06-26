@@ -2,24 +2,15 @@
 
 exports[`Pretty Misc SQL formatting should format misc-1: pretty/selects-1.sql (non-pretty) 1`] = `"SELECT 1"`;
 
-exports[`Pretty Misc SQL formatting should format misc-1: pretty/selects-1.sql (pretty) 1`] = `
-"SELECT
-  1"
-`;
+exports[`Pretty Misc SQL formatting should format misc-1: pretty/selects-1.sql (pretty) 1`] = `"SELECT 1"`;
 
 exports[`Pretty Misc SQL formatting should format misc-2: pretty/selects-2.sql (non-pretty) 1`] = `"SELECT 'abc'::text"`;
 
-exports[`Pretty Misc SQL formatting should format misc-2: pretty/selects-2.sql (pretty) 1`] = `
-"SELECT
-  'abc'::text"
-`;
+exports[`Pretty Misc SQL formatting should format misc-2: pretty/selects-2.sql (pretty) 1`] = `"SELECT 'abc'::text"`;
 
 exports[`Pretty Misc SQL formatting should format misc-3: pretty/selects-3.sql (non-pretty) 1`] = `"SELECT now() AT TIME ZONE 'UTC'"`;
 
-exports[`Pretty Misc SQL formatting should format misc-3: pretty/selects-3.sql (pretty) 1`] = `
-"SELECT
-  now() AT TIME ZONE 'UTC'"
-`;
+exports[`Pretty Misc SQL formatting should format misc-3: pretty/selects-3.sql (pretty) 1`] = `"SELECT now() AT TIME ZONE 'UTC'"`;
 
 exports[`Pretty Misc SQL formatting should format misc-4: pretty/selects-4.sql (non-pretty) 1`] = `"SELECT 1, 2"`;
 
@@ -42,8 +33,7 @@ FROM users"
 exports[`Pretty Misc SQL formatting should format misc-6: pretty/selects-6.sql (non-pretty) 1`] = `"SELECT DISTINCT id FROM users"`;
 
 exports[`Pretty Misc SQL formatting should format misc-6: pretty/selects-6.sql (pretty) 1`] = `
-"SELECT DISTINCT
-  id
+"SELECT DISTINCT id
 FROM users"
 `;
 
@@ -69,10 +59,8 @@ FROM accounts"
 exports[`Pretty Misc SQL formatting should format misc-9: pretty/selects-9.sql (non-pretty) 1`] = `"SELECT (SELECT max(score) FROM results)"`;
 
 exports[`Pretty Misc SQL formatting should format misc-9: pretty/selects-9.sql (pretty) 1`] = `
-"SELECT
-  (SELECT
-    max(score)
-  FROM results)"
+"SELECT (SELECT max(score)
+FROM results)"
 `;
 
 exports[`Pretty Misc SQL formatting should format misc-10: pretty/selects-10.sql (non-pretty) 1`] = `"SELECT count(*) OVER (), u.id FROM users AS u"`;
@@ -87,13 +75,11 @@ FROM users AS u"
 exports[`Pretty Misc SQL formatting should format misc-11: pretty/selects-11.sql (non-pretty) 1`] = `"SELECT name FROM customers UNION ALL SELECT name FROM suppliers ORDER BY name"`;
 
 exports[`Pretty Misc SQL formatting should format misc-11: pretty/selects-11.sql (pretty) 1`] = `
-"SELECT
-  name
+"SELECT name
 FROM customers
 UNION
 ALL
-SELECT
-  name
+SELECT name
 FROM suppliers
 ORDER BY
   name"
@@ -123,8 +109,7 @@ exports[`Pretty Misc SQL formatting should format misc-13: pretty/selects-13.sql
   name
 FROM users
 WHERE
-  id IN (SELECT
-  user_id
+  id IN (SELECT user_id
 FROM orders
 WHERE
   total > 100)"

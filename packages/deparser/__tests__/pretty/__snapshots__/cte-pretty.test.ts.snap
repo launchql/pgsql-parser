@@ -8,8 +8,7 @@ exports[`Pretty CTE (Common Table Expressions) formatting should format basic CT
   FROM sales
   GROUP BY
     region)
-SELECT
-  *
+SELECT *
 FROM regional_sales;"
 `;
 
@@ -21,13 +20,11 @@ exports[`Pretty CTE (Common Table Expressions) formatting should format complex 
   FROM sales
   GROUP BY
     region),
-  top_regions AS (SELECT
-    region
+  top_regions AS (SELECT region
   FROM regional_sales
   WHERE
     total_sales > 1000000)
-SELECT
-  *
+SELECT *
 FROM top_regions;"
 `;
 
@@ -75,8 +72,7 @@ exports[`Pretty CTE (Common Table Expressions) formatting should format recursiv
     eh.level + 1
   FROM employees AS e
   JOIN employee_hierarchy AS eh ON e.manager_id = eh.id)
-SELECT
-  *
+SELECT *
 FROM employee_hierarchy;"
 `;
 
@@ -90,7 +86,6 @@ exports[`Pretty CTE (Common Table Expressions) formatting should use custom newl
     FROM sales
     GROUP BY
         region)
-SELECT
-    *
+SELECT *
 FROM regional_sales;"
 `;

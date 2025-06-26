@@ -370,17 +370,22 @@ export class Deparser implements DeparserVisitor {
     if (node.targetList) {
       const targetList = ListUtils.unwrapList(node.targetList);
       if (this.formatter.isPretty()) {
-        const targetStrings = targetList
-          .map(e => {
-            const targetStr = this.visit(e as Node, { ...context, select: true });
-            if (this.containsMultilineStringLiteral(targetStr)) {
-              return targetStr;
-            }
-            return this.formatter.indent(targetStr);
-          });
-        const formattedTargets = targetStrings.join(',' + this.formatter.newline());
-        output.push('SELECT' + distinctPart);
-        output.push(formattedTargets);
+        if (targetList.length === 1) {
+          const target = this.visit(targetList[0] as Node, { ...context, select: true });
+          output.push('SELECT' + distinctPart + ' ' + target);
+        } else {
+          const targetStrings = targetList
+            .map(e => {
+              const targetStr = this.visit(e as Node, { ...context, select: true });
+              if (this.containsMultilineStringLiteral(targetStr)) {
+                return targetStr;
+              }
+              return this.formatter.indent(targetStr);
+            });
+          const formattedTargets = targetStrings.join(',' + this.formatter.newline());
+          output.push('SELECT' + distinctPart);
+          output.push(formattedTargets);
+        }
       } else {
         const targets = targetList
           .map(e => this.visit(e as Node, { ...context, select: true }))
@@ -8371,7 +8376,11 @@ export class Deparser implements DeparserVisitor {
 
     if (node.action) {
       const actionStr = this.GrantStmt(node.action, context);
-      output.push(actionStr);
+      if (this.formatter.isPretty()) {
+        return output.join(' ') + this.formatter.newline() + this.formatter.indent(actionStr);
+      } else {
+        output.push(actionStr);
+      }
     }
 
     return output.join(' ');
@@ -8555,87 +8564,163 @@ export class Deparser implements DeparserVisitor {
       output.push(QuoteUtils.quote(node.trigname));
     }
 
-    const timing: string[] = [];
-    if (node.timing & 2) timing.push('BEFORE');
-    else if (node.timing & 64) timing.push('INSTEAD OF');
-    else timing.push('AFTER'); // Default timing when no specific timing is set
-    output.push(timing.join(' '));
-
-    const events: string[] = [];
-    if (node.events & 4) events.push('INSERT');
-    if (node.events & 8) events.push('DELETE');
-    if (node.events & 16) events.push('UPDATE');
-    if (node.events & 32) events.push('TRUNCATE');
-    output.push(events.join(' OR '));
-
-    if (node.columns && node.columns.length > 0) {
-      output.push('OF');
-      const columnNames = ListUtils.unwrapList(node.columns)
-        .map(col => this.visit(col, context))
-        .join(', ');
-      output.push(columnNames);
-    }
-
-    output.push('ON');
-    if (node.relation) {
-      output.push(this.RangeVar(node.relation, context));
-    }
-
-    if (node.constrrel) {
-      output.push('FROM');
-      output.push(this.RangeVar(node.constrrel, context));
-    }
-
-    if (node.deferrable) {
-      output.push('DEFERRABLE');
-    }
-
-    if (node.initdeferred) {
-      output.push('INITIALLY DEFERRED');
-    }
-
-    // Handle REFERENCING clauses
-    if (node.transitionRels && node.transitionRels.length > 0) {
-      output.push('REFERENCING');
-      const transitionClauses = ListUtils.unwrapList(node.transitionRels)
-        .map(rel => this.visit(rel, context))
-        .join(' ');
-      output.push(transitionClauses);
-    }
-
-    if (node.row) {
-      output.push('FOR EACH ROW');
+    if (this.formatter.isPretty()) {
+      const components: string[] = [];
+      
+      const timing: string[] = [];
+      if (node.timing & 2) timing.push('BEFORE');
+      else if (node.timing & 64) timing.push('INSTEAD OF');
+      else timing.push('AFTER');
+      
+      const events: string[] = [];
+      if (node.events & 4) events.push('INSERT');
+      if (node.events & 8) events.push('DELETE');
+      if (node.events & 16) {
+        let updateStr = 'UPDATE';
+        if (node.columns && node.columns.length > 0) {
+          const columnNames = ListUtils.unwrapList(node.columns)
+            .map(col => this.visit(col, context))
+            .join(', ');
+          updateStr += ' OF ' + columnNames;
+        }
+        events.push(updateStr);
+      }
+      if (node.events & 32) events.push('TRUNCATE');
+      
+      components.push(this.formatter.indent(timing.join(' ') + ' ' + events.join(' OR ')));
+      
+      if (node.relation) {
+        components.push(this.formatter.indent('ON ' + this.RangeVar(node.relation, context)));
+      }
+      
+      if (node.transitionRels && node.transitionRels.length > 0) {
+        const transitionClauses = ListUtils.unwrapList(node.transitionRels)
+          .map(rel => this.visit(rel, context))
+          .join(' ');
+        components.push(this.formatter.indent('REFERENCING ' + transitionClauses));
+      }
+      
+      if (node.deferrable) {
+        components.push(this.formatter.indent('DEFERRABLE'));
+      }
+      
+      if (node.initdeferred) {
+        components.push(this.formatter.indent('INITIALLY DEFERRED'));
+      }
+      
+      if (node.row) {
+        components.push(this.formatter.indent('FOR EACH ROW'));
+      } else {
+        components.push(this.formatter.indent('FOR EACH STATEMENT'));
+      }
+      
+      if (node.whenClause) {
+        const whenStr = 'WHEN (' + this.visit(node.whenClause, context) + ')';
+        components.push(this.formatter.indent(whenStr));
+      }
+      
+      let executeStr = 'EXECUTE';
+      if (node.funcname && node.funcname.length > 0) {
+        const funcName = ListUtils.unwrapList(node.funcname)
+          .map(name => this.visit(name, context))
+          .join('.');
+        executeStr += ' PROCEDURE ' + funcName;
+      }
+      
+      if (node.args && node.args.length > 0) {
+        const args = ListUtils.unwrapList(node.args)
+          .map(arg => this.visit(arg, context))
+          .join(', ');
+        executeStr += '(' + args + ')';
+      } else {
+        executeStr += '()';
+      }
+      
+      components.push(this.formatter.indent(executeStr));
+      
+      return output.join(' ') + this.formatter.newline() + components.join(this.formatter.newline());
     } else {
-      output.push('FOR EACH STATEMENT');
-    }
+      const timing: string[] = [];
+      if (node.timing & 2) timing.push('BEFORE');
+      else if (node.timing & 64) timing.push('INSTEAD OF');
+      else timing.push('AFTER');
+      output.push(timing.join(' '));
 
-    if (node.whenClause) {
-      output.push('WHEN');
-      output.push('(');
-      output.push(this.visit(node.whenClause, context));
-      output.push(')');
-    }
+      const events: string[] = [];
+      if (node.events & 4) events.push('INSERT');
+      if (node.events & 8) events.push('DELETE');
+      if (node.events & 16) events.push('UPDATE');
+      if (node.events & 32) events.push('TRUNCATE');
+      output.push(events.join(' OR '));
 
-    output.push('EXECUTE');
-    if (node.funcname && node.funcname.length > 0) {
-      const funcName = ListUtils.unwrapList(node.funcname)
-        .map(name => this.visit(name, context))
-        .join('.');
-      output.push('FUNCTION', funcName);
-    }
+      if (node.columns && node.columns.length > 0) {
+        output.push('OF');
+        const columnNames = ListUtils.unwrapList(node.columns)
+          .map(col => this.visit(col, context))
+          .join(', ');
+        output.push(columnNames);
+      }
 
-    if (node.args && node.args.length > 0) {
-      output.push('(');
-      const args = ListUtils.unwrapList(node.args)
-        .map(arg => this.visit(arg, context))
-        .join(', ');
-      output.push(args);
-      output.push(')');
-    } else {
-      output.push('()');
-    }
+      output.push('ON');
+      if (node.relation) {
+        output.push(this.RangeVar(node.relation, context));
+      }
 
-    return output.join(' ');
+      if (node.constrrel) {
+        output.push('FROM');
+        output.push(this.RangeVar(node.constrrel, context));
+      }
+
+      if (node.deferrable) {
+        output.push('DEFERRABLE');
+      }
+
+      if (node.initdeferred) {
+        output.push('INITIALLY DEFERRED');
+      }
+
+      if (node.transitionRels && node.transitionRels.length > 0) {
+        output.push('REFERENCING');
+        const transitionClauses = ListUtils.unwrapList(node.transitionRels)
+          .map(rel => this.visit(rel, context))
+          .join(' ');
+        output.push(transitionClauses);
+      }
+
+      if (node.row) {
+        output.push('FOR EACH ROW');
+      } else {
+        output.push('FOR EACH STATEMENT');
+      }
+
+      if (node.whenClause) {
+        output.push('WHEN');
+        output.push('(');
+        output.push(this.visit(node.whenClause, context));
+        output.push(')');
+      }
+
+      output.push('EXECUTE');
+      if (node.funcname && node.funcname.length > 0) {
+        const funcName = ListUtils.unwrapList(node.funcname)
+          .map(name => this.visit(name, context))
+          .join('.');
+        output.push('FUNCTION', funcName);
+      }
+
+      if (node.args && node.args.length > 0) {
+        output.push('(');
+        const args = ListUtils.unwrapList(node.args)
+          .map(arg => this.visit(arg, context))
+          .join(', ');
+        output.push(args);
+        output.push(')');
+      } else {
+        output.push('()');
+      }
+
+      return output.join(' ');
+    }
   }
 
   TriggerTransition(node: t.TriggerTransition, context: DeparserContext): string {
