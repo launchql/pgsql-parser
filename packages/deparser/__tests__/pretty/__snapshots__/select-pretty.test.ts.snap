@@ -117,7 +117,7 @@ WHERE
   id IN (SELECT user_id
 FROM orders
 WHERE
-  total > 100)"
+    total > 100)"
 `;
 
 exports[`pretty: pretty/selects-14.sql 1`] = `

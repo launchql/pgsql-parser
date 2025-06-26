@@ -2659,7 +2659,7 @@ export class Deparser implements DeparserVisitor {
         }
         if (node.raw_expr) {
           if (context.isPretty()) {
-            const checkExpr = this.visit(node.raw_expr, context);
+            const checkExpr = this.visit(node.raw_expr, context.spawn('Constraint', { indentLevel: context.indentLevel + 1 }));
             if (checkExpr.includes('\n')) {
               output.push('(\n' + context.indent(checkExpr) + '\n)');
             } else {
@@ -2973,7 +2973,7 @@ export class Deparser implements DeparserVisitor {
   }
 
   SubLink(node: t.SubLink, context: DeparserContext): string {
-    const subselect = context.parens(this.visit(node.subselect, context));
+    const subselect = context.parens(this.visit(node.subselect, context.spawn('SubLink', { indentLevel: context.indentLevel + 1 })));
 
     switch (node.subLinkType) {
       case 'ANY_SUBLINK':

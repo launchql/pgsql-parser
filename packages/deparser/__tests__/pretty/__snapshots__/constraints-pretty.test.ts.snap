@@ -87,7 +87,7 @@ exports[`pretty: pretty/constraints-9.sql 1`] = `
   ADD CONSTRAINT tax_rate_range 
     CHECK (
     tax_rate >= 0
-      AND tax_rate <= 1
+        AND tax_rate <= 1
   )"
 `;
 
@@ -151,7 +151,7 @@ exports[`pretty: pretty/constraints-16.sql 1`] = `
   ADD CONSTRAINT chk_enrollment_date 
     CHECK (
     enrollment_date <= CURRENT_DATE
-      AND status IN ('active', 'completed', 'withdrawn')
+        AND status IN ('active', 'completed', 'withdrawn')
   )"
 `;
 

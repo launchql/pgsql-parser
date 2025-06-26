@@ -95,8 +95,8 @@ CASE
   WHEN EXISTS (SELECT 1
   FROM reviews AS r
   WHERE
-    r.product_id = p.id
-    AND r.rating >= 4) THEN 'Popular' 
+      r.product_id = p.id
+      AND r.rating >= 4) THEN 'Popular' 
   ELSE 'Unrated' 
 END AS status
 FROM products AS p
@@ -165,8 +165,8 @@ WHERE
   AND EXISTS (SELECT 1
 FROM order_notes AS n
 WHERE
-  (n.order_id = o.id
-  AND n.note ILIKE '%expedite%'))))
+    (n.order_id = o.id
+    AND n.note ILIKE '%expedite%'))))
 ORDER BY
   o.created_at DESC"
 `;
@@ -229,8 +229,8 @@ CASE
   WHEN EXISTS (SELECT 1
   FROM logins
   WHERE
-    logins.user_id = users.user_id
-    AND success = false) THEN 'risky' 
+      logins.user_id = users.user_id
+      AND success = false) THEN 'risky' 
   ELSE 'safe' 
 END AS risk_status
 FROM users"
@@ -261,12 +261,12 @@ exports[`pretty: pretty/misc-12.sql 1`] = `
   id,
 (SELECT
 CASE 
-  WHEN count(*) > 5 THEN 'frequent' 
-  ELSE 'occasional' 
+    WHEN count(*) > 5 THEN 'frequent' 
+    ELSE 'occasional' 
 END
 FROM purchases AS p
 WHERE
-  p.user_id = u.id) AS purchase_freq
+    p.user_id = u.id) AS purchase_freq
 FROM users AS u"
 `;
 
