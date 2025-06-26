@@ -109,182 +109,12 @@ export class V13ToV14Transformer {
   FuncCall(node: PG13.FuncCall, context: TransformerContext): any {
     const result: any = { ...node };
     
+    delete result.funcformat;
+    
     if (node.funcname !== undefined) {
-      const originalFuncname = node.funcname;
-      
       result.funcname = Array.isArray(node.funcname)
         ? node.funcname.map(item => this.transform(item as any, context))
         : this.transform(node.funcname as any, context);
-      
-      if (result.funcname && Array.isArray(result.funcname) && result.funcname.length === 2) {
-        const hasPrefix = result.funcname[0] && typeof result.funcname[0] === 'object' && 
-          'String' in result.funcname[0] && ((result.funcname[0] as any).String.str === 'pg_catalog' || (result.funcname[0] as any).String.sval === 'pg_catalog');
-        const funcName = result.funcname[1] && typeof result.funcname[1] === 'object' && 
-          'String' in result.funcname[1] ? ((result.funcname[1] as any).String.str || (result.funcname[1] as any).String.sval) : '';
-        
-        if (hasPrefix && funcName === 'date_part') {
-          if ((result.funcname[1] as any).String.str) {
-            (result.funcname[1] as any).String.str = 'extract';
-          } else if ((result.funcname[1] as any).String.sval) {
-            (result.funcname[1] as any).String.sval = 'extract';
-          }
-        }
-      }
-      
-      let funcName = '';
-      if (Array.isArray(originalFuncname) && originalFuncname.length >= 1) {
-        const lastFunc = originalFuncname[originalFuncname.length - 1];
-        if (lastFunc && typeof lastFunc === 'object' && 'String' in lastFunc) {
-          funcName = (lastFunc as any).String.str || (lastFunc as any).String.sval;
-        }
-      }
-      
-      const remainingSqlSyntaxFunctions = [
-        'position', 'overlay', 'extract'
-      ];
-      
-      const functionsWithPrefixButExplicitCall = [
-        'like_escape', 'similar_to_escape'
-      ];
-      
-      const convertedToRegularFunctions = [
-        'pg_relation_is_updatable'
-      ];
-      
-      const transformedHasPrefix = Array.isArray(result.funcname) && result.funcname.length === 2 &&
-        result.funcname[0] && typeof result.funcname[0] === 'object' && 
-        'String' in result.funcname[0] && ((result.funcname[0] as any).String.str === 'pg_catalog' || (result.funcname[0] as any).String.sval === 'pg_catalog');
-      
-      if (node.funcformat !== undefined) {
-        if (remainingSqlSyntaxFunctions.includes(funcName)) {
-          result.funcformat = "COERCE_SQL_SYNTAX";
-          if (!transformedHasPrefix) {
-            result.funcname = [
-              { String: { str: "pg_catalog" } },
-              ...result.funcname
-            ];
-          }
-        } else if (functionsWithPrefixButExplicitCall.includes(funcName)) {
-          result.funcformat = "COERCE_EXPLICIT_CALL";
-        } else {
-          result.funcformat = node.funcformat;
-        }
-      }
-      
-      let isContextSensitiveFunction = ['btrim', 'ltrim', 'rtrim', 'substring', 'timezone', 'pg_collation_for', 'xmlexists'].includes(funcName);
-      
-      if (isContextSensitiveFunction) {
-        const pg13HasPrefix = Array.isArray(node.funcname) && node.funcname.length === 2 &&
-          node.funcname[0] && typeof node.funcname[0] === 'object' && 
-          'String' in node.funcname[0] && ((node.funcname[0] as any).String.str === 'pg_catalog' || (node.funcname[0] as any).String.sval === 'pg_catalog');
-        
-        if (funcName === 'substring') {
-          if (node.funcformat === "COERCE_SQL_SYNTAX" || node.funcformat === undefined) {
-            if (!pg13HasPrefix) {
-              result.funcname = [
-                { String: { str: "pg_catalog" } },
-                ...result.funcname
-              ];
-            }
-            if (node.funcformat !== undefined) {
-              result.funcformat = "COERCE_SQL_SYNTAX";
-            }
-          } else {
-            if (pg13HasPrefix) {
-              result.funcname = [result.funcname[1]];
-            }
-            if (node.funcformat !== undefined) {
-              result.funcformat = "COERCE_EXPLICIT_CALL";
-            }
-          }
-
-        } else if (funcName === 'timezone') {
-          if (!transformedHasPrefix) {
-            result.funcname = [
-              { String: { str: "pg_catalog" } },
-              ...result.funcname
-            ];
-          }
-          if (node.funcformat !== undefined) {
-            result.funcformat = "COERCE_SQL_SYNTAX";
-          }
-        } else if (funcName === 'pg_collation_for') {
-          if (!transformedHasPrefix) {
-            result.funcname = [
-              { String: { str: "pg_catalog" } },
-              ...result.funcname
-            ];
-          }
-          if (node.funcformat !== undefined) {
-            result.funcformat = "COERCE_SQL_SYNTAX";
-          }
-        } else if (funcName === 'xmlexists') {
-          if (!transformedHasPrefix) {
-            result.funcname = [
-              { String: { str: "pg_catalog" } },
-              ...result.funcname
-            ];
-          }
-          if (node.funcformat !== undefined) {
-            result.funcformat = "COERCE_SQL_SYNTAX";
-          }
-        } else {
-          if (pg13HasPrefix) {
-            if (!transformedHasPrefix) {
-              result.funcname = [
-                { String: { str: "pg_catalog" } },
-                ...result.funcname
-              ];
-            }
-            if (node.funcformat !== undefined) {
-              result.funcformat = "COERCE_SQL_SYNTAX";
-            }
-          } else {
-            if (transformedHasPrefix) {
-              result.funcname = [result.funcname[1]];
-            }
-            if (node.funcformat !== undefined) {
-              result.funcformat = "COERCE_EXPLICIT_CALL";
-            }
-          }
-        }
-      } else if (!isContextSensitiveFunction) {
-        if (remainingSqlSyntaxFunctions.includes(funcName)) {
-          if (!transformedHasPrefix) {
-            result.funcname = [
-              { String: { str: "pg_catalog" } },
-              ...result.funcname
-            ];
-          }
-          if (node.funcformat !== undefined) {
-            result.funcformat = node.funcformat;
-          }
-        } else if (functionsWithPrefixButExplicitCall.includes(funcName)) {
-          if (!transformedHasPrefix) {
-            result.funcname = [
-              { String: { str: "pg_catalog" } },
-              ...result.funcname
-            ];
-          }
-          if (node.funcformat !== undefined) {
-            result.funcformat = "COERCE_EXPLICIT_CALL";
-          }
-        } else if (convertedToRegularFunctions.includes(funcName)) {
-          if (transformedHasPrefix) {
-            result.funcname = [result.funcname[1]];
-          }
-          if (node.funcformat !== undefined) {
-            result.funcformat = node.funcformat;
-          }
-        } else {
-          if (transformedHasPrefix) {
-            result.funcname = [result.funcname[1]];
-          }
-          if (node.funcformat !== undefined) {
-            result.funcformat = node.funcformat;
-          }
-        }
-      }
     }
     
     if (node.args !== undefined) {
@@ -340,6 +170,30 @@ export class V13ToV14Transformer {
     }
     
     return { CallStmt: result };
+  }
+
+  ResTarget(node: PG13.ResTarget, context: TransformerContext): any {
+    const result: any = { ...node };
+    
+    if (node.name !== undefined) {
+      result.name = node.name;
+    }
+    
+    if (node.indirection !== undefined) {
+      result.indirection = Array.isArray(node.indirection)
+        ? node.indirection.map(item => this.transform(item as any, context))
+        : this.transform(node.indirection as any, context);
+    }
+    
+    if (node.val !== undefined) {
+      result.val = this.transform(node.val as any, context);
+    }
+    
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+    
+    return { ResTarget: result };
   }
 
   private getFunctionName(funcCall: any): string | null {
@@ -1117,21 +971,11 @@ export class V13ToV14Transformer {
   BitString(node: PG13.BitString, context: TransformerContext): any {
     const result: any = { ...node };
     
-    if (node.bsval !== undefined) {
-      result.str = node.bsval;
-      delete result.bsval;
-    }
-    
     return { BitString: result };
   }
 
   Float(node: PG13.Float, context: TransformerContext): any {
     const result: any = { ...node };
-    
-    if (node.fval !== undefined) {
-      result.str = node.fval;
-      delete result.fval;
-    }
     
     return { Float: result };
   }
