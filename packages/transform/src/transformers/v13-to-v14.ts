@@ -184,6 +184,10 @@ export class V13ToV14Transformer {
       return false;
     }
     
+    if (this.isInRangeFunctionContext(context)) {
+      return false;
+    }
+    
     return true;
   }
 
@@ -261,6 +265,13 @@ export class V13ToV14Transformer {
     const path = context.path || [];
     return path.some((node: any) => 
       node && typeof node === 'object' && 'XmlExpr' in node
+    );
+  }
+
+  private isInRangeFunctionContext(context: TransformerContext): boolean {
+    const path = context.path || [];
+    return path.some((node: any) => 
+      node && typeof node === 'object' && 'RangeFunction' in node
     );
   }
 
