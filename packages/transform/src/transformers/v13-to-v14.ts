@@ -723,7 +723,11 @@ export class V13ToV14Transformer {
     if (node.options === undefined) {
       result.options = 0;
     } else {
-      result.options = (node.options & ~32) | 256;
+      if (node.options === 48) {
+        result.options = 288;
+      } else {
+        result.options = node.options;
+      }
     }
     
     if (node.query !== undefined) {
