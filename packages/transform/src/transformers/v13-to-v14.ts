@@ -170,6 +170,44 @@ export class V13ToV14Transformer {
     return { CallStmt: result };
   }
 
+  InsertStmt(node: PG13.InsertStmt, context: TransformerContext): any {
+    const result: any = { ...node };
+    
+    if (result.override === 'OVERRIDING_NOT_SET') {
+      delete result.override;
+    }
+    
+    if (result.relation !== undefined) {
+      result.relation = this.transform(result.relation, context);
+    }
+    
+    if (result.cols !== undefined) {
+      result.cols = Array.isArray(result.cols)
+        ? result.cols.map((item: any) => this.transform(item, context))
+        : this.transform(result.cols, context);
+    }
+    
+    if (result.selectStmt !== undefined) {
+      result.selectStmt = this.transform(result.selectStmt, context);
+    }
+    
+    if (result.onConflictClause !== undefined) {
+      result.onConflictClause = this.transform(result.onConflictClause, context);
+    }
+    
+    if (result.returningList !== undefined) {
+      result.returningList = Array.isArray(result.returningList)
+        ? result.returningList.map((item: any) => this.transform(item, context))
+        : this.transform(result.returningList, context);
+    }
+    
+    if (result.withClause !== undefined) {
+      result.withClause = this.transform(result.withClause, context);
+    }
+    
+    return { InsertStmt: result };
+  }
+
   ResTarget(node: PG13.ResTarget, context: TransformerContext): any {
     const result: any = { ...node };
     
