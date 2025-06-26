@@ -472,7 +472,7 @@ export class Deparser implements DeparserVisitor {
       if (context.isPretty()) {
         const groupItems = groupList
           .map(e => {
-            const groupStr = this.visit(e as Node, context.spawn('SelectStmt', { group: true }));
+            const groupStr = this.visit(e as Node, context.spawn('SelectStmt', { group: true, indentLevel: context.indentLevel + 1 }));
             if (this.containsMultilineStringLiteral(groupStr)) {
               return groupStr;
             }
@@ -519,7 +519,7 @@ export class Deparser implements DeparserVisitor {
       if (context.isPretty()) {
         const sortItems = sortList
           .map(e => {
-            const sortStr = this.visit(e as Node, context.spawn('SelectStmt', { sort: true }));
+            const sortStr = this.visit(e as Node, context.spawn('SelectStmt', { sort: true, indentLevel: context.indentLevel + 1 }));
             if (this.containsMultilineStringLiteral(sortStr)) {
               return sortStr;
             }
@@ -1282,7 +1282,7 @@ export class Deparser implements DeparserVisitor {
     switch (boolop) {
       case 'AND_EXPR':
         if (context.isPretty() && args.length > 1) {
-          const andArgs = args.map(arg => this.visit(arg, boolContext)).join(context.newline() + '  AND ');
+          const andArgs = args.map(arg => this.visit(arg, boolContext)).join(context.newline() + context.indent('AND '));
           return formatStr.replace('%s', () => andArgs);
         } else {
           const andArgs = args.map(arg => this.visit(arg, boolContext)).join(' AND ');
@@ -1290,7 +1290,7 @@ export class Deparser implements DeparserVisitor {
         }
       case 'OR_EXPR':
         if (context.isPretty() && args.length > 1) {
-          const orArgs = args.map(arg => this.visit(arg, boolContext)).join(context.newline() + '  OR ');
+          const orArgs = args.map(arg => this.visit(arg, boolContext)).join(context.newline() + context.indent('OR '));
           return formatStr.replace('%s', () => orArgs);
         } else {
           const orArgs = args.map(arg => this.visit(arg, boolContext)).join(' OR ');
