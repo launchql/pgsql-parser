@@ -370,7 +370,7 @@ export class V13ToV14Transformer {
       'substring', 'substr', 'position', 'overlay',
       'extract', 'date_part', 'date_trunc',
       'current_date', 'current_time', 'current_timestamp',
-      'localtime', 'localtimestamp'
+      'localtime', 'localtimestamp', 'overlaps'
     ];
     
     if (sqlSyntaxFunctions.includes(funcname.toLowerCase())) {
