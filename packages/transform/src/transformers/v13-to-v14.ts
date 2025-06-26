@@ -1372,4 +1372,112 @@ export class V13ToV14Transformer {
     return { AlterSeqStmt: result };
   }
 
+  CTECycleClause(node: any, context: TransformerContext): any {
+    const result: any = {};
+    
+    if (node.cycle_col_list !== undefined) {
+      result.cycle_col_list = Array.isArray(node.cycle_col_list)
+        ? node.cycle_col_list.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.cycle_col_list as any, context);
+    }
+    
+    if (node.cycle_mark_column !== undefined) {
+      result.cycle_mark_column = node.cycle_mark_column;
+    }
+    
+    if (node.cycle_mark_value !== undefined) {
+      result.cycle_mark_value = this.transform(node.cycle_mark_value as any, context);
+    }
+    
+    if (node.cycle_mark_default !== undefined) {
+      result.cycle_mark_default = this.transform(node.cycle_mark_default as any, context);
+    }
+    
+    if (node.cycle_path_column !== undefined) {
+      result.cycle_path_column = node.cycle_path_column;
+    }
+    
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+    
+    return { CTECycleClause: result };
+  }
+
+  CTESearchClause(node: any, context: TransformerContext): any {
+    const result: any = {};
+    
+    if (node.search_col_list !== undefined) {
+      result.search_col_list = Array.isArray(node.search_col_list)
+        ? node.search_col_list.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.search_col_list as any, context);
+    }
+    
+    if (node.search_breadth_first !== undefined) {
+      result.search_breadth_first = node.search_breadth_first;
+    }
+    
+    if (node.search_seq_column !== undefined) {
+      result.search_seq_column = node.search_seq_column;
+    }
+    
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+    
+    return { CTESearchClause: result };
+  }
+
+  PLAssignStmt(node: any, context: TransformerContext): any {
+    const result: any = {};
+    
+    if (node.name !== undefined) {
+      result.name = node.name;
+    }
+    
+    if (node.indirection !== undefined) {
+      result.indirection = Array.isArray(node.indirection)
+        ? node.indirection.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.indirection as any, context);
+    }
+    
+    if (node.nnames !== undefined) {
+      result.nnames = node.nnames;
+    }
+    
+    if (node.val !== undefined) {
+      result.val = this.transform(node.val as any, context);
+    }
+    
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+    
+    return { PLAssignStmt: result };
+  }
+
+  ReturnStmt(node: any, context: TransformerContext): any {
+    const result: any = {};
+    
+    if (node.returnval !== undefined) {
+      result.returnval = this.transform(node.returnval as any, context);
+    }
+    
+    return { ReturnStmt: result };
+  }
+
+  StatsElem(node: any, context: TransformerContext): any {
+    const result: any = {};
+    
+    if (node.name !== undefined) {
+      result.name = node.name;
+    }
+    
+    if (node.expr !== undefined) {
+      result.expr = this.transform(node.expr as any, context);
+    }
+    
+    return { StatsElem: result };
+  }
+
 }
