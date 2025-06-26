@@ -358,7 +358,7 @@ export class V13ToV14Transformer {
     return null;
   }
 
-  private getFuncformatValue(node: any, context: TransformerContext): string {
+  private  getFuncformatValue(node: any, context: TransformerContext): string {
     const funcname = this.getFunctionName(node);
     
     if (!funcname) {
@@ -380,6 +380,7 @@ export class V13ToV14Transformer {
     
     return 'COERCE_EXPLICIT_CALL';
   }
+
 
 
   FunctionParameter(node: PG13.FunctionParameter, context: TransformerContext): any {
@@ -404,8 +405,6 @@ export class V13ToV14Transformer {
     return { FunctionParameter: result };
   }
 
-
-
   AlterFunctionStmt(node: PG13.AlterFunctionStmt, context: TransformerContext): any {
     const result: any = {};
     
@@ -421,8 +420,6 @@ export class V13ToV14Transformer {
         if ('ObjectWithArgs' in funcResult) {
           funcData = funcResult.ObjectWithArgs;
         }
-        
-
         
         result.func = 'ObjectWithArgs' in funcResult ? { ObjectWithArgs: funcData } : funcData;
       } else {
