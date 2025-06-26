@@ -214,21 +214,21 @@ export class Deparser implements DeparserVisitor {
 
   visit(node: Node, context: DeparserContext = new DeparserContext({})): string {
     const nodeType = this.getNodeType(node);
-
+    
     // Handle empty objects
     if (!nodeType) {
       return '';
     }
-
+    
     const nodeData = this.getNodeData(node);
 
     const methodName = nodeType as keyof this;
     if (typeof this[methodName] === 'function') {
-      const result = (this[methodName] as any)(nodeData, context.spawn(nodeType));
-
+      const result = (this[methodName] as any)(nodeData, context);
+      
       return result;
     }
-
+    
     throw new Error(`Deparser does not handle node type: ${nodeType}`);
   }
 
