@@ -4571,10 +4571,24 @@ export class Deparser implements DeparserVisitor {
     }
 
     if (node.cmds && node.cmds.length > 0) {
-      const commandsStr = ListUtils.unwrapList(node.cmds)
-        .map(cmd => this.visit(cmd, alterContext))
-        .join(', ');
-      output.push(commandsStr);
+      const commands = ListUtils.unwrapList(node.cmds);
+      if (this.formatter.isPretty()) {
+        const commandsStr = commands
+          .map(cmd => {
+            const cmdStr = this.visit(cmd, alterContext);
+            if (cmdStr.startsWith('ADD CONSTRAINT') || cmdStr.startsWith('ADD ')) {
+              return this.formatter.newline() + this.formatter.indent(cmdStr);
+            }
+            return cmdStr;
+          })
+          .join(',');
+        output.push(commandsStr);
+      } else {
+        const commandsStr = commands
+          .map(cmd => this.visit(cmd, alterContext))
+          .join(', ');
+        output.push(commandsStr);
+      }
     }
 
     return output.join(' ');
