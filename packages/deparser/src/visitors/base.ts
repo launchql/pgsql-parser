@@ -1,10 +1,114 @@
 import { Node } from '@pgsql/types';
 
-export interface DeparserContext {
+export interface DeparserContextOptions {
   isStringLiteral?: boolean;
-  parentNodeTypes: string[];
+  parentNodeTypes?: string[];
   indentLevel?: number;
+  prettyMode?: boolean;
+  select?: boolean;
+  from?: boolean;
+  group?: boolean;
+  sort?: boolean;
+  insertColumns?: boolean;
+  update?: boolean;
+  bool?: boolean;
+  isColumnConstraint?: boolean;
+  isDomainConstraint?: boolean;
+  alterColumnOptions?: boolean;
+  alterTableOptions?: boolean;
+  isEnumValue?: boolean;
+  objtype?: string;
+  subtype?: string;
   [key: string]: any;
+}
+
+export class DeparserContext {
+  readonly indentLevel: number;
+  readonly prettyMode: boolean;
+  readonly isStringLiteral?: boolean;
+  readonly parentNodeTypes: string[];
+  readonly select?: boolean;
+  readonly from?: boolean;
+  readonly group?: boolean;
+  readonly sort?: boolean;
+  readonly insertColumns?: boolean;
+  readonly update?: boolean;
+  readonly bool?: boolean;
+  readonly isColumnConstraint?: boolean;
+  readonly isDomainConstraint?: boolean;
+  readonly alterColumnOptions?: boolean;
+  readonly alterTableOptions?: boolean;
+  readonly isEnumValue?: boolean;
+  readonly objtype?: string;
+  readonly subtype?: string;
+  readonly [key: string]: any;
+
+  constructor({
+    indentLevel = 0,
+    prettyMode = false,
+    isStringLiteral,
+    parentNodeTypes = [],
+    select,
+    from,
+    group,
+    sort,
+    insertColumns,
+    update,
+    bool,
+    isColumnConstraint,
+    isDomainConstraint,
+    alterColumnOptions,
+    alterTableOptions,
+    isEnumValue,
+    objtype,
+    subtype,
+    ...rest
+  }: DeparserContextOptions = {}) {
+    this.indentLevel = indentLevel;
+    this.prettyMode = prettyMode;
+    this.isStringLiteral = isStringLiteral;
+    this.parentNodeTypes = parentNodeTypes;
+    this.select = select;
+    this.from = from;
+    this.group = group;
+    this.sort = sort;
+    this.insertColumns = insertColumns;
+    this.update = update;
+    this.bool = bool;
+    this.isColumnConstraint = isColumnConstraint;
+    this.isDomainConstraint = isDomainConstraint;
+    this.alterColumnOptions = alterColumnOptions;
+    this.alterTableOptions = alterTableOptions;
+    this.isEnumValue = isEnumValue;
+    this.objtype = objtype;
+    this.subtype = subtype;
+
+    Object.assign(this, rest);
+  }
+
+  spawn(nodeType: string, overrides: Partial<DeparserContextOptions> = {}): DeparserContext {
+    return new DeparserContext({
+      indentLevel: this.indentLevel,
+      prettyMode: this.prettyMode,
+      isStringLiteral: this.isStringLiteral,
+      parentNodeTypes: [...this.parentNodeTypes, nodeType],
+      select: this.select,
+      from: this.from,
+      group: this.group,
+      sort: this.sort,
+      insertColumns: this.insertColumns,
+      update: this.update,
+      bool: this.bool,
+      isColumnConstraint: this.isColumnConstraint,
+      isDomainConstraint: this.isDomainConstraint,
+      alterColumnOptions: this.alterColumnOptions,
+      alterTableOptions: this.alterTableOptions,
+      isEnumValue: this.isEnumValue,
+      objtype: this.objtype,
+      subtype: this.subtype,
+      ...overrides,
+    });
+  }
 }
 
 export interface DeparserVisitor {
