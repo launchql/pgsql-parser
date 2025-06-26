@@ -65,63 +65,91 @@ exports[`non-pretty: pretty/casing-31.sql 1`] = `"SELECT "HandleInsert"('TYPE_A'
 exports[`non-pretty: pretty/casing-32.sql 1`] = `"SELECT * FROM "dataPoints""`;
 
 exports[`pretty: pretty/casing-1.sql 1`] = `
-"INSERT INTO users (name) VALUES
-('John Doe')"
+"INSERT INTO users (
+  name
+) VALUES
+  ('John Doe')"
 `;
 
 exports[`pretty: pretty/casing-2.sql 1`] = `
-"INSERT INTO users (name) VALUES
-('ADMINISTRATOR')"
+"INSERT INTO users (
+  name
+) VALUES
+  ('ADMINISTRATOR')"
 `;
 
 exports[`pretty: pretty/casing-3.sql 1`] = `
-"INSERT INTO users (name) VALUES
-('lowercase')"
+"INSERT INTO users (
+  name
+) VALUES
+  ('lowercase')"
 `;
 
 exports[`pretty: pretty/casing-4.sql 1`] = `
-"INSERT INTO users (name) VALUES
-('camelCaseString')"
+"INSERT INTO users (
+  name
+) VALUES
+  ('camelCaseString')"
 `;
 
 exports[`pretty: pretty/casing-5.sql 1`] = `
-"INSERT INTO users (name) VALUES
-('snake_case_string')"
+"INSERT INTO users (
+  name
+) VALUES
+  ('snake_case_string')"
 `;
 
 exports[`pretty: pretty/casing-6.sql 1`] = `
-"INSERT INTO users (name) VALUES
-('kebab-case-value')"
+"INSERT INTO users (
+  name
+) VALUES
+  ('kebab-case-value')"
 `;
 
 exports[`pretty: pretty/casing-7.sql 1`] = `
-"INSERT INTO data.snapshots (metadata) VALUES
-('{"Type": "Full", "Status": "OK"}')"
+"INSERT INTO data.snapshots (
+  metadata
+) VALUES
+  ('{"Type": "Full", "Status": "OK"}')"
 `;
 
 exports[`pretty: pretty/casing-8.sql 1`] = `
-"INSERT INTO "AppSchema"."User Data" ("Full Name") VALUES
-('Jane Smith')"
+"INSERT INTO "AppSchema"."User Data" (
+  "Full Name"
+) VALUES
+  ('Jane Smith')"
 `;
 
 exports[`pretty: pretty/casing-9.sql 1`] = `
-"INSERT INTO logtable (message) VALUES
-('Init'), ('Reboot'), ('ERROR'), ('Warning'), ('info')"
+"INSERT INTO logtable (
+  message
+) VALUES
+  ('Init'),
+  ('Reboot'),
+  ('ERROR'),
+  ('Warning'),
+  ('info')"
 `;
 
 exports[`pretty: pretty/casing-10.sql 1`] = `
-"INSERT INTO metrics.logs (message) VALUES
-('NOW()')"
+"INSERT INTO metrics.logs (
+  message
+) VALUES
+  ('NOW()')"
 `;
 
 exports[`pretty: pretty/casing-11.sql 1`] = `
-"INSERT INTO users (name) VALUES
-('SELECT')"
+"INSERT INTO users (
+  name
+) VALUES
+  ('SELECT')"
 `;
 
 exports[`pretty: pretty/casing-12.sql 1`] = `
-"INSERT INTO users (name) VALUES
-('john_doe@example.com')"
+"INSERT INTO users (
+  name
+) VALUES
+  ('john_doe@example.com')"
 `;
 
 exports[`pretty: pretty/casing-13.sql 1`] = `"SELECT 'MixedCase'"`;

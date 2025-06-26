@@ -438,12 +438,27 @@ export class Deparser implements DeparserVisitor {
     }
 
     if (node.valuesLists) {
-      output.push('VALUES');
-      const lists = ListUtils.unwrapList(node.valuesLists).map(list => {
-        const values = ListUtils.unwrapList(list).map(val => this.visit(val as Node, context));
-        return this.formatter.parens(values.join(', '));
-      });
-      output.push(lists.join(', '));
+      if (this.formatter.isPretty()) {
+        output.push('VALUES');
+        const lists = ListUtils.unwrapList(node.valuesLists).map(list => {
+          const values = ListUtils.unwrapList(list).map(val => this.visit(val as Node, context));
+          return this.formatter.parens(values.join(', '));
+        });
+        const indentedTuples = lists.map(tuple => {
+          if (this.containsMultilineStringLiteral(tuple)) {
+            return tuple;
+          }
+          return this.formatter.indent(tuple);
+        });
+        output.push(indentedTuples.join(',\n'));
+      } else {
+        output.push('VALUES');
+        const lists = ListUtils.unwrapList(node.valuesLists).map(list => {
+          const values = ListUtils.unwrapList(list).map(val => this.visit(val as Node, context));
+          return this.formatter.parens(values.join(', '));
+        });
+        output.push(lists.join(', '));
+      }
     }
 
     if (node.groupClause) {
@@ -909,6 +924,8 @@ export class Deparser implements DeparserVisitor {
     return this.visit(rexpr, context);
   }
 
+
+
   InsertStmt(node: t.InsertStmt, context: DeparserContext): string {
     const output: string[] = [];
 
@@ -923,7 +940,14 @@ export class Deparser implements DeparserVisitor {
       const cols = ListUtils.unwrapList(node.cols);
       const insertContext = { ...context, insertColumns: true };
       const columnNames = cols.map(col => this.visit(col as Node, insertContext));
-      output.push(this.formatter.parens(columnNames.join(', ')));
+      
+      if (this.formatter.isPretty()) {
+        // Always format columns in multiline parentheses for pretty printing
+        const indentedColumns = columnNames.map(col => this.formatter.indent(col));
+        output.push('(\n' + indentedColumns.join(',\n') + '\n)');
+      } else {
+        output.push(this.formatter.parens(columnNames.join(', ')));
+      }
     }
 
     if (node.selectStmt) {
