@@ -2631,7 +2631,10 @@ export class Deparser implements DeparserVisitor {
           if (this.formatter.isPretty()) {
             const checkExpr = this.visit(node.raw_expr, context);
             if (checkExpr.includes('\n')) {
-              output.push('(\n' + this.formatter.indent(checkExpr) + '\n)');
+              const indentedExpr = checkExpr.split('\n').map(line => 
+                '  ' + line
+              ).join('\n');
+              output.push('(\n' + indentedExpr + '\n)');
             } else {
               output.push(`(${checkExpr})`);
             }
