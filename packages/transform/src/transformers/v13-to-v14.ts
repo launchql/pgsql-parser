@@ -946,10 +946,39 @@ export class V13ToV14Transformer {
     }
     
     if (node.options !== undefined) {
-      result.options = node.options >> 1;
+      result.options = this.transformTableLikeOptions(node.options);
     }
     
     return { TableLikeClause: result };
+  }
+
+  private transformTableLikeOptions(options: any): any {
+    // Handle TableLikeOption enum changes from PG13 to PG14
+    
+    if (typeof options === 'string') {
+      return options;
+    }
+    
+    if (typeof options === 'number') {
+      // Handle bitwise combination of TableLikeOption flags
+      let transformedOptions = 0;
+      
+      for (let bit = 0; bit < 32; bit++) {
+        if (options & (1 << bit)) {
+          let pg14Bit = bit;
+          
+          if (bit >= 1) {
+            pg14Bit = bit + 1;
+          }
+          
+          transformedOptions |= (1 << pg14Bit);
+        }
+      }
+      
+      return transformedOptions;
+    }
+    
+    return options;
   }
 
   ObjectWithArgs(node: PG13.ObjectWithArgs, context: TransformerContext): any {
