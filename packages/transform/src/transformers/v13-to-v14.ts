@@ -155,7 +155,6 @@ export class V13ToV14Transformer {
       result.location = node.location;
     }
     
-    
     return { FuncCall: result };
   }
 
