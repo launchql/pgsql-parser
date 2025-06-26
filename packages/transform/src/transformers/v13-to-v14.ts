@@ -155,11 +155,9 @@ export class V13ToV14Transformer {
         result.funcname[0] && typeof result.funcname[0] === 'object' && 
         'String' in result.funcname[0] && ((result.funcname[0] as any).String.str === 'pg_catalog' || (result.funcname[0] as any).String.sval === 'pg_catalog');
       
-      let finalFuncformat = "COERCE_EXPLICIT_CALL";
-      
-      if (node.funcformat === undefined) {
+      if (node.funcformat !== undefined) {
         if (remainingSqlSyntaxFunctions.includes(funcName)) {
-          finalFuncformat = "COERCE_SQL_SYNTAX";
+          result.funcformat = "COERCE_SQL_SYNTAX";
           if (!transformedHasPrefix) {
             result.funcname = [
               { String: { str: "pg_catalog" } },
@@ -167,15 +165,11 @@ export class V13ToV14Transformer {
             ];
           }
         } else if (functionsWithPrefixButExplicitCall.includes(funcName)) {
-          finalFuncformat = "COERCE_EXPLICIT_CALL";
+          result.funcformat = "COERCE_EXPLICIT_CALL";
         } else {
-          finalFuncformat = "COERCE_EXPLICIT_CALL";
+          result.funcformat = node.funcformat;
         }
-      } else {
-        finalFuncformat = node.funcformat;
       }
-      
-
       
       let isContextSensitiveFunction = ['btrim', 'ltrim', 'rtrim', 'substring', 'timezone', 'pg_collation_for', 'xmlexists'].includes(funcName);
       
@@ -192,12 +186,16 @@ export class V13ToV14Transformer {
                 ...result.funcname
               ];
             }
-            result.funcformat = "COERCE_SQL_SYNTAX";
+            if (node.funcformat !== undefined) {
+              result.funcformat = "COERCE_SQL_SYNTAX";
+            }
           } else {
             if (pg13HasPrefix) {
               result.funcname = [result.funcname[1]];
             }
-            result.funcformat = "COERCE_EXPLICIT_CALL";
+            if (node.funcformat !== undefined) {
+              result.funcformat = "COERCE_EXPLICIT_CALL";
+            }
           }
 
         } else if (funcName === 'timezone') {
@@ -207,7 +205,9 @@ export class V13ToV14Transformer {
               ...result.funcname
             ];
           }
-          result.funcformat = "COERCE_SQL_SYNTAX";
+          if (node.funcformat !== undefined) {
+            result.funcformat = "COERCE_SQL_SYNTAX";
+          }
         } else if (funcName === 'pg_collation_for') {
           if (!transformedHasPrefix) {
             result.funcname = [
@@ -215,7 +215,9 @@ export class V13ToV14Transformer {
               ...result.funcname
             ];
           }
-          result.funcformat = "COERCE_SQL_SYNTAX";
+          if (node.funcformat !== undefined) {
+            result.funcformat = "COERCE_SQL_SYNTAX";
+          }
         } else if (funcName === 'xmlexists') {
           if (!transformedHasPrefix) {
             result.funcname = [
@@ -223,7 +225,9 @@ export class V13ToV14Transformer {
               ...result.funcname
             ];
           }
-          result.funcformat = "COERCE_SQL_SYNTAX";
+          if (node.funcformat !== undefined) {
+            result.funcformat = "COERCE_SQL_SYNTAX";
+          }
         } else {
           if (pg13HasPrefix) {
             if (!transformedHasPrefix) {
@@ -232,12 +236,16 @@ export class V13ToV14Transformer {
                 ...result.funcname
               ];
             }
-            result.funcformat = "COERCE_SQL_SYNTAX";
+            if (node.funcformat !== undefined) {
+              result.funcformat = "COERCE_SQL_SYNTAX";
+            }
           } else {
             if (transformedHasPrefix) {
               result.funcname = [result.funcname[1]];
             }
-            result.funcformat = "COERCE_EXPLICIT_CALL";
+            if (node.funcformat !== undefined) {
+              result.funcformat = "COERCE_EXPLICIT_CALL";
+            }
           }
         }
       } else if (!isContextSensitiveFunction) {
@@ -248,7 +256,9 @@ export class V13ToV14Transformer {
               ...result.funcname
             ];
           }
-          result.funcformat = node.funcformat || "COERCE_SQL_SYNTAX";
+          if (node.funcformat !== undefined) {
+            result.funcformat = node.funcformat;
+          }
         } else if (functionsWithPrefixButExplicitCall.includes(funcName)) {
           if (!transformedHasPrefix) {
             result.funcname = [
@@ -256,17 +266,23 @@ export class V13ToV14Transformer {
               ...result.funcname
             ];
           }
-          result.funcformat = finalFuncformat;
+          if (node.funcformat !== undefined) {
+            result.funcformat = "COERCE_EXPLICIT_CALL";
+          }
         } else if (convertedToRegularFunctions.includes(funcName)) {
           if (transformedHasPrefix) {
             result.funcname = [result.funcname[1]];
           }
-          result.funcformat = finalFuncformat;
+          if (node.funcformat !== undefined) {
+            result.funcformat = node.funcformat;
+          }
         } else {
           if (transformedHasPrefix) {
             result.funcname = [result.funcname[1]];
           }
-          result.funcformat = finalFuncformat;
+          if (node.funcformat !== undefined) {
+            result.funcformat = node.funcformat;
+          }
         }
       }
     }
@@ -352,7 +368,11 @@ export class V13ToV14Transformer {
     }
     
     if (node.mode !== undefined) {
-      result.mode = node.mode;
+      if (node.mode === 'FUNC_PARAM_IN') {
+        result.mode = 'FUNC_PARAM_DEFAULT';
+      } else {
+        result.mode = node.mode;
+      }
     }
     
     return { FunctionParameter: result };
@@ -969,6 +989,34 @@ export class V13ToV14Transformer {
     return { CreateCastStmt: result };
   }
 
+  CreateFunctionStmt(node: PG13.CreateFunctionStmt, context: TransformerContext): any {
+    const result: any = { ...node };
+    
+    if (node.funcname !== undefined) {
+      result.funcname = Array.isArray(node.funcname)
+        ? node.funcname.map(item => this.transform(item as any, context))
+        : this.transform(node.funcname as any, context);
+    }
+    
+    if (node.parameters !== undefined) {
+      result.parameters = Array.isArray(node.parameters)
+        ? node.parameters.map(item => this.transform(item as any, context))
+        : this.transform(node.parameters as any, context);
+    }
+    
+    if (node.returnType !== undefined) {
+      result.returnType = this.transform(node.returnType as any, context);
+    }
+    
+    if (node.options !== undefined) {
+      result.options = Array.isArray(node.options)
+        ? node.options.map(item => this.transform(item as any, context))
+        : this.transform(node.options as any, context);
+    }
+    
+    return { CreateFunctionStmt: result };
+  }
+
   TableLikeClause(node: PG13.TableLikeClause, context: TransformerContext): any {
     const result: any = {};
     
@@ -1031,12 +1079,13 @@ export class V13ToV14Transformer {
       return true;
     }
     
-    if (context.parentNodeTypes.includes('CreateCastStmt')) {
-      return false;
-    }
-    
-    if (context.parentNodeTypes.includes('AlterFunctionStmt')) {
-      return false;
+    for (const parentType of context.parentNodeTypes) {
+      if (parentType === 'CreateCastStmt') {
+        return false;
+      }
+      if (parentType === 'AlterFunctionStmt') {
+        return false;
+      }
     }
     
     return true;
@@ -1061,7 +1110,8 @@ export class V13ToV14Transformer {
   }
 
   String(node: PG13.String, context: TransformerContext): any {
-    return { String: node };
+    const result: any = { ...node };
+    return { String: result };
   }
 
   BitString(node: PG13.BitString, context: TransformerContext): any {
