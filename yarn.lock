@@ -1227,7 +1227,7 @@
     node-addon-api "^3.2.1"
     node-gyp-build "^4.3.0"
 
-"@pgsql/parser@1.0.2":
+"@pgsql/parser@^1.0.2":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@pgsql/parser/-/parser-1.0.2.tgz#f9a23e569034999654b42637ad87670df1b05a41"
   integrity sha512-n3jebU/M6CfExsavM/zoDLt4QPfDO4lp1ZXOC9LtV+CKKau47cwQ9lLs0cBLyLJ9AY8B328RmY8HHHQbtE5W8A==
