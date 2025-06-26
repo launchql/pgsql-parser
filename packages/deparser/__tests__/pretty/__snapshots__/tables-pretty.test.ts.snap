@@ -58,7 +58,8 @@ exports[`pretty: pretty/tables-3.sql 1`] = `
 "CREATE TABLE system.settings (
   setting_key text PRIMARY KEY,
   setting_value text,
-  CONSTRAINT "Default Setting Check" CHECK (setting_value IS NOT NULL)
+  CONSTRAINT "Default Setting Check" 
+    CHECK (setting_value IS NOT NULL)
 )"
 `;
 
@@ -73,7 +74,8 @@ exports[`pretty: pretty/tables-5.sql 1`] = `
 "CREATE TABLE "Orders"."OrderLines" (
   id serial PRIMARY KEY,
   order_id int,
-  CONSTRAINT "FK Order Reference" FOREIGN KEY (order_id)
+  CONSTRAINT "FK Order Reference"
+    FOREIGN KEY(order_id)
     REFERENCES "Orders"."Order" ("OrderID")
 )"
 `;
@@ -127,7 +129,8 @@ exports[`pretty: pretty/tables-12.sql 1`] = `
 "CREATE TABLE secure.sessions (
   session_id uuid PRIMARY KEY,
   user_id uuid,
-  CONSTRAINT "fk-user->session" FOREIGN KEY (user_id)
+  CONSTRAINT "fk-user->session"
+    FOREIGN KEY(user_id)
     REFERENCES users (id)
 )"
 `;
@@ -137,7 +140,8 @@ exports[`pretty: pretty/tables-13.sql 1`] = `
   "KeyID" uuid PRIMARY KEY,
   "ClientName" text,
   "KeyValue" text UNIQUE,
-  CONSTRAINT "Unique_ClientName" UNIQUE ("ClientName")
+  CONSTRAINT "Unique_ClientName" 
+    UNIQUE ("ClientName")
 )"
 `;
 
@@ -152,7 +156,8 @@ exports[`pretty: pretty/tables-15.sql 1`] = `
 "CREATE TABLE "Billing"."Invoices" (
   invoice_id uuid PRIMARY KEY,
   "Client ID" uuid,
-  CONSTRAINT "FK_Client" FOREIGN KEY ("Client ID")
+  CONSTRAINT "FK_Client"
+    FOREIGN KEY("Client ID")
     REFERENCES "Clients"."ClientBase" ("Client ID")
 )"
 `;
@@ -161,7 +166,8 @@ exports[`pretty: pretty/tables-16.sql 1`] = `
 "CREATE TABLE media.assets (
   id uuid PRIMARY KEY,
   url text,
-  CONSTRAINT "Check-URL-NonEmpty" CHECK (url <> '')
+  CONSTRAINT "Check-URL-NonEmpty" 
+    CHECK (url <> '')
 )"
 `;
 
@@ -177,7 +183,8 @@ exports[`pretty: pretty/tables-18.sql 1`] = `
 "CREATE TABLE "x-Schema"."z-Table" (
   "Z-ID" int PRIMARY KEY,
   "Z-Name" text,
-  CONSTRAINT "z-Name-Check" CHECK ("Z-Name" ~ '^[A-Z]')
+  CONSTRAINT "z-Name-Check" 
+    CHECK ("Z-Name" ~ '^[A-Z]')
 )"
 `;
 
@@ -185,7 +192,8 @@ exports[`pretty: pretty/tables-19.sql 1`] = `
 "CREATE TABLE users.details (
   first_name text NOT NULL,
   last_name text,
-  CONSTRAINT first_name_required CHECK (first_name <> '')
+  CONSTRAINT first_name_required 
+    CHECK (first_name <> '')
 )"
 `;
 

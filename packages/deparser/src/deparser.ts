@@ -2617,7 +2617,11 @@ export class Deparser implements DeparserVisitor {
         }
         break;
       case 'CONSTR_CHECK':
-        output.push('CHECK');
+        if (this.formatter.isPretty() && !context.isColumnConstraint) {
+          output.push('\n' + this.formatter.indent('CHECK'));
+        } else {
+          output.push('CHECK');
+        }
         if (node.raw_expr) {
           if (this.formatter.isPretty()) {
             const checkExpr = this.visit(node.raw_expr, context);
@@ -2700,7 +2704,11 @@ export class Deparser implements DeparserVisitor {
         }
         break;
       case 'CONSTR_UNIQUE':
-        output.push('UNIQUE');
+        if (this.formatter.isPretty() && !context.isColumnConstraint) {
+          output.push('\n' + this.formatter.indent('UNIQUE'));
+        } else {
+          output.push('UNIQUE');
+        }
         if (node.nulls_not_distinct) {
           output.push('NULLS NOT DISTINCT');
         }
@@ -2719,7 +2727,7 @@ export class Deparser implements DeparserVisitor {
         // Only add "FOREIGN KEY" for table-level constraints, not column-level constraints
         if (!context.isColumnConstraint) {
           if (this.formatter.isPretty()) {
-            output.push('FOREIGN KEY');
+            output.push('\n' + this.formatter.indent('FOREIGN KEY'));
             if (node.fk_attrs && node.fk_attrs.length > 0) {
               const fkAttrs = ListUtils.unwrapList(node.fk_attrs)
                 .map(attr => this.visit(attr, context))
