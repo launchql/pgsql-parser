@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Pretty Misc SQL formatting should format pretty/create_policy-1.sql: (non-pretty) 1`] = `"CREATE POLICY "user_policy" ON users AS PERMISSIVE FOR ALL TO authenticated_users USING (user_id = current_user_id())"`;
+exports[`should format create_policy-1: pretty/create_policy-1.sql (non-pretty) 1`] = `"CREATE POLICY "user_policy" ON users AS PERMISSIVE FOR ALL TO authenticated_users USING (user_id = current_user_id())"`;
 
-exports[`Pretty Misc SQL formatting should format pretty/create_policy-1.sql: (pretty) 1`] = `
+exports[`should format create_policy-1: pretty/create_policy-1.sql (pretty) 1`] = `
 "CREATE POLICY "user_policy"
   ON users
   AS PERMISSIVE
@@ -13,9 +13,9 @@ exports[`Pretty Misc SQL formatting should format pretty/create_policy-1.sql: (p
   )"
 `;
 
-exports[`Pretty Misc SQL formatting should format pretty/create_policy-2.sql: (non-pretty) 1`] = `"CREATE POLICY "admin_policy" ON sensitive_data AS RESTRICTIVE FOR SELECT TO admin_role USING (department = current_user_department()) WITH CHECK (approved = true)"`;
+exports[`should format create_policy-2: pretty/create_policy-2.sql (non-pretty) 1`] = `"CREATE POLICY "admin_policy" ON sensitive_data AS RESTRICTIVE FOR SELECT TO admin_role USING (department = current_user_department()) WITH CHECK (approved = true)"`;
 
-exports[`Pretty Misc SQL formatting should format pretty/create_policy-2.sql: (pretty) 1`] = `
+exports[`should format create_policy-2: pretty/create_policy-2.sql (pretty) 1`] = `
 "CREATE POLICY "admin_policy"
   ON sensitive_data
   AS RESTRICTIVE
@@ -29,9 +29,9 @@ exports[`Pretty Misc SQL formatting should format pretty/create_policy-2.sql: (p
   )"
 `;
 
-exports[`Pretty Misc SQL formatting should format pretty/create_policy-3.sql: (non-pretty) 1`] = `"CREATE POLICY "complex_policy" ON documents AS PERMISSIVE FOR UPDATE TO document_editors USING (owner_id = current_user_id() OR (shared = true AND permissions @> '{"edit": true}')) WITH CHECK (status <> 'archived' AND last_modified > (now() - '1 day'::interval))"`;
+exports[`should format create_policy-3: pretty/create_policy-3.sql (non-pretty) 1`] = `"CREATE POLICY "complex_policy" ON documents AS PERMISSIVE FOR UPDATE TO document_editors USING (owner_id = current_user_id() OR (shared = true AND permissions @> '{"edit": true}')) WITH CHECK (status <> 'archived' AND last_modified > (now() - '1 day'::interval))"`;
 
-exports[`Pretty Misc SQL formatting should format pretty/create_policy-3.sql: (pretty) 1`] = `
+exports[`should format create_policy-3: pretty/create_policy-3.sql (pretty) 1`] = `
 "CREATE POLICY "complex_policy"
   ON documents
   AS PERMISSIVE
@@ -48,9 +48,9 @@ exports[`Pretty Misc SQL formatting should format pretty/create_policy-3.sql: (p
   )"
 `;
 
-exports[`Pretty Misc SQL formatting should format pretty/create_policy-4.sql: (non-pretty) 1`] = `"CREATE POLICY "simple_policy" ON posts AS PERMISSIVE FOR SELECT TO PUBLIC USING (published = true)"`;
+exports[`should format create_policy-4: pretty/create_policy-4.sql (non-pretty) 1`] = `"CREATE POLICY "simple_policy" ON posts AS PERMISSIVE FOR SELECT TO PUBLIC USING (published = true)"`;
 
-exports[`Pretty Misc SQL formatting should format pretty/create_policy-4.sql: (pretty) 1`] = `
+exports[`should format create_policy-4: pretty/create_policy-4.sql (pretty) 1`] = `
 "CREATE POLICY "simple_policy"
   ON posts
   AS PERMISSIVE
@@ -61,9 +61,9 @@ exports[`Pretty Misc SQL formatting should format pretty/create_policy-4.sql: (p
   )"
 `;
 
-exports[`Pretty Misc SQL formatting should format pretty/create_policy-5.sql: (non-pretty) 1`] = `"CREATE POLICY "simple_policy" ON posts AS PERMISSIVE FOR SELECT TO PUBLIC USING (published = true)"`;
+exports[`should format create_policy-5: pretty/create_policy-5.sql (non-pretty) 1`] = `"CREATE POLICY "simple_policy" ON posts AS PERMISSIVE FOR SELECT TO PUBLIC USING (published = true)"`;
 
-exports[`Pretty Misc SQL formatting should format pretty/create_policy-5.sql: (pretty) 1`] = `
+exports[`should format create_policy-5: pretty/create_policy-5.sql (pretty) 1`] = `
 "CREATE POLICY "simple_policy"
   ON posts
   AS PERMISSIVE
@@ -74,9 +74,9 @@ exports[`Pretty Misc SQL formatting should format pretty/create_policy-5.sql: (p
   )"
 `;
 
-exports[`Pretty Misc SQL formatting should format pretty/create_policy-6.sql: (non-pretty) 1`] = `"CREATE POLICY "Simple Policy" ON posts AS PERMISSIVE FOR SELECT TO PUBLIC USING (published = true)"`;
+exports[`should format create_policy-6: pretty/create_policy-6.sql (non-pretty) 1`] = `"CREATE POLICY "Simple Policy" ON posts AS PERMISSIVE FOR SELECT TO PUBLIC USING (published = true)"`;
 
-exports[`Pretty Misc SQL formatting should format pretty/create_policy-6.sql: (pretty) 1`] = `
+exports[`should format create_policy-6: pretty/create_policy-6.sql (pretty) 1`] = `
 "CREATE POLICY "Simple Policy"
   ON posts
   AS PERMISSIVE
@@ -87,9 +87,9 @@ exports[`Pretty Misc SQL formatting should format pretty/create_policy-6.sql: (p
   )"
 `;
 
-exports[`Pretty Misc SQL formatting should format pretty/create_policy-7.sql: (non-pretty) 1`] = `"CREATE POLICY "simplepolicy" ON posts AS PERMISSIVE FOR SELECT TO PUBLIC USING (published = true)"`;
+exports[`should format create_policy-7: pretty/create_policy-7.sql (non-pretty) 1`] = `"CREATE POLICY "simplepolicy" ON posts AS PERMISSIVE FOR SELECT TO PUBLIC USING (published = true)"`;
 
-exports[`Pretty Misc SQL formatting should format pretty/create_policy-7.sql: (pretty) 1`] = `
+exports[`should format create_policy-7: pretty/create_policy-7.sql (pretty) 1`] = `
 "CREATE POLICY "simplepolicy"
   ON posts
   AS PERMISSIVE
