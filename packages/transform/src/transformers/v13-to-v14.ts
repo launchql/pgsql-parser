@@ -155,9 +155,16 @@ export class V13ToV14Transformer {
       result.location = node.location;
     }
     
-    result.funcformat = "COERCE_EXPLICIT_CALL";
+    // Only add funcformat in specific contexts where it's expected in PG14
+    if (this.shouldAddFuncformat(context)) {
+      result.funcformat = "COERCE_EXPLICIT_CALL";
+    }
     
     return { FuncCall: result };
+  }
+
+  private shouldAddFuncformat(context: TransformerContext): boolean {
+    return true;
   }
 
   CallStmt(node: PG13.CallStmt, context: TransformerContext): any {
@@ -1112,7 +1119,7 @@ export class V13ToV14Transformer {
     const result: any = {};
     
     if (node.roletype !== undefined) {
-      result.roletype = node.roletype;
+      result.roletype = this.transformRoleSpecType(node.roletype);
     }
     
     if (node.rolename !== undefined) {
@@ -1124,6 +1131,26 @@ export class V13ToV14Transformer {
     }
     
     return { RoleSpec: result };
+  }
+
+  private transformRoleSpecType(pg13RoleType: any): any {
+    // Handle both string and numeric enum values
+    if (typeof pg13RoleType === 'string') {
+      return pg13RoleType;
+    }
+    
+    // Handle numeric enum values - map PG13 indices to PG14 indices
+    if (typeof pg13RoleType === 'number') {
+      switch (pg13RoleType) {
+        case 0: return 'ROLESPEC_CSTRING'; // Stays at case 0
+        case 1: return 'ROLESPEC_CURRENT_USER'; // Shifts from 1 to 2 in PG14
+        case 2: return 'ROLESPEC_SESSION_USER'; // Shifts from 2 to 3 in PG14
+        case 3: return 'ROLESPEC_PUBLIC'; // Shifts from 3 to 4 in PG14
+        default: return 'ROLESPEC_CSTRING';
+      }
+    }
+    
+    return pg13RoleType;
   }
 
   AlterTableCmd(node: any, context: TransformerContext): any {
