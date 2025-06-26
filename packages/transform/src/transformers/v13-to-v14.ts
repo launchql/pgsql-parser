@@ -172,6 +172,10 @@ export class V13ToV14Transformer {
       return false;
     }
     
+    if (this.isInTypeCastContext(context) && this.isAggregateFunction(context)) {
+      return false;
+    }
+    
     return true;
   }
 
@@ -222,6 +226,41 @@ export class V13ToV14Transformer {
     return path.some((node: any) => 
       node && typeof node === 'object' && 'CommentStmt' in node
     );
+  }
+
+  private isInTypeCastContext(context: TransformerContext): boolean {
+    const path = context.path || [];
+    return path.some((node: any) => 
+      node && typeof node === 'object' && 'TypeCast' in node
+    );
+  }
+
+  private isInInsertContext(context: TransformerContext): boolean {
+    const path = context.path || [];
+    return path.some((node: any) => 
+      node && typeof node === 'object' && 'InsertStmt' in node
+    );
+  }
+
+  private isInUpdateContext(context: TransformerContext): boolean {
+    const path = context.path || [];
+    return path.some((node: any) => 
+      node && typeof node === 'object' && 'UpdateStmt' in node
+    );
+  }
+
+  private isAggregateFunction(context: TransformerContext): boolean {
+    if (context.currentNode && 'FuncCall' in context.currentNode) {
+      const funcCall = context.currentNode.FuncCall;
+      if (funcCall?.funcname && Array.isArray(funcCall.funcname)) {
+        const lastName = funcCall.funcname[funcCall.funcname.length - 1];
+        if (lastName && 'String' in lastName) {
+          const name = lastName.String.str || lastName.String.sval;
+          return ['avg', 'sum', 'count', 'min', 'max', 'stddev', 'variance'].includes(name);
+        }
+      }
+    }
+    return false;
   }
 
   CallStmt(node: PG13.CallStmt, context: TransformerContext): any {
