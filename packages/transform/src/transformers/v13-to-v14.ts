@@ -365,16 +365,9 @@ export class V13ToV14Transformer {
       return 'COERCE_EXPLICIT_CALL';
     }
     
-    if (funcname.toLowerCase() === 'substring') {
-      if (this.isSubstringFromForPattern(node)) {
-        return null; // This will cause shouldAddFuncformat to return false
-      }
-      return 'COERCE_SQL_SYNTAX';
-    }
-    
     const sqlSyntaxFunctions = [
       'btrim', 'trim', 'ltrim', 'rtrim',
-      'substr', 'position', 'overlay',
+      'substring', 'substr', 'position', 'overlay',
       'extract', 'date_part', 'date_trunc',
       'current_date', 'current_time', 'current_timestamp',
       'localtime', 'localtimestamp'
@@ -387,17 +380,6 @@ export class V13ToV14Transformer {
     return 'COERCE_EXPLICIT_CALL';
   }
 
-  private isSubstringFromForPattern(node: any): boolean {
-    if (!node.args || !Array.isArray(node.args) || node.args.length !== 3) {
-      return false;
-    }
-    
-    return node.args.every((arg: any) => 
-      arg && typeof arg === 'object' && 
-      'A_Const' in arg && 
-      arg.A_Const?.val?.String
-    );
-  }
 
   FunctionParameter(node: PG13.FunctionParameter, context: TransformerContext): any {
     const result: any = {};
