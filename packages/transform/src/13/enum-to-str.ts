@@ -3,7 +3,7 @@
 * DO NOT MODIFY IT BY HAND. Instead, modify the source proto file,
 * and run the pg-proto-parser generate command to regenerate this file.
 */
-export type EnumType = "OverridingKind" | "QuerySource" | "SortByDir" | "SortByNulls" | "SetQuantifier" | "A_Expr_Kind" | "RoleSpecType" | "TableLikeOption" | "DefElemAction" | "PartitionStrategy" | "PartitionRangeDatumKind" | "RTEKind" | "WCOKind" | "GroupingSetKind" | "CTEMaterialize" | "SetOperation" | "ObjectType" | "DropBehavior" | "AlterTableType" | "GrantTargetType" | "VariableSetKind" | "ConstrType" | "ImportForeignSchemaType" | "RoleStmtType" | "FetchDirection" | "FunctionParameterMode" | "TransactionStmtKind" | "ViewCheckOption" | "DiscardMode" | "ReindexObjectType" | "AlterTSConfigType" | "PublicationObjSpecType" | "AlterPublicationAction" | "AlterSubscriptionType" | "OnCommitAction" | "ParamKind" | "CoercionContext" | "CoercionForm" | "BoolExprType" | "SubLinkType" | "RowCompareType" | "MinMaxOp" | "SQLValueFunctionOp" | "XmlExprOp" | "XmlOptionType" | "JsonEncoding" | "JsonFormatType" | "JsonConstructorType" | "JsonValueType" | "NullTestType" | "BoolTestType" | "CmdType" | "JoinType" | "AggStrategy" | "AggSplit" | "SetOpCmd" | "SetOpStrategy" | "OnConflictAction" | "LimitOption" | "LockClauseStrength" | "LockWaitPolicy" | "LockTupleMode" | "KeywordKind" | "Token";
+export type EnumType = "OverridingKind" | "QuerySource" | "SortByDir" | "SortByNulls" | "A_Expr_Kind" | "RoleSpecType" | "TableLikeOption" | "DefElemAction" | "PartitionRangeDatumKind" | "RTEKind" | "WCOKind" | "GroupingSetKind" | "CTEMaterialize" | "SetOperation" | "ObjectType" | "DropBehavior" | "AlterTableType" | "GrantTargetType" | "VariableSetKind" | "ConstrType" | "ImportForeignSchemaType" | "RoleStmtType" | "FetchDirection" | "FunctionParameterMode" | "TransactionStmtKind" | "ViewCheckOption" | "ClusterOption" | "DiscardMode" | "ReindexObjectType" | "AlterTSConfigType" | "AlterSubscriptionType" | "OnCommitAction" | "ParamKind" | "CoercionContext" | "CoercionForm" | "BoolExprType" | "SubLinkType" | "RowCompareType" | "MinMaxOp" | "SQLValueFunctionOp" | "XmlExprOp" | "XmlOptionType" | "NullTestType" | "BoolTestType" | "CmdType" | "JoinType" | "AggStrategy" | "AggSplit" | "SetOpCmd" | "SetOpStrategy" | "OnConflictAction" | "LimitOption" | "LockClauseStrength" | "LockWaitPolicy" | "LockTupleMode" | "KeywordKind" | "Token";
 export const getEnumString = (enumType: EnumType, key: number): string => {
   switch (enumType) {
     case "OverridingKind":
@@ -64,19 +64,6 @@ export const getEnumString = (enumType: EnumType, key: number): string => {
             throw new Error("Value not recognized in enum SortByNulls");
         }
       }
-    case "SetQuantifier":
-      {
-        switch (key) {
-          case 0:
-            return "SET_QUANTIFIER_DEFAULT";
-          case 1:
-            return "SET_QUANTIFIER_ALL";
-          case 2:
-            return "SET_QUANTIFIER_DISTINCT";
-          default:
-            throw new Error("Value not recognized in enum SetQuantifier");
-        }
-      }
     case "A_Expr_Kind":
       {
         switch (key) {
@@ -93,21 +80,25 @@ export const getEnumString = (enumType: EnumType, key: number): string => {
           case 5:
             return "AEXPR_NULLIF";
           case 6:
-            return "AEXPR_IN";
+            return "AEXPR_OF";
           case 7:
-            return "AEXPR_LIKE";
+            return "AEXPR_IN";
           case 8:
-            return "AEXPR_ILIKE";
+            return "AEXPR_LIKE";
           case 9:
-            return "AEXPR_SIMILAR";
+            return "AEXPR_ILIKE";
           case 10:
-            return "AEXPR_BETWEEN";
+            return "AEXPR_SIMILAR";
           case 11:
-            return "AEXPR_NOT_BETWEEN";
+            return "AEXPR_BETWEEN";
           case 12:
-            return "AEXPR_BETWEEN_SYM";
+            return "AEXPR_NOT_BETWEEN";
           case 13:
+            return "AEXPR_BETWEEN_SYM";
+          case 14:
             return "AEXPR_NOT_BETWEEN_SYM";
+          case 15:
+            return "AEXPR_PAREN";
           default:
             throw new Error("Value not recognized in enum A_Expr_Kind");
         }
@@ -118,12 +109,10 @@ export const getEnumString = (enumType: EnumType, key: number): string => {
           case 0:
             return "ROLESPEC_CSTRING";
           case 1:
-            return "ROLESPEC_CURRENT_ROLE";
-          case 2:
             return "ROLESPEC_CURRENT_USER";
-          case 3:
+          case 2:
             return "ROLESPEC_SESSION_USER";
-          case 4:
+          case 3:
             return "ROLESPEC_PUBLIC";
           default:
             throw new Error("Value not recognized in enum RoleSpecType");
@@ -135,22 +124,20 @@ export const getEnumString = (enumType: EnumType, key: number): string => {
           case 0:
             return "CREATE_TABLE_LIKE_COMMENTS";
           case 1:
-            return "CREATE_TABLE_LIKE_COMPRESSION";
-          case 2:
             return "CREATE_TABLE_LIKE_CONSTRAINTS";
-          case 3:
+          case 2:
             return "CREATE_TABLE_LIKE_DEFAULTS";
-          case 4:
+          case 3:
             return "CREATE_TABLE_LIKE_GENERATED";
-          case 5:
+          case 4:
             return "CREATE_TABLE_LIKE_IDENTITY";
-          case 6:
+          case 5:
             return "CREATE_TABLE_LIKE_INDEXES";
-          case 7:
+          case 6:
             return "CREATE_TABLE_LIKE_STATISTICS";
-          case 8:
+          case 7:
             return "CREATE_TABLE_LIKE_STORAGE";
-          case 9:
+          case 8:
             return "CREATE_TABLE_LIKE_ALL";
           default:
             throw new Error("Value not recognized in enum TableLikeOption");
@@ -169,19 +156,6 @@ export const getEnumString = (enumType: EnumType, key: number): string => {
             return "DEFELEM_DROP";
           default:
             throw new Error("Value not recognized in enum DefElemAction");
-        }
-      }
-    case "PartitionStrategy":
-      {
-        switch (key) {
-          case 0:
-            return "PARTITION_STRATEGY_LIST";
-          case 1:
-            return "PARTITION_STRATEGY_RANGE";
-          case 2:
-            return "PARTITION_STRATEGY_HASH";
-          default:
-            throw new Error("Value not recognized in enum PartitionStrategy");
         }
       }
     case "PartitionRangeDatumKind":
@@ -233,10 +207,6 @@ export const getEnumString = (enumType: EnumType, key: number): string => {
             return "WCO_RLS_UPDATE_CHECK";
           case 3:
             return "WCO_RLS_CONFLICT_CHECK";
-          case 4:
-            return "WCO_RLS_MERGE_UPDATE_CHECK";
-          case 5:
-            return "WCO_RLS_MERGE_DELETE_CHECK";
           default:
             throw new Error("Value not recognized in enum WCOKind");
         }
@@ -344,54 +314,50 @@ export const getEnumString = (enumType: EnumType, key: number): string => {
           case 26:
             return "OBJECT_OPFAMILY";
           case 27:
-            return "OBJECT_PARAMETER_ACL";
-          case 28:
             return "OBJECT_POLICY";
-          case 29:
+          case 28:
             return "OBJECT_PROCEDURE";
-          case 30:
+          case 29:
             return "OBJECT_PUBLICATION";
-          case 31:
-            return "OBJECT_PUBLICATION_NAMESPACE";
-          case 32:
+          case 30:
             return "OBJECT_PUBLICATION_REL";
-          case 33:
+          case 31:
             return "OBJECT_ROLE";
-          case 34:
+          case 32:
             return "OBJECT_ROUTINE";
-          case 35:
+          case 33:
             return "OBJECT_RULE";
-          case 36:
+          case 34:
             return "OBJECT_SCHEMA";
-          case 37:
+          case 35:
             return "OBJECT_SEQUENCE";
-          case 38:
+          case 36:
             return "OBJECT_SUBSCRIPTION";
-          case 39:
+          case 37:
             return "OBJECT_STATISTIC_EXT";
-          case 40:
+          case 38:
             return "OBJECT_TABCONSTRAINT";
-          case 41:
+          case 39:
             return "OBJECT_TABLE";
-          case 42:
+          case 40:
             return "OBJECT_TABLESPACE";
-          case 43:
+          case 41:
             return "OBJECT_TRANSFORM";
-          case 44:
+          case 42:
             return "OBJECT_TRIGGER";
-          case 45:
+          case 43:
             return "OBJECT_TSCONFIGURATION";
-          case 46:
+          case 44:
             return "OBJECT_TSDICTIONARY";
-          case 47:
+          case 45:
             return "OBJECT_TSPARSER";
-          case 48:
+          case 46:
             return "OBJECT_TSTEMPLATE";
-          case 49:
+          case 47:
             return "OBJECT_TYPE";
-          case 50:
+          case 48:
             return "OBJECT_USER_MAPPING";
-          case 51:
+          case 49:
             return "OBJECT_VIEW";
           default:
             throw new Error("Value not recognized in enum ObjectType");
@@ -414,135 +380,137 @@ export const getEnumString = (enumType: EnumType, key: number): string => {
           case 0:
             return "AT_AddColumn";
           case 1:
-            return "AT_AddColumnToView";
+            return "AT_AddColumnRecurse";
           case 2:
-            return "AT_ColumnDefault";
+            return "AT_AddColumnToView";
           case 3:
-            return "AT_CookedColumnDefault";
+            return "AT_ColumnDefault";
           case 4:
-            return "AT_DropNotNull";
+            return "AT_CookedColumnDefault";
           case 5:
-            return "AT_SetNotNull";
+            return "AT_DropNotNull";
           case 6:
-            return "AT_DropExpression";
+            return "AT_SetNotNull";
           case 7:
-            return "AT_CheckNotNull";
+            return "AT_DropExpression";
           case 8:
-            return "AT_SetStatistics";
+            return "AT_CheckNotNull";
           case 9:
-            return "AT_SetOptions";
+            return "AT_SetStatistics";
           case 10:
-            return "AT_ResetOptions";
+            return "AT_SetOptions";
           case 11:
-            return "AT_SetStorage";
+            return "AT_ResetOptions";
           case 12:
-            return "AT_SetCompression";
+            return "AT_SetStorage";
           case 13:
             return "AT_DropColumn";
           case 14:
-            return "AT_AddIndex";
+            return "AT_DropColumnRecurse";
           case 15:
-            return "AT_ReAddIndex";
+            return "AT_AddIndex";
           case 16:
-            return "AT_AddConstraint";
+            return "AT_ReAddIndex";
           case 17:
-            return "AT_ReAddConstraint";
+            return "AT_AddConstraint";
           case 18:
-            return "AT_ReAddDomainConstraint";
+            return "AT_AddConstraintRecurse";
           case 19:
-            return "AT_AlterConstraint";
+            return "AT_ReAddConstraint";
           case 20:
-            return "AT_ValidateConstraint";
+            return "AT_ReAddDomainConstraint";
           case 21:
-            return "AT_AddIndexConstraint";
+            return "AT_AlterConstraint";
           case 22:
-            return "AT_DropConstraint";
+            return "AT_ValidateConstraint";
           case 23:
-            return "AT_ReAddComment";
+            return "AT_ValidateConstraintRecurse";
           case 24:
-            return "AT_AlterColumnType";
+            return "AT_AddIndexConstraint";
           case 25:
-            return "AT_AlterColumnGenericOptions";
+            return "AT_DropConstraint";
           case 26:
-            return "AT_ChangeOwner";
+            return "AT_DropConstraintRecurse";
           case 27:
-            return "AT_ClusterOn";
+            return "AT_ReAddComment";
           case 28:
-            return "AT_DropCluster";
+            return "AT_AlterColumnType";
           case 29:
-            return "AT_SetLogged";
+            return "AT_AlterColumnGenericOptions";
           case 30:
-            return "AT_SetUnLogged";
+            return "AT_ChangeOwner";
           case 31:
-            return "AT_DropOids";
+            return "AT_ClusterOn";
           case 32:
-            return "AT_SetAccessMethod";
+            return "AT_DropCluster";
           case 33:
-            return "AT_SetTableSpace";
+            return "AT_SetLogged";
           case 34:
-            return "AT_SetRelOptions";
+            return "AT_SetUnLogged";
           case 35:
-            return "AT_ResetRelOptions";
+            return "AT_DropOids";
           case 36:
-            return "AT_ReplaceRelOptions";
+            return "AT_SetTableSpace";
           case 37:
-            return "AT_EnableTrig";
+            return "AT_SetRelOptions";
           case 38:
-            return "AT_EnableAlwaysTrig";
+            return "AT_ResetRelOptions";
           case 39:
-            return "AT_EnableReplicaTrig";
+            return "AT_ReplaceRelOptions";
           case 40:
-            return "AT_DisableTrig";
+            return "AT_EnableTrig";
           case 41:
-            return "AT_EnableTrigAll";
+            return "AT_EnableAlwaysTrig";
           case 42:
-            return "AT_DisableTrigAll";
+            return "AT_EnableReplicaTrig";
           case 43:
-            return "AT_EnableTrigUser";
+            return "AT_DisableTrig";
           case 44:
-            return "AT_DisableTrigUser";
+            return "AT_EnableTrigAll";
           case 45:
-            return "AT_EnableRule";
+            return "AT_DisableTrigAll";
           case 46:
-            return "AT_EnableAlwaysRule";
+            return "AT_EnableTrigUser";
           case 47:
-            return "AT_EnableReplicaRule";
+            return "AT_DisableTrigUser";
           case 48:
-            return "AT_DisableRule";
+            return "AT_EnableRule";
           case 49:
-            return "AT_AddInherit";
+            return "AT_EnableAlwaysRule";
           case 50:
-            return "AT_DropInherit";
+            return "AT_EnableReplicaRule";
           case 51:
-            return "AT_AddOf";
+            return "AT_DisableRule";
           case 52:
-            return "AT_DropOf";
+            return "AT_AddInherit";
           case 53:
-            return "AT_ReplicaIdentity";
+            return "AT_DropInherit";
           case 54:
-            return "AT_EnableRowSecurity";
+            return "AT_AddOf";
           case 55:
-            return "AT_DisableRowSecurity";
+            return "AT_DropOf";
           case 56:
-            return "AT_ForceRowSecurity";
+            return "AT_ReplicaIdentity";
           case 57:
-            return "AT_NoForceRowSecurity";
+            return "AT_EnableRowSecurity";
           case 58:
-            return "AT_GenericOptions";
+            return "AT_DisableRowSecurity";
           case 59:
-            return "AT_AttachPartition";
+            return "AT_ForceRowSecurity";
           case 60:
-            return "AT_DetachPartition";
+            return "AT_NoForceRowSecurity";
           case 61:
-            return "AT_DetachPartitionFinalize";
+            return "AT_GenericOptions";
           case 62:
-            return "AT_AddIdentity";
+            return "AT_AttachPartition";
           case 63:
-            return "AT_SetIdentity";
+            return "AT_DetachPartition";
           case 64:
-            return "AT_DropIdentity";
+            return "AT_AddIdentity";
           case 65:
-            return "AT_ReAddStatistics";
+            return "AT_SetIdentity";
+          case 66:
+            return "AT_DropIdentity";
           default:
             throw new Error("Value not recognized in enum AlterTableType");
         }
@@ -668,8 +636,6 @@ export const getEnumString = (enumType: EnumType, key: number): string => {
             return "FUNC_PARAM_VARIADIC";
           case 4:
             return "FUNC_PARAM_TABLE";
-          case 5:
-            return "FUNC_PARAM_DEFAULT";
           default:
             throw new Error("Value not recognized in enum FunctionParameterMode");
         }
@@ -712,6 +678,17 @@ export const getEnumString = (enumType: EnumType, key: number): string => {
             return "CASCADED_CHECK_OPTION";
           default:
             throw new Error("Value not recognized in enum ViewCheckOption");
+        }
+      }
+    case "ClusterOption":
+      {
+        switch (key) {
+          case 0:
+            return "CLUOPT_RECHECK";
+          case 1:
+            return "CLUOPT_VERBOSE";
+          default:
+            throw new Error("Value not recognized in enum ClusterOption");
         }
       }
     case "DiscardMode":
@@ -763,34 +740,6 @@ export const getEnumString = (enumType: EnumType, key: number): string => {
             throw new Error("Value not recognized in enum AlterTSConfigType");
         }
       }
-    case "PublicationObjSpecType":
-      {
-        switch (key) {
-          case 0:
-            return "PUBLICATIONOBJ_TABLE";
-          case 1:
-            return "PUBLICATIONOBJ_TABLES_IN_SCHEMA";
-          case 2:
-            return "PUBLICATIONOBJ_TABLES_IN_CUR_SCHEMA";
-          case 3:
-            return "PUBLICATIONOBJ_CONTINUATION";
-          default:
-            throw new Error("Value not recognized in enum PublicationObjSpecType");
-        }
-      }
-    case "AlterPublicationAction":
-      {
-        switch (key) {
-          case 0:
-            return "AP_AddObjects";
-          case 1:
-            return "AP_DropObjects";
-          case 2:
-            return "AP_SetObjects";
-          default:
-            throw new Error("Value not recognized in enum AlterPublicationAction");
-        }
-      }
     case "AlterSubscriptionType":
       {
         switch (key) {
@@ -799,17 +748,11 @@ export const getEnumString = (enumType: EnumType, key: number): string => {
           case 1:
             return "ALTER_SUBSCRIPTION_CONNECTION";
           case 2:
-            return "ALTER_SUBSCRIPTION_SET_PUBLICATION";
+            return "ALTER_SUBSCRIPTION_PUBLICATION";
           case 3:
-            return "ALTER_SUBSCRIPTION_ADD_PUBLICATION";
-          case 4:
-            return "ALTER_SUBSCRIPTION_DROP_PUBLICATION";
-          case 5:
             return "ALTER_SUBSCRIPTION_REFRESH";
-          case 6:
+          case 4:
             return "ALTER_SUBSCRIPTION_ENABLED";
-          case 7:
-            return "ALTER_SUBSCRIPTION_SKIP";
           default:
             throw new Error("Value not recognized in enum AlterSubscriptionType");
         }
@@ -852,8 +795,6 @@ export const getEnumString = (enumType: EnumType, key: number): string => {
           case 1:
             return "COERCION_ASSIGNMENT";
           case 2:
-            return "COERCION_PLPGSQL";
-          case 3:
             return "COERCION_EXPLICIT";
           default:
             throw new Error("Value not recognized in enum CoercionContext");
@@ -868,8 +809,6 @@ export const getEnumString = (enumType: EnumType, key: number): string => {
             return "COERCE_EXPLICIT_CAST";
           case 2:
             return "COERCE_IMPLICIT_CAST";
-          case 3:
-            return "COERCE_SQL_SYNTAX";
           default:
             throw new Error("Value not recognized in enum CoercionForm");
         }
@@ -1011,64 +950,6 @@ export const getEnumString = (enumType: EnumType, key: number): string => {
             throw new Error("Value not recognized in enum XmlOptionType");
         }
       }
-    case "JsonEncoding":
-      {
-        switch (key) {
-          case 0:
-            return "JS_ENC_DEFAULT";
-          case 1:
-            return "JS_ENC_UTF8";
-          case 2:
-            return "JS_ENC_UTF16";
-          case 3:
-            return "JS_ENC_UTF32";
-          default:
-            throw new Error("Value not recognized in enum JsonEncoding");
-        }
-      }
-    case "JsonFormatType":
-      {
-        switch (key) {
-          case 0:
-            return "JS_FORMAT_DEFAULT";
-          case 1:
-            return "JS_FORMAT_JSON";
-          case 2:
-            return "JS_FORMAT_JSONB";
-          default:
-            throw new Error("Value not recognized in enum JsonFormatType");
-        }
-      }
-    case "JsonConstructorType":
-      {
-        switch (key) {
-          case 0:
-            return "JSCTOR_JSON_OBJECT";
-          case 1:
-            return "JSCTOR_JSON_ARRAY";
-          case 2:
-            return "JSCTOR_JSON_OBJECTAGG";
-          case 3:
-            return "JSCTOR_JSON_ARRAYAGG";
-          default:
-            throw new Error("Value not recognized in enum JsonConstructorType");
-        }
-      }
-    case "JsonValueType":
-      {
-        switch (key) {
-          case 0:
-            return "JS_TYPE_ANY";
-          case 1:
-            return "JS_TYPE_OBJECT";
-          case 2:
-            return "JS_TYPE_ARRAY";
-          case 3:
-            return "JS_TYPE_SCALAR";
-          default:
-            throw new Error("Value not recognized in enum JsonValueType");
-        }
-      }
     case "NullTestType":
       {
         switch (key) {
@@ -1113,10 +994,8 @@ export const getEnumString = (enumType: EnumType, key: number): string => {
           case 4:
             return "CMD_DELETE";
           case 5:
-            return "CMD_MERGE";
-          case 6:
             return "CMD_UTILITY";
-          case 7:
+          case 6:
             return "CMD_NOTHING";
           default:
             throw new Error("Value not recognized in enum CmdType");
@@ -1138,10 +1017,8 @@ export const getEnumString = (enumType: EnumType, key: number): string => {
           case 5:
             return "JOIN_ANTI";
           case 6:
-            return "JOIN_RIGHT_ANTI";
-          case 7:
             return "JOIN_UNIQUE_OUTER";
-          case 8:
+          case 7:
             return "JOIN_UNIQUE_INNER";
           default:
             throw new Error("Value not recognized in enum JoinType");
@@ -1294,8 +1171,6 @@ export const getEnumString = (enumType: EnumType, key: number): string => {
         switch (key) {
           case 0:
             return "NUL";
-          case 36:
-            return "ASCII_36";
           case 37:
             return "ASCII_37";
           case 40:
@@ -1375,966 +1250,912 @@ export const getEnumString = (enumType: EnumType, key: number): string => {
           case 277:
             return "ABORT_P";
           case 278:
-            return "ABSENT";
-          case 279:
             return "ABSOLUTE_P";
-          case 280:
+          case 279:
             return "ACCESS";
-          case 281:
+          case 280:
             return "ACTION";
-          case 282:
+          case 281:
             return "ADD_P";
-          case 283:
+          case 282:
             return "ADMIN";
-          case 284:
+          case 283:
             return "AFTER";
-          case 285:
+          case 284:
             return "AGGREGATE";
-          case 286:
+          case 285:
             return "ALL";
-          case 287:
+          case 286:
             return "ALSO";
-          case 288:
+          case 287:
             return "ALTER";
-          case 289:
+          case 288:
             return "ALWAYS";
-          case 290:
+          case 289:
             return "ANALYSE";
-          case 291:
+          case 290:
             return "ANALYZE";
-          case 292:
+          case 291:
             return "AND";
-          case 293:
+          case 292:
             return "ANY";
-          case 294:
+          case 293:
             return "ARRAY";
-          case 295:
+          case 294:
             return "AS";
-          case 296:
+          case 295:
             return "ASC";
-          case 297:
-            return "ASENSITIVE";
-          case 298:
+          case 296:
             return "ASSERTION";
-          case 299:
+          case 297:
             return "ASSIGNMENT";
-          case 300:
+          case 298:
             return "ASYMMETRIC";
-          case 301:
-            return "ATOMIC";
-          case 302:
+          case 299:
             return "AT";
-          case 303:
+          case 300:
             return "ATTACH";
-          case 304:
+          case 301:
             return "ATTRIBUTE";
-          case 305:
+          case 302:
             return "AUTHORIZATION";
-          case 306:
+          case 303:
             return "BACKWARD";
-          case 307:
+          case 304:
             return "BEFORE";
-          case 308:
+          case 305:
             return "BEGIN_P";
-          case 309:
+          case 306:
             return "BETWEEN";
-          case 310:
+          case 307:
             return "BIGINT";
-          case 311:
+          case 308:
             return "BINARY";
-          case 312:
+          case 309:
             return "BIT";
-          case 313:
+          case 310:
             return "BOOLEAN_P";
-          case 314:
+          case 311:
             return "BOTH";
-          case 315:
-            return "BREADTH";
-          case 316:
+          case 312:
             return "BY";
-          case 317:
+          case 313:
             return "CACHE";
-          case 318:
+          case 314:
             return "CALL";
-          case 319:
+          case 315:
             return "CALLED";
-          case 320:
+          case 316:
             return "CASCADE";
-          case 321:
+          case 317:
             return "CASCADED";
-          case 322:
+          case 318:
             return "CASE";
-          case 323:
+          case 319:
             return "CAST";
-          case 324:
+          case 320:
             return "CATALOG_P";
-          case 325:
+          case 321:
             return "CHAIN";
-          case 326:
+          case 322:
             return "CHAR_P";
-          case 327:
+          case 323:
             return "CHARACTER";
-          case 328:
+          case 324:
             return "CHARACTERISTICS";
-          case 329:
+          case 325:
             return "CHECK";
-          case 330:
+          case 326:
             return "CHECKPOINT";
-          case 331:
+          case 327:
             return "CLASS";
-          case 332:
+          case 328:
             return "CLOSE";
-          case 333:
+          case 329:
             return "CLUSTER";
-          case 334:
+          case 330:
             return "COALESCE";
-          case 335:
+          case 331:
             return "COLLATE";
-          case 336:
+          case 332:
             return "COLLATION";
-          case 337:
+          case 333:
             return "COLUMN";
-          case 338:
+          case 334:
             return "COLUMNS";
-          case 339:
+          case 335:
             return "COMMENT";
-          case 340:
+          case 336:
             return "COMMENTS";
-          case 341:
+          case 337:
             return "COMMIT";
-          case 342:
+          case 338:
             return "COMMITTED";
-          case 343:
-            return "COMPRESSION";
-          case 344:
+          case 339:
             return "CONCURRENTLY";
-          case 345:
+          case 340:
             return "CONFIGURATION";
-          case 346:
+          case 341:
             return "CONFLICT";
-          case 347:
+          case 342:
             return "CONNECTION";
-          case 348:
+          case 343:
             return "CONSTRAINT";
-          case 349:
+          case 344:
             return "CONSTRAINTS";
-          case 350:
+          case 345:
             return "CONTENT_P";
-          case 351:
+          case 346:
             return "CONTINUE_P";
-          case 352:
+          case 347:
             return "CONVERSION_P";
-          case 353:
+          case 348:
             return "COPY";
-          case 354:
+          case 349:
             return "COST";
-          case 355:
+          case 350:
             return "CREATE";
-          case 356:
+          case 351:
             return "CROSS";
-          case 357:
+          case 352:
             return "CSV";
-          case 358:
+          case 353:
             return "CUBE";
-          case 359:
+          case 354:
             return "CURRENT_P";
-          case 360:
+          case 355:
             return "CURRENT_CATALOG";
-          case 361:
+          case 356:
             return "CURRENT_DATE";
-          case 362:
+          case 357:
             return "CURRENT_ROLE";
-          case 363:
+          case 358:
             return "CURRENT_SCHEMA";
-          case 364:
+          case 359:
             return "CURRENT_TIME";
-          case 365:
+          case 360:
             return "CURRENT_TIMESTAMP";
-          case 366:
+          case 361:
             return "CURRENT_USER";
-          case 367:
+          case 362:
             return "CURSOR";
-          case 368:
+          case 363:
             return "CYCLE";
-          case 369:
+          case 364:
             return "DATA_P";
-          case 370:
+          case 365:
             return "DATABASE";
-          case 371:
+          case 366:
             return "DAY_P";
-          case 372:
+          case 367:
             return "DEALLOCATE";
-          case 373:
+          case 368:
             return "DEC";
-          case 374:
+          case 369:
             return "DECIMAL_P";
-          case 375:
+          case 370:
             return "DECLARE";
-          case 376:
+          case 371:
             return "DEFAULT";
-          case 377:
+          case 372:
             return "DEFAULTS";
-          case 378:
+          case 373:
             return "DEFERRABLE";
-          case 379:
+          case 374:
             return "DEFERRED";
-          case 380:
+          case 375:
             return "DEFINER";
-          case 381:
+          case 376:
             return "DELETE_P";
-          case 382:
+          case 377:
             return "DELIMITER";
-          case 383:
+          case 378:
             return "DELIMITERS";
-          case 384:
+          case 379:
             return "DEPENDS";
-          case 385:
-            return "DEPTH";
-          case 386:
+          case 380:
             return "DESC";
-          case 387:
+          case 381:
             return "DETACH";
-          case 388:
+          case 382:
             return "DICTIONARY";
-          case 389:
+          case 383:
             return "DISABLE_P";
-          case 390:
+          case 384:
             return "DISCARD";
-          case 391:
+          case 385:
             return "DISTINCT";
-          case 392:
+          case 386:
             return "DO";
-          case 393:
+          case 387:
             return "DOCUMENT_P";
-          case 394:
+          case 388:
             return "DOMAIN_P";
-          case 395:
+          case 389:
             return "DOUBLE_P";
-          case 396:
+          case 390:
             return "DROP";
-          case 397:
+          case 391:
             return "EACH";
-          case 398:
+          case 392:
             return "ELSE";
-          case 399:
+          case 393:
             return "ENABLE_P";
-          case 400:
+          case 394:
             return "ENCODING";
-          case 401:
+          case 395:
             return "ENCRYPTED";
-          case 402:
+          case 396:
             return "END_P";
-          case 403:
+          case 397:
             return "ENUM_P";
-          case 404:
+          case 398:
             return "ESCAPE";
-          case 405:
+          case 399:
             return "EVENT";
-          case 406:
+          case 400:
             return "EXCEPT";
-          case 407:
+          case 401:
             return "EXCLUDE";
-          case 408:
+          case 402:
             return "EXCLUDING";
-          case 409:
+          case 403:
             return "EXCLUSIVE";
-          case 410:
+          case 404:
             return "EXECUTE";
-          case 411:
+          case 405:
             return "EXISTS";
-          case 412:
+          case 406:
             return "EXPLAIN";
-          case 413:
+          case 407:
             return "EXPRESSION";
-          case 414:
+          case 408:
             return "EXTENSION";
-          case 415:
+          case 409:
             return "EXTERNAL";
-          case 416:
+          case 410:
             return "EXTRACT";
-          case 417:
+          case 411:
             return "FALSE_P";
-          case 418:
+          case 412:
             return "FAMILY";
-          case 419:
+          case 413:
             return "FETCH";
-          case 420:
+          case 414:
             return "FILTER";
-          case 421:
-            return "FINALIZE";
-          case 422:
+          case 415:
             return "FIRST_P";
-          case 423:
+          case 416:
             return "FLOAT_P";
-          case 424:
+          case 417:
             return "FOLLOWING";
-          case 425:
+          case 418:
             return "FOR";
-          case 426:
+          case 419:
             return "FORCE";
-          case 427:
+          case 420:
             return "FOREIGN";
-          case 428:
-            return "FORMAT";
-          case 429:
+          case 421:
             return "FORWARD";
-          case 430:
+          case 422:
             return "FREEZE";
-          case 431:
+          case 423:
             return "FROM";
-          case 432:
+          case 424:
             return "FULL";
-          case 433:
+          case 425:
             return "FUNCTION";
-          case 434:
+          case 426:
             return "FUNCTIONS";
-          case 435:
+          case 427:
             return "GENERATED";
-          case 436:
+          case 428:
             return "GLOBAL";
-          case 437:
+          case 429:
             return "GRANT";
-          case 438:
+          case 430:
             return "GRANTED";
-          case 439:
+          case 431:
             return "GREATEST";
-          case 440:
+          case 432:
             return "GROUP_P";
-          case 441:
+          case 433:
             return "GROUPING";
-          case 442:
+          case 434:
             return "GROUPS";
-          case 443:
+          case 435:
             return "HANDLER";
-          case 444:
+          case 436:
             return "HAVING";
-          case 445:
+          case 437:
             return "HEADER_P";
-          case 446:
+          case 438:
             return "HOLD";
-          case 447:
+          case 439:
             return "HOUR_P";
-          case 448:
+          case 440:
             return "IDENTITY_P";
-          case 449:
+          case 441:
             return "IF_P";
-          case 450:
+          case 442:
             return "ILIKE";
-          case 451:
+          case 443:
             return "IMMEDIATE";
-          case 452:
+          case 444:
             return "IMMUTABLE";
-          case 453:
+          case 445:
             return "IMPLICIT_P";
-          case 454:
+          case 446:
             return "IMPORT_P";
-          case 455:
+          case 447:
             return "IN_P";
-          case 456:
+          case 448:
             return "INCLUDE";
-          case 457:
+          case 449:
             return "INCLUDING";
-          case 458:
+          case 450:
             return "INCREMENT";
-          case 459:
-            return "INDENT";
-          case 460:
+          case 451:
             return "INDEX";
-          case 461:
+          case 452:
             return "INDEXES";
-          case 462:
+          case 453:
             return "INHERIT";
-          case 463:
+          case 454:
             return "INHERITS";
-          case 464:
+          case 455:
             return "INITIALLY";
-          case 465:
+          case 456:
             return "INLINE_P";
-          case 466:
+          case 457:
             return "INNER_P";
-          case 467:
+          case 458:
             return "INOUT";
-          case 468:
+          case 459:
             return "INPUT_P";
-          case 469:
+          case 460:
             return "INSENSITIVE";
-          case 470:
+          case 461:
             return "INSERT";
-          case 471:
+          case 462:
             return "INSTEAD";
-          case 472:
+          case 463:
             return "INT_P";
-          case 473:
+          case 464:
             return "INTEGER";
-          case 474:
+          case 465:
             return "INTERSECT";
-          case 475:
+          case 466:
             return "INTERVAL";
-          case 476:
+          case 467:
             return "INTO";
-          case 477:
+          case 468:
             return "INVOKER";
-          case 478:
+          case 469:
             return "IS";
-          case 479:
+          case 470:
             return "ISNULL";
-          case 480:
+          case 471:
             return "ISOLATION";
-          case 481:
+          case 472:
             return "JOIN";
-          case 482:
-            return "JSON";
-          case 483:
-            return "JSON_ARRAY";
-          case 484:
-            return "JSON_ARRAYAGG";
-          case 485:
-            return "JSON_OBJECT";
-          case 486:
-            return "JSON_OBJECTAGG";
-          case 487:
+          case 473:
             return "KEY";
-          case 488:
-            return "KEYS";
-          case 489:
+          case 474:
             return "LABEL";
-          case 490:
+          case 475:
             return "LANGUAGE";
-          case 491:
+          case 476:
             return "LARGE_P";
-          case 492:
+          case 477:
             return "LAST_P";
-          case 493:
+          case 478:
             return "LATERAL_P";
-          case 494:
+          case 479:
             return "LEADING";
-          case 495:
+          case 480:
             return "LEAKPROOF";
-          case 496:
+          case 481:
             return "LEAST";
-          case 497:
+          case 482:
             return "LEFT";
-          case 498:
+          case 483:
             return "LEVEL";
-          case 499:
+          case 484:
             return "LIKE";
-          case 500:
+          case 485:
             return "LIMIT";
-          case 501:
+          case 486:
             return "LISTEN";
-          case 502:
+          case 487:
             return "LOAD";
-          case 503:
+          case 488:
             return "LOCAL";
-          case 504:
+          case 489:
             return "LOCALTIME";
-          case 505:
+          case 490:
             return "LOCALTIMESTAMP";
-          case 506:
+          case 491:
             return "LOCATION";
-          case 507:
+          case 492:
             return "LOCK_P";
-          case 508:
+          case 493:
             return "LOCKED";
-          case 509:
+          case 494:
             return "LOGGED";
-          case 510:
+          case 495:
             return "MAPPING";
-          case 511:
+          case 496:
             return "MATCH";
-          case 512:
-            return "MATCHED";
-          case 513:
+          case 497:
             return "MATERIALIZED";
-          case 514:
+          case 498:
             return "MAXVALUE";
-          case 515:
-            return "MERGE";
-          case 516:
+          case 499:
             return "METHOD";
-          case 517:
+          case 500:
             return "MINUTE_P";
-          case 518:
+          case 501:
             return "MINVALUE";
-          case 519:
+          case 502:
             return "MODE";
-          case 520:
+          case 503:
             return "MONTH_P";
-          case 521:
+          case 504:
             return "MOVE";
-          case 522:
+          case 505:
             return "NAME_P";
-          case 523:
+          case 506:
             return "NAMES";
-          case 524:
+          case 507:
             return "NATIONAL";
-          case 525:
+          case 508:
             return "NATURAL";
-          case 526:
+          case 509:
             return "NCHAR";
-          case 527:
+          case 510:
             return "NEW";
-          case 528:
+          case 511:
             return "NEXT";
-          case 529:
+          case 512:
             return "NFC";
-          case 530:
+          case 513:
             return "NFD";
-          case 531:
+          case 514:
             return "NFKC";
-          case 532:
+          case 515:
             return "NFKD";
-          case 533:
+          case 516:
             return "NO";
-          case 534:
+          case 517:
             return "NONE";
-          case 535:
+          case 518:
             return "NORMALIZE";
-          case 536:
+          case 519:
             return "NORMALIZED";
-          case 537:
+          case 520:
             return "NOT";
-          case 538:
+          case 521:
             return "NOTHING";
-          case 539:
+          case 522:
             return "NOTIFY";
-          case 540:
+          case 523:
             return "NOTNULL";
-          case 541:
+          case 524:
             return "NOWAIT";
-          case 542:
+          case 525:
             return "NULL_P";
-          case 543:
+          case 526:
             return "NULLIF";
-          case 544:
+          case 527:
             return "NULLS_P";
-          case 545:
+          case 528:
             return "NUMERIC";
-          case 546:
+          case 529:
             return "OBJECT_P";
-          case 547:
+          case 530:
             return "OF";
-          case 548:
+          case 531:
             return "OFF";
-          case 549:
+          case 532:
             return "OFFSET";
-          case 550:
+          case 533:
             return "OIDS";
-          case 551:
+          case 534:
             return "OLD";
-          case 552:
+          case 535:
             return "ON";
-          case 553:
+          case 536:
             return "ONLY";
-          case 554:
+          case 537:
             return "OPERATOR";
-          case 555:
+          case 538:
             return "OPTION";
-          case 556:
+          case 539:
             return "OPTIONS";
-          case 557:
+          case 540:
             return "OR";
-          case 558:
+          case 541:
             return "ORDER";
-          case 559:
+          case 542:
             return "ORDINALITY";
-          case 560:
+          case 543:
             return "OTHERS";
-          case 561:
+          case 544:
             return "OUT_P";
-          case 562:
+          case 545:
             return "OUTER_P";
-          case 563:
+          case 546:
             return "OVER";
-          case 564:
+          case 547:
             return "OVERLAPS";
-          case 565:
+          case 548:
             return "OVERLAY";
-          case 566:
+          case 549:
             return "OVERRIDING";
-          case 567:
+          case 550:
             return "OWNED";
-          case 568:
+          case 551:
             return "OWNER";
-          case 569:
+          case 552:
             return "PARALLEL";
-          case 570:
-            return "PARAMETER";
-          case 571:
+          case 553:
             return "PARSER";
-          case 572:
+          case 554:
             return "PARTIAL";
-          case 573:
+          case 555:
             return "PARTITION";
-          case 574:
+          case 556:
             return "PASSING";
-          case 575:
+          case 557:
             return "PASSWORD";
-          case 576:
+          case 558:
             return "PLACING";
-          case 577:
+          case 559:
             return "PLANS";
-          case 578:
+          case 560:
             return "POLICY";
-          case 579:
+          case 561:
             return "POSITION";
-          case 580:
+          case 562:
             return "PRECEDING";
-          case 581:
+          case 563:
             return "PRECISION";
-          case 582:
+          case 564:
             return "PRESERVE";
-          case 583:
+          case 565:
             return "PREPARE";
-          case 584:
+          case 566:
             return "PREPARED";
-          case 585:
+          case 567:
             return "PRIMARY";
-          case 586:
+          case 568:
             return "PRIOR";
-          case 587:
+          case 569:
             return "PRIVILEGES";
-          case 588:
+          case 570:
             return "PROCEDURAL";
-          case 589:
+          case 571:
             return "PROCEDURE";
-          case 590:
+          case 572:
             return "PROCEDURES";
-          case 591:
+          case 573:
             return "PROGRAM";
-          case 592:
+          case 574:
             return "PUBLICATION";
-          case 593:
+          case 575:
             return "QUOTE";
-          case 594:
+          case 576:
             return "RANGE";
-          case 595:
+          case 577:
             return "READ";
-          case 596:
+          case 578:
             return "REAL";
-          case 597:
+          case 579:
             return "REASSIGN";
-          case 598:
+          case 580:
             return "RECHECK";
-          case 599:
+          case 581:
             return "RECURSIVE";
-          case 600:
+          case 582:
             return "REF_P";
-          case 601:
+          case 583:
             return "REFERENCES";
-          case 602:
+          case 584:
             return "REFERENCING";
-          case 603:
+          case 585:
             return "REFRESH";
-          case 604:
+          case 586:
             return "REINDEX";
-          case 605:
+          case 587:
             return "RELATIVE_P";
-          case 606:
+          case 588:
             return "RELEASE";
-          case 607:
+          case 589:
             return "RENAME";
-          case 608:
+          case 590:
             return "REPEATABLE";
-          case 609:
+          case 591:
             return "REPLACE";
-          case 610:
+          case 592:
             return "REPLICA";
-          case 611:
+          case 593:
             return "RESET";
-          case 612:
+          case 594:
             return "RESTART";
-          case 613:
+          case 595:
             return "RESTRICT";
-          case 614:
-            return "RETURN";
-          case 615:
+          case 596:
             return "RETURNING";
-          case 616:
+          case 597:
             return "RETURNS";
-          case 617:
+          case 598:
             return "REVOKE";
-          case 618:
+          case 599:
             return "RIGHT";
-          case 619:
+          case 600:
             return "ROLE";
-          case 620:
+          case 601:
             return "ROLLBACK";
-          case 621:
+          case 602:
             return "ROLLUP";
-          case 622:
+          case 603:
             return "ROUTINE";
-          case 623:
+          case 604:
             return "ROUTINES";
-          case 624:
+          case 605:
             return "ROW";
-          case 625:
+          case 606:
             return "ROWS";
-          case 626:
+          case 607:
             return "RULE";
-          case 627:
+          case 608:
             return "SAVEPOINT";
-          case 628:
-            return "SCALAR";
-          case 629:
+          case 609:
             return "SCHEMA";
-          case 630:
+          case 610:
             return "SCHEMAS";
-          case 631:
+          case 611:
             return "SCROLL";
-          case 632:
+          case 612:
             return "SEARCH";
-          case 633:
+          case 613:
             return "SECOND_P";
-          case 634:
+          case 614:
             return "SECURITY";
-          case 635:
+          case 615:
             return "SELECT";
-          case 636:
+          case 616:
             return "SEQUENCE";
-          case 637:
+          case 617:
             return "SEQUENCES";
-          case 638:
+          case 618:
             return "SERIALIZABLE";
-          case 639:
+          case 619:
             return "SERVER";
-          case 640:
+          case 620:
             return "SESSION";
-          case 641:
+          case 621:
             return "SESSION_USER";
-          case 642:
+          case 622:
             return "SET";
-          case 643:
+          case 623:
             return "SETS";
-          case 644:
+          case 624:
             return "SETOF";
-          case 645:
+          case 625:
             return "SHARE";
-          case 646:
+          case 626:
             return "SHOW";
-          case 647:
+          case 627:
             return "SIMILAR";
-          case 648:
+          case 628:
             return "SIMPLE";
-          case 649:
+          case 629:
             return "SKIP";
-          case 650:
+          case 630:
             return "SMALLINT";
-          case 651:
+          case 631:
             return "SNAPSHOT";
-          case 652:
+          case 632:
             return "SOME";
-          case 653:
+          case 633:
             return "SQL_P";
-          case 654:
+          case 634:
             return "STABLE";
-          case 655:
+          case 635:
             return "STANDALONE_P";
-          case 656:
+          case 636:
             return "START";
-          case 657:
+          case 637:
             return "STATEMENT";
-          case 658:
+          case 638:
             return "STATISTICS";
-          case 659:
+          case 639:
             return "STDIN";
-          case 660:
+          case 640:
             return "STDOUT";
-          case 661:
+          case 641:
             return "STORAGE";
-          case 662:
+          case 642:
             return "STORED";
-          case 663:
+          case 643:
             return "STRICT_P";
-          case 664:
+          case 644:
             return "STRIP_P";
-          case 665:
+          case 645:
             return "SUBSCRIPTION";
-          case 666:
+          case 646:
             return "SUBSTRING";
-          case 667:
+          case 647:
             return "SUPPORT";
-          case 668:
+          case 648:
             return "SYMMETRIC";
-          case 669:
+          case 649:
             return "SYSID";
-          case 670:
+          case 650:
             return "SYSTEM_P";
-          case 671:
-            return "SYSTEM_USER";
-          case 672:
+          case 651:
             return "TABLE";
-          case 673:
+          case 652:
             return "TABLES";
-          case 674:
+          case 653:
             return "TABLESAMPLE";
-          case 675:
+          case 654:
             return "TABLESPACE";
-          case 676:
+          case 655:
             return "TEMP";
-          case 677:
+          case 656:
             return "TEMPLATE";
-          case 678:
+          case 657:
             return "TEMPORARY";
-          case 679:
+          case 658:
             return "TEXT_P";
-          case 680:
+          case 659:
             return "THEN";
-          case 681:
+          case 660:
             return "TIES";
-          case 682:
+          case 661:
             return "TIME";
-          case 683:
+          case 662:
             return "TIMESTAMP";
-          case 684:
+          case 663:
             return "TO";
-          case 685:
+          case 664:
             return "TRAILING";
-          case 686:
+          case 665:
             return "TRANSACTION";
-          case 687:
+          case 666:
             return "TRANSFORM";
-          case 688:
+          case 667:
             return "TREAT";
-          case 689:
+          case 668:
             return "TRIGGER";
-          case 690:
+          case 669:
             return "TRIM";
-          case 691:
+          case 670:
             return "TRUE_P";
-          case 692:
+          case 671:
             return "TRUNCATE";
-          case 693:
+          case 672:
             return "TRUSTED";
-          case 694:
+          case 673:
             return "TYPE_P";
-          case 695:
+          case 674:
             return "TYPES_P";
-          case 696:
+          case 675:
             return "UESCAPE";
-          case 697:
+          case 676:
             return "UNBOUNDED";
-          case 698:
+          case 677:
             return "UNCOMMITTED";
-          case 699:
+          case 678:
             return "UNENCRYPTED";
-          case 700:
+          case 679:
             return "UNION";
-          case 701:
+          case 680:
             return "UNIQUE";
-          case 702:
+          case 681:
             return "UNKNOWN";
-          case 703:
+          case 682:
             return "UNLISTEN";
-          case 704:
+          case 683:
             return "UNLOGGED";
-          case 705:
+          case 684:
             return "UNTIL";
-          case 706:
+          case 685:
             return "UPDATE";
-          case 707:
+          case 686:
             return "USER";
-          case 708:
+          case 687:
             return "USING";
-          case 709:
+          case 688:
             return "VACUUM";
-          case 710:
+          case 689:
             return "VALID";
-          case 711:
+          case 690:
             return "VALIDATE";
-          case 712:
+          case 691:
             return "VALIDATOR";
-          case 713:
+          case 692:
             return "VALUE_P";
-          case 714:
+          case 693:
             return "VALUES";
-          case 715:
+          case 694:
             return "VARCHAR";
-          case 716:
+          case 695:
             return "VARIADIC";
-          case 717:
+          case 696:
             return "VARYING";
-          case 718:
+          case 697:
             return "VERBOSE";
-          case 719:
+          case 698:
             return "VERSION_P";
-          case 720:
+          case 699:
             return "VIEW";
-          case 721:
+          case 700:
             return "VIEWS";
-          case 722:
+          case 701:
             return "VOLATILE";
-          case 723:
+          case 702:
             return "WHEN";
-          case 724:
+          case 703:
             return "WHERE";
-          case 725:
+          case 704:
             return "WHITESPACE_P";
-          case 726:
+          case 705:
             return "WINDOW";
-          case 727:
+          case 706:
             return "WITH";
-          case 728:
+          case 707:
             return "WITHIN";
-          case 729:
+          case 708:
             return "WITHOUT";
-          case 730:
+          case 709:
             return "WORK";
-          case 731:
+          case 710:
             return "WRAPPER";
-          case 732:
+          case 711:
             return "WRITE";
-          case 733:
+          case 712:
             return "XML_P";
-          case 734:
+          case 713:
             return "XMLATTRIBUTES";
-          case 735:
+          case 714:
             return "XMLCONCAT";
-          case 736:
+          case 715:
             return "XMLELEMENT";
-          case 737:
+          case 716:
             return "XMLEXISTS";
-          case 738:
+          case 717:
             return "XMLFOREST";
-          case 739:
+          case 718:
             return "XMLNAMESPACES";
-          case 740:
+          case 719:
             return "XMLPARSE";
-          case 741:
+          case 720:
             return "XMLPI";
-          case 742:
+          case 721:
             return "XMLROOT";
-          case 743:
+          case 722:
             return "XMLSERIALIZE";
-          case 744:
+          case 723:
             return "XMLTABLE";
-          case 745:
+          case 724:
             return "YEAR_P";
-          case 746:
+          case 725:
             return "YES_P";
-          case 747:
+          case 726:
             return "ZONE";
-          case 748:
-            return "FORMAT_LA";
-          case 749:
+          case 727:
             return "NOT_LA";
-          case 750:
+          case 728:
             return "NULLS_LA";
-          case 751:
+          case 729:
             return "WITH_LA";
-          case 752:
-            return "WITHOUT_LA";
-          case 753:
-            return "MODE_TYPE_NAME";
-          case 754:
-            return "MODE_PLPGSQL_EXPR";
-          case 755:
-            return "MODE_PLPGSQL_ASSIGN1";
-          case 756:
-            return "MODE_PLPGSQL_ASSIGN2";
-          case 757:
-            return "MODE_PLPGSQL_ASSIGN3";
-          case 758:
+          case 730:
+            return "POSTFIXOP";
+          case 731:
             return "UMINUS";
           default:
             throw new Error("Value not recognized in enum Token");
