@@ -924,8 +924,14 @@ export class V13ToV14Transformer {
         : [this.transform(result.objargs, context)];
     }
     
-    if (result.objfuncargs !== undefined) {
-      const shouldPreserveObjfuncargs = this.shouldPreserveObjfuncargs(context);
+    // Handle objfuncargs based on context
+    const shouldCreateObjfuncargs = this.shouldCreateObjfuncargs(context);
+    const shouldPreserveObjfuncargs = this.shouldPreserveObjfuncargs(context);
+    
+    if (shouldCreateObjfuncargs) {
+      // For CreateCastStmt contexts, always set empty objfuncargs
+      result.objfuncargs = [];
+    } else if (result.objfuncargs !== undefined) {
       if (shouldPreserveObjfuncargs) {
         result.objfuncargs = Array.isArray(result.objfuncargs)
           ? result.objfuncargs.map((item: any) => this.transform(item, context))
@@ -939,6 +945,17 @@ export class V13ToV14Transformer {
   }
 
   private shouldCreateObjfuncargs(context: TransformerContext): boolean {
+    if (!context.parentNodeTypes || context.parentNodeTypes.length === 0) {
+      return false;
+    }
+    
+    // CreateCastStmt contexts need empty objfuncargs added in PG14
+    for (const parentType of context.parentNodeTypes) {
+      if (parentType === 'CreateCastStmt') {
+        return true;
+      }
+    }
+    
     return false;
   }
 
