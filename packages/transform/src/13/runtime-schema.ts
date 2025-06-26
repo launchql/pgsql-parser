@@ -38,44 +38,14 @@ export const runtimeSchema: NodeSpec[] = [
     isNode: true,
     fields: [
       {
-        name: 'boolval',
-        type: 'Boolean',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'bsval',
-        type: 'BitString',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'fval',
-        type: 'Float',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'isnull',
-        type: 'bool',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'ival',
-        type: 'Integer',
-        isArray: false,
-        optional: true
-      },
-      {
         name: 'location',
         type: 'int32',
         isArray: false,
         optional: true
       },
       {
-        name: 'sval',
-        type: 'String',
+        name: 'val',
+        type: 'Node',
         isArray: false,
         optional: true
       }
@@ -237,12 +207,6 @@ export const runtimeSchema: NodeSpec[] = [
         optional: true
       },
       {
-        name: 'aggno',
-        type: 'int32',
-        isArray: false,
-        optional: true
-      },
-      {
         name: 'aggorder',
         type: 'Node',
         isArray: true,
@@ -261,8 +225,8 @@ export const runtimeSchema: NodeSpec[] = [
         optional: true
       },
       {
-        name: 'aggtransno',
-        type: 'int32',
+        name: 'aggtranstype',
+        type: 'uint32',
         isArray: false,
         optional: true
       },
@@ -330,18 +294,6 @@ export const runtimeSchema: NodeSpec[] = [
         name: 'collname',
         type: 'Node',
         isArray: true,
-        optional: true
-      }
-    ]
-  },
-  {
-    name: 'AlterDatabaseRefreshCollStmt',
-    isNode: true,
-    fields: [
-      {
-        name: 'dbname',
-        type: 'string',
-        isArray: false,
         optional: true
       }
     ]
@@ -652,7 +604,7 @@ export const runtimeSchema: NodeSpec[] = [
     fields: [
       {
         name: 'extname',
-        type: 'String',
+        type: 'Node',
         isArray: false,
         optional: true
       },
@@ -837,12 +789,6 @@ export const runtimeSchema: NodeSpec[] = [
     isNode: true,
     fields: [
       {
-        name: 'action',
-        type: 'AlterPublicationAction',
-        isArray: false,
-        optional: true
-      },
-      {
         name: 'for_all_tables',
         type: 'bool',
         isArray: false,
@@ -861,7 +807,13 @@ export const runtimeSchema: NodeSpec[] = [
         optional: true
       },
       {
-        name: 'pubobjects',
+        name: 'tableAction',
+        type: 'DefElemAction',
+        isArray: false,
+        optional: true
+      },
+      {
+        name: 'tables',
         type: 'Node',
         isArray: true,
         optional: true
@@ -1149,14 +1101,14 @@ export const runtimeSchema: NodeSpec[] = [
         optional: true
       },
       {
-        name: 'objtype',
-        type: 'ObjectType',
+        name: 'relation',
+        type: 'RangeVar',
         isArray: false,
         optional: true
       },
       {
-        name: 'relation',
-        type: 'RangeVar',
+        name: 'relkind',
+        type: 'ObjectType',
         isArray: false,
         optional: true
       }
@@ -1377,20 +1329,8 @@ export const runtimeSchema: NodeSpec[] = [
     isNode: true,
     fields: [
       {
-        name: 'bsval',
+        name: 'str',
         type: 'string',
-        isArray: false,
-        optional: true
-      }
-    ]
-  },
-  {
-    name: 'Boolean',
-    isNode: true,
-    fields: [
-      {
-        name: 'boolval',
-        type: 'bool',
         isArray: false,
         optional: true
       }
@@ -1482,12 +1422,6 @@ export const runtimeSchema: NodeSpec[] = [
         name: 'funcexpr',
         type: 'FuncExpr',
         isArray: false,
-        optional: true
-      },
-      {
-        name: 'outargs',
-        type: 'Node',
-        isArray: true,
         optional: true
       }
     ]
@@ -1630,9 +1564,9 @@ export const runtimeSchema: NodeSpec[] = [
         optional: true
       },
       {
-        name: 'params',
-        type: 'Node',
-        isArray: true,
+        name: 'options',
+        type: 'int32',
+        isArray: false,
         optional: true
       },
       {
@@ -1882,12 +1816,6 @@ export const runtimeSchema: NodeSpec[] = [
         optional: true
       },
       {
-        name: 'compression',
-        type: 'string',
-        isArray: false,
-        optional: true
-      },
-      {
         name: 'constraints',
         type: 'Node',
         isArray: true,
@@ -1961,12 +1889,6 @@ export const runtimeSchema: NodeSpec[] = [
       },
       {
         name: 'storage',
-        type: 'string',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'storage_name',
         type: 'string',
         isArray: false,
         optional: true
@@ -2086,20 +2008,8 @@ export const runtimeSchema: NodeSpec[] = [
         optional: true
       },
       {
-        name: 'cycle_clause',
-        type: 'CTECycleClause',
-        isArray: false,
-        optional: true
-      },
-      {
         name: 'location',
         type: 'int32',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'search_clause',
-        type: 'CTESearchClause',
         isArray: false,
         optional: true
       }
@@ -2176,12 +2086,6 @@ export const runtimeSchema: NodeSpec[] = [
         optional: true
       },
       {
-        name: 'fk_del_set_cols',
-        type: 'Node',
-        isArray: true,
-        optional: true
-      },
-      {
         name: 'fk_matchtype',
         type: 'string',
         isArray: false,
@@ -2244,12 +2148,6 @@ export const runtimeSchema: NodeSpec[] = [
       {
         name: 'location',
         type: 'int32',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'nulls_not_distinct',
-        type: 'bool',
         isArray: false,
         optional: true
       },
@@ -2762,12 +2660,6 @@ export const runtimeSchema: NodeSpec[] = [
         type: 'TypeName',
         isArray: false,
         optional: true
-      },
-      {
-        name: 'sql_body',
-        type: 'Node',
-        isArray: false,
-        optional: true
       }
     ]
   },
@@ -2986,7 +2878,7 @@ export const runtimeSchema: NodeSpec[] = [
         optional: true
       },
       {
-        name: 'pubobjects',
+        name: 'tables',
         type: 'Node',
         isArray: true,
         optional: true
@@ -3140,12 +3032,6 @@ export const runtimeSchema: NodeSpec[] = [
         type: 'string',
         isArray: false,
         optional: true
-      },
-      {
-        name: 'transformed',
-        type: 'bool',
-        isArray: false,
-        optional: true
       }
     ]
   },
@@ -3280,14 +3166,14 @@ export const runtimeSchema: NodeSpec[] = [
         optional: true
       },
       {
-        name: 'objtype',
-        type: 'ObjectType',
+        name: 'query',
+        type: 'Node',
         isArray: false,
         optional: true
       },
       {
-        name: 'query',
-        type: 'Node',
+        name: 'relkind',
+        type: 'ObjectType',
         isArray: false,
         optional: true
       }
@@ -3418,12 +3304,6 @@ export const runtimeSchema: NodeSpec[] = [
         optional: true
       },
       {
-        name: 'replace',
-        type: 'bool',
-        isArray: false,
-        optional: true
-      },
-      {
         name: 'row',
         type: 'bool',
         isArray: false,
@@ -3480,102 +3360,6 @@ export const runtimeSchema: NodeSpec[] = [
       {
         name: 'user',
         type: 'RoleSpec',
-        isArray: false,
-        optional: true
-      }
-    ]
-  },
-  {
-    name: 'CTECycleClause',
-    isNode: true,
-    fields: [
-      {
-        name: 'cycle_col_list',
-        type: 'Node',
-        isArray: true,
-        optional: true
-      },
-      {
-        name: 'cycle_mark_collation',
-        type: 'uint32',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'cycle_mark_column',
-        type: 'string',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'cycle_mark_default',
-        type: 'Node',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'cycle_mark_neop',
-        type: 'uint32',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'cycle_mark_type',
-        type: 'uint32',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'cycle_mark_typmod',
-        type: 'int32',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'cycle_mark_value',
-        type: 'Node',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'cycle_path_column',
-        type: 'string',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'location',
-        type: 'int32',
-        isArray: false,
-        optional: true
-      }
-    ]
-  },
-  {
-    name: 'CTESearchClause',
-    isNode: true,
-    fields: [
-      {
-        name: 'location',
-        type: 'int32',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'search_breadth_first',
-        type: 'bool',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'search_col_list',
-        type: 'Node',
-        isArray: true,
-        optional: true
-      },
-      {
-        name: 'search_seq_column',
-        type: 'string',
         isArray: false,
         optional: true
       }
@@ -3803,6 +3587,12 @@ export const runtimeSchema: NodeSpec[] = [
       },
       {
         name: 'opcollid',
+        type: 'uint32',
+        isArray: false,
+        optional: true
+      },
+      {
+        name: 'opfuncid',
         type: 'uint32',
         isArray: false,
         optional: true
@@ -4044,6 +3834,13 @@ export const runtimeSchema: NodeSpec[] = [
     ]
   },
   {
+    name: 'Expr',
+    isNode: true,
+    fields: [
+
+    ]
+  },
+  {
     name: 'FetchStmt',
     isNode: true,
     fields: [
@@ -4156,7 +3953,7 @@ export const runtimeSchema: NodeSpec[] = [
     isNode: true,
     fields: [
       {
-        name: 'fval',
+        name: 'str',
         type: 'string',
         isArray: false,
         optional: true
@@ -4224,12 +4021,6 @@ export const runtimeSchema: NodeSpec[] = [
       {
         name: 'func_variadic',
         type: 'bool',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'funcformat',
-        type: 'CoercionForm',
         isArray: false,
         optional: true
       },
@@ -4354,6 +4145,12 @@ export const runtimeSchema: NodeSpec[] = [
     isNode: true,
     fields: [
       {
+        name: 'admin_opt',
+        type: 'bool',
+        isArray: false,
+        optional: true
+      },
+      {
         name: 'behavior',
         type: 'DropBehavior',
         isArray: false,
@@ -4382,12 +4179,6 @@ export const runtimeSchema: NodeSpec[] = [
         type: 'bool',
         isArray: false,
         optional: true
-      },
-      {
-        name: 'opt',
-        type: 'Node',
-        isArray: true,
-        optional: true
       }
     ]
   },
@@ -4411,12 +4202,6 @@ export const runtimeSchema: NodeSpec[] = [
         name: 'grantees',
         type: 'Node',
         isArray: true,
-        optional: true
-      },
-      {
-        name: 'grantor',
-        type: 'RoleSpec',
-        isArray: false,
         optional: true
       },
       {
@@ -4463,6 +4248,12 @@ export const runtimeSchema: NodeSpec[] = [
       },
       {
         name: 'args',
+        type: 'Node',
+        isArray: true,
+        optional: true
+      },
+      {
+        name: 'cols',
         type: 'Node',
         isArray: true,
         optional: true
@@ -4684,25 +4475,19 @@ export const runtimeSchema: NodeSpec[] = [
         optional: true
       },
       {
-        name: 'nulls_not_distinct',
-        type: 'bool',
-        isArray: false,
-        optional: true
-      },
-      {
         name: 'oldCreateSubid',
         type: 'uint32',
         isArray: false,
         optional: true
       },
       {
-        name: 'oldFirstRelfilelocatorSubid',
+        name: 'oldFirstRelfilenodeSubid',
         type: 'uint32',
         isArray: false,
         optional: true
       },
       {
-        name: 'oldNumber',
+        name: 'oldNode',
         type: 'uint32',
         isArray: false,
         optional: true
@@ -4990,12 +4775,6 @@ export const runtimeSchema: NodeSpec[] = [
         optional: true
       },
       {
-        name: 'join_using_alias',
-        type: 'Alias',
-        isArray: false,
-        optional: true
-      },
-      {
         name: 'jointype',
         type: 'JoinType',
         isArray: false,
@@ -5029,402 +4808,6 @@ export const runtimeSchema: NodeSpec[] = [
         name: 'usingClause',
         type: 'Node',
         isArray: true,
-        optional: true
-      }
-    ]
-  },
-  {
-    name: 'JsonAggConstructor',
-    isNode: true,
-    fields: [
-      {
-        name: 'agg_filter',
-        type: 'Node',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'agg_order',
-        type: 'Node',
-        isArray: true,
-        optional: true
-      },
-      {
-        name: 'location',
-        type: 'int32',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'output',
-        type: 'JsonOutput',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'over',
-        type: 'WindowDef',
-        isArray: false,
-        optional: true
-      }
-    ]
-  },
-  {
-    name: 'JsonArrayAgg',
-    isNode: true,
-    fields: [
-      {
-        name: 'absent_on_null',
-        type: 'bool',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'arg',
-        type: 'JsonValueExpr',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'constructor',
-        type: 'JsonAggConstructor',
-        isArray: false,
-        optional: true
-      }
-    ]
-  },
-  {
-    name: 'JsonArrayConstructor',
-    isNode: true,
-    fields: [
-      {
-        name: 'absent_on_null',
-        type: 'bool',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'exprs',
-        type: 'Node',
-        isArray: true,
-        optional: true
-      },
-      {
-        name: 'location',
-        type: 'int32',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'output',
-        type: 'JsonOutput',
-        isArray: false,
-        optional: true
-      }
-    ]
-  },
-  {
-    name: 'JsonArrayQueryConstructor',
-    isNode: true,
-    fields: [
-      {
-        name: 'absent_on_null',
-        type: 'bool',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'format',
-        type: 'JsonFormat',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'location',
-        type: 'int32',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'output',
-        type: 'JsonOutput',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'query',
-        type: 'Node',
-        isArray: false,
-        optional: true
-      }
-    ]
-  },
-  {
-    name: 'JsonConstructorExpr',
-    isNode: true,
-    fields: [
-      {
-        name: 'absent_on_null',
-        type: 'bool',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'args',
-        type: 'Node',
-        isArray: true,
-        optional: true
-      },
-      {
-        name: 'coercion',
-        type: 'Node',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'func',
-        type: 'Node',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'location',
-        type: 'int32',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'returning',
-        type: 'JsonReturning',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'type',
-        type: 'JsonConstructorType',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'unique',
-        type: 'bool',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'xpr',
-        type: 'Node',
-        isArray: false,
-        optional: true
-      }
-    ]
-  },
-  {
-    name: 'JsonFormat',
-    isNode: true,
-    fields: [
-      {
-        name: 'encoding',
-        type: 'JsonEncoding',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'format_type',
-        type: 'JsonFormatType',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'location',
-        type: 'int32',
-        isArray: false,
-        optional: true
-      }
-    ]
-  },
-  {
-    name: 'JsonIsPredicate',
-    isNode: true,
-    fields: [
-      {
-        name: 'expr',
-        type: 'Node',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'format',
-        type: 'JsonFormat',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'item_type',
-        type: 'JsonValueType',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'location',
-        type: 'int32',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'unique_keys',
-        type: 'bool',
-        isArray: false,
-        optional: true
-      }
-    ]
-  },
-  {
-    name: 'JsonKeyValue',
-    isNode: true,
-    fields: [
-      {
-        name: 'key',
-        type: 'Node',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'value',
-        type: 'JsonValueExpr',
-        isArray: false,
-        optional: true
-      }
-    ]
-  },
-  {
-    name: 'JsonObjectAgg',
-    isNode: true,
-    fields: [
-      {
-        name: 'absent_on_null',
-        type: 'bool',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'arg',
-        type: 'JsonKeyValue',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'constructor',
-        type: 'JsonAggConstructor',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'unique',
-        type: 'bool',
-        isArray: false,
-        optional: true
-      }
-    ]
-  },
-  {
-    name: 'JsonObjectConstructor',
-    isNode: true,
-    fields: [
-      {
-        name: 'absent_on_null',
-        type: 'bool',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'exprs',
-        type: 'Node',
-        isArray: true,
-        optional: true
-      },
-      {
-        name: 'location',
-        type: 'int32',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'output',
-        type: 'JsonOutput',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'unique',
-        type: 'bool',
-        isArray: false,
-        optional: true
-      }
-    ]
-  },
-  {
-    name: 'JsonOutput',
-    isNode: true,
-    fields: [
-      {
-        name: 'returning',
-        type: 'JsonReturning',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'typeName',
-        type: 'TypeName',
-        isArray: false,
-        optional: true
-      }
-    ]
-  },
-  {
-    name: 'JsonReturning',
-    isNode: true,
-    fields: [
-      {
-        name: 'format',
-        type: 'JsonFormat',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'typid',
-        type: 'uint32',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'typmod',
-        type: 'int32',
-        isArray: false,
-        optional: true
-      }
-    ]
-  },
-  {
-    name: 'JsonValueExpr',
-    isNode: true,
-    fields: [
-      {
-        name: 'format',
-        type: 'JsonFormat',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'formatted_expr',
-        type: 'Node',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'raw_expr',
-        type: 'Node',
-        isArray: false,
         optional: true
       }
     ]
@@ -5507,126 +4890,6 @@ export const runtimeSchema: NodeSpec[] = [
       },
       {
         name: 'relations',
-        type: 'Node',
-        isArray: true,
-        optional: true
-      }
-    ]
-  },
-  {
-    name: 'MergeAction',
-    isNode: true,
-    fields: [
-      {
-        name: 'commandType',
-        type: 'CmdType',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'matched',
-        type: 'bool',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'override',
-        type: 'OverridingKind',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'qual',
-        type: 'Node',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'targetList',
-        type: 'Node',
-        isArray: true,
-        optional: true
-      },
-      {
-        name: 'updateColnos',
-        type: 'Node',
-        isArray: true,
-        optional: true
-      }
-    ]
-  },
-  {
-    name: 'MergeStmt',
-    isNode: true,
-    fields: [
-      {
-        name: 'joinCondition',
-        type: 'Node',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'mergeWhenClauses',
-        type: 'Node',
-        isArray: true,
-        optional: true
-      },
-      {
-        name: 'relation',
-        type: 'RangeVar',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'sourceRelation',
-        type: 'Node',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'withClause',
-        type: 'WithClause',
-        isArray: false,
-        optional: true
-      }
-    ]
-  },
-  {
-    name: 'MergeWhenClause',
-    isNode: true,
-    fields: [
-      {
-        name: 'commandType',
-        type: 'CmdType',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'condition',
-        type: 'Node',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'matched',
-        type: 'bool',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'override',
-        type: 'OverridingKind',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'targetList',
-        type: 'Node',
-        isArray: true,
-        optional: true
-      },
-      {
-        name: 'values',
         type: 'Node',
         isArray: true,
         optional: true
@@ -5784,6 +5047,13 @@ export const runtimeSchema: NodeSpec[] = [
     ]
   },
   {
+    name: 'Null',
+    isNode: true,
+    fields: [
+
+    ]
+  },
+  {
     name: 'NullIfExpr',
     isNode: true,
     fields: [
@@ -5807,6 +5077,12 @@ export const runtimeSchema: NodeSpec[] = [
       },
       {
         name: 'opcollid',
+        type: 'uint32',
+        isArray: false,
+        optional: true
+      },
+      {
+        name: 'opfuncid',
         type: 'uint32',
         isArray: false,
         optional: true
@@ -5885,12 +5161,6 @@ export const runtimeSchema: NodeSpec[] = [
       },
       {
         name: 'objargs',
-        type: 'Node',
-        isArray: true,
-        optional: true
-      },
-      {
-        name: 'objfuncargs',
         type: 'Node',
         isArray: true,
         optional: true
@@ -6029,6 +5299,12 @@ export const runtimeSchema: NodeSpec[] = [
       },
       {
         name: 'opcollid',
+        type: 'uint32',
+        isArray: false,
+        optional: true
+      },
+      {
+        name: 'opfuncid',
         type: 'uint32',
         isArray: false,
         optional: true
@@ -6208,12 +5484,6 @@ export const runtimeSchema: NodeSpec[] = [
         optional: true
       },
       {
-        name: 'concurrent',
-        type: 'bool',
-        isArray: false,
-        optional: true
-      },
-      {
         name: 'name',
         type: 'RangeVar',
         isArray: false,
@@ -6299,43 +5569,7 @@ export const runtimeSchema: NodeSpec[] = [
       },
       {
         name: 'strategy',
-        type: 'PartitionStrategy',
-        isArray: false,
-        optional: true
-      }
-    ]
-  },
-  {
-    name: 'PLAssignStmt',
-    isNode: true,
-    fields: [
-      {
-        name: 'indirection',
-        type: 'Node',
-        isArray: true,
-        optional: true
-      },
-      {
-        name: 'location',
-        type: 'int32',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'name',
         type: 'string',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'nnames',
-        type: 'int32',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'val',
-        type: 'SelectStmt',
         isArray: false,
         optional: true
       }
@@ -6359,60 +5593,6 @@ export const runtimeSchema: NodeSpec[] = [
       },
       {
         name: 'query',
-        type: 'Node',
-        isArray: false,
-        optional: true
-      }
-    ]
-  },
-  {
-    name: 'PublicationObjSpec',
-    isNode: true,
-    fields: [
-      {
-        name: 'location',
-        type: 'int32',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'name',
-        type: 'string',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'pubobjtype',
-        type: 'PublicationObjSpecType',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'pubtable',
-        type: 'PublicationTable',
-        isArray: false,
-        optional: true
-      }
-    ]
-  },
-  {
-    name: 'PublicationTable',
-    isNode: true,
-    fields: [
-      {
-        name: 'columns',
-        type: 'Node',
-        isArray: true,
-        optional: true
-      },
-      {
-        name: 'relation',
-        type: 'RangeVar',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'whereClause',
         type: 'Node',
         isArray: false,
         optional: true
@@ -6457,12 +5637,6 @@ export const runtimeSchema: NodeSpec[] = [
         name: 'groupClause',
         type: 'Node',
         isArray: true,
-        optional: true
-      },
-      {
-        name: 'groupDistinct',
-        type: 'bool',
-        isArray: false,
         optional: true
       },
       {
@@ -6532,12 +5706,6 @@ export const runtimeSchema: NodeSpec[] = [
         optional: true
       },
       {
-        name: 'isReturn',
-        type: 'bool',
-        isArray: false,
-        optional: true
-      },
-      {
         name: 'jointree',
         type: 'FromExpr',
         isArray: false,
@@ -6558,18 +5726,6 @@ export const runtimeSchema: NodeSpec[] = [
       {
         name: 'limitOption',
         type: 'LimitOption',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'mergeActionList',
-        type: 'Node',
-        isArray: true,
-        optional: true
-      },
-      {
-        name: 'mergeUseOuterJoin',
-        type: 'bool',
         isArray: false,
         optional: true
       },
@@ -6611,12 +5767,6 @@ export const runtimeSchema: NodeSpec[] = [
       },
       {
         name: 'rtable',
-        type: 'Node',
-        isArray: true,
-        optional: true
-      },
-      {
-        name: 'rteperminfos',
         type: 'Node',
         isArray: true,
         optional: true
@@ -6880,6 +6030,12 @@ export const runtimeSchema: NodeSpec[] = [
         optional: true
       },
       {
+        name: 'checkAsUser',
+        type: 'uint32',
+        isArray: false,
+        optional: true
+      },
+      {
         name: 'colcollations',
         type: 'Node',
         isArray: true,
@@ -6928,6 +6084,12 @@ export const runtimeSchema: NodeSpec[] = [
         optional: true
       },
       {
+        name: 'extraUpdatedCols',
+        type: 'uint64',
+        isArray: true,
+        optional: true
+      },
+      {
         name: 'funcordinality',
         type: 'bool',
         isArray: false,
@@ -6952,9 +6114,9 @@ export const runtimeSchema: NodeSpec[] = [
         optional: true
       },
       {
-        name: 'join_using_alias',
-        type: 'Alias',
-        isArray: false,
+        name: 'insertedCols',
+        type: 'uint64',
+        isArray: true,
         optional: true
       },
       {
@@ -6994,12 +6156,6 @@ export const runtimeSchema: NodeSpec[] = [
         optional: true
       },
       {
-        name: 'perminfoindex',
-        type: 'uint32',
-        isArray: false,
-        optional: true
-      },
-      {
         name: 'relid',
         type: 'uint32',
         isArray: false,
@@ -7018,6 +6174,12 @@ export const runtimeSchema: NodeSpec[] = [
         optional: true
       },
       {
+        name: 'requiredPerms',
+        type: 'uint32',
+        isArray: false,
+        optional: true
+      },
+      {
         name: 'rtekind',
         type: 'RTEKind',
         isArray: false,
@@ -7032,6 +6194,12 @@ export const runtimeSchema: NodeSpec[] = [
       {
         name: 'securityQuals',
         type: 'Node',
+        isArray: true,
+        optional: true
+      },
+      {
+        name: 'selectedCols',
+        type: 'uint64',
         isArray: true,
         optional: true
       },
@@ -7057,6 +6225,12 @@ export const runtimeSchema: NodeSpec[] = [
         name: 'tablesample',
         type: 'TableSampleClause',
         isArray: false,
+        optional: true
+      },
+      {
+        name: 'updatedCols',
+        type: 'uint64',
+        isArray: true,
         optional: true
       },
       {
@@ -7246,6 +6420,12 @@ export const runtimeSchema: NodeSpec[] = [
     isNode: true,
     fields: [
       {
+        name: 'concurrent',
+        type: 'bool',
+        isArray: false,
+        optional: true
+      },
+      {
         name: 'kind',
         type: 'ReindexObjectType',
         isArray: false,
@@ -7258,9 +6438,9 @@ export const runtimeSchema: NodeSpec[] = [
         optional: true
       },
       {
-        name: 'params',
-        type: 'Node',
-        isArray: true,
+        name: 'options',
+        type: 'int32',
+        isArray: false,
         optional: true
       },
       {
@@ -7422,18 +6602,6 @@ export const runtimeSchema: NodeSpec[] = [
     ]
   },
   {
-    name: 'ReturnStmt',
-    isNode: true,
-    fields: [
-      {
-        name: 'returnval',
-        type: 'Node',
-        isArray: false,
-        optional: true
-      }
-    ]
-  },
-  {
     name: 'RoleSpec',
     isNode: true,
     fields: [
@@ -7578,54 +6746,6 @@ export const runtimeSchema: NodeSpec[] = [
     ]
   },
   {
-    name: 'RTEPermissionInfo',
-    isNode: true,
-    fields: [
-      {
-        name: 'checkAsUser',
-        type: 'uint32',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'inh',
-        type: 'bool',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'insertedCols',
-        type: 'uint64',
-        isArray: true,
-        optional: true
-      },
-      {
-        name: 'relid',
-        type: 'uint32',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'requiredPerms',
-        type: 'uint64',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'selectedCols',
-        type: 'uint64',
-        isArray: true,
-        optional: true
-      },
-      {
-        name: 'updatedCols',
-        type: 'uint64',
-        isArray: true,
-        optional: true
-      }
-    ]
-  },
-  {
     name: 'RuleStmt',
     isNode: true,
     fields: [
@@ -7692,6 +6812,12 @@ export const runtimeSchema: NodeSpec[] = [
       {
         name: 'location',
         type: 'int32',
+        isArray: false,
+        optional: true
+      },
+      {
+        name: 'opfuncid',
+        type: 'uint32',
         isArray: false,
         optional: true
       },
@@ -7819,12 +6945,6 @@ export const runtimeSchema: NodeSpec[] = [
         name: 'groupClause',
         type: 'Node',
         isArray: true,
-        optional: true
-      },
-      {
-        name: 'groupDistinct',
-        type: 'bool',
-        isArray: false,
         optional: true
       },
       {
@@ -8118,29 +7238,11 @@ export const runtimeSchema: NodeSpec[] = [
     ]
   },
   {
-    name: 'StatsElem',
-    isNode: true,
-    fields: [
-      {
-        name: 'expr',
-        type: 'Node',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'name',
-        type: 'string',
-        isArray: false,
-        optional: true
-      }
-    ]
-  },
-  {
     name: 'String',
     isNode: true,
     fields: [
       {
-        name: 'sval',
+        name: 'str',
         type: 'string',
         isArray: false,
         optional: true
@@ -8341,12 +7443,6 @@ export const runtimeSchema: NodeSpec[] = [
         name: 'reflowerindexpr',
         type: 'Node',
         isArray: true,
-        optional: true
-      },
-      {
-        name: 'refrestype',
-        type: 'uint32',
-        isArray: false,
         optional: true
       },
       {
@@ -8836,6 +7932,12 @@ export const runtimeSchema: NodeSpec[] = [
         optional: true
       },
       {
+        name: 'varattnosyn',
+        type: 'int32',
+        isArray: false,
+        optional: true
+      },
+      {
         name: 'varcollid',
         type: 'uint32',
         isArray: false,
@@ -8849,14 +7951,14 @@ export const runtimeSchema: NodeSpec[] = [
       },
       {
         name: 'varno',
-        type: 'int32',
+        type: 'uint32',
         isArray: false,
         optional: true
       },
       {
-        name: 'varnullingrels',
-        type: 'uint64',
-        isArray: true,
+        name: 'varnosyn',
+        type: 'uint32',
+        isArray: false,
         optional: true
       },
       {
@@ -9031,12 +8133,6 @@ export const runtimeSchema: NodeSpec[] = [
         name: 'refname',
         type: 'string',
         isArray: false,
-        optional: true
-      },
-      {
-        name: 'runCondition',
-        type: 'Node',
-        isArray: true,
         optional: true
       },
       {
@@ -9262,12 +8358,6 @@ export const runtimeSchema: NodeSpec[] = [
         optional: true
       },
       {
-        name: 'indent',
-        type: 'bool',
-        isArray: false,
-        optional: true
-      },
-      {
         name: 'location',
         type: 'int32',
         isArray: false,
@@ -9324,12 +8414,6 @@ export const runtimeSchema: NodeSpec[] = [
       {
         name: 'expr',
         type: 'Node',
-        isArray: false,
-        optional: true
-      },
-      {
-        name: 'indent',
-        type: 'bool',
         isArray: false,
         optional: true
       },
