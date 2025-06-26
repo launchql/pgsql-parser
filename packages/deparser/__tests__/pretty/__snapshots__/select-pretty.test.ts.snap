@@ -59,8 +59,9 @@ FROM accounts"
 exports[`Pretty Misc SQL formatting should format misc-9: pretty/selects-9.sql (non-pretty) 1`] = `"SELECT (SELECT max(score) FROM results)"`;
 
 exports[`Pretty Misc SQL formatting should format misc-9: pretty/selects-9.sql (pretty) 1`] = `
-"SELECT (SELECT max(score)
-FROM results)"
+"SELECT
+  (SELECT max(score)
+  FROM results)"
 `;
 
 exports[`Pretty Misc SQL formatting should format misc-10: pretty/selects-10.sql (non-pretty) 1`] = `"SELECT count(*) OVER (), u.id FROM users AS u"`;

@@ -839,6 +839,10 @@ export class Deparser implements DeparserVisitor {
   private isComplexSelectTarget(node: any): boolean {
     if (!node) return false;
 
+    if (node.ResTarget?.val) {
+      return this.isComplexExpression(node.ResTarget.val);
+    }
+
     // Always complex: CASE expressions
     if (node.CaseExpr) return true;
     

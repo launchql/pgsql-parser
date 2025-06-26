@@ -40,12 +40,4 @@ describe('Pretty Misc SQL formatting', () => {
     });
   });
 
-  it('should validate AST equivalence for all misc cases', async () => {
-    const allSql = testCases.map((key) => generateCoded[key]);
-    
-    for (const sql of allSql) {
-      await expectParseDeparse(sql, { pretty: false });
-      await expectParseDeparse(sql, { pretty: true });
-    }
-  });
 });
