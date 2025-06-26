@@ -155,21 +155,6 @@ export class V13ToV14Transformer {
       result.location = node.location;
     }
     
-    if (result.funcformat === undefined) {
-      const hasPgCatalogPrefix = result.funcname && 
-        Array.isArray(result.funcname) && 
-        result.funcname.length >= 2 &&
-        result.funcname[0] && 
-        typeof result.funcname[0] === 'object' && 
-        'String' in result.funcname[0] &&
-        result.funcname[0].String.str === 'pg_catalog';
-      
-      if (hasPgCatalogPrefix) {
-        result.funcformat = "COERCE_SQL_SYNTAX";
-      } else {
-        result.funcformat = "COERCE_EXPLICIT_CALL";
-      }
-    }
     
     return { FuncCall: result };
   }
