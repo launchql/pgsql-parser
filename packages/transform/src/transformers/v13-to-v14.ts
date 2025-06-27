@@ -58,13 +58,32 @@ export class V13ToV14Transformer {
       return result;
     }
     
-    // If no specific method, return the node as-is
-    return node;
+    // If no specific method, use transformGenericNode to handle nested transformations
+    return this.transformGenericNode(node, context);
   }
 
   private transformGenericNode(node: any, context: TransformerContext): any {
     if (typeof node !== 'object' || node === null) return node;
     if (Array.isArray(node)) return node.map(item => this.transform(item, context));
+
+    const keys = Object.keys(node);
+    if (keys.length === 1 && typeof node[keys[0]] === 'object' && node[keys[0]] !== null) {
+      const nodeType = keys[0];
+      const nodeData = node[keys[0]];
+      
+      const transformedData: any = {};
+      for (const [key, value] of Object.entries(nodeData)) {
+        if (Array.isArray(value)) {
+          transformedData[key] = value.map(item => this.transform(item as any, context));
+        } else if (typeof value === 'object' && value !== null) {
+          transformedData[key] = this.transform(value as any, context);
+        } else {
+          transformedData[key] = value;
+        }
+      }
+      
+      return { [nodeType]: transformedData };
+    }
 
     const result: any = {};
     for (const [key, value] of Object.entries(node)) {
@@ -85,7 +104,7 @@ export class V13ToV14Transformer {
 
   getNodeData(node: PG13.Node): any {
     const keys = Object.keys(node);
-    if (keys.length === 1 && typeof (node as any)[keys[0]] === 'object') {
+    if (keys.length === 1 && typeof (node as any)[keys[0]] === 'object' && (node as any)[keys[0]] !== null) {
       return (node as any)[keys[0]];
     }
     return node;
