@@ -1017,11 +1017,6 @@ export class V13ToV14Transformer {
     
     if (node.name !== undefined) {
       const isInDropContext = context.parentNodeTypes?.includes('DropStmt');
-      console.log('FunctionParameter debug:', {
-        name: node.name,
-        parentNodeTypes: context.parentNodeTypes,
-        isInDropContext
-      });
       if (!isInDropContext) {
         result.name = node.name;
       }
