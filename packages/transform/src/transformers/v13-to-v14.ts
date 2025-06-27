@@ -1195,10 +1195,15 @@ export class V13ToV14Transformer {
     // Handle objfuncargs based on context
     const shouldCreateObjfuncargs = this.shouldCreateObjfuncargs(context);
     const shouldPreserveObjfuncargs = this.shouldPreserveObjfuncargs(context);
+    const shouldCreateObjfuncargsFromObjargs = this.shouldCreateObjfuncargsFromObjargs(context);
     
     if (shouldCreateObjfuncargs) {
       // For CreateCastStmt contexts, always set empty objfuncargs (override any existing content)
       result.objfuncargs = [];
+    } else if (shouldCreateObjfuncargsFromObjargs && result.objargs) {
+      result.objfuncargs = Array.isArray(result.objargs)
+        ? result.objargs.map((arg: any) => this.createFunctionParameterFromTypeName(arg))
+        : [this.createFunctionParameterFromTypeName(result.objargs)];
     } else if (result.objfuncargs !== undefined) {
       if (shouldPreserveObjfuncargs) {
         result.objfuncargs = Array.isArray(result.objfuncargs)
@@ -1241,6 +1246,31 @@ export class V13ToV14Transformer {
     }
     
     return true;
+  }
+
+  private shouldCreateObjfuncargsFromObjargs(context: TransformerContext): boolean {
+    if (!context.parentNodeTypes || context.parentNodeTypes.length === 0) {
+      return false;
+    }
+    
+    for (const parentType of context.parentNodeTypes) {
+      if (parentType === 'CommentStmt') {
+        return true;
+      }
+    }
+    
+    return false;
+  }
+
+  private createFunctionParameterFromTypeName(typeNameNode: any): any {
+    const transformedTypeName = this.transform(typeNameNode, { parentNodeTypes: [] });
+    
+    return {
+      FunctionParameter: {
+        argType: transformedTypeName,
+        mode: "FUNC_PARAM_DEFAULT"
+      }
+    };
   }
 
   private isVariadicAggregateContext(context: TransformerContext): boolean {
