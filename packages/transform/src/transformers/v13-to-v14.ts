@@ -933,7 +933,7 @@ export class V13ToV14Transformer {
     const sqlSyntaxFunctions = [
       'btrim', 'trim', 'ltrim', 'rtrim',
       'position', 'overlay',
-      'extract', 'timezone',
+      'extract', 'timezone', 'xmlexists',
       'current_date', 'current_time', 'current_timestamp',
       'localtime', 'localtimestamp', 'overlaps'
     ];
