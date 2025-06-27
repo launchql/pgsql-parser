@@ -106,7 +106,7 @@ export class V13ToV14Transformer {
                 const sortedKeys = keys.sort((a, b) => parseInt(a) - parseInt(b));
                 transformedData[key] = sortedKeys.map(k => this.transform((value as any)[k], context));
               }
-            } else {
+            }else {
               // Regular object transformation
               transformedData[key] = this.transform(value as any, context);
             }
@@ -753,6 +753,18 @@ export class V13ToV14Transformer {
     
     if (result.name !== undefined) {
       result.name = this.transform(result.name, childContext);
+      
+      if (result.name && typeof result.name === 'object' && result.name.objname) {
+        const objname = result.name.objname;
+        if (typeof objname === 'object' && !Array.isArray(objname) && objname !== null) {
+          const keys = Object.keys(objname);
+          const isNumericKeysObject = keys.length > 0 && keys.every(k => /^\d+$/.test(k));
+          if (isNumericKeysObject) {
+            const sortedKeys = keys.sort((a, b) => parseInt(a) - parseInt(b));
+            result.name.objname = sortedKeys.map(key => this.transform(objname[key], childContext));
+          }
+        }
+      }
     }
     
     if (result.args !== undefined) {
@@ -1683,7 +1695,7 @@ export class V13ToV14Transformer {
             const sortedKeys = keys.sort((a, b) => parseInt(a) - parseInt(b));
             result.objname = sortedKeys.map(key => this.transform(result.objname[key], context));
           }
-        } else {
+        }else {
           // Regular object transformation
           result.objname = this.transform(result.objname, context);
         }
