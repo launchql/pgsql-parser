@@ -191,7 +191,8 @@ export class V13ToV14Transformer {
     
     // Only add funcformat in specific contexts where it's expected in PG14
     if (this.shouldAddFuncformat(context)) {
-      const funcformatValue = this.getFuncformatValue(node, context);
+      const nodeForFuncformat = { ...node, funcname: result.funcname };
+      const funcformatValue = this.getFuncformatValue(nodeForFuncformat, context);
       if (funcformatValue !== null) {
         result.funcformat = funcformatValue;
       }
@@ -242,6 +243,14 @@ export class V13ToV14Transformer {
     }
     
     if (this.isInSelectFromContext(context)) {
+      return false;
+    }
+    
+    if (this.isInCreateIndexContext(context)) {
+      return false;
+    }
+    
+    if (this.isInConstraintContext(context)) {
       return false;
     }
     
@@ -364,6 +373,20 @@ export class V13ToV14Transformer {
       return false;
     });
   }
+  private isInCreateIndexContext(context: TransformerContext): boolean {
+    const path = context.path || [];
+    return path.some((node: any) => 
+      node && typeof node === 'object' && 'IndexStmt' in node
+    );
+  }
+
+  private isInConstraintContext(context: TransformerContext): boolean {
+    const path = context.path || [];
+    return path.some((node: any) => 
+      node && typeof node === 'object' && 'Constraint' in node
+    );
+  }
+
 
   CallStmt(node: PG13.CallStmt, context: TransformerContext): any {
     const result: any = { ...node };
@@ -375,6 +398,60 @@ export class V13ToV14Transformer {
     }
     
     return { CallStmt: result };
+  }
+
+  CommentStmt(node: any, context: TransformerContext): any {
+    const result: any = { ...node };
+    
+    if (result.object !== undefined) {
+      const childContext = {
+        ...context,
+        commentObjtype: result.objtype
+      };
+      result.object = this.transform(result.object, childContext);
+    }
+    
+    if (result.comment !== undefined) {
+      result.comment = result.comment;
+    }
+    
+    if (result.objtype !== undefined) {
+      result.objtype = result.objtype;
+    }
+    
+    return { CommentStmt: result };
+  }
+
+  DropStmt(node: any, context: TransformerContext): any {
+    const result: any = { ...node };
+    
+    if (result.objects !== undefined) {
+      const childContext = {
+        ...context,
+        dropRemoveType: result.removeType
+      };
+      result.objects = Array.isArray(result.objects)
+        ? result.objects.map((item: any) => this.transform(item, childContext))
+        : this.transform(result.objects, childContext);
+    }
+    
+    if (result.removeType !== undefined) {
+      result.removeType = result.removeType;
+    }
+    
+    if (result.behavior !== undefined) {
+      result.behavior = result.behavior;
+    }
+    
+    if (result.missing_ok !== undefined) {
+      result.missing_ok = result.missing_ok;
+    }
+    
+    if (result.concurrent !== undefined) {
+      result.concurrent = result.concurrent;
+    }
+    
+    return { DropStmt: result };
   }
 
   InsertStmt(node: PG13.InsertStmt, context: TransformerContext): any {
@@ -445,7 +522,7 @@ export class V13ToV14Transformer {
     return null;
   }
 
-  private  getFuncformatValue(node: any, context: TransformerContext): string {
+  private getFuncformatValue(node: any, context: TransformerContext): string {
     const funcname = this.getFunctionName(node);
     
     if (!funcname) {
@@ -454,12 +531,16 @@ export class V13ToV14Transformer {
     
     const sqlSyntaxFunctions = [
       'btrim', 'trim', 'ltrim', 'rtrim',
-      'substring', 'substr', 'position', 'overlay',
-      'extract', 'date_part', 'date_trunc',
+      'substring', 'position', 'overlay',
+      'extract',
       'current_date', 'current_time', 'current_timestamp',
       'localtime', 'localtimestamp', 'overlaps',
-      'date', 'isfinite'
+      'date'
     ];
+    
+    if (funcname.toLowerCase() === 'substr') {
+      return 'COERCE_EXPLICIT_CALL';
+    }
     
     if (sqlSyntaxFunctions.includes(funcname.toLowerCase())) {
       return 'COERCE_SQL_SYNTAX';
@@ -1197,13 +1278,13 @@ export class V13ToV14Transformer {
     const shouldPreserveObjfuncargs = this.shouldPreserveObjfuncargs(context);
     const shouldCreateObjfuncargsFromObjargs = this.shouldCreateObjfuncargsFromObjargs(context);
     
-    if (shouldCreateObjfuncargs) {
-      // For CreateCastStmt contexts, always set empty objfuncargs (override any existing content)
-      result.objfuncargs = [];
-    } else if (shouldCreateObjfuncargsFromObjargs && result.objargs) {
+    if (shouldCreateObjfuncargsFromObjargs && result.objargs) {
+      // Create objfuncargs from objargs (this takes priority over shouldCreateObjfuncargs)
       result.objfuncargs = Array.isArray(result.objargs)
         ? result.objargs.map((arg: any) => this.createFunctionParameterFromTypeName(arg))
         : [this.createFunctionParameterFromTypeName(result.objargs)];
+    } else if (shouldCreateObjfuncargs) {
+      result.objfuncargs = [];
     } else if (result.objfuncargs !== undefined) {
       if (shouldPreserveObjfuncargs) {
         result.objfuncargs = Array.isArray(result.objfuncargs)
@@ -1253,8 +1334,84 @@ export class V13ToV14Transformer {
       return false;
     }
     
+    if ((context as any).commentObjtype === 'OBJECT_OPERATOR') {
+      return false;
+    }
+    
+    const path = context.path || [];
+    for (const node of path) {
+      if (node && typeof node === 'object') {
+        const nodeType = Object.keys(node)[0];
+        if (nodeType === 'CommentStmt' || 
+            nodeType === 'AlterFunctionStmt' ||
+            nodeType === 'AlterOwnerStmt' ||
+            nodeType === 'CreateAggregateStmt' ||
+            nodeType === 'AlterAggregateStmt' ||
+            nodeType === 'CreateFunctionStmt' ||
+            nodeType === 'CreateStmt' ||
+            nodeType === 'CreateTypeStmt' ||
+            nodeType === 'CreateOpClassStmt' ||
+            nodeType === 'CreateOpFamilyStmt' ||
+            nodeType === 'CreateOperatorStmt' ||
+            nodeType === 'GrantStmt' ||
+            nodeType === 'RevokeStmt') {
+          return true;
+        }
+        if (nodeType === 'DropStmt') {
+          return this.shouldAddObjfuncargsForDropStmt(context);
+        }
+      }
+    }
+    
     for (const parentType of context.parentNodeTypes) {
-      if (parentType === 'CommentStmt') {
+      if (parentType === 'CommentStmt' || 
+          parentType === 'AlterFunctionStmt' ||
+          parentType === 'AlterOwnerStmt' ||
+          parentType === 'CreateAggregateStmt' ||
+          parentType === 'AlterAggregateStmt' ||
+          parentType === 'CreateFunctionStmt' ||
+          parentType === 'CreateStmt' ||
+          parentType === 'CreateTypeStmt' ||
+          parentType === 'CreateOpClassStmt' ||
+          parentType === 'CreateOpFamilyStmt' ||
+          parentType === 'CreateOperatorStmt' ||
+          parentType === 'CreateCastStmt' ||
+          parentType === 'GrantStmt' ||
+          parentType === 'RevokeStmt') {
+        return true;
+      }
+      if (parentType === 'DropStmt') {
+        return this.shouldAddObjfuncargsForDropStmt(context);
+      }
+    }
+    
+    return false;
+  }
+
+  private shouldAddObjfuncargsForDropStmt(context: TransformerContext): boolean {
+    const path = context.path || [];
+    for (const node of path) {
+      if (node && typeof node === 'object' && 'DropStmt' in node) {
+        const dropStmt = node.DropStmt;
+        if (dropStmt && dropStmt.removeType === 'OBJECT_OPERATOR') {
+          return false;
+        }
+        if (dropStmt && (dropStmt.removeType === 'OBJECT_FUNCTION' || 
+                        dropStmt.removeType === 'OBJECT_AGGREGATE' ||
+                        dropStmt.removeType === 'OBJECT_PROCEDURE')) {
+          return true;
+        }
+      }
+    }
+    
+    if ((context as any).dropRemoveType) {
+      const removeType = (context as any).dropRemoveType;
+      if (removeType === 'OBJECT_OPERATOR') {
+        return false;
+      }
+      if (removeType === 'OBJECT_FUNCTION' || 
+          removeType === 'OBJECT_AGGREGATE' ||
+          removeType === 'OBJECT_PROCEDURE') {
         return true;
       }
     }
@@ -1265,9 +1422,11 @@ export class V13ToV14Transformer {
   private createFunctionParameterFromTypeName(typeNameNode: any): any {
     const transformedTypeName = this.transform(typeNameNode, { parentNodeTypes: [] });
     
+    const argType = transformedTypeName.TypeName ? transformedTypeName.TypeName : transformedTypeName;
+    
     return {
       FunctionParameter: {
-        argType: transformedTypeName,
+        argType: argType,
         mode: "FUNC_PARAM_DEFAULT"
       }
     };
@@ -1647,6 +1806,33 @@ export class V13ToV14Transformer {
     return { CreateSeqStmt: result };
   }
 
+  WithClause(node: PG13.WithClause, context: TransformerContext): any {
+    const result: any = { ...node };
+    
+    if (node.ctes !== undefined) {
+      if (Array.isArray(node.ctes)) {
+        result.ctes = node.ctes.map(item => this.transform(item as any, context));
+      } else if (typeof node.ctes === 'object' && node.ctes !== null) {
+        const cteArray = Object.keys(node.ctes)
+          .sort((a, b) => parseInt(a) - parseInt(b))
+          .map(key => this.transform((node.ctes as any)[key], context));
+        result.ctes = cteArray;
+      } else {
+        result.ctes = this.transform(node.ctes as any, context);
+      }
+    }
+    
+    if (node.recursive !== undefined) {
+      result.recursive = node.recursive;
+    }
+    
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+    
+    return { WithClause: result };
+  }
+
   AlterSeqStmt(node: any, context: TransformerContext): any {
     const result: any = {};
     
@@ -1877,32 +2063,5 @@ export class V13ToV14Transformer {
     return { CreatePolicyStmt: result };
   }
 
-  DropStmt(node: any, context: TransformerContext): any {
-    const result: any = {};
-    
-    if (node.objects !== undefined) {
-      result.objects = Array.isArray(node.objects)
-        ? node.objects.map((item: any) => this.transform(item as any, context))
-        : this.transform(node.objects as any, context);
-    }
-    
-    if (node.removeType !== undefined) {
-      result.removeType = node.removeType;
-    }
-    
-    if (node.behavior !== undefined) {
-      result.behavior = node.behavior;
-    }
-    
-    if (node.missing_ok !== undefined) {
-      result.missing_ok = node.missing_ok;
-    }
-    
-    if (node.concurrent !== undefined) {
-      result.concurrent = node.concurrent;
-    }
-    
-    return { DropStmt: result };
-  }
 
 }
