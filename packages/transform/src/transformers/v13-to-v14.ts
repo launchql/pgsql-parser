@@ -985,9 +985,9 @@ export class V13ToV14Transformer {
       'pg_collation_for', 'collation_for'
     ];
     
-    if (funcname === 'substring') {
+    if (funcname === 'substring' || funcname === 'pg_collation_for') {
       const isInSelectContext = context.parentNodeTypes?.some(type => 
-        type.includes('Select') || type.includes('Target') || type.includes('Expr'));
+        type.includes('Select') || type.includes('Target') || type.includes('Expr') || type.includes('FuncCall'));
       if (isInSelectContext) {
         return 'COERCE_SQL_SYNTAX';
       }
@@ -1043,13 +1043,12 @@ export class V13ToV14Transformer {
       
       if (node.mode === "FUNC_PARAM_VARIADIC") {
         if (isInAggregateContext) {
-          const isVariadicType = this.isVariadicParameterType(node.argType);
-          result.mode = isVariadicType ? "FUNC_PARAM_VARIADIC" : "FUNC_PARAM_DEFAULT";
+          result.mode = "FUNC_PARAM_DEFAULT";
         } else {
           const isVariadicType = this.isVariadicParameterType(node.argType);
           result.mode = isVariadicType ? "FUNC_PARAM_VARIADIC" : "FUNC_PARAM_DEFAULT";
         }
-      } else if (node.mode === "FUNC_PARAM_IN") {
+      }else if (node.mode === "FUNC_PARAM_IN") {
         result.mode = "FUNC_PARAM_DEFAULT";
       } else {
         result.mode = node.mode;
@@ -2832,6 +2831,11 @@ export class V13ToV14Transformer {
 
   private mapTableLikeOption(pg13Value: number): number {
     // Handle specific mappings based on test failures:
+    
+    // Handle negative values (bitwise NOT operations)
+    if (pg13Value < 0) {
+      return pg13Value;
+    }
     
     if (pg13Value === 33) return 64;  // DEFAULTS + STATISTICS combination
     if (pg13Value === 17) return 32;  // DEFAULTS + INDEXES combination
