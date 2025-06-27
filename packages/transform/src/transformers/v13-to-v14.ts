@@ -194,20 +194,6 @@ export class V13ToV14Transformer {
           }
         }
         
-        if (funcname.length >= 2) {
-          const firstElement = funcname[0];
-          const lastElement = funcname[funcname.length - 1];
-          if (firstElement && typeof firstElement === 'object' && 'String' in firstElement &&
-              lastElement && typeof lastElement === 'object' && 'String' in lastElement) {
-            const prefix = firstElement.String.str || firstElement.String.sval;
-            const funcName = lastElement.String.str || lastElement.String.sval;
-            if (prefix === 'pg_catalog' && funcName === 'substring') {
-              if (this.isStandardFunctionCallSyntax(node, context)) {
-                funcname = funcname.slice(1);
-              }
-            }
-          }
-        }
       }
       
       result.funcname = funcname;
