@@ -986,6 +986,21 @@ export class V13ToV14Transformer {
       'collation_for'
     ];
     
+    // Handle pg_collation_for specifically - depends on pg_catalog prefix
+    if (funcname.toLowerCase() === 'pg_collation_for') {
+      // Check if the function has pg_catalog prefix by examining the node
+      if (node && node.funcname && Array.isArray(node.funcname) && node.funcname.length >= 2) {
+        const firstElement = node.funcname[0];
+        if (firstElement && typeof firstElement === 'object' && 'String' in firstElement) {
+          const prefix = firstElement.String.str || firstElement.String.sval;
+          if (prefix === 'pg_catalog') {
+            return 'COERCE_SQL_SYNTAX';
+          }
+        }
+      }
+      return 'COERCE_EXPLICIT_CALL';
+    }
+    
     if (explicitCallFunctions.includes(funcname.toLowerCase())) {
       return 'COERCE_EXPLICIT_CALL';
     }
