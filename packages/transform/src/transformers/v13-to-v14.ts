@@ -47,6 +47,10 @@ export class V13ToV14Transformer {
     
     const nodeData = this.getNodeData(node);
 
+    if (nodeType === 'WithClause') {
+      console.log('Found WithClause node, nodeData:', JSON.stringify(nodeData, null, 2));
+    }
+
     const methodName = nodeType as keyof this;
     if (typeof this[methodName] === 'function') {
       const childContext: TransformerContext = {
@@ -71,9 +75,21 @@ export class V13ToV14Transformer {
       const nodeType = keys[0];
       const nodeData = node[keys[0]];
       
+      if ('ctes' in nodeData) {
+        console.log('transformGenericNode: Processing node with ctes:', {
+          nodeType,
+          ctesType: typeof nodeData.ctes,
+          isArray: Array.isArray(nodeData.ctes)
+        });
+      }
+      
       const transformedData: any = {};
       for (const [key, value] of Object.entries(nodeData)) {
-        if (Array.isArray(value)) {
+        if (key === 'ctes' && Array.isArray(value)) {
+          transformedData[key] = value.map(item => this.transform(item as any, context));
+        } else if (key === 'objname' && typeof value === 'object' && value !== null && !Array.isArray(value)) {
+          transformedData[key] = this.transform(value as any, context);
+        } else if (Array.isArray(value)) {
           transformedData[key] = value.map(item => this.transform(item as any, context));
         } else if (typeof value === 'object' && value !== null) {
           transformedData[key] = this.transform(value as any, context);
@@ -84,6 +100,7 @@ export class V13ToV14Transformer {
       
       return { [nodeType]: transformedData };
     }
+
 
     const result: any = {};
     for (const [key, value] of Object.entries(node)) {
@@ -142,6 +159,31 @@ export class V13ToV14Transformer {
             funcname[funcname.length - 1] = {
               String: { str: 'extract' }
             };
+          }
+        }
+        
+        if (this.isInCreateDomainContext(context) && funcname.length >= 2) {
+          const firstElement = funcname[0];
+          if (firstElement && typeof firstElement === 'object' && 'String' in firstElement) {
+            const prefix = firstElement.String.str || firstElement.String.sval;
+            if (prefix === 'pg_catalog') {
+              funcname = funcname.slice(1);
+            }
+          }
+        }
+        
+        if (funcname.length >= 2) {
+          const firstElement = funcname[0];
+          const lastElement = funcname[funcname.length - 1];
+          if (firstElement && typeof firstElement === 'object' && 'String' in firstElement &&
+              lastElement && typeof lastElement === 'object' && 'String' in lastElement) {
+            const prefix = firstElement.String.str || firstElement.String.sval;
+            const funcName = lastElement.String.str || lastElement.String.sval;
+            if (prefix === 'pg_catalog' && funcName === 'substring') {
+              if (this.isStandardFunctionCallSyntax(node, context)) {
+                funcname = funcname.slice(1);
+              }
+            }
           }
         }
       }
@@ -387,6 +429,38 @@ export class V13ToV14Transformer {
     );
   }
 
+  private isInCreateDomainContext(context: TransformerContext): boolean {
+    const parentNodeTypes = context.parentNodeTypes || [];
+    return parentNodeTypes.includes('CreateDomainStmt');
+  }
+
+  private isStandardFunctionCallSyntax(node: any, context: TransformerContext): boolean {
+    if (!node.args || !Array.isArray(node.args)) {
+      return true; // Default to function call syntax
+    }
+    
+    if (this.isInCreateDomainContext(context) || this.isInConstraintContext(context)) {
+      return true;
+    }
+    
+    if (node.args.length === 2) {
+      return false; // FROM syntax
+    }
+    
+    if (node.args.length === 3) {
+      const thirdArg = node.args[2];
+      if (thirdArg && typeof thirdArg === 'object' && 'TypeCast' in thirdArg) {
+        return false; // FOR syntax with length cast
+      }
+    }
+    
+    return true; // Default to function call syntax
+  }
+
+  private isSqlStandardSyntax(node: any, context: TransformerContext): boolean {
+    return !this.isStandardFunctionCallSyntax(node, context);
+  }
+
 
   CallStmt(node: PG13.CallStmt, context: TransformerContext): any {
     const result: any = { ...node };
@@ -457,35 +531,301 @@ export class V13ToV14Transformer {
   InsertStmt(node: PG13.InsertStmt, context: TransformerContext): any {
     const result: any = { ...node };
     
+    // Create child context with InsertStmt as parent
+    const childContext: TransformerContext = {
+      ...context,
+      parentNodeTypes: [...(context.parentNodeTypes || []), 'InsertStmt']
+    };
+    
     if (result.relation !== undefined) {
-      result.relation = this.transform(result.relation, context);
+      result.relation = this.transform(result.relation, childContext);
     }
     
     if (result.cols !== undefined) {
       result.cols = Array.isArray(result.cols)
-        ? result.cols.map((item: any) => this.transform(item, context))
-        : this.transform(result.cols, context);
+        ? result.cols.map((item: any) => this.transform(item, childContext))
+        : this.transform(result.cols, childContext);
     }
     
     if (result.selectStmt !== undefined) {
-      result.selectStmt = this.transform(result.selectStmt, context);
+      result.selectStmt = this.transform(result.selectStmt, childContext);
     }
     
     if (result.onConflictClause !== undefined) {
-      result.onConflictClause = this.transform(result.onConflictClause, context);
+      result.onConflictClause = this.transform(result.onConflictClause, childContext);
     }
     
     if (result.returningList !== undefined) {
       result.returningList = Array.isArray(result.returningList)
-        ? result.returningList.map((item: any) => this.transform(item, context))
-        : this.transform(result.returningList, context);
+        ? result.returningList.map((item: any) => this.transform(item, childContext))
+        : this.transform(result.returningList, childContext);
     }
     
     if (result.withClause !== undefined) {
-      result.withClause = this.transform(result.withClause, context);
+      if (result.withClause.ctes && Array.isArray(result.withClause.ctes)) {
+        const transformedWithClause = { ...result.withClause };
+        transformedWithClause.ctes = result.withClause.ctes.map((cte: any) => this.transform(cte, childContext));
+        if (result.withClause.recursive !== undefined) {
+          transformedWithClause.recursive = result.withClause.recursive;
+        }
+        if (result.withClause.location !== undefined) {
+          transformedWithClause.location = result.withClause.location;
+        }
+        result.withClause = transformedWithClause;
+      } else {
+        result.withClause = this.transform(result.withClause, childContext);
+      }
     }
     
     return { InsertStmt: result };
+  }
+
+  UpdateStmt(node: any, context: TransformerContext): any {
+    const result: any = { ...node };
+    
+    // Create child context with UpdateStmt as parent
+    const childContext: TransformerContext = {
+      ...context,
+      parentNodeTypes: [...(context.parentNodeTypes || []), 'UpdateStmt']
+    };
+    
+    if (result.relation !== undefined) {
+      result.relation = this.transform(result.relation, childContext);
+    }
+    
+    if (result.targetList !== undefined) {
+      result.targetList = Array.isArray(result.targetList)
+        ? result.targetList.map((item: any) => this.transform(item, childContext))
+        : this.transform(result.targetList, childContext);
+    }
+    
+    if (result.whereClause !== undefined) {
+      result.whereClause = this.transform(result.whereClause, childContext);
+    }
+    
+    if (result.fromClause !== undefined) {
+      result.fromClause = Array.isArray(result.fromClause)
+        ? result.fromClause.map((item: any) => this.transform(item, childContext))
+        : this.transform(result.fromClause, childContext);
+    }
+    
+    if (result.returningList !== undefined) {
+      result.returningList = Array.isArray(result.returningList)
+        ? result.returningList.map((item: any) => this.transform(item, childContext))
+        : this.transform(result.returningList, childContext);
+    }
+    
+    if (result.withClause !== undefined) {
+      if (result.withClause.ctes && Array.isArray(result.withClause.ctes)) {
+        const transformedWithClause = { ...result.withClause };
+        transformedWithClause.ctes = result.withClause.ctes.map((cte: any) => this.transform(cte, childContext));
+        if (result.withClause.recursive !== undefined) {
+          transformedWithClause.recursive = result.withClause.recursive;
+        }
+        if (result.withClause.location !== undefined) {
+          transformedWithClause.location = result.withClause.location;
+        }
+        result.withClause = transformedWithClause;
+      } else {
+        result.withClause = this.transform(result.withClause, childContext);
+      }
+    }
+    
+    return { UpdateStmt: result };
+  }
+
+  DeleteStmt(node: any, context: TransformerContext): any {
+    const result: any = { ...node };
+    
+    // Create child context with DeleteStmt as parent
+    const childContext: TransformerContext = {
+      ...context,
+      parentNodeTypes: [...(context.parentNodeTypes || []), 'DeleteStmt']
+    };
+    
+    if (result.relation !== undefined) {
+      result.relation = this.transform(result.relation, childContext);
+    }
+    
+    if (result.usingClause !== undefined) {
+      result.usingClause = Array.isArray(result.usingClause)
+        ? result.usingClause.map((item: any) => this.transform(item, childContext))
+        : this.transform(result.usingClause, childContext);
+    }
+    
+    if (result.whereClause !== undefined) {
+      result.whereClause = this.transform(result.whereClause, childContext);
+    }
+    
+    if (result.returningList !== undefined) {
+      result.returningList = Array.isArray(result.returningList)
+        ? result.returningList.map((item: any) => this.transform(item, childContext))
+        : this.transform(result.returningList, childContext);
+    }
+    
+    if (result.withClause !== undefined) {
+      if (result.withClause.ctes && Array.isArray(result.withClause.ctes)) {
+        const transformedWithClause = { ...result.withClause };
+        transformedWithClause.ctes = result.withClause.ctes.map((cte: any) => this.transform(cte, childContext));
+        if (result.withClause.recursive !== undefined) {
+          transformedWithClause.recursive = result.withClause.recursive;
+        }
+        if (result.withClause.location !== undefined) {
+          transformedWithClause.location = result.withClause.location;
+        }
+        result.withClause = transformedWithClause;
+      } else {
+        result.withClause = this.transform(result.withClause, childContext);
+      }
+    }
+    
+    return { DeleteStmt: result };
+  }
+
+  CreateOpClassStmt(node: any, context: TransformerContext): any {
+    const result: any = { ...node };
+    
+    // Create child context with CreateOpClassStmt as parent
+    const childContext: TransformerContext = {
+      ...context,
+      parentNodeTypes: [...(context.parentNodeTypes || []), 'CreateOpClassStmt']
+    };
+    
+    if (result.opclassname !== undefined) {
+      result.opclassname = Array.isArray(result.opclassname)
+        ? result.opclassname.map((item: any) => this.transform(item, childContext))
+        : this.transform(result.opclassname, childContext);
+    }
+    
+    if (result.opfamilyname !== undefined) {
+      result.opfamilyname = Array.isArray(result.opfamilyname)
+        ? result.opfamilyname.map((item: any) => this.transform(item, childContext))
+        : this.transform(result.opfamilyname, childContext);
+    }
+    
+    if (result.amname !== undefined) {
+      result.amname = this.transform(result.amname, childContext);
+    }
+    
+    if (result.datatype !== undefined) {
+      result.datatype = this.transform(result.datatype, childContext);
+    }
+    
+    if (result.items !== undefined) {
+      result.items = Array.isArray(result.items)
+        ? result.items.map((item: any) => this.transform(item, childContext))
+        : this.transform(result.items, childContext);
+    }
+    
+    return { CreateOpClassStmt: result };
+  }
+
+  CreateOpClassItem(node: any, context: TransformerContext): any {
+    const result: any = { ...node };
+    
+    // Create child context with CreateOpClassItem as parent
+    const childContext: TransformerContext = {
+      ...context,
+      parentNodeTypes: [...(context.parentNodeTypes || []), 'CreateOpClassItem']
+    };
+    
+    if (result.name !== undefined) {
+      result.name = this.transform(result.name, childContext);
+    }
+    
+    if (result.args !== undefined) {
+      result.args = Array.isArray(result.args)
+        ? result.args.map((item: any) => this.transform(item, childContext))
+        : this.transform(result.args, childContext);
+    }
+    
+    if (result.storedtype !== undefined) {
+      result.storedtype = this.transform(result.storedtype, childContext);
+    }
+    
+    return { CreateOpClassItem: result };
+  }
+
+  CreateAccessMethodStmt(node: any, context: TransformerContext): any {
+    const result: any = { ...node };
+    
+    // Create child context with CreateAccessMethodStmt as parent
+    const childContext: TransformerContext = {
+      ...context,
+      parentNodeTypes: [...(context.parentNodeTypes || []), 'CreateAccessMethodStmt']
+    };
+    
+    if (result.amname !== undefined) {
+      result.amname = this.transform(result.amname, childContext);
+    }
+    
+    if (result.handler_name !== undefined) {
+      result.handler_name = Array.isArray(result.handler_name)
+        ? result.handler_name.map((item: any) => this.transform(item, childContext))
+        : this.transform(result.handler_name, childContext);
+    }
+    
+    return { CreateAccessMethodStmt: result };
+  }
+
+  GrantStmt(node: any, context: TransformerContext): any {
+    const result: any = { ...node };
+    
+    // Create child context with GrantStmt as parent
+    const childContext: TransformerContext = {
+      ...context,
+      parentNodeTypes: [...(context.parentNodeTypes || []), 'GrantStmt']
+    };
+    
+    if (result.objects !== undefined) {
+      result.objects = Array.isArray(result.objects)
+        ? result.objects.map((item: any) => this.transform(item, childContext))
+        : this.transform(result.objects, childContext);
+    }
+    
+    if (result.grantees !== undefined) {
+      result.grantees = Array.isArray(result.grantees)
+        ? result.grantees.map((item: any) => this.transform(item, childContext))
+        : this.transform(result.grantees, childContext);
+    }
+    
+    if (result.privileges !== undefined) {
+      result.privileges = Array.isArray(result.privileges)
+        ? result.privileges.map((item: any) => this.transform(item, childContext))
+        : this.transform(result.privileges, childContext);
+    }
+    
+    return { GrantStmt: result };
+  }
+
+  RevokeStmt(node: any, context: TransformerContext): any {
+    const result: any = { ...node };
+    
+    // Create child context with RevokeStmt as parent
+    const childContext: TransformerContext = {
+      ...context,
+      parentNodeTypes: [...(context.parentNodeTypes || []), 'RevokeStmt']
+    };
+    
+    if (result.objects !== undefined) {
+      result.objects = Array.isArray(result.objects)
+        ? result.objects.map((item: any) => this.transform(item, childContext))
+        : this.transform(result.objects, childContext);
+    }
+    
+    if (result.grantees !== undefined) {
+      result.grantees = Array.isArray(result.grantees)
+        ? result.grantees.map((item: any) => this.transform(item, childContext))
+        : this.transform(result.grantees, childContext);
+    }
+    
+    if (result.privileges !== undefined) {
+      result.privileges = Array.isArray(result.privileges)
+        ? result.privileges.map((item: any) => this.transform(item, childContext))
+        : this.transform(result.privileges, childContext);
+    }
+    
+    return { RevokeStmt: result };
   }
 
   ResTarget(node: PG13.ResTarget, context: TransformerContext): any {
@@ -531,14 +871,20 @@ export class V13ToV14Transformer {
     
     const sqlSyntaxFunctions = [
       'btrim', 'trim', 'ltrim', 'rtrim',
-      'substring', 'position', 'overlay',
+      'position', 'overlay',
       'extract',
       'current_date', 'current_time', 'current_timestamp',
-      'localtime', 'localtimestamp', 'overlaps',
-      'date'
+      'localtime', 'localtimestamp', 'overlaps'
     ];
     
     if (funcname.toLowerCase() === 'substr') {
+      return 'COERCE_EXPLICIT_CALL';
+    }
+    
+    if (funcname.toLowerCase() === 'substring') {
+      if (this.isSqlStandardSyntax(node, context)) {
+        return 'COERCE_SQL_SYNTAX';
+      }
       return 'COERCE_EXPLICIT_CALL';
     }
     
@@ -576,12 +922,18 @@ export class V13ToV14Transformer {
   AlterFunctionStmt(node: PG13.AlterFunctionStmt, context: TransformerContext): any {
     const result: any = {};
     
+    // Create child context with AlterFunctionStmt as parent
+    const childContext: TransformerContext = {
+      ...context,
+      parentNodeTypes: [...(context.parentNodeTypes || []), 'AlterFunctionStmt']
+    };
+    
     if (node.objtype !== undefined) {
       result.objtype = node.objtype;
     }
     
     if (node.func !== undefined) {
-      const funcResult = this.transform(node.func as any, context);
+      const funcResult = this.transform(node.func as any, childContext);
       
       if (funcResult && typeof funcResult === 'object') {
         let funcData = funcResult;
@@ -765,7 +1117,35 @@ export class V13ToV14Transformer {
     }
     
     if (node.withClause !== undefined) {
-      result.withClause = this.transform(node.withClause as any, context);
+      // Handle WithClause transformation directly here since the method dispatch isn't working
+      const withClause = node.withClause as any;
+      
+      if (withClause && typeof withClause === 'object' && withClause.ctes !== undefined) {
+        const transformedWithClause: any = { ...withClause };
+        
+        if (typeof withClause.ctes === 'object' && withClause.ctes !== null && !Array.isArray(withClause.ctes)) {
+          const cteArray = Object.keys(withClause.ctes)
+            .sort((a, b) => parseInt(a) - parseInt(b))
+            .map(key => this.transform((withClause.ctes as any)[key], context));
+          transformedWithClause.ctes = cteArray;
+        } else if (Array.isArray(withClause.ctes)) {
+          transformedWithClause.ctes = withClause.ctes.map((item: any) => this.transform(item as any, context));
+        } else {
+          transformedWithClause.ctes = this.transform(withClause.ctes as any, context);
+        }
+        
+        if (withClause.recursive !== undefined) {
+          transformedWithClause.recursive = withClause.recursive;
+        }
+        
+        if (withClause.location !== undefined) {
+          transformedWithClause.location = withClause.location;
+        }
+        
+        result.withClause = transformedWithClause;
+      } else {
+        result.withClause = this.transform(node.withClause as any, context);
+      }
     }
     
     if (node.op !== undefined) {
@@ -1262,9 +1642,14 @@ export class V13ToV14Transformer {
     const result: any = { ...node };
 
     if (result.objname !== undefined) {
-      result.objname = Array.isArray(result.objname) 
-        ? result.objname.map((item: any) => this.transform(item, context))
-        : this.transform(result.objname, context);
+      if (Array.isArray(result.objname)) {
+        result.objname = result.objname.map((item: any) => this.transform(item, context));
+      } else if (typeof result.objname === 'object' && result.objname !== null) {
+        const keys = Object.keys(result.objname).sort((a, b) => parseInt(a) - parseInt(b));
+        result.objname = keys.map(key => this.transform(result.objname[key], context));
+      } else {
+        result.objname = this.transform(result.objname, context);
+      }
     }
     
     if (result.objargs !== undefined) {
@@ -1305,11 +1690,10 @@ export class V13ToV14Transformer {
       return false;
     }
     
-    // CreateCastStmt contexts need empty objfuncargs added in PG14
     for (const parentType of context.parentNodeTypes) {
-      if (parentType === 'CreateCastStmt') {
-        return true;
-      }
+      // if (parentType === 'SomeSpecificContext') {
+      //   return true;
+      // }
     }
     
     return false;
@@ -1317,16 +1701,54 @@ export class V13ToV14Transformer {
 
   private shouldPreserveObjfuncargs(context: TransformerContext): boolean {
     if (!context.parentNodeTypes || context.parentNodeTypes.length === 0) {
-      return true;
+      return false;
+    }
+    
+    const excludedNodeTypes = [
+      'CreateOpClassStmt', 'CreateOpClassItem', 'CreateAggregateStmt', 'AlterAggregateStmt',
+      'CreateFunctionStmt', 'CreateStmt', 'CreateTypeStmt', 'CreateOpFamilyStmt',
+      'CreateOperatorStmt', 'GrantStmt', 'RevokeStmt'
+    ];
+    
+    const path = context.path || [];
+    for (const node of path) {
+      if (node && typeof node === 'object') {
+        const nodeType = Object.keys(node)[0];
+        if (excludedNodeTypes.includes(nodeType)) {
+          return false;
+        }
+      }
     }
     
     for (const parentType of context.parentNodeTypes) {
-      if (parentType === 'AlterFunctionStmt' || parentType === 'DropStmt') {
+      if (excludedNodeTypes.includes(parentType)) {
+        return false;
+      }
+      if (parentType === 'DropStmt') {
         return false;
       }
     }
     
-    return true;
+    const allowedNodeTypes = [
+      'CommentStmt', 'AlterFunctionStmt', 'AlterOwnerStmt', 'RenameStmt', 'AlterObjectSchemaStmt', 'CreateCastStmt'
+    ];
+    
+    for (const node of path) {
+      if (node && typeof node === 'object') {
+        const nodeType = Object.keys(node)[0];
+        if (allowedNodeTypes.includes(nodeType)) {
+          return true;
+        }
+      }
+    }
+    
+    for (const parentType of context.parentNodeTypes) {
+      if (allowedNodeTypes.includes(parentType)) {
+        return true;
+      }
+    }
+    
+    return false;
   }
 
   private shouldCreateObjfuncargsFromObjargs(context: TransformerContext): boolean {
@@ -1339,23 +1761,35 @@ export class V13ToV14Transformer {
     }
     
     const path = context.path || [];
+    const excludedNodeTypes = [
+      'CreateOpClassStmt', 'CreateOpClassItem', 'CreateAggregateStmt', 'AlterAggregateStmt',
+      'CreateFunctionStmt', 'CreateStmt', 'CreateTypeStmt', 'CreateOpFamilyStmt',
+      'CreateOperatorStmt', 'GrantStmt', 'RevokeStmt'
+    ];
+    
     for (const node of path) {
       if (node && typeof node === 'object') {
         const nodeType = Object.keys(node)[0];
-        if (nodeType === 'CommentStmt' || 
-            nodeType === 'AlterFunctionStmt' ||
-            nodeType === 'AlterOwnerStmt' ||
-            nodeType === 'CreateAggregateStmt' ||
-            nodeType === 'AlterAggregateStmt' ||
-            nodeType === 'CreateFunctionStmt' ||
-            nodeType === 'CreateStmt' ||
-            nodeType === 'CreateTypeStmt' ||
-            nodeType === 'CreateOpClassStmt' ||
-            nodeType === 'CreateOpFamilyStmt' ||
-            nodeType === 'CreateOperatorStmt' ||
-            nodeType === 'GrantStmt' ||
-            nodeType === 'RevokeStmt' ||
-            nodeType === 'RenameStmt') {
+        if (excludedNodeTypes.includes(nodeType)) {
+          return false;
+        }
+      }
+    }
+    
+    for (const parentType of context.parentNodeTypes) {
+      if (excludedNodeTypes.includes(parentType)) {
+        return false;
+      }
+    }
+    
+    const allowedNodeTypes = [
+      'CommentStmt', 'AlterFunctionStmt', 'AlterOwnerStmt', 'RenameStmt', 'AlterObjectSchemaStmt', 'CreateCastStmt'
+    ];
+    
+    for (const node of path) {
+      if (node && typeof node === 'object') {
+        const nodeType = Object.keys(node)[0];
+        if (allowedNodeTypes.includes(nodeType)) {
           return true;
         }
         if (nodeType === 'DropStmt') {
@@ -1365,21 +1799,7 @@ export class V13ToV14Transformer {
     }
     
     for (const parentType of context.parentNodeTypes) {
-      if (parentType === 'CommentStmt' || 
-          parentType === 'AlterFunctionStmt' ||
-          parentType === 'AlterOwnerStmt' ||
-          parentType === 'CreateAggregateStmt' ||
-          parentType === 'AlterAggregateStmt' ||
-          parentType === 'CreateFunctionStmt' ||
-          parentType === 'CreateStmt' ||
-          parentType === 'CreateTypeStmt' ||
-          parentType === 'CreateOpClassStmt' ||
-          parentType === 'CreateOpFamilyStmt' ||
-          parentType === 'CreateOperatorStmt' ||
-          parentType === 'CreateCastStmt' ||
-          parentType === 'GrantStmt' ||
-          parentType === 'RevokeStmt' ||
-          parentType === 'RenameStmt') {
+      if (allowedNodeTypes.includes(parentType)) {
         return true;
       }
       if (parentType === 'DropStmt') {
@@ -1757,6 +2177,12 @@ export class V13ToV14Transformer {
   CreateDomainStmt(node: any, context: TransformerContext): any {
     const result: any = {};
     
+    // Create child context with CreateDomainStmt as parent
+    const childContext: TransformerContext = {
+      ...context,
+      parentNodeTypes: [...(context.parentNodeTypes || []), 'CreateDomainStmt']
+    };
+    
     if (node.domainname !== undefined) {
       result.domainname = Array.isArray(node.domainname)
         ? node.domainname.map((item: any) => this.transform(item as any, context))
@@ -1773,8 +2199,8 @@ export class V13ToV14Transformer {
     
     if (node.constraints !== undefined) {
       result.constraints = Array.isArray(node.constraints)
-        ? node.constraints.map((item: any) => this.transform(item as any, context))
-        : this.transform(node.constraints as any, context);
+        ? node.constraints.map((item: any) => this.transform(item as any, childContext))
+        : this.transform(node.constraints as any, childContext);
     }
     
     return { CreateDomainStmt: result };
@@ -1809,17 +2235,40 @@ export class V13ToV14Transformer {
   }
 
   WithClause(node: PG13.WithClause, context: TransformerContext): any {
+    console.log('WithClause called with:', {
+      ctes: node.ctes,
+      ctesType: typeof node.ctes,
+      isArray: Array.isArray(node.ctes),
+      keys: node.ctes ? Object.keys(node.ctes) : null
+    });
+    
     const result: any = { ...node };
     
     if (node.ctes !== undefined) {
-      if (Array.isArray(node.ctes)) {
+      const shouldConvertToArray = this.shouldConvertCTEsToArray(context);
+      console.log('shouldConvertToArray:', shouldConvertToArray);
+      
+      if (typeof node.ctes === 'object' && node.ctes !== null && !Array.isArray(node.ctes)) {
+        console.log('Converting object to array, shouldConvertToArray:', shouldConvertToArray);
+        if (shouldConvertToArray) {
+          const cteArray = Object.keys(node.ctes)
+            .sort((a, b) => parseInt(a) - parseInt(b))
+            .map(key => this.transform((node.ctes as any)[key], context));
+          console.log('Converted to array:', cteArray);
+          result.ctes = cteArray;
+        } else {
+          console.log('Keeping as object');
+          const transformedCtes: any = {};
+          Object.keys(node.ctes).forEach(key => {
+            transformedCtes[key] = this.transform((node.ctes as any)[key], context);
+          });
+          result.ctes = transformedCtes;
+        }
+      } else if (Array.isArray(node.ctes)) {
+        console.log('Input is already array, transforming items');
         result.ctes = node.ctes.map(item => this.transform(item as any, context));
-      } else if (typeof node.ctes === 'object' && node.ctes !== null) {
-        const cteArray = Object.keys(node.ctes)
-          .sort((a, b) => parseInt(a) - parseInt(b))
-          .map(key => this.transform((node.ctes as any)[key], context));
-        result.ctes = cteArray;
       } else {
+        console.log('Input is neither object nor array, transforming directly');
         result.ctes = this.transform(node.ctes as any, context);
       }
     }
@@ -1833,6 +2282,10 @@ export class V13ToV14Transformer {
     }
     
     return { WithClause: result };
+  }
+
+  private shouldConvertCTEsToArray(context: TransformerContext): boolean {
+    return true;
   }
 
   AlterSeqStmt(node: any, context: TransformerContext): any {
@@ -2065,5 +2518,80 @@ export class V13ToV14Transformer {
     return { CreatePolicyStmt: result };
   }
 
+  RenameStmt(node: any, context: TransformerContext): any {
+    const result: any = {};
+    
+    // Create child context with RenameStmt as parent
+    const childContext: TransformerContext = {
+      ...context,
+      parentNodeTypes: [...(context.parentNodeTypes || []), 'RenameStmt']
+    };
+    
+    if (node.renameType !== undefined) {
+      result.renameType = node.renameType;
+    }
+    
+    if (node.relationType !== undefined) {
+      result.relationType = node.relationType;
+    }
+    
+    if (node.relation !== undefined) {
+      result.relation = this.transform(node.relation as any, childContext);
+    }
+    
+    if (node.object !== undefined) {
+      result.object = this.transform(node.object as any, childContext);
+    }
+    
+    if (node.subname !== undefined) {
+      result.subname = node.subname;
+    }
+    
+    if (node.newname !== undefined) {
+      result.newname = node.newname;
+    }
+    
+    if (node.behavior !== undefined) {
+      result.behavior = node.behavior;
+    }
+    
+    if (node.missing_ok !== undefined) {
+      result.missing_ok = node.missing_ok;
+    }
+    
+    return { RenameStmt: result };
+  }
+
+  AlterObjectSchemaStmt(node: any, context: TransformerContext): any {
+    const result: any = {};
+    
+    // Create child context with AlterObjectSchemaStmt as parent
+    const childContext: TransformerContext = {
+      ...context,
+      parentNodeTypes: [...(context.parentNodeTypes || []), 'AlterObjectSchemaStmt']
+    };
+    
+    if (node.objectType !== undefined) {
+      result.objectType = node.objectType;
+    }
+    
+    if (node.relation !== undefined) {
+      result.relation = this.transform(node.relation as any, childContext);
+    }
+    
+    if (node.object !== undefined) {
+      result.object = this.transform(node.object as any, childContext);
+    }
+    
+    if (node.newschema !== undefined) {
+      result.newschema = node.newschema;
+    }
+    
+    if (node.missing_ok !== undefined) {
+      result.missing_ok = node.missing_ok;
+    }
+    
+    return { AlterObjectSchemaStmt: result };
+  }
 
 }
