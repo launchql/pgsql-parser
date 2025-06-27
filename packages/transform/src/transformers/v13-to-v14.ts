@@ -87,8 +87,29 @@ export class V13ToV14Transformer {
       for (const [key, value] of Object.entries(nodeData)) {
         if (key === 'ctes' && Array.isArray(value)) {
           transformedData[key] = value.map(item => this.transform(item as any, context));
-        } else if (key === 'objname' && typeof value === 'object' && value !== null && !Array.isArray(value)) {
-          transformedData[key] = this.transform(value as any, context);
+        } else if (key === 'objname' && typeof value === 'object' && value !== null) {
+          console.log('transformGenericNode: Processing objname:', {
+            isArray: Array.isArray(value),
+            value: JSON.stringify(value, null, 2),
+            keys: Object.keys(value)
+          });
+          if (Array.isArray(value)) {
+            console.log('transformGenericNode: objname is array, transforming items');
+            transformedData[key] = value.map(item => this.transform(item as any, context));
+          } else {
+            const keys = Object.keys(value);
+            const isNumericKeysObject = keys.every(k => /^\d+$/.test(k));
+            console.log('transformGenericNode: objname is object, isNumericKeysObject:', isNumericKeysObject, 'keys:', keys);
+            if (isNumericKeysObject && keys.length > 0) {
+              const sortedKeys = keys.sort((a, b) => parseInt(a) - parseInt(b));
+              console.log('transformGenericNode: Converting numeric keys object to array, sortedKeys:', sortedKeys);
+              transformedData[key] = sortedKeys.map(k => this.transform((value as any)[k], context));
+            } else {
+              // Regular object transformation
+              console.log('transformGenericNode: Regular object transformation for objname');
+              transformedData[key] = this.transform(value as any, context);
+            }
+          }
         } else if (Array.isArray(value)) {
           transformedData[key] = value.map(item => this.transform(item as any, context));
         } else if (typeof value === 'object' && value !== null) {
