@@ -184,11 +184,17 @@ export class V13ToV14Transformer {
           }
         }
         
-        if (this.isInCreateDomainContext(context) && funcname.length >= 2) {
+        // Handle pg_catalog prefix removal for specific functions
+        if (funcname.length >= 2) {
           const firstElement = funcname[0];
-          if (firstElement && typeof firstElement === 'object' && 'String' in firstElement) {
+          const secondElement = funcname[1];
+          if (firstElement && typeof firstElement === 'object' && 'String' in firstElement &&
+              secondElement && typeof secondElement === 'object' && 'String' in secondElement) {
             const prefix = firstElement.String.str || firstElement.String.sval;
-            if (prefix === 'pg_catalog') {
+            const functionName = secondElement.String.str || secondElement.String.sval;
+            
+            if (prefix === 'pg_catalog' && 
+                (functionName === 'substring' || this.isInCreateDomainContext(context))) {
               funcname = funcname.slice(1);
             }
           }
@@ -916,8 +922,11 @@ export class V13ToV14Transformer {
       return 'COERCE_EXPLICIT_CALL';
     }
     
-    // Handle substring function specifically - it should use SQL syntax in most contexts
+    // Handle substring function specifically - context-dependent behavior
     if (funcname.toLowerCase() === 'substring') {
+      if (this.isInConstraintContext(context) || this.isInCreateDomainContext(context)) {
+        return 'COERCE_EXPLICIT_CALL';
+      }
       return 'COERCE_SQL_SYNTAX';
     }
 
@@ -944,7 +953,6 @@ export class V13ToV14Transformer {
     if (sqlSyntaxFunctions.includes(funcname.toLowerCase())) {
       return 'COERCE_SQL_SYNTAX';
     }
-    
     return 'COERCE_EXPLICIT_CALL';
   }
 
@@ -968,7 +976,10 @@ export class V13ToV14Transformer {
     const result: any = {};
     
     if (node.name !== undefined) {
-      result.name = node.name;
+      const isInDropContext = context.parentNodeTypes?.includes('DropStmt');
+      if (!isInDropContext) {
+        result.name = node.name;
+      }
     }
     
     if (node.argType !== undefined) {
