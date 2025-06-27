@@ -1030,8 +1030,12 @@ export class V13ToV14Transformer {
     }
     
     if (node.mode !== undefined) {
-      if (node.mode === "FUNC_PARAM_VARIADIC") {
-        result.mode = "FUNC_PARAM_VARIADIC"; // Keep variadic parameters as variadic
+      const isInDropContext = context.parentNodeTypes?.includes('DropStmt');
+      
+      if (isInDropContext) {
+        result.mode = "FUNC_PARAM_DEFAULT";
+      } else if (node.mode === "FUNC_PARAM_VARIADIC") {
+        result.mode = "FUNC_PARAM_VARIADIC"; // Keep variadic parameters as variadic in non-drop contexts
       } else if (node.mode === "FUNC_PARAM_IN") {
         result.mode = "FUNC_PARAM_DEFAULT";
       } else {
@@ -2064,26 +2068,30 @@ export class V13ToV14Transformer {
     
     let mode = "FUNC_PARAM_DEFAULT";
     
-    // Check if this is a variadic parameter type (anyarray, anycompatiblearray, etc.)
-    if (this.isVariadicParameterType(argType)) {
-      mode = "FUNC_PARAM_VARIADIC";
-    }
+    const isInDropContext = context?.parentNodeTypes?.includes('DropStmt');
     
-    if (argType && argType.names && Array.isArray(argType.names)) {
-      const typeName = argType.names[argType.names.length - 1];
-      if (typeName && typeName.String && typeName.String.str === 'anyarray') {
+    if (!isInDropContext) {
+      // Check if this is a variadic parameter type (anyarray, anycompatiblearray, etc.)
+      if (this.isVariadicParameterType(argType)) {
         mode = "FUNC_PARAM_VARIADIC";
       }
-    }
-    
-    // Also check for VARIADIC context in aggregate functions
-    if (context && context.parentNodeTypes) {
-      const isAggregateContext = context.parentNodeTypes.includes('RenameStmt') && 
-                                (context as any).renameObjectType === 'OBJECT_AGGREGATE';
-      if (isAggregateContext && argType && argType.names && Array.isArray(argType.names)) {
+      
+      if (argType && argType.names && Array.isArray(argType.names)) {
         const typeName = argType.names[argType.names.length - 1];
-        if (typeName && typeName.String && typeName.String.str === 'any') {
+        if (typeName && typeName.String && typeName.String.str === 'anyarray') {
           mode = "FUNC_PARAM_VARIADIC";
+        }
+      }
+      
+      // Also check for VARIADIC context in aggregate functions
+      if (context && context.parentNodeTypes) {
+        const isAggregateContext = context.parentNodeTypes.includes('RenameStmt') && 
+                                  (context as any).renameObjectType === 'OBJECT_AGGREGATE';
+        if (isAggregateContext && argType && argType.names && Array.isArray(argType.names)) {
+          const typeName = argType.names[argType.names.length - 1];
+          if (typeName && typeName.String && typeName.String.str === 'any') {
+            mode = "FUNC_PARAM_VARIADIC";
+          }
         }
       }
     }
