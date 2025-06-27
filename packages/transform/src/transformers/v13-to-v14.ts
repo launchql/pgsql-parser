@@ -1883,7 +1883,7 @@ export class V13ToV14Transformer {
 
   private shouldPreserveObjnameAsObject(context: TransformerContext): boolean {
     if (!context.parentNodeTypes || context.parentNodeTypes.length === 0) {
-      return true; // Default to preserving objects
+      return false; // Default to converting to arrays for PG14
     }
     
     // For CreateOpClassItem contexts, convert objname to arrays (PG14 expects arrays)
@@ -1893,7 +1893,7 @@ export class V13ToV14Transformer {
     
     for (const parentType of context.parentNodeTypes) {
       if (convertToArrayContexts.includes(parentType)) {
-        return false; // Convert to array for these contexts
+        return false; // Convert to array for these contexts (PG14 format)
       }
     }
     
