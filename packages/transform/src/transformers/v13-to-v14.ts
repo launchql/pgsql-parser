@@ -1004,7 +1004,7 @@ export class V13ToV14Transformer {
       const typeName = argType.names[argType.names.length - 1];
       if (typeName && typeName.String && typeName.String.str) {
         const typeStr = typeName.String.str.toLowerCase();
-        return typeStr === 'variadic';
+        return typeStr === 'anyarray';
       }
     }
     
@@ -1030,11 +1030,9 @@ export class V13ToV14Transformer {
     }
     
     if (node.mode !== undefined) {
-      if (node.mode.toString() === "FUNC_PARAM_DEFAULT") {
-        // Check if this should be FUNC_PARAM_VARIADIC based on context
-        const isVariadicType = this.isVariadicParameterType(node.argType);
-        result.mode = isVariadicType ? "FUNC_PARAM_VARIADIC" : "FUNC_PARAM_DEFAULT";
-      } else if (node.mode.toString() === "FUNC_PARAM_IN") {
+      if (node.mode === "FUNC_PARAM_VARIADIC") {
+        result.mode = "FUNC_PARAM_DEFAULT";
+      } else if (node.mode === "FUNC_PARAM_IN") {
         result.mode = "FUNC_PARAM_DEFAULT";
       } else {
         result.mode = node.mode;
