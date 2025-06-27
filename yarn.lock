@@ -4561,10 +4561,10 @@ libnpmpublish@7.1.4:
     sigstore "^1.4.0"
     ssri "^10.0.1"
 
-libpg-query@17.5.3:
-  version "17.5.3"
-  resolved "https://registry.yarnpkg.com/libpg-query/-/libpg-query-17.5.3.tgz#39823a52fa85864dc1662b9e1554f65de593d16f"
-  integrity sha512-vAXQNAiBH1CGFNoi7dNxF3EKLI2QI7zEuSErHepY1Qam75zbYANPtETf6N2306UaB/Hr9l2tmKHkS/ZMwfUgcw==
+libpg-query@17.5.5:
+  version "17.5.5"
+  resolved "https://registry.yarnpkg.com/libpg-query/-/libpg-query-17.5.5.tgz#6446641f0a2dc0ec12fccb1bbd14374ae191cece"
+  integrity sha512-vzD5sjv1Kqf5EtoxzO1pcL43Y5k9o84wmPWAxomhhBS1crEgLlkwuVi28aSE5SGz7UZOu+KqO5eLmGPt1ySGRg==
   dependencies:
     "@pgsql/types" "^17.6.0"
 
