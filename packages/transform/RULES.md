@@ -147,6 +147,32 @@ async function testTransformer() {
 4. **Test Framework Alignment**: Debug scripts must use the same parser as the actual test framework
 5. **ACU Conservation**: Using the correct tools from the start prevents wasted debugging cycles
 
+## Critical: Parser Methods Are Async
+
+**⚠️ The @pgsql/parser's `parse()` method is async and returns a Promise.**
+
+You MUST use `await` or `.then()` when calling parser methods:
+
+```javascript
+// ❌ WRONG - returns unresolved Promise, not AST
+const { Parser } = require('@pgsql/parser');
+const parser = new Parser(13);
+const result = parser.parse(sql, { version: '13' }); // Missing await!
+
+// ✅ CORRECT - returns actual AST structure  
+const { Parser } = require('@pgsql/parser');
+const parser = new Parser(13);
+const result = await parser.parse(sql, { version: '13' }); // With await
+```
+
+**Impact on Transformers:** If parser calls are not properly awaited, the transformer will receive empty objects `{}` instead of AST structures, causing visitor pattern methods (like `FuncCall`) to never be invoked.
+
+**Common Symptoms:**
+- Transformer methods like `FuncCall` never get called
+- Empty AST objects `{}` instead of proper structures
+- Visitor pattern appears broken but works with mock data
+- Tests fail because transformations aren't applied
+
 ## Summary
 
-Always use `@pgsql/parser` for multi-version PostgreSQL AST parsing in the transform package. This is the only way to get accurate version-specific results and build working transformers.
+Always use `@pgsql/parser` for multi-version PostgreSQL AST parsing in the transform package. This is the only way to get accurate version-specific results and build working transformers. Remember that all parser methods are async and must be awaited.
