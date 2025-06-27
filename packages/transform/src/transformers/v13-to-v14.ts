@@ -1012,7 +1012,6 @@ export class V13ToV14Transformer {
   }
 
 
-
   private isVariadicParameterType(argType: any): boolean {
     if (!argType) return false;
     
@@ -1808,6 +1807,8 @@ export class V13ToV14Transformer {
 
   ObjectWithArgs(node: PG13.ObjectWithArgs, context: TransformerContext): any {
     const result: any = { ...node };
+    
+
 
     if (result.objname !== undefined) {
       if (Array.isArray(result.objname)) {
@@ -1848,6 +1849,7 @@ export class V13ToV14Transformer {
     const shouldCreateObjfuncargs = this.shouldCreateObjfuncargs(context);
     const shouldPreserveObjfuncargs = this.shouldPreserveObjfuncargs(context);
     const shouldCreateObjfuncargsFromObjargs = this.shouldCreateObjfuncargsFromObjargs(context);
+    
     
     let createdFromObjargs = false;
     
@@ -2149,23 +2151,6 @@ export class V13ToV14Transformer {
       mode: mode
     };
     
-    // Parameter names are crucial for DROP FUNCTION to identify overloaded functions
-    if (typeNameNode) {
-      if (typeNameNode.name) {
-        functionParam.name = typeNameNode.name;
-      } else if (typeNameNode.String && typeNameNode.String.str) {
-        functionParam.name = typeNameNode.String.str;
-      } else if (typeNameNode.names && Array.isArray(typeNameNode.names) && typeNameNode.names.length > 0) {
-        // Check if the first element might be a parameter name (before the type)
-        const firstElement = typeNameNode.names[0];
-        if (firstElement && firstElement.String && firstElement.String.str) {
-          const potentialName = firstElement.String.str;
-          if (!potentialName.includes('.') && potentialName.length < 20) {
-            functionParam.name = potentialName;
-          }
-        }
-      }
-    }
     
     return {
       FunctionParameter: functionParam
