@@ -29,7 +29,8 @@
     "lint": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch",
-    "kitchen-sink": "ts-node scripts/make-kitchen-sink.ts"
+    "kitchen-sink": "ts-node scripts/make-kitchen-sink.ts",
+    "test:ast": "ts-node scripts/test-ast.ts"
   },
   "devDependencies": {
     "@pgsql/parser": "^1.0.2",
