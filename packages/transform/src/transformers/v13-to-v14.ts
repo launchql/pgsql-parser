@@ -977,8 +977,13 @@ export class V13ToV14Transformer {
   FunctionParameter(node: PG13.FunctionParameter, context: TransformerContext): any {
     const result: any = {};
     
+    // Only preserve name field if not in DropStmt context
     if (node.name !== undefined) {
-      result.name = node.name;
+      const parentNodeTypes = context.parentNodeTypes || [];
+      const isInDropStmt = parentNodeTypes.includes('DropStmt');
+      if (!isInDropStmt) {
+        result.name = node.name;
+      }
     }
     
     if (node.argType !== undefined) {
