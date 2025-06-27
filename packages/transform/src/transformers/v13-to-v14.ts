@@ -2150,13 +2150,22 @@ export class V13ToV14Transformer {
       mode: mode
     };
     
-    // In DROP FUNCTION contexts, parameter names should be preserved to identify overloaded functions
-    const shouldAddParameterName = context && context.parentNodeTypes && 
-      (context.parentNodeTypes.includes('DropStmt') || 
-       !context.parentNodeTypes.includes('DropStmt'));
-    
-    if (typeNameNode && typeNameNode.name && shouldAddParameterName) {
-      functionParam.name = typeNameNode.name;
+    // Parameter names are crucial for DROP FUNCTION to identify overloaded functions
+    if (typeNameNode) {
+      if (typeNameNode.name) {
+        functionParam.name = typeNameNode.name;
+      } else if (typeNameNode.String && typeNameNode.String.str) {
+        functionParam.name = typeNameNode.String.str;
+      } else if (typeNameNode.names && Array.isArray(typeNameNode.names) && typeNameNode.names.length > 0) {
+        // Check if the first element might be a parameter name (before the type)
+        const firstElement = typeNameNode.names[0];
+        if (firstElement && firstElement.String && firstElement.String.str) {
+          const potentialName = firstElement.String.str;
+          if (!potentialName.includes('.') && potentialName.length < 20) {
+            functionParam.name = potentialName;
+          }
+        }
+      }
     }
     
     return {
