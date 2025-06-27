@@ -173,6 +173,39 @@ const result = await parser.parse(sql, { version: '13' }); // With await
 - Visitor pattern appears broken but works with mock data
 - Tests fail because transformations aren't applied
 
+## Using Enums Package for Op Codes and Enum Handling
+
+When working with PG13->PG14 transformations, the enums packages in `src/13/` and `src/14/` directories are essential for handling op codes and enum value differences:
+
+### Key Enum Differences Between PG13 and PG14
+
+- **FunctionParameterMode**: PG14 added `FUNC_PARAM_DEFAULT`
+- **CoercionForm**: PG14 added `COERCE_SQL_SYNTAX` 
+- **TableLikeOption**: PG14 added `CREATE_TABLE_LIKE_COMPRESSION` at position 1, shifting other values
+- **RoleSpecType**: PG14 added `ROLESPEC_CURRENT_ROLE` at position 1, shifting other values
+
+### Using Enum Utilities
+
+```typescript
+import * as PG13Enums from '../13/enums';
+import * as PG14Enums from '../14/enums';
+
+// When you see integers or strings shifting that look like op codes or enums,
+// check the enum definitions to understand the mapping:
+const pg13TableLikeOptions = PG13Enums.TableLikeOption;
+const pg14TableLikeOptions = PG14Enums.TableLikeOption;
+
+// Use enum-to-int.ts and enum-to-str.ts utilities for conversion if needed
+```
+
+### Common Enum-Related Test Failures
+
+- **TableLikeOption values**: PG13 value 6 maps to PG14 value 12 due to compression option insertion
+- **Function parameter modes**: `FUNC_PARAM_VARIADIC` vs `FUNC_PARAM_DEFAULT` differences
+- **Function formats**: `COERCE_EXPLICIT_CALL` vs `COERCE_SQL_SYNTAX` handling
+
+Always consult the enum files when debugging transformation issues involving numeric or string values that appear to be op codes or enum constants.
+
 ## Summary
 
 Always use `@pgsql/parser` for multi-version PostgreSQL AST parsing in the transform package. This is the only way to get accurate version-specific results and build working transformers. Remember that all parser methods are async and must be awaited.
