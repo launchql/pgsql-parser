@@ -764,6 +764,12 @@ export class V13ToV14Transformer {
             result.name.objname = sortedKeys.map(key => this.transform(objname[key], childContext));
           }
         }
+        
+        if (result.name.objargs && !result.name.objfuncargs) {
+          result.name.objfuncargs = Array.isArray(result.name.objargs)
+            ? result.name.objargs.map((arg: any) => this.createFunctionParameterFromTypeName(arg))
+            : [this.createFunctionParameterFromTypeName(result.name.objargs)];
+        }
       }
     }
     
