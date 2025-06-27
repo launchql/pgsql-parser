@@ -765,8 +765,8 @@ export class V13ToV14Transformer {
           
           if (!isOperator) {
             result.name.objfuncargs = Array.isArray(result.name.objargs)
-              ? result.name.objargs.map((arg: any) => this.createFunctionParameterFromTypeName(arg))
-              : [this.createFunctionParameterFromTypeName(result.name.objargs)];
+              ? result.name.objargs.map((arg: any) => this.createFunctionParameterFromTypeName(arg, context))
+              : [this.createFunctionParameterFromTypeName(result.name.objargs, context)];
           }
         }
       }
@@ -977,13 +977,8 @@ export class V13ToV14Transformer {
   FunctionParameter(node: PG13.FunctionParameter, context: TransformerContext): any {
     const result: any = {};
     
-    // Only preserve name field if not in DropStmt context
     if (node.name !== undefined) {
-      const parentNodeTypes = context.parentNodeTypes || [];
-      const isInDropStmt = parentNodeTypes.includes('DropStmt');
-      if (!isInDropStmt) {
-        result.name = node.name;
-      }
+      result.name = node.name;
     }
     
     if (node.argType !== undefined) {
@@ -1035,8 +1030,8 @@ export class V13ToV14Transformer {
           
           // Create objfuncargs from objargs for PG14
           funcResult.objfuncargs = Array.isArray((node.func as any).objargs)
-            ? (node.func as any).objargs.map((arg: any) => this.createFunctionParameterFromTypeName(arg))
-            : [this.createFunctionParameterFromTypeName((node.func as any).objargs)];
+            ? (node.func as any).objargs.map((arg: any) => this.createFunctionParameterFromTypeName(arg, childContext))
+            : [this.createFunctionParameterFromTypeName((node.func as any).objargs, childContext)];
         }
         
         result.func = funcResult;
@@ -1793,8 +1788,8 @@ export class V13ToV14Transformer {
       }
       
       result.objfuncargs = Array.isArray(result.objargs)
-        ? result.objargs.map((arg: any) => this.createFunctionParameterFromTypeName(arg))
-        : [this.createFunctionParameterFromTypeName(result.objargs)];
+        ? result.objargs.map((arg: any) => this.createFunctionParameterFromTypeName(arg, context))
+        : [this.createFunctionParameterFromTypeName(result.objargs, context)];
       
     } else if (shouldCreateObjfuncargs) {
       if (context.parentNodeTypes && context.parentNodeTypes.includes('AlterFunctionStmt')) {
@@ -2043,11 +2038,8 @@ export class V13ToV14Transformer {
       mode: "FUNC_PARAM_DEFAULT"
     };
     
-    if (context && context.parentNodeTypes && !context.parentNodeTypes.includes('DropStmt')) {
-      // Only add name if we have one and we're not in a DropStmt context
-      if (typeNameNode && typeNameNode.name) {
-        functionParam.name = typeNameNode.name;
-      }
+    if (typeNameNode && typeNameNode.name) {
+      functionParam.name = typeNameNode.name;
     }
     
     return {
