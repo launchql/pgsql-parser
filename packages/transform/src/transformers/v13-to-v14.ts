@@ -752,9 +752,14 @@ export class V13ToV14Transformer {
         }
         
         if (result.name.objargs && !result.name.objfuncargs) {
-          result.name.objfuncargs = Array.isArray(result.name.objargs)
-            ? result.name.objargs.map((arg: any) => this.createFunctionParameterFromTypeName(arg))
-            : [this.createFunctionParameterFromTypeName(result.name.objargs)];
+          // Check if this is an operator by looking at the objname
+          const isOperator = this.isOperatorName(result.name.objname);
+          
+          if (!isOperator) {
+            result.name.objfuncargs = Array.isArray(result.name.objargs)
+              ? result.name.objargs.map((arg: any) => this.createFunctionParameterFromTypeName(arg))
+              : [this.createFunctionParameterFromTypeName(result.name.objargs)];
+          }
         }
       }
     }
@@ -888,6 +893,26 @@ export class V13ToV14Transformer {
     return null;
   }
 
+  private isOperatorName(objname: any): boolean {
+    if (!objname || !Array.isArray(objname) || objname.length === 0) {
+      return false;
+    }
+    
+    const firstElement = objname[0];
+    if (!firstElement || typeof firstElement !== 'object' || !('String' in firstElement)) {
+      return false;
+    }
+    
+    const name = firstElement.String?.str;
+    if (!name || typeof name !== 'string') {
+      return false;
+    }
+    
+    // Check if it's an operator symbol (contains operator characters)
+    const operatorChars = /[+\-*/<>=!~@#%^&|`?]/;
+    return operatorChars.test(name);
+  }
+
   private getFuncformatValue(node: any, context: TransformerContext): string {
     const funcname = this.getFunctionName(node);
     
@@ -1003,7 +1028,12 @@ export class V13ToV14Transformer {
     }
     
     if (node.object !== undefined) {
-      const transformedObject = this.transform(node.object as any, context);
+      const childContext = {
+        ...context,
+        alterOwnerObjectType: node.objectType
+      };
+      
+      const transformedObject = this.transform(node.object as any, childContext);
       
       if (node.objectType === 'OBJECT_FUNCTION' && transformedObject && 
           typeof transformedObject === 'object' && 'ObjectWithArgs' in transformedObject) {
@@ -1844,8 +1874,41 @@ export class V13ToV14Transformer {
       return false;
     }
     
-    
+    // Check if this is an operator context - operators should NOT get objfuncargs
     const path = context.path || [];
+    
+    // Check if we're in any statement with OBJECT_OPERATOR
+    if ((context as any).alterOwnerObjectType === 'OBJECT_OPERATOR' ||
+        (context as any).alterObjectSchemaObjectType === 'OBJECT_OPERATOR' ||
+        (context as any).renameObjectType === 'OBJECT_OPERATOR') {
+      return false;
+    }
+    for (const node of path) {
+      if (node && typeof node === 'object') {
+        const nodeData = Object.values(node)[0] as any;
+        if (nodeData && (nodeData.objtype === 'OBJECT_OPERATOR' || 
+                         nodeData.objectType === 'OBJECT_OPERATOR' ||
+                         nodeData.renameType === 'OBJECT_OPERATOR')) {
+          return false;
+        }
+        if (nodeData && nodeData.objname && Array.isArray(nodeData.objname)) {
+          // Check if objname contains operator symbols - but only if it's actually an operator context
+          const objnameStr = nodeData.objname.map((item: any) => {
+            if (item && typeof item === 'object' && item.String && item.String.str) {
+              return item.String.str;
+            }
+            return '';
+          }).join('');
+          if (objnameStr.match(/^[@#~!%^&*+=<>?|-]+$/) && 
+              (nodeData.objtype === 'OBJECT_OPERATOR' || 
+               nodeData.objectType === 'OBJECT_OPERATOR' ||
+               nodeData.renameType === 'OBJECT_OPERATOR')) {
+            return false;
+          }
+        }
+      }
+    }
+    
     const excludedNodeTypes = [
       'CreateOpClassStmt', 'CreateAggregateStmt', 'AlterAggregateStmt',
       'CreateFunctionStmt', 'CreateStmt', 'CreateTypeStmt', 'CreateOpFamilyStmt',
@@ -1868,7 +1931,7 @@ export class V13ToV14Transformer {
     }
     
     const allowedNodeTypes = [
-      'CommentStmt', 'AlterFunctionStmt', 'AlterOwnerStmt', 'RenameStmt', 'AlterObjectSchemaStmt', 'CreateCastStmt', 'AlterOpFamilyStmt', 'CreateOpClassItem'
+      'CommentStmt', 'AlterFunctionStmt', 'RenameStmt', 'AlterOwnerStmt', 'AlterObjectSchemaStmt', 'CreateCastStmt', 'AlterOpFamilyStmt', 'CreateOpClassItem'
     ];
     
     for (const node of path) {
@@ -2637,7 +2700,8 @@ export class V13ToV14Transformer {
     // Create child context with RenameStmt as parent
     const childContext: TransformerContext = {
       ...context,
-      parentNodeTypes: [...(context.parentNodeTypes || []), 'RenameStmt']
+      parentNodeTypes: [...(context.parentNodeTypes || []), 'RenameStmt'],
+      renameObjectType: node.renameType
     };
     
     if (node.renameType !== undefined) {
@@ -2681,7 +2745,8 @@ export class V13ToV14Transformer {
     // Create child context with AlterObjectSchemaStmt as parent
     const childContext: TransformerContext = {
       ...context,
-      parentNodeTypes: [...(context.parentNodeTypes || []), 'AlterObjectSchemaStmt']
+      parentNodeTypes: [...(context.parentNodeTypes || []), 'AlterObjectSchemaStmt'],
+      alterObjectSchemaObjectType: node.objectType
     };
     
     if (node.objectType !== undefined) {
