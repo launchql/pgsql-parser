@@ -193,8 +193,7 @@ export class V13ToV14Transformer {
             const prefix = firstElement.String.str || firstElement.String.sval;
             const functionName = secondElement.String.str || secondElement.String.sval;
             
-            if (prefix === 'pg_catalog' && 
-                (functionName === 'substring' || this.isInCreateDomainContext(context))) {
+            if (prefix === 'pg_catalog' && this.isInCreateDomainContext(context)) {
               funcname = funcname.slice(1);
             }
           }
@@ -922,12 +921,52 @@ export class V13ToV14Transformer {
       return 'COERCE_EXPLICIT_CALL';
     }
     
-    // Handle substring function specifically - context-dependent behavior
+    // Handle substring function specifically - depends on pg_catalog prefix
     if (funcname.toLowerCase() === 'substring') {
+      // Check if the function has pg_catalog prefix by examining the node
+      if (node && node.funcname && Array.isArray(node.funcname) && node.funcname.length >= 2) {
+        const firstElement = node.funcname[0];
+        if (firstElement && typeof firstElement === 'object' && 'String' in firstElement) {
+          const prefix = firstElement.String.str || firstElement.String.sval;
+          if (prefix === 'pg_catalog') {
+            return 'COERCE_SQL_SYNTAX';
+          }
+        }
+      }
       if (this.isInConstraintContext(context) || this.isInCreateDomainContext(context)) {
         return 'COERCE_EXPLICIT_CALL';
       }
       return 'COERCE_SQL_SYNTAX';
+    }
+
+    // Handle ltrim function specifically - depends on pg_catalog prefix
+    if (funcname.toLowerCase() === 'ltrim') {
+      // Check if the function has pg_catalog prefix by examining the node
+      if (node && node.funcname && Array.isArray(node.funcname) && node.funcname.length >= 2) {
+        const firstElement = node.funcname[0];
+        if (firstElement && typeof firstElement === 'object' && 'String' in firstElement) {
+          const prefix = firstElement.String.str || firstElement.String.sval;
+          if (prefix === 'pg_catalog') {
+            return 'COERCE_SQL_SYNTAX';
+          }
+        }
+      }
+      return 'COERCE_EXPLICIT_CALL';
+    }
+
+    // Handle btrim function specifically - depends on pg_catalog prefix
+    if (funcname.toLowerCase() === 'btrim') {
+      // Check if the function has pg_catalog prefix by examining the node
+      if (node && node.funcname && Array.isArray(node.funcname) && node.funcname.length >= 2) {
+        const firstElement = node.funcname[0];
+        if (firstElement && typeof firstElement === 'object' && 'String' in firstElement) {
+          const prefix = firstElement.String.str || firstElement.String.sval;
+          if (prefix === 'pg_catalog') {
+            return 'COERCE_SQL_SYNTAX';
+          }
+        }
+      }
+      return 'COERCE_EXPLICIT_CALL';
     }
 
     
@@ -1721,6 +1760,11 @@ export class V13ToV14Transformer {
         return options;
       }
       
+      // Transform specific enum values from PG13 to PG14
+      if (options === 6) {
+        return 12;
+      }
+      
       return options;
     }
     
@@ -2015,7 +2059,11 @@ export class V13ToV14Transformer {
       mode: "FUNC_PARAM_DEFAULT"
     };
     
-    if (typeNameNode && typeNameNode.name) {
+    const shouldAddParameterName = context && context.parentNodeTypes && 
+      !context.parentNodeTypes.includes('DropStmt');
+    
+    
+    if (typeNameNode && typeNameNode.name && shouldAddParameterName) {
       functionParam.name = typeNameNode.name;
     }
     
