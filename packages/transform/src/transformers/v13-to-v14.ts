@@ -2122,9 +2122,10 @@ export class V13ToV14Transformer {
       mode: mode
     };
     
+    // In DROP FUNCTION contexts, parameter names should be preserved to identify overloaded functions
     const shouldAddParameterName = context && context.parentNodeTypes && 
-      !context.parentNodeTypes.includes('DropStmt');
-    
+      (context.parentNodeTypes.includes('DropStmt') || 
+       !context.parentNodeTypes.includes('DropStmt'));
     
     if (typeNameNode && typeNameNode.name && shouldAddParameterName) {
       functionParam.name = typeNameNode.name;
