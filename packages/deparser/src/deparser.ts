@@ -378,7 +378,7 @@ export class Deparser implements DeparserVisitor {
       if (context.isPretty()) {
         if (targetList.length === 1) {
           const targetNode = targetList[0] as Node;
-          const target = this.visit(targetNode, context.spawn('SelectStmt', { select: true, indentLevel: context.indentLevel + 1 }));
+          const target = this.visit(targetNode, context.spawn('SelectStmt', { select: true }));
 
           // Check if single target is complex - if so, use multiline format
           if (this.isComplexSelectTarget(targetNode)) {
@@ -394,11 +394,11 @@ export class Deparser implements DeparserVisitor {
         } else {
           const targetStrings = targetList
             .map(e => {
-              const targetStr = this.visit(e as Node, context.spawn('SelectStmt', { select: true, indentLevel: context.indentLevel + 1 }));
+              const targetStr = this.visit(e as Node, context.spawn('SelectStmt', { select: true }));
               if (this.containsMultilineStringLiteral(targetStr)) {
                 return targetStr;
               }
-              return context.indentToCurrentLevel(targetStr);
+              return context.indent(targetStr);
             });
           const formattedTargets = targetStrings.join(',' + context.newline());
           output.push('SELECT' + distinctPart);
@@ -428,12 +428,11 @@ export class Deparser implements DeparserVisitor {
     if (node.whereClause) {
       if (context.isPretty()) {
         output.push('WHERE');
-        const whereContext = context.spawn('SelectStmt', { indentLevel: context.indentLevel + 1 });
-        const whereExpr = this.visit(node.whereClause as Node, whereContext);
+        const whereExpr = this.visit(node.whereClause as Node, context.spawn('SelectStmt'));
         const lines = whereExpr.split(context.newline());
         const indentedLines = lines.map((line, index) => {
           if (index === 0) {
-            return context.indentToCurrentLevel(line);
+            return context.indent(line);
           }
           return line;
         });
@@ -455,7 +454,7 @@ export class Deparser implements DeparserVisitor {
           if (this.containsMultilineStringLiteral(tuple)) {
             return tuple;
           }
-          return context.indent(tuple);
+          return context.indentToCurrentLevel(tuple);
         });
         output.push(indentedTuples.join(',\n'));
       } else {
@@ -477,7 +476,7 @@ export class Deparser implements DeparserVisitor {
             if (this.containsMultilineStringLiteral(groupStr)) {
               return groupStr;
             }
-            return context.indent(groupStr);
+            return context.indentToCurrentLevel(groupStr);
           })
           .join(',' + context.newline());
         output.push('GROUP BY');
@@ -498,7 +497,7 @@ export class Deparser implements DeparserVisitor {
         if (this.containsMultilineStringLiteral(havingStr)) {
           output.push(havingStr);
         } else {
-          output.push(context.indent(havingStr));
+          output.push(context.indentToCurrentLevel(havingStr));
         }
       } else {
         output.push('HAVING');
@@ -524,7 +523,7 @@ export class Deparser implements DeparserVisitor {
             if (this.containsMultilineStringLiteral(sortStr)) {
               return sortStr;
             }
-            return context.indent(sortStr);
+            return context.indentToCurrentLevel(sortStr);
           })
           .join(',' + context.newline());
         output.push('ORDER BY');
@@ -950,7 +949,7 @@ export class Deparser implements DeparserVisitor {
 
       if (context.isPretty()) {
         // Always format columns in multiline parentheses for pretty printing
-        const indentedColumns = columnNames.map(col => context.indent(col));
+        const indentedColumns = columnNames.map(col => context.indentToCurrentLevel(col));
         output.push('(\n' + indentedColumns.join(',\n') + '\n)');
       } else {
         output.push(context.parens(columnNames.join(', ')));
@@ -1179,7 +1178,7 @@ export class Deparser implements DeparserVisitor {
           if (this.containsMultilineStringLiteral(cteStr)) {
             return prefix + cteStr;
           }
-          return prefix + context.indent(cteStr);
+          return prefix + context.indentToCurrentLevel(cteStr);
         });
         output.push(cteStrings.join(''));
       } else {
@@ -1283,7 +1282,7 @@ export class Deparser implements DeparserVisitor {
     switch (boolop) {
       case 'AND_EXPR':
         if (context.isPretty() && args.length > 1) {
-          const andArgs = args.map(arg => this.visit(arg, boolContext)).join(context.newline() + context.indentToCurrentLevel('AND '));
+          const andArgs = args.map(arg => this.visit(arg, boolContext)).join(context.newline() + context.indent('AND '));
           return formatStr.replace('%s', () => andArgs);
         } else {
           const andArgs = args.map(arg => this.visit(arg, boolContext)).join(' AND ');
@@ -1291,7 +1290,7 @@ export class Deparser implements DeparserVisitor {
         }
       case 'OR_EXPR':
         if (context.isPretty() && args.length > 1) {
-          const orArgs = args.map(arg => this.visit(arg, boolContext)).join(context.newline() + context.indentToCurrentLevel('OR '));
+          const orArgs = args.map(arg => this.visit(arg, boolContext)).join(context.newline() + context.indent('OR '));
           return formatStr.replace('%s', () => orArgs);
         } else {
           const orArgs = args.map(arg => this.visit(arg, boolContext)).join(' OR ');
@@ -1515,7 +1514,7 @@ export class Deparser implements DeparserVisitor {
 
         if (windowParts.length > 0) {
           if (context.isPretty() && windowParts.length > 1) {
-            const formattedParts = windowParts.map(part => context.indent(part));
+            const formattedParts = windowParts.map(part => context.indentToCurrentLevel(part));
             result += ` OVER (${context.newline()}${formattedParts.join(context.newline())}${context.newline()})`;
           } else {
             result += ` OVER (${windowParts.join(' ')})`;
@@ -2177,22 +2176,21 @@ export class Deparser implements DeparserVisitor {
     const args = ListUtils.unwrapList(node.args);
 
     if (context.isPretty() && args.length > 0) {
-      const caseContext = context.spawn('CaseExpr', { indentLevel: context.indentLevel + 1 });
       for (const arg of args) {
-        const whenClause = this.visit(arg, caseContext);
+        const whenClause = this.visit(arg, context.spawn('CaseExpr'));
         if (this.containsMultilineStringLiteral(whenClause)) {
           output.push(context.newline() + whenClause);
         } else {
-          output.push(context.newline() + context.indentToCurrentLevel(whenClause));
+          output.push(context.newline() + context.indent(whenClause));
         }
       }
 
       if (node.defresult) {
-        const elseResult = this.visit(node.defresult, caseContext);
+        const elseResult = this.visit(node.defresult, context.spawn('CaseExpr'));
         if (this.containsMultilineStringLiteral(elseResult)) {
           output.push(context.newline() + 'ELSE ' + elseResult);
         } else {
-          output.push(context.newline() + context.indentToCurrentLevel('ELSE ' + elseResult));
+          output.push(context.newline() + context.indent('ELSE ' + elseResult));
         }
       }
 
@@ -2475,7 +2473,7 @@ export class Deparser implements DeparserVisitor {
           const trimmedEl = el.trim();
           // Remove leading newlines from constraint elements to avoid extra blank lines
           if (trimmedEl.startsWith('\n')) {
-            return context.indent(trimmedEl.substring(1));
+            return context.indentToCurrentLevel(trimmedEl.substring(1));
           }
           return context.indent(trimmedEl);
         }).join(',' + context.newline());
@@ -2975,7 +2973,8 @@ export class Deparser implements DeparserVisitor {
   }
 
   SubLink(node: t.SubLink, context: DeparserContext): string {
-    const subselect = context.parens(this.visit(node.subselect, context.spawn('SubLink', { indentLevel: context.indentLevel + 1 })));
+    const sublinkContext = context.spawn('SubLink', { indentLevel: context.indentLevel + 1 });
+    const subselect = context.parens(this.visit(node.subselect, sublinkContext));
 
     switch (node.subLinkType) {
       case 'ANY_SUBLINK':
