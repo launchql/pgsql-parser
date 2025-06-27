@@ -983,7 +983,7 @@ export class V13ToV14Transformer {
       'extract', 'timezone', 'xmlexists',
       'current_date', 'current_time', 'current_timestamp',
       'localtime', 'localtimestamp', 'overlaps',
-      'pg_collation_for', 'collation_for'
+      'collation_for'
     ];
     
     if (explicitCallFunctions.includes(funcname.toLowerCase())) {
