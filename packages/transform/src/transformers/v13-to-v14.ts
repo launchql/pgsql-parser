@@ -1759,45 +1759,20 @@ export class V13ToV14Transformer {
     const shouldPreserveObjfuncargs = this.shouldPreserveObjfuncargs(context);
     const shouldCreateObjfuncargsFromObjargs = this.shouldCreateObjfuncargsFromObjargs(context);
     
-    // Debug logging for AlterFunctionStmt context
-    if (context.parentNodeTypes && context.parentNodeTypes.includes('AlterFunctionStmt')) {
-      console.log('DEBUG AlterFunctionStmt ObjectWithArgs:', {
-        shouldCreateObjfuncargs,
-        shouldPreserveObjfuncargs,
-        shouldCreateObjfuncargsFromObjargs,
-        hasObjargs: !!result.objargs,
-        hasObjfuncargs: !!result.objfuncargs,
-        parentNodeTypes: context.parentNodeTypes
-      });
-    }
-    
     if (shouldCreateObjfuncargsFromObjargs && result.objargs) {
       // Create objfuncargs from objargs (this takes priority over shouldCreateObjfuncargs)
-      if (context.parentNodeTypes && context.parentNodeTypes.includes('AlterFunctionStmt')) {
-        console.log('DEBUG AlterFunctionStmt: CREATING objfuncargs from objargs');
-      }
-      
       result.objfuncargs = Array.isArray(result.objargs)
         ? result.objargs.map((arg: any) => this.createFunctionParameterFromTypeName(arg, context))
         : [this.createFunctionParameterFromTypeName(result.objargs, context)];
       
     } else if (shouldCreateObjfuncargs) {
-      if (context.parentNodeTypes && context.parentNodeTypes.includes('AlterFunctionStmt')) {
-        console.log('DEBUG AlterFunctionStmt: CREATING empty objfuncargs');
-      }
       result.objfuncargs = [];
     } else if (result.objfuncargs !== undefined) {
       if (shouldPreserveObjfuncargs) {
-        if (context.parentNodeTypes && context.parentNodeTypes.includes('AlterFunctionStmt')) {
-          console.log('DEBUG AlterFunctionStmt: PRESERVING objfuncargs');
-        }
         result.objfuncargs = Array.isArray(result.objfuncargs)
           ? result.objfuncargs.map((item: any) => this.transform(item, context))
           : [this.transform(result.objfuncargs, context)];
       } else {
-        if (context.parentNodeTypes && context.parentNodeTypes.includes('AlterFunctionStmt')) {
-          console.log('DEBUG AlterFunctionStmt: DELETING objfuncargs because shouldPreserveObjfuncargs is false');
-        }
         delete result.objfuncargs;
       }
     } else if (!shouldPreserveObjfuncargs) {
