@@ -2701,6 +2701,46 @@ export class V13ToV14Transformer {
     return { StatsElem: result };
   }
 
+  CreateStatsStmt(node: any, context: TransformerContext): any {
+    const result: any = {};
+    
+    if (node.defnames !== undefined) {
+      result.defnames = Array.isArray(node.defnames)
+        ? node.defnames.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.defnames as any, context);
+    }
+    
+    if (node.stat_types !== undefined) {
+      result.stat_types = Array.isArray(node.stat_types)
+        ? node.stat_types.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.stat_types as any, context);
+    }
+    
+    if (node.exprs !== undefined) {
+      result.exprs = Array.isArray(node.exprs)
+        ? node.exprs.map((expr: any) => {
+            return { StatsElem: { expr: this.transform(expr as any, context) } };
+          })
+        : [{ StatsElem: { expr: this.transform(node.exprs as any, context) } }];
+    }
+    
+    if (node.relations !== undefined) {
+      result.relations = Array.isArray(node.relations)
+        ? node.relations.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.relations as any, context);
+    }
+    
+    if (node.stxcomment !== undefined) {
+      result.stxcomment = node.stxcomment;
+    }
+    
+    if (node.if_not_exists !== undefined) {
+      result.if_not_exists = node.if_not_exists;
+    }
+    
+    return { CreateStatsStmt: result };
+  }
+
   CreateStmt(node: any, context: TransformerContext): any {
     const result: any = {};
     
