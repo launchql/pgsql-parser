@@ -1724,35 +1724,14 @@ export class V13ToV14Transformer {
     
     if (shouldCreateObjfuncargsFromObjargs && result.objargs) {
       // Create objfuncargs from objargs (this takes priority over shouldCreateObjfuncargs)
-      if (context.parentNodeTypes && context.parentNodeTypes.includes('AlterOwnerStmt')) {
-        console.log('DEBUG: Processing objargs for AlterOwnerStmt:', {
-          objargs: result.objargs,
-          isArray: Array.isArray(result.objargs),
-          length: Array.isArray(result.objargs) ? result.objargs.length : 'not array'
-        });
-      }
       
       result.objfuncargs = Array.isArray(result.objargs)
         ? result.objargs.map((arg: any) => this.createFunctionParameterFromTypeName(arg))
         : [this.createFunctionParameterFromTypeName(result.objargs)];
       
-      if (context.parentNodeTypes && context.parentNodeTypes.includes('AlterOwnerStmt')) {
-        console.log('DEBUG: Created objfuncargs for AlterOwnerStmt:', {
-          objfuncargs: result.objfuncargs,
-          objfuncargsLength: result.objfuncargs.length,
-          shouldPreserveObjfuncargs,
-          willCheckPreserve: true
-        });
-      }
     } else if (shouldCreateObjfuncargs) {
       result.objfuncargs = [];
     } else if (result.objfuncargs !== undefined) {
-      if (context.parentNodeTypes && context.parentNodeTypes.includes('AlterOwnerStmt')) {
-        console.log('DEBUG: Checking preserve for existing objfuncargs:', {
-          shouldPreserveObjfuncargs,
-          willDelete: !shouldPreserveObjfuncargs
-        });
-      }
       if (shouldPreserveObjfuncargs) {
         result.objfuncargs = Array.isArray(result.objfuncargs)
           ? result.objfuncargs.map((item: any) => this.transform(item, context))
@@ -1846,17 +1825,6 @@ export class V13ToV14Transformer {
       return false;
     }
     
-    if (context.parentNodeTypes.includes('AlterOwnerStmt')) {
-      const path = context.path || [];
-      for (const node of path) {
-        if (node && typeof node === 'object' && 'AlterOwnerStmt' in node) {
-          const alterOwnerStmt = node.AlterOwnerStmt;
-          if (alterOwnerStmt && alterOwnerStmt.objectType === 'OBJECT_OPERATOR') {
-            return true;
-          }
-        }
-      }
-    }
     
     const path = context.path || [];
     const excludedNodeTypes = [
