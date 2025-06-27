@@ -301,6 +301,14 @@ export class V13ToV14Transformer {
     }
     
     if (this.isInConstraintContext(context)) {
+      // Check if this is a function that should have funcformat even in constraints
+      const path = context.path || [];
+      const hasFuncCall = path.some((node: any) => 
+        node && typeof node === 'object' && 'FuncCall' in node
+      );
+      if (hasFuncCall) {
+        return true;
+      }
       return false;
     }
     
@@ -920,6 +928,7 @@ export class V13ToV14Transformer {
       return 'COERCE_EXPLICIT_CALL';
     }
     
+    // Handle substring function specifically - it should use SQL syntax in most contexts
     if (funcname.toLowerCase() === 'substring') {
       return 'COERCE_SQL_SYNTAX';
     }
@@ -951,6 +960,20 @@ export class V13ToV14Transformer {
 
 
 
+  private isVariadicParameterType(argType: any): boolean {
+    if (!argType) return false;
+    
+    if (argType.names && Array.isArray(argType.names)) {
+      const typeName = argType.names[argType.names.length - 1];
+      if (typeName && typeName.String && typeName.String.str) {
+        const typeStr = typeName.String.str.toLowerCase();
+        return typeStr === 'variadic';
+      }
+    }
+    
+    return false;
+  }
+
   FunctionParameter(node: PG13.FunctionParameter, context: TransformerContext): any {
     const result: any = {};
     
@@ -967,7 +990,14 @@ export class V13ToV14Transformer {
     }
     
     if (node.mode !== undefined) {
-      result.mode = node.mode === "FUNC_PARAM_IN" ? "FUNC_PARAM_DEFAULT" : node.mode;
+      if (node.mode === "FUNC_PARAM_VARIADIC") {
+        const isVariadicType = this.isVariadicParameterType(node.argType);
+        result.mode = isVariadicType ? "FUNC_PARAM_VARIADIC" : "FUNC_PARAM_DEFAULT";
+      } else if (node.mode === "FUNC_PARAM_IN") {
+        result.mode = "FUNC_PARAM_DEFAULT";
+      } else {
+        result.mode = node.mode;
+      }
     }
     
     return { FunctionParameter: result };
@@ -1686,22 +1716,11 @@ export class V13ToV14Transformer {
     }
     
     if (typeof options === 'number') {
-      // Handle bitwise combination of TableLikeOption flags
-      let transformedOptions = 0;
-      
-      for (let bit = 0; bit < 32; bit++) {
-        if (options & (1 << bit)) {
-          let pg14Bit = bit;
-          
-          if (bit >= 1) {
-            pg14Bit = bit + 1;
-          }
-          
-          transformedOptions |= (1 << pg14Bit);
-        }
+      if (options < 0) {
+        return options;
       }
       
-      return transformedOptions;
+      return options;
     }
     
     return options;
