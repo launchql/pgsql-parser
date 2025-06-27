@@ -1767,6 +1767,9 @@ export class V13ToV14Transformer {
       if (options === 2) {
         return 4;
       }
+      if (options === 4) {
+        return 8;  // INCLUDING DEFAULTS: PG13 value 4 -> PG14 value 8
+      }
       if (options === 6) {
         return 12;
       }
