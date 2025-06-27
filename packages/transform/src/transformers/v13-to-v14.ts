@@ -1030,10 +1030,11 @@ export class V13ToV14Transformer {
     }
     
     if (node.mode !== undefined) {
-      if (node.mode === "FUNC_PARAM_VARIADIC") {
+      if (node.mode.toString() === "FUNC_PARAM_DEFAULT") {
+        // Check if this should be FUNC_PARAM_VARIADIC based on context
         const isVariadicType = this.isVariadicParameterType(node.argType);
         result.mode = isVariadicType ? "FUNC_PARAM_VARIADIC" : "FUNC_PARAM_DEFAULT";
-      } else if (node.mode === "FUNC_PARAM_IN") {
+      } else if (node.mode.toString() === "FUNC_PARAM_IN") {
         result.mode = "FUNC_PARAM_DEFAULT";
       } else {
         result.mode = node.mode;
