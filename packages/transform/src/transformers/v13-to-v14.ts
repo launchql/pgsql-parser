@@ -88,25 +88,26 @@ export class V13ToV14Transformer {
         if (key === 'ctes' && Array.isArray(value)) {
           transformedData[key] = value.map(item => this.transform(item as any, context));
         } else if (key === 'objname' && typeof value === 'object' && value !== null) {
-          console.log('transformGenericNode: Processing objname:', {
-            isArray: Array.isArray(value),
-            value: JSON.stringify(value, null, 2),
-            keys: Object.keys(value)
-          });
           if (Array.isArray(value)) {
-            console.log('transformGenericNode: objname is array, transforming items');
             transformedData[key] = value.map(item => this.transform(item as any, context));
           } else {
             const keys = Object.keys(value);
             const isNumericKeysObject = keys.every(k => /^\d+$/.test(k));
-            console.log('transformGenericNode: objname is object, isNumericKeysObject:', isNumericKeysObject, 'keys:', keys);
+            
             if (isNumericKeysObject && keys.length > 0) {
-              const sortedKeys = keys.sort((a, b) => parseInt(a) - parseInt(b));
-              console.log('transformGenericNode: Converting numeric keys object to array, sortedKeys:', sortedKeys);
-              transformedData[key] = sortedKeys.map(k => this.transform((value as any)[k], context));
+              const shouldPreserve = this.shouldPreserveObjnameAsObject(context);
+              if (shouldPreserve) {
+                const transformedObjname: any = {};
+                Object.keys(value).forEach(k => {
+                  transformedObjname[k] = this.transform((value as any)[k], context);
+                });
+                transformedData[key] = transformedObjname;
+              } else {
+                const sortedKeys = keys.sort((a, b) => parseInt(a) - parseInt(b));
+                transformedData[key] = sortedKeys.map(k => this.transform((value as any)[k], context));
+              }
             } else {
               // Regular object transformation
-              console.log('transformGenericNode: Regular object transformation for objname');
               transformedData[key] = this.transform(value as any, context);
             }
           }
@@ -1666,8 +1667,26 @@ export class V13ToV14Transformer {
       if (Array.isArray(result.objname)) {
         result.objname = result.objname.map((item: any) => this.transform(item, context));
       } else if (typeof result.objname === 'object' && result.objname !== null) {
-        const keys = Object.keys(result.objname).sort((a, b) => parseInt(a) - parseInt(b));
-        result.objname = keys.map(key => this.transform(result.objname[key], context));
+        const keys = Object.keys(result.objname);
+        const isNumericKeysObject = keys.every(k => /^\d+$/.test(k));
+        
+        if (isNumericKeysObject && keys.length > 0) {
+          // Check if we should preserve objname as object with numeric keys
+          const shouldPreserve = this.shouldPreserveObjnameAsObject(context);
+          if (shouldPreserve) {
+            const transformedObjname: any = {};
+            Object.keys(result.objname).forEach(k => {
+              transformedObjname[k] = this.transform(result.objname[k], context);
+            });
+            result.objname = transformedObjname;
+          } else {
+            const sortedKeys = keys.sort((a, b) => parseInt(a) - parseInt(b));
+            result.objname = sortedKeys.map(key => this.transform(result.objname[key], context));
+          }
+        } else {
+          // Regular object transformation
+          result.objname = this.transform(result.objname, context);
+        }
       } else {
         result.objname = this.transform(result.objname, context);
       }
@@ -1860,6 +1879,25 @@ export class V13ToV14Transformer {
     }
     
     return false;
+  }
+
+  private shouldPreserveObjnameAsObject(context: TransformerContext): boolean {
+    if (!context.parentNodeTypes || context.parentNodeTypes.length === 0) {
+      return true; // Default to preserving objects
+    }
+    
+    // For CreateOpClassItem contexts, convert objname to arrays (PG14 expects arrays)
+    const convertToArrayContexts = [
+      'CreateOpClassStmt', 'CreateOpClassItem', 'CreateAccessMethodStmt'
+    ];
+    
+    for (const parentType of context.parentNodeTypes) {
+      if (convertToArrayContexts.includes(parentType)) {
+        return false; // Convert to array for these contexts
+      }
+    }
+    
+    return true; // Preserve as object for other contexts
   }
 
   private createFunctionParameterFromTypeName(typeNameNode: any): any {
