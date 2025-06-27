@@ -1005,7 +1005,9 @@ export class V13ToV14Transformer {
       const typeName = argType.names[argType.names.length - 1];
       if (typeName && typeName.String && typeName.String.str) {
         const typeStr = typeName.String.str.toLowerCase();
-        return typeStr === 'anyarray';
+        return typeStr === 'anyarray' || 
+               typeStr === 'anycompatiblearray' || 
+               typeStr.endsWith('array');
       }
     }
     
@@ -1032,7 +1034,7 @@ export class V13ToV14Transformer {
     
     if (node.mode !== undefined) {
       if (node.mode === "FUNC_PARAM_VARIADIC") {
-        result.mode = "FUNC_PARAM_DEFAULT";
+        result.mode = "FUNC_PARAM_VARIADIC"; // Keep variadic parameters as variadic
       } else if (node.mode === "FUNC_PARAM_IN") {
         result.mode = "FUNC_PARAM_DEFAULT";
       } else {
@@ -1761,6 +1763,9 @@ export class V13ToV14Transformer {
       }
       
       // Transform specific enum values from PG13 to PG14
+      if (options === 2) {
+        return 4;
+      }
       if (options === 6) {
         return 12;
       }
