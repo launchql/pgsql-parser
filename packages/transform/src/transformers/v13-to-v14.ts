@@ -1853,6 +1853,7 @@ export class V13ToV14Transformer {
       return false;
     }
     
+    
     if ((context as any).commentObjtype === 'OBJECT_OPERATOR' && 
         context.parentNodeTypes.includes('CommentStmt')) {
       return false;
