@@ -1766,6 +1766,9 @@ export class V13ToV14Transformer {
       if (options === 6) {
         return 12;
       }
+      if (options === 16) {
+        return 32;
+      }
       
       return options;
     }
