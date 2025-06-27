@@ -2842,4 +2842,38 @@ export class V13ToV14Transformer {
     return { AlterObjectSchemaStmt: result };
   }
 
+  ReindexStmt(node: any, context: TransformerContext): any {
+    const result: any = {};
+    
+    if (node.kind !== undefined) {
+      result.kind = node.kind;
+    }
+    
+    if (node.relation !== undefined) {
+      result.relation = this.transform(node.relation as any, context);
+    }
+    
+    if (node.name !== undefined) {
+      result.name = node.name;
+    }
+    
+    // Transform PG13's numeric options to PG14's params array
+    if (node.options !== undefined) {
+      const params = [];
+      
+      if (node.options & 1) {
+        params.push({
+          DefElem: {
+            defname: "verbose",
+            defaction: "DEFELEM_UNSPEC"
+          }
+        });
+      }
+      
+      result.params = params;
+    }
+    
+    return { ReindexStmt: result };
+  }
+
 }
