@@ -962,16 +962,26 @@ export class V13ToV14Transformer {
     }
     
     if (node.func !== undefined) {
-      const funcResult = this.transform(node.func as any, childContext);
-      
-      if (funcResult && typeof funcResult === 'object') {
-        let funcData = funcResult;
-        if ('ObjectWithArgs' in funcResult) {
-          funcData = funcResult.ObjectWithArgs;
+      // Handle plain object func (not wrapped in ObjectWithArgs)
+      if (typeof node.func === 'object' && !('ObjectWithArgs' in node.func) && 'objargs' in node.func) {
+        const funcResult: any = {};
+        
+        if ((node.func as any).objname !== undefined) {
+          funcResult.objname = this.transform((node.func as any).objname, childContext);
         }
         
-        result.func = 'ObjectWithArgs' in funcResult ? { ObjectWithArgs: funcData } : funcData;
+        if ((node.func as any).objargs !== undefined) {
+          funcResult.objargs = this.transform((node.func as any).objargs, childContext);
+          
+          // Create objfuncargs from objargs for PG14
+          funcResult.objfuncargs = Array.isArray((node.func as any).objargs)
+            ? (node.func as any).objargs.map((arg: any) => this.createFunctionParameterFromTypeName(arg))
+            : [this.createFunctionParameterFromTypeName((node.func as any).objargs)];
+        }
+        
+        result.func = funcResult;
       } else {
+        const funcResult = this.transform(node.func as any, childContext);
         result.func = funcResult;
       }
     }
@@ -1710,24 +1720,44 @@ export class V13ToV14Transformer {
     const shouldPreserveObjfuncargs = this.shouldPreserveObjfuncargs(context);
     const shouldCreateObjfuncargsFromObjargs = this.shouldCreateObjfuncargsFromObjargs(context);
     
+    // Debug logging for AlterFunctionStmt context
+    if (context.parentNodeTypes && context.parentNodeTypes.includes('AlterFunctionStmt')) {
+      console.log('DEBUG AlterFunctionStmt ObjectWithArgs:', {
+        shouldCreateObjfuncargs,
+        shouldPreserveObjfuncargs,
+        shouldCreateObjfuncargsFromObjargs,
+        hasObjargs: !!result.objargs,
+        hasObjfuncargs: !!result.objfuncargs,
+        parentNodeTypes: context.parentNodeTypes
+      });
+    }
     
     if (shouldCreateObjfuncargsFromObjargs && result.objargs) {
       // Create objfuncargs from objargs (this takes priority over shouldCreateObjfuncargs)
+      if (context.parentNodeTypes && context.parentNodeTypes.includes('AlterFunctionStmt')) {
+        console.log('DEBUG AlterFunctionStmt: CREATING objfuncargs from objargs');
+      }
       
       result.objfuncargs = Array.isArray(result.objargs)
         ? result.objargs.map((arg: any) => this.createFunctionParameterFromTypeName(arg))
         : [this.createFunctionParameterFromTypeName(result.objargs)];
       
     } else if (shouldCreateObjfuncargs) {
+      if (context.parentNodeTypes && context.parentNodeTypes.includes('AlterFunctionStmt')) {
+        console.log('DEBUG AlterFunctionStmt: CREATING empty objfuncargs');
+      }
       result.objfuncargs = [];
     } else if (result.objfuncargs !== undefined) {
       if (shouldPreserveObjfuncargs) {
+        if (context.parentNodeTypes && context.parentNodeTypes.includes('AlterFunctionStmt')) {
+          console.log('DEBUG AlterFunctionStmt: PRESERVING objfuncargs');
+        }
         result.objfuncargs = Array.isArray(result.objfuncargs)
           ? result.objfuncargs.map((item: any) => this.transform(item, context))
           : [this.transform(result.objfuncargs, context)];
       } else {
-        if (context.parentNodeTypes && context.parentNodeTypes.includes('AlterOwnerStmt')) {
-          console.log('DEBUG: DELETING objfuncargs because shouldPreserveObjfuncargs is false');
+        if (context.parentNodeTypes && context.parentNodeTypes.includes('AlterFunctionStmt')) {
+          console.log('DEBUG AlterFunctionStmt: DELETING objfuncargs because shouldPreserveObjfuncargs is false');
         }
         delete result.objfuncargs;
       }
