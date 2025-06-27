@@ -1820,7 +1820,7 @@ export class V13ToV14Transformer {
     const excludedNodeTypes = [
       'CreateOpClassStmt', 'CreateAggregateStmt', 'AlterAggregateStmt',
       'CreateFunctionStmt', 'CreateStmt', 'CreateTypeStmt', 'CreateOpFamilyStmt',
-      'CreateOperatorStmt', 'GrantStmt', 'RevokeStmt'
+      'CreateOperatorStmt'
     ];
     
     const path = context.path || [];
@@ -1874,6 +1874,7 @@ export class V13ToV14Transformer {
       return false;
     }
     
+    
     // Check if this is an operator context - operators should NOT get objfuncargs
     const path = context.path || [];
     
@@ -1912,7 +1913,7 @@ export class V13ToV14Transformer {
     const excludedNodeTypes = [
       'CreateOpClassStmt', 'CreateAggregateStmt', 'AlterAggregateStmt',
       'CreateFunctionStmt', 'CreateStmt', 'CreateTypeStmt', 'CreateOpFamilyStmt',
-      'CreateOperatorStmt', 'GrantStmt', 'RevokeStmt'
+      'CreateOperatorStmt'
     ];
     
     for (const node of path) {
@@ -1931,7 +1932,7 @@ export class V13ToV14Transformer {
     }
     
     const allowedNodeTypes = [
-      'CommentStmt', 'AlterFunctionStmt', 'RenameStmt', 'AlterOwnerStmt', 'AlterObjectSchemaStmt', 'CreateCastStmt', 'AlterOpFamilyStmt', 'CreateOpClassItem'
+      'CommentStmt', 'AlterFunctionStmt', 'RenameStmt', 'AlterOwnerStmt', 'AlterObjectSchemaStmt', 'CreateCastStmt', 'AlterOpFamilyStmt', 'CreateOpClassItem', 'GrantStmt', 'RevokeStmt'
     ];
     
     for (const node of path) {
