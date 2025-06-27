@@ -268,14 +268,6 @@ export class V13ToV14Transformer {
       return false;
     }
     
-    if (this.isInInsertContext(context)) {
-      return false;
-    }
-    
-    if (this.isInUpdateContext(context)) {
-      return false;
-    }
-    
     if (this.isInRangeFunctionContext(context)) {
       return false;
     }
@@ -289,10 +281,6 @@ export class V13ToV14Transformer {
     }
     
     if (this.isInPolicyContext(context)) {
-      return false;
-    }
-    
-    if (this.isInSelectFromContext(context)) {
       return false;
     }
     
