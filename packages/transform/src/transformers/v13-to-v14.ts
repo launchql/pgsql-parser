@@ -758,8 +758,8 @@ export class V13ToV14Transformer {
           
           if (!isOperator) {
             result.name.objfuncargs = Array.isArray(result.name.objargs)
-              ? result.name.objargs.map((arg: any) => this.createFunctionParameterFromTypeName(arg, context))
-              : [this.createFunctionParameterFromTypeName(result.name.objargs, context)];
+              ? result.name.objargs.map((arg: any, index: number) => this.createFunctionParameterFromTypeName(arg, context, index))
+              : [this.createFunctionParameterFromTypeName(result.name.objargs, context, 0)];
           }
         }
       }
@@ -978,7 +978,7 @@ export class V13ToV14Transformer {
     
     const sqlSyntaxFunctions = [
       'btrim', 'trim', 'ltrim', 'rtrim',
-      'position', 'overlay',
+      'position', 'overlay', 'substring',
       'extract', 'timezone', 'xmlexists',
       'current_date', 'current_time', 'current_timestamp',
       'localtime', 'localtimestamp', 'overlaps',
@@ -1030,11 +1030,22 @@ export class V13ToV14Transformer {
     }
     
     if (node.mode !== undefined) {
+      const isInAggregateContext = context.parentNodeTypes?.includes('CreateAggregateStmt');
+      const isInObjectAddressContext = context.parentNodeTypes?.includes('ObjectAddress');
+      
       if (node.mode === "FUNC_PARAM_VARIADIC") {
-        const isVariadicType = this.isVariadicParameterType(node.argType);
-        result.mode = isVariadicType ? "FUNC_PARAM_VARIADIC" : "FUNC_PARAM_DEFAULT";
+        if (isInAggregateContext) {
+          result.mode = "FUNC_PARAM_DEFAULT";
+        } else {
+          const isVariadicType = this.isVariadicParameterType(node.argType);
+          result.mode = isVariadicType ? "FUNC_PARAM_VARIADIC" : "FUNC_PARAM_DEFAULT";
+        }
       } else if (node.mode === "FUNC_PARAM_IN") {
-        result.mode = "FUNC_PARAM_DEFAULT";
+        if (isInObjectAddressContext) {
+          result.mode = "FUNC_PARAM_DEFAULT";
+        } else {
+          result.mode = "FUNC_PARAM_DEFAULT";
+        }
       } else {
         result.mode = node.mode;
       }
@@ -1070,8 +1081,8 @@ export class V13ToV14Transformer {
           
           // Create objfuncargs from objargs for PG14
           funcResult.objfuncargs = Array.isArray((node.func as any).objargs)
-            ? (node.func as any).objargs.map((arg: any) => this.createFunctionParameterFromTypeName(arg, childContext))
-            : [this.createFunctionParameterFromTypeName((node.func as any).objargs, childContext)];
+            ? (node.func as any).objargs.map((arg: any, index: number) => this.createFunctionParameterFromTypeName(arg, childContext, index))
+            : [this.createFunctionParameterFromTypeName((node.func as any).objargs, childContext, 0)];
         }
         
         result.func = funcResult;
@@ -1742,7 +1753,7 @@ export class V13ToV14Transformer {
     }
     
     if (node.options !== undefined) {
-      result.options = this.transformTableLikeOptions(node.options);
+      result.options = this.mapTableLikeOption(node.options);
     }
     
     return { TableLikeClause: result };
@@ -1817,8 +1828,8 @@ export class V13ToV14Transformer {
     if (shouldCreateObjfuncargsFromObjargs && result.objargs) {
       // Create objfuncargs from objargs (this takes priority over shouldCreateObjfuncargs)
       result.objfuncargs = Array.isArray(result.objargs)
-        ? result.objargs.map((arg: any) => this.createFunctionParameterFromTypeName(arg, context))
-        : [this.createFunctionParameterFromTypeName(result.objargs, context)];
+        ? result.objargs.map((arg: any, index: number) => this.createFunctionParameterFromTypeName(arg, context, index))
+        : [this.createFunctionParameterFromTypeName(result.objargs, context, 0)];
       
     } else if (shouldCreateObjfuncargs) {
       result.objfuncargs = [];
@@ -2049,7 +2060,7 @@ export class V13ToV14Transformer {
     return true; // Preserve as object for other contexts
   }
 
-  private createFunctionParameterFromTypeName(typeNameNode: any, context?: TransformerContext): any {
+  private createFunctionParameterFromTypeName(typeNameNode: any, context?: TransformerContext, index: number = 0): any {
     const transformedTypeName = this.transform(typeNameNode, { parentNodeTypes: [] });
     
     const argType = transformedTypeName.TypeName ? transformedTypeName.TypeName : transformedTypeName;
@@ -2061,7 +2072,6 @@ export class V13ToV14Transformer {
     
     const shouldAddParameterName = context && context.parentNodeTypes && 
       !context.parentNodeTypes.includes('DropStmt');
-    
     
     if (typeNameNode && typeNameNode.name && shouldAddParameterName) {
       functionParam.name = typeNameNode.name;
@@ -2781,6 +2791,7 @@ export class V13ToV14Transformer {
     return { RenameStmt: result };
   }
 
+
   AlterObjectSchemaStmt(node: any, context: TransformerContext): any {
     const result: any = {};
     
@@ -2813,5 +2824,31 @@ export class V13ToV14Transformer {
     
     return { AlterObjectSchemaStmt: result };
   }
+
+  private mapTableLikeOption(pg13Value: number): number {
+    if (pg13Value === 2) {
+      return 4;
+    }
+    if (pg13Value === 6) {
+      return 12;
+    }
+    if (pg13Value >= 1) {
+      return pg13Value + 1;
+    }
+    return pg13Value;
+  }
+
+  private mapFunctionParameterMode(pg13Mode: string): string {
+    // Handle specific mode mappings between PG13 and PG14
+    switch (pg13Mode) {
+      case 'FUNC_PARAM_VARIADIC':
+        return 'FUNC_PARAM_DEFAULT';
+      case 'FUNC_PARAM_IN':
+        return 'FUNC_PARAM_DEFAULT';
+      default:
+        return pg13Mode;
+    }
+  }
+
 
 }
