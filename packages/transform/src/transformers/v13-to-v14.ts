@@ -2059,9 +2059,28 @@ export class V13ToV14Transformer {
     
     const argType = transformedTypeName.TypeName ? transformedTypeName.TypeName : transformedTypeName;
     
+    let mode = "FUNC_PARAM_DEFAULT";
+    
+    // Check if this is a variadic parameter type (anyarray, anycompatiblearray, etc.)
+    if (this.isVariadicParameterType(argType)) {
+      mode = "FUNC_PARAM_VARIADIC";
+    }
+    
+    // Also check for VARIADIC context in aggregate functions
+    if (context && context.parentNodeTypes) {
+      const isAggregateContext = context.parentNodeTypes.includes('RenameStmt') && 
+                                (context as any).renameObjectType === 'OBJECT_AGGREGATE';
+      if (isAggregateContext && argType && argType.names && Array.isArray(argType.names)) {
+        const typeName = argType.names[argType.names.length - 1];
+        if (typeName && typeName.String && typeName.String.str === 'any') {
+          mode = "FUNC_PARAM_VARIADIC";
+        }
+      }
+    }
+    
     const functionParam: any = {
       argType: argType,
-      mode: "FUNC_PARAM_DEFAULT"
+      mode: mode
     };
     
     const shouldAddParameterName = context && context.parentNodeTypes && 
