@@ -1730,7 +1730,7 @@ export class V13ToV14Transformer {
     }
     
     const allowedNodeTypes = [
-      'CommentStmt', 'AlterFunctionStmt', 'AlterOwnerStmt', 'RenameStmt', 'AlterObjectSchemaStmt', 'CreateCastStmt'
+      'CommentStmt', 'AlterFunctionStmt', 'AlterOwnerStmt', 'RenameStmt', 'AlterObjectSchemaStmt', 'CreateCastStmt', 'AlterOpFamilyStmt'
     ];
     
     for (const node of path) {
@@ -1783,7 +1783,7 @@ export class V13ToV14Transformer {
     }
     
     const allowedNodeTypes = [
-      'CommentStmt', 'AlterFunctionStmt', 'AlterOwnerStmt', 'RenameStmt', 'AlterObjectSchemaStmt', 'CreateCastStmt'
+      'CommentStmt', 'AlterFunctionStmt', 'AlterOwnerStmt', 'RenameStmt', 'AlterObjectSchemaStmt', 'CreateCastStmt', 'AlterOpFamilyStmt'
     ];
     
     for (const node of path) {
