@@ -1797,6 +1797,9 @@ export class V13ToV14Transformer {
       if (options === 16) {
         return 32;
       }
+      if (options === 32) {
+        return 64;  // INCLUDING INDEXES: PG13 value 32 -> PG14 value 64
+      }
       
       return options;
     }
@@ -2061,6 +2064,31 @@ export class V13ToV14Transformer {
     }
     
     return true;
+  }
+
+  private isDropFunctionContext(context?: TransformerContext): boolean {
+    if (!context) return false;
+    
+    const path = context.path || [];
+    for (const node of path) {
+      if (node && typeof node === 'object' && 'DropStmt' in node) {
+        const dropStmt = node.DropStmt;
+        if (dropStmt && (dropStmt.removeType === 'OBJECT_FUNCTION' || 
+                        dropStmt.removeType === 'OBJECT_AGGREGATE' ||
+                        dropStmt.removeType === 'OBJECT_PROCEDURE')) {
+          return true;
+        }
+      }
+    }
+    
+    if ((context as any).dropRemoveType) {
+      const removeType = (context as any).dropRemoveType;
+      return removeType === 'OBJECT_FUNCTION' || 
+             removeType === 'OBJECT_AGGREGATE' ||
+             removeType === 'OBJECT_PROCEDURE';
+    }
+    
+    return false;
   }
 
   private shouldPreserveObjnameAsObject(context: TransformerContext): boolean {
