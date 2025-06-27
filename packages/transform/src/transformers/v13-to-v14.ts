@@ -2151,21 +2151,26 @@ export class V13ToV14Transformer {
     };
     
     // Parameter names are crucial for DROP FUNCTION to identify overloaded functions
+    let parameterName = null;
     if (typeNameNode) {
       if (typeNameNode.name) {
-        functionParam.name = typeNameNode.name;
+        parameterName = typeNameNode.name;
       } else if (typeNameNode.String && typeNameNode.String.str) {
-        functionParam.name = typeNameNode.String.str;
+        parameterName = typeNameNode.String.str;
       } else if (typeNameNode.names && Array.isArray(typeNameNode.names) && typeNameNode.names.length > 0) {
         // Check if the first element might be a parameter name (before the type)
         const firstElement = typeNameNode.names[0];
         if (firstElement && firstElement.String && firstElement.String.str) {
           const potentialName = firstElement.String.str;
           if (!potentialName.includes('.') && potentialName.length < 20) {
-            functionParam.name = potentialName;
+            parameterName = potentialName;
           }
         }
       }
+    }
+    
+    if (parameterName) {
+      functionParam.name = parameterName;
     }
     
     return {
