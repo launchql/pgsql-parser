@@ -1354,7 +1354,8 @@ export class V13ToV14Transformer {
             nodeType === 'CreateOpFamilyStmt' ||
             nodeType === 'CreateOperatorStmt' ||
             nodeType === 'GrantStmt' ||
-            nodeType === 'RevokeStmt') {
+            nodeType === 'RevokeStmt' ||
+            nodeType === 'RenameStmt') {
           return true;
         }
         if (nodeType === 'DropStmt') {
@@ -1377,7 +1378,8 @@ export class V13ToV14Transformer {
           parentType === 'CreateOperatorStmt' ||
           parentType === 'CreateCastStmt' ||
           parentType === 'GrantStmt' ||
-          parentType === 'RevokeStmt') {
+          parentType === 'RevokeStmt' ||
+          parentType === 'RenameStmt') {
         return true;
       }
       if (parentType === 'DropStmt') {
