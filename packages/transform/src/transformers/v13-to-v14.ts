@@ -909,22 +909,25 @@ export class V13ToV14Transformer {
       return 'COERCE_EXPLICIT_CALL';
     }
     
+    if (funcname.toLowerCase() === 'substring') {
+      return 'COERCE_SQL_SYNTAX';
+    }
+    
+    const explicitCallFunctions = [
+      'substr', 'timestamptz', 'timestamp', 'date', 'time', 'timetz',
+      'interval', 'numeric', 'decimal', 'float4', 'float8', 'int2', 'int4', 'int8',
+      'bool', 'text', 'varchar', 'char', 'bpchar'
+    ];
+    
     const sqlSyntaxFunctions = [
       'btrim', 'trim', 'ltrim', 'rtrim',
       'position', 'overlay',
-      'extract',
+      'extract', 'timezone',
       'current_date', 'current_time', 'current_timestamp',
       'localtime', 'localtimestamp', 'overlaps'
     ];
     
-    if (funcname.toLowerCase() === 'substr') {
-      return 'COERCE_EXPLICIT_CALL';
-    }
-    
-    if (funcname.toLowerCase() === 'substring') {
-      if (this.isSqlStandardSyntax(node, context)) {
-        return 'COERCE_SQL_SYNTAX';
-      }
+    if (explicitCallFunctions.includes(funcname.toLowerCase())) {
       return 'COERCE_EXPLICIT_CALL';
     }
     
