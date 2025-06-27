@@ -75,40 +75,58 @@ export class V13ToV14Transformer {
       const nodeType = keys[0];
       const nodeData = node[keys[0]];
       
-      if ('ctes' in nodeData) {
-        console.log('transformGenericNode: Processing node with ctes:', {
-          nodeType,
-          ctesType: typeof nodeData.ctes,
-          isArray: Array.isArray(nodeData.ctes)
-        });
-      }
+      
       
       const transformedData: any = {};
       for (const [key, value] of Object.entries(nodeData)) {
         if (key === 'ctes' && Array.isArray(value)) {
           transformedData[key] = value.map(item => this.transform(item as any, context));
         } else if (key === 'objname' && typeof value === 'object' && value !== null) {
-          console.log('transformGenericNode: Processing objname:', {
-            isArray: Array.isArray(value),
-            value: JSON.stringify(value, null, 2),
-            keys: Object.keys(value)
-          });
           if (Array.isArray(value)) {
-            console.log('transformGenericNode: objname is array, transforming items');
             transformedData[key] = value.map(item => this.transform(item as any, context));
           } else {
             const keys = Object.keys(value);
             const isNumericKeysObject = keys.every(k => /^\d+$/.test(k));
-            console.log('transformGenericNode: objname is object, isNumericKeysObject:', isNumericKeysObject, 'keys:', keys);
             if (isNumericKeysObject && keys.length > 0) {
               const sortedKeys = keys.sort((a, b) => parseInt(a) - parseInt(b));
-              console.log('transformGenericNode: Converting numeric keys object to array, sortedKeys:', sortedKeys);
               transformedData[key] = sortedKeys.map(k => this.transform((value as any)[k], context));
             } else {
-              // Regular object transformation
-              console.log('transformGenericNode: Regular object transformation for objname');
               transformedData[key] = this.transform(value as any, context);
             }
+          }
+        } else if (key === 'objargs' && typeof value === 'object' && value !== null) {
+          if (Array.isArray(value)) {
+            transformedData[key] = value.map(item => this.transform(item as any, context));
+          } else {
+            const keys = Object.keys(value);
+            const isNumericKeysObject = keys.every(k => /^\d+$/.test(k));
+            if (isNumericKeysObject && keys.length > 0) {
+              const sortedKeys = keys.sort((a, b) => parseInt(a) - parseInt(b));
+              transformedData[key] = sortedKeys.map(k => this.transform((value as any)[k], context));
+            } else {
+              transformedData[key] = this.transform(value as any, context);
+            }
+          }
+          
+          // Create objfuncargs from objargs for AlterOpFamilyStmt context
+          console.log('DEBUG: Found objargs in transformGenericNode, context:', {
+            parentNodeTypes: context.parentNodeTypes,
+            nodeType: nodeType,
+            objargs: transformedData[key]
+          });
+          
+          const shouldCreate = this.shouldCreateObjfuncargsFromObjargs(context);
+          console.log('DEBUG: shouldCreateObjfuncargsFromObjargs returned:', shouldCreate);
+          
+          if (shouldCreate) {
+            const objargs = transformedData[key];
+            console.log('DEBUG: Creating objfuncargs from objargs:', objargs);
+            if (Array.isArray(objargs)) {
+              transformedData['objfuncargs'] = objargs.map((arg: any) => this.createFunctionParameterFromTypeName(arg));
+            } else {
+              transformedData['objfuncargs'] = [this.createFunctionParameterFromTypeName(objargs)];
+            }
+            console.log('DEBUG: Created objfuncargs:', transformedData['objfuncargs']);
           }
         } else if (Array.isArray(value)) {
           transformedData[key] = value.map(item => this.transform(item as any, context));
@@ -752,6 +770,17 @@ export class V13ToV14Transformer {
     
     if (result.name !== undefined) {
       result.name = this.transform(result.name, childContext);
+      
+      // Add objfuncargs creation logic for CreateOpClassItem in AlterOpFamilyStmt context
+      // Only add objfuncargs for functions (itemtype 2), not operators (itemtype 1)
+      if (result.itemtype === 2 && result.name && typeof result.name === 'object' && result.name.objargs && !result.name.objfuncargs) {
+        const objargs = result.name.objargs;
+        if (Array.isArray(objargs)) {
+          result.name.objfuncargs = objargs.map((arg: any) => this.createFunctionParameterFromTypeName(arg));
+        } else {
+          result.name.objfuncargs = [this.createFunctionParameterFromTypeName(objargs)];
+        }
+      }
     }
     
     if (result.args !== undefined) {
@@ -962,7 +991,17 @@ export class V13ToV14Transformer {
           funcData = funcResult.ObjectWithArgs;
         }
         
-        result.func = 'ObjectWithArgs' in funcResult ? { ObjectWithArgs: funcData } : funcData;
+        if (!('ObjectWithArgs' in funcResult) && funcData.objname && funcData.objargs) {
+          // Create objfuncargs from objargs for AlterFunctionStmt contexts
+          const objfuncargs = Array.isArray(funcData.objargs)
+            ? funcData.objargs.map((arg: any) => this.createFunctionParameterFromTypeName(arg))
+            : [this.createFunctionParameterFromTypeName(funcData.objargs)];
+          
+          funcData.objfuncargs = objfuncargs;
+          result.func = funcData;
+        } else {
+          result.func = 'ObjectWithArgs' in funcResult ? { ObjectWithArgs: funcData } : funcData;
+        }
       } else {
         result.func = funcResult;
       }
@@ -1666,8 +1705,16 @@ export class V13ToV14Transformer {
       if (Array.isArray(result.objname)) {
         result.objname = result.objname.map((item: any) => this.transform(item, context));
       } else if (typeof result.objname === 'object' && result.objname !== null) {
-        const keys = Object.keys(result.objname).sort((a, b) => parseInt(a) - parseInt(b));
-        result.objname = keys.map(key => this.transform(result.objname[key], context));
+        if (this.shouldPreserveObjnameAsObject(context)) {
+          const transformedObjname: any = {};
+          Object.keys(result.objname).forEach(key => {
+            transformedObjname[key] = this.transform(result.objname[key], context);
+          });
+          result.objname = transformedObjname;
+        } else {
+          const keys = Object.keys(result.objname).sort((a, b) => parseInt(a) - parseInt(b));
+          result.objname = keys.map(key => this.transform(result.objname[key], context));
+        }
       } else {
         result.objname = this.transform(result.objname, context);
       }
@@ -1677,30 +1724,13 @@ export class V13ToV14Transformer {
       result.objargs = Array.isArray(result.objargs)
         ? result.objargs.map((item: any) => this.transform(item, context))
         : [this.transform(result.objargs, context)];
-    }
-    
-    // Handle objfuncargs based on context
-    const shouldCreateObjfuncargs = this.shouldCreateObjfuncargs(context);
-    const shouldPreserveObjfuncargs = this.shouldPreserveObjfuncargs(context);
-    const shouldCreateObjfuncargsFromObjargs = this.shouldCreateObjfuncargsFromObjargs(context);
-    
-    if (shouldCreateObjfuncargsFromObjargs && result.objargs) {
-      // Create objfuncargs from objargs (this takes priority over shouldCreateObjfuncargs)
-      result.objfuncargs = Array.isArray(result.objargs)
-        ? result.objargs.map((arg: any) => this.createFunctionParameterFromTypeName(arg))
-        : [this.createFunctionParameterFromTypeName(result.objargs)];
-    } else if (shouldCreateObjfuncargs) {
-      result.objfuncargs = [];
-    } else if (result.objfuncargs !== undefined) {
-      if (shouldPreserveObjfuncargs) {
-        result.objfuncargs = Array.isArray(result.objfuncargs)
-          ? result.objfuncargs.map((item: any) => this.transform(item, context))
-          : [this.transform(result.objfuncargs, context)];
-      } else {
-        delete result.objfuncargs;
+      
+      // Only add objfuncargs when appropriate based on context
+      if (this.shouldCreateObjfuncargsFromObjargs(context)) {
+        result.objfuncargs = Array.isArray(result.objargs)
+          ? result.objargs.map((arg: any) => this.createFunctionParameterFromTypeName(arg))
+          : [this.createFunctionParameterFromTypeName(result.objargs)];
       }
-    } else if (!shouldPreserveObjfuncargs) {
-      delete result.objfuncargs;
     }
     
     return { ObjectWithArgs: result };
@@ -1783,9 +1813,9 @@ export class V13ToV14Transformer {
     
     const path = context.path || [];
     const excludedNodeTypes = [
-      'CreateOpClassStmt', 'CreateOpClassItem', 'CreateAggregateStmt', 'AlterAggregateStmt',
-      'CreateFunctionStmt', 'CreateStmt', 'CreateTypeStmt', 'CreateOpFamilyStmt',
-      'CreateOperatorStmt', 'GrantStmt', 'RevokeStmt'
+      'CreateOpClassStmt', 'CreateAggregateStmt', 'AlterAggregateStmt',
+      'CreateFunctionStmt', 'CreateStmt', 'CreateTypeStmt',
+      'CreateOperatorStmt'
     ];
     
     for (const node of path) {
@@ -1804,7 +1834,7 @@ export class V13ToV14Transformer {
     }
     
     const allowedNodeTypes = [
-      'CommentStmt', 'AlterFunctionStmt', 'AlterOwnerStmt', 'RenameStmt', 'AlterObjectSchemaStmt', 'CreateCastStmt', 'AlterOpFamilyStmt'
+      'CommentStmt', 'AlterFunctionStmt', 'AlterOwnerStmt', 'RenameStmt', 'AlterObjectSchemaStmt', 'CreateCastStmt', 'AlterOpFamilyStmt', 'GrantStmt', 'RevokeStmt'
     ];
     
     for (const node of path) {
@@ -1816,6 +1846,9 @@ export class V13ToV14Transformer {
         if (nodeType === 'DropStmt') {
           return this.shouldAddObjfuncargsForDropStmt(context);
         }
+        if (nodeType === 'GrantStmt' || nodeType === 'RevokeStmt') {
+          return this.shouldAddObjfuncargsForGrantStmt(context);
+        }
       }
     }
     
@@ -1825,6 +1858,9 @@ export class V13ToV14Transformer {
       }
       if (parentType === 'DropStmt') {
         return this.shouldAddObjfuncargsForDropStmt(context);
+      }
+      if (parentType === 'GrantStmt' || parentType === 'RevokeStmt') {
+        return this.shouldAddObjfuncargsForGrantStmt(context);
       }
     }
     
@@ -1855,6 +1891,48 @@ export class V13ToV14Transformer {
       if (removeType === 'OBJECT_FUNCTION' || 
           removeType === 'OBJECT_AGGREGATE' ||
           removeType === 'OBJECT_PROCEDURE') {
+        return true;
+      }
+    }
+    
+    return false;
+  }
+
+  private shouldAddObjfuncargsForGrantStmt(context: TransformerContext): boolean {
+    const path = context.path || [];
+    for (const node of path) {
+      if (node && typeof node === 'object' && ('GrantStmt' in node || 'RevokeStmt' in node)) {
+        const stmt = node.GrantStmt || node.RevokeStmt;
+        if (stmt && stmt.objtype === 'OBJECT_FUNCTION') {
+          return true;
+        }
+        if (stmt && stmt.objtype === 'OBJECT_AGGREGATE') {
+          return true;
+        }
+        if (stmt && stmt.objtype === 'OBJECT_PROCEDURE') {
+          return true;
+        }
+        if (stmt && stmt.objtype === 'OBJECT_OPERATOR') {
+          return false;
+        }
+      }
+    }
+    
+    return false;
+  }
+
+  private shouldPreserveObjnameAsObject(context: TransformerContext): boolean {
+    if (!context.parentNodeTypes || context.parentNodeTypes.length === 0) {
+      return false;
+    }
+    
+    // For CreateOpClassItem contexts, preserve objname as objects for operators (itemtype 1)
+    const preserveAsObjectContexts = [
+      'CreateOpClassStmt', 'CreateOpClassItem', 'CreateAccessMethodStmt'
+    ];
+    
+    for (const parentType of context.parentNodeTypes) {
+      if (preserveAsObjectContexts.includes(parentType)) {
         return true;
       }
     }
