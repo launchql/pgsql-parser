@@ -928,7 +928,7 @@ export class V13ToV14Transformer {
     ];
     
     const sqlSyntaxFunctions = [
-      'btrim', 'trim', 'ltrim', 'rtrim',
+      'btrim', 'trim', 'rtrim',
       'position', 'overlay',
       'extract', 'timezone', 'xmlexists',
       'current_date', 'current_time', 'current_timestamp',
