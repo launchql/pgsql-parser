@@ -1757,7 +1757,7 @@ export class V13ToV14Transformer {
     }
     
     const excludedNodeTypes = [
-      'CreateOpClassStmt', 'CreateOpClassItem', 'CreateAggregateStmt', 'AlterAggregateStmt',
+      'CreateOpClassStmt', 'CreateAggregateStmt', 'AlterAggregateStmt',
       'CreateFunctionStmt', 'CreateStmt', 'CreateTypeStmt', 'CreateOpFamilyStmt',
       'CreateOperatorStmt', 'GrantStmt', 'RevokeStmt'
     ];
@@ -1814,7 +1814,7 @@ export class V13ToV14Transformer {
     
     const path = context.path || [];
     const excludedNodeTypes = [
-      'CreateOpClassStmt', 'CreateOpClassItem', 'CreateAggregateStmt', 'AlterAggregateStmt',
+      'CreateOpClassStmt', 'CreateAggregateStmt', 'AlterAggregateStmt',
       'CreateFunctionStmt', 'CreateStmt', 'CreateTypeStmt', 'CreateOpFamilyStmt',
       'CreateOperatorStmt', 'GrantStmt', 'RevokeStmt'
     ];
@@ -1835,7 +1835,7 @@ export class V13ToV14Transformer {
     }
     
     const allowedNodeTypes = [
-      'CommentStmt', 'AlterFunctionStmt', 'AlterOwnerStmt', 'RenameStmt', 'AlterObjectSchemaStmt', 'CreateCastStmt', 'AlterOpFamilyStmt'
+      'CommentStmt', 'AlterFunctionStmt', 'AlterOwnerStmt', 'RenameStmt', 'AlterObjectSchemaStmt', 'CreateCastStmt', 'AlterOpFamilyStmt', 'CreateOpClassItem'
     ];
     
     for (const node of path) {
