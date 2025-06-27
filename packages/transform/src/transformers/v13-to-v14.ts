@@ -932,7 +932,8 @@ export class V13ToV14Transformer {
       'position', 'overlay',
       'extract', 'timezone', 'xmlexists',
       'current_date', 'current_time', 'current_timestamp',
-      'localtime', 'localtimestamp', 'overlaps'
+      'localtime', 'localtimestamp', 'overlaps',
+      'pg_collation_for', 'collation_for'
     ];
     
     if (explicitCallFunctions.includes(funcname.toLowerCase())) {
