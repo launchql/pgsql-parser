@@ -509,8 +509,9 @@ export class V13ToV14Transformer {
     const result: any = { ...node };
     
     if (result.objects !== undefined) {
-      const childContext = {
+      const childContext: TransformerContext = {
         ...context,
+        parentNodeTypes: [...(context.parentNodeTypes || []), 'DropStmt'],
         dropRemoveType: result.removeType
       };
       result.objects = Array.isArray(result.objects)
@@ -1016,6 +1017,11 @@ export class V13ToV14Transformer {
     
     if (node.name !== undefined) {
       const isInDropContext = context.parentNodeTypes?.includes('DropStmt');
+      console.log('FunctionParameter debug:', {
+        name: node.name,
+        parentNodeTypes: context.parentNodeTypes,
+        isInDropContext
+      });
       if (!isInDropContext) {
         result.name = node.name;
       }
