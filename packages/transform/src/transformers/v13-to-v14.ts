@@ -920,6 +920,7 @@ export class V13ToV14Transformer {
     if (funcname.toLowerCase() === 'substring') {
       return 'COERCE_SQL_SYNTAX';
     }
+
     
     const explicitCallFunctions = [
       'substr', 'timestamptz', 'timestamp', 'date', 'time', 'timetz',
