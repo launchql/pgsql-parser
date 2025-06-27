@@ -1020,9 +1020,7 @@ export class V13ToV14Transformer {
       const typeName = argType.names[argType.names.length - 1];
       if (typeName && typeName.String && typeName.String.str) {
         const typeStr = typeName.String.str.toLowerCase();
-        return typeStr === 'anyarray' || 
-               typeStr === 'anycompatiblearray' || 
-               typeStr.endsWith('array');
+        return typeStr === 'anyarray' || typeStr === 'anycompatiblearray';
       }
     }
     
@@ -1045,14 +1043,15 @@ export class V13ToV14Transformer {
     }
     
     if (node.mode !== undefined) {
-      const isInDropContext = context.parentNodeTypes?.includes('DropStmt');
-      
-      if (isInDropContext) {
-        result.mode = "FUNC_PARAM_DEFAULT";
-      } else if (node.mode === "FUNC_PARAM_VARIADIC") {
-        result.mode = "FUNC_PARAM_VARIADIC"; // Keep variadic parameters as variadic in non-drop contexts
+      if (node.mode === "FUNC_PARAM_VARIADIC") {
+        result.mode = "FUNC_PARAM_VARIADIC"; // Always preserve variadic parameters
       } else if (node.mode === "FUNC_PARAM_IN") {
-        result.mode = "FUNC_PARAM_DEFAULT";
+        // Check if this parameter should be variadic based on polymorphic array types
+        if (this.isVariadicParameterType(node.argType)) {
+          result.mode = "FUNC_PARAM_VARIADIC";
+        } else {
+          result.mode = "FUNC_PARAM_DEFAULT";
+        }
       } else {
         result.mode = node.mode;
       }
@@ -1850,20 +1849,23 @@ export class V13ToV14Transformer {
     const shouldPreserveObjfuncargs = this.shouldPreserveObjfuncargs(context);
     const shouldCreateObjfuncargsFromObjargs = this.shouldCreateObjfuncargsFromObjargs(context);
     
+    let createdFromObjargs = false;
+    
     if (shouldCreateObjfuncargsFromObjargs && result.objargs) {
       // Create objfuncargs from objargs (this takes priority over shouldCreateObjfuncargs)
       result.objfuncargs = Array.isArray(result.objargs)
         ? result.objargs.map((arg: any) => this.createFunctionParameterFromTypeName(arg, context))
         : [this.createFunctionParameterFromTypeName(result.objargs, context)];
+      createdFromObjargs = true;
       
     } else if (shouldCreateObjfuncargs) {
       result.objfuncargs = [];
     } else if (result.objfuncargs !== undefined) {
-      if (shouldPreserveObjfuncargs) {
+      if (shouldPreserveObjfuncargs && !createdFromObjargs) {
         result.objfuncargs = Array.isArray(result.objfuncargs)
           ? result.objfuncargs.map((item: any) => this.transform(item, context))
           : [this.transform(result.objfuncargs, context)];
-      } else {
+      } else if (!shouldPreserveObjfuncargs) {
         delete result.objfuncargs;
       }
     } else if (!shouldPreserveObjfuncargs) {
@@ -2117,30 +2119,27 @@ export class V13ToV14Transformer {
     
     let mode = "FUNC_PARAM_DEFAULT";
     
-    const isInDropContext = context?.parentNodeTypes?.includes('DropStmt');
+    // Check if this is a variadic parameter type (anyarray, anycompatiblearray, etc.)
+    if (this.isVariadicParameterType(argType)) {
+      mode = "FUNC_PARAM_VARIADIC";
+    }
     
-    if (!isInDropContext) {
-      // Check if this is a variadic parameter type (anyarray, anycompatiblearray, etc.)
-      if (this.isVariadicParameterType(argType)) {
+    if (argType && argType.names && Array.isArray(argType.names)) {
+      const typeName = argType.names[argType.names.length - 1];
+      if (typeName && typeName.String && typeName.String.str === 'anyarray') {
         mode = "FUNC_PARAM_VARIADIC";
       }
-      
-      if (argType && argType.names && Array.isArray(argType.names)) {
+    }
+    
+    
+    // Also check for VARIADIC context in aggregate functions
+    if (context && context.parentNodeTypes) {
+      const isAggregateContext = context.parentNodeTypes.includes('RenameStmt') && 
+                                (context as any).renameObjectType === 'OBJECT_AGGREGATE';
+      if (isAggregateContext && argType && argType.names && Array.isArray(argType.names)) {
         const typeName = argType.names[argType.names.length - 1];
-        if (typeName && typeName.String && typeName.String.str === 'anyarray') {
+        if (typeName && typeName.String && typeName.String.str === 'any') {
           mode = "FUNC_PARAM_VARIADIC";
-        }
-      }
-      
-      // Also check for VARIADIC context in aggregate functions
-      if (context && context.parentNodeTypes) {
-        const isAggregateContext = context.parentNodeTypes.includes('RenameStmt') && 
-                                  (context as any).renameObjectType === 'OBJECT_AGGREGATE';
-        if (isAggregateContext && argType && argType.names && Array.isArray(argType.names)) {
-          const typeName = argType.names[argType.names.length - 1];
-          if (typeName && typeName.String && typeName.String.str === 'any') {
-            mode = "FUNC_PARAM_VARIADIC";
-          }
         }
       }
     }
@@ -2151,26 +2150,21 @@ export class V13ToV14Transformer {
     };
     
     // Parameter names are crucial for DROP FUNCTION to identify overloaded functions
-    let parameterName = null;
     if (typeNameNode) {
       if (typeNameNode.name) {
-        parameterName = typeNameNode.name;
+        functionParam.name = typeNameNode.name;
       } else if (typeNameNode.String && typeNameNode.String.str) {
-        parameterName = typeNameNode.String.str;
+        functionParam.name = typeNameNode.String.str;
       } else if (typeNameNode.names && Array.isArray(typeNameNode.names) && typeNameNode.names.length > 0) {
         // Check if the first element might be a parameter name (before the type)
         const firstElement = typeNameNode.names[0];
         if (firstElement && firstElement.String && firstElement.String.str) {
           const potentialName = firstElement.String.str;
           if (!potentialName.includes('.') && potentialName.length < 20) {
-            parameterName = potentialName;
+            functionParam.name = potentialName;
           }
         }
       }
-    }
-    
-    if (parameterName) {
-      functionParam.name = parameterName;
     }
     
     return {
