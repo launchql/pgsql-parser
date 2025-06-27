@@ -199,7 +199,7 @@ export class Deparser implements DeparserVisitor {
     if (node == null) {
       return null;
     }
-    
+
     if (!context) {
       const formatter = new SqlFormatter(this.options.newline, this.options.tab, this.options.pretty);
       context = new DeparserContext({ formatter, prettyMode: this.options.pretty });
@@ -222,23 +222,23 @@ export class Deparser implements DeparserVisitor {
       const formatter = new SqlFormatter(this.options.newline, this.options.tab, this.options.pretty);
       context = new DeparserContext({ formatter, prettyMode: this.options.pretty });
     }
-    
+
     const nodeType = this.getNodeType(node);
-    
+
     // Handle empty objects
     if (!nodeType) {
       return '';
     }
-    
+
     const nodeData = this.getNodeData(node);
 
     const methodName = nodeType as keyof this;
     if (typeof this[methodName] === 'function') {
       const result = (this[methodName] as any)(nodeData, context);
-      
+
       return result;
     }
-    
+
     throw new Error(`Deparser does not handle node type: ${nodeType}`);
   }
 
@@ -378,7 +378,7 @@ export class Deparser implements DeparserVisitor {
       if (context.isPretty()) {
         if (targetList.length === 1) {
           const targetNode = targetList[0] as Node;
-          const target = this.visit(targetNode, context.spawn('SelectStmt', { select: true }));
+          const target = this.visit(targetNode, context.spawn('SelectStmt', { select: true, indentLevel: context.indentLevel + 1 }));
 
           // Check if single target is complex - if so, use multiline format
           if (this.isComplexSelectTarget(targetNode)) {
@@ -394,11 +394,11 @@ export class Deparser implements DeparserVisitor {
         } else {
           const targetStrings = targetList
             .map(e => {
-              const targetStr = this.visit(e as Node, context.spawn('SelectStmt', { select: true }));
+              const targetStr = this.visit(e as Node, context.spawn('SelectStmt', { select: true, indentLevel: context.indentLevel + 1 }));
               if (this.containsMultilineStringLiteral(targetStr)) {
                 return targetStr;
               }
-              return context.indent(targetStr);
+              return context.indentToCurrentLevel(targetStr);
             });
           const formattedTargets = targetStrings.join(',' + context.newline());
           output.push('SELECT' + distinctPart);
@@ -428,11 +428,12 @@ export class Deparser implements DeparserVisitor {
     if (node.whereClause) {
       if (context.isPretty()) {
         output.push('WHERE');
-        const whereExpr = this.visit(node.whereClause as Node, context);
+        const whereContext = context.spawn('SelectStmt', { indentLevel: context.indentLevel + 1 });
+        const whereExpr = this.visit(node.whereClause as Node, whereContext);
         const lines = whereExpr.split(context.newline());
         const indentedLines = lines.map((line, index) => {
           if (index === 0) {
-            return context.indent(line);
+            return context.indentToCurrentLevel(line);
           }
           return line;
         });
@@ -1282,7 +1283,7 @@ export class Deparser implements DeparserVisitor {
     switch (boolop) {
       case 'AND_EXPR':
         if (context.isPretty() && args.length > 1) {
-          const andArgs = args.map(arg => this.visit(arg, boolContext)).join(context.newline() + context.indent('AND '));
+          const andArgs = args.map(arg => this.visit(arg, boolContext)).join(context.newline() + context.indentToCurrentLevel('AND '));
           return formatStr.replace('%s', () => andArgs);
         } else {
           const andArgs = args.map(arg => this.visit(arg, boolContext)).join(' AND ');
@@ -1290,7 +1291,7 @@ export class Deparser implements DeparserVisitor {
         }
       case 'OR_EXPR':
         if (context.isPretty() && args.length > 1) {
-          const orArgs = args.map(arg => this.visit(arg, boolContext)).join(context.newline() + context.indent('OR '));
+          const orArgs = args.map(arg => this.visit(arg, boolContext)).join(context.newline() + context.indentToCurrentLevel('OR '));
           return formatStr.replace('%s', () => orArgs);
         } else {
           const orArgs = args.map(arg => this.visit(arg, boolContext)).join(' OR ');
@@ -2176,27 +2177,28 @@ export class Deparser implements DeparserVisitor {
     const args = ListUtils.unwrapList(node.args);
 
     if (context.isPretty() && args.length > 0) {
+      const caseContext = context.spawn('CaseExpr', { indentLevel: context.indentLevel + 1 });
       for (const arg of args) {
-        const whenClause = this.visit(arg, context);
+        const whenClause = this.visit(arg, caseContext);
         if (this.containsMultilineStringLiteral(whenClause)) {
           output.push(context.newline() + whenClause);
         } else {
-          output.push(context.newline() + context.indent(whenClause));
+          output.push(context.newline() + context.indentToCurrentLevel(whenClause));
         }
       }
 
       if (node.defresult) {
-        const elseResult = this.visit(node.defresult, context);
+        const elseResult = this.visit(node.defresult, caseContext);
         if (this.containsMultilineStringLiteral(elseResult)) {
           output.push(context.newline() + 'ELSE ' + elseResult);
         } else {
-          output.push(context.newline() + context.indent('ELSE ' + elseResult));
+          output.push(context.newline() + context.indentToCurrentLevel('ELSE ' + elseResult));
         }
       }
 
       output.push(context.newline() + 'END');
       return output.join(' ');
-    } else {
+    }else {
       for (const arg of args) {
         output.push(this.visit(arg, context));
       }
