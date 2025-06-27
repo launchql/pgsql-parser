@@ -1042,12 +1042,7 @@ export class V13ToV14Transformer {
       const isInObjectAddressContext = context.parentNodeTypes?.includes('ObjectAddress');
       
       if (node.mode === "FUNC_PARAM_VARIADIC") {
-        if (isInAggregateContext) {
-          result.mode = "FUNC_PARAM_DEFAULT";
-        } else {
-          const isVariadicType = this.isVariadicParameterType(node.argType);
-          result.mode = isVariadicType ? "FUNC_PARAM_VARIADIC" : "FUNC_PARAM_DEFAULT";
-        }
+        result.mode = "FUNC_PARAM_VARIADIC";
       }else if (node.mode === "FUNC_PARAM_IN") {
         result.mode = "FUNC_PARAM_DEFAULT";
       } else {
@@ -1724,6 +1719,12 @@ export class V13ToV14Transformer {
   CreateFunctionStmt(node: PG13.CreateFunctionStmt, context: TransformerContext): any {
     const result: any = { ...node };
     
+    // Create child context with CreateFunctionStmt as parent
+    const childContext: TransformerContext = {
+      ...context,
+      parentNodeTypes: [...(context.parentNodeTypes || []), 'CreateFunctionStmt']
+    };
+    
     if (node.funcname !== undefined) {
       result.funcname = Array.isArray(node.funcname)
         ? node.funcname.map(item => this.transform(item as any, context))
@@ -1732,8 +1733,8 @@ export class V13ToV14Transformer {
     
     if (node.parameters !== undefined) {
       result.parameters = Array.isArray(node.parameters)
-        ? node.parameters.map(item => this.transform(item as any, context))
-        : this.transform(node.parameters as any, context);
+        ? node.parameters.map(item => this.transform(item as any, childContext))
+        : this.transform(node.parameters as any, childContext);
     }
     
     if (node.returnType !== undefined) {
@@ -2832,7 +2833,7 @@ export class V13ToV14Transformer {
   private mapTableLikeOption(pg13Value: number): number {
     // Handle specific mappings based on test failures:
     
-    // Handle negative values (bitwise NOT operations)
+    // Handle negative values (bitwise NOT operations) - these need special handling
     if (pg13Value < 0) {
       return pg13Value;
     }
