@@ -1919,16 +1919,25 @@ export class V13ToV14Transformer {
     return true; // Preserve as object for other contexts
   }
 
-  private createFunctionParameterFromTypeName(typeNameNode: any): any {
+  private createFunctionParameterFromTypeName(typeNameNode: any, context?: TransformerContext): any {
     const transformedTypeName = this.transform(typeNameNode, { parentNodeTypes: [] });
     
     const argType = transformedTypeName.TypeName ? transformedTypeName.TypeName : transformedTypeName;
     
-    return {
-      FunctionParameter: {
-        argType: argType,
-        mode: "FUNC_PARAM_DEFAULT"
+    const functionParam: any = {
+      argType: argType,
+      mode: "FUNC_PARAM_DEFAULT"
+    };
+    
+    if (context && context.parentNodeTypes && !context.parentNodeTypes.includes('DropStmt')) {
+      // Only add name if we have one and we're not in a DropStmt context
+      if (typeNameNode && typeNameNode.name) {
+        functionParam.name = typeNameNode.name;
       }
+    }
+    
+    return {
+      FunctionParameter: functionParam
     };
   }
 
