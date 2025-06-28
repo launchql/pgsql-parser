@@ -564,19 +564,59 @@ export class V15ToV16Transformer {
   }
 
   A_ArrayExpr(node: PG15.A_ArrayExpr, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.elements !== undefined) {
+      result.elements = Array.isArray(node.elements)
+        ? node.elements.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.elements as any, context);
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { A_ArrayExpr: result };
   }
 
   A_Indices(node: PG15.A_Indices, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.is_slice !== undefined) {
+      result.is_slice = node.is_slice;
+    }
+
+    if (node.lidx !== undefined) {
+      result.lidx = this.transform(node.lidx as any, context);
+    }
+
+    if (node.uidx !== undefined) {
+      result.uidx = this.transform(node.uidx as any, context);
+    }
+
+    return { A_Indices: result };
   }
 
   A_Indirection(node: PG15.A_Indirection, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.arg !== undefined) {
+      result.arg = this.transform(node.arg as any, context);
+    }
+
+    if (node.indirection !== undefined) {
+      result.indirection = Array.isArray(node.indirection)
+        ? node.indirection.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.indirection as any, context);
+    }
+
+    return { A_Indirection: result };
   }
 
   A_Star(node: PG15.A_Star, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    return { A_Star: result };
   }
 
   CaseExpr(node: PG15.CaseExpr, context: TransformerContext): any {
