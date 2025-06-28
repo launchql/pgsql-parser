@@ -5,6 +5,13 @@
 - **Tests Failing**: 256/258 (99.2%)
 - **Last Updated**: June 28, 2025
 
+## v15-to-v16 Transformer Fixes Applied
+- ✅ Fixed version number: 150000 → 160000
+- ✅ Fixed CreateStmt node wrapping
+- ✅ Fixed CommentStmt, List, String, RangeVar, ResTarget node wrapping
+- ✅ Fixed TypeCast, AlterTableCmd, TypeName node wrapping
+- 🔧 Still working on remaining node wrapping issues
+
 ## Test Status Summary
 The 14-15 transformer is in early development with only 2 tests passing. The core transformation logic is working but there are systematic node wrapping issues.
 
