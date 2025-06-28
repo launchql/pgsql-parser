@@ -454,27 +454,9 @@ export class V16ToV17Transformer {
     const result: any = {};
 
     if (node.names !== undefined) {
-      let names = Array.isArray(node.names)
+      result.names = Array.isArray(node.names)
         ? node.names.map(item => this.transform(item as any, context))
         : this.transform(node.names as any, context);
-      
-      if (Array.isArray(names) && names.length === 1) {
-        const firstElement = names[0];
-        if (firstElement && typeof firstElement === 'object' && 'String' in firstElement) {
-          const typeNameStr = firstElement.String.str || firstElement.String.sval;
-          if (typeNameStr === 'json' || typeNameStr === 'jsonb') {
-            // Add pg_catalog prefix
-            const pgCatalogElement = {
-              String: {
-                sval: 'pg_catalog'
-              }
-            };
-            names = [pgCatalogElement, firstElement];
-          }
-        }
-      }
-      
-      result.names = names;
     }
 
     if (node.typeOid !== undefined) {
