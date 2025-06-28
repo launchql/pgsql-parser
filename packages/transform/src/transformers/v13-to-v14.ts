@@ -1067,12 +1067,39 @@ export class V13ToV14Transformer {
     if (typeNode.names && Array.isArray(typeNode.names)) {
       const typeName = typeNode.names[typeNode.names.length - 1]?.String?.str;
 
-      if (context && context.parentNodeTypes?.includes('DropStmt')) {
-        return false;
+      if (typeName === 'variadic') {
+        return true;
       }
 
-      if (typeName === 'anyarray' || typeName === 'variadic') {
-        return true;
+      if ((typeName === 'anyarray' || typeNode.arrayBounds) && allArgs && index !== undefined) {
+        if (allArgs.length === 1 && typeNode.arrayBounds) {
+          if (typeNode.arrayBounds.length === 1 && 
+              typeNode.arrayBounds[0]?.Integer?.ival === -1) {
+            return true;
+          }
+        }
+        
+        if (typeName === 'anyarray' && index > 0) {
+          const prevArg = allArgs[index - 1];
+          const prevTypeNode = prevArg?.TypeName || prevArg;
+          
+          if (typeNode.location && prevTypeNode?.location) {
+            const locationGap = typeNode.location - prevTypeNode.location;
+            const prevTypeName = prevTypeNode.names?.[0]?.String?.str || '';
+            
+            const baseGap = prevTypeName.length + 2; // "prevType, "
+            const variadicGap = baseGap + 9; // + "variadic "
+            
+            if (locationGap >= variadicGap - 1) {
+              return true;
+            }
+          }
+        }
+        return false;
+      }
+      
+      if (typeName === 'int4' || typeName === 'int' || typeName === 'text' || typeName === 'varchar') {
+        return false;
       }
 
       // In RenameStmt context for aggregates, "any" type should be treated as variadic
@@ -1962,7 +1989,7 @@ export class V13ToV14Transformer {
               if (originalObjfuncargs && Array.isArray(originalObjfuncargs) && originalObjfuncargs[index]) {
                 const originalParam = originalObjfuncargs[index];
                 if (originalParam && originalParam.FunctionParameter && originalParam.FunctionParameter.mode) {
-                  mode = this.mapFunctionParameterMode(originalParam.FunctionParameter.mode);
+                  mode = this.mapFunctionParameterMode(originalParam.FunctionParameter.mode, context);
                 } else {
                   const isVariadic = this.isVariadicParameterType(arg, index, result.objargs, context);
                   mode = isVariadic ? 'FUNC_PARAM_VARIADIC' : 'FUNC_PARAM_DEFAULT';
@@ -1972,12 +1999,25 @@ export class V13ToV14Transformer {
                 mode = isVariadic ? 'FUNC_PARAM_VARIADIC' : 'FUNC_PARAM_DEFAULT';
               }
               
-              const parameter = {
+              // Extract parameter name if available from original objfuncargs
+              let paramName: string | undefined;
+              if (originalObjfuncargs && Array.isArray(originalObjfuncargs) && originalObjfuncargs[index]) {
+                const originalParam = originalObjfuncargs[index];
+                if (originalParam && originalParam.FunctionParameter && originalParam.FunctionParameter.name) {
+                  paramName = originalParam.FunctionParameter.name;
+                }
+              }
+
+              const parameter: any = {
                 FunctionParameter: {
                   argType: transformedArgType.TypeName || transformedArgType,
                   mode: mode
                 }
               };
+
+              if (paramName) {
+                parameter.FunctionParameter.name = paramName;
+              }
 
               return parameter;
             })
@@ -1985,8 +2025,11 @@ export class V13ToV14Transformer {
               FunctionParameter: {
                 argType: this.visit(result.objargs, context),
                 mode: (originalObjfuncargs && originalObjfuncargs[0] && originalObjfuncargs[0].FunctionParameter && originalObjfuncargs[0].FunctionParameter.mode) 
-                  ? this.mapFunctionParameterMode(originalObjfuncargs[0].FunctionParameter.mode)
-                  : (this.isVariadicParameterType(result.objargs, 0, [result.objargs], context) ? 'FUNC_PARAM_VARIADIC' : 'FUNC_PARAM_DEFAULT')
+                  ? this.mapFunctionParameterMode(originalObjfuncargs[0].FunctionParameter.mode, context)
+                  : (() => {
+                      const isVariadic = this.isVariadicParameterType(result.objargs, 0, [result.objargs], context);
+                      return isVariadic ? 'FUNC_PARAM_VARIADIC' : 'FUNC_PARAM_DEFAULT';
+                    })()
               }
             }];
         }
@@ -2234,7 +2277,9 @@ export class V13ToV14Transformer {
 
     const argType = transformedTypeName.TypeName ? transformedTypeName.TypeName : transformedTypeName;
 
-    let mode = "FUNC_PARAM_DEFAULT";
+    // Check if this should be a variadic parameter
+    const isVariadic = this.isVariadicParameterType(typeNameNode, index, undefined, context);
+    let mode = isVariadic ? "FUNC_PARAM_VARIADIC" : "FUNC_PARAM_DEFAULT";
 
     const functionParam: any = {
       argType: argType,
@@ -3058,11 +3103,14 @@ export class V13ToV14Transformer {
     return bitNames.length > 0 ? bitNames.join(' | ') : `UNKNOWN(${value})`;
   }
 
-  private mapFunctionParameterMode(pg13Mode: string): string {
+  private mapFunctionParameterMode(pg13Mode: string, context?: TransformerContext): string {
     // Handle specific mode mappings between PG13 and PG14
     switch (pg13Mode) {
       case 'FUNC_PARAM_VARIADIC':
-        return 'FUNC_PARAM_VARIADIC'; // Keep variadic parameters as variadic
+        if (context && context.parentNodeTypes?.includes('DropStmt')) {
+          return 'FUNC_PARAM_DEFAULT';
+        }
+        return 'FUNC_PARAM_VARIADIC';
       case 'FUNC_PARAM_IN':
         return 'FUNC_PARAM_DEFAULT';
       default:
