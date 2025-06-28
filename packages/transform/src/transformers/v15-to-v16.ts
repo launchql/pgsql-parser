@@ -862,7 +862,12 @@ export class V15ToV16Transformer {
   }
   
   Integer(node: PG15.Integer, context: TransformerContext): any {
-    const result: any = { ...node };
+    const result: any = {};
+
+    if (node.ival !== undefined) {
+      result.ival = node.ival;
+    }
+
     return { Integer: result };
   }
   
