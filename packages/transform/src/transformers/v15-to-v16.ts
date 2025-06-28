@@ -880,9 +880,13 @@ export class V15ToV16Transformer {
   Integer(node: PG15.Integer, context: TransformerContext): any {
     const result: any = { ...node };
     
-    // Handle case where PG15 produces empty Integer nodes in arrayBounds that should have ival: -1 in PG16
-    if (Object.keys(node).length === 0 && context.parentNodeTypes.includes('TypeName')) {
-      result.ival = -1;
+    // Handle case where PG15 produces empty Integer nodes that need different handling based on context
+    if (Object.keys(node).length === 0) {
+      if (context.parentNodeTypes.includes('TypeName')) {
+        result.ival = -1;
+      } else if (context.parentNodeTypes.includes('A_Const')) {
+        result.ival = -1;
+      }
     }
     
     return { Integer: result };
