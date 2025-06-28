@@ -444,9 +444,24 @@ export class V16ToV17Transformer {
     const result: any = {};
 
     if (node.names !== undefined) {
-      result.names = Array.isArray(node.names)
+      let names = Array.isArray(node.names)
         ? node.names.map(item => this.transform(item as any, context))
         : this.transform(node.names as any, context);
+
+      if (Array.isArray(names) && names.length === 1) {
+        const singleElement = names[0];
+        if (singleElement && typeof singleElement === 'object' && 'String' in singleElement) {
+          const typeName = singleElement.String.str || singleElement.String.sval;
+          if (typeName === 'json') {
+            names = [
+              { String: { sval: 'pg_catalog' } },
+              singleElement
+            ];
+          }
+        }
+      }
+
+      result.names = names;
     }
 
     if (node.typeOid !== undefined) {
@@ -547,7 +562,33 @@ export class V16ToV17Transformer {
       result.arg = this.transform(node.arg as any, context);
     }
     if (node.typeName !== undefined) {
-      result.typeName = this.transform(node.typeName as any, context);
+      let transformedTypeName = this.transform(node.typeName as any, context);
+      
+      // Handle both wrapped and unwrapped TypeName results
+      let typeName = transformedTypeName;
+      if (transformedTypeName && typeof transformedTypeName === 'object' && 'TypeName' in transformedTypeName) {
+        typeName = transformedTypeName.TypeName;
+      }
+      
+      if (typeName && typeName.names && Array.isArray(typeName.names) && typeName.names.length === 1) {
+        const singleElement = typeName.names[0];
+        if (singleElement && typeof singleElement === 'object' && 'String' in singleElement) {
+          const typeNameStr = singleElement.String.str || singleElement.String.sval;
+          if (typeNameStr === 'json') {
+            typeName.names = [
+              { String: { sval: 'pg_catalog' } },
+              singleElement
+            ];
+            if (transformedTypeName && typeof transformedTypeName === 'object' && 'TypeName' in transformedTypeName) {
+              transformedTypeName.TypeName = typeName;
+            } else {
+              transformedTypeName = typeName;
+            }
+          }
+        }
+      }
+      
+      result.typeName = transformedTypeName;
     }
     if (node.location !== undefined) {
       result.location = node.location;
