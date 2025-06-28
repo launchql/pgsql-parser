@@ -427,13 +427,15 @@ export class V14ToV15Transformer {
     
     if (isInDefElemContext && node.ival !== undefined) {
       // ival: 1 becomes boolval: true, ival: 0 becomes boolval: false
-      // All other values become boolval: false
-      const boolValue = node.ival === 1;
-      return {
-        Boolean: {
-          boolval: boolValue
-        }
-      };
+      // Other integer values remain as Integer objects
+      if (node.ival === 0 || node.ival === 1) {
+        const boolValue = node.ival === 1;
+        return {
+          Boolean: {
+            boolval: boolValue
+          }
+        };
+      }
     }
     
     const result: any = { ...node };
