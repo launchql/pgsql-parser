@@ -1302,10 +1302,6 @@ export class V14ToV15Transformer {
     return { DropRoleStmt: result };
   }
 
-  CreateAggregateStmt(node: PG14.DefineStmt, context: TransformerContext): any {
-    const result = this.transformGenericNode(node, context);
-    return result;
-  }
 
   CreateTableAsStmt(node: PG14.CreateTableAsStmt, context: TransformerContext): any {
     const result = this.transformGenericNode(node, context);
