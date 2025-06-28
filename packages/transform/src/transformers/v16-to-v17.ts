@@ -794,7 +794,7 @@ export class V16ToV17Transformer {
   }
 
   DeclareCursorStmt(node: PG16.DeclareCursorStmt, context: TransformerContext): any {
-    return node;
+    return { DeclareCursorStmt: node };
   }
 
   PublicationObjSpec(node: PG16.PublicationObjSpec, context: TransformerContext): any {
@@ -806,7 +806,7 @@ export class V16ToV17Transformer {
   }
 
   CreateAmStmt(node: PG16.CreateAmStmt, context: TransformerContext): any {
-    return node;
+    return { CreateAmStmt: node };
   }
 
   IntoClause(node: PG16.IntoClause, context: TransformerContext): any {
@@ -906,6 +906,6 @@ export class V16ToV17Transformer {
   }
 
   CreateForeignTableStmt(node: PG16.CreateForeignTableStmt, context: TransformerContext): any {
-    return node;
+    return { CreateForeignTableStmt: node };
   }
 }
