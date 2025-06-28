@@ -1,11 +1,19 @@
 
 we are a building transformers so we can upgrade PG13 ASTs to PG17, stepwise, so one major version at a time.
 
-First only work on packages/transform/src/transformers/v13-to-v14.ts
+you will be assigned a transformer, such as v13-v14, or v14-v15, you will be assigned in your initial prompt.
 
-and only work by testing like this to only run tests inside of the PG13 -> PG14 :
+First only work on packages/transform/src/transformers/v<previousVersion>-to-v<nextVersion>.ts
 
+and only work by testing like this to only run tests inside a particular transformer test suite
+
+yarn test:watch __tests__/kitchen-sink/<previousVersion>-<nextVersion>
+
+for example, for the 13-14 transformer:
 yarn test:watch __tests__/kitchen-sink/13-14
+
+for example, for the 14-15 transformer:
+yarn test:watch __tests__/kitchen-sink/14-15
 
 More info:
 review packages/transform/AST_NOTES.md
