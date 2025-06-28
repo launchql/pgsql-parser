@@ -1022,7 +1022,7 @@ export class V13ToV14Transformer {
 
 
 
-  private isVariadicParameterType(argType: any, index?: number, allArgs?: any[]): boolean {
+  private isVariadicParameterType(argType: any, index?: number, allArgs?: any[], context?: TransformerContext): boolean {
     if (!argType) return false;
     
     // Handle TypeName wrapper
@@ -1039,15 +1039,15 @@ export class V13ToV14Transformer {
         }
       }
       
-      if (index !== undefined && allArgs && 
-          typeNode.names.length > 0 &&
-          index === allArgs.length - 1 && 
-          allArgs.length > 1) {
-        const typeName = typeNode.names[typeNode.names.length - 1]?.String?.str;
-        if (typeName === 'anyarray' || typeName === 'any') {
-          return true;
-        }
+      const typeName = typeNode.names[typeNode.names.length - 1]?.String?.str;
+      
+      // In RenameStmt context for aggregates, "any" type should be treated as variadic
+      if (context && context.parentNodeTypes?.includes('RenameStmt') && 
+          !context.parentNodeTypes?.includes('DropStmt') && typeName === 'any') {
+        return true;
       }
+      
+      
     }
     
     return false;
@@ -1075,15 +1075,24 @@ export class V13ToV14Transformer {
     }
     
     if (node.mode !== undefined) {
-      const isInAggregateContext = context.parentNodeTypes?.includes('CreateAggregateStmt');
-      const isInObjectAddressContext = context.parentNodeTypes?.includes('ObjectAddress');
+      const isInRenameContext = context.parentNodeTypes?.includes('RenameStmt');
+      const isInDropContext = context.parentNodeTypes?.includes('DropStmt');
+      const isInCommentContext = context.parentNodeTypes?.includes('CommentStmt');
       
-      if (node.mode === "FUNC_PARAM_VARIADIC") {
-        result.mode = "FUNC_PARAM_VARIADIC"; // Always preserve variadic mode
+      if (isInRenameContext || isInCommentContext) {
+        result.mode = node.mode; // Preserve original mode
+      } else if (isInDropContext) {
+        if (node.mode === "FUNC_PARAM_VARIADIC") {
+          result.mode = node.mode; // Preserve variadic mode
+        } else if (node.mode === "FUNC_PARAM_IN") {
+          result.mode = "FUNC_PARAM_DEFAULT"; // Map IN to DEFAULT in PG14
+        } else {
+          result.mode = node.mode; // Preserve other modes
+        }
       } else if (node.mode === "FUNC_PARAM_IN") {
         result.mode = "FUNC_PARAM_DEFAULT"; // Map IN to DEFAULT in PG14
       } else {
-        result.mode = node.mode;
+        result.mode = node.mode; // Preserve all other modes unchanged
       }
     }
     
@@ -1866,38 +1875,20 @@ export class V13ToV14Transformer {
     const shouldPreserveObjfuncargs = this.shouldPreserveObjfuncargs(context);
     const shouldCreateObjfuncargsFromObjargs = this.shouldCreateObjfuncargsFromObjargs(context);
     
-    console.log('DEBUG ObjectWithArgs context:', {
-      shouldCreateObjfuncargs,
-      shouldPreserveObjfuncargs,
-      shouldCreateObjfuncargsFromObjargs,
-      parentNodeTypes: context.parentNodeTypes,
-      hasOriginalObjfuncargs: !!(node as any).objfuncargs,
-      objname: result.objname
-    });
     
     if (shouldCreateObjfuncargsFromObjargs && result.objargs) {
       // Create objfuncargs from objargs, with smart parameter mode handling
       const originalObjfuncargs = (node as any).objfuncargs;
       if (originalObjfuncargs && Array.isArray(originalObjfuncargs)) {
-        result.objfuncargs = originalObjfuncargs.map((item: any, index: number) => {
-          const transformedParam = this.transform(item, context);
-          // Only apply heuristic detection if the parameter doesn't already have a variadic mode
-          if (transformedParam.FunctionParameter && 
-              transformedParam.FunctionParameter.mode !== "FUNC_PARAM_VARIADIC" &&
-              result.objargs && result.objargs[index]) {
-            const argType = result.objargs[index];
-            if (this.isVariadicParameterType(argType, index, result.objargs)) {
-              transformedParam.FunctionParameter.mode = "FUNC_PARAM_VARIADIC";
-            }
-          }
-          return transformedParam;
+        result.objfuncargs = originalObjfuncargs.map((item: any) => {
+          return this.transform(item, context);
         });
       } else {
         result.objfuncargs = Array.isArray(result.objargs)
           ? result.objargs.map((arg: any, index: number) => {
               
               const transformedArgType = this.visit(arg, context);
-              const isVariadic = this.isVariadicParameterType(arg, index, result.objargs);
+              const isVariadic = this.isVariadicParameterType(arg, index, result.objargs, context);
               const parameter = {
                 FunctionParameter: {
                   argType: transformedArgType.TypeName || transformedArgType,
@@ -1910,7 +1901,7 @@ export class V13ToV14Transformer {
           : [{
               FunctionParameter: {
                 argType: this.visit(result.objargs, context),
-                mode: this.isVariadicParameterType(result.objargs, 0, [result.objargs]) ? 'FUNC_PARAM_VARIADIC' : 'FUNC_PARAM_DEFAULT'
+                mode: this.isVariadicParameterType(result.objargs, 0, [result.objargs], context) ? 'FUNC_PARAM_VARIADIC' : 'FUNC_PARAM_DEFAULT'
               }
             }];
       }
