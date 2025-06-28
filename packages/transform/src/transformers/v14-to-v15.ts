@@ -421,21 +421,58 @@ export class V14ToV15Transformer {
   }
   
   Integer(node: PG14.Integer, context: TransformerContext): any {
-    // Check if we're in a DefElem context - if so, convert Integer to Boolean
+    // Check if we're in a DefElem context - if so, handle special cases
     const isInDefElemContext = context.parentNodeTypes && 
       context.parentNodeTypes.some(nodeType => nodeType === 'DefElem');
     
     if (isInDefElemContext && node.ival !== undefined) {
-      // ival: 1 becomes boolval: true, ival: 0 becomes boolval: false
-      // Other integer values remain as Integer objects
-      if (node.ival === 0 || node.ival === 1) {
-        const boolValue = node.ival === 1;
-        return {
-          Boolean: {
-            boolval: boolValue
-          }
-        };
+      const defElemName = (context as any).defElemName;
+      
+      // DefElem name-specific transformations - be very restrictive
+      if (defElemName) {
+        if (defElemName === 'cycle' && node.ival === 1 && 
+            context.parentNodeTypes?.some(nodeType => nodeType === 'CreateSeqStmt')) {
+          return {
+            Boolean: {
+              boolval: true
+            }
+          };
+        }
+        
+        
+        if (defElemName === 'increment' && node.ival < 0 &&
+            context.parentNodeTypes?.some(nodeType => nodeType === 'CreateSeqStmt')) {
+          return { Integer: {} };
+        }
+        
+        
+        if (defElemName === 'sspace' && node.ival === 0 &&
+            context.parentNodeTypes?.some(nodeType => nodeType === 'DefineStmt')) {
+          return { Integer: {} };
+        }
       }
+      
+      const isBooleanContext = context.parentNodeTypes && 
+        (context.parentNodeTypes.some(nodeType => 
+          nodeType === 'CreateRoleStmt' || 
+          nodeType === 'AlterRoleStmt' || 
+          nodeType === 'CreateFunctionStmt' ||
+          nodeType === 'AlterFunctionStmt' ||
+          nodeType === 'CreateExtensionStmt'
+        ));
+      
+      if (isBooleanContext) {
+        // Boolean contexts: ival: 0 -> boolval: false, ival: 1 -> boolval: true
+        if (node.ival === 0 || node.ival === 1) {
+          const boolValue = node.ival === 1;
+          return {
+            Boolean: {
+              boolval: boolValue
+            }
+          };
+        }
+      }
+      
     }
     
     const result: any = { ...node };
@@ -798,7 +835,12 @@ export class V14ToV15Transformer {
     }
 
     if (node.arg !== undefined) {
-      result.arg = this.transform(node.arg as any, context);
+      const argContext = {
+        ...context,
+        defElemName: node.defname,
+        parentNodeTypes: [...(context.parentNodeTypes || []), 'DefElem']
+      };
+      result.arg = this.transform(node.arg as any, argContext);
     }
 
     if (node.defaction !== undefined) {
