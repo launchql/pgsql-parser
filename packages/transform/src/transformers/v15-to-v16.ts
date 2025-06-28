@@ -86,7 +86,21 @@ export class V15ToV16Transformer {
   }
 
   RawStmt(node: PG15.RawStmt, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.stmt !== undefined) {
+      result.stmt = this.transform(node.stmt as any, context);
+    }
+
+    if (node.stmt_location !== undefined) {
+      result.stmt_location = node.stmt_location;
+    }
+
+    if (node.stmt_len !== undefined) {
+      result.stmt_len = node.stmt_len;
+    }
+
+    return { RawStmt: result };
   }
 
   SelectStmt(node: PG15.SelectStmt, context: TransformerContext): any {
@@ -324,7 +338,23 @@ export class V15ToV16Transformer {
   }
 
   WithClause(node: PG15.WithClause, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.ctes !== undefined) {
+      result.ctes = Array.isArray(node.ctes)
+        ? node.ctes.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.ctes as any, context);
+    }
+
+    if (node.recursive !== undefined) {
+      result.recursive = node.recursive;
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { WithClause: result };
   }
 
   ResTarget(node: PG15.ResTarget, context: TransformerContext): any {
@@ -428,7 +458,51 @@ export class V15ToV16Transformer {
   }
 
   FuncExpr(node: PG15.FuncExpr, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.xpr !== undefined) {
+      result.xpr = this.transform(node.xpr as any, context);
+    }
+
+    if (node.funcid !== undefined) {
+      result.funcid = node.funcid;
+    }
+
+    if (node.funcresulttype !== undefined) {
+      result.funcresulttype = node.funcresulttype;
+    }
+
+    if (node.funcretset !== undefined) {
+      result.funcretset = node.funcretset;
+    }
+
+    if (node.funcvariadic !== undefined) {
+      result.funcvariadic = node.funcvariadic;
+    }
+
+    if (node.funcformat !== undefined) {
+      result.funcformat = node.funcformat;
+    }
+
+    if (node.funccollid !== undefined) {
+      result.funccollid = node.funccollid;
+    }
+
+    if (node.inputcollid !== undefined) {
+      result.inputcollid = node.inputcollid;
+    }
+
+    if (node.args !== undefined) {
+      result.args = Array.isArray(node.args)
+        ? node.args.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.args as any, context);
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { FuncExpr: result };
   }
 
   A_Const(node: PG15.A_Const, context: TransformerContext): any {
@@ -620,11 +694,67 @@ export class V15ToV16Transformer {
   }
 
   CaseExpr(node: PG15.CaseExpr, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.xpr !== undefined) {
+      result.xpr = this.transform(node.xpr as any, context);
+    }
+
+    if (node.casetype !== undefined) {
+      result.casetype = node.casetype;
+    }
+
+    if (node.casecollid !== undefined) {
+      result.casecollid = node.casecollid;
+    }
+
+    if (node.arg !== undefined) {
+      result.arg = this.transform(node.arg as any, context);
+    }
+
+    if (node.args !== undefined) {
+      result.args = Array.isArray(node.args)
+        ? node.args.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.args as any, context);
+    }
+
+    if (node.defresult !== undefined) {
+      result.defresult = this.transform(node.defresult as any, context);
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { CaseExpr: result };
   }
 
   CoalesceExpr(node: PG15.CoalesceExpr, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.xpr !== undefined) {
+      result.xpr = this.transform(node.xpr as any, context);
+    }
+
+    if (node.coalescetype !== undefined) {
+      result.coalescetype = node.coalescetype;
+    }
+
+    if (node.coalescecollid !== undefined) {
+      result.coalescecollid = node.coalescecollid;
+    }
+
+    if (node.args !== undefined) {
+      result.args = Array.isArray(node.args)
+        ? node.args.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.args as any, context);
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { CoalesceExpr: result };
   }
 
   TypeCast(node: PG15.TypeCast, context: TransformerContext): any {
@@ -646,15 +776,71 @@ export class V15ToV16Transformer {
   }
 
   CollateClause(node: PG15.CollateClause, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.arg !== undefined) {
+      result.arg = this.transform(node.arg as any, context);
+    }
+
+    if (node.collname !== undefined) {
+      result.collname = Array.isArray(node.collname)
+        ? node.collname.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.collname as any, context);
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { CollateClause: result };
   }
 
   BooleanTest(node: PG15.BooleanTest, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.xpr !== undefined) {
+      result.xpr = this.transform(node.xpr as any, context);
+    }
+
+    if (node.arg !== undefined) {
+      result.arg = this.transform(node.arg as any, context);
+    }
+
+    if (node.booltesttype !== undefined) {
+      result.booltesttype = node.booltesttype;
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { BooleanTest: result };
   }
 
   NullTest(node: PG15.NullTest, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.xpr !== undefined) {
+      result.xpr = this.transform(node.xpr as any, context);
+    }
+
+    if (node.arg !== undefined) {
+      result.arg = this.transform(node.arg as any, context);
+    }
+
+    if (node.nulltesttype !== undefined) {
+      result.nulltesttype = node.nulltesttype;
+    }
+
+    if (node.argisrow !== undefined) {
+      result.argisrow = node.argisrow;
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { NullTest: result };
   }
 
   String(node: PG15.String, context: TransformerContext): any {
@@ -708,7 +894,7 @@ export class V15ToV16Transformer {
   }
   
   Null(node: PG15.Node, context: TransformerContext): any {
-    return node;
+    return { Null: {} };
   }
 
   List(node: PG15.List, context: TransformerContext): any {
@@ -864,143 +1050,1351 @@ export class V15ToV16Transformer {
   }
 
   Constraint(node: PG15.Constraint, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.contype !== undefined) {
+      result.contype = node.contype;
+    }
+
+    if (node.conname !== undefined) {
+      result.conname = node.conname;
+    }
+
+    if (node.deferrable !== undefined) {
+      result.deferrable = node.deferrable;
+    }
+
+    if (node.initdeferred !== undefined) {
+      result.initdeferred = node.initdeferred;
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    if (node.is_no_inherit !== undefined) {
+      result.is_no_inherit = node.is_no_inherit;
+    }
+
+    if (node.raw_expr !== undefined) {
+      result.raw_expr = this.transform(node.raw_expr as any, context);
+    }
+
+    if (node.cooked_expr !== undefined) {
+      result.cooked_expr = node.cooked_expr;
+    }
+
+    if (node.generated_when !== undefined) {
+      result.generated_when = node.generated_when;
+    }
+
+    if (node.keys !== undefined) {
+      result.keys = Array.isArray(node.keys)
+        ? node.keys.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.keys as any, context);
+    }
+
+    if (node.including !== undefined) {
+      result.including = Array.isArray(node.including)
+        ? node.including.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.including as any, context);
+    }
+
+    if (node.exclusions !== undefined) {
+      result.exclusions = Array.isArray(node.exclusions)
+        ? node.exclusions.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.exclusions as any, context);
+    }
+
+    if (node.options !== undefined) {
+      result.options = Array.isArray(node.options)
+        ? node.options.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.options as any, context);
+    }
+
+    if (node.indexname !== undefined) {
+      result.indexname = node.indexname;
+    }
+
+    if (node.indexspace !== undefined) {
+      result.indexspace = node.indexspace;
+    }
+
+    if (node.reset_default_tblspc !== undefined) {
+      result.reset_default_tblspc = node.reset_default_tblspc;
+    }
+
+    if (node.access_method !== undefined) {
+      result.access_method = node.access_method;
+    }
+
+    if (node.where_clause !== undefined) {
+      result.where_clause = this.transform(node.where_clause as any, context);
+    }
+
+    if (node.pktable !== undefined) {
+      result.pktable = this.transform(node.pktable as any, context);
+    }
+
+    if (node.fk_attrs !== undefined) {
+      result.fk_attrs = Array.isArray(node.fk_attrs)
+        ? node.fk_attrs.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.fk_attrs as any, context);
+    }
+
+    if (node.pk_attrs !== undefined) {
+      result.pk_attrs = Array.isArray(node.pk_attrs)
+        ? node.pk_attrs.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.pk_attrs as any, context);
+    }
+
+    if (node.fk_matchtype !== undefined) {
+      result.fk_matchtype = node.fk_matchtype;
+    }
+
+    if (node.fk_upd_action !== undefined) {
+      result.fk_upd_action = node.fk_upd_action;
+    }
+
+    if (node.fk_del_action !== undefined) {
+      result.fk_del_action = node.fk_del_action;
+    }
+
+    if (node.old_conpfeqop !== undefined) {
+      result.old_conpfeqop = Array.isArray(node.old_conpfeqop)
+        ? node.old_conpfeqop.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.old_conpfeqop as any, context);
+    }
+
+    if (node.old_pktable_oid !== undefined) {
+      result.old_pktable_oid = node.old_pktable_oid;
+    }
+
+    if (node.skip_validation !== undefined) {
+      result.skip_validation = node.skip_validation;
+    }
+
+    if (node.initially_valid !== undefined) {
+      result.initially_valid = node.initially_valid;
+    }
+
+    return { Constraint: result };
   }
 
   SubLink(node: PG15.SubLink, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.xpr !== undefined) {
+      result.xpr = this.transform(node.xpr as any, context);
+    }
+
+    if (node.subLinkType !== undefined) {
+      result.subLinkType = node.subLinkType;
+    }
+
+    if (node.subLinkId !== undefined) {
+      result.subLinkId = node.subLinkId;
+    }
+
+    if (node.testexpr !== undefined) {
+      result.testexpr = this.transform(node.testexpr as any, context);
+    }
+
+    if (node.operName !== undefined) {
+      result.operName = Array.isArray(node.operName)
+        ? node.operName.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.operName as any, context);
+    }
+
+    if (node.subselect !== undefined) {
+      result.subselect = this.transform(node.subselect as any, context);
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { SubLink: result };
   }
 
   CaseWhen(node: PG15.CaseWhen, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.xpr !== undefined) {
+      result.xpr = this.transform(node.xpr as any, context);
+    }
+
+    if (node.expr !== undefined) {
+      result.expr = this.transform(node.expr as any, context);
+    }
+
+    if (node.result !== undefined) {
+      result.result = this.transform(node.result as any, context);
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { CaseWhen: result };
   }
 
   WindowDef(node: PG15.WindowDef, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.name !== undefined) {
+      result.name = node.name;
+    }
+
+    if (node.refname !== undefined) {
+      result.refname = node.refname;
+    }
+
+    if (node.partitionClause !== undefined) {
+      result.partitionClause = Array.isArray(node.partitionClause)
+        ? node.partitionClause.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.partitionClause as any, context);
+    }
+
+    if (node.orderClause !== undefined) {
+      result.orderClause = Array.isArray(node.orderClause)
+        ? node.orderClause.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.orderClause as any, context);
+    }
+
+    if (node.frameOptions !== undefined) {
+      result.frameOptions = node.frameOptions;
+    }
+
+    if (node.startOffset !== undefined) {
+      result.startOffset = this.transform(node.startOffset as any, context);
+    }
+
+    if (node.endOffset !== undefined) {
+      result.endOffset = this.transform(node.endOffset as any, context);
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { WindowDef: result };
   }
 
   SortBy(node: PG15.SortBy, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.node !== undefined) {
+      result.node = this.transform(node.node as any, context);
+    }
+
+    if (node.sortby_dir !== undefined) {
+      result.sortby_dir = node.sortby_dir;
+    }
+
+    if (node.sortby_nulls !== undefined) {
+      result.sortby_nulls = node.sortby_nulls;
+    }
+
+    if (node.useOp !== undefined) {
+      result.useOp = Array.isArray(node.useOp)
+        ? node.useOp.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.useOp as any, context);
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { SortBy: result };
   }
 
   GroupingSet(node: PG15.GroupingSet, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.kind !== undefined) {
+      result.kind = node.kind;
+    }
+
+    if (node.content !== undefined) {
+      result.content = Array.isArray(node.content)
+        ? node.content.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.content as any, context);
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { GroupingSet: result };
   }
 
   CommonTableExpr(node: PG15.CommonTableExpr, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.ctename !== undefined) {
+      result.ctename = node.ctename;
+    }
+
+    if (node.aliascolnames !== undefined) {
+      result.aliascolnames = Array.isArray(node.aliascolnames)
+        ? node.aliascolnames.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.aliascolnames as any, context);
+    }
+
+    if (node.ctematerialized !== undefined) {
+      result.ctematerialized = node.ctematerialized;
+    }
+
+    if (node.ctequery !== undefined) {
+      result.ctequery = this.transform(node.ctequery as any, context);
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    if (node.cterecursive !== undefined) {
+      result.cterecursive = node.cterecursive;
+    }
+
+    if (node.cterefcount !== undefined) {
+      result.cterefcount = node.cterefcount;
+    }
+
+    if (node.ctecolnames !== undefined) {
+      result.ctecolnames = Array.isArray(node.ctecolnames)
+        ? node.ctecolnames.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.ctecolnames as any, context);
+    }
+
+    if (node.ctecoltypes !== undefined) {
+      result.ctecoltypes = Array.isArray(node.ctecoltypes)
+        ? node.ctecoltypes.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.ctecoltypes as any, context);
+    }
+
+    if (node.ctecoltypmods !== undefined) {
+      result.ctecoltypmods = Array.isArray(node.ctecoltypmods)
+        ? node.ctecoltypmods.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.ctecoltypmods as any, context);
+    }
+
+    if (node.ctecolcollations !== undefined) {
+      result.ctecolcollations = Array.isArray(node.ctecolcollations)
+        ? node.ctecolcollations.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.ctecolcollations as any, context);
+    }
+
+    return { CommonTableExpr: result };
   }
 
   ParamRef(node: PG15.ParamRef, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.number !== undefined) {
+      result.number = node.number;
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { ParamRef: result };
   }
 
   LockingClause(node: any, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.lockedRels !== undefined) {
+      result.lockedRels = Array.isArray(node.lockedRels)
+        ? node.lockedRels.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.lockedRels as any, context);
+    }
+
+    if (node.strength !== undefined) {
+      result.strength = node.strength;
+    }
+
+    if (node.waitPolicy !== undefined) {
+      result.waitPolicy = node.waitPolicy;
+    }
+
+    return { LockingClause: result };
   }
 
   MinMaxExpr(node: PG15.MinMaxExpr, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.xpr !== undefined) {
+      result.xpr = this.transform(node.xpr as any, context);
+    }
+
+    if (node.minmaxtype !== undefined) {
+      result.minmaxtype = node.minmaxtype;
+    }
+
+    if (node.minmaxcollid !== undefined) {
+      result.minmaxcollid = node.minmaxcollid;
+    }
+
+    if (node.inputcollid !== undefined) {
+      result.inputcollid = node.inputcollid;
+    }
+
+    if (node.op !== undefined) {
+      result.op = node.op;
+    }
+
+    if (node.args !== undefined) {
+      result.args = Array.isArray(node.args)
+        ? node.args.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.args as any, context);
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { MinMaxExpr: result };
   }
 
   RowExpr(node: PG15.RowExpr, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.xpr !== undefined) {
+      result.xpr = this.transform(node.xpr as any, context);
+    }
+
+    if (node.args !== undefined) {
+      result.args = Array.isArray(node.args)
+        ? node.args.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.args as any, context);
+    }
+
+    if (node.row_typeid !== undefined) {
+      result.row_typeid = node.row_typeid;
+    }
+
+    if (node.row_format !== undefined) {
+      result.row_format = node.row_format;
+    }
+
+    if (node.colnames !== undefined) {
+      result.colnames = Array.isArray(node.colnames)
+        ? node.colnames.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.colnames as any, context);
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { RowExpr: result };
   }
 
   OpExpr(node: PG15.OpExpr, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.xpr !== undefined) {
+      result.xpr = this.transform(node.xpr as any, context);
+    }
+
+    if (node.opno !== undefined) {
+      result.opno = node.opno;
+    }
+
+    if (node.opfuncid !== undefined) {
+      result.opfuncid = node.opfuncid;
+    }
+
+    if (node.opresulttype !== undefined) {
+      result.opresulttype = node.opresulttype;
+    }
+
+    if (node.opretset !== undefined) {
+      result.opretset = node.opretset;
+    }
+
+    if (node.opcollid !== undefined) {
+      result.opcollid = node.opcollid;
+    }
+
+    if (node.inputcollid !== undefined) {
+      result.inputcollid = node.inputcollid;
+    }
+
+    if (node.args !== undefined) {
+      result.args = Array.isArray(node.args)
+        ? node.args.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.args as any, context);
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { OpExpr: result };
   }
 
   DistinctExpr(node: PG15.DistinctExpr, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.xpr !== undefined) {
+      result.xpr = this.transform(node.xpr as any, context);
+    }
+
+    if (node.opno !== undefined) {
+      result.opno = node.opno;
+    }
+
+    if (node.opfuncid !== undefined) {
+      result.opfuncid = node.opfuncid;
+    }
+
+    if (node.opresulttype !== undefined) {
+      result.opresulttype = node.opresulttype;
+    }
+
+    if (node.opretset !== undefined) {
+      result.opretset = node.opretset;
+    }
+
+    if (node.opcollid !== undefined) {
+      result.opcollid = node.opcollid;
+    }
+
+    if (node.inputcollid !== undefined) {
+      result.inputcollid = node.inputcollid;
+    }
+
+    if (node.args !== undefined) {
+      result.args = Array.isArray(node.args)
+        ? node.args.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.args as any, context);
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { DistinctExpr: result };
   }
 
   NullIfExpr(node: PG15.NullIfExpr, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.xpr !== undefined) {
+      result.xpr = this.transform(node.xpr as any, context);
+    }
+
+    if (node.opno !== undefined) {
+      result.opno = node.opno;
+    }
+
+    if (node.opfuncid !== undefined) {
+      result.opfuncid = node.opfuncid;
+    }
+
+    if (node.opresulttype !== undefined) {
+      result.opresulttype = node.opresulttype;
+    }
+
+    if (node.opretset !== undefined) {
+      result.opretset = node.opretset;
+    }
+
+    if (node.opcollid !== undefined) {
+      result.opcollid = node.opcollid;
+    }
+
+    if (node.inputcollid !== undefined) {
+      result.inputcollid = node.inputcollid;
+    }
+
+    if (node.args !== undefined) {
+      result.args = Array.isArray(node.args)
+        ? node.args.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.args as any, context);
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { NullIfExpr: result };
   }
 
   ScalarArrayOpExpr(node: PG15.ScalarArrayOpExpr, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.xpr !== undefined) {
+      result.xpr = this.transform(node.xpr as any, context);
+    }
+
+    if (node.opno !== undefined) {
+      result.opno = node.opno;
+    }
+
+    if (node.opfuncid !== undefined) {
+      result.opfuncid = node.opfuncid;
+    }
+
+    if (node.hashfuncid !== undefined) {
+      result.hashfuncid = node.hashfuncid;
+    }
+
+    if (node.useOr !== undefined) {
+      result.useOr = node.useOr;
+    }
+
+    if (node.inputcollid !== undefined) {
+      result.inputcollid = node.inputcollid;
+    }
+
+    if (node.args !== undefined) {
+      result.args = Array.isArray(node.args)
+        ? node.args.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.args as any, context);
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { ScalarArrayOpExpr: result };
   }
 
   Aggref(node: PG15.Aggref, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.xpr !== undefined) {
+      result.xpr = this.transform(node.xpr as any, context);
+    }
+
+    if (node.aggfnoid !== undefined) {
+      result.aggfnoid = node.aggfnoid;
+    }
+
+    if (node.aggtype !== undefined) {
+      result.aggtype = node.aggtype;
+    }
+
+    if (node.aggcollid !== undefined) {
+      result.aggcollid = node.aggcollid;
+    }
+
+    if (node.inputcollid !== undefined) {
+      result.inputcollid = node.inputcollid;
+    }
+
+    if (node.aggtranstype !== undefined) {
+      result.aggtranstype = node.aggtranstype;
+    }
+
+    if (node.aggargtypes !== undefined) {
+      result.aggargtypes = Array.isArray(node.aggargtypes)
+        ? node.aggargtypes.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.aggargtypes as any, context);
+    }
+
+    if (node.aggdirectargs !== undefined) {
+      result.aggdirectargs = Array.isArray(node.aggdirectargs)
+        ? node.aggdirectargs.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.aggdirectargs as any, context);
+    }
+
+    if (node.args !== undefined) {
+      result.args = Array.isArray(node.args)
+        ? node.args.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.args as any, context);
+    }
+
+    if (node.aggorder !== undefined) {
+      result.aggorder = Array.isArray(node.aggorder)
+        ? node.aggorder.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.aggorder as any, context);
+    }
+
+    if (node.aggdistinct !== undefined) {
+      result.aggdistinct = Array.isArray(node.aggdistinct)
+        ? node.aggdistinct.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.aggdistinct as any, context);
+    }
+
+    if (node.aggfilter !== undefined) {
+      result.aggfilter = this.transform(node.aggfilter as any, context);
+    }
+
+    if (node.aggstar !== undefined) {
+      result.aggstar = node.aggstar;
+    }
+
+    if (node.aggvariadic !== undefined) {
+      result.aggvariadic = node.aggvariadic;
+    }
+
+    if (node.aggkind !== undefined) {
+      result.aggkind = node.aggkind;
+    }
+
+    if (node.agglevelsup !== undefined) {
+      result.agglevelsup = node.agglevelsup;
+    }
+
+    if (node.aggsplit !== undefined) {
+      result.aggsplit = node.aggsplit;
+    }
+
+    if (node.aggno !== undefined) {
+      result.aggno = node.aggno;
+    }
+
+    if (node.aggtransno !== undefined) {
+      result.aggtransno = node.aggtransno;
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { Aggref: result };
   }
 
   WindowFunc(node: PG15.WindowFunc, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.xpr !== undefined) {
+      result.xpr = this.transform(node.xpr as any, context);
+    }
+
+    if (node.winfnoid !== undefined) {
+      result.winfnoid = node.winfnoid;
+    }
+
+    if (node.wintype !== undefined) {
+      result.wintype = node.wintype;
+    }
+
+    if (node.wincollid !== undefined) {
+      result.wincollid = node.wincollid;
+    }
+
+    if (node.inputcollid !== undefined) {
+      result.inputcollid = node.inputcollid;
+    }
+
+    if (node.args !== undefined) {
+      result.args = Array.isArray(node.args)
+        ? node.args.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.args as any, context);
+    }
+
+    if (node.aggfilter !== undefined) {
+      result.aggfilter = this.transform(node.aggfilter as any, context);
+    }
+
+    if (node.winref !== undefined) {
+      result.winref = node.winref;
+    }
+
+    if (node.winstar !== undefined) {
+      result.winstar = node.winstar;
+    }
+
+    if (node.winagg !== undefined) {
+      result.winagg = node.winagg;
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { WindowFunc: result };
   }
 
   FieldSelect(node: PG15.FieldSelect, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.xpr !== undefined) {
+      result.xpr = this.transform(node.xpr as any, context);
+    }
+
+    if (node.arg !== undefined) {
+      result.arg = this.transform(node.arg as any, context);
+    }
+
+    if (node.fieldnum !== undefined) {
+      result.fieldnum = node.fieldnum;
+    }
+
+    if (node.resulttype !== undefined) {
+      result.resulttype = node.resulttype;
+    }
+
+    if (node.resulttypmod !== undefined) {
+      result.resulttypmod = node.resulttypmod;
+    }
+
+    if (node.resultcollid !== undefined) {
+      result.resultcollid = node.resultcollid;
+    }
+
+    return { FieldSelect: result };
   }
 
   RelabelType(node: PG15.RelabelType, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.xpr !== undefined) {
+      result.xpr = this.transform(node.xpr as any, context);
+    }
+
+    if (node.arg !== undefined) {
+      result.arg = this.transform(node.arg as any, context);
+    }
+
+    if (node.resulttype !== undefined) {
+      result.resulttype = node.resulttype;
+    }
+
+    if (node.resulttypmod !== undefined) {
+      result.resulttypmod = node.resulttypmod;
+    }
+
+    if (node.resultcollid !== undefined) {
+      result.resultcollid = node.resultcollid;
+    }
+
+    if (node.relabelformat !== undefined) {
+      result.relabelformat = node.relabelformat;
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { RelabelType: result };
   }
 
   CoerceViaIO(node: PG15.CoerceViaIO, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.xpr !== undefined) {
+      result.xpr = this.transform(node.xpr as any, context);
+    }
+
+    if (node.arg !== undefined) {
+      result.arg = this.transform(node.arg as any, context);
+    }
+
+    if (node.resulttype !== undefined) {
+      result.resulttype = node.resulttype;
+    }
+
+    if (node.resultcollid !== undefined) {
+      result.resultcollid = node.resultcollid;
+    }
+
+    if (node.coerceformat !== undefined) {
+      result.coerceformat = node.coerceformat;
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { CoerceViaIO: result };
   }
 
   ArrayCoerceExpr(node: PG15.ArrayCoerceExpr, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.xpr !== undefined) {
+      result.xpr = this.transform(node.xpr as any, context);
+    }
+
+    if (node.arg !== undefined) {
+      result.arg = this.transform(node.arg as any, context);
+    }
+
+    if (node.elemexpr !== undefined) {
+      result.elemexpr = this.transform(node.elemexpr as any, context);
+    }
+
+    if (node.resulttype !== undefined) {
+      result.resulttype = node.resulttype;
+    }
+
+    if (node.resulttypmod !== undefined) {
+      result.resulttypmod = node.resulttypmod;
+    }
+
+    if (node.resultcollid !== undefined) {
+      result.resultcollid = node.resultcollid;
+    }
+
+    if (node.coerceformat !== undefined) {
+      result.coerceformat = node.coerceformat;
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { ArrayCoerceExpr: result };
   }
 
   ConvertRowtypeExpr(node: PG15.ConvertRowtypeExpr, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.xpr !== undefined) {
+      result.xpr = this.transform(node.xpr as any, context);
+    }
+
+    if (node.arg !== undefined) {
+      result.arg = this.transform(node.arg as any, context);
+    }
+
+    if (node.resulttype !== undefined) {
+      result.resulttype = node.resulttype;
+    }
+
+    if (node.convertformat !== undefined) {
+      result.convertformat = node.convertformat;
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { ConvertRowtypeExpr: result };
   }
 
   NamedArgExpr(node: PG15.NamedArgExpr, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.xpr !== undefined) {
+      result.xpr = this.transform(node.xpr as any, context);
+    }
+
+    if (node.arg !== undefined) {
+      result.arg = this.transform(node.arg as any, context);
+    }
+
+    if (node.name !== undefined) {
+      result.name = node.name;
+    }
+
+    if (node.argnumber !== undefined) {
+      result.argnumber = node.argnumber;
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { NamedArgExpr: result };
   }
 
   ViewStmt(node: PG15.ViewStmt, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.view !== undefined) {
+      result.view = this.transform(node.view as any, context);
+    }
+
+    if (node.aliases !== undefined) {
+      result.aliases = Array.isArray(node.aliases)
+        ? node.aliases.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.aliases as any, context);
+    }
+
+    if (node.query !== undefined) {
+      result.query = this.transform(node.query as any, context);
+    }
+
+    if (node.replace !== undefined) {
+      result.replace = node.replace;
+    }
+
+    if (node.options !== undefined) {
+      result.options = Array.isArray(node.options)
+        ? node.options.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.options as any, context);
+    }
+
+    if (node.withCheckOption !== undefined) {
+      result.withCheckOption = node.withCheckOption;
+    }
+
+    return { ViewStmt: result };
   }
 
   IndexStmt(node: PG15.IndexStmt, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.idxname !== undefined) {
+      result.idxname = node.idxname;
+    }
+
+    if (node.relation !== undefined) {
+      result.relation = this.transform(node.relation as any, context);
+    }
+
+    if (node.accessMethod !== undefined) {
+      result.accessMethod = node.accessMethod;
+    }
+
+    if (node.tableSpace !== undefined) {
+      result.tableSpace = node.tableSpace;
+    }
+
+    if (node.indexParams !== undefined) {
+      result.indexParams = Array.isArray(node.indexParams)
+        ? node.indexParams.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.indexParams as any, context);
+    }
+
+    if (node.indexIncludingParams !== undefined) {
+      result.indexIncludingParams = Array.isArray(node.indexIncludingParams)
+        ? node.indexIncludingParams.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.indexIncludingParams as any, context);
+    }
+
+    if (node.options !== undefined) {
+      result.options = Array.isArray(node.options)
+        ? node.options.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.options as any, context);
+    }
+
+    if (node.whereClause !== undefined) {
+      result.whereClause = this.transform(node.whereClause as any, context);
+    }
+
+    if (node.excludeOpNames !== undefined) {
+      result.excludeOpNames = Array.isArray(node.excludeOpNames)
+        ? node.excludeOpNames.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.excludeOpNames as any, context);
+    }
+
+    if (node.idxcomment !== undefined) {
+      result.idxcomment = node.idxcomment;
+    }
+
+    if (node.indexOid !== undefined) {
+      result.indexOid = node.indexOid;
+    }
+
+    if (node.oldNode !== undefined) {
+      result.oldNode = node.oldNode;
+    }
+
+    if (node.oldCreateSubid !== undefined) {
+      result.oldCreateSubid = node.oldCreateSubid;
+    }
+
+    if (node.oldFirstRelfilenodeSubid !== undefined) {
+      result.oldFirstRelfilenodeSubid = node.oldFirstRelfilenodeSubid;
+    }
+
+    if (node.unique !== undefined) {
+      result.unique = node.unique;
+    }
+
+    if (node.nulls_not_distinct !== undefined) {
+      result.nulls_not_distinct = node.nulls_not_distinct;
+    }
+
+    if (node.primary !== undefined) {
+      result.primary = node.primary;
+    }
+
+    if (node.isconstraint !== undefined) {
+      result.isconstraint = node.isconstraint;
+    }
+
+    if (node.deferrable !== undefined) {
+      result.deferrable = node.deferrable;
+    }
+
+    if (node.initdeferred !== undefined) {
+      result.initdeferred = node.initdeferred;
+    }
+
+    if (node.transformed !== undefined) {
+      result.transformed = node.transformed;
+    }
+
+    if (node.concurrent !== undefined) {
+      result.concurrent = node.concurrent;
+    }
+
+    if (node.if_not_exists !== undefined) {
+      result.if_not_exists = node.if_not_exists;
+    }
+
+    if (node.reset_default_tblspc !== undefined) {
+      result.reset_default_tblspc = node.reset_default_tblspc;
+    }
+
+    return { IndexStmt: result };
   }
 
   IndexElem(node: PG15.IndexElem, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.name !== undefined) {
+      result.name = node.name;
+    }
+
+    if (node.expr !== undefined) {
+      result.expr = this.transform(node.expr as any, context);
+    }
+
+    if (node.indexcolname !== undefined) {
+      result.indexcolname = node.indexcolname;
+    }
+
+    if (node.collation !== undefined) {
+      result.collation = Array.isArray(node.collation)
+        ? node.collation.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.collation as any, context);
+    }
+
+    if (node.opclass !== undefined) {
+      result.opclass = Array.isArray(node.opclass)
+        ? node.opclass.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.opclass as any, context);
+    }
+
+    if (node.opclassopts !== undefined) {
+      result.opclassopts = Array.isArray(node.opclassopts)
+        ? node.opclassopts.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.opclassopts as any, context);
+    }
+
+    if (node.ordering !== undefined) {
+      result.ordering = node.ordering;
+    }
+
+    if (node.nulls_ordering !== undefined) {
+      result.nulls_ordering = node.nulls_ordering;
+    }
+
+    return { IndexElem: result };
   }
 
   PartitionElem(node: PG15.PartitionElem, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.name !== undefined) {
+      result.name = node.name;
+    }
+
+    if (node.expr !== undefined) {
+      result.expr = this.transform(node.expr as any, context);
+    }
+
+    if (node.collation !== undefined) {
+      result.collation = Array.isArray(node.collation)
+        ? node.collation.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.collation as any, context);
+    }
+
+    if (node.opclass !== undefined) {
+      result.opclass = Array.isArray(node.opclass)
+        ? node.opclass.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.opclass as any, context);
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { PartitionElem: result };
   }
 
   PartitionCmd(node: PG15.PartitionCmd, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.name !== undefined) {
+      result.name = this.transform(node.name as any, context);
+    }
+
+    if (node.bound !== undefined) {
+      result.bound = this.transform(node.bound as any, context);
+    }
+
+    if (node.concurrent !== undefined) {
+      result.concurrent = node.concurrent;
+    }
+
+    return { PartitionCmd: result };
   }
 
   JoinExpr(node: PG15.JoinExpr, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.jointype !== undefined) {
+      result.jointype = node.jointype;
+    }
+
+    if (node.isNatural !== undefined) {
+      result.isNatural = node.isNatural;
+    }
+
+    if (node.larg !== undefined) {
+      result.larg = this.transform(node.larg as any, context);
+    }
+
+    if (node.rarg !== undefined) {
+      result.rarg = this.transform(node.rarg as any, context);
+    }
+
+    if (node.usingClause !== undefined) {
+      result.usingClause = Array.isArray(node.usingClause)
+        ? node.usingClause.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.usingClause as any, context);
+    }
+
+    if (node.join_using_alias !== undefined) {
+      result.join_using_alias = this.transform(node.join_using_alias as any, context);
+    }
+
+    if (node.quals !== undefined) {
+      result.quals = this.transform(node.quals as any, context);
+    }
+
+    if (node.alias !== undefined) {
+      result.alias = this.transform(node.alias as any, context);
+    }
+
+    if (node.rtindex !== undefined) {
+      result.rtindex = node.rtindex;
+    }
+
+    return { JoinExpr: result };
   }
 
   FromExpr(node: PG15.FromExpr, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.fromlist !== undefined) {
+      result.fromlist = Array.isArray(node.fromlist)
+        ? node.fromlist.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.fromlist as any, context);
+    }
+
+    if (node.quals !== undefined) {
+      result.quals = this.transform(node.quals as any, context);
+    }
+
+    return { FromExpr: result };
   }
 
   TransactionStmt(node: PG15.TransactionStmt, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.kind !== undefined) {
+      result.kind = node.kind;
+    }
+
+    if (node.options !== undefined) {
+      result.options = Array.isArray(node.options)
+        ? node.options.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.options as any, context);
+    }
+
+    if (node.savepoint_name !== undefined) {
+      result.savepoint_name = node.savepoint_name;
+    }
+
+    if (node.gid !== undefined) {
+      result.gid = node.gid;
+    }
+
+    if (node.chain !== undefined) {
+      result.chain = node.chain;
+    }
+
+    return { TransactionStmt: result };
   }
 
   VariableSetStmt(node: PG15.VariableSetStmt, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.kind !== undefined) {
+      result.kind = node.kind;
+    }
+
+    if (node.name !== undefined) {
+      result.name = node.name;
+    }
+
+    if (node.args !== undefined) {
+      result.args = Array.isArray(node.args)
+        ? node.args.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.args as any, context);
+    }
+
+    if (node.is_local !== undefined) {
+      result.is_local = node.is_local;
+    }
+
+    return { VariableSetStmt: result };
   }
 
   VariableShowStmt(node: PG15.VariableShowStmt, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.name !== undefined) {
+      result.name = node.name;
+    }
+
+    return { VariableShowStmt: result };
   }
 
   CreateSchemaStmt(node: PG15.CreateSchemaStmt, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.schemaname !== undefined) {
+      result.schemaname = node.schemaname;
+    }
+
+    if (node.authrole !== undefined) {
+      result.authrole = this.transform(node.authrole as any, context);
+    }
+
+    if (node.schemaElts !== undefined) {
+      result.schemaElts = Array.isArray(node.schemaElts)
+        ? node.schemaElts.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.schemaElts as any, context);
+    }
+
+    if (node.if_not_exists !== undefined) {
+      result.if_not_exists = node.if_not_exists;
+    }
+
+    return { CreateSchemaStmt: result };
   }
 
   RoleSpec(node: PG15.RoleSpec, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.roletype !== undefined) {
+      result.roletype = node.roletype;
+    }
+
+    if (node.rolename !== undefined) {
+      result.rolename = node.rolename;
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { RoleSpec: result };
   }
 
   DropStmt(node: PG15.DropStmt, context: TransformerContext): any {
@@ -1032,19 +2426,103 @@ export class V15ToV16Transformer {
   }
 
   TruncateStmt(node: PG15.TruncateStmt, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.relations !== undefined) {
+      result.relations = Array.isArray(node.relations)
+        ? node.relations.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.relations as any, context);
+    }
+
+    if (node.restart_seqs !== undefined) {
+      result.restart_seqs = node.restart_seqs;
+    }
+
+    if (node.behavior !== undefined) {
+      result.behavior = node.behavior;
+    }
+
+    return { TruncateStmt: result };
   }
 
   ReturnStmt(node: PG15.ReturnStmt, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.returnval !== undefined) {
+      result.returnval = this.transform(node.returnval as any, context);
+    }
+
+    return { ReturnStmt: result };
   }
 
   PLAssignStmt(node: PG15.PLAssignStmt, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.name !== undefined) {
+      result.name = node.name;
+    }
+
+    if (node.indirection !== undefined) {
+      result.indirection = Array.isArray(node.indirection)
+        ? node.indirection.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.indirection as any, context);
+    }
+
+    if (node.nnames !== undefined) {
+      result.nnames = node.nnames;
+    }
+
+    if (node.val !== undefined) {
+      result.val = this.transform(node.val as any, context);
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { PLAssignStmt: result };
   }
 
   CopyStmt(node: PG15.CopyStmt, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.relation !== undefined) {
+      result.relation = this.transform(node.relation as any, context);
+    }
+
+    if (node.query !== undefined) {
+      result.query = this.transform(node.query as any, context);
+    }
+
+    if (node.attlist !== undefined) {
+      result.attlist = Array.isArray(node.attlist)
+        ? node.attlist.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.attlist as any, context);
+    }
+
+    if (node.is_from !== undefined) {
+      result.is_from = node.is_from;
+    }
+
+    if (node.is_program !== undefined) {
+      result.is_program = node.is_program;
+    }
+
+    if (node.filename !== undefined) {
+      result.filename = node.filename;
+    }
+
+    if (node.options !== undefined) {
+      result.options = Array.isArray(node.options)
+        ? node.options.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.options as any, context);
+    }
+
+    if (node.whereClause !== undefined) {
+      result.whereClause = this.transform(node.whereClause as any, context);
+    }
+
+    return { CopyStmt: result };
   }
 
   AlterTableStmt(node: PG15.AlterTableStmt, context: TransformerContext): any {
@@ -1058,6 +2536,10 @@ export class V15ToV16Transformer {
       result.cmds = Array.isArray(node.cmds)
         ? node.cmds.map((item: any) => this.transform(item as any, context))
         : this.transform(node.cmds as any, context);
+    }
+
+    if (node.objtype !== undefined) {
+      result.objtype = node.objtype;
     }
 
     if (node.missing_ok !== undefined) {
@@ -1102,27 +2584,241 @@ export class V15ToV16Transformer {
   }
 
   CreateFunctionStmt(node: PG15.CreateFunctionStmt, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.is_procedure !== undefined) {
+      result.is_procedure = node.is_procedure;
+    }
+
+    if (node.replace !== undefined) {
+      result.replace = node.replace;
+    }
+
+    if (node.funcname !== undefined) {
+      result.funcname = Array.isArray(node.funcname)
+        ? node.funcname.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.funcname as any, context);
+    }
+
+    if (node.parameters !== undefined) {
+      result.parameters = Array.isArray(node.parameters)
+        ? node.parameters.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.parameters as any, context);
+    }
+
+    if (node.returnType !== undefined) {
+      result.returnType = this.transform(node.returnType as any, context);
+    }
+
+    if (node.options !== undefined) {
+      result.options = Array.isArray(node.options)
+        ? node.options.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.options as any, context);
+    }
+
+    if (node.sql_body !== undefined) {
+      result.sql_body = this.transform(node.sql_body as any, context);
+    }
+
+    return { CreateFunctionStmt: result };
   }
 
   FunctionParameter(node: PG15.FunctionParameter, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.name !== undefined) {
+      result.name = node.name;
+    }
+
+    if (node.argType !== undefined) {
+      result.argType = this.transform(node.argType as any, context);
+    }
+
+    if (node.mode !== undefined) {
+      result.mode = node.mode;
+    }
+
+    if (node.defexpr !== undefined) {
+      result.defexpr = this.transform(node.defexpr as any, context);
+    }
+
+    return { FunctionParameter: result };
+  }
+
+  CompositeTypeStmt(node: PG15.CompositeTypeStmt, context: TransformerContext): any {
+    const result: any = {};
+
+    if (node.typevar !== undefined) {
+      result.typevar = this.transform(node.typevar as any, context);
+    }
+
+    if (node.coldeflist !== undefined) {
+      result.coldeflist = Array.isArray(node.coldeflist)
+        ? node.coldeflist.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.coldeflist as any, context);
+    }
+
+    return { CompositeTypeStmt: result };
+  }
+
+  DoStmt(node: PG15.DoStmt, context: TransformerContext): any {
+    const result: any = {};
+
+    if (node.args !== undefined) {
+      result.args = Array.isArray(node.args)
+        ? node.args.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.args as any, context);
+    }
+
+    return { DoStmt: result };
+  }
+
+  DefineStmt(node: PG15.DefineStmt, context: TransformerContext): any {
+    const result: any = {};
+
+    if (node.kind !== undefined) {
+      result.kind = node.kind;
+    }
+
+    if (node.oldstyle !== undefined) {
+      result.oldstyle = node.oldstyle;
+    }
+
+    if (node.defnames !== undefined) {
+      result.defnames = Array.isArray(node.defnames)
+        ? node.defnames.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.defnames as any, context);
+    }
+
+    if (node.args !== undefined) {
+      result.args = Array.isArray(node.args)
+        ? node.args.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.args as any, context);
+    }
+
+    if (node.definition !== undefined) {
+      result.definition = Array.isArray(node.definition)
+        ? node.definition.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.definition as any, context);
+    }
+
+    if (node.if_not_exists !== undefined) {
+      result.if_not_exists = node.if_not_exists;
+    }
+
+    if (node.replace !== undefined) {
+      result.replace = node.replace;
+    }
+
+    return { DefineStmt: result };
+  }
+
+  RangeSubselect(node: PG15.RangeSubselect, context: TransformerContext): any {
+    const result: any = {};
+
+    if (node.lateral !== undefined) {
+      result.lateral = node.lateral;
+    }
+
+    if (node.subquery !== undefined) {
+      result.subquery = this.transform(node.subquery as any, context);
+    }
+
+    if (node.alias !== undefined) {
+      result.alias = this.transform(node.alias as any, context);
+    }
+
+    return { RangeSubselect: result };
   }
 
   CreateEnumStmt(node: PG15.CreateEnumStmt, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.typeName !== undefined) {
+      result.typeName = Array.isArray(node.typeName)
+        ? node.typeName.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.typeName as any, context);
+    }
+
+    if (node.vals !== undefined) {
+      result.vals = Array.isArray(node.vals)
+        ? node.vals.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.vals as any, context);
+    }
+
+    return { CreateEnumStmt: result };
   }
 
   CreateDomainStmt(node: PG15.CreateDomainStmt, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.domainname !== undefined) {
+      result.domainname = Array.isArray(node.domainname)
+        ? node.domainname.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.domainname as any, context);
+    }
+
+    if (node.typeName !== undefined) {
+      result.typeName = this.transform(node.typeName as any, context);
+    }
+
+    if (node.collClause !== undefined) {
+      result.collClause = this.transform(node.collClause as any, context);
+    }
+
+    if (node.constraints !== undefined) {
+      result.constraints = Array.isArray(node.constraints)
+        ? node.constraints.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.constraints as any, context);
+    }
+
+    return { CreateDomainStmt: result };
   }
 
   CreateRoleStmt(node: PG15.CreateRoleStmt, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.stmt_type !== undefined) {
+      result.stmt_type = node.stmt_type;
+    }
+
+    if (node.role !== undefined) {
+      result.role = node.role;
+    }
+
+    if (node.options !== undefined) {
+      result.options = Array.isArray(node.options)
+        ? node.options.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.options as any, context);
+    }
+
+    return { CreateRoleStmt: result };
   }
 
   DefElem(node: PG15.DefElem, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.defnamespace !== undefined) {
+      result.defnamespace = node.defnamespace;
+    }
+
+    if (node.defname !== undefined) {
+      result.defname = node.defname;
+    }
+
+    if (node.arg !== undefined) {
+      result.arg = this.transform(node.arg as any, context);
+    }
+
+    if (node.defaction !== undefined) {
+      result.defaction = node.defaction;
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { DefElem: result };
   }
 
   CreateTableSpaceStmt(node: PG15.CreateTableSpaceStmt, context: TransformerContext): any {
@@ -1263,10 +2959,6 @@ export class V15ToV16Transformer {
     return node;
   }
 
-  DoStmt(node: PG15.DoStmt, context: TransformerContext): any {
-    return node;
-  }
-
   InlineCodeBlock(node: PG15.InlineCodeBlock, context: TransformerContext): any {
     return node;
   }
@@ -1383,9 +3075,6 @@ export class V15ToV16Transformer {
     return node;
   }
 
-  GrantStmt(node: PG15.GrantStmt, context: TransformerContext): any {
-    return node;
-  }
 
   GrantRoleStmt(node: PG15.GrantRoleStmt, context: TransformerContext): any {
     return node;
@@ -1459,10 +3148,6 @@ export class V15ToV16Transformer {
     return node;
   }
 
-  CompositeTypeStmt(node: PG15.CompositeTypeStmt, context: TransformerContext): any {
-    return node;
-  }
-
   CreateRangeStmt(node: PG15.CreateRangeStmt, context: TransformerContext): any {
     return node;
   }
@@ -1479,9 +3164,6 @@ export class V15ToV16Transformer {
     return node;
   }
 
-  DropRoleStmt(node: PG15.DropRoleStmt, context: TransformerContext): any {
-    return node;
-  }
 
   CreateAggregateStmt(node: PG15.DefineStmt, context: TransformerContext): any {
     return node;
@@ -1496,10 +3178,6 @@ export class V15ToV16Transformer {
   }
 
   AccessPriv(node: PG15.AccessPriv, context: TransformerContext): any {
-    return node;
-  }
-
-  DefineStmt(node: PG15.DefineStmt, context: TransformerContext): any {
     return node;
   }
 
@@ -1567,9 +3245,6 @@ export class V15ToV16Transformer {
     return node;
   }
 
-  XmlExpr(node: PG15.XmlExpr, context: TransformerContext): any {
-    return node;
-  }
 
   RangeTableSample(node: PG15.RangeTableSample, context: TransformerContext): any {
     return node;
@@ -1580,10 +3255,6 @@ export class V15ToV16Transformer {
   }
 
   RuleStmt(node: PG15.RuleStmt, context: TransformerContext): any {
-    return node;
-  }
-
-  RangeSubselect(node: PG15.RangeSubselect, context: TransformerContext): any {
     return node;
   }
 
@@ -1619,11 +3290,138 @@ export class V15ToV16Transformer {
     return node;
   }
 
-  AlterRoleSetStmt(node: PG15.AlterRoleSetStmt, context: TransformerContext): any {
-    return node;
-  }
 
   CreateForeignTableStmt(node: PG15.CreateForeignTableStmt, context: TransformerContext): any {
     return node;
+  }
+
+  DropRoleStmt(node: PG15.DropRoleStmt, context: TransformerContext): any {
+    const result: any = {};
+
+    if (node.missing_ok !== undefined) {
+      result.missing_ok = node.missing_ok;
+    }
+
+    if (node.roles !== undefined) {
+      result.roles = Array.isArray(node.roles)
+        ? node.roles.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.roles as any, context);
+    }
+
+    return { DropRoleStmt: result };
+  }
+
+  XmlExpr(node: PG15.XmlExpr, context: TransformerContext): any {
+    const result: any = {};
+
+    if (node.xpr !== undefined) {
+      result.xpr = this.transform(node.xpr as any, context);
+    }
+
+    if (node.op !== undefined) {
+      result.op = node.op;
+    }
+
+    if (node.name !== undefined) {
+      result.name = node.name;
+    }
+
+    if (node.named_args !== undefined) {
+      result.named_args = Array.isArray(node.named_args)
+        ? node.named_args.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.named_args as any, context);
+    }
+
+    if (node.arg_names !== undefined) {
+      result.arg_names = Array.isArray(node.arg_names)
+        ? node.arg_names.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.arg_names as any, context);
+    }
+
+    if (node.args !== undefined) {
+      result.args = Array.isArray(node.args)
+        ? node.args.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.args as any, context);
+    }
+
+    if (node.xmloption !== undefined) {
+      result.xmloption = node.xmloption;
+    }
+
+    if (node.type !== undefined) {
+      result.type = node.type;
+    }
+
+    if (node.typmod !== undefined) {
+      result.typmod = node.typmod;
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { XmlExpr: result };
+  }
+
+  AlterRoleSetStmt(node: PG15.AlterRoleSetStmt, context: TransformerContext): any {
+    const result: any = {};
+
+    if (node.role !== undefined) {
+      result.role = this.transform(node.role as any, context);
+    }
+
+    if (node.database !== undefined) {
+      result.database = node.database;
+    }
+
+    if (node.setstmt !== undefined) {
+      result.setstmt = this.transform(node.setstmt as any, context);
+    }
+
+    return { AlterRoleSetStmt: result };
+  }
+
+  GrantStmt(node: PG15.GrantStmt, context: TransformerContext): any {
+    const result: any = {};
+
+    if (node.is_grant !== undefined) {
+      result.is_grant = node.is_grant;
+    }
+
+    if (node.targtype !== undefined) {
+      result.targtype = node.targtype;
+    }
+
+    if (node.objtype !== undefined) {
+      result.objtype = node.objtype;
+    }
+
+    if (node.objects !== undefined) {
+      result.objects = Array.isArray(node.objects)
+        ? node.objects.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.objects as any, context);
+    }
+
+    if (node.privileges !== undefined) {
+      result.privileges = Array.isArray(node.privileges)
+        ? node.privileges.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.privileges as any, context);
+    }
+
+    if (node.grantees !== undefined) {
+      result.grantees = Array.isArray(node.grantees)
+        ? node.grantees.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.grantees as any, context);
+    }
+
+    if (node.grant_option !== undefined) {
+      result.grant_option = node.grant_option;
+    }
+
+    if (node.behavior !== undefined) {
+      result.behavior = node.behavior;
+    }
+
+    return { GrantStmt: result };
   }
 }
