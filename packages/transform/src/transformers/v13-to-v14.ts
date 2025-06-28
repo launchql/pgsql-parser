@@ -1046,7 +1046,12 @@ export class V13ToV14Transformer {
       if (node.mode === "FUNC_PARAM_VARIADIC") {
         result.mode = "FUNC_PARAM_VARIADIC"; // Always preserve variadic parameters
       } else if (node.mode === "FUNC_PARAM_IN") {
-        result.mode = "FUNC_PARAM_DEFAULT";
+        // Check if this parameter should be variadic based on polymorphic array types
+        if (this.isVariadicParameterType(node.argType)) {
+          result.mode = "FUNC_PARAM_VARIADIC";
+        } else {
+          result.mode = "FUNC_PARAM_DEFAULT";
+        }
       } else {
         result.mode = node.mode;
       }
@@ -1778,9 +1783,6 @@ export class V13ToV14Transformer {
       if (options === 2) {
         return 4;
       }
-      if (options === 3) {
-        return 5;  // INCLUDING CONSTRAINTS + INCLUDING COMMENTS: PG13 value 3 -> PG14 value 5
-      }
       if (options === 4) {
         return 8;  // INCLUDING DEFAULTS: PG13 value 4 -> PG14 value 8
       }
@@ -1801,12 +1803,6 @@ export class V13ToV14Transformer {
       }
       if (options === 128) {
         return 256;  // INCLUDING STATISTICS: PG13 value 128 -> PG14 value 256
-      }
-      if (options === 131) {
-        return 261;  // INCLUDING CONSTRAINTS + INCLUDING STATISTICS: PG13 value 131 -> PG14 value 261
-      }
-      if (options === 163) {
-        return 325;  // INCLUDING CONSTRAINTS + INCLUDING INDEXES + INCLUDING COMMENTS + INCLUDING STORAGE: PG13 value 163 -> PG14 value 325
       }
       
       return options;
@@ -1924,10 +1920,6 @@ export class V13ToV14Transformer {
         return false;
       }
       if (parentType === 'DropStmt') {
-        // Check if this is a function drop context
-        if ((context as any).dropRemoveType === 'OBJECT_FUNCTION') {
-          return true;
-        }
         return false;
       }
     }
@@ -2132,7 +2124,20 @@ export class V13ToV14Transformer {
     
     let mode = "FUNC_PARAM_DEFAULT";
     
-    // Check if this should be variadic based on context (aggregate functions with VARIADIC keyword)
+    // Check if this is a variadic parameter type (anyarray, anycompatiblearray, etc.)
+    if (this.isVariadicParameterType(argType)) {
+      mode = "FUNC_PARAM_VARIADIC";
+    }
+    
+    if (argType && argType.names && Array.isArray(argType.names)) {
+      const typeName = argType.names[argType.names.length - 1];
+      if (typeName && typeName.String && typeName.String.str === 'anyarray') {
+        mode = "FUNC_PARAM_VARIADIC";
+      }
+    }
+    
+    
+    // Also check for VARIADIC context in aggregate functions
     if (context && context.parentNodeTypes) {
       const isAggregateContext = context.parentNodeTypes.includes('RenameStmt') && 
                                 (context as any).renameObjectType === 'OBJECT_AGGREGATE';
@@ -2728,7 +2733,13 @@ export class V13ToV14Transformer {
     const result: any = {};
     
     if (node.name !== undefined) {
-      result.name = node.name;
+      result.expr = {
+        ColumnRef: {
+          fields: [{
+            String: { str: node.name }
+          }]
+        }
+      };
     }
     
     if (node.expr !== undefined) {
@@ -2756,35 +2767,9 @@ export class V13ToV14Transformer {
     if (node.exprs !== undefined) {
       result.exprs = Array.isArray(node.exprs)
         ? node.exprs.map((expr: any) => {
-            const transformed = this.transform(expr as any, context);
-            if (transformed && transformed.StatsElem) {
-              return transformed;
-            }
-            // Check if this is a simple ColumnRef that should become a name field
-            if (transformed && transformed.ColumnRef && 
-                transformed.ColumnRef.fields && 
-                Array.isArray(transformed.ColumnRef.fields) &&
-                transformed.ColumnRef.fields.length === 1 &&
-                transformed.ColumnRef.fields[0].String) {
-              return { StatsElem: { name: transformed.ColumnRef.fields[0].String.str } };
-            }
-            return { StatsElem: { expr: transformed } };
+            return { StatsElem: { expr: this.transform(expr as any, context) } };
           })
-        : (() => {
-            const transformed = this.transform(node.exprs as any, context);
-            if (transformed && transformed.StatsElem) {
-              return transformed;
-            }
-            // Check if this is a simple ColumnRef that should become a name field
-            if (transformed && transformed.ColumnRef && 
-                transformed.ColumnRef.fields && 
-                Array.isArray(transformed.ColumnRef.fields) &&
-                transformed.ColumnRef.fields.length === 1 &&
-                transformed.ColumnRef.fields[0].String) {
-              return { StatsElem: { name: transformed.ColumnRef.fields[0].String.str } };
-            }
-            return { StatsElem: { expr: transformed } };
-          })();
+        : [{ StatsElem: { expr: this.transform(node.exprs as any, context) } }];
     }
     
     if (node.relations !== undefined) {
