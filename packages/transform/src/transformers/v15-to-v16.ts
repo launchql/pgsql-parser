@@ -3419,18 +3419,85 @@ export class V15ToV16Transformer {
   }
 
   RangeFunction(node: PG15.RangeFunction, context: TransformerContext): any {
-    const result: any = { ...node };
+    const result: any = {};
+
+    if (node.lateral !== undefined) {
+      result.lateral = node.lateral;
+    }
+
+    if (node.ordinality !== undefined) {
+      result.ordinality = node.ordinality;
+    }
+
+    if (node.is_rowsfrom !== undefined) {
+      result.is_rowsfrom = node.is_rowsfrom;
+    }
+
+    if (node.functions !== undefined) {
+      result.functions = Array.isArray(node.functions)
+        ? node.functions.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.functions as any, context);
+    }
+
+    if (node.alias !== undefined) {
+      result.alias = this.transform(node.alias as any, context);
+    }
+
+    if (node.coldeflist !== undefined) {
+      result.coldeflist = Array.isArray(node.coldeflist)
+        ? node.coldeflist.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.coldeflist as any, context);
+    }
+
     return { RangeFunction: result };
   }
 
 
   RangeTableSample(node: PG15.RangeTableSample, context: TransformerContext): any {
-    const result: any = { ...node };
+    const result: any = {};
+
+    if (node.relation !== undefined) {
+      result.relation = this.transform(node.relation as any, context);
+    }
+
+    if (node.method !== undefined) {
+      result.method = Array.isArray(node.method)
+        ? node.method.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.method as any, context);
+    }
+
+    if (node.args !== undefined) {
+      result.args = Array.isArray(node.args)
+        ? node.args.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.args as any, context);
+    }
+
+    if (node.repeatable !== undefined) {
+      result.repeatable = this.transform(node.repeatable as any, context);
+    }
+
     return { RangeTableSample: result };
   }
 
   XmlSerialize(node: PG15.XmlSerialize, context: TransformerContext): any {
-    const result: any = { ...node };
+    const result: any = {};
+
+    if (node.xmloption !== undefined) {
+      result.xmloption = node.xmloption;
+    }
+
+    if (node.expr !== undefined) {
+      result.expr = this.transform(node.expr as any, context);
+    }
+
+    if (node.typeName !== undefined) {
+      result.typeName = this.transform(node.typeName as any, context);
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
     return { XmlSerialize: result };
   }
 
