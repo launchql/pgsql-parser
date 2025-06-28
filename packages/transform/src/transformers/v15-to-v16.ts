@@ -3127,156 +3127,194 @@ export class V15ToV16Transformer {
   }
 
   AlterOperatorStmt(node: PG15.AlterOperatorStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { AlterOperatorStmt: result };
   }
 
   AlterFdwStmt(node: PG15.AlterFdwStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { AlterFdwStmt: result };
   }
 
   CreateForeignServerStmt(node: PG15.CreateForeignServerStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { CreateForeignServerStmt: result };
   }
 
   AlterForeignServerStmt(node: PG15.AlterForeignServerStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { AlterForeignServerStmt: result };
   }
 
   AlterUserMappingStmt(node: PG15.AlterUserMappingStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { AlterUserMappingStmt: result };
   }
 
   DropUserMappingStmt(node: PG15.DropUserMappingStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { DropUserMappingStmt: result };
   }
 
   ImportForeignSchemaStmt(node: PG15.ImportForeignSchemaStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { ImportForeignSchemaStmt: result };
   }
 
   ClusterStmt(node: PG15.ClusterStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { ClusterStmt: result };
   }
 
   VacuumStmt(node: PG15.VacuumStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { VacuumStmt: result };
   }
 
   ExplainStmt(node: PG15.ExplainStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { ExplainStmt: result };
   }
 
   ReindexStmt(node: PG15.ReindexStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { ReindexStmt: result };
   }
 
   CallStmt(node: PG15.CallStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { CallStmt: result };
   }
 
   CreatedbStmt(node: PG15.CreatedbStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { CreatedbStmt: result };
   }
 
   DropdbStmt(node: PG15.DropdbStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { DropdbStmt: result };
   }
 
   RenameStmt(node: PG15.RenameStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { RenameStmt: result };
   }
 
   AlterOwnerStmt(node: PG15.AlterOwnerStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { AlterOwnerStmt: result };
   }
 
 
   GrantRoleStmt(node: PG15.GrantRoleStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { GrantRoleStmt: result };
   }
 
   SecLabelStmt(node: PG15.SecLabelStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { SecLabelStmt: result };
   }
 
   AlterDefaultPrivilegesStmt(node: PG15.AlterDefaultPrivilegesStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { AlterDefaultPrivilegesStmt: result };
   }
 
   CreateConversionStmt(node: PG15.CreateConversionStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { CreateConversionStmt: result };
   }
 
   CreateCastStmt(node: PG15.CreateCastStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { CreateCastStmt: result };
   }
 
   CreatePLangStmt(node: PG15.CreatePLangStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { CreatePLangStmt: result };
   }
 
   CreateTransformStmt(node: PG15.CreateTransformStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { CreateTransformStmt: result };
   }
 
   CreateTrigStmt(node: PG15.CreateTrigStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { CreateTrigStmt: result };
   }
 
   TriggerTransition(node: PG15.TriggerTransition, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { TriggerTransition: result };
   }
 
   CreateEventTrigStmt(node: PG15.CreateEventTrigStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { CreateEventTrigStmt: result };
   }
 
   AlterEventTrigStmt(node: PG15.AlterEventTrigStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { AlterEventTrigStmt: result };
   }
 
   CreateOpClassStmt(node: PG15.CreateOpClassStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { CreateOpClassStmt: result };
   }
 
   CreateOpFamilyStmt(node: PG15.CreateOpFamilyStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { CreateOpFamilyStmt: result };
   }
 
   AlterOpFamilyStmt(node: PG15.AlterOpFamilyStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { AlterOpFamilyStmt: result };
   }
 
   MergeStmt(node: PG15.MergeStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { MergeStmt: result };
   }
 
   AlterTableMoveAllStmt(node: PG15.AlterTableMoveAllStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { AlterTableMoveAllStmt: result };
   }
 
   CreateSeqStmt(node: PG15.CreateSeqStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { CreateSeqStmt: result };
   }
 
   AlterSeqStmt(node: PG15.AlterSeqStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { AlterSeqStmt: result };
   }
 
   CreateRangeStmt(node: PG15.CreateRangeStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { CreateRangeStmt: result };
   }
 
   AlterEnumStmt(node: PG15.AlterEnumStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { AlterEnumStmt: result };
   }
 
   AlterTypeStmt(node: PG15.AlterTypeStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { AlterTypeStmt: result };
   }
 
   AlterRoleStmt(node: PG15.AlterRoleStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { AlterRoleStmt: result };
   }
 
 
