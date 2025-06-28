@@ -31,6 +31,10 @@ export class V16ToV17Transformer {
   visit(node: PG16.Node, context: TransformerContext = { parentNodeTypes: [] }): any {
     const nodeType = this.getNodeType(node);
     
+    if (nodeType === 'TypeName') {
+      console.log('VISIT DEBUG - Processing TypeName node:', JSON.stringify(node, null, 2));
+    }
+    
     // Handle empty objects
     if (!nodeType) {
       return {};
@@ -44,13 +48,24 @@ export class V16ToV17Transformer {
         ...context,
         parentNodeTypes: [...context.parentNodeTypes, nodeType]
       };
+      
+      if (nodeType === 'TypeName') {
+        console.log('VISIT DEBUG - About to call TypeName method with data:', JSON.stringify(nodeData, null, 2));
+      }
+      
       const result = (this[methodName] as any)(nodeData, childContext);
       
+      if (nodeType === 'TypeName') {
+        console.log('VISIT DEBUG - TypeName method returned:', JSON.stringify(result, null, 2));
+      }
       
       return result;
     }
     
     // If no specific method, return the node as-is
+    if (nodeType === 'TypeName') {
+      console.log('VISIT DEBUG - No TypeName method found, returning node as-is');
+    }
     return node;
   }
 
@@ -442,13 +457,34 @@ export class V16ToV17Transformer {
   }
 
   TypeName(node: PG16.TypeName, context: TransformerContext): any {
+    console.log('TypeName DEBUG - Called with node:', JSON.stringify(node, null, 2));
     const result: any = {};
 
     if (node.names !== undefined) {
+      console.log('TypeName DEBUG - Original node.names:', JSON.stringify(node.names, null, 2));
+      
       let names = Array.isArray(node.names)
         ? node.names.map(item => this.transform(item as any, context))
         : this.transform(node.names as any, context);
 
+      console.log('TypeName DEBUG - After transformation, names:', JSON.stringify(names, null, 2));
+
+      if (Array.isArray(names) && names.length === 1) {
+        const singleElement = names[0];
+        console.log('TypeName DEBUG - Single element:', JSON.stringify(singleElement, null, 2));
+        if (singleElement && typeof singleElement === 'object' && 'String' in singleElement) {
+          const typeName = singleElement.String.str || singleElement.String.sval;
+          console.log('TypeName DEBUG - Found single element type:', typeName);
+          if (typeName === 'json') {
+            console.log('TypeName DEBUG - Adding pg_catalog prefix for JSON type');
+            names = [
+              { String: { sval: 'pg_catalog' } },
+              ...names
+            ];
+            console.log('TypeName DEBUG - After adding prefix, names:', JSON.stringify(names, null, 2));
+          }
+        }
+      }
 
       result.names = names;
     }
