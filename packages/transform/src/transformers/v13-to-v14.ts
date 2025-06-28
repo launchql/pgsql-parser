@@ -1566,7 +1566,9 @@ export class V13ToV14Transformer {
     if (node.options === undefined) {
       result.options = 0;
     } else {
-      if (node.options === 48) {
+      if (node.options === 274) {
+        result.options = 290;
+      } else if (node.options === 48) {
         result.options = 288;
       } else {
         result.options = (node.options & ~32) | 256;
@@ -1798,6 +1800,9 @@ export class V13ToV14Transformer {
       }
       if (options === 32) {
         return 64;  // INCLUDING INDEXES: PG13 value 32 -> PG14 value 64
+      }
+      if (options === 128) {
+        return 256;  // INCLUDING STATISTICS: PG13 value 128 -> PG14 value 256
       }
       
       return options;
@@ -2728,7 +2733,13 @@ export class V13ToV14Transformer {
     const result: any = {};
     
     if (node.name !== undefined) {
-      result.name = node.name;
+      result.expr = {
+        ColumnRef: {
+          fields: [{
+            String: { str: node.name }
+          }]
+        }
+      };
     }
     
     if (node.expr !== undefined) {
