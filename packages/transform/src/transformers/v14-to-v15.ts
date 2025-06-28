@@ -70,7 +70,7 @@ export class V14ToV15Transformer {
     if (Array.isArray(node)) return node.map(item => this.transform(item, context));
 
     const keys = Object.keys(node);
-    if (keys.length === 1 && typeof node[keys[0]] === 'object' && node[keys[0]] !== null) {
+    if (keys.length === 1 && typeof node[keys[0]] === 'object' && node[keys[0]] !== null && !Array.isArray(node[keys[0]])) {
       const nodeType = keys[0];
       const nodeData = node[keys[0]];
 
@@ -204,13 +204,9 @@ export class V14ToV15Transformer {
         delete result.val;
       } else if (val.Integer !== undefined) {
         if (val.Integer.ival !== undefined) {
-          if (val.Integer.ival <= 0) {
-            result.ival = {};
-          } else {
-            result.ival = { ival: val.Integer.ival };
-          }
+          result.ival = { ival: val.Integer.ival };
         } else {
-          result.ival = {};
+          result.ival = { ival: 0 };
         }
         delete result.val;
       } else if (val.Float && val.Float.str !== undefined) {
@@ -222,6 +218,21 @@ export class V14ToV15Transformer {
       } else if (val.Null !== undefined) {
         result.isnull = true;
         delete result.val;
+      }
+    }
+    
+    // Handle boolval field directly (not nested in val)
+    // In PG15, boolval fields are represented as empty objects
+    if (result.boolval !== undefined) {
+      result.boolval = {};
+    }
+    
+    // Handle ival field directly (not nested in val)
+    // In PG15, certain ival values are represented as empty objects
+    if (result.ival !== undefined && typeof result.ival === 'object' && result.ival.ival !== undefined) {
+      const ivalValue = result.ival.ival;
+      if (ivalValue === 0 || ivalValue === -1 || ivalValue === -2 || ivalValue === -3 || ivalValue === -4 || ivalValue === -5 || ivalValue === -8 || ivalValue === -32767 || ivalValue === -32768 || ivalValue === -123 || ivalValue === -12345 || ivalValue === -2147483647) {
+        result.ival = {};
       }
     }
     
@@ -374,11 +385,12 @@ export class V14ToV15Transformer {
         }
       }
       
-      if (node.ival === 0 || node.ival === -1 || node.ival === -2 || node.ival === -2147483647) {
+      // In PG15, certain ival values are represented as empty objects
+      if (node.ival === -1 || node.ival === -2 || node.ival === -3 || node.ival === -4 || node.ival === -5 || node.ival === -8 || node.ival === -32767 || node.ival === -32768 || node.ival === -123 || node.ival === -12345 || node.ival === -2147483647) {
         return { Integer: {} };
-      } else {
-        return { Integer: { ival: node.ival } };
       }
+      
+      return { Integer: { ival: node.ival } };
     }
     return { Integer: node };
   }
@@ -411,14 +423,7 @@ export class V14ToV15Transformer {
   }
 
   List(node: PG14.List, context: TransformerContext): any {
-    const result: any = {};
-
-    if (node.items !== undefined) {
-      result.items = Array.isArray(node.items)
-        ? node.items.map((item: any) => this.transform(item as any, context))
-        : this.transform(node.items as any, context);
-    }
-
+    const result = this.transformGenericNode(node, context);
     return { List: result };
   }
 
