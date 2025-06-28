@@ -49,8 +49,8 @@ export class V14ToV15Transformer {
       return result;
     }
     
-    // If no specific method, return the node as-is
-    return node;
+    // If no specific method, use transformGenericNode to handle nested transformations
+    return this.transformGenericNode(node, context);
   }
 
   getNodeType(node: PG14.Node): any {
@@ -65,7 +65,7 @@ export class V14ToV15Transformer {
     return node;
   }
 
-  transformGenericNode(node: any, context: TransformerContext): any {
+  private transformGenericNode(node: any, context: TransformerContext): any {
     if (typeof node !== 'object' || node === null) return node;
     if (Array.isArray(node)) return node.map(item => this.transform(item, context));
 

@@ -1,12 +1,12 @@
 # PostgreSQL 13-to-14 AST Transformer Status
 
 ## Current Test Results
-- **Tests Passing**: 235/258 (91.1%)
-- **Tests Failing**: 23/258 (8.9%)
+- **Tests Passing**: 237/258 (91.9%)
+- **Tests Failing**: 21/258 (8.1%)
 - **Last Updated**: June 28, 2025
 
 ## Test Status Summary
-The 13-14 transformer is in good shape with 235 out of 258 tests passing. The remaining 23 failures are primarily edge cases and specialized PostgreSQL features.
+The 13-14 transformer is in good shape with 237 out of 258 tests passing. The remaining 21 failures are primarily edge cases and specialized PostgreSQL features.
 
 ## Failure Categories
 
