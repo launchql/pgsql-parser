@@ -852,52 +852,33 @@ export class V15ToV16Transformer {
   }
 
   String(node: PG15.String, context: TransformerContext): any {
-    const result: any = {};
-
-    if (node.sval !== undefined) {
-      result.sval = node.sval;
-    }
-
+    const result: any = { ...node };
     return { String: result };
   }
   
   Integer(node: PG15.Integer, context: TransformerContext): any {
-    const result: any = {};
-
-    if (node.ival !== undefined) {
-      result.ival = node.ival;
+    const result: any = { ...node };
+    
+    // Handle case where PG15 produces empty Integer nodes that should have ival: -1 in PG16
+    if (Object.keys(result).length === 0) {
+      result.ival = -1;
     }
-
+    
     return { Integer: result };
   }
   
   Float(node: PG15.Float, context: TransformerContext): any {
-    const result: any = {};
-
-    if (node.fval !== undefined) {
-      result.fval = node.fval;
-    }
-
+    const result: any = { ...node };
     return { Float: result };
   }
   
   Boolean(node: PG15.Boolean, context: TransformerContext): any {
-    const result: any = {};
-
-    if (node.boolval !== undefined) {
-      result.boolval = node.boolval;
-    }
-
+    const result: any = { ...node };
     return { Boolean: result };
   }
   
   BitString(node: PG15.BitString, context: TransformerContext): any {
-    const result: any = {};
-
-    if (node.bsval !== undefined) {
-      result.bsval = node.bsval;
-    }
-
+    const result: any = { ...node };
     return { BitString: result };
   }
   
