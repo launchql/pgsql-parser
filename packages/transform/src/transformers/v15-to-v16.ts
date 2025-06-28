@@ -530,20 +530,7 @@ export class V15ToV16Transformer {
     }
 
     if (result.ival !== undefined) {
-      // Handle case where PG15 produces empty ival objects for negative integers
-      if (typeof result.ival === 'object' && Object.keys(result.ival).length === 0) {
-        // Check if we're in an INSERT context which typically has negative integers
-        const hasInsertContext = context.parentNodeTypes && context.parentNodeTypes.includes('InsertStmt');
-        const hasSelectContext = context.parentNodeTypes && context.parentNodeTypes.includes('SelectStmt');
-        
-        if (hasInsertContext || hasSelectContext) {
-          result.ival = { ival: -1 }; // Use -1 as default since PG15 loses the original value
-        } else {
-          result.ival = result.ival;
-        }
-      } else {
-        result.ival = this.transform(result.ival as any, context);
-      }
+      result.ival = this.transform(result.ival as any, context);
     }
 
     if (result.fval !== undefined) {

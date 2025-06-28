@@ -1,10 +1,10 @@
 const { Parser } = require('@pgsql/parser');
-const { ASTTransformer } = require('./dist/transformer');
+const { V15ToV16Transformer } = require('./dist/transformers/v15-to-v16');
 
 async function debugInsertNegative() {
   const parser15 = new Parser(15);
   const parser16 = new Parser(16);
-  const transformer = new ASTTransformer();
+  const transformer = new V15ToV16Transformer();
   
   const sql = "insert into atacc2 (test2) values (-3)";
   
@@ -33,7 +33,7 @@ async function debugInsertNegative() {
     if (astToTransform.stmts && Array.isArray(astToTransform.stmts)) {
       astToTransform.stmts = astToTransform.stmts.map((stmtWrapper) => {
         if (stmtWrapper.stmt) {
-          const transformedStmt = transformer.transform(stmtWrapper.stmt, 15, 16);
+          const transformedStmt = transformer.transform(stmtWrapper.stmt, { parentNodeTypes: [] });
           return { ...stmtWrapper, stmt: transformedStmt };
         }
         return stmtWrapper;
