@@ -13,14 +13,6 @@ export class V15ToV16Transformer {
 
   private shouldTransformEmptyIval(context: TransformerContext): { ival: number } | null {
     
-    const sqlContext = context.sqlContext;
-    if (sqlContext) {
-      const transformationTarget = this.detectEmptyIvalTransformation(sqlContext);
-      if (transformationTarget !== null) {
-        return { ival: transformationTarget };
-      }
-    }
-    
     return null;
   }
 
