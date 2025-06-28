@@ -53,6 +53,7 @@ export class V16ToV17Transformer {
     return node;
   }
 
+
   getNodeType(node: PG16.Node): any {
     return Object.keys(node)[0];
   }
@@ -307,9 +308,10 @@ export class V16ToV17Transformer {
     const result: any = {};
     
     if (node.ctes !== undefined) {
+      const cteContext = { ...context, inCTE: true };
       result.ctes = Array.isArray(node.ctes)
-        ? node.ctes.map(item => this.transform(item as any, context))
-        : this.transform(node.ctes as any, context);
+        ? node.ctes.map(item => this.transform(item as any, cteContext))
+        : this.transform(node.ctes as any, cteContext);
     }
     if (node.recursive !== undefined) {
       result.recursive = node.recursive;
@@ -440,6 +442,14 @@ export class V16ToV17Transformer {
            !this.isInValuesContext(context);
   }
 
+  private shouldAddPgCatalogPrefix(context: TransformerContext): boolean {
+    const hasSelectStmt = context.parentNodeTypes.includes('SelectStmt');
+    const hasWithClause = context.parentNodeTypes.includes('WithClause');
+    const hasCommonTableExpr = context.parentNodeTypes.includes('CommonTableExpr');
+    
+    return hasSelectStmt && !hasWithClause && !hasCommonTableExpr;
+  }
+
   TypeName(node: PG16.TypeName, context: TransformerContext): any {
     const result: any = {};
 
@@ -447,20 +457,21 @@ export class V16ToV17Transformer {
       let names = Array.isArray(node.names)
         ? node.names.map(item => this.transform(item as any, context))
         : this.transform(node.names as any, context);
-
-      if (Array.isArray(names) && names.length === 1) {
-        const singleElement = names[0];
-        if (singleElement && typeof singleElement === 'object' && 'String' in singleElement) {
-          const typeName = singleElement.String.str || singleElement.String.sval;
-          if (typeName === 'json') {
-            names = [
-              { String: { sval: 'pg_catalog' } },
-              singleElement
-            ];
+      
+      // Remove pg_catalog prefix from JSON types
+      if (Array.isArray(names) && names.length === 2) {
+        const firstElement = names[0];
+        const secondElement = names[1];
+        if (firstElement && typeof firstElement === 'object' && 'String' in firstElement &&
+            secondElement && typeof secondElement === 'object' && 'String' in secondElement) {
+          const prefixStr = firstElement.String.str || firstElement.String.sval;
+          const typeNameStr = secondElement.String.str || secondElement.String.sval;
+          if (prefixStr === 'pg_catalog' && (typeNameStr === 'json' || typeNameStr === 'jsonb')) {
+            names = [secondElement];
           }
         }
       }
-
+      
       result.names = names;
     }
 
@@ -562,33 +573,7 @@ export class V16ToV17Transformer {
       result.arg = this.transform(node.arg as any, context);
     }
     if (node.typeName !== undefined) {
-      let transformedTypeName = this.transform(node.typeName as any, context);
-      
-      // Handle both wrapped and unwrapped TypeName results
-      let typeName = transformedTypeName;
-      if (transformedTypeName && typeof transformedTypeName === 'object' && 'TypeName' in transformedTypeName) {
-        typeName = transformedTypeName.TypeName;
-      }
-      
-      if (typeName && typeName.names && Array.isArray(typeName.names) && typeName.names.length === 1) {
-        const singleElement = typeName.names[0];
-        if (singleElement && typeof singleElement === 'object' && 'String' in singleElement) {
-          const typeNameStr = singleElement.String.str || singleElement.String.sval;
-          if (typeNameStr === 'json') {
-            typeName.names = [
-              { String: { sval: 'pg_catalog' } },
-              singleElement
-            ];
-            if (transformedTypeName && typeof transformedTypeName === 'object' && 'TypeName' in transformedTypeName) {
-              transformedTypeName.TypeName = typeName;
-            } else {
-              transformedTypeName = typeName;
-            }
-          }
-        }
-      }
-      
-      result.typeName = transformedTypeName;
+      result.typeName = this.transform(node.typeName as any, context);
     }
     if (node.location !== undefined) {
       result.location = node.location;
@@ -784,7 +769,33 @@ export class V16ToV17Transformer {
   }
 
   CommonTableExpr(node: PG16.CommonTableExpr, context: TransformerContext): any {
-    return { CommonTableExpr: node };
+    const result: any = {};
+    
+    if (node.ctename !== undefined) {
+      result.ctename = node.ctename;
+    }
+    if (node.aliascolnames !== undefined) {
+      result.aliascolnames = Array.isArray(node.aliascolnames)
+        ? node.aliascolnames.map(item => this.transform(item as any, context))
+        : this.transform(node.aliascolnames as any, context);
+    }
+    if (node.ctematerialized !== undefined) {
+      result.ctematerialized = node.ctematerialized;
+    }
+    if (node.ctequery !== undefined) {
+      result.ctequery = this.transform(node.ctequery as any, context);
+    }
+    if (node.search_clause !== undefined) {
+      result.search_clause = this.transform(node.search_clause as any, context);
+    }
+    if (node.cycle_clause !== undefined) {
+      result.cycle_clause = this.transform(node.cycle_clause as any, context);
+    }
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+    
+    return { CommonTableExpr: result };
   }
 
   ParamRef(node: PG16.ParamRef, context: TransformerContext): any {
