@@ -6,7 +6,7 @@ import { TransformerContext } from './context';
  * Transforms PostgreSQL v15 AST nodes to v16 format
  */
 export class V15ToV16Transformer {
-  
+
   transform(node: PG15.Node, context: TransformerContext = { parentNodeTypes: [] }): any {
     if (node == null) {
       return null;
@@ -34,12 +34,12 @@ export class V15ToV16Transformer {
 
   visit(node: PG15.Node, context: TransformerContext = { parentNodeTypes: [] }): any {
     const nodeType = this.getNodeType(node);
-    
+
     // Handle empty objects
     if (!nodeType) {
       return {};
     }
-    
+
     const nodeData = this.getNodeData(node);
 
     const methodName = nodeType as keyof this;
@@ -50,7 +50,7 @@ export class V15ToV16Transformer {
       };
       return (this[methodName] as any)(nodeData, childContext);
     }
-    
+
     // If no specific method, return the node as-is
     return node;
   }
@@ -68,7 +68,7 @@ export class V15ToV16Transformer {
   }
 
   ParseResult(node: PG15.ParseResult, context: TransformerContext): any {
-    
+
     if (node && typeof node === 'object' && 'version' in node && 'stmts' in node) {
       return {
         version: 160000, // PG16 version
@@ -509,7 +509,7 @@ export class V15ToV16Transformer {
 
   A_Const(node: PG15.A_Const, context: TransformerContext): any {
     const result: any = { ...node };
-    
+
     if (result.val) {
       const val: any = result.val;
       if (val.String && val.String.str !== undefined) {
@@ -876,10 +876,10 @@ export class V15ToV16Transformer {
     const result: any = { ...node };
     return { String: result };
   }
-  
+
   Integer(node: PG15.Integer, context: TransformerContext): any {
     const result: any = { ...node };
-    
+
     // Handle case where PG15 produces empty Integer nodes that need different handling based on context
     if (Object.keys(node).length === 0) {
       if (context.parentNodeTypes.includes('TypeName')) {
@@ -888,25 +888,25 @@ export class V15ToV16Transformer {
         result.ival = -1;
       }
     }
-    
+
     return { Integer: result };
   }
-  
+
   Float(node: PG15.Float, context: TransformerContext): any {
     const result: any = { ...node };
     return { Float: result };
   }
-  
+
   Boolean(node: PG15.Boolean, context: TransformerContext): any {
     const result: any = { ...node };
     return { Boolean: result };
   }
-  
+
   BitString(node: PG15.BitString, context: TransformerContext): any {
     const result: any = { ...node };
     return { BitString: result };
   }
-  
+
   Null(node: PG15.Node, context: TransformerContext): any {
     return { Null: {} };
   }
@@ -949,7 +949,7 @@ export class V15ToV16Transformer {
     if (node.partspec !== undefined) {
       // Handle partspec transformation directly since it's a plain object, not a wrapped node
       const partspec: any = { ...node.partspec };
-      
+
       if (partspec.strategy !== undefined) {
         const strategyMap: Record<string, string> = {
           'range': 'PARTITION_STRATEGY_RANGE',
@@ -958,13 +958,13 @@ export class V15ToV16Transformer {
         };
         partspec.strategy = strategyMap[partspec.strategy] || partspec.strategy;
       }
-      
+
       if (partspec.partParams !== undefined) {
         partspec.partParams = Array.isArray(partspec.partParams)
           ? partspec.partParams.map((item: any) => this.transform(item as any, context))
           : this.transform(partspec.partParams as any, context);
       }
-      
+
       result.partspec = partspec;
     }
 
