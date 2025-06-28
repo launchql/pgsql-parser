@@ -7,60 +7,9 @@ import { Parser } from '@pgsql/parser';
  * Transforms PostgreSQL v15 AST nodes to v16 format
  */
 export class V15ToV16Transformer {
-  private parser15 = new Parser(15);
-  private parser16 = new Parser(16);
-  private transformationCache = new Map<string, any>();
 
-  private shouldTransformEmptyIval(context: TransformerContext): { ival: number } | null {
-    
-    return null;
-  }
 
-  private detectEmptyIvalTransformation(sql: string): number | null {
-    try {
-      const cacheKey = `empty_ival_${sql}`;
-      if (this.transformationCache.has(cacheKey)) {
-        return this.transformationCache.get(cacheKey);
-      }
 
-      const pg15Result = this.parser15.parse(sql);
-      const pg16Result = this.parser16.parse(sql);
-      
-      const pg15AConst = this.findAConstInAST(pg15Result);
-      const pg16AConst = this.findAConstInAST(pg16Result);
-      
-      if (pg15AConst && pg16AConst) {
-        const pg15IsEmpty = pg15AConst.ival && Object.keys(pg15AConst.ival).length === 0;
-        const pg16HasNested = pg16AConst.ival && typeof pg16AConst.ival.ival === 'number';
-        
-        if (pg15IsEmpty && pg16HasNested) {
-          const targetValue = pg16AConst.ival.ival;
-          this.transformationCache.set(cacheKey, targetValue);
-          return targetValue;
-        }
-      }
-      
-      this.transformationCache.set(cacheKey, null);
-      return null;
-    } catch (error) {
-      return null;
-    }
-  }
-
-  private findAConstInAST(obj: any): any {
-    if (!obj || typeof obj !== 'object') return null;
-    
-    if (obj.A_Const) return obj.A_Const;
-    
-    for (const key in obj) {
-      if (typeof obj[key] === 'object') {
-        const result = this.findAConstInAST(obj[key]);
-        if (result) return result;
-      }
-    }
-    
-    return null;
-  }
 
   transform(node: PG15.Node, context: TransformerContext = { parentNodeTypes: [] }): any {
     if (node == null) {
@@ -101,7 +50,7 @@ export class V15ToV16Transformer {
     if (typeof this[methodName] === 'function') {
       const childContext: TransformerContext = {
         ...context,
-        parentNodeTypes: [...context.parentNodeTypes, nodeType]
+        parentNodeTypes: [...(context.parentNodeTypes || []), nodeType]
       };
       return (this[methodName] as any)(nodeData, childContext);
     }
