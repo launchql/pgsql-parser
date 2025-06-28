@@ -77,8 +77,19 @@ export class V14ToV15Transformer {
       const transformedData: any = {};
       for (const [key, value] of Object.entries(nodeData)) {
         if (Array.isArray(value)) {
-          transformedData[key] = value.map(item => this.transform(item as any, context));
-        } else if (typeof value === 'object' && value !== null) {
+          if (key === 'arrayBounds') {
+            transformedData[key] = value.map(item => {
+              // In PG15, -1 values in arrayBounds are represented as empty Integer objects
+              if (item && typeof item === 'object' && 'Integer' in item && 
+                  item.Integer && item.Integer.ival === -1) {
+                return { Integer: {} };
+              }
+              return this.transform(item as any, context);
+            });
+          } else {
+            transformedData[key] = value.map(item => this.transform(item as any, context));
+          }
+        }else if (typeof value === 'object' && value !== null) {
           const keys = Object.keys(value);
           const isNumericKeysObject = keys.every(k => /^\d+$/.test(k));
           
@@ -100,8 +111,19 @@ export class V14ToV15Transformer {
     const result: any = {};
     for (const [key, value] of Object.entries(node)) {
       if (Array.isArray(value)) {
-        result[key] = value.map(item => this.transform(item as any, context));
-      } else if (typeof value === 'object' && value !== null) {
+        if (key === 'arrayBounds') {
+          result[key] = value.map(item => {
+            // In PG15, -1 values in arrayBounds are represented as empty Integer objects
+            if (item && typeof item === 'object' && 'Integer' in item && 
+                item.Integer && item.Integer.ival === -1) {
+              return { Integer: {} };
+            }
+            return this.transform(item as any, context);
+          });
+        } else {
+          result[key] = value.map(item => this.transform(item as any, context));
+        }
+      }else if (typeof value === 'object' && value !== null) {
         const keys = Object.keys(value);
         const isNumericKeysObject = keys.every(k => /^\d+$/.test(k));
         
@@ -195,7 +217,11 @@ export class V14ToV15Transformer {
   }
 
   A_Const(node: PG14.A_Const, context: TransformerContext): any {
-    const result: any = { ...node };
+    const result: any = {};
+    
+    for (const [key, value] of Object.entries(node)) {
+      result[key] = value;
+    }
     
     if (result.val) {
       const val: any = result.val;
@@ -204,9 +230,14 @@ export class V14ToV15Transformer {
         delete result.val;
       } else if (val.Integer !== undefined) {
         if (val.Integer.ival !== undefined) {
-          result.ival = { ival: val.Integer.ival };
+          // In PG15, certain integer values in A_Const are converted to empty objects
+          if (val.Integer.ival <= 0) {
+            result.ival = {};
+          } else {
+            result.ival = { ival: val.Integer.ival };
+          }
         } else {
-          result.ival = { ival: 0 };
+          result.ival = {};
         }
         delete result.val;
       } else if (val.Float && val.Float.str !== undefined) {
@@ -221,20 +252,13 @@ export class V14ToV15Transformer {
       }
     }
     
-    // Handle boolval field directly (not nested in val)
-    // In PG15, boolval fields are represented as empty objects
+    // Handle boolval field - in PG15, all boolval fields are represented as empty objects
     if (result.boolval !== undefined) {
+      // Handle both direct boolval and nested boolval structures
       result.boolval = {};
     }
     
-    // Handle ival field directly (not nested in val)
-    // In PG15, certain ival values are represented as empty objects
-    if (result.ival !== undefined && typeof result.ival === 'object' && result.ival.ival !== undefined) {
-      const ivalValue = result.ival.ival;
-      if (ivalValue === 0 || ivalValue === -1 || ivalValue === -2 || ivalValue === -3 || ivalValue === -4 || ivalValue === -5 || ivalValue === -8 || ivalValue === -32767 || ivalValue === -32768 || ivalValue === -123 || ivalValue === -12345 || ivalValue === -2147483647) {
-        result.ival = {};
-      }
-    }
+    // Handle ival field directly (not nested in val) - removed overly broad conversion
     
     return { A_Const: result };
   }
@@ -265,7 +289,24 @@ export class V14ToV15Transformer {
   }
 
   A_Indices(node: PG14.A_Indices, context: TransformerContext): any {
-    const result = this.transformGenericNode(node, context);
+    const result: any = {};
+    
+    if (node.is_slice !== undefined) {
+      result.is_slice = node.is_slice;
+    }
+    
+    if (node.lidx !== undefined) {
+      result.lidx = this.transform(node.lidx as any, context);
+    }
+    
+    if (node.uidx !== undefined) {
+      const childContext = {
+        ...context,
+        parentNodeTypes: [...(context.parentNodeTypes || []), 'A_Indices']
+      };
+      result.uidx = this.transform(node.uidx as any, childContext);
+    }
+    
     return { A_Indices: result };
   }
 
@@ -293,8 +334,12 @@ export class V14ToV15Transformer {
     // First transform the node using standard transformation
     const result = this.transformGenericNode(node, context);
     
-    // Handle both pre-transformation (PG14) and post-transformation (PG15) A_Const structures
-    if (result.arg && 
+    // Check if we're in a DefElem context - if so, don't apply Boolean conversion
+    const isInDefElemContext = context.parentNodeTypes && 
+      context.parentNodeTypes.some(nodeType => nodeType === 'DefElem');
+    
+    if (!isInDefElemContext &&
+        result.arg && 
         typeof result.arg === 'object' && 
         'A_Const' in result.arg &&
         result.arg.A_Const &&
@@ -302,40 +347,46 @@ export class V14ToV15Transformer {
         result.typeName.names &&
         Array.isArray(result.typeName.names)) {
       
-      let isBoolean = false;
-      let boolValue = false;
+      const hasPgCatalog = result.typeName.names.some((name: any) => 
+        name && typeof name === 'object' && 
+        (('String' in name && name.String && name.String.sval === 'pg_catalog') ||
+         ('String' in name && name.String && name.String.str === 'pg_catalog'))
+      );
       
-      if (result.arg.A_Const.sval && 
-          result.arg.A_Const.sval.sval &&
-          (result.arg.A_Const.sval.sval === 't' || result.arg.A_Const.sval.sval === 'f')) {
-        isBoolean = true;
-        boolValue = result.arg.A_Const.sval.sval === 't';
-      }
-      else if (result.arg.A_Const.val &&
-               typeof result.arg.A_Const.val === 'object' &&
-               'String' in result.arg.A_Const.val &&
-               result.arg.A_Const.val.String &&
-               (result.arg.A_Const.val.String.str === 't' || result.arg.A_Const.val.String.str === 'f')) {
-        isBoolean = true;
-        boolValue = result.arg.A_Const.val.String.str === 't';
-      }
-      
-      if (isBoolean) {
-        const isBoolType = result.typeName.names.some((name: any) => 
-          name && typeof name === 'object' && 
-          (('String' in name && name.String && name.String.sval === 'bool') ||
-           ('String' in name && name.String && name.String.str === 'bool'))
-        );
+      if (hasPgCatalog) {
+        let isBoolean = false;
+        let boolValue = false;
         
-        if (isBoolType) {
-          return {
-            A_Const: {
-              boolval: {
-                boolval: boolValue
-              },
-              location: result.arg.A_Const.location
-            }
-          };
+        if (result.arg.A_Const.sval && 
+            result.arg.A_Const.sval.sval &&
+            (result.arg.A_Const.sval.sval === 't' || result.arg.A_Const.sval.sval === 'f')) {
+          isBoolean = true;
+          boolValue = result.arg.A_Const.sval.sval === 't';
+        }
+        else if (result.arg.A_Const.val &&
+                 typeof result.arg.A_Const.val === 'object' &&
+                 'String' in result.arg.A_Const.val &&
+                 result.arg.A_Const.val.String &&
+                 (result.arg.A_Const.val.String.str === 't' || result.arg.A_Const.val.String.str === 'f')) {
+          isBoolean = true;
+          boolValue = result.arg.A_Const.val.String.str === 't';
+        }
+        
+        if (isBoolean) {
+          const isBoolType = result.typeName.names.some((name: any) => 
+            name && typeof name === 'object' && 
+            (('String' in name && name.String && name.String.sval === 'bool') ||
+             ('String' in name && name.String && name.String.str === 'bool'))
+          );
+          
+          if (isBoolType) {
+            return {
+              A_Const: {
+                boolval: boolValue ? { boolval: true } : {},
+                location: result.arg.A_Const.location
+              }
+            };
+          }
         }
       }
     }
@@ -370,29 +421,8 @@ export class V14ToV15Transformer {
   }
   
   Integer(node: PG14.Integer, context: TransformerContext): any {
-    if (node.ival !== undefined) {
-      if (node.ival === 1) {
-        const hasDefElemParent = context.parentNodeTypes.includes('DefElem');
-        if (hasDefElemParent) {
-          return { Boolean: { boolval: true } };
-        }
-      }
-      
-      if (node.ival === 0) {
-        const hasDefElemParent = context.parentNodeTypes.includes('DefElem');
-        if (hasDefElemParent) {
-          return { Boolean: { boolval: false } };
-        }
-      }
-      
-      // In PG15, certain ival values are represented as empty objects
-      if (node.ival === -1 || node.ival === -2 || node.ival === -3 || node.ival === -4 || node.ival === -5 || node.ival === -8 || node.ival === -32767 || node.ival === -32768 || node.ival === -123 || node.ival === -12345 || node.ival === -2147483647) {
-        return { Integer: {} };
-      }
-      
-      return { Integer: { ival: node.ival } };
-    }
-    return { Integer: node };
+    const result: any = { ...node };
+    return { Integer: result };
   }
   
   Float(node: PG14.Float, context: TransformerContext): any {
@@ -680,7 +710,32 @@ export class V14ToV15Transformer {
   }
 
   AlterTableCmd(node: PG14.AlterTableCmd, context: TransformerContext): any {
-    const result = this.transformGenericNode(node, context);
+    const result: any = {};
+
+    if (node.subtype !== undefined) {
+      result.subtype = node.subtype;
+    }
+
+    if (node.name !== undefined) {
+      result.name = node.name;
+    }
+
+    if (node.newowner !== undefined) {
+      result.newowner = this.transform(node.newowner as any, context);
+    }
+
+    if (node.def !== undefined) {
+      result.def = this.transform(node.def as any, context);
+    }
+
+    if (node.behavior !== undefined) {
+      result.behavior = node.behavior;
+    }
+
+    if (node.missing_ok !== undefined) {
+      result.missing_ok = node.missing_ok;
+    }
+
     return { AlterTableCmd: result };
   }
 
@@ -715,9 +770,31 @@ export class V14ToV15Transformer {
   }
 
   DefElem(node: PG14.DefElem, context: TransformerContext): any {
-    const result = this.transformGenericNode(node, context);
+    const result: any = {};
+
+    if (node.defnamespace !== undefined) {
+      result.defnamespace = node.defnamespace;
+    }
+
+    if (node.defname !== undefined) {
+      result.defname = node.defname;
+    }
+
+    if (node.arg !== undefined) {
+      result.arg = this.transform(node.arg as any, context);
+    }
+
+    if (node.defaction !== undefined) {
+      result.defaction = node.defaction;
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
     return { DefElem: result };
   }
+
 
   CreateTableSpaceStmt(node: PG14.CreateTableSpaceStmt, context: TransformerContext): any {
     const result = this.transformGenericNode(node, context);
@@ -1179,7 +1256,12 @@ export class V14ToV15Transformer {
 
     if (node.args !== undefined) {
       result.args = Array.isArray(node.args)
-        ? node.args.map(item => this.transform(item as any, context))
+        ? node.args.map(item => {
+            if (item && typeof item === 'object' && 'Integer' in item && item.Integer.ival === -1) {
+              return { Integer: {} };
+            }
+            return this.transform(item as any, context);
+          })
         : this.transform(node.args as any, context);
     }
 
