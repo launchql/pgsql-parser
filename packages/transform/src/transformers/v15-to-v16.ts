@@ -192,7 +192,31 @@ export class V15ToV16Transformer {
   }
 
   A_Expr(node: PG15.A_Expr, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.kind !== undefined) {
+      result.kind = node.kind;
+    }
+
+    if (node.name !== undefined) {
+      result.name = Array.isArray(node.name)
+        ? node.name.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.name as any, context);
+    }
+
+    if (node.lexpr !== undefined) {
+      result.lexpr = this.transform(node.lexpr as any, context);
+    }
+
+    if (node.rexpr !== undefined) {
+      result.rexpr = this.transform(node.rexpr as any, context);
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { A_Expr: result };
   }
 
   InsertStmt(node: PG15.InsertStmt, context: TransformerContext): any {
@@ -328,7 +352,23 @@ export class V15ToV16Transformer {
   }
 
   BoolExpr(node: PG15.BoolExpr, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.boolop !== undefined) {
+      result.boolop = node.boolop;
+    }
+
+    if (node.args !== undefined) {
+      result.args = Array.isArray(node.args)
+        ? node.args.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.args as any, context);
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { BoolExpr: result };
   }
 
   FuncCall(node: PG15.FuncCall, context: TransformerContext): any {
@@ -478,7 +518,19 @@ export class V15ToV16Transformer {
   }
 
   Alias(node: PG15.Alias, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.aliasname !== undefined) {
+      result.aliasname = node.aliasname;
+    }
+
+    if (node.colnames !== undefined) {
+      result.colnames = Array.isArray(node.colnames)
+        ? node.colnames.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.colnames as any, context);
+    }
+
+    return { Alias: result };
   }
 
   RangeVar(node: PG15.RangeVar, context: TransformerContext): any {
@@ -596,7 +648,13 @@ export class V15ToV16Transformer {
   }
   
   Boolean(node: PG15.Boolean, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.boolval !== undefined) {
+      result.boolval = node.boolval;
+    }
+
+    return { Boolean: result };
   }
   
   BitString(node: PG15.BitString, context: TransformerContext): any {
