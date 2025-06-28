@@ -3319,83 +3319,103 @@ export class V15ToV16Transformer {
 
 
   CreateAggregateStmt(node: PG15.DefineStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { CreateAggregateStmt: result };
   }
 
   CreateTableAsStmt(node: PG15.CreateTableAsStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { CreateTableAsStmt: result };
   }
 
   RefreshMatViewStmt(node: PG15.RefreshMatViewStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { RefreshMatViewStmt: result };
   }
 
   AccessPriv(node: PG15.AccessPriv, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { AccessPriv: result };
   }
 
   AlterDatabaseStmt(node: PG15.AlterDatabaseStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { AlterDatabaseStmt: result };
   }
 
   AlterDatabaseRefreshCollStmt(node: PG15.AlterDatabaseRefreshCollStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { AlterDatabaseRefreshCollStmt: result };
   }
 
   AlterDatabaseSetStmt(node: PG15.AlterDatabaseSetStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { AlterDatabaseSetStmt: result };
   }
 
   DeclareCursorStmt(node: PG15.DeclareCursorStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { DeclareCursorStmt: result };
   }
 
   PublicationObjSpec(node: PG15.PublicationObjSpec, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { PublicationObjSpec: result };
   }
 
   PublicationTable(node: PG15.PublicationTable, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { PublicationTable: result };
   }
 
   CreateAmStmt(node: PG15.CreateAmStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { CreateAmStmt: result };
   }
 
   IntoClause(node: PG15.IntoClause, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { IntoClause: result };
   }
 
   OnConflictExpr(node: PG15.OnConflictExpr, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { OnConflictExpr: result };
   }
 
   ScanToken(node: PG15.ScanToken, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { ScanToken: result };
   }
 
   CreateOpClassItem(node: PG15.CreateOpClassItem, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { CreateOpClassItem: result };
   }
 
   Var(node: PG15.Var, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { Var: result };
   }
 
   TableFunc(node: PG15.TableFunc, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { TableFunc: result };
   }
 
   RangeTableFunc(node: PG15.RangeTableFunc, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { RangeTableFunc: result };
   }
 
   RangeTableFuncCol(node: PG15.RangeTableFuncCol, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { RangeTableFuncCol: result };
   }
 
   RangeFunction(node: PG15.RangeFunction, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { RangeFunction: result };
   }
 
 
