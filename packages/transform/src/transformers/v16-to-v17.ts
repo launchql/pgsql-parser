@@ -441,31 +441,22 @@ export class V16ToV17Transformer {
   }
 
   TypeName(node: PG16.TypeName, context: TransformerContext): any {
-    console.log('TypeName DEBUG - Called with node:', JSON.stringify(node, null, 2));
     const result: any = {};
 
     if (node.names !== undefined) {
-      console.log('TypeName DEBUG - Original node.names:', JSON.stringify(node.names, null, 2));
-      
       let names = Array.isArray(node.names)
         ? node.names.map(item => this.transform(item as any, context))
         : this.transform(node.names as any, context);
 
-      console.log('TypeName DEBUG - After transformation, names:', JSON.stringify(names, null, 2));
-
       if (Array.isArray(names) && names.length === 1) {
         const singleElement = names[0];
-        console.log('TypeName DEBUG - Single element:', JSON.stringify(singleElement, null, 2));
         if (singleElement && typeof singleElement === 'object' && 'String' in singleElement) {
           const typeName = singleElement.String.str || singleElement.String.sval;
-          console.log('TypeName DEBUG - Found single element type:', typeName);
-          if (typeName === 'json') {
-            console.log('TypeName DEBUG - Adding pg_catalog prefix for JSON type');
+          if (typeName === 'json' && !this.isInValuesContext(context) && !this.isInTypeCastContext(context)) {
             names = [
               { String: { sval: 'pg_catalog' } },
               ...names
             ];
-            console.log('TypeName DEBUG - After adding prefix, names:', JSON.stringify(names, null, 2));
           }
         }
       }
@@ -1609,8 +1600,7 @@ export class V16ToV17Transformer {
       'position', 'overlay', 'substring',
       'extract', 'timezone', 'xmlexists',
       'current_date', 'current_time', 'current_timestamp',
-      'localtime', 'localtimestamp', 'overlaps',
-      'collation_for'
+      'localtime', 'localtimestamp', 'overlaps'
     ];
 
     // Handle specific functions that depend on pg_catalog prefix
@@ -1629,6 +1619,13 @@ export class V16ToV17Transformer {
     }
 
     if (functionName.toLowerCase() === 'btrim') {
+      if (hasPgCatalogPrefix) {
+        return 'COERCE_SQL_SYNTAX';
+      }
+      return 'COERCE_EXPLICIT_CALL';
+    }
+
+    if (functionName.toLowerCase() === 'pg_collation_for') {
       if (hasPgCatalogPrefix) {
         return 'COERCE_SQL_SYNTAX';
       }
