@@ -508,24 +508,28 @@ export class V15ToV16Transformer {
   A_Const(node: PG15.A_Const, context: TransformerContext): any {
     const result: any = {};
 
-    if (node.isnull !== undefined && !node.isnull) {
-      result.isnull = node.isnull;
-    }
-
-    if (node.sval !== undefined) {
-      result.sval = node.sval;
-    }
-
     if (node.ival !== undefined) {
-      result.ival = node.ival;
+      result.ival = this.transform(node.ival as any, context);
     }
 
     if (node.fval !== undefined) {
-      result.fval = node.fval;
+      result.fval = this.transform(node.fval as any, context);
+    }
+
+    if (node.boolval !== undefined) {
+      result.boolval = this.transform(node.boolval as any, context);
+    }
+
+    if (node.sval !== undefined) {
+      result.sval = this.transform(node.sval as any, context);
     }
 
     if (node.bsval !== undefined) {
-      result.bsval = node.bsval;
+      result.bsval = this.transform(node.bsval as any, context);
+    }
+
+    if (node.isnull !== undefined) {
+      result.isnull = node.isnull;
     }
 
     if (node.location !== undefined) {
@@ -858,11 +862,7 @@ export class V15ToV16Transformer {
   }
   
   Integer(node: PG15.Integer, context: TransformerContext): any {
-    const result: any = {};
-
-    if (node.ival !== undefined) {
-      result.ival = node.ival;
-    }
+    const result: any = { ...node };
 
     return { Integer: result };
   }
@@ -2826,23 +2826,97 @@ export class V15ToV16Transformer {
   }
 
   CreateTableSpaceStmt(node: PG15.CreateTableSpaceStmt, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.tablespacename !== undefined) {
+      result.tablespacename = node.tablespacename;
+    }
+
+    if (node.owner !== undefined) {
+      result.owner = this.transform(node.owner as any, context);
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    if (node.options !== undefined) {
+      result.options = Array.isArray(node.options)
+        ? node.options.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.options as any, context);
+    }
+
+    return { CreateTableSpaceStmt: result };
   }
 
   DropTableSpaceStmt(node: PG15.DropTableSpaceStmt, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.tablespacename !== undefined) {
+      result.tablespacename = node.tablespacename;
+    }
+
+    if (node.missing_ok !== undefined) {
+      result.missing_ok = node.missing_ok;
+    }
+
+    return { DropTableSpaceStmt: result };
   }
 
   AlterTableSpaceOptionsStmt(node: PG15.AlterTableSpaceOptionsStmt, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.tablespacename !== undefined) {
+      result.tablespacename = node.tablespacename;
+    }
+
+    if (node.options !== undefined) {
+      result.options = Array.isArray(node.options)
+        ? node.options.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.options as any, context);
+    }
+
+    if (node.isReset !== undefined) {
+      result.isReset = node.isReset;
+    }
+
+    return { AlterTableSpaceOptionsStmt: result };
   }
 
   CreateExtensionStmt(node: PG15.CreateExtensionStmt, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.extname !== undefined) {
+      result.extname = node.extname;
+    }
+
+    if (node.if_not_exists !== undefined) {
+      result.if_not_exists = node.if_not_exists;
+    }
+
+    if (node.options !== undefined) {
+      result.options = Array.isArray(node.options)
+        ? node.options.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.options as any, context);
+    }
+
+    return { CreateExtensionStmt: result };
   }
 
   AlterExtensionStmt(node: PG15.AlterExtensionStmt, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.extname !== undefined) {
+      result.extname = node.extname;
+    }
+
+    if (node.options !== undefined) {
+      result.options = Array.isArray(node.options)
+        ? node.options.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.options as any, context);
+    }
+
+    return { AlterExtensionStmt: result };
   }
 
   CreateFdwStmt(node: PG15.CreateFdwStmt, context: TransformerContext): any {
