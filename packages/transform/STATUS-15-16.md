@@ -26,9 +26,9 @@ Started from a basic skeleton transformer and systematically implemented node wr
 
 **Attempted Solutions**:
 - ❌ Broad A_Const fix (transforms all empty ival objects) - caused test pass rate to drop to 144/258
-- ❌ Context-aware transformation - context patterns identical for zero vs negative values
+- ❌ Context-based detection (constraint/ALTER TABLE contexts) - caused test pass rate to drop to 174/258
 - ✅ Successfully reverted to stable 184/258 baseline after testing approaches
-- 🔄 Currently exploring dual-parse approach to detect when transformation is needed
+- 🔄 Dual-parse approach explored but @pgsql/parser returns empty objects for all SQL queries
 
 ## Debug Tools Created
 - `debug_transformation_flow_detailed.js` - Analyzes exact transformation flow for negative integers
@@ -40,9 +40,9 @@ Started from a basic skeleton transformer and systematically implemented node wr
 - `debug_context_analysis.js` - Analyzes context-dependent transformation patterns
 
 ## Next Steps
-1. Explore dual-parse approach: parse same SQL with both PG15 and PG16 to determine when transformation is needed
-2. Implement targeted A_Const fix based on dual-parse comparison results
-3. Test fix maintains 184/258 baseline while resolving negative integer cases
+1. Investigate alternative approaches beyond context-based and dual-parse methods
+2. Consider advanced pattern matching or heuristic detection for negative integer cases
+3. Explore selective transformation targeting only high-confidence scenarios
 4. Verify specific failing test cases like `alter_table-234.sql`
 5. Continue systematic improvement of remaining 74 failing tests
 
