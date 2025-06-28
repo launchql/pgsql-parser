@@ -453,7 +453,7 @@ export class V14ToV15Transformer {
     }
     
     // AlterTableCmd context: SET STATISTICS with ival 0 or -1 -> empty Integer
-    if (context.parentNodeTypes?.includes('AlterTableCmd') && (node.ival === 0 || node.ival === -1)) {
+    if (context.parentNodeTypes?.includes('AlterTableCmd') && !context.parentNodeTypes?.includes('DefineStmt') && (node.ival === 0 || node.ival === -1)) {
       return { Integer: {} };
     }
     
@@ -469,9 +469,6 @@ export class V14ToV15Transformer {
         return { Integer: {} };
       }
       
-      if (node.ival === -1 && !defElemName) {
-        return { Integer: {} };
-      }
       
       // DefineStmt args context: ival 0 should become empty Integer for aggregates
       if (!defElemName && node.ival === 0) {
