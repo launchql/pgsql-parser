@@ -2,7 +2,7 @@ import * as PG13 from '../13/types';
 import { TransformerContext } from './context';
 
 export class V13ToV14Transformer {
-  
+
   transform(node: PG13.Node, context: TransformerContext = { parentNodeTypes: [] }): any {
     if (node == null) {
       return null;
@@ -37,14 +37,14 @@ export class V13ToV14Transformer {
     if (!context.parentNodeTypes || !Array.isArray(context.parentNodeTypes)) {
       context = { ...context, parentNodeTypes: [] };
     }
-    
+
     const nodeType = this.getNodeType(node);
-    
+
     // Handle empty objects
     if (!nodeType) {
       return {};
     }
-    
+
     const nodeData = this.getNodeData(node);
 
     if (nodeType === 'WithClause') {
@@ -58,10 +58,10 @@ export class V13ToV14Transformer {
         parentNodeTypes: [...context.parentNodeTypes, nodeType]
       };
       const result = (this[methodName] as any)(nodeData, childContext);
-      
+
       return result;
     }
-    
+
     // If no specific method, use transformGenericNode to handle nested transformations
     return this.transformGenericNode(node, context);
   }
@@ -74,7 +74,7 @@ export class V13ToV14Transformer {
     if (keys.length === 1 && typeof node[keys[0]] === 'object' && node[keys[0]] !== null) {
       const nodeType = keys[0];
       const nodeData = node[keys[0]];
-      
+
       if ('ctes' in nodeData) {
         console.log('transformGenericNode: Processing node with ctes:', {
           nodeType,
@@ -82,7 +82,7 @@ export class V13ToV14Transformer {
           isArray: Array.isArray(nodeData.ctes)
         });
       }
-      
+
       const transformedData: any = {};
       for (const [key, value] of Object.entries(nodeData)) {
         if (key === 'ctes' && Array.isArray(value)) {
@@ -93,7 +93,7 @@ export class V13ToV14Transformer {
           } else {
             const keys = Object.keys(value);
             const isNumericKeysObject = keys.every(k => /^\d+$/.test(k));
-            
+
             if (isNumericKeysObject && keys.length > 0) {
               const shouldPreserve = this.shouldPreserveObjnameAsObject(context);
               if (shouldPreserve) {
@@ -119,7 +119,7 @@ export class V13ToV14Transformer {
           transformedData[key] = value;
         }
       }
-      
+
       return { [nodeType]: transformedData };
     }
 
@@ -166,12 +166,12 @@ export class V13ToV14Transformer {
 
   FuncCall(node: PG13.FuncCall, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.funcname !== undefined) {
       let funcname = Array.isArray(node.funcname)
         ? node.funcname.map(item => this.transform(item as any, context))
         : this.transform(node.funcname as any, context);
-      
+
       if (Array.isArray(funcname) && funcname.length >= 2) {
         const lastName = funcname[funcname.length - 1];
         if (lastName && typeof lastName === 'object' && 'String' in lastName) {
@@ -183,8 +183,8 @@ export class V13ToV14Transformer {
             };
           }
         }
-        
-        // Handle pg_catalog prefix for specific functions
+
+        // Handle pg_catalog prefix for specific functions - preserve existing prefixes in most contexts
         if (funcname.length >= 2) {
           const firstElement = funcname[0];
           const secondElement = funcname[1];
@@ -192,26 +192,25 @@ export class V13ToV14Transformer {
               secondElement && typeof secondElement === 'object' && 'String' in secondElement) {
             const prefix = firstElement.String.str || firstElement.String.sval;
             const functionName = secondElement.String.str || secondElement.String.sval;
-            
+
             if (prefix === 'pg_catalog') {
-              const isInCreateContext = this.isInCreateDomainContext(context) || this.isInCreateProcedureContext(context);
-              const isStandardSyntax = this.isStandardFunctionCallSyntax(node, context);
-              
-              if (isInCreateContext || isStandardSyntax) {
+              const isInCreateDomainContext = this.isInCreateDomainContext(context);
+
+              if (isInCreateDomainContext) {
                 funcname = funcname.slice(1);
               }
             }
           }
-        } else if (funcname.length === 1) {
+        }else if (funcname.length === 1) {
           const singleElement = funcname[0];
           if (singleElement && typeof singleElement === 'object' && 'String' in singleElement) {
             const functionName = singleElement.String.str || singleElement.String.sval;
             const sqlSyntaxFunctions = [
-              'btrim', 'trim', 'ltrim', 'rtrim',
+              'trim', 'ltrim', 'rtrim',
               'position', 'overlay',
               'extract', 'timezone'
             ];
-            
+
             if (sqlSyntaxFunctions.includes(functionName.toLowerCase())) {
               funcname = [
                 { String: { str: 'pg_catalog' } },
@@ -220,52 +219,52 @@ export class V13ToV14Transformer {
             }
           }
         }
-        
+
       }
-      
+
       result.funcname = funcname;
     }
-    
+
     if (node.args !== undefined) {
       result.args = Array.isArray(node.args)
         ? node.args.map(item => this.transform(item as any, context))
         : this.transform(node.args as any, context);
     }
-    
+
     if (node.agg_order !== undefined) {
       result.agg_order = Array.isArray(node.agg_order)
         ? node.agg_order.map(item => this.transform(item as any, context))
         : this.transform(node.agg_order as any, context);
     }
-    
+
     if (node.agg_filter !== undefined) {
       result.agg_filter = this.transform(node.agg_filter as any, context);
     }
-    
+
     if (node.agg_within_group !== undefined) {
       result.agg_within_group = node.agg_within_group;
     }
-    
+
     if (node.agg_star !== undefined) {
       result.agg_star = node.agg_star;
     }
-    
+
     if (node.agg_distinct !== undefined) {
       result.agg_distinct = node.agg_distinct;
     }
-    
+
     if (node.func_variadic !== undefined) {
       result.func_variadic = node.func_variadic;
     }
-    
+
     if (node.over !== undefined) {
       result.over = this.transform(node.over as any, context);
     }
-    
+
     if (node.location !== undefined) {
       result.location = node.location;
     }
-    
+
     // Only add funcformat in specific contexts where it's expected in PG14
     if (this.shouldAddFuncformat(context)) {
       const nodeForFuncformat = { ...node, funcname: result.funcname };
@@ -274,7 +273,7 @@ export class V13ToV14Transformer {
         result.funcformat = funcformatValue;
       }
     }
-    
+
     return { FuncCall: result };
   }
 
@@ -282,43 +281,43 @@ export class V13ToV14Transformer {
     if (this.isInCheckConstraintContext(context)) {
       return false;
     }
-    
+
     if (this.isInCommentContext(context)) {
       return false;
     }
-    
+
     if (this.isInTypeCastContext(context)) {
       return false;
     }
-    
+
     if (this.isInXmlExprContext(context)) {
       return false;
     }
-    
+
     if (this.isInRangeFunctionContext(context)) {
       return false;
     }
-    
+
     if (this.isInSortByContext(context)) {
       return false;
     }
-    
+
     if (this.isInDefaultConstraintContext(context)) {
       return false;
     }
-    
+
     if (this.isInPolicyContext(context)) {
       return false;
     }
-    
+
     if (this.isInCreateIndexContext(context)) {
       return false;
     }
-    
+
     if (this.isInConstraintContext(context)) {
       // Check if this is a function that should have funcformat even in constraints
       const path = context.path || [];
-      const hasFuncCall = path.some((node: any) => 
+      const hasFuncCall = path.some((node: any) =>
         node && typeof node === 'object' && 'FuncCall' in node
       );
       if (hasFuncCall) {
@@ -326,112 +325,112 @@ export class V13ToV14Transformer {
       }
       return false;
     }
-    
+
     return true;
   }
 
   private isInCheckConstraintContext(context: TransformerContext): boolean {
     const path = context.path || [];
-    
-    const hasDirectConstraint = path.some((node: any) => 
-      node && typeof node === 'object' && 
+
+    const hasDirectConstraint = path.some((node: any) =>
+      node && typeof node === 'object' &&
       ('Constraint' in node && node.Constraint?.contype === 'CONSTR_CHECK')
     );
-    
+
     if (hasDirectConstraint) {
       return true;
     }
-    
-    const hasAlterTableConstraint = path.some((node: any) => 
-      node && typeof node === 'object' && 
-      ('AlterTableCmd' in node && 
+
+    const hasAlterTableConstraint = path.some((node: any) =>
+      node && typeof node === 'object' &&
+      ('AlterTableCmd' in node &&
        node.AlterTableCmd?.def?.Constraint?.contype === 'CONSTR_CHECK')
     );
-    
+
     if (hasAlterTableConstraint) {
       return true;
     }
-    
+
     if (context.parentNodeTypes) {
       const hasConstraintParent = context.parentNodeTypes.some((parentType: string) =>
         parentType === 'Constraint' || parentType === 'AlterTableCmd'
       );
-      
+
       if (hasConstraintParent && context.parent?.currentNode) {
         const parentNode = context.parent.currentNode;
         if ('Constraint' in parentNode && parentNode.Constraint?.contype === 'CONSTR_CHECK') {
           return true;
         }
-        if ('AlterTableCmd' in parentNode && 
+        if ('AlterTableCmd' in parentNode &&
             parentNode.AlterTableCmd?.def?.Constraint?.contype === 'CONSTR_CHECK') {
           return true;
         }
       }
     }
-    
+
     return false;
   }
 
   private isInCommentContext(context: TransformerContext): boolean {
     const path = context.path || [];
-    return path.some((node: any) => 
+    return path.some((node: any) =>
       node && typeof node === 'object' && 'CommentStmt' in node
     );
   }
 
   private isInTypeCastContext(context: TransformerContext): boolean {
     const path = context.path || [];
-    return path.some((node: any) => 
+    return path.some((node: any) =>
       node && typeof node === 'object' && 'TypeCast' in node
     );
   }
 
   private isInInsertContext(context: TransformerContext): boolean {
     const path = context.path || [];
-    return path.some((node: any) => 
+    return path.some((node: any) =>
       node && typeof node === 'object' && 'InsertStmt' in node
     );
   }
 
   private isInUpdateContext(context: TransformerContext): boolean {
     const path = context.path || [];
-    return path.some((node: any) => 
+    return path.some((node: any) =>
       node && typeof node === 'object' && 'UpdateStmt' in node
     );
   }
 
   private isInXmlExprContext(context: TransformerContext): boolean {
     const path = context.path || [];
-    return path.some((node: any) => 
+    return path.some((node: any) =>
       node && typeof node === 'object' && 'XmlExpr' in node
     );
   }
 
   private isInRangeFunctionContext(context: TransformerContext): boolean {
     const path = context.path || [];
-    return path.some((node: any) => 
+    return path.some((node: any) =>
       node && typeof node === 'object' && 'RangeFunction' in node
     );
   }
 
   private isInSortByContext(context: TransformerContext): boolean {
     const path = context.path || [];
-    return path.some((node: any) => 
+    return path.some((node: any) =>
       node && typeof node === 'object' && 'SortBy' in node
     );
   }
 
   private isInDefaultConstraintContext(context: TransformerContext): boolean {
     const path = context.path || [];
-    return path.some((node: any) => 
-      node && typeof node === 'object' && 'Constraint' in node && 
+    return path.some((node: any) =>
+      node && typeof node === 'object' && 'Constraint' in node &&
       node.Constraint && node.Constraint.contype === 'CONSTR_DEFAULT'
     );
   }
 
   private isInPolicyContext(context: TransformerContext): boolean {
     const path = context.path || [];
-    return path.some((node: any) => 
+    return path.some((node: any) =>
       node && typeof node === 'object' && 'CreatePolicyStmt' in node
     );
   }
@@ -448,14 +447,14 @@ export class V13ToV14Transformer {
   }
   private isInCreateIndexContext(context: TransformerContext): boolean {
     const path = context.path || [];
-    return path.some((node: any) => 
+    return path.some((node: any) =>
       node && typeof node === 'object' && 'IndexStmt' in node
     );
   }
 
   private isInConstraintContext(context: TransformerContext): boolean {
     const path = context.path || [];
-    return path.some((node: any) => 
+    return path.some((node: any) =>
       node && typeof node === 'object' && 'Constraint' in node
     );
   }
@@ -474,22 +473,22 @@ export class V13ToV14Transformer {
     if (!node.args || !Array.isArray(node.args)) {
       return true; // Default to function call syntax
     }
-    
+
     if (this.isInCreateDomainContext(context) || this.isInConstraintContext(context)) {
       return true;
     }
-    
+
     if (node.args.length === 2) {
       return false; // FROM syntax
     }
-    
+
     if (node.args.length === 3) {
       const thirdArg = node.args[2];
       if (thirdArg && typeof thirdArg === 'object' && 'TypeCast' in thirdArg) {
         return false; // FOR syntax with length cast
       }
     }
-    
+
     return true; // Default to function call syntax
   }
 
@@ -500,19 +499,19 @@ export class V13ToV14Transformer {
 
   CallStmt(node: PG13.CallStmt, context: TransformerContext): any {
     const result: any = { ...node };
-    
+
     if (node.funccall !== undefined) {
       const wrappedFuncCall = { FuncCall: node.funccall };
       const transformedFuncCall = this.transform(wrappedFuncCall as any, context);
       result.funccall = transformedFuncCall.FuncCall || transformedFuncCall;
     }
-    
+
     return { CallStmt: result };
   }
 
   CommentStmt(node: any, context: TransformerContext): any {
     const result: any = { ...node };
-    
+
     if (result.object !== undefined) {
       const childContext = {
         ...context,
@@ -520,21 +519,21 @@ export class V13ToV14Transformer {
       };
       result.object = this.transform(result.object, childContext);
     }
-    
+
     if (result.comment !== undefined) {
       result.comment = result.comment;
     }
-    
+
     if (result.objtype !== undefined) {
       result.objtype = result.objtype;
     }
-    
+
     return { CommentStmt: result };
   }
 
   DropStmt(node: any, context: TransformerContext): any {
     const result: any = { ...node };
-    
+
     if (result.objects !== undefined) {
       const childContext = {
         ...context,
@@ -544,59 +543,59 @@ export class V13ToV14Transformer {
         ? result.objects.map((item: any) => this.transform(item, childContext))
         : this.transform(result.objects, childContext);
     }
-    
+
     if (result.removeType !== undefined) {
       result.removeType = result.removeType;
     }
-    
+
     if (result.behavior !== undefined) {
       result.behavior = result.behavior;
     }
-    
+
     if (result.missing_ok !== undefined) {
       result.missing_ok = result.missing_ok;
     }
-    
+
     if (result.concurrent !== undefined) {
       result.concurrent = result.concurrent;
     }
-    
+
     return { DropStmt: result };
   }
 
   InsertStmt(node: PG13.InsertStmt, context: TransformerContext): any {
     const result: any = { ...node };
-    
+
     // Create child context with InsertStmt as parent
     const childContext: TransformerContext = {
       ...context,
       parentNodeTypes: [...(context.parentNodeTypes || []), 'InsertStmt']
     };
-    
+
     if (result.relation !== undefined) {
       result.relation = this.transform(result.relation, childContext);
     }
-    
+
     if (result.cols !== undefined) {
       result.cols = Array.isArray(result.cols)
         ? result.cols.map((item: any) => this.transform(item, childContext))
         : this.transform(result.cols, childContext);
     }
-    
+
     if (result.selectStmt !== undefined) {
       result.selectStmt = this.transform(result.selectStmt, childContext);
     }
-    
+
     if (result.onConflictClause !== undefined) {
       result.onConflictClause = this.transform(result.onConflictClause, childContext);
     }
-    
+
     if (result.returningList !== undefined) {
       result.returningList = Array.isArray(result.returningList)
         ? result.returningList.map((item: any) => this.transform(item, childContext))
         : this.transform(result.returningList, childContext);
     }
-    
+
     if (result.withClause !== undefined) {
       if (result.withClause.ctes && Array.isArray(result.withClause.ctes)) {
         const transformedWithClause = { ...result.withClause };
@@ -612,45 +611,45 @@ export class V13ToV14Transformer {
         result.withClause = this.transform(result.withClause, childContext);
       }
     }
-    
+
     return { InsertStmt: result };
   }
 
   UpdateStmt(node: any, context: TransformerContext): any {
     const result: any = { ...node };
-    
+
     // Create child context with UpdateStmt as parent
     const childContext: TransformerContext = {
       ...context,
       parentNodeTypes: [...(context.parentNodeTypes || []), 'UpdateStmt']
     };
-    
+
     if (result.relation !== undefined) {
       result.relation = this.transform(result.relation, childContext);
     }
-    
+
     if (result.targetList !== undefined) {
       result.targetList = Array.isArray(result.targetList)
         ? result.targetList.map((item: any) => this.transform(item, childContext))
         : this.transform(result.targetList, childContext);
     }
-    
+
     if (result.whereClause !== undefined) {
       result.whereClause = this.transform(result.whereClause, childContext);
     }
-    
+
     if (result.fromClause !== undefined) {
       result.fromClause = Array.isArray(result.fromClause)
         ? result.fromClause.map((item: any) => this.transform(item, childContext))
         : this.transform(result.fromClause, childContext);
     }
-    
+
     if (result.returningList !== undefined) {
       result.returningList = Array.isArray(result.returningList)
         ? result.returningList.map((item: any) => this.transform(item, childContext))
         : this.transform(result.returningList, childContext);
     }
-    
+
     if (result.withClause !== undefined) {
       if (result.withClause.ctes && Array.isArray(result.withClause.ctes)) {
         const transformedWithClause = { ...result.withClause };
@@ -666,39 +665,39 @@ export class V13ToV14Transformer {
         result.withClause = this.transform(result.withClause, childContext);
       }
     }
-    
+
     return { UpdateStmt: result };
   }
 
   DeleteStmt(node: any, context: TransformerContext): any {
     const result: any = { ...node };
-    
+
     // Create child context with DeleteStmt as parent
     const childContext: TransformerContext = {
       ...context,
       parentNodeTypes: [...(context.parentNodeTypes || []), 'DeleteStmt']
     };
-    
+
     if (result.relation !== undefined) {
       result.relation = this.transform(result.relation, childContext);
     }
-    
+
     if (result.usingClause !== undefined) {
       result.usingClause = Array.isArray(result.usingClause)
         ? result.usingClause.map((item: any) => this.transform(item, childContext))
         : this.transform(result.usingClause, childContext);
     }
-    
+
     if (result.whereClause !== undefined) {
       result.whereClause = this.transform(result.whereClause, childContext);
     }
-    
+
     if (result.returningList !== undefined) {
       result.returningList = Array.isArray(result.returningList)
         ? result.returningList.map((item: any) => this.transform(item, childContext))
         : this.transform(result.returningList, childContext);
     }
-    
+
     if (result.withClause !== undefined) {
       if (result.withClause.ctes && Array.isArray(result.withClause.ctes)) {
         const transformedWithClause = { ...result.withClause };
@@ -714,60 +713,60 @@ export class V13ToV14Transformer {
         result.withClause = this.transform(result.withClause, childContext);
       }
     }
-    
+
     return { DeleteStmt: result };
   }
 
   CreateOpClassStmt(node: any, context: TransformerContext): any {
     const result: any = { ...node };
-    
+
     // Create child context with CreateOpClassStmt as parent
     const childContext: TransformerContext = {
       ...context,
       parentNodeTypes: [...(context.parentNodeTypes || []), 'CreateOpClassStmt']
     };
-    
+
     if (result.opclassname !== undefined) {
       result.opclassname = Array.isArray(result.opclassname)
         ? result.opclassname.map((item: any) => this.transform(item, childContext))
         : this.transform(result.opclassname, childContext);
     }
-    
+
     if (result.opfamilyname !== undefined) {
       result.opfamilyname = Array.isArray(result.opfamilyname)
         ? result.opfamilyname.map((item: any) => this.transform(item, childContext))
         : this.transform(result.opfamilyname, childContext);
     }
-    
+
     if (result.amname !== undefined) {
       result.amname = this.transform(result.amname, childContext);
     }
-    
+
     if (result.datatype !== undefined) {
       result.datatype = this.transform(result.datatype, childContext);
     }
-    
+
     if (result.items !== undefined) {
       result.items = Array.isArray(result.items)
         ? result.items.map((item: any) => this.transform(item, childContext))
         : this.transform(result.items, childContext);
     }
-    
+
     return { CreateOpClassStmt: result };
   }
 
   CreateOpClassItem(node: any, context: TransformerContext): any {
     const result: any = { ...node };
-    
+
     // Create child context with CreateOpClassItem as parent
     const childContext: TransformerContext = {
       ...context,
       parentNodeTypes: [...(context.parentNodeTypes || []), 'CreateOpClassItem']
     };
-    
+
     if (result.name !== undefined) {
       result.name = this.transform(result.name, childContext);
-      
+
       if (result.name && typeof result.name === 'object' && result.name.objname) {
         const objname = result.name.objname;
         if (typeof objname === 'object' && !Array.isArray(objname) && objname !== null) {
@@ -778,11 +777,11 @@ export class V13ToV14Transformer {
             result.name.objname = sortedKeys.map(key => this.transform(objname[key], childContext));
           }
         }
-        
+
         if (result.name.objargs && !result.name.objfuncargs) {
           // Check if this is an operator by looking at the objname
           const isOperator = this.isOperatorName(result.name.objname);
-          
+
           if (!isOperator) {
             result.name.objfuncargs = Array.isArray(result.name.objargs)
               ? result.name.objargs.map((arg: any, index: number) => this.createFunctionParameterFromTypeName(arg, context, index))
@@ -791,123 +790,123 @@ export class V13ToV14Transformer {
         }
       }
     }
-    
+
     if (result.args !== undefined) {
       result.args = Array.isArray(result.args)
         ? result.args.map((item: any) => this.transform(item, childContext))
         : this.transform(result.args, childContext);
     }
-    
+
     if (result.storedtype !== undefined) {
       result.storedtype = this.transform(result.storedtype, childContext);
     }
-    
+
     return { CreateOpClassItem: result };
   }
 
   CreateAccessMethodStmt(node: any, context: TransformerContext): any {
     const result: any = { ...node };
-    
+
     // Create child context with CreateAccessMethodStmt as parent
     const childContext: TransformerContext = {
       ...context,
       parentNodeTypes: [...(context.parentNodeTypes || []), 'CreateAccessMethodStmt']
     };
-    
+
     if (result.amname !== undefined) {
       result.amname = this.transform(result.amname, childContext);
     }
-    
+
     if (result.handler_name !== undefined) {
       result.handler_name = Array.isArray(result.handler_name)
         ? result.handler_name.map((item: any) => this.transform(item, childContext))
         : this.transform(result.handler_name, childContext);
     }
-    
+
     return { CreateAccessMethodStmt: result };
   }
 
   GrantStmt(node: any, context: TransformerContext): any {
     const result: any = { ...node };
-    
+
     // Create child context with GrantStmt as parent
     const childContext: TransformerContext = {
       ...context,
       parentNodeTypes: [...(context.parentNodeTypes || []), 'GrantStmt']
     };
-    
+
     if (result.objects !== undefined) {
       result.objects = Array.isArray(result.objects)
         ? result.objects.map((item: any) => this.transform(item, childContext))
         : this.transform(result.objects, childContext);
     }
-    
+
     if (result.grantees !== undefined) {
       result.grantees = Array.isArray(result.grantees)
         ? result.grantees.map((item: any) => this.transform(item, childContext))
         : this.transform(result.grantees, childContext);
     }
-    
+
     if (result.privileges !== undefined) {
       result.privileges = Array.isArray(result.privileges)
         ? result.privileges.map((item: any) => this.transform(item, childContext))
         : this.transform(result.privileges, childContext);
     }
-    
+
     return { GrantStmt: result };
   }
 
   RevokeStmt(node: any, context: TransformerContext): any {
     const result: any = { ...node };
-    
+
     // Create child context with RevokeStmt as parent
     const childContext: TransformerContext = {
       ...context,
       parentNodeTypes: [...(context.parentNodeTypes || []), 'RevokeStmt']
     };
-    
+
     if (result.objects !== undefined) {
       result.objects = Array.isArray(result.objects)
         ? result.objects.map((item: any) => this.transform(item, childContext))
         : this.transform(result.objects, childContext);
     }
-    
+
     if (result.grantees !== undefined) {
       result.grantees = Array.isArray(result.grantees)
         ? result.grantees.map((item: any) => this.transform(item, childContext))
         : this.transform(result.grantees, childContext);
     }
-    
+
     if (result.privileges !== undefined) {
       result.privileges = Array.isArray(result.privileges)
         ? result.privileges.map((item: any) => this.transform(item, childContext))
         : this.transform(result.privileges, childContext);
     }
-    
+
     return { RevokeStmt: result };
   }
 
   ResTarget(node: PG13.ResTarget, context: TransformerContext): any {
     const result: any = { ...node };
-    
+
     if (node.name !== undefined) {
       result.name = node.name;
     }
-    
+
     if (node.indirection !== undefined) {
       result.indirection = Array.isArray(node.indirection)
         ? node.indirection.map(item => this.transform(item as any, context))
         : this.transform(node.indirection as any, context);
     }
-    
+
     if (node.val !== undefined) {
       result.val = this.transform(node.val as any, context);
     }
-    
+
     if (node.location !== undefined) {
       result.location = node.location;
     }
-    
+
     return { ResTarget: result };
   }
 
@@ -925,17 +924,17 @@ export class V13ToV14Transformer {
     if (!objname || !Array.isArray(objname) || objname.length === 0) {
       return false;
     }
-    
+
     const firstElement = objname[0];
     if (!firstElement || typeof firstElement !== 'object' || !('String' in firstElement)) {
       return false;
     }
-    
+
     const name = firstElement.String?.str;
     if (!name || typeof name !== 'string') {
       return false;
     }
-    
+
     // Check if it's an operator symbol (contains operator characters)
     const operatorChars = /[+\-*/<>=!~@#%^&|`?]/;
     return operatorChars.test(name);
@@ -943,11 +942,11 @@ export class V13ToV14Transformer {
 
   private getFuncformatValue(node: any, context: TransformerContext): string {
     const funcname = this.getFunctionName(node);
-    
+
     if (!funcname) {
       return 'COERCE_EXPLICIT_CALL';
     }
-    
+
     // Handle substring function specifically - depends on pg_catalog prefix
     if (funcname.toLowerCase() === 'substring') {
       // Check if the function has pg_catalog prefix by examining the node
@@ -978,42 +977,58 @@ export class V13ToV14Transformer {
       return 'COERCE_EXPLICIT_CALL';
     }
 
+    // Handle btrim function specifically - depends on pg_catalog prefix
+    if (funcname.toLowerCase() === 'btrim') {
+      // Check if the function has pg_catalog prefix by examining the node
+      if (node && node.funcname && Array.isArray(node.funcname) && node.funcname.length >= 2) {
+        const firstElement = node.funcname[0];
+        if (firstElement && typeof firstElement === 'object' && 'String' in firstElement) {
+          const prefix = firstElement.String.str || firstElement.String.sval;
+          if (prefix === 'pg_catalog') {
+            return 'COERCE_SQL_SYNTAX';
+          }
+        }
+      }
+      return 'COERCE_EXPLICIT_CALL';
+    }
+
     const explicitCallFunctions = [
       'substr', 'timestamptz', 'timestamp', 'date', 'time', 'timetz',
       'interval', 'numeric', 'decimal', 'float4', 'float8', 'int2', 'int4', 'int8',
       'bool', 'text', 'varchar', 'char', 'bpchar'
     ];
-    
+
     const sqlSyntaxFunctions = [
-      'btrim', 'trim', 'ltrim', 'rtrim',
+      'trim', 'ltrim', 'rtrim',
       'position', 'overlay',
       'extract', 'timezone', 'xmlexists',
       'current_date', 'current_time', 'current_timestamp',
       'localtime', 'localtimestamp', 'overlaps',
-      'pg_collation_for', 'collation_for'
+      'collation_for'
     ];
-    
+
     if (funcname === 'substring') {
-      const isInDirectSelectContext = context.parentNodeTypes?.includes('SelectStmt') && 
-                                     context.parentNodeTypes?.includes('ResTarget');
-      if (isInDirectSelectContext) {
-        return 'COERCE_SQL_SYNTAX';
+      // Check if the function has pg_catalog prefix by examining the node
+      if (node && node.funcname && Array.isArray(node.funcname) && node.funcname.length >= 2) {
+        const firstElement = node.funcname[0];
+        if (firstElement && typeof firstElement === 'object' && 'String' in firstElement) {
+          const prefix = firstElement.String.str || firstElement.String.sval;
+          if (prefix === 'pg_catalog') {
+            return 'COERCE_SQL_SYNTAX';
+          }
+        }
       }
       return 'COERCE_EXPLICIT_CALL';
     }
-    
+
     if (funcname === 'pg_collation_for') {
-      const isInSelectContext = context.parentNodeTypes?.some(type => 
-        type.includes('Select') || type.includes('Target') || type.includes('Expr') || type.includes('FuncCall'));
-      if (isInSelectContext) {
-        return 'COERCE_SQL_SYNTAX';
-      }
+      return 'COERCE_EXPLICIT_CALL';
     }
-    
+
     if (explicitCallFunctions.includes(funcname.toLowerCase())) {
       return 'COERCE_EXPLICIT_CALL';
     }
-    
+
     if (sqlSyntaxFunctions.includes(funcname.toLowerCase())) {
       return 'COERCE_SQL_SYNTAX';
     }
@@ -1024,10 +1039,10 @@ export class V13ToV14Transformer {
 
   private isVariadicParameterType(argType: any, index?: number, allArgs?: any[], context?: TransformerContext): boolean {
     if (!argType) return false;
-    
+
     // Handle TypeName wrapper
     const typeNode = argType.TypeName || argType;
-    
+
     if (typeNode.names && Array.isArray(typeNode.names)) {
       // Check if any name in the chain contains "variadic"
       for (const nameNode of typeNode.names) {
@@ -1038,47 +1053,47 @@ export class V13ToV14Transformer {
           }
         }
       }
-      
+
       const typeName = typeNode.names[typeNode.names.length - 1]?.String?.str;
-      
+
       // In RenameStmt context for aggregates, "any" type should be treated as variadic
-      if (context && context.parentNodeTypes?.includes('RenameStmt') && 
+      if (context && context.parentNodeTypes?.includes('RenameStmt') &&
           !context.parentNodeTypes?.includes('DropStmt') && typeName === 'any') {
         return true;
       }
-      
-      
+
+
     }
-    
+
     return false;
   }
 
   FunctionParameter(node: PG13.FunctionParameter, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.name !== undefined) {
       const isInDropContext = context.parentNodeTypes?.includes('DropStmt');
       const isInCommentContext = context.parentNodeTypes?.includes('CommentStmt');
       const isInObjectWithArgsContext = context.parentNodeTypes?.includes('ObjectWithArgs');
-      
+
       if (!isInDropContext || (isInCommentContext && !isInObjectWithArgsContext)) {
         result.name = node.name;
       }
     }
-    
+
     if (node.argType !== undefined) {
       result.argType = this.transform(node.argType as any, context);
     }
-    
+
     if (node.defexpr !== undefined) {
       result.defexpr = this.transform(node.defexpr as any, context);
     }
-    
+
     if (node.mode !== undefined) {
       const isInRenameContext = context.parentNodeTypes?.includes('RenameStmt');
       const isInDropContext = context.parentNodeTypes?.includes('DropStmt');
       const isInCommentContext = context.parentNodeTypes?.includes('CommentStmt');
-      
+
       if (isInRenameContext || isInCommentContext) {
         result.mode = node.mode; // Preserve original mode
       } else if (isInDropContext) {
@@ -1095,229 +1110,229 @@ export class V13ToV14Transformer {
         result.mode = node.mode; // Preserve all other modes unchanged
       }
     }
-    
+
     return { FunctionParameter: result };
   }
 
   AlterFunctionStmt(node: PG13.AlterFunctionStmt, context: TransformerContext): any {
     const result: any = {};
-    
+
     // Create child context with AlterFunctionStmt as parent
     const childContext: TransformerContext = {
       ...context,
       parentNodeTypes: [...(context.parentNodeTypes || []), 'AlterFunctionStmt']
     };
-    
+
     if (node.objtype !== undefined) {
       result.objtype = node.objtype;
     }
-    
+
     if (node.func !== undefined) {
       // Handle plain object func (not wrapped in ObjectWithArgs)
       if (typeof node.func === 'object' && !('ObjectWithArgs' in node.func) && 'objargs' in node.func) {
         const funcResult: any = {};
-        
+
         if ((node.func as any).objname !== undefined) {
           funcResult.objname = this.transform((node.func as any).objname, childContext);
         }
-        
+
         if ((node.func as any).objargs !== undefined) {
           funcResult.objargs = this.transform((node.func as any).objargs, childContext);
-          
+
           // Create objfuncargs from objargs for PG14
           funcResult.objfuncargs = Array.isArray((node.func as any).objargs)
             ? (node.func as any).objargs.map((arg: any, index: number) => this.createFunctionParameterFromTypeName(arg, childContext, index))
             : [this.createFunctionParameterFromTypeName((node.func as any).objargs, childContext, 0)];
         }
-        
+
         result.func = funcResult;
       } else {
         const funcResult = this.transform(node.func as any, childContext);
         result.func = funcResult;
       }
     }
-    
+
     if (node.actions !== undefined) {
       result.actions = Array.isArray(node.actions)
         ? node.actions.map(item => this.transform(item as any, context))
         : this.transform(node.actions as any, context);
     }
-    
+
     return { AlterFunctionStmt: result };
   }
 
   AlterOwnerStmt(node: PG13.AlterOwnerStmt, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.objectType !== undefined) {
       result.objectType = node.objectType;
     }
-    
+
     if (node.object !== undefined) {
       const childContext = {
         ...context,
         alterOwnerObjectType: node.objectType
       };
-      
+
       const transformedObject = this.transform(node.object as any, childContext);
-      
-      if (node.objectType === 'OBJECT_FUNCTION' && transformedObject && 
+
+      if (node.objectType === 'OBJECT_FUNCTION' && transformedObject &&
           typeof transformedObject === 'object' && 'ObjectWithArgs' in transformedObject) {
         const objWithArgs = transformedObject.ObjectWithArgs;
-        
+
 
       }
-      
+
       result.object = transformedObject;
     }
-    
+
     if (node.newowner !== undefined) {
       result.newowner = this.transform(node.newowner as any, context);
     }
-    
+
     return { AlterOwnerStmt: result };
   }
 
   AlterTableStmt(node: PG13.AlterTableStmt, context: TransformerContext): any {
     const result: any = { ...node };
-    
+
     if ('relkind' in result) {
       result.objtype = result.relkind;
       delete result.relkind;
     }
-    
+
     if (result.relation !== undefined) {
       result.relation = this.transform(result.relation as any, context);
     }
-    
+
     if (result.cmds !== undefined) {
       result.cmds = Array.isArray(result.cmds)
         ? result.cmds.map((item: any) => this.transform(item as any, context))
         : this.transform(result.cmds as any, context);
     }
-    
+
     return { AlterTableStmt: result };
   }
 
   CreateTableAsStmt(node: PG13.CreateTableAsStmt, context: TransformerContext): any {
     const result: any = { ...node };
-    
+
     if ('relkind' in result) {
       result.objtype = result.relkind;
       delete result.relkind;
     }
-    
+
     if (result.query !== undefined) {
       result.query = this.transform(result.query as any, context);
     }
-    
+
     if (result.into !== undefined) {
       result.into = this.transform(result.into as any, context);
     }
-    
+
     return { CreateTableAsStmt: result };
   }
 
   RawStmt(node: PG13.RawStmt, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.stmt !== undefined) {
       result.stmt = this.transform(node.stmt, context);
     }
-    
+
     if (node.stmt_location !== undefined) {
       result.stmt_location = node.stmt_location;
     }
-    
+
     if (node.stmt_len !== undefined) {
       result.stmt_len = node.stmt_len;
     }
-    
+
     return { RawStmt: result };
   }
 
   SelectStmt(node: PG13.SelectStmt, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.distinctClause !== undefined) {
       result.distinctClause = Array.isArray(node.distinctClause)
         ? node.distinctClause.map(item => this.transform(item, context))
         : this.transform(node.distinctClause, context);
     }
-    
+
     if (node.intoClause !== undefined) {
       result.intoClause = this.transform(node.intoClause as any, context);
     }
-    
+
     if (node.targetList !== undefined) {
       result.targetList = Array.isArray(node.targetList)
         ? node.targetList.map(item => this.transform(item, context))
         : this.transform(node.targetList, context);
     }
-    
+
     if (node.fromClause !== undefined) {
       result.fromClause = Array.isArray(node.fromClause)
         ? node.fromClause.map(item => this.transform(item, context))
         : this.transform(node.fromClause, context);
     }
-    
+
     if (node.whereClause !== undefined) {
       result.whereClause = this.transform(node.whereClause, context);
     }
-    
+
     if (node.groupClause !== undefined) {
       result.groupClause = Array.isArray(node.groupClause)
         ? node.groupClause.map(item => this.transform(item, context))
         : this.transform(node.groupClause, context);
     }
-    
+
     if (node.havingClause !== undefined) {
       result.havingClause = this.transform(node.havingClause, context);
     }
-    
+
     if (node.windowClause !== undefined) {
       result.windowClause = Array.isArray(node.windowClause)
         ? node.windowClause.map(item => this.transform(item, context))
         : this.transform(node.windowClause, context);
     }
-    
+
     if (node.valuesLists !== undefined) {
       result.valuesLists = Array.isArray(node.valuesLists)
         ? node.valuesLists.map(item => this.transform(item, context))
         : this.transform(node.valuesLists, context);
     }
-    
+
     if (node.sortClause !== undefined) {
       result.sortClause = Array.isArray(node.sortClause)
         ? node.sortClause.map(item => this.transform(item, context))
         : this.transform(node.sortClause, context);
     }
-    
+
     if (node.limitOffset !== undefined) {
       result.limitOffset = this.transform(node.limitOffset, context);
     }
-    
+
     if (node.limitCount !== undefined) {
       result.limitCount = this.transform(node.limitCount, context);
     }
-    
+
     if (node.limitOption !== undefined) {
       result.limitOption = node.limitOption;
     }
-    
+
     if (node.lockingClause !== undefined) {
       result.lockingClause = Array.isArray(node.lockingClause)
         ? node.lockingClause.map(item => this.transform(item, context))
         : this.transform(node.lockingClause, context);
     }
-    
+
     if (node.withClause !== undefined) {
       // Handle WithClause transformation directly here since the method dispatch isn't working
       const withClause = node.withClause as any;
-      
+
       if (withClause && typeof withClause === 'object' && withClause.ctes !== undefined) {
         const transformedWithClause: any = { ...withClause };
-        
+
         if (typeof withClause.ctes === 'object' && withClause.ctes !== null && !Array.isArray(withClause.ctes)) {
           const cteArray = Object.keys(withClause.ctes)
             .sort((a, b) => parseInt(a) - parseInt(b))
@@ -1328,280 +1343,280 @@ export class V13ToV14Transformer {
         } else {
           transformedWithClause.ctes = this.transform(withClause.ctes as any, context);
         }
-        
+
         if (withClause.recursive !== undefined) {
           transformedWithClause.recursive = withClause.recursive;
         }
-        
+
         if (withClause.location !== undefined) {
           transformedWithClause.location = withClause.location;
         }
-        
+
         result.withClause = transformedWithClause;
       } else {
         result.withClause = this.transform(node.withClause as any, context);
       }
     }
-    
+
     if (node.op !== undefined) {
       result.op = node.op;
     }
-    
+
     if (node.all !== undefined) {
       result.all = node.all;
     }
-    
+
     if (node.larg !== undefined) {
       result.larg = this.transform(node.larg as any, context);
     }
-    
+
     if (node.rarg !== undefined) {
       result.rarg = this.transform(node.rarg as any, context);
     }
-    
 
-    
+
+
     return { SelectStmt: result };
   }
 
   RangeSubselect(node: PG13.RangeSubselect, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.lateral !== undefined) {
       result.lateral = node.lateral;
     }
-    
+
     if (node.subquery !== undefined) {
       result.subquery = this.transform(node.subquery, context);
     }
-    
+
     if (node.alias !== undefined) {
       result.alias = node.alias;
     }
-    
+
     return { RangeSubselect: result };
   }
 
   CommonTableExpr(node: PG13.CommonTableExpr, context: TransformerContext): any {
     const result: any = { ...node };
-    
+
     if (node.ctename !== undefined) {
       result.ctename = node.ctename;
     }
-    
+
     if (node.aliascolnames !== undefined) {
       result.aliascolnames = Array.isArray(node.aliascolnames)
         ? node.aliascolnames.map(item => this.transform(item as any, context))
         : this.transform(node.aliascolnames as any, context);
     }
-    
+
     if (node.ctematerialized !== undefined) {
       result.ctematerialized = node.ctematerialized;
     }
-    
+
     if (node.ctequery !== undefined) {
       const nodeType = this.getNodeType(node.ctequery as any);
       const nodeData = this.getNodeData(node.ctequery as any);
-      
+
       if (nodeType === 'SelectStmt' && typeof this.SelectStmt === 'function') {
         result.ctequery = this.SelectStmt(nodeData, context);
       } else {
         result.ctequery = this.transform(node.ctequery as any, context);
       }
     }
-    
+
     if (node.location !== undefined) {
       result.location = node.location;
     }
-    
+
     if (node.cterecursive !== undefined) {
       result.cterecursive = node.cterecursive;
     }
-    
+
     if (node.cterefcount !== undefined) {
       result.cterefcount = node.cterefcount;
     }
-    
+
     if (node.ctecolnames !== undefined) {
       result.ctecolnames = Array.isArray(node.ctecolnames)
         ? node.ctecolnames.map(item => this.transform(item as any, context))
         : this.transform(node.ctecolnames as any, context);
     }
-    
+
     if (node.ctecoltypes !== undefined) {
       result.ctecoltypes = Array.isArray(node.ctecoltypes)
         ? node.ctecoltypes.map(item => this.transform(item as any, context))
         : this.transform(node.ctecoltypes as any, context);
     }
-    
+
     if (node.ctecoltypmods !== undefined) {
       result.ctecoltypmods = Array.isArray(node.ctecoltypmods)
         ? node.ctecoltypmods.map(item => this.transform(item as any, context))
         : this.transform(node.ctecoltypmods as any, context);
     }
-    
+
     if (node.ctecolcollations !== undefined) {
       result.ctecolcollations = Array.isArray(node.ctecolcollations)
         ? node.ctecolcollations.map(item => this.transform(item as any, context))
         : this.transform(node.ctecolcollations as any, context);
     }
-    
+
     return { CommonTableExpr: result };
   }
 
   SubLink(node: PG13.SubLink, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.xpr !== undefined) {
       result.xpr = this.transform(node.xpr, context);
     }
-    
+
     if (node.subLinkType !== undefined) {
       result.subLinkType = node.subLinkType;
     }
-    
+
     if (node.subLinkId !== undefined) {
       result.subLinkId = node.subLinkId;
     }
-    
+
     if (node.testexpr !== undefined) {
       result.testexpr = this.transform(node.testexpr, context);
     }
-    
+
     if (node.operName !== undefined) {
       result.operName = node.operName.map(item => this.transform(item, context));
     }
-    
+
     if (node.subselect !== undefined) {
       result.subselect = this.transform(node.subselect, context);
     }
-    
+
     if (node.location !== undefined) {
       result.location = node.location;
     }
-    
+
     return { SubLink: result };
   }
 
   CopyStmt(node: PG13.CopyStmt, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.relation !== undefined) {
       result.relation = this.transform(node.relation as any, context);
     }
-    
+
     if (node.query !== undefined) {
       result.query = this.transform(node.query as any, context);
     }
-    
+
     if (node.attlist !== undefined) {
       result.attlist = Array.isArray(node.attlist)
         ? node.attlist.map(item => this.transform(item as any, context))
         : this.transform(node.attlist as any, context);
     }
-    
+
     if (node.is_from !== undefined) {
       result.is_from = node.is_from;
     }
-    
+
     if (node.is_program !== undefined) {
       result.is_program = node.is_program;
     }
-    
+
     if (node.filename !== undefined) {
       result.filename = node.filename;
     }
-    
+
     if (node.options !== undefined) {
       result.options = Array.isArray(node.options)
         ? node.options.map(item => this.transform(item as any, context))
         : this.transform(node.options as any, context);
     }
-    
+
     if (node.whereClause !== undefined) {
       result.whereClause = this.transform(node.whereClause as any, context);
     }
-    
+
     return { CopyStmt: result };
   }
 
   CreateEnumStmt(node: PG13.CreateEnumStmt, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.typeName !== undefined) {
       result.typeName = Array.isArray(node.typeName)
         ? node.typeName.map(item => this.transform(item as any, context))
         : this.transform(node.typeName as any, context);
     }
-    
+
     if (node.vals !== undefined) {
       result.vals = Array.isArray(node.vals)
         ? node.vals.map(item => this.transform(item as any, context))
         : this.transform(node.vals as any, context);
     }
-    
+
     return { CreateEnumStmt: result };
   }
 
   DefineStmt(node: PG13.DefineStmt, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.kind !== undefined) {
       result.kind = node.kind;
     }
-    
+
     if (node.oldstyle !== undefined) {
       result.oldstyle = node.oldstyle;
     }
-    
+
     if (node.defnames !== undefined) {
       result.defnames = Array.isArray(node.defnames)
         ? node.defnames.map(item => this.transform(item as any, context))
         : this.transform(node.defnames as any, context);
     }
-    
+
     if (node.args !== undefined) {
       result.args = Array.isArray(node.args)
         ? node.args.map(item => this.transform(item as any, context))
         : this.transform(node.args as any, context);
     }
-    
+
     if (node.definition !== undefined) {
       result.definition = Array.isArray(node.definition)
         ? node.definition.map(item => this.transform(item as any, context))
         : this.transform(node.definition as any, context);
     }
-    
+
     if (node.if_not_exists !== undefined) {
       result.if_not_exists = node.if_not_exists;
     }
-    
+
     if (node.replace !== undefined) {
       result.replace = node.replace;
     }
-    
+
     return { DefineStmt: result };
   }
 
   DoStmt(node: PG13.DoStmt, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.args !== undefined) {
       result.args = Array.isArray(node.args)
         ? node.args.map(item => this.transform(item as any, context))
         : this.transform(node.args as any, context);
     }
-    
+
     return { DoStmt: result };
   }
 
   DeclareCursorStmt(node: PG13.DeclareCursorStmt, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.portalname !== undefined) {
       result.portalname = node.portalname;
     }
-    
+
     if (node.options === undefined) {
       result.options = 0;
     } else {
@@ -1611,136 +1626,136 @@ export class V13ToV14Transformer {
         result.options = (node.options & ~32) | 256;
       }
     }
-    
+
     if (node.query !== undefined) {
       result.query = this.transform(node.query as any, context);
     }
-    
+
     return { DeclareCursorStmt: result };
   }
 
   VacuumStmt(node: PG13.VacuumStmt, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.options !== undefined) {
       result.options = Array.isArray(node.options)
         ? node.options.map(item => this.transform(item as any, context))
         : this.transform(node.options as any, context);
     }
-    
+
     if (node.rels !== undefined) {
       result.rels = Array.isArray(node.rels)
         ? node.rels.map(item => this.transform(item as any, context))
         : this.transform(node.rels as any, context);
     }
-    
+
     if (node.is_vacuumcmd !== undefined) {
       result.is_vacuumcmd = node.is_vacuumcmd;
     }
-    
+
     return { VacuumStmt: result };
   }
 
   VacuumRelation(node: PG13.VacuumRelation, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.relation !== undefined) {
       result.relation = node.relation;
     }
-    
+
     if (node.va_cols !== undefined) {
       result.va_cols = Array.isArray(node.va_cols)
         ? node.va_cols.map(item => this.transform(item as any, context))
         : this.transform(node.va_cols as any, context);
     }
-    
+
     return { VacuumRelation: result };
   }
 
   RangeVar(node: PG13.RangeVar, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.catalogname !== undefined) {
       result.catalogname = node.catalogname;
     }
-    
+
     if (node.schemaname !== undefined) {
       result.schemaname = node.schemaname;
     }
-    
+
     if (node.relname !== undefined) {
       result.relname = node.relname;
     }
-    
+
     // Handle PG13->PG14 inh field transformation
     if (node.inh !== undefined) {
       result.inh = node.inh;
     }
-    
+
     if (node.relpersistence !== undefined) {
       result.relpersistence = node.relpersistence;
     }
-    
+
     if (node.alias !== undefined) {
       result.alias = this.transform(node.alias as any, context);
     }
-    
+
     if (node.location !== undefined) {
       result.location = node.location;
     }
-    
+
     return { RangeVar: result };
   }
 
   IntoClause(node: PG13.IntoClause, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.rel !== undefined) {
       result.rel = node.rel;
     }
-    
+
     if (node.colNames !== undefined) {
       result.colNames = Array.isArray(node.colNames)
         ? node.colNames.map(item => this.transform(item as any, context))
         : this.transform(node.colNames as any, context);
     }
-    
+
     if (node.options !== undefined) {
       result.options = Array.isArray(node.options)
         ? node.options.map(item => this.transform(item as any, context))
         : this.transform(node.options as any, context);
     }
-    
+
     if (node.onCommit !== undefined) {
       result.onCommit = node.onCommit;
     }
-    
+
     if (node.tableSpaceName !== undefined) {
       result.tableSpaceName = node.tableSpaceName;
     }
-    
+
     if (node.viewQuery !== undefined) {
       result.viewQuery = this.transform(node.viewQuery as any, context);
     }
-    
+
     if (node.skipData !== undefined) {
       result.skipData = node.skipData;
     }
-    
+
     return { IntoClause: result };
   }
 
   CreateCastStmt(node: PG13.CreateCastStmt, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.sourcetype !== undefined) {
       result.sourcetype = this.transform(node.sourcetype as any, context);
     }
-    
+
     if (node.targettype !== undefined) {
       result.targettype = this.transform(node.targettype as any, context);
     }
-    
+
     if (node.func !== undefined) {
       const childContext: TransformerContext = {
         ...context,
@@ -1750,59 +1765,59 @@ export class V13ToV14Transformer {
       const transformedFunc = this.transform(wrappedFunc as any, childContext);
       result.func = transformedFunc.ObjectWithArgs;
     }
-    
+
     if (node.context !== undefined) {
       result.context = node.context;
     }
-    
+
     if (node.inout !== undefined) {
       result.inout = node.inout;
     }
-    
+
     return { CreateCastStmt: result };
   }
 
   CreateFunctionStmt(node: PG13.CreateFunctionStmt, context: TransformerContext): any {
     const result: any = { ...node };
-    
+
     // Create child context with CreateFunctionStmt as parent
     const childContext: TransformerContext = {
       ...context,
       parentNodeTypes: [...(context.parentNodeTypes || []), 'CreateFunctionStmt']
     };
-    
+
     if (node.funcname !== undefined) {
       result.funcname = Array.isArray(node.funcname)
         ? node.funcname.map(item => this.transform(item as any, context))
         : this.transform(node.funcname as any, context);
     }
-    
+
     if (node.parameters !== undefined) {
       result.parameters = Array.isArray(node.parameters)
         ? node.parameters.map(item => this.transform(item as any, childContext))
         : this.transform(node.parameters as any, childContext);
     }
-    
+
     if (node.returnType !== undefined) {
       result.returnType = this.transform(node.returnType as any, context);
     }
-    
+
     if (node.options !== undefined) {
       result.options = Array.isArray(node.options)
         ? node.options.map(item => this.transform(item as any, context))
         : this.transform(node.options as any, context);
     }
-    
+
     return { CreateFunctionStmt: result };
   }
 
   TableLikeClause(node: PG13.TableLikeClause, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.relation !== undefined) {
       result.relation = this.transform(node.relation as any, context);
     }
-    
+
     if (node.options !== undefined) {
       if (typeof node.options === 'number') {
         result.options = this.mapTableLikeOption(node.options);
@@ -1810,7 +1825,7 @@ export class V13ToV14Transformer {
         result.options = node.options;
       }
     }
-    
+
     return { TableLikeClause: result };
   }
 
@@ -1827,7 +1842,7 @@ export class V13ToV14Transformer {
       8: 9,
       9: 10
     };
-    
+
     return pg13ToP14TableLikeMapping[option] !== undefined ? pg13ToP14TableLikeMapping[option] : option;
   }
 
@@ -1841,7 +1856,7 @@ export class V13ToV14Transformer {
       } else if (typeof result.objname === 'object' && result.objname !== null) {
         const keys = Object.keys(result.objname);
         const isNumericKeysObject = keys.every(k => /^\d+$/.test(k));
-        
+
         if (isNumericKeysObject && keys.length > 0) {
           // Check if we should preserve objname as object with numeric keys
           const shouldPreserve = this.shouldPreserveObjnameAsObject(context);
@@ -1863,19 +1878,19 @@ export class V13ToV14Transformer {
         result.objname = this.transform(result.objname, context);
       }
     }
-    
+
     if (result.objargs !== undefined) {
       result.objargs = Array.isArray(result.objargs)
         ? result.objargs.map((item: any) => this.transform(item, context))
         : [this.transform(result.objargs, context)];
     }
-    
+
     // Handle objfuncargs based on context
     const shouldCreateObjfuncargs = this.shouldCreateObjfuncargs(context);
     const shouldPreserveObjfuncargs = this.shouldPreserveObjfuncargs(context);
     const shouldCreateObjfuncargsFromObjargs = this.shouldCreateObjfuncargsFromObjargs(context);
-    
-    
+
+
     if (shouldCreateObjfuncargsFromObjargs && result.objargs) {
       // Create objfuncargs from objargs, with smart parameter mode handling
       const originalObjfuncargs = (node as any).objfuncargs;
@@ -1886,7 +1901,7 @@ export class V13ToV14Transformer {
       } else {
         result.objfuncargs = Array.isArray(result.objargs)
           ? result.objargs.map((arg: any, index: number) => {
-              
+
               const transformedArgType = this.visit(arg, context);
               const isVariadic = this.isVariadicParameterType(arg, index, result.objargs, context);
               const parameter = {
@@ -1895,7 +1910,7 @@ export class V13ToV14Transformer {
                   mode: isVariadic ? 'FUNC_PARAM_VARIADIC' : 'FUNC_PARAM_DEFAULT'
                 }
               };
-              
+
               return parameter;
             })
           : [{
@@ -1905,7 +1920,7 @@ export class V13ToV14Transformer {
               }
             }];
       }
-      
+
     } else if (shouldCreateObjfuncargs) {
       result.objfuncargs = [];
     } else if (result.objfuncargs !== undefined) {
@@ -1919,7 +1934,7 @@ export class V13ToV14Transformer {
     } else if (!shouldPreserveObjfuncargs) {
       delete result.objfuncargs;
     }
-    
+
     return { ObjectWithArgs: result };
   }
 
@@ -1927,13 +1942,13 @@ export class V13ToV14Transformer {
     if (!context.parentNodeTypes || context.parentNodeTypes.length === 0) {
       return false;
     }
-    
+
     for (const parentType of context.parentNodeTypes) {
       // if (parentType === 'SomeSpecificContext') {
       //   return true;
       // }
     }
-    
+
     return false;
   }
 
@@ -1941,13 +1956,13 @@ export class V13ToV14Transformer {
     if (!context.parentNodeTypes || context.parentNodeTypes.length === 0) {
       return false;
     }
-    
+
     const excludedNodeTypes = [
       'CreateOpClassStmt', 'CreateAggregateStmt', 'AlterAggregateStmt',
       'CreateFunctionStmt', 'CreateStmt', 'CreateTypeStmt', 'CreateOpFamilyStmt',
       'CreateOperatorStmt'
     ];
-    
+
     const path = context.path || [];
     for (const node of path) {
       if (node && typeof node === 'object') {
@@ -1957,7 +1972,7 @@ export class V13ToV14Transformer {
         }
       }
     }
-    
+
     for (const parentType of context.parentNodeTypes) {
       if (excludedNodeTypes.includes(parentType)) {
         return false;
@@ -1966,11 +1981,11 @@ export class V13ToV14Transformer {
         return false;
       }
     }
-    
+
     const allowedNodeTypes = [
       'CommentStmt', 'AlterFunctionStmt', 'AlterOwnerStmt', 'RenameStmt', 'AlterObjectSchemaStmt', 'CreateCastStmt', 'AlterOpFamilyStmt'
     ];
-    
+
     for (const node of path) {
       if (node && typeof node === 'object') {
         const nodeType = Object.keys(node)[0];
@@ -1979,13 +1994,13 @@ export class V13ToV14Transformer {
         }
       }
     }
-    
+
     for (const parentType of context.parentNodeTypes) {
       if (allowedNodeTypes.includes(parentType)) {
         return true;
       }
     }
-    
+
     return false;
   }
 
@@ -1993,17 +2008,17 @@ export class V13ToV14Transformer {
     if (!context.parentNodeTypes || context.parentNodeTypes.length === 0) {
       return false;
     }
-    
-    
-    if ((context as any).commentObjtype === 'OBJECT_OPERATOR' && 
+
+
+    if ((context as any).commentObjtype === 'OBJECT_OPERATOR' &&
         context.parentNodeTypes.includes('CommentStmt')) {
       return false;
     }
-    
-    
+
+
     // Check if this is an operator context - operators should NOT get objfuncargs
     const path = context.path || [];
-    
+
     // Check if we're in any statement with OBJECT_OPERATOR
     if ((context as any).alterOwnerObjectType === 'OBJECT_OPERATOR' ||
         (context as any).alterObjectSchemaObjectType === 'OBJECT_OPERATOR' ||
@@ -2013,7 +2028,7 @@ export class V13ToV14Transformer {
     for (const node of path) {
       if (node && typeof node === 'object') {
         const nodeData = Object.values(node)[0] as any;
-        if (nodeData && (nodeData.objtype === 'OBJECT_OPERATOR' || 
+        if (nodeData && (nodeData.objtype === 'OBJECT_OPERATOR' ||
                          nodeData.objectType === 'OBJECT_OPERATOR' ||
                          nodeData.renameType === 'OBJECT_OPERATOR')) {
           return false;
@@ -2026,8 +2041,8 @@ export class V13ToV14Transformer {
             }
             return '';
           }).join('');
-          if (objnameStr.match(/^[@#~!%^&*+=<>?|-]+$/) && 
-              (nodeData.objtype === 'OBJECT_OPERATOR' || 
+          if (objnameStr.match(/^[@#~!%^&*+=<>?|-]+$/) &&
+              (nodeData.objtype === 'OBJECT_OPERATOR' ||
                nodeData.objectType === 'OBJECT_OPERATOR' ||
                nodeData.renameType === 'OBJECT_OPERATOR')) {
             return false;
@@ -2035,13 +2050,13 @@ export class V13ToV14Transformer {
         }
       }
     }
-    
+
     const excludedNodeTypes = [
       'CreateOpClassStmt', 'CreateAggregateStmt', 'AlterAggregateStmt',
       'CreateFunctionStmt', 'CreateStmt', 'CreateTypeStmt', 'CreateOpFamilyStmt',
       'CreateOperatorStmt'
     ];
-    
+
     for (const node of path) {
       if (node && typeof node === 'object') {
         const nodeType = Object.keys(node)[0];
@@ -2050,17 +2065,17 @@ export class V13ToV14Transformer {
         }
       }
     }
-    
+
     for (const parentType of context.parentNodeTypes) {
       if (excludedNodeTypes.includes(parentType)) {
         return false;
       }
     }
-    
+
     const allowedNodeTypes = [
       'CommentStmt', 'AlterFunctionStmt', 'RenameStmt', 'AlterOwnerStmt', 'AlterObjectSchemaStmt', 'CreateCastStmt', 'AlterOpFamilyStmt', 'CreateOpClassItem', 'GrantStmt', 'RevokeStmt'
     ];
-    
+
     for (const node of path) {
       if (node && typeof node === 'object') {
         const nodeType = Object.keys(node)[0];
@@ -2072,7 +2087,7 @@ export class V13ToV14Transformer {
         }
       }
     }
-    
+
     for (const parentType of context.parentNodeTypes) {
       if (allowedNodeTypes.includes(parentType)) {
         return true;
@@ -2081,7 +2096,7 @@ export class V13ToV14Transformer {
         return this.shouldAddObjfuncargsForDropStmt(context);
       }
     }
-    
+
     return false;
   }
 
@@ -2093,26 +2108,26 @@ export class V13ToV14Transformer {
         if (dropStmt && dropStmt.removeType === 'OBJECT_OPERATOR') {
           return false;
         }
-        if (dropStmt && (dropStmt.removeType === 'OBJECT_FUNCTION' || 
+        if (dropStmt && (dropStmt.removeType === 'OBJECT_FUNCTION' ||
                         dropStmt.removeType === 'OBJECT_AGGREGATE' ||
                         dropStmt.removeType === 'OBJECT_PROCEDURE')) {
           return true;
         }
       }
     }
-    
+
     if ((context as any).dropRemoveType) {
       const removeType = (context as any).dropRemoveType;
       if (removeType === 'OBJECT_OPERATOR') {
         return false;
       }
-      if (removeType === 'OBJECT_FUNCTION' || 
+      if (removeType === 'OBJECT_FUNCTION' ||
           removeType === 'OBJECT_AGGREGATE' ||
           removeType === 'OBJECT_PROCEDURE') {
         return true;
       }
     }
-    
+
     return false;
   }
 
@@ -2120,41 +2135,41 @@ export class V13ToV14Transformer {
     if (!context.parentNodeTypes || context.parentNodeTypes.length === 0) {
       return false; // Default to converting to arrays for PG14
     }
-    
+
     // For CreateOpClassItem contexts, convert objname to arrays (PG14 expects arrays)
     const convertToArrayContexts = [
       'CreateOpClassStmt', 'CreateOpClassItem', 'CreateAccessMethodStmt'
     ];
-    
+
     for (const parentType of context.parentNodeTypes) {
       if (convertToArrayContexts.includes(parentType)) {
         return false; // Convert to array for these contexts (PG14 format)
       }
     }
-    
+
     return true; // Preserve as object for other contexts
   }
 
   private createFunctionParameterFromTypeName(typeNameNode: any, context?: TransformerContext, index: number = 0): any {
     const transformedTypeName = this.transform(typeNameNode, { parentNodeTypes: [] });
-    
+
     const argType = transformedTypeName.TypeName ? transformedTypeName.TypeName : transformedTypeName;
-    
+
     let mode = "FUNC_PARAM_DEFAULT";
-    
+
     const functionParam: any = {
       argType: argType,
       mode: mode
     };
-    
-    const shouldAddParameterName = context && context.parentNodeTypes && 
+
+    const shouldAddParameterName = context && context.parentNodeTypes &&
       !context.parentNodeTypes.includes('DropStmt') &&
       !context.parentNodeTypes.includes('ObjectWithArgs');
-    
+
     if (typeNameNode && typeNameNode.name && shouldAddParameterName) {
       functionParam.name = typeNameNode.name;
     }
-    
+
     return {
       FunctionParameter: functionParam
     };
@@ -2168,7 +2183,7 @@ export class V13ToV14Transformer {
           const renameStmt = parent.currentNode.RenameStmt;
           return renameStmt?.renameType === 'OBJECT_AGGREGATE';
         }
-        if ('CreateAggregateStmt' in parent.currentNode || 
+        if ('CreateAggregateStmt' in parent.currentNode ||
             'AlterAggregateStmt' in parent.currentNode) {
           return true;
         }
@@ -2181,7 +2196,7 @@ export class V13ToV14Transformer {
   private transformA_Expr_Kind(kind: string): string {
     const pg13ToP14Map: { [key: string]: string } = {
       'AEXPR_OP': 'AEXPR_OP',
-      'AEXPR_OP_ANY': 'AEXPR_OP_ANY', 
+      'AEXPR_OP_ANY': 'AEXPR_OP_ANY',
       'AEXPR_OP_ALL': 'AEXPR_OP_ALL',
       'AEXPR_DISTINCT': 'AEXPR_DISTINCT',
       'AEXPR_NOT_DISTINCT': 'AEXPR_NOT_DISTINCT',
@@ -2197,7 +2212,7 @@ export class V13ToV14Transformer {
       'AEXPR_NOT_BETWEEN_SYM': 'AEXPR_NOT_BETWEEN_SYM',
       'AEXPR_PAREN': 'AEXPR_OP' // AEXPR_PAREN removed, map to AEXPR_OP
     };
-    
+
     return pg13ToP14Map[kind] || kind;
   }
 
@@ -2205,10 +2220,10 @@ export class V13ToV14Transformer {
     const pg13ToP14Map: { [key: string]: string } = {
       'ROLESPEC_CSTRING': 'ROLESPEC_CSTRING',
       'ROLESPEC_CURRENT_USER': 'ROLESPEC_CURRENT_USER',
-      'ROLESPEC_SESSION_USER': 'ROLESPEC_SESSION_USER', 
+      'ROLESPEC_SESSION_USER': 'ROLESPEC_SESSION_USER',
       'ROLESPEC_PUBLIC': 'ROLESPEC_PUBLIC'
     };
-    
+
     return pg13ToP14Map[type] || type;
   }
 
@@ -2216,14 +2231,14 @@ export class V13ToV14Transformer {
     if (!context.parentNodeTypes || context.parentNodeTypes.length === 0) {
       return false;
     }
-    
+
     for (const parentType of context.parentNodeTypes) {
-      if (parentType === 'CreateAggregateStmt' || 
+      if (parentType === 'CreateAggregateStmt' ||
           parentType === 'AlterAggregateStmt') {
         return true;
       }
     }
-    
+
     return false;
   }
 
@@ -2231,13 +2246,13 @@ export class V13ToV14Transformer {
     if (!context.parentNodeTypes || context.parentNodeTypes.length === 0) {
       return false;
     }
-    
+
     for (const parentType of context.parentNodeTypes) {
       if (parentType === 'CreateFunctionStmt') {
         return true;
       }
     }
-    
+
     return false;
   }
 
@@ -2248,43 +2263,43 @@ export class V13ToV14Transformer {
 
   BitString(node: PG13.BitString, context: TransformerContext): any {
     const result: any = { ...node };
-    
+
     return { BitString: result };
   }
 
   Float(node: PG13.Float, context: TransformerContext): any {
     const result: any = { ...node };
-    
+
     return { Float: result };
   }
 
   Integer(node: PG13.Integer, context: TransformerContext): any {
     const result: any = { ...node };
-    
+
     return { Integer: result };
   }
 
   Null(node: PG13.Null, context: TransformerContext): any {
     const result: any = { ...node };
-    
+
     return { Null: result };
   }
 
   List(node: any, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.items !== undefined) {
       result.items = Array.isArray(node.items)
         ? node.items.map((item: any) => this.transform(item as any, context))
         : this.transform(node.items as any, context);
     }
-    
+
     return { List: result };
   }
 
   A_Expr(node: any, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.kind !== undefined) {
       if (node.kind === "AEXPR_OF") {
         result.kind = "AEXPR_IN";
@@ -2294,156 +2309,156 @@ export class V13ToV14Transformer {
         result.kind = node.kind;
       }
     }
-    
+
     if (node.name !== undefined) {
       result.name = Array.isArray(node.name)
         ? node.name.map((item: any) => this.transform(item as any, context))
         : this.transform(node.name as any, context);
     }
-    
+
     if (node.lexpr !== undefined) {
       result.lexpr = this.transform(node.lexpr as any, context);
     }
-    
+
     if (node.rexpr !== undefined) {
       result.rexpr = this.transform(node.rexpr as any, context);
     }
-    
+
     if (node.location !== undefined) {
       result.location = node.location;
     }
-    
+
     if (node.kind !== undefined) {
       result.kind = this.transformA_Expr_Kind(node.kind);
     }
-    
+
     return { A_Expr: result };
   }
 
   RoleSpec(node: any, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.roletype !== undefined) {
       result.roletype = this.transformRoleSpecType(node.roletype);
     }
-    
+
     if (node.rolename !== undefined) {
       result.rolename = node.rolename;
     }
-    
+
     if (node.location !== undefined) {
       result.location = node.location;
     }
-    
+
     return { RoleSpec: result };
   }
 
 
   AlterTableCmd(node: any, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.subtype !== undefined) {
       result.subtype = node.subtype;
     }
-    
+
     if (node.name !== undefined) {
       result.name = node.name;
     }
-    
+
     if (node.num !== undefined) {
       result.num = node.num;
     }
-    
+
     if (node.newowner !== undefined) {
       result.newowner = this.transform(node.newowner as any, context);
     }
-    
+
     if (node.def !== undefined) {
       result.def = this.transform(node.def as any, context);
     }
-    
+
     if (node.behavior !== undefined) {
       result.behavior = node.behavior;
     }
-    
+
     if (node.missing_ok !== undefined) {
       result.missing_ok = node.missing_ok;
     }
-    
+
     return { AlterTableCmd: result };
   }
 
   TypeName(node: any, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.names !== undefined) {
       result.names = Array.isArray(node.names)
         ? node.names.map((item: any) => this.transform(item as any, context))
         : this.transform(node.names as any, context);
     }
-    
+
     if (node.typeOid !== undefined) {
       result.typeOid = node.typeOid;
     }
-    
+
     if (node.setof !== undefined) {
       result.setof = node.setof;
     }
-    
+
     if (node.pct_type !== undefined) {
       result.pct_type = node.pct_type;
     }
-    
+
     if (node.typmods !== undefined) {
       result.typmods = Array.isArray(node.typmods)
         ? node.typmods.map((item: any) => this.transform(item as any, context))
         : this.transform(node.typmods as any, context);
     }
-    
+
     if (node.typemod !== undefined) {
       result.typemod = node.typemod;
     }
-    
+
     if (node.arrayBounds !== undefined) {
       result.arrayBounds = Array.isArray(node.arrayBounds)
         ? node.arrayBounds.map((item: any) => this.transform(item as any, context))
         : this.transform(node.arrayBounds as any, context);
     }
-    
+
     if (node.location !== undefined) {
       result.location = node.location;
     }
-    
+
     return { TypeName: result };
   }
 
   ColumnRef(node: any, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.fields !== undefined) {
       result.fields = Array.isArray(node.fields)
         ? node.fields.map((item: any) => this.transform(item as any, context))
         : this.transform(node.fields as any, context);
     }
-    
+
     if (node.location !== undefined) {
       result.location = node.location;
     }
-    
+
     return { ColumnRef: result };
   }
 
   A_Const(node: any, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.val !== undefined) {
       result.val = this.transform(node.val as any, context);
     }
-    
+
     if (node.location !== undefined) {
       result.location = node.location;
     }
-    
+
     return { A_Const: result };
   }
 
@@ -2454,89 +2469,89 @@ export class V13ToV14Transformer {
 
   SortBy(node: any, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.node !== undefined) {
       result.node = this.transform(node.node as any, context);
     }
-    
+
     if (node.sortby_dir !== undefined) {
       result.sortby_dir = node.sortby_dir;
     }
-    
+
     if (node.sortby_nulls !== undefined) {
       result.sortby_nulls = node.sortby_nulls;
     }
-    
+
     if (node.useOp !== undefined) {
       result.useOp = Array.isArray(node.useOp)
         ? node.useOp.map((item: any) => this.transform(item as any, context))
         : this.transform(node.useOp as any, context);
     }
-    
+
     if (node.location !== undefined) {
       result.location = node.location;
     }
-    
+
     return { SortBy: result };
   }
 
   CreateDomainStmt(node: any, context: TransformerContext): any {
     const result: any = {};
-    
+
     // Create child context with CreateDomainStmt as parent
     const childContext: TransformerContext = {
       ...context,
       parentNodeTypes: [...(context.parentNodeTypes || []), 'CreateDomainStmt']
     };
-    
+
     if (node.domainname !== undefined) {
       result.domainname = Array.isArray(node.domainname)
         ? node.domainname.map((item: any) => this.transform(item as any, context))
         : this.transform(node.domainname as any, context);
     }
-    
+
     if (node.typeName !== undefined) {
       result.typeName = this.transform(node.typeName as any, context);
     }
-    
+
     if (node.collClause !== undefined) {
       result.collClause = this.transform(node.collClause as any, context);
     }
-    
+
     if (node.constraints !== undefined) {
       result.constraints = Array.isArray(node.constraints)
         ? node.constraints.map((item: any) => this.transform(item as any, childContext))
         : this.transform(node.constraints as any, childContext);
     }
-    
+
     return { CreateDomainStmt: result };
   }
 
   CreateSeqStmt(node: any, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.sequence !== undefined) {
       result.sequence = this.transform(node.sequence as any, context);
     }
-    
+
     if (node.options !== undefined) {
       result.options = Array.isArray(node.options)
         ? node.options.map((item: any) => this.transform(item as any, context))
         : this.transform(node.options as any, context);
     }
-    
+
     if (node.ownerId !== undefined) {
       result.ownerId = node.ownerId;
     }
-    
+
     if (node.for_identity !== undefined) {
       result.for_identity = node.for_identity;
     }
-    
+
     if (node.if_not_exists !== undefined) {
       result.if_not_exists = node.if_not_exists;
     }
-    
+
     return { CreateSeqStmt: result };
   }
 
@@ -2547,13 +2562,13 @@ export class V13ToV14Transformer {
       isArray: Array.isArray(node.ctes),
       keys: node.ctes ? Object.keys(node.ctes) : null
     });
-    
+
     const result: any = { ...node };
-    
+
     if (node.ctes !== undefined) {
       const shouldConvertToArray = this.shouldConvertCTEsToArray(context);
       console.log('shouldConvertToArray:', shouldConvertToArray);
-      
+
       if (typeof node.ctes === 'object' && node.ctes !== null && !Array.isArray(node.ctes)) {
         console.log('Converting object to array, shouldConvertToArray:', shouldConvertToArray);
         if (shouldConvertToArray) {
@@ -2578,15 +2593,15 @@ export class V13ToV14Transformer {
         result.ctes = this.transform(node.ctes as any, context);
       }
     }
-    
+
     if (node.recursive !== undefined) {
       result.recursive = node.recursive;
     }
-    
+
     if (node.location !== undefined) {
       result.location = node.location;
     }
-    
+
     return { WithClause: result };
   }
 
@@ -2596,310 +2611,310 @@ export class V13ToV14Transformer {
 
   AlterSeqStmt(node: any, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.sequence !== undefined) {
       result.sequence = this.transform(node.sequence as any, context);
     }
-    
+
     if (node.options !== undefined) {
       result.options = Array.isArray(node.options)
         ? node.options.map((item: any) => this.transform(item as any, context))
         : this.transform(node.options as any, context);
     }
-    
+
     if (node.for_identity !== undefined) {
       result.for_identity = node.for_identity;
     }
-    
+
     if (node.missing_ok !== undefined) {
       result.missing_ok = node.missing_ok;
     }
-    
+
     return { AlterSeqStmt: result };
   }
 
   CTECycleClause(node: any, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.cycle_col_list !== undefined) {
       result.cycle_col_list = Array.isArray(node.cycle_col_list)
         ? node.cycle_col_list.map((item: any) => this.transform(item as any, context))
         : this.transform(node.cycle_col_list as any, context);
     }
-    
+
     if (node.cycle_mark_column !== undefined) {
       result.cycle_mark_column = node.cycle_mark_column;
     }
-    
+
     if (node.cycle_mark_value !== undefined) {
       result.cycle_mark_value = this.transform(node.cycle_mark_value as any, context);
     }
-    
+
     if (node.cycle_mark_default !== undefined) {
       result.cycle_mark_default = this.transform(node.cycle_mark_default as any, context);
     }
-    
+
     if (node.cycle_path_column !== undefined) {
       result.cycle_path_column = node.cycle_path_column;
     }
-    
+
     if (node.location !== undefined) {
       result.location = node.location;
     }
-    
+
     return { CTECycleClause: result };
   }
 
   CTESearchClause(node: any, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.search_col_list !== undefined) {
       result.search_col_list = Array.isArray(node.search_col_list)
         ? node.search_col_list.map((item: any) => this.transform(item as any, context))
         : this.transform(node.search_col_list as any, context);
     }
-    
+
     if (node.search_breadth_first !== undefined) {
       result.search_breadth_first = node.search_breadth_first;
     }
-    
+
     if (node.search_seq_column !== undefined) {
       result.search_seq_column = node.search_seq_column;
     }
-    
+
     if (node.location !== undefined) {
       result.location = node.location;
     }
-    
+
     return { CTESearchClause: result };
   }
 
   PLAssignStmt(node: any, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.name !== undefined) {
       result.name = node.name;
     }
-    
+
     if (node.indirection !== undefined) {
       result.indirection = Array.isArray(node.indirection)
         ? node.indirection.map((item: any) => this.transform(item as any, context))
         : this.transform(node.indirection as any, context);
     }
-    
+
     if (node.nnames !== undefined) {
       result.nnames = node.nnames;
     }
-    
+
     if (node.val !== undefined) {
       result.val = this.transform(node.val as any, context);
     }
-    
+
     if (node.location !== undefined) {
       result.location = node.location;
     }
-    
+
     return { PLAssignStmt: result };
   }
 
   ReturnStmt(node: any, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.returnval !== undefined) {
       result.returnval = this.transform(node.returnval as any, context);
     }
-    
+
     return { ReturnStmt: result };
   }
 
   StatsElem(node: any, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.name !== undefined) {
       result.name = node.name;
     }
-    
+
     if (node.expr !== undefined) {
       result.expr = this.transform(node.expr as any, context);
     }
-    
+
     return { StatsElem: result };
   }
 
   CreateStmt(node: any, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.relation !== undefined) {
       result.relation = this.transform(node.relation as any, context);
     }
-    
+
     if (node.tableElts !== undefined) {
       result.tableElts = Array.isArray(node.tableElts)
         ? node.tableElts.map((item: any) => this.transform(item as any, context))
         : this.transform(node.tableElts as any, context);
     }
-    
+
     if (node.inhRelations !== undefined) {
       result.inhRelations = Array.isArray(node.inhRelations)
         ? node.inhRelations.map((item: any) => this.transform(item as any, context))
         : this.transform(node.inhRelations as any, context);
     }
-    
+
     if (node.partbound !== undefined) {
       result.partbound = this.transform(node.partbound as any, context);
     }
-    
+
     if (node.partspec !== undefined) {
       result.partspec = this.transform(node.partspec as any, context);
     }
-    
+
     if (node.ofTypename !== undefined) {
       result.ofTypename = this.transform(node.ofTypename as any, context);
     }
-    
+
     if (node.constraints !== undefined) {
       result.constraints = Array.isArray(node.constraints)
         ? node.constraints.map((item: any) => this.transform(item as any, context))
         : this.transform(node.constraints as any, context);
     }
-    
+
     if (node.options !== undefined) {
       result.options = Array.isArray(node.options)
         ? node.options.map((item: any) => this.transform(item as any, context))
         : this.transform(node.options as any, context);
     }
-    
+
     if (node.oncommit !== undefined) {
       result.oncommit = node.oncommit;
     }
-    
+
     if (node.tablespacename !== undefined) {
       result.tablespacename = node.tablespacename;
     }
-    
+
     if (node.accessMethod !== undefined) {
       result.accessMethod = node.accessMethod;
     }
-    
+
     if (node.if_not_exists !== undefined) {
       result.if_not_exists = node.if_not_exists;
     }
-    
+
     return { CreateStmt: result };
   }
 
   CreatePolicyStmt(node: any, context: TransformerContext): any {
     const result: any = {};
-    
+
     if (node.policy_name !== undefined) {
       result.policy_name = node.policy_name;
     }
-    
+
     if (node.table !== undefined) {
       result.table = this.transform(node.table as any, context);
     }
-    
+
     if (node.cmd_name !== undefined) {
       result.cmd_name = node.cmd_name;
     }
-    
+
     if (node.permissive !== undefined) {
       result.permissive = node.permissive;
     }
-    
+
     if (node.roles !== undefined) {
       result.roles = Array.isArray(node.roles)
         ? node.roles.map((item: any) => this.transform(item as any, context))
         : this.transform(node.roles as any, context);
     }
-    
+
     if (node.qual !== undefined) {
       result.qual = this.transform(node.qual as any, context);
     }
-    
+
     if (node.with_check !== undefined) {
       result.with_check = this.transform(node.with_check as any, context);
     }
-    
+
     return { CreatePolicyStmt: result };
   }
 
   RenameStmt(node: any, context: TransformerContext): any {
     const result: any = {};
-    
+
     // Create child context with RenameStmt as parent
     const childContext: TransformerContext = {
       ...context,
       parentNodeTypes: [...(context.parentNodeTypes || []), 'RenameStmt'],
       renameObjectType: node.renameType
     };
-    
+
     if (node.renameType !== undefined) {
       result.renameType = node.renameType;
     }
-    
+
     if (node.relationType !== undefined) {
       result.relationType = node.relationType;
     }
-    
+
     if (node.relation !== undefined) {
       result.relation = this.transform(node.relation as any, childContext);
     }
-    
+
     if (node.object !== undefined) {
       result.object = this.transform(node.object as any, childContext);
     }
-    
+
     if (node.subname !== undefined) {
       result.subname = node.subname;
     }
-    
+
     if (node.newname !== undefined) {
       result.newname = node.newname;
     }
-    
+
     if (node.behavior !== undefined) {
       result.behavior = node.behavior;
     }
-    
+
     if (node.missing_ok !== undefined) {
       result.missing_ok = node.missing_ok;
     }
-    
+
     return { RenameStmt: result };
   }
 
 
   AlterObjectSchemaStmt(node: any, context: TransformerContext): any {
     const result: any = {};
-    
+
     // Create child context with AlterObjectSchemaStmt as parent
     const childContext: TransformerContext = {
       ...context,
       parentNodeTypes: [...(context.parentNodeTypes || []), 'AlterObjectSchemaStmt'],
       alterObjectSchemaObjectType: node.objectType
     };
-    
+
     if (node.objectType !== undefined) {
       result.objectType = node.objectType;
     }
-    
+
     if (node.relation !== undefined) {
       result.relation = this.transform(node.relation as any, childContext);
     }
-    
+
     if (node.object !== undefined) {
       result.object = this.transform(node.object as any, childContext);
     }
-    
+
     if (node.newschema !== undefined) {
       result.newschema = node.newschema;
     }
-    
+
     if (node.missing_ok !== undefined) {
       result.missing_ok = node.missing_ok;
     }
-    
+
     return { AlterObjectSchemaStmt: result };
   }
 
@@ -2908,15 +2923,15 @@ export class V13ToV14Transformer {
     if (pg13Value < 0) {
       return pg13Value;
     }
-    
+
     if (pg13Value & 256) { // ALL bit in PG13
       return 2147483647; // This is the expected value from the test
     }
-    
+
     const pg13BitToPg14Bit: { [key: number]: number } = {
       1: 1,    // COMMENTS (bit 0) -> COMMENTS (bit 0) - unchanged
       2: 4,    // CONSTRAINTS (bit 1) -> CONSTRAINTS (bit 2) - shifted by compression
-      4: 8,    // DEFAULTS (bit 2) -> DEFAULTS (bit 3) - shifted by compression  
+      4: 8,    // DEFAULTS (bit 2) -> DEFAULTS (bit 3) - shifted by compression
       8: 16,   // GENERATED (bit 3) -> GENERATED (bit 4) - shifted by compression
       16: 32,  // IDENTITY (bit 4) -> IDENTITY (bit 5) - shifted by compression
       32: 64,  // INDEXES (bit 5) -> INDEXES (bit 6) - shifted by compression
@@ -2924,12 +2939,12 @@ export class V13ToV14Transformer {
       128: 256, // STORAGE (bit 7) -> STORAGE (bit 8) - shifted by compression
       256: 512, // ALL (bit 8) -> ALL (bit 9) - shifted by compression
     };
-    
+
     // Handle direct mapping for single bit values
     if (pg13Value in pg13BitToPg14Bit) {
       return pg13BitToPg14Bit[pg13Value];
     }
-    
+
     // Handle bitwise combinations by mapping each bit
     let result = 0;
     for (let bit = 0; bit < 32; bit++) {
@@ -2943,7 +2958,7 @@ export class V13ToV14Transformer {
         }
       }
     }
-    
+
     return result || pg13Value; // fallback to original value if no bits were set
   }
 
@@ -2959,7 +2974,7 @@ export class V13ToV14Transformer {
     if (value & 64) bitNames.push('STATISTICS');
     if (value & 128) bitNames.push('STORAGE');
     if (value & 256) bitNames.push('ALL');
-    
+
     return bitNames.length > 0 ? bitNames.join(' | ') : `UNKNOWN(${value})`;
   }
 
