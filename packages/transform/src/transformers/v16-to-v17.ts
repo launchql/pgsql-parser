@@ -454,9 +454,41 @@ export class V16ToV17Transformer {
     const result: any = {};
 
     if (node.names !== undefined) {
-      result.names = Array.isArray(node.names)
+      let names = Array.isArray(node.names)
         ? node.names.map(item => this.transform(item as any, context))
         : this.transform(node.names as any, context);
+      
+      // Add pg_catalog prefix for JSON types in CREATE TABLE contexts
+      if (Array.isArray(names) && names.length === 1) {
+        const firstElement = names[0];
+        if (firstElement && typeof firstElement === 'object' && 'String' in firstElement) {
+          const typeNameStr = firstElement.String.str || firstElement.String.sval;
+          if (typeNameStr === 'json') {
+            const hasCreateStmt = context.parentNodeTypes.includes('CreateStmt');
+            const hasCompositeTypeStmt = context.parentNodeTypes.includes('CompositeTypeStmt');
+            const hasRangeFunction = context.parentNodeTypes.includes('RangeFunction');
+            const hasCreateDomainStmt = context.parentNodeTypes.includes('CreateDomainStmt');
+            const hasColumnDef = context.parentNodeTypes.includes('ColumnDef');
+            if ((hasCreateStmt || hasCompositeTypeStmt || hasRangeFunction) && hasColumnDef) {
+              const pgCatalogElement = {
+                String: {
+                  sval: 'pg_catalog'
+                }
+              };
+              names = [pgCatalogElement, firstElement];
+            } else if (hasCreateDomainStmt) {
+              const pgCatalogElement = {
+                String: {
+                  sval: 'pg_catalog'
+                }
+              };
+              names = [pgCatalogElement, firstElement];
+            }
+          }
+        }
+      }
+      
+      result.names = names;
     }
 
     if (node.typeOid !== undefined) {
@@ -557,7 +589,31 @@ export class V16ToV17Transformer {
       result.arg = this.transform(node.arg as any, context);
     }
     if (node.typeName !== undefined) {
-      result.typeName = this.transform(node.typeName as any, context);
+      let typeName = this.transform(node.typeName as any, context);
+      
+      // Add pg_catalog prefix for JSON types in simple SELECT contexts
+      if (typeName && typeName.names && Array.isArray(typeName.names) && typeName.names.length === 1) {
+        const firstElement = typeName.names[0];
+        if (firstElement && typeof firstElement === 'object' && 'String' in firstElement) {
+          const typeNameStr = firstElement.String.str || firstElement.String.sval;
+          if (typeNameStr === 'json') {
+            const hasSelectStmt = context.parentNodeTypes.includes('SelectStmt');
+            const hasResTarget = context.parentNodeTypes.includes('ResTarget');
+            const hasList = context.parentNodeTypes.includes('List');
+            const hasA_Expr = context.parentNodeTypes.includes('A_Expr');
+            if ((hasSelectStmt && hasResTarget) || (hasSelectStmt && hasList) || hasA_Expr) {
+              const pgCatalogElement = {
+                String: {
+                  sval: 'pg_catalog'
+                }
+              };
+              typeName.names = [pgCatalogElement, firstElement];
+            }
+          }
+        }
+      }
+      
+      result.typeName = typeName;
     }
     if (node.location !== undefined) {
       result.location = node.location;
