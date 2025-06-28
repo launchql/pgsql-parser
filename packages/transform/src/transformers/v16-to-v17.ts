@@ -458,16 +458,18 @@ export class V16ToV17Transformer {
         ? node.names.map(item => this.transform(item as any, context))
         : this.transform(node.names as any, context);
       
-      // Remove pg_catalog prefix from JSON types
-      if (Array.isArray(names) && names.length === 2) {
+      if (Array.isArray(names) && names.length === 1) {
         const firstElement = names[0];
-        const secondElement = names[1];
-        if (firstElement && typeof firstElement === 'object' && 'String' in firstElement &&
-            secondElement && typeof secondElement === 'object' && 'String' in secondElement) {
-          const prefixStr = firstElement.String.str || firstElement.String.sval;
-          const typeNameStr = secondElement.String.str || secondElement.String.sval;
-          if (prefixStr === 'pg_catalog' && (typeNameStr === 'json' || typeNameStr === 'jsonb')) {
-            names = [secondElement];
+        if (firstElement && typeof firstElement === 'object' && 'String' in firstElement) {
+          const typeNameStr = firstElement.String.str || firstElement.String.sval;
+          if (typeNameStr === 'json' || typeNameStr === 'jsonb') {
+            // Add pg_catalog prefix
+            const pgCatalogElement = {
+              String: {
+                sval: 'pg_catalog'
+              }
+            };
+            names = [pgCatalogElement, firstElement];
           }
         }
       }
