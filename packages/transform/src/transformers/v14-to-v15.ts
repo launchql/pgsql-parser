@@ -65,11 +65,28 @@ export class V14ToV15Transformer {
     return node;
   }
 
+  transformGenericNode(node: any, context: TransformerContext): any {
+    if (typeof node !== 'object' || node === null) return node;
+    if (Array.isArray(node)) return node.map(item => this.transform(item, context));
+
+    const result: any = {};
+    for (const [key, value] of Object.entries(node)) {
+      if (Array.isArray(value)) {
+        result[key] = value.map(item => this.transform(item as any, context));
+      } else if (typeof value === 'object' && value !== null) {
+        result[key] = this.transform(value as any, context);
+      } else {
+        result[key] = value;
+      }
+    }
+    return result;
+  }
+
   ParseResult(node: PG14.ParseResult, context: TransformerContext): any {
     
     if (node && typeof node === 'object' && 'version' in node && 'stmts' in node) {
       return {
-        version: 140000, // PG14 version
+        version: 150000, // PG15 version
         stmts: node.stmts.map((stmt: any) => {
           if (stmt && typeof stmt === 'object' && 'stmt' in stmt) {
             return {
@@ -90,23 +107,23 @@ export class V14ToV15Transformer {
   }
 
   SelectStmt(node: PG14.SelectStmt, context: TransformerContext): any {
-    return node;
+    return this.transformGenericNode(node, context);
   }
 
   A_Expr(node: PG14.A_Expr, context: TransformerContext): any {
-    return node;
+    return this.transformGenericNode(node, context);
   }
 
   InsertStmt(node: PG14.InsertStmt, context: TransformerContext): any {
-    return node;
+    return this.transformGenericNode(node, context);
   }
 
   UpdateStmt(node: PG14.UpdateStmt, context: TransformerContext): any {
-    return node;
+    return this.transformGenericNode(node, context);
   }
 
   DeleteStmt(node: PG14.DeleteStmt, context: TransformerContext): any {
-    return node;
+    return this.transformGenericNode(node, context);
   }
 
   WithClause(node: PG14.WithClause, context: TransformerContext): any {
@@ -114,7 +131,7 @@ export class V14ToV15Transformer {
   }
 
   ResTarget(node: PG14.ResTarget, context: TransformerContext): any {
-    return node;
+    return this.transformGenericNode(node, context);
   }
 
   BoolExpr(node: PG14.BoolExpr, context: TransformerContext): any {
@@ -122,7 +139,7 @@ export class V14ToV15Transformer {
   }
 
   FuncCall(node: PG14.FuncCall, context: TransformerContext): any {
-    return node;
+    return this.transformGenericNode(node, context);
   }
 
   FuncExpr(node: PG14.FuncExpr, context: TransformerContext): any {
@@ -130,15 +147,36 @@ export class V14ToV15Transformer {
   }
 
   A_Const(node: PG14.A_Const, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    
+    if (result.val) {
+      const val: any = result.val;
+      if (val.String && val.String.str !== undefined) {
+        result.sval = { sval: val.String.str };
+        delete result.val;
+      } else if (val.Integer && val.Integer.ival !== undefined) {
+        result.ival = val.Integer.ival;
+        delete result.val;
+      } else if (val.Float && val.Float.str !== undefined) {
+        result.fval = { fval: val.Float.str };
+        delete result.val;
+      } else if (val.BitString && val.BitString.str !== undefined) {
+        result.bsval = { bsval: val.BitString.str };
+        delete result.val;
+      } else if (val.Null !== undefined) {
+        delete result.val;
+      }
+    }
+    
+    return result;
   }
 
   ColumnRef(node: PG14.ColumnRef, context: TransformerContext): any {
-    return node;
+    return this.transformGenericNode(node, context);
   }
 
   TypeName(node: PG14.TypeName, context: TransformerContext): any {
-    return node;
+    return this.transformGenericNode(node, context);
   }
 
   Alias(node: PG14.Alias, context: TransformerContext): any {
@@ -146,7 +184,7 @@ export class V14ToV15Transformer {
   }
 
   RangeVar(node: PG14.RangeVar, context: TransformerContext): any {
-    return node;
+    return this.transformGenericNode(node, context);
   }
 
   A_ArrayExpr(node: PG14.A_ArrayExpr, context: TransformerContext): any {
@@ -190,7 +228,14 @@ export class V14ToV15Transformer {
   }
 
   String(node: PG14.String, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    
+    if (result.str !== undefined) {
+      result.sval = result.str;
+      delete result.str;
+    }
+    
+    return result;
   }
   
   Integer(node: PG14.Integer, context: TransformerContext): any {
@@ -198,11 +243,25 @@ export class V14ToV15Transformer {
   }
   
   Float(node: PG14.Float, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    
+    if (result.str !== undefined) {
+      result.fval = result.str;
+      delete result.str;
+    }
+    
+    return result;
   }
     
   BitString(node: PG14.BitString, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    
+    if (result.str !== undefined) {
+      result.bsval = result.str;
+      delete result.str;
+    }
+    
+    return result;
   }
   
   Null(node: PG14.Node, context: TransformerContext): any {
@@ -210,11 +269,11 @@ export class V14ToV15Transformer {
   }
 
   List(node: PG14.List, context: TransformerContext): any {
-    return node;
+    return this.transformGenericNode(node, context);
   }
 
   CreateStmt(node: PG14.CreateStmt, context: TransformerContext): any {
-    return node;
+    return this.transformGenericNode(node, context);
   }
 
   ColumnDef(node: PG14.ColumnDef, context: TransformerContext): any {
@@ -362,7 +421,7 @@ export class V14ToV15Transformer {
   }
 
   DropStmt(node: PG14.DropStmt, context: TransformerContext): any {
-    return node;
+    return this.transformGenericNode(node, context);
   }
 
   TruncateStmt(node: PG14.TruncateStmt, context: TransformerContext): any {
@@ -382,7 +441,7 @@ export class V14ToV15Transformer {
   }
 
   AlterTableStmt(node: PG14.AlterTableStmt, context: TransformerContext): any {
-    return node;
+    return this.transformGenericNode(node, context);
   }
 
   AlterTableCmd(node: PG14.AlterTableCmd, context: TransformerContext): any {
@@ -390,11 +449,11 @@ export class V14ToV15Transformer {
   }
 
   CreateFunctionStmt(node: PG14.CreateFunctionStmt, context: TransformerContext): any {
-    return node;
+    return this.transformGenericNode(node, context);
   }
 
   FunctionParameter(node: PG14.FunctionParameter, context: TransformerContext): any {
-    return node;
+    return this.transformGenericNode(node, context);
   }
 
   CreateEnumStmt(node: PG14.CreateEnumStmt, context: TransformerContext): any {
@@ -590,7 +649,7 @@ export class V14ToV15Transformer {
   }
 
   ObjectWithArgs(node: PG14.ObjectWithArgs, context: TransformerContext): any {
-    return node;
+    return this.transformGenericNode(node, context);
   }
 
   AlterOperatorStmt(node: PG14.AlterOperatorStmt, context: TransformerContext): any {
