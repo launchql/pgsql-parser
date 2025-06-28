@@ -782,7 +782,8 @@ export class V13ToV14Transformer {
           // Check if this is an operator by looking at the objname
           const isOperator = this.isOperatorName(result.name.objname);
 
-          if (!isOperator) {
+          // Don't create objfuncargs in CreateTransformStmt contexts
+          if (!isOperator && !context.parentNodeTypes?.includes('CreateTransformStmt')) {
             result.name.objfuncargs = Array.isArray(result.name.objargs)
               ? result.name.objargs.map((arg: any, index: number) => this.createFunctionParameterFromTypeName(arg, context, index))
               : [this.createFunctionParameterFromTypeName(result.name.objargs, context, 0)];
@@ -1037,6 +1038,26 @@ export class V13ToV14Transformer {
 
 
 
+  private getFunctionNameFromContext(context: TransformerContext): string | null {
+    if (context.nodeStack) {
+      for (let i = context.nodeStack.length - 1; i >= 0; i--) {
+        const node = context.nodeStack[i];
+        if (node && typeof node === 'object') {
+          if ('ObjectWithArgs' in node) {
+            const objWithArgs = node.ObjectWithArgs;
+            if (objWithArgs.objname && Array.isArray(objWithArgs.objname)) {
+              const lastName = objWithArgs.objname[objWithArgs.objname.length - 1];
+              if (lastName && lastName.String && lastName.String.str) {
+                return lastName.String.str;
+              }
+            }
+          }
+        }
+      }
+    }
+    return null;
+  }
+
   private isVariadicParameterType(argType: any, index?: number, allArgs?: any[], context?: TransformerContext): boolean {
     if (!argType) return false;
 
@@ -1044,25 +1065,20 @@ export class V13ToV14Transformer {
     const typeNode = argType.TypeName || argType;
 
     if (typeNode.names && Array.isArray(typeNode.names)) {
-      // Check if any name in the chain contains "variadic"
-      for (const nameNode of typeNode.names) {
-        if (nameNode && nameNode.String && nameNode.String.str) {
-          const typeStr = nameNode.String.str.toLowerCase();
-          if (typeStr === 'variadic') {
-            return true;
-          }
-        }
-      }
-
       const typeName = typeNode.names[typeNode.names.length - 1]?.String?.str;
 
-      // In RenameStmt context for aggregates, "any" type should be treated as variadic
-      if (context && context.parentNodeTypes?.includes('RenameStmt') &&
-          !context.parentNodeTypes?.includes('DropStmt') && typeName === 'any') {
+      if (context && context.parentNodeTypes?.includes('DropStmt')) {
+        return false;
+      }
+
+      if (typeName === 'anyarray' || typeName === 'variadic') {
         return true;
       }
 
-
+      // In RenameStmt context for aggregates, "any" type should be treated as variadic
+      if (context && context.parentNodeTypes?.includes('RenameStmt') && typeName === 'any') {
+        return true;
+      }
     }
 
     return false;
@@ -1090,22 +1106,12 @@ export class V13ToV14Transformer {
     }
 
     if (node.mode !== undefined) {
-      const isInRenameContext = context.parentNodeTypes?.includes('RenameStmt');
       const isInDropContext = context.parentNodeTypes?.includes('DropStmt');
-      const isInCommentContext = context.parentNodeTypes?.includes('CommentStmt');
-
-      if (isInRenameContext || isInCommentContext) {
-        result.mode = node.mode; // Preserve original mode
-      } else if (isInDropContext) {
-        if (node.mode === "FUNC_PARAM_VARIADIC") {
-          result.mode = node.mode; // Preserve variadic mode
-        } else if (node.mode === "FUNC_PARAM_IN") {
-          result.mode = "FUNC_PARAM_DEFAULT"; // Map IN to DEFAULT in PG14
-        } else {
-          result.mode = node.mode; // Preserve other modes
-        }
-      } else if (node.mode === "FUNC_PARAM_IN") {
-        result.mode = "FUNC_PARAM_DEFAULT"; // Map IN to DEFAULT in PG14
+      
+      if (node.mode === "FUNC_PARAM_IN") {
+        result.mode = "FUNC_PARAM_DEFAULT";
+      } else if (isInDropContext && node.mode === "FUNC_PARAM_VARIADIC") {
+        result.mode = "FUNC_PARAM_DEFAULT";
       } else {
         result.mode = node.mode; // Preserve all other modes unchanged
       }
@@ -1139,10 +1145,12 @@ export class V13ToV14Transformer {
         if ((node.func as any).objargs !== undefined) {
           funcResult.objargs = this.transform((node.func as any).objargs, childContext);
 
-          // Create objfuncargs from objargs for PG14
-          funcResult.objfuncargs = Array.isArray((node.func as any).objargs)
-            ? (node.func as any).objargs.map((arg: any, index: number) => this.createFunctionParameterFromTypeName(arg, childContext, index))
-            : [this.createFunctionParameterFromTypeName((node.func as any).objargs, childContext, 0)];
+          // Create objfuncargs from objargs for PG14, but not in CreateTransformStmt contexts
+          if (!childContext.parentNodeTypes?.includes('CreateTransformStmt')) {
+            funcResult.objfuncargs = Array.isArray((node.func as any).objargs)
+              ? (node.func as any).objargs.map((arg: any, index: number) => this.createFunctionParameterFromTypeName(arg, childContext, index))
+              : [this.createFunctionParameterFromTypeName((node.func as any).objargs, childContext, 0)];
+          }
         }
 
         result.func = funcResult;
@@ -1777,6 +1785,38 @@ export class V13ToV14Transformer {
     return { CreateCastStmt: result };
   }
 
+  CreateTransformStmt(node: PG13.CreateTransformStmt, context: TransformerContext): any {
+    const result: any = {};
+
+    const childContext: TransformerContext = {
+      ...context,
+      parentNodeTypes: [...(context.parentNodeTypes || []), 'CreateTransformStmt']
+    };
+
+
+    if (node.type_name !== undefined) {
+      result.type_name = this.transform(node.type_name as any, childContext);
+    }
+
+    if (node.lang !== undefined) {
+      result.lang = node.lang;
+    }
+
+    if (node.fromsql !== undefined) {
+      result.fromsql = this.transform(node.fromsql as any, childContext);
+    }
+
+    if (node.tosql !== undefined) {
+      result.tosql = this.transform(node.tosql as any, childContext);
+    }
+
+    if (node.replace !== undefined) {
+      result.replace = node.replace;
+    }
+
+    return { CreateTransformStmt: result };
+  }
+
   CreateFunctionStmt(node: PG13.CreateFunctionStmt, context: TransformerContext): any {
     const result: any = { ...node };
 
@@ -1885,29 +1925,57 @@ export class V13ToV14Transformer {
         : [this.transform(result.objargs, context)];
     }
 
+    // Never create or preserve objfuncargs in CreateTransformStmt contexts
+    if (context.parentNodeTypes?.includes('CreateTransformStmt')) {
+      if (result.objfuncargs !== undefined) {
+        delete result.objfuncargs;
+      }
+      return { ObjectWithArgs: result };
+    }
+    
     // Handle objfuncargs based on context
     const shouldCreateObjfuncargs = this.shouldCreateObjfuncargs(context);
     const shouldPreserveObjfuncargs = this.shouldPreserveObjfuncargs(context);
     const shouldCreateObjfuncargsFromObjargs = this.shouldCreateObjfuncargsFromObjargs(context);
+    
 
 
     if (shouldCreateObjfuncargsFromObjargs && result.objargs) {
       // Create objfuncargs from objargs, with smart parameter mode handling
       const originalObjfuncargs = (node as any).objfuncargs;
       if (originalObjfuncargs && Array.isArray(originalObjfuncargs)) {
-        result.objfuncargs = originalObjfuncargs.map((item: any) => {
-          return this.transform(item, context);
-        });
+        if (!context.parentNodeTypes?.includes('CreateTransformStmt')) {
+          result.objfuncargs = originalObjfuncargs.map((item: any) => {
+            return this.transform(item, context);
+          });
+        }
       } else {
-        result.objfuncargs = Array.isArray(result.objargs)
-          ? result.objargs.map((arg: any, index: number) => {
+        // Don't create objfuncargs in CreateTransformStmt contexts
+        if (!context.parentNodeTypes?.includes('CreateTransformStmt')) {
+          result.objfuncargs = Array.isArray(result.objargs)
+            ? result.objargs.map((arg: any, index: number) => {
 
-              const transformedArgType = this.visit(arg, context);
-              const isVariadic = this.isVariadicParameterType(arg, index, result.objargs, context);
+                const transformedArgType = this.visit(arg, context);
+              
+              // Check if there's an existing objfuncargs with original mode information
+              let mode = 'FUNC_PARAM_DEFAULT';
+              if (originalObjfuncargs && Array.isArray(originalObjfuncargs) && originalObjfuncargs[index]) {
+                const originalParam = originalObjfuncargs[index];
+                if (originalParam && originalParam.FunctionParameter && originalParam.FunctionParameter.mode) {
+                  mode = this.mapFunctionParameterMode(originalParam.FunctionParameter.mode);
+                } else {
+                  const isVariadic = this.isVariadicParameterType(arg, index, result.objargs, context);
+                  mode = isVariadic ? 'FUNC_PARAM_VARIADIC' : 'FUNC_PARAM_DEFAULT';
+                }
+              } else {
+                const isVariadic = this.isVariadicParameterType(arg, index, result.objargs, context);
+                mode = isVariadic ? 'FUNC_PARAM_VARIADIC' : 'FUNC_PARAM_DEFAULT';
+              }
+              
               const parameter = {
                 FunctionParameter: {
                   argType: transformedArgType.TypeName || transformedArgType,
-                  mode: isVariadic ? 'FUNC_PARAM_VARIADIC' : 'FUNC_PARAM_DEFAULT'
+                  mode: mode
                 }
               };
 
@@ -1916,9 +1984,12 @@ export class V13ToV14Transformer {
           : [{
               FunctionParameter: {
                 argType: this.visit(result.objargs, context),
-                mode: this.isVariadicParameterType(result.objargs, 0, [result.objargs], context) ? 'FUNC_PARAM_VARIADIC' : 'FUNC_PARAM_DEFAULT'
+                mode: (originalObjfuncargs && originalObjfuncargs[0] && originalObjfuncargs[0].FunctionParameter && originalObjfuncargs[0].FunctionParameter.mode) 
+                  ? this.mapFunctionParameterMode(originalObjfuncargs[0].FunctionParameter.mode)
+                  : (this.isVariadicParameterType(result.objargs, 0, [result.objargs], context) ? 'FUNC_PARAM_VARIADIC' : 'FUNC_PARAM_DEFAULT')
               }
             }];
+        }
       }
 
     } else if (shouldCreateObjfuncargs) {
@@ -1978,7 +2049,8 @@ export class V13ToV14Transformer {
         return false;
       }
       if (parentType === 'DropStmt') {
-        return false;
+        // For DropStmt, check if we should add objfuncargs based on removeType
+        return this.shouldAddObjfuncargsForDropStmt(context);
       }
     }
 
@@ -2009,6 +2081,9 @@ export class V13ToV14Transformer {
       return false;
     }
 
+    if (context.parentNodeTypes.includes('CreateTransformStmt')) {
+      return false;
+    }
 
     if ((context as any).commentObjtype === 'OBJECT_OPERATOR' &&
         context.parentNodeTypes.includes('CommentStmt')) {
@@ -2054,7 +2129,7 @@ export class V13ToV14Transformer {
     const excludedNodeTypes = [
       'CreateOpClassStmt', 'CreateAggregateStmt', 'AlterAggregateStmt',
       'CreateFunctionStmt', 'CreateStmt', 'CreateTypeStmt', 'CreateOpFamilyStmt',
-      'CreateOperatorStmt'
+      'CreateOperatorStmt', 'CreateTransformStmt', 'DefineStmt'
     ];
 
     for (const node of path) {
@@ -2108,9 +2183,11 @@ export class V13ToV14Transformer {
         if (dropStmt && dropStmt.removeType === 'OBJECT_OPERATOR') {
           return false;
         }
-        if (dropStmt && (dropStmt.removeType === 'OBJECT_FUNCTION' ||
-                        dropStmt.removeType === 'OBJECT_AGGREGATE' ||
+        if (dropStmt && (dropStmt.removeType === 'OBJECT_AGGREGATE' ||
                         dropStmt.removeType === 'OBJECT_PROCEDURE')) {
+          return true;
+        }
+        if (dropStmt && dropStmt.removeType === 'OBJECT_FUNCTION') {
           return true;
         }
       }
@@ -2121,9 +2198,11 @@ export class V13ToV14Transformer {
       if (removeType === 'OBJECT_OPERATOR') {
         return false;
       }
-      if (removeType === 'OBJECT_FUNCTION' ||
-          removeType === 'OBJECT_AGGREGATE' ||
+      if (removeType === 'OBJECT_AGGREGATE' ||
           removeType === 'OBJECT_PROCEDURE') {
+        return true;
+      }
+      if (removeType === 'OBJECT_FUNCTION') {
         return true;
       }
     }
@@ -2151,7 +2230,7 @@ export class V13ToV14Transformer {
   }
 
   private createFunctionParameterFromTypeName(typeNameNode: any, context?: TransformerContext, index: number = 0): any {
-    const transformedTypeName = this.transform(typeNameNode, { parentNodeTypes: [] });
+    const transformedTypeName = this.transform(typeNameNode, context || { parentNodeTypes: [] });
 
     const argType = transformedTypeName.TypeName ? transformedTypeName.TypeName : transformedTypeName;
 
@@ -2164,7 +2243,8 @@ export class V13ToV14Transformer {
 
     const shouldAddParameterName = context && context.parentNodeTypes &&
       !context.parentNodeTypes.includes('DropStmt') &&
-      !context.parentNodeTypes.includes('ObjectWithArgs');
+      !context.parentNodeTypes.includes('ObjectWithArgs') &&
+      !context.parentNodeTypes.includes('CreateTransformStmt');
 
     if (typeNameNode && typeNameNode.name && shouldAddParameterName) {
       functionParam.name = typeNameNode.name;
