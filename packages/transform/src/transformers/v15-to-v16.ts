@@ -20,6 +20,10 @@ export class V15ToV16Transformer {
       return node;
     }
 
+    if (Array.isArray(node)) {
+      return node.map(item => this.transform(item, context));
+    }
+
     try {
       return this.visit(node, context);
     } catch (error) {
@@ -31,12 +35,14 @@ export class V15ToV16Transformer {
   visit(node: PG15.Node, context: TransformerContext = { parentNodeTypes: [] }): any {
     const nodeType = this.getNodeType(node);
     
+    
     // Handle empty objects
     if (!nodeType) {
       return {};
     }
     
     const nodeData = this.getNodeData(node);
+
 
     const methodName = nodeType as keyof this;
     if (typeof this[methodName] === 'function') {
@@ -46,8 +52,10 @@ export class V15ToV16Transformer {
       };
       const result = (this[methodName] as any)(nodeData, childContext);
       
+      
       return result;
     }
+    
     
     // If no specific method, return the node as-is
     return node;
