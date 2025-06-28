@@ -332,7 +332,59 @@ export class V15ToV16Transformer {
   }
 
   FuncCall(node: PG15.FuncCall, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.funcname !== undefined) {
+      result.funcname = Array.isArray(node.funcname)
+        ? node.funcname.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.funcname as any, context);
+    }
+
+    if (node.args !== undefined) {
+      result.args = Array.isArray(node.args)
+        ? node.args.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.args as any, context);
+    }
+
+    if (node.agg_order !== undefined) {
+      result.agg_order = Array.isArray(node.agg_order)
+        ? node.agg_order.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.agg_order as any, context);
+    }
+
+    if (node.agg_filter !== undefined) {
+      result.agg_filter = this.transform(node.agg_filter as any, context);
+    }
+
+    if (node.over !== undefined) {
+      result.over = this.transform(node.over as any, context);
+    }
+
+    if (node.agg_within_group !== undefined) {
+      result.agg_within_group = node.agg_within_group;
+    }
+
+    if (node.agg_star !== undefined) {
+      result.agg_star = node.agg_star;
+    }
+
+    if (node.agg_distinct !== undefined) {
+      result.agg_distinct = node.agg_distinct;
+    }
+
+    if (node.func_variadic !== undefined) {
+      result.func_variadic = node.func_variadic;
+    }
+
+    if (node.funcformat !== undefined) {
+      result.funcformat = node.funcformat;
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { FuncCall: result };
   }
 
   FuncExpr(node: PG15.FuncExpr, context: TransformerContext): any {
@@ -340,11 +392,45 @@ export class V15ToV16Transformer {
   }
 
   A_Const(node: PG15.A_Const, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.sval !== undefined) {
+      result.sval = node.sval;
+    }
+
+    if (node.ival !== undefined) {
+      result.ival = node.ival;
+    }
+
+    if (node.fval !== undefined) {
+      result.fval = node.fval;
+    }
+
+    if (node.bsval !== undefined) {
+      result.bsval = node.bsval;
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { A_Const: result };
   }
 
   ColumnRef(node: PG15.ColumnRef, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.fields !== undefined) {
+      result.fields = Array.isArray(node.fields)
+        ? node.fields.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.fields as any, context);
+    }
+
+    if (node.location !== undefined) {
+      result.location = node.location;
+    }
+
+    return { ColumnRef: result };
   }
 
   TypeName(node: PG15.TypeName, context: TransformerContext): any {
@@ -490,11 +576,23 @@ export class V15ToV16Transformer {
   }
   
   Integer(node: PG15.Integer, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.ival !== undefined) {
+      result.ival = node.ival;
+    }
+
+    return { Integer: result };
   }
   
   Float(node: PG15.Float, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.fval !== undefined) {
+      result.fval = node.fval;
+    }
+
+    return { Float: result };
   }
   
   Boolean(node: PG15.Boolean, context: TransformerContext): any {
@@ -502,7 +600,13 @@ export class V15ToV16Transformer {
   }
   
   BitString(node: PG15.BitString, context: TransformerContext): any {
-    return node;
+    const result: any = {};
+
+    if (node.bsval !== undefined) {
+      result.bsval = node.bsval;
+    }
+
+    return { BitString: result };
   }
   
   Null(node: PG15.Node, context: TransformerContext): any {
