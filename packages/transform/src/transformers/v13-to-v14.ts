@@ -782,8 +782,7 @@ export class V13ToV14Transformer {
           // Check if this is an operator by looking at the objname
           const isOperator = this.isOperatorName(result.name.objname);
 
-          // Don't create objfuncargs in CreateTransformStmt contexts
-          if (!isOperator && !context.parentNodeTypes?.includes('CreateTransformStmt')) {
+          if (!isOperator) {
             result.name.objfuncargs = Array.isArray(result.name.objargs)
               ? result.name.objargs.map((arg: any, index: number) => this.createFunctionParameterFromTypeName(arg, context, index))
               : [this.createFunctionParameterFromTypeName(result.name.objargs, context, 0)];
@@ -1172,12 +1171,9 @@ export class V13ToV14Transformer {
         if ((node.func as any).objargs !== undefined) {
           funcResult.objargs = this.transform((node.func as any).objargs, childContext);
 
-          // Create objfuncargs from objargs for PG14, but not in CreateTransformStmt contexts
-          if (!childContext.parentNodeTypes?.includes('CreateTransformStmt')) {
-            funcResult.objfuncargs = Array.isArray((node.func as any).objargs)
-              ? (node.func as any).objargs.map((arg: any, index: number) => this.createFunctionParameterFromTypeName(arg, childContext, index))
-              : [this.createFunctionParameterFromTypeName((node.func as any).objargs, childContext, 0)];
-          }
+          funcResult.objfuncargs = Array.isArray((node.func as any).objargs)
+            ? (node.func as any).objargs.map((arg: any, index: number) => this.createFunctionParameterFromTypeName(arg, childContext, index))
+            : [this.createFunctionParameterFromTypeName((node.func as any).objargs, childContext, 0)];
         }
 
         result.func = funcResult;
@@ -1952,13 +1948,7 @@ export class V13ToV14Transformer {
         : [this.transform(result.objargs, context)];
     }
 
-    // Never create or preserve objfuncargs in CreateTransformStmt contexts
-    if (context.parentNodeTypes?.includes('CreateTransformStmt')) {
-      if (result.objfuncargs !== undefined) {
-        delete result.objfuncargs;
-      }
-      return { ObjectWithArgs: result };
-    }
+    // Handle special cases for objfuncargs deletion in specific contexts
     
     // Handle objfuncargs based on context
     const shouldCreateObjfuncargs = this.shouldCreateObjfuncargs(context);
@@ -1970,15 +1960,19 @@ export class V13ToV14Transformer {
     if (shouldCreateObjfuncargsFromObjargs && result.objargs) {
       // Create objfuncargs from objargs, with smart parameter mode handling
       const originalObjfuncargs = (node as any).objfuncargs;
+      
+      // Don't create objfuncargs in certain contexts where they shouldn't exist
+      const skipObjfuncargsContexts = ['CreateCastStmt'];
+      const shouldSkipObjfuncargs = skipObjfuncargsContexts.some(ctx => context.parentNodeTypes?.includes(ctx));
+      
       if (originalObjfuncargs && Array.isArray(originalObjfuncargs)) {
-        if (!context.parentNodeTypes?.includes('CreateTransformStmt')) {
+        if (!shouldSkipObjfuncargs) {
           result.objfuncargs = originalObjfuncargs.map((item: any) => {
             return this.transform(item, context);
           });
         }
       } else {
-        // Don't create objfuncargs in CreateTransformStmt contexts
-        if (!context.parentNodeTypes?.includes('CreateTransformStmt')) {
+        if (!shouldSkipObjfuncargs) {
           result.objfuncargs = Array.isArray(result.objargs)
             ? result.objargs.map((arg: any, index: number) => {
 
@@ -2098,7 +2092,7 @@ export class V13ToV14Transformer {
     }
 
     const allowedNodeTypes = [
-      'CommentStmt', 'AlterFunctionStmt', 'AlterOwnerStmt', 'RenameStmt', 'AlterObjectSchemaStmt', 'CreateCastStmt', 'AlterOpFamilyStmt'
+      'CommentStmt', 'AlterFunctionStmt', 'AlterOwnerStmt', 'RenameStmt', 'AlterObjectSchemaStmt', 'CreateCastStmt', 'CreateTransformStmt', 'AlterOpFamilyStmt'
     ];
 
     for (const node of path) {
@@ -2121,10 +2115,6 @@ export class V13ToV14Transformer {
 
   private shouldCreateObjfuncargsFromObjargs(context: TransformerContext): boolean {
     if (!context.parentNodeTypes || context.parentNodeTypes.length === 0) {
-      return false;
-    }
-
-    if (context.parentNodeTypes.includes('CreateTransformStmt')) {
       return false;
     }
 
@@ -2172,7 +2162,7 @@ export class V13ToV14Transformer {
     const excludedNodeTypes = [
       'CreateOpClassStmt', 'CreateAggregateStmt', 'AlterAggregateStmt',
       'CreateFunctionStmt', 'CreateStmt', 'CreateTypeStmt', 'CreateOpFamilyStmt',
-      'CreateOperatorStmt', 'CreateTransformStmt', 'DefineStmt'
+      'CreateOperatorStmt', 'DefineStmt'
     ];
 
     for (const node of path) {
@@ -2191,7 +2181,7 @@ export class V13ToV14Transformer {
     }
 
     const allowedNodeTypes = [
-      'CommentStmt', 'AlterFunctionStmt', 'RenameStmt', 'AlterOwnerStmt', 'AlterObjectSchemaStmt', 'CreateCastStmt', 'AlterOpFamilyStmt', 'CreateOpClassItem', 'GrantStmt', 'RevokeStmt'
+      'CommentStmt', 'AlterFunctionStmt', 'RenameStmt', 'AlterOwnerStmt', 'AlterObjectSchemaStmt', 'CreateCastStmt', 'CreateTransformStmt', 'AlterOpFamilyStmt', 'CreateOpClassItem', 'GrantStmt', 'RevokeStmt'
     ];
 
     for (const node of path) {
