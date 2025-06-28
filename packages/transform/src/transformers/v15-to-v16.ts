@@ -922,7 +922,25 @@ export class V15ToV16Transformer {
     }
 
     if (node.partspec !== undefined) {
-      result.partspec = this.transform(node.partspec as any, context);
+      // Handle partspec transformation directly since it's a plain object, not a wrapped node
+      const partspec: any = { ...node.partspec };
+      
+      if (partspec.strategy !== undefined) {
+        const strategyMap: Record<string, string> = {
+          'range': 'PARTITION_STRATEGY_RANGE',
+          'list': 'PARTITION_STRATEGY_LIST',
+          'hash': 'PARTITION_STRATEGY_HASH'
+        };
+        partspec.strategy = strategyMap[partspec.strategy] || partspec.strategy;
+      }
+      
+      if (partspec.partParams !== undefined) {
+        partspec.partParams = Array.isArray(partspec.partParams)
+          ? partspec.partParams.map((item: any) => this.transform(item as any, context))
+          : this.transform(partspec.partParams as any, context);
+      }
+      
+      result.partspec = partspec;
     }
 
     if (node.ofTypename !== undefined) {
@@ -2221,6 +2239,7 @@ export class V15ToV16Transformer {
 
     return { PartitionCmd: result };
   }
+
 
   JoinExpr(node: PG15.JoinExpr, context: TransformerContext): any {
     const result: any = {};
