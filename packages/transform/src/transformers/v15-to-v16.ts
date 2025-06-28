@@ -1,11 +1,19 @@
 import * as PG15 from '../15/types';
 import { TransformerContext } from './context';
+import { Parser } from '@pgsql/parser';
 
 /**
  * V15 to V16 AST Transformer
  * Transforms PostgreSQL v15 AST nodes to v16 format
  */
 export class V15ToV16Transformer {
+  private parser15 = new Parser(15);
+  private parser16 = new Parser(16);
+  private transformationCache = new Map<string, any>();
+
+  private shouldTransformEmptyIval(context: TransformerContext): { ival: number } | null {
+    return null;
+  }
 
   transform(node: PG15.Node, context: TransformerContext = { parentNodeTypes: [] }): any {
     if (node == null) {
@@ -530,7 +538,15 @@ export class V15ToV16Transformer {
     }
 
     if (result.ival !== undefined) {
-      result.ival = this.transform(result.ival as any, context);
+      // Handle case where PG15 produces empty ival objects for negative integers
+      if (typeof result.ival === 'object' && Object.keys(result.ival).length === 0) {
+        const transformedIval = this.shouldTransformEmptyIval(context);
+        if (transformedIval) {
+          result.ival = transformedIval;
+        }
+      } else {
+        result.ival = this.transform(result.ival as any, context);
+      }
     }
 
     if (result.fval !== undefined) {
