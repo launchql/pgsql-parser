@@ -421,6 +421,21 @@ export class V14ToV15Transformer {
   }
   
   Integer(node: PG14.Integer, context: TransformerContext): any {
+    // Check if we're in a DefElem context - if so, convert Integer to Boolean
+    const isInDefElemContext = context.parentNodeTypes && 
+      context.parentNodeTypes.some(nodeType => nodeType === 'DefElem');
+    
+    if (isInDefElemContext && node.ival !== undefined) {
+      // ival: 1 becomes boolval: true, ival: 0 becomes boolval: false
+      // All other values become boolval: false
+      const boolValue = node.ival === 1;
+      return {
+        Boolean: {
+          boolval: boolValue
+        }
+      };
+    }
+    
     const result: any = { ...node };
     return { Integer: result };
   }
