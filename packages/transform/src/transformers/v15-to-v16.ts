@@ -35,7 +35,6 @@ export class V15ToV16Transformer {
   visit(node: PG15.Node, context: TransformerContext = { parentNodeTypes: [] }): any {
     const nodeType = this.getNodeType(node);
     
-    
     // Handle empty objects
     if (!nodeType) {
       return {};
@@ -43,19 +42,14 @@ export class V15ToV16Transformer {
     
     const nodeData = this.getNodeData(node);
 
-
     const methodName = nodeType as keyof this;
     if (typeof this[methodName] === 'function') {
       const childContext: TransformerContext = {
         ...context,
         parentNodeTypes: [...context.parentNodeTypes, nodeType]
       };
-      const result = (this[methodName] as any)(nodeData, childContext);
-      
-      
-      return result;
+      return (this[methodName] as any)(nodeData, childContext);
     }
-    
     
     // If no specific method, return the node as-is
     return node;
@@ -514,34 +508,53 @@ export class V15ToV16Transformer {
   }
 
   A_Const(node: PG15.A_Const, context: TransformerContext): any {
-    const result: any = {};
-
-    if (node.ival !== undefined) {
-      result.ival = this.transform(node.ival as any, context);
+    const result: any = { ...node };
+    
+    if (result.val) {
+      const val: any = result.val;
+      if (val.String && val.String.str !== undefined) {
+        result.sval = { sval: val.String.str };
+        delete result.val;
+      } else if (val.Integer && val.Integer.ival !== undefined) {
+        result.ival = val.Integer.ival;
+        delete result.val;
+      } else if (val.Float && val.Float.str !== undefined) {
+        result.fval = { fval: val.Float.str };
+        delete result.val;
+      } else if (val.BitString && val.BitString.str !== undefined) {
+        result.bsval = { bsval: val.BitString.str };
+        delete result.val;
+      } else if (val.Null !== undefined) {
+        delete result.val;
+      }
     }
 
-    if (node.fval !== undefined) {
-      result.fval = this.transform(node.fval as any, context);
+    if (result.ival !== undefined) {
+      result.ival = this.transform(result.ival as any, context);
     }
 
-    if (node.boolval !== undefined) {
-      result.boolval = this.transform(node.boolval as any, context);
+    if (result.fval !== undefined) {
+      result.fval = this.transform(result.fval as any, context);
     }
 
-    if (node.sval !== undefined) {
-      result.sval = this.transform(node.sval as any, context);
+    if (result.boolval !== undefined) {
+      result.boolval = this.transform(result.boolval as any, context);
     }
 
-    if (node.bsval !== undefined) {
-      result.bsval = this.transform(node.bsval as any, context);
+    if (result.sval !== undefined) {
+      result.sval = this.transform(result.sval as any, context);
     }
 
-    if (node.isnull !== undefined) {
-      result.isnull = node.isnull;
+    if (result.bsval !== undefined) {
+      result.bsval = this.transform(result.bsval as any, context);
     }
 
-    if (node.location !== undefined) {
-      result.location = node.location;
+    if (result.isnull !== undefined) {
+      result.isnull = result.isnull;
+    }
+
+    if (result.location !== undefined) {
+      result.location = result.location;
     }
 
     return { A_Const: result };
@@ -867,8 +880,8 @@ export class V15ToV16Transformer {
   Integer(node: PG15.Integer, context: TransformerContext): any {
     const result: any = { ...node };
     
-    // Handle case where PG15 produces empty Integer nodes that should have ival: -1 in PG16
-    if (Object.keys(result).length === 0) {
+    // Handle case where PG15 produces empty Integer nodes in arrayBounds that should have ival: -1 in PG16
+    if (Object.keys(node).length === 0 && context.parentNodeTypes.includes('TypeName')) {
       result.ival = -1;
     }
     
@@ -994,7 +1007,8 @@ export class V15ToV16Transformer {
     }
 
     if (node.typeName !== undefined) {
-      result.typeName = this.transform(node.typeName as any, context);
+      const transformedTypeName = this.transform({ TypeName: node.typeName } as any, context);
+      result.typeName = transformedTypeName.TypeName;
     }
 
     if (node.inhcount !== undefined) {
