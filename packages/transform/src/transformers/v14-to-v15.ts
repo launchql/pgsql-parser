@@ -326,66 +326,55 @@ export class V14ToV15Transformer {
   }
 
   TypeCast(node: PG14.TypeCast, context: TransformerContext): any {
-    // First transform the node using standard transformation
-    const result = this.transformGenericNode(node, context);
-    
-    // Check if we're in a DefElem context - if so, don't apply Boolean conversion
-    const isInDefElemContext = context.parentNodeTypes && 
-      context.parentNodeTypes.some(nodeType => nodeType === 'DefElem');
-    
-    if (!isInDefElemContext &&
-        result.arg && 
-        typeof result.arg === 'object' && 
-        'A_Const' in result.arg &&
-        result.arg.A_Const &&
-        result.typeName &&
-        result.typeName.names &&
-        Array.isArray(result.typeName.names)) {
+    if (node.location === -1 && node.typeName && node.typeName.names) {
       
-      const hasPgCatalog = result.typeName.names.some((name: any) => 
-        name && typeof name === 'object' && 
-        (('String' in name && name.String && name.String.sval === 'pg_catalog') ||
-         ('String' in name && name.String && name.String.str === 'pg_catalog'))
-      );
+      const typeNames = node.typeName.names.map(name => {
+        if (name && typeof name === 'object' && 'String' in name) {
+          const stringVal = name.String;
+          return (stringVal as any).sval || (stringVal as any).str;
+        }
+        return null;
+      }).filter(Boolean);
       
-      if (hasPgCatalog) {
-        let isBoolean = false;
-        let boolValue = false;
-        
-        if (result.arg.A_Const.sval && 
-            result.arg.A_Const.sval.sval &&
-            (result.arg.A_Const.sval.sval === 't' || result.arg.A_Const.sval.sval === 'f')) {
-          isBoolean = true;
-          boolValue = result.arg.A_Const.sval.sval === 't';
-        }
-        else if (result.arg.A_Const.val &&
-                 typeof result.arg.A_Const.val === 'object' &&
-                 'String' in result.arg.A_Const.val &&
-                 result.arg.A_Const.val.String &&
-                 (result.arg.A_Const.val.String.str === 't' || result.arg.A_Const.val.String.str === 'f')) {
-          isBoolean = true;
-          boolValue = result.arg.A_Const.val.String.str === 't';
-        }
-        
-        if (isBoolean) {
-          const isBoolType = result.typeName.names.some((name: any) => 
-            name && typeof name === 'object' && 
-            (('String' in name && name.String && name.String.sval === 'bool') ||
-             ('String' in name && name.String && name.String.str === 'bool'))
-          );
+      const hasPgCatalog = typeNames.includes('pg_catalog');
+      const hasBool = typeNames.includes('bool');
+      
+      if (hasPgCatalog && hasBool && node.arg) {
+        const arg = node.arg as any;
+        if (arg.A_Const) {
+          let stringValue = null;
           
-          if (isBoolType) {
+          // Handle both sval and val.String formats
+          if (arg.A_Const.sval && arg.A_Const.sval.sval) {
+            stringValue = arg.A_Const.sval.sval;
+          } else if (arg.A_Const.val && arg.A_Const.val.String) {
+            if (arg.A_Const.val.String.sval) {
+              stringValue = arg.A_Const.val.String.sval;
+            } else if (arg.A_Const.val.String.str) {
+              stringValue = arg.A_Const.val.String.str;
+            }
+          }
+          
+          if (stringValue === 't' || stringValue === 'true') {
+            return {
+              A_Const: {
+                boolval: { boolval: true },
+                location: arg.A_Const.location
+              }
+            };
+          } else if (stringValue === 'f' || stringValue === 'false') {
             return {
               A_Const: {
                 boolval: {},
-                location: result.arg.A_Const.location
+                location: arg.A_Const.location
               }
             };
           }
         }
       }
     }
-    
+
+    const result = this.transformGenericNode(node, context);
     return { TypeCast: result };
   }
 
@@ -416,10 +405,55 @@ export class V14ToV15Transformer {
   }
   
   Integer(node: PG14.Integer, context: TransformerContext): any {
+    const isInDefElemContext = context.parentNodeTypes?.includes('DefElem');
+    if (isInDefElemContext && node.ival !== undefined) {
+      const defElemName = (context as any).defElemName;
+      
+      // CreateRoleStmt: specific role attributes should become Boolean
+      if (defElemName && ['createrole', 'superuser', 'canlogin', 'createdb', 'inherit', 'bypassrls', 'isreplication'].includes(defElemName) && 
+          (node.ival === 0 || node.ival === 1)) {
+        return {
+          Boolean: {
+            boolval: node.ival === 1
+          }
+        };
+      }
+      
+      // CreateExtensionStmt: cascade should become Boolean
+      if (context.parentNodeTypes?.includes('CreateExtensionStmt') && defElemName) {
+        if (defElemName === 'cascade' && (node.ival === 0 || node.ival === 1)) {
+          return {
+            Boolean: {
+              boolval: node.ival === 1
+            }
+          };
+        }
+      }
+      
+      
+      // CreateFunctionStmt: window should become Boolean
+      if (context.parentNodeTypes?.includes('CreateFunctionStmt') && defElemName) {
+        if (defElemName === 'window' && (node.ival === 0 || node.ival === 1)) {
+          return {
+            Boolean: {
+              boolval: node.ival === 1
+            }
+          };
+        }
+      }
+      
+      if (['strict', 'security', 'leakproof', 'cycle'].includes(defElemName) && (node.ival === 0 || node.ival === 1)) {
+        return {
+          Boolean: {
+            boolval: node.ival === 1
+          }
+        };
+      }
+      
+    }
     
     // AlterTableCmd context: SET STATISTICS with ival 0 or -1 -> empty Integer
-    if (context.parentNodeTypes?.includes('AlterTableCmd') && 
-        (node.ival === 0 || node.ival === -1)) {
+    if (context.parentNodeTypes?.includes('AlterTableCmd') && (node.ival === 0 || node.ival === -1)) {
       return { Integer: {} };
     }
     
@@ -436,6 +470,11 @@ export class V14ToV15Transformer {
       }
       
       if (node.ival === -1 && !defElemName) {
+        return { Integer: {} };
+      }
+      
+      // DefineStmt args context: ival 0 should become empty Integer for aggregates
+      if (!defElemName && node.ival === 0) {
         return { Integer: {} };
       }
     }
@@ -689,7 +728,12 @@ export class V14ToV15Transformer {
   }
 
   ReturnStmt(node: PG14.ReturnStmt, context: TransformerContext): any {
-    const result = this.transformGenericNode(node, context);
+    const result: any = {};
+
+    if (node.returnval !== undefined) {
+      result.returnval = this.transform(node.returnval as any, context);
+    }
+
     return { ReturnStmt: result };
   }
 
