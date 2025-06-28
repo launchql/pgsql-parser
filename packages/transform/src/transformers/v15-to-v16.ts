@@ -3088,35 +3088,43 @@ export class V15ToV16Transformer {
   }
 
   DropOwnedStmt(node: PG15.DropOwnedStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { DropOwnedStmt: result };
   }
 
   ReassignOwnedStmt(node: PG15.ReassignOwnedStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { ReassignOwnedStmt: result };
   }
 
   AlterTSDictionaryStmt(node: PG15.AlterTSDictionaryStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { AlterTSDictionaryStmt: result };
   }
 
   AlterTSConfigurationStmt(node: PG15.AlterTSConfigurationStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { AlterTSConfigurationStmt: result };
   }
 
   ClosePortalStmt(node: PG15.ClosePortalStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { ClosePortalStmt: result };
   }
 
   FetchStmt(node: PG15.FetchStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { FetchStmt: result };
   }
 
   AlterStatsStmt(node: PG15.AlterStatsStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { AlterStatsStmt: result };
   }
 
   ObjectWithArgs(node: PG15.ObjectWithArgs, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { ObjectWithArgs: result };
   }
 
   AlterOperatorStmt(node: PG15.AlterOperatorStmt, context: TransformerContext): any {
