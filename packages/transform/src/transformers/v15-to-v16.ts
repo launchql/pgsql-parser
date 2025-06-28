@@ -508,6 +508,10 @@ export class V15ToV16Transformer {
   A_Const(node: PG15.A_Const, context: TransformerContext): any {
     const result: any = {};
 
+    if (node.isnull !== undefined && !node.isnull) {
+      result.isnull = node.isnull;
+    }
+
     if (node.sval !== undefined) {
       result.sval = node.sval;
     }
