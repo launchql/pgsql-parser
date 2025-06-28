@@ -184,7 +184,7 @@ export class V13ToV14Transformer {
           }
         }
         
-        // Handle pg_catalog prefix removal for specific functions
+        // Handle pg_catalog prefix for specific functions
         if (funcname.length >= 2) {
           const firstElement = funcname[0];
           const secondElement = funcname[1];
@@ -200,6 +200,23 @@ export class V13ToV14Transformer {
               if (isInCreateContext || isStandardSyntax) {
                 funcname = funcname.slice(1);
               }
+            }
+          }
+        } else if (funcname.length === 1) {
+          const singleElement = funcname[0];
+          if (singleElement && typeof singleElement === 'object' && 'String' in singleElement) {
+            const functionName = singleElement.String.str || singleElement.String.sval;
+            const sqlSyntaxFunctions = [
+              'btrim', 'trim', 'ltrim', 'rtrim',
+              'position', 'overlay',
+              'extract', 'timezone'
+            ];
+            
+            if (sqlSyntaxFunctions.includes(functionName.toLowerCase())) {
+              funcname = [
+                { String: { str: 'pg_catalog' } },
+                ...funcname
+              ];
             }
           }
         }
@@ -961,22 +978,6 @@ export class V13ToV14Transformer {
       return 'COERCE_EXPLICIT_CALL';
     }
 
-    // Handle btrim function specifically - depends on pg_catalog prefix
-    if (funcname.toLowerCase() === 'btrim') {
-      // Check if the function has pg_catalog prefix by examining the node
-      if (node && node.funcname && Array.isArray(node.funcname) && node.funcname.length >= 2) {
-        const firstElement = node.funcname[0];
-        if (firstElement && typeof firstElement === 'object' && 'String' in firstElement) {
-          const prefix = firstElement.String.str || firstElement.String.sval;
-          if (prefix === 'pg_catalog') {
-            return 'COERCE_SQL_SYNTAX';
-          }
-        }
-      }
-      return 'COERCE_EXPLICIT_CALL';
-    }
-
-    
     const explicitCallFunctions = [
       'substr', 'timestamptz', 'timestamp', 'date', 'time', 'timetz',
       'interval', 'numeric', 'decimal', 'float4', 'float8', 'int2', 'int4', 'int8',
