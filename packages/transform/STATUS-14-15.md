@@ -1,8 +1,8 @@
 # PostgreSQL 14-to-15 AST Transformer Status
 
 ## Current Test Results
-- **Tests Passing**: 5/258 (1.9%) - Testing in progress
-- **Tests Failing**: 253/258 (98.1%)
+- **Tests Passing**: 6/258 (2.3%) - Improved from 2/258
+- **Tests Failing**: 252/258 (97.7%)
 - **Last Updated**: June 28, 2025
 
 ## Recent Fixes Applied
@@ -13,10 +13,10 @@
 - 🔧 Testing current fixes for node wrapping issues
 
 ## Test Status Summary
-The 14-15 transformer is in active development with 5 tests passing (improved from 2). The core transformation logic is working and recent fixes to the visit method should improve node wrapping issues.
+The 14-15 transformer is in active development with 6 tests passing (improved from 2). The core transformation logic is working and recent fixes to the visit method have shown some improvement, but String transformation issues persist.
 
-## Primary Issue: Node Wrapping Problems (FIXED)
-The main issue was that the `visit` method wasn't properly calling specific node transformation methods like `String`. Fixed by updating visit method to use transformGenericNode as fallback, following v13-to-v14 pattern.
+## Primary Issue: Node Wrapping Problems (PARTIALLY FIXED)
+The main issue was that the `visit` method wasn't properly calling specific node transformation methods like `String`. Updated visit method to use transformGenericNode as fallback, following v13-to-v14 pattern. This improved from 2/258 to 6/258 passing tests, but String transformation issues persist.
 
 ### Examples of Wrapping Issues:
 ```diff
@@ -115,8 +115,8 @@ Applied the v13-to-v14 transformer's approach to node wrapping:
 
 ## Next Steps
 1. ✅ Fixed `visit` method to follow v13-to-v14 patterns
-2. 🧪 Testing locally to verify node wrapping fixes (in progress)
-3. 📈 Expecting significant improvement from 5/258 to much higher pass rate
+2. 🧪 Testing shows improvement from 2/258 to 6/258 passing tests
+3. 📈 Further investigation needed for String transformation issues
 4. 🔍 Address any remaining edge cases after confirming wrapping fixes work
 
 ## Architecture Notes
