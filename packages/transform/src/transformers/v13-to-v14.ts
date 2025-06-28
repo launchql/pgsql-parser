@@ -1046,12 +1046,7 @@ export class V13ToV14Transformer {
       if (node.mode === "FUNC_PARAM_VARIADIC") {
         result.mode = "FUNC_PARAM_VARIADIC"; // Always preserve variadic parameters
       } else if (node.mode === "FUNC_PARAM_IN") {
-        // Check if this parameter should be variadic based on polymorphic array types
-        if (this.isVariadicParameterType(node.argType)) {
-          result.mode = "FUNC_PARAM_VARIADIC";
-        } else {
-          result.mode = "FUNC_PARAM_DEFAULT";
-        }
+        result.mode = "FUNC_PARAM_DEFAULT";
       } else {
         result.mode = node.mode;
       }
@@ -2124,20 +2119,7 @@ export class V13ToV14Transformer {
     
     let mode = "FUNC_PARAM_DEFAULT";
     
-    // Check if this is a variadic parameter type (anyarray, anycompatiblearray, etc.)
-    if (this.isVariadicParameterType(argType)) {
-      mode = "FUNC_PARAM_VARIADIC";
-    }
-    
-    if (argType && argType.names && Array.isArray(argType.names)) {
-      const typeName = argType.names[argType.names.length - 1];
-      if (typeName && typeName.String && typeName.String.str === 'anyarray') {
-        mode = "FUNC_PARAM_VARIADIC";
-      }
-    }
-    
-    
-    // Also check for VARIADIC context in aggregate functions
+    // Check if this should be variadic based on context (aggregate functions with VARIADIC keyword)
     if (context && context.parentNodeTypes) {
       const isAggregateContext = context.parentNodeTypes.includes('RenameStmt') && 
                                 (context as any).renameObjectType === 'OBJECT_AGGREGATE';
