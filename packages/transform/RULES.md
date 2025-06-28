@@ -219,6 +219,19 @@ When debugging transformation issues:
 
 This ensures faster feedback loops and prevents dependency on external CI systems during development.
 
+## DO NOT LOOK AT CI — only work locally with tests.
+
+**⚠️ CRITICAL RULE: Never look at CI logs or use CI-related commands during development.**
+
+When debugging transformation issues:
+- Run tests locally using `yarn test __tests__/kitchen-sink/13-14` or similar
+- Examine local test output and failure messages
+- Reproduce issues locally and verify fixes locally
+- Only push changes after verifying they work locally
+- Do not use `gh run view`, `git_pr_checks`, or other CI inspection commands
+
+This ensures faster feedback loops and prevents dependency on external CI systems during development.
+
 ## Summary
 
 Always use `@pgsql/parser` for multi-version PostgreSQL AST parsing in the transform package. This is the only way to get accurate version-specific results and build working transformers. Remember that all parser methods are async and must be awaited.
