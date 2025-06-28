@@ -2920,59 +2920,73 @@ export class V15ToV16Transformer {
   }
 
   CreateFdwStmt(node: PG15.CreateFdwStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { CreateFdwStmt: result };
   }
 
   SetOperationStmt(node: PG15.SetOperationStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { SetOperationStmt: result };
   }
 
   ReplicaIdentityStmt(node: PG15.ReplicaIdentityStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { ReplicaIdentityStmt: result };
   }
 
   AlterCollationStmt(node: PG15.AlterCollationStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { AlterCollationStmt: result };
   }
 
   AlterDomainStmt(node: PG15.AlterDomainStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { AlterDomainStmt: result };
   }
 
   PrepareStmt(node: PG15.PrepareStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { PrepareStmt: result };
   }
 
   ExecuteStmt(node: PG15.ExecuteStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { ExecuteStmt: result };
   }
 
   DeallocateStmt(node: PG15.DeallocateStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { DeallocateStmt: result };
   }
 
   NotifyStmt(node: PG15.NotifyStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { NotifyStmt: result };
   }
 
   ListenStmt(node: PG15.ListenStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { ListenStmt: result };
   }
 
   UnlistenStmt(node: PG15.UnlistenStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { UnlistenStmt: result };
   }
 
   CheckPointStmt(node: PG15.CheckPointStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { CheckPointStmt: result };
   }
 
   LoadStmt(node: PG15.LoadStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { LoadStmt: result };
   }
 
   DiscardStmt(node: PG15.DiscardStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { DiscardStmt: result };
   }
 
   CommentStmt(node: PG15.CommentStmt, context: TransformerContext): any {
@@ -2994,35 +3008,43 @@ export class V15ToV16Transformer {
   }
 
   LockStmt(node: PG15.LockStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { LockStmt: result };
   }
 
   CreatePolicyStmt(node: PG15.CreatePolicyStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { CreatePolicyStmt: result };
   }
 
   AlterPolicyStmt(node: PG15.AlterPolicyStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { AlterPolicyStmt: result };
   }
 
   CreateUserMappingStmt(node: PG15.CreateUserMappingStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { CreateUserMappingStmt: result };
   }
 
   CreateStatsStmt(node: PG15.CreateStatsStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { CreateStatsStmt: result };
   }
 
   StatsElem(node: PG15.StatsElem, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { StatsElem: result };
   }
 
   CreatePublicationStmt(node: PG15.CreatePublicationStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { CreatePublicationStmt: result };
   }
 
   CreateSubscriptionStmt(node: PG15.CreateSubscriptionStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { CreateSubscriptionStmt: result };
   }
 
   AlterPublicationStmt(node: PG15.AlterPublicationStmt, context: TransformerContext): any {
