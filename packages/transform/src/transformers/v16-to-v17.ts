@@ -448,6 +448,18 @@ export class V16ToV17Transformer {
         ? node.names.map(item => this.transform(item as any, context))
         : this.transform(node.names as any, context);
 
+      if (Array.isArray(names) && names.length === 2) {
+        const firstElement = names[0];
+        const secondElement = names[1];
+        if (firstElement && typeof firstElement === 'object' && 'String' in firstElement &&
+            secondElement && typeof secondElement === 'object' && 'String' in secondElement) {
+          const firstTypeName = firstElement.String.str || firstElement.String.sval;
+          const secondTypeName = secondElement.String.str || secondElement.String.sval;
+          if (firstTypeName === 'pg_catalog' && secondTypeName === 'json') {
+            names = [secondElement];
+          }
+        }
+      }
 
       result.names = names;
     }
@@ -561,6 +573,18 @@ export class V16ToV17Transformer {
             ? typeName.names.map((item: any) => this.transform(item as any, context))
             : this.transform(typeName.names as any, context);
 
+          if (Array.isArray(names) && names.length === 2) {
+            const firstElement = names[0];
+            const secondElement = names[1];
+            if (firstElement && typeof firstElement === 'object' && 'String' in firstElement &&
+                secondElement && typeof secondElement === 'object' && 'String' in secondElement) {
+              const firstTypeName = firstElement.String.str || firstElement.String.sval;
+              const secondTypeName = secondElement.String.str || secondElement.String.sval;
+              if (firstTypeName === 'pg_catalog' && secondTypeName === 'json') {
+                names = [secondElement];
+              }
+            }
+          }
 
           transformedTypeName.names = names;
         }
