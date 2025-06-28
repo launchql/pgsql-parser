@@ -26,20 +26,25 @@ Started from a basic skeleton transformer and systematically implemented node wr
 
 **Attempted Solutions**:
 - ❌ Broad A_Const fix (transforms all empty ival objects) - caused test pass rate to drop to 144/258
-- ❌ Context-aware transformation - too complex, inconsistent results
-- 🔄 Currently exploring more sophisticated approach
+- ❌ Context-aware transformation - context patterns identical for zero vs negative values
+- ✅ Successfully reverted to stable 184/258 baseline after testing approaches
+- 🔄 Currently exploring dual-parse approach to detect when transformation is needed
 
 ## Debug Tools Created
 - `debug_transformation_flow_detailed.js` - Analyzes exact transformation flow for negative integers
+- `debug_sql_value_analysis.js` - Compares PG15 vs PG16 behavior across test cases
+- `debug_ival_contexts.js` - Analyzes empty ival contexts across different SQL scenarios
+- `debug_alternative_approach.js` - Explores alternative detection methods beyond context analysis
 - `debug_insert_negative.js` - Tests specific INSERT statement with negative value
 - `debug_zero_vs_negative.js` - Compares zero vs negative value handling
 - `debug_context_analysis.js` - Analyzes context-dependent transformation patterns
 
 ## Next Steps
-1. Implement targeted A_Const fix that can distinguish between contexts where empty ival objects should be transformed vs. preserved
-2. Test fix maintains 184/258 baseline while resolving negative integer cases
-3. Verify specific failing test cases like `alter_table-234.sql`
-4. Continue systematic improvement of remaining 74 failing tests
+1. Explore dual-parse approach: parse same SQL with both PG15 and PG16 to determine when transformation is needed
+2. Implement targeted A_Const fix based on dual-parse comparison results
+3. Test fix maintains 184/258 baseline while resolving negative integer cases
+4. Verify specific failing test cases like `alter_table-234.sql`
+5. Continue systematic improvement of remaining 74 failing tests
 
 ## Test Categories
 - **Passing (184)**: Basic node transformations, most SQL constructs
