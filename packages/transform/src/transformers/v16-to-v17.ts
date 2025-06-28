@@ -31,10 +31,6 @@ export class V16ToV17Transformer {
   visit(node: PG16.Node, context: TransformerContext = { parentNodeTypes: [] }): any {
     const nodeType = this.getNodeType(node);
     
-    if (nodeType === 'TypeName') {
-      console.log('VISIT DEBUG - Processing TypeName node:', JSON.stringify(node, null, 2));
-    }
-    
     // Handle empty objects
     if (!nodeType) {
       return {};
@@ -49,23 +45,11 @@ export class V16ToV17Transformer {
         parentNodeTypes: [...context.parentNodeTypes, nodeType]
       };
       
-      if (nodeType === 'TypeName') {
-        console.log('VISIT DEBUG - About to call TypeName method with data:', JSON.stringify(nodeData, null, 2));
-      }
-      
       const result = (this[methodName] as any)(nodeData, childContext);
-      
-      if (nodeType === 'TypeName') {
-        console.log('VISIT DEBUG - TypeName method returned:', JSON.stringify(result, null, 2));
-      }
-      
       return result;
     }
     
     // If no specific method, return the node as-is
-    if (nodeType === 'TypeName') {
-      console.log('VISIT DEBUG - No TypeName method found, returning node as-is');
-    }
     return node;
   }
 
@@ -587,7 +571,63 @@ export class V16ToV17Transformer {
       result.arg = this.transform(node.arg as any, context);
     }
     if (node.typeName !== undefined) {
-      result.typeName = this.transform(node.typeName as any, context);
+      // Handle unwrapped TypeName data directly since PG16 provides it unwrapped
+      const typeName = node.typeName as any;
+      
+      if (typeName && typeof typeName === 'object' && 'names' in typeName) {
+        const transformedTypeName: any = {};
+        
+        if (typeName.names !== undefined) {
+          let names = Array.isArray(typeName.names)
+            ? typeName.names.map((item: any) => this.transform(item as any, context))
+            : this.transform(typeName.names as any, context);
+
+          if (Array.isArray(names) && names.length === 1) {
+            const singleElement = names[0];
+            if (singleElement && typeof singleElement === 'object' && 'String' in singleElement) {
+              const typeNameStr = singleElement.String.str || singleElement.String.sval;
+              if (typeNameStr === 'json') {
+                names = [
+                  { String: { sval: 'pg_catalog' } },
+                  ...names
+                ];
+              }
+            }
+          }
+
+          transformedTypeName.names = names;
+        }
+
+        if (typeName.typeOid !== undefined) {
+          transformedTypeName.typeOid = typeName.typeOid;
+        }
+        if (typeName.setof !== undefined) {
+          transformedTypeName.setof = typeName.setof;
+        }
+        if (typeName.pct_type !== undefined) {
+          transformedTypeName.pct_type = typeName.pct_type;
+        }
+        if (typeName.typmods !== undefined) {
+          transformedTypeName.typmods = Array.isArray(typeName.typmods)
+            ? typeName.typmods.map((item: any) => this.transform(item as any, context))
+            : this.transform(typeName.typmods as any, context);
+        }
+        if (typeName.typemod !== undefined) {
+          transformedTypeName.typemod = typeName.typemod;
+        }
+        if (typeName.arrayBounds !== undefined) {
+          transformedTypeName.arrayBounds = Array.isArray(typeName.arrayBounds)
+            ? typeName.arrayBounds.map((item: any) => this.transform(item as any, context))
+            : this.transform(typeName.arrayBounds as any, context);
+        }
+        if (typeName.location !== undefined) {
+          transformedTypeName.location = typeName.location;
+        }
+
+        result.typeName = transformedTypeName;
+      } else {
+        result.typeName = this.transform(typeName, context);
+      }
     }
     if (node.location !== undefined) {
       result.location = node.location;
