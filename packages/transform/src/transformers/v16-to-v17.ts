@@ -449,20 +449,6 @@ export class V16ToV17Transformer {
         ? node.names.map(item => this.transform(item as any, context))
         : this.transform(node.names as any, context);
 
-      if (Array.isArray(names) && names.length === 1) {
-        const singleElement = names[0];
-        if (singleElement && typeof singleElement === 'object' && 'String' in singleElement) {
-          const typeName = singleElement.String.str || singleElement.String.sval;
-          if (typeName === 'json') {
-            if (!this.isInValuesContext(context)) {
-              names = [
-                { String: { sval: 'pg_catalog' } },
-                ...names
-              ];
-            }
-          }
-        }
-      }
 
       result.names = names;
     }
@@ -565,8 +551,7 @@ export class V16ToV17Transformer {
       result.arg = this.transform(node.arg as any, context);
     }
     if (node.typeName !== undefined) {
-      const typeNameResult = this.TypeName(node.typeName as any, context);
-      result.typeName = typeNameResult.TypeName;
+      result.typeName = this.transform(node.typeName as any, context);
     }
     if (node.location !== undefined) {
       result.location = node.location;
