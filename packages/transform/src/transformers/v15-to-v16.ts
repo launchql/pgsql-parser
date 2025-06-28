@@ -3420,52 +3420,64 @@ export class V15ToV16Transformer {
 
 
   RangeTableSample(node: PG15.RangeTableSample, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { RangeTableSample: result };
   }
 
   XmlSerialize(node: PG15.XmlSerialize, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { XmlSerialize: result };
   }
 
   RuleStmt(node: PG15.RuleStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { RuleStmt: result };
   }
 
   SQLValueFunction(node: PG15.SQLValueFunction, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { SQLValueFunction: result };
   }
 
   GroupingFunc(node: PG15.GroupingFunc, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { GroupingFunc: result };
   }
 
   MultiAssignRef(node: PG15.MultiAssignRef, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { MultiAssignRef: result };
   }
 
   SetToDefault(node: PG15.SetToDefault, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { SetToDefault: result };
   }
 
   CurrentOfExpr(node: PG15.CurrentOfExpr, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { CurrentOfExpr: result };
   }
 
   TableLikeClause(node: PG15.TableLikeClause, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { TableLikeClause: result };
   }
 
   AlterFunctionStmt(node: PG15.AlterFunctionStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { AlterFunctionStmt: result };
   }
 
   AlterObjectSchemaStmt(node: PG15.AlterObjectSchemaStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { AlterObjectSchemaStmt: result };
   }
 
 
   CreateForeignTableStmt(node: PG15.CreateForeignTableStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { CreateForeignTableStmt: result };
   }
 
   DropRoleStmt(node: PG15.DropRoleStmt, context: TransformerContext): any {
