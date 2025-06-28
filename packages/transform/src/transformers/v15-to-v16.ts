@@ -3048,35 +3048,43 @@ export class V15ToV16Transformer {
   }
 
   AlterPublicationStmt(node: PG15.AlterPublicationStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { AlterPublicationStmt: result };
   }
 
   AlterSubscriptionStmt(node: PG15.AlterSubscriptionStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { AlterSubscriptionStmt: result };
   }
 
   DropSubscriptionStmt(node: PG15.DropSubscriptionStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { DropSubscriptionStmt: result };
   }
 
   InlineCodeBlock(node: PG15.InlineCodeBlock, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { InlineCodeBlock: result };
   }
 
   CallContext(node: PG15.CallContext, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { CallContext: result };
   }
 
   ConstraintsSetStmt(node: PG15.ConstraintsSetStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { ConstraintsSetStmt: result };
   }
 
   AlterSystemStmt(node: PG15.AlterSystemStmt, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { AlterSystemStmt: result };
   }
 
   VacuumRelation(node: PG15.VacuumRelation, context: TransformerContext): any {
-    return node;
+    const result: any = { ...node };
+    return { VacuumRelation: result };
   }
 
   DropOwnedStmt(node: PG15.DropOwnedStmt, context: TransformerContext): any {
