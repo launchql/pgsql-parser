@@ -252,11 +252,6 @@ export class V14ToV15Transformer {
       }
     }
     
-    // Handle boolval field - in PG15, all boolval fields are represented as empty objects
-    if (result.boolval !== undefined) {
-      // Handle both direct boolval and nested boolval structures
-      result.boolval = {};
-    }
     
     // Handle ival field directly (not nested in val) - removed overly broad conversion
     
@@ -382,7 +377,7 @@ export class V14ToV15Transformer {
           if (isBoolType) {
             return {
               A_Const: {
-                boolval: boolValue ? { boolval: true } : {},
+                boolval: {},
                 location: result.arg.A_Const.location
               }
             };
@@ -421,58 +416,45 @@ export class V14ToV15Transformer {
   }
   
   Integer(node: PG14.Integer, context: TransformerContext): any {
-    // Check if we're in a DefElem context - if so, handle special cases
-    const isInDefElemContext = context.parentNodeTypes && 
-      context.parentNodeTypes.some(nodeType => nodeType === 'DefElem');
     
-    if (isInDefElemContext && node.ival !== undefined) {
+    // AlterTableCmd context: SET STATISTICS with ival 0 or -1 -> empty Integer
+    if (context.parentNodeTypes?.includes('AlterTableCmd') && 
+        (node.ival === 0 || node.ival === -1)) {
+      return { Integer: {} };
+    }
+    
+    // DefineStmt context: specific cases where ival should become empty Integer
+    if (context.parentNodeTypes?.includes('DefineStmt')) {
       const defElemName = (context as any).defElemName;
       
-      // DefElem name-specific transformations - be very restrictive
-      if (defElemName) {
-        if (defElemName === 'cycle' && node.ival === 1 && 
-            context.parentNodeTypes?.some(nodeType => nodeType === 'CreateSeqStmt')) {
-          return {
-            Boolean: {
-              boolval: true
-            }
-          };
-        }
-        
-        
-        if (defElemName === 'increment' && node.ival < 0 &&
-            context.parentNodeTypes?.some(nodeType => nodeType === 'CreateSeqStmt')) {
-          return { Integer: {} };
-        }
-        
-        
-        if (defElemName === 'sspace' && node.ival === 0 &&
-            context.parentNodeTypes?.some(nodeType => nodeType === 'DefineStmt')) {
-          return { Integer: {} };
-        }
+      if (defElemName === 'initcond' && (node.ival === 0 || node.ival === -100)) {
+        return { Integer: {} };
       }
       
-      const isBooleanContext = context.parentNodeTypes && 
-        (context.parentNodeTypes.some(nodeType => 
-          nodeType === 'CreateRoleStmt' || 
-          nodeType === 'AlterRoleStmt' || 
-          nodeType === 'CreateFunctionStmt' ||
-          nodeType === 'AlterFunctionStmt' ||
-          nodeType === 'CreateExtensionStmt'
-        ));
-      
-      if (isBooleanContext) {
-        // Boolean contexts: ival: 0 -> boolval: false, ival: 1 -> boolval: true
-        if (node.ival === 0 || node.ival === 1) {
-          const boolValue = node.ival === 1;
-          return {
-            Boolean: {
-              boolval: boolValue
-            }
-          };
-        }
+      if (defElemName === 'sspace' && node.ival === 0) {
+        return { Integer: {} };
       }
       
+      if (node.ival === -1 && !defElemName) {
+        return { Integer: {} };
+      }
+    }
+    
+    // CreateSeqStmt context: specific cases where ival should become empty Integer
+    if (context.parentNodeTypes?.includes('CreateSeqStmt')) {
+      const defElemName = (context as any).defElemName;
+      
+      if (defElemName === 'start' && node.ival === 0) {
+        return { Integer: {} };
+      }
+      
+      if (defElemName === 'minvalue' && node.ival === 0) {
+        return { Integer: {} };
+      }
+      
+      if (defElemName === 'increment' && node.ival === -1) {
+        return { Integer: {} };
+      }
     }
     
     const result: any = { ...node };
