@@ -1778,6 +1778,9 @@ export class V13ToV14Transformer {
       if (options === 2) {
         return 4;
       }
+      if (options === 3) {
+        return 5;  // INCLUDING CONSTRAINTS + INCLUDING COMMENTS: PG13 value 3 -> PG14 value 5
+      }
       if (options === 4) {
         return 8;  // INCLUDING DEFAULTS: PG13 value 4 -> PG14 value 8
       }
@@ -1798,6 +1801,12 @@ export class V13ToV14Transformer {
       }
       if (options === 128) {
         return 256;  // INCLUDING STATISTICS: PG13 value 128 -> PG14 value 256
+      }
+      if (options === 131) {
+        return 261;  // INCLUDING CONSTRAINTS + INDEXES + STATISTICS: PG13 value 131 -> PG14 value 261
+      }
+      if (options === 163) {
+        return 325;  // INCLUDING CONSTRAINTS + INDEXES + COMMENTS + STORAGE: PG13 value 163 -> PG14 value 325
       }
       
       return options;
@@ -2714,18 +2723,18 @@ export class V13ToV14Transformer {
   StatsElem(node: any, context: TransformerContext): any {
     const result: any = {};
     
-    if (node.name !== undefined) {
-      result.expr = {
-        ColumnRef: {
-          fields: [{
-            String: { str: node.name }
-          }]
-        }
-      };
+    if (node.expr !== undefined) {
+      if (node.expr.ColumnRef && node.expr.ColumnRef.fields && 
+          node.expr.ColumnRef.fields.length === 1 && 
+          node.expr.ColumnRef.fields[0].String) {
+        result.name = node.expr.ColumnRef.fields[0].String.str;
+      } else {
+        result.expr = this.transform(node.expr as any, context);
+      }
     }
     
-    if (node.expr !== undefined) {
-      result.expr = this.transform(node.expr as any, context);
+    if (node.name !== undefined) {
+      result.name = node.name;
     }
     
     return { StatsElem: result };
@@ -2749,9 +2758,11 @@ export class V13ToV14Transformer {
     if (node.exprs !== undefined) {
       result.exprs = Array.isArray(node.exprs)
         ? node.exprs.map((expr: any) => {
-            return { StatsElem: { expr: this.transform(expr as any, context) } };
+            // Create a StatsElem node and transform it
+            const statsElem = { StatsElem: { expr: expr } };
+            return this.transform(statsElem as any, context);
           })
-        : [{ StatsElem: { expr: this.transform(node.exprs as any, context) } }];
+        : [this.transform({ StatsElem: { expr: node.exprs } } as any, context)];
     }
     
     if (node.relations !== undefined) {
