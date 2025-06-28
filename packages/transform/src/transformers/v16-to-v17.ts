@@ -444,24 +444,9 @@ export class V16ToV17Transformer {
     const result: any = {};
 
     if (node.names !== undefined) {
-      let names = Array.isArray(node.names)
+      result.names = Array.isArray(node.names)
         ? node.names.map(item => this.transform(item as any, context))
         : this.transform(node.names as any, context);
-
-      if (Array.isArray(names) && names.length === 2) {
-        const firstElement = names[0];
-        const secondElement = names[1];
-        if (firstElement && typeof firstElement === 'object' && 'String' in firstElement &&
-            secondElement && typeof secondElement === 'object' && 'String' in secondElement) {
-          const firstTypeName = firstElement.String.str || firstElement.String.sval;
-          const secondTypeName = secondElement.String.str || secondElement.String.sval;
-          if (firstTypeName === 'pg_catalog' && secondTypeName === 'json') {
-            names = [secondElement];
-          }
-        }
-      }
-
-      result.names = names;
     }
 
     if (node.typeOid !== undefined) {
@@ -562,63 +547,7 @@ export class V16ToV17Transformer {
       result.arg = this.transform(node.arg as any, context);
     }
     if (node.typeName !== undefined) {
-      // Handle unwrapped TypeName data directly since PG16 provides it unwrapped
-      const typeName = node.typeName as any;
-      
-      if (typeName && typeof typeName === 'object' && 'names' in typeName) {
-        const transformedTypeName: any = {};
-        
-        if (typeName.names !== undefined) {
-          let names = Array.isArray(typeName.names)
-            ? typeName.names.map((item: any) => this.transform(item as any, context))
-            : this.transform(typeName.names as any, context);
-
-          if (Array.isArray(names) && names.length === 2) {
-            const firstElement = names[0];
-            const secondElement = names[1];
-            if (firstElement && typeof firstElement === 'object' && 'String' in firstElement &&
-                secondElement && typeof secondElement === 'object' && 'String' in secondElement) {
-              const firstTypeName = firstElement.String.str || firstElement.String.sval;
-              const secondTypeName = secondElement.String.str || secondElement.String.sval;
-              if (firstTypeName === 'pg_catalog' && secondTypeName === 'json') {
-                names = [secondElement];
-              }
-            }
-          }
-
-          transformedTypeName.names = names;
-        }
-
-        if (typeName.typeOid !== undefined) {
-          transformedTypeName.typeOid = typeName.typeOid;
-        }
-        if (typeName.setof !== undefined) {
-          transformedTypeName.setof = typeName.setof;
-        }
-        if (typeName.pct_type !== undefined) {
-          transformedTypeName.pct_type = typeName.pct_type;
-        }
-        if (typeName.typmods !== undefined) {
-          transformedTypeName.typmods = Array.isArray(typeName.typmods)
-            ? typeName.typmods.map((item: any) => this.transform(item as any, context))
-            : this.transform(typeName.typmods as any, context);
-        }
-        if (typeName.typemod !== undefined) {
-          transformedTypeName.typemod = typeName.typemod;
-        }
-        if (typeName.arrayBounds !== undefined) {
-          transformedTypeName.arrayBounds = Array.isArray(typeName.arrayBounds)
-            ? typeName.arrayBounds.map((item: any) => this.transform(item as any, context))
-            : this.transform(typeName.arrayBounds as any, context);
-        }
-        if (typeName.location !== undefined) {
-          transformedTypeName.location = typeName.location;
-        }
-
-        result.typeName = transformedTypeName;
-      } else {
-        result.typeName = this.transform(typeName, context);
-      }
+      result.typeName = this.transform(node.typeName as any, context);
     }
     if (node.location !== undefined) {
       result.location = node.location;
