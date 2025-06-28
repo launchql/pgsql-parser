@@ -279,7 +279,56 @@ export class V14ToV15Transformer {
   }
 
   TypeCast(node: PG14.TypeCast, context: TransformerContext): any {
+    // First transform the node using standard transformation
     const result = this.transformGenericNode(node, context);
+    
+    // Handle both pre-transformation (PG14) and post-transformation (PG15) A_Const structures
+    if (result.arg && 
+        typeof result.arg === 'object' && 
+        'A_Const' in result.arg &&
+        result.arg.A_Const &&
+        result.typeName &&
+        result.typeName.names &&
+        Array.isArray(result.typeName.names)) {
+      
+      let isBoolean = false;
+      let boolValue = false;
+      
+      if (result.arg.A_Const.sval && 
+          result.arg.A_Const.sval.sval &&
+          (result.arg.A_Const.sval.sval === 't' || result.arg.A_Const.sval.sval === 'f')) {
+        isBoolean = true;
+        boolValue = result.arg.A_Const.sval.sval === 't';
+      }
+      else if (result.arg.A_Const.val &&
+               typeof result.arg.A_Const.val === 'object' &&
+               'String' in result.arg.A_Const.val &&
+               result.arg.A_Const.val.String &&
+               (result.arg.A_Const.val.String.str === 't' || result.arg.A_Const.val.String.str === 'f')) {
+        isBoolean = true;
+        boolValue = result.arg.A_Const.val.String.str === 't';
+      }
+      
+      if (isBoolean) {
+        const isBoolType = result.typeName.names.some((name: any) => 
+          name && typeof name === 'object' && 
+          (('String' in name && name.String && name.String.sval === 'bool') ||
+           ('String' in name && name.String && name.String.str === 'bool'))
+        );
+        
+        if (isBoolType) {
+          return {
+            A_Const: {
+              boolval: {
+                boolval: boolValue
+              },
+              location: result.arg.A_Const.location
+            }
+          };
+        }
+      }
+    }
+    
     return { TypeCast: result };
   }
 
