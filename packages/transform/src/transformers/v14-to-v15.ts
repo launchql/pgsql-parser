@@ -1304,7 +1304,7 @@ export class V14ToV15Transformer {
 
   CreateAggregateStmt(node: PG14.DefineStmt, context: TransformerContext): any {
     const result = this.transformGenericNode(node, context);
-    return { DefineStmt: result };
+    return result;
   }
 
   CreateTableAsStmt(node: PG14.CreateTableAsStmt, context: TransformerContext): any {
