@@ -201,9 +201,12 @@ export class V13ToV14Transformer {
 
               if (isInCreateDomainContext) {
                 funcname = funcname.slice(1);
-              } else if ((isInSelectTargetContext || this.isInReturningContext(context)) && functionName === 'substring') {
-                const hasThreeArgs = node.args && Array.isArray(node.args) && node.args.length === 3;
-                if (hasThreeArgs) {
+              } else if ((isInSelectTargetContext || this.isInReturningContext(context) || isInCallStmtContext) && functionName === 'substring') {
+                // For substring functions in SELECT contexts, remove pg_catalog prefix for function call syntax
+                // Function call syntax: substring(string, start, length) - 3 args with simple types
+                // SQL syntax: SUBSTRING(string FROM start FOR length) - 3 args but with special FROM/FOR structure
+                const isFunctionCallSyntax = this.isStandardFunctionCallSyntax(node, context);
+                if (isFunctionCallSyntax) {
                   funcname = funcname.slice(1);
                 }
               }
@@ -505,14 +508,28 @@ export class V13ToV14Transformer {
       return true;
     }
 
-    if (node.args.length === 2) {
-      return false; // FROM syntax
-    }
-
-    if (node.args.length === 3) {
-      const thirdArg = node.args[2];
-      if (thirdArg && typeof thirdArg === 'object' && 'TypeCast' in thirdArg) {
-        return false; // FOR syntax with length cast
+    // For substring function, detect SQL syntax patterns
+    const funcname = node.funcname || [];
+    const functionName = funcname[funcname.length - 1]?.String?.str;
+    
+    if (functionName === 'substring') {
+      // SQL syntax patterns:
+      // 2. SUBSTRING(string FROM position FOR length) - 3 args with simple types
+      // Function call syntax:
+      
+      if (node.args.length === 2) {
+        return false; // SQL syntax: FROM only
+      }
+      
+      if (node.args.length === 3) {
+        const firstArg = node.args[0];
+        // If first argument is complex (TypeCast, FuncCall), it's likely function call syntax
+        if (firstArg && typeof firstArg === 'object' && ('TypeCast' in firstArg || 'FuncCall' in firstArg)) {
+          return true; // Function call syntax
+        }
+        if (firstArg && typeof firstArg === 'object' && 'ColumnRef' in firstArg) {
+          return false; // SQL syntax: FROM...FOR
+        }
       }
     }
 
