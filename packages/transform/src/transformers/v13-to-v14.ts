@@ -1111,11 +1111,11 @@ export class V13ToV14Transformer {
       return false;
     }
     
-    // Check if ALL parameters have explicit modes (IN, OUT, INOUT, VARIADIC)
+    // Check if ALL parameters have truly explicit modes (OUT, INOUT, VARIADIC)
+    // FUNC_PARAM_IN is often the default assigned by v13 parser for implicit parameters
     return parameters.every(param => {
       const mode = param?.FunctionParameter?.mode;
-      return mode === 'FUNC_PARAM_IN' || mode === 'FUNC_PARAM_OUT' || 
-             mode === 'FUNC_PARAM_INOUT' || mode === 'FUNC_PARAM_VARIADIC';
+      return mode === 'FUNC_PARAM_OUT' || mode === 'FUNC_PARAM_INOUT' || mode === 'FUNC_PARAM_VARIADIC';
     });
   }
 
@@ -1127,19 +1127,32 @@ export class V13ToV14Transformer {
     return false;
   }
 
+  private hasExplicitInParameters(parameters: any[]): boolean {
+    if (!parameters || !Array.isArray(parameters)) {
+      return false;
+    }
+    
+    const inParams = parameters.filter(p => p?.FunctionParameter?.mode === 'FUNC_PARAM_IN');
+    const outParams = parameters.filter(p => p?.FunctionParameter?.mode === 'FUNC_PARAM_OUT');
+    const inoutParams = parameters.filter(p => p?.FunctionParameter?.mode === 'FUNC_PARAM_INOUT');
+    
+    const hasExplicitModes = outParams.length > 0 || inoutParams.length > 0;
+    const hasInParams = inParams.length > 0;
+    
+    if (!hasExplicitModes || !hasInParams) {
+      return false;
+    }
+    
+    const inParamsWithNames = inParams.filter(p => p?.FunctionParameter?.name);
+    return inParamsWithNames.length > 0;
+  }
+
   private isVariadicParameterType(argType: any, index?: number, allArgs?: any[], context?: TransformerContext): boolean {
     if (!argType) return false;
 
     // Handle TypeName wrapper
     const typeNode = argType.TypeName || argType;
 
-    if (typeNode.arrayBounds && Array.isArray(typeNode.arrayBounds)) {
-      for (const bound of typeNode.arrayBounds) {
-        if (bound.Integer && bound.Integer.ival === -1) {
-          return true;
-        }
-      }
-    }
 
     if (typeNode.names && Array.isArray(typeNode.names)) {
       const typeName = typeNode.names[typeNode.names.length - 1]?.String?.str;
@@ -1149,7 +1162,6 @@ export class V13ToV14Transformer {
       }
 
       if (typeName === 'anyarray' && allArgs && index !== undefined) {
-
         if (typeName === 'anyarray' && index > 0) {
           const prevArg = allArgs[index - 1];
           const prevTypeNode = prevArg?.TypeName || prevArg;
@@ -1169,13 +1181,37 @@ export class V13ToV14Transformer {
         return false;
       }
 
-      if (typeName === 'int4' || typeName === 'int' || typeName === 'text' || typeName === 'varchar') {
-        return false;
-      }
-
       // In RenameStmt context for aggregates, "any" type should be treated as variadic
       if (context && context.parentNodeTypes?.includes('RenameStmt') && typeName === 'any') {
         return true;
+      }
+    }
+
+    if (typeNode.arrayBounds && Array.isArray(typeNode.arrayBounds)) {
+      if (typeNode.names && Array.isArray(typeNode.names)) {
+        const typeName = typeNode.names[typeNode.names.length - 1]?.String?.str;
+        
+        if (context?.parentNodeTypes?.includes('DropStmt') && allArgs && index !== undefined) {
+          // For DropStmt context, be extremely conservative about VARIADIC detection
+          
+          for (const bound of typeNode.arrayBounds) {
+            if (bound.Integer && bound.Integer.ival === -1) {
+              // For DropStmt, default to regular array parameter (FUNC_PARAM_DEFAULT)
+              // Only mark as VARIADIC in very specific cases with clear VARIADIC syntax indicators
+              
+              const isLastParameter = index === allArgs.length - 1;
+              const hasMultipleParameters = allArgs.length > 1;
+              
+              if (hasMultipleParameters && isLastParameter && typeNode.location && typeNode.location <= 15) {
+                return true;
+              }
+              
+              return false;
+            }
+          }
+          // For DropStmt context, if we reach here, it's not VARIADIC
+          return false;
+        }
       }
     }
 
@@ -1910,6 +1946,7 @@ export class V13ToV14Transformer {
     const hasExplicitModes = this.functionHasExplicitModes(node.parameters);
     const allHaveExplicitModes = this.allParametersHaveExplicitModes(node.parameters);
     const hasOnlyExplicitIn = this.hasOnlyExplicitInParameters(node.parameters);
+    const hasExplicitIn = this.hasExplicitInParameters(node.parameters);
 
     // Create child context with CreateFunctionStmt as parent and explicit mode info
     const childContext: TransformerContext = {
@@ -1917,7 +1954,8 @@ export class V13ToV14Transformer {
       parentNodeTypes: [...(context.parentNodeTypes || []), 'CreateFunctionStmt'],
       functionHasExplicitModes: hasExplicitModes,
       allParametersHaveExplicitModes: allHaveExplicitModes,
-      hasOnlyExplicitInParameters: hasOnlyExplicitIn
+      hasOnlyExplicitInParameters: hasOnlyExplicitIn,
+      hasExplicitInParameters: hasExplicitIn
     };
 
     if (node.funcname !== undefined) {
@@ -3289,14 +3327,21 @@ export class V13ToV14Transformer {
           return 'FUNC_PARAM_IN';
         }
         
-        if (context && context.functionHasExplicitModes) {
-          if (context.hasOnlyExplicitInParameters) {
-            return 'FUNC_PARAM_IN';
-          }
+        if (context && 
+            ((context as any).functionHasExplicitModes && 
+             !(context as any).hasExplicitInParameters &&
+             (context as any).allParametersHaveExplicitModes === false)) {
           return 'FUNC_PARAM_DEFAULT';
         }
         
-        return 'FUNC_PARAM_DEFAULT';
+        // Convert implicit IN parameters to DEFAULT for functions with only IN parameters
+        if (context && 
+            !(context as any).functionHasExplicitModes &&
+            !(context as any).hasExplicitInParameters) {
+          return 'FUNC_PARAM_DEFAULT';
+        }
+        
+        return 'FUNC_PARAM_IN';
       default:
         return pg13Mode;
     }
