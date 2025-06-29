@@ -196,13 +196,14 @@ export class V13ToV14Transformer {
 
             if (prefix === 'pg_catalog') {
               const isInCreateDomainContext = this.isInCreateDomainContext(context);
+              const isInCallStmtContext = this.isInCallStmtContext(context);
 
               if (isInCreateDomainContext) {
                 funcname = funcname.slice(1);
               }
               
-              // Remove pg_catalog prefix from substring functions in most contexts
-              if (functionName === 'substring') {
+              // Remove pg_catalog prefix from substring functions in CallStmt contexts
+              if (isInCallStmtContext && functionName === 'substring') {
                 funcname = funcname.slice(1);
               }
             }
@@ -473,6 +474,11 @@ export class V13ToV14Transformer {
   private isInCreateProcedureContext(context: TransformerContext): boolean {
     const parentNodeTypes = context.parentNodeTypes || [];
     return parentNodeTypes.includes('CreateFunctionStmt');
+  }
+
+  private isInCallStmtContext(context: TransformerContext): boolean {
+    const parentNodeTypes = context.parentNodeTypes || [];
+    return parentNodeTypes.includes('CallStmt');
   }
 
   private isStandardFunctionCallSyntax(node: any, context: TransformerContext): boolean {
