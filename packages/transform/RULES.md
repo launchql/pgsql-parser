@@ -235,3 +235,49 @@ This ensures faster feedback loops and prevents dependency on external CI system
 ## Summary
 
 Always use `@pgsql/parser` for multi-version PostgreSQL AST parsing in the transform package. This is the only way to get accurate version-specific results and build working transformers. Remember that all parser methods are async and must be awaited.
+
+
+# Transformer Rules
+
+## Core Principles
+
+### 1. Explicit Field Handling (REQUIRED)
+**Always explicitly handle each field** rather than using spread operators to copy everything.
+
+#### ✅ GOOD - Explicit field handling
+```ts
+RoleSpec(node: PG15.RoleSpec, context: TransformerContext): { RoleSpec: PG16.RoleSpec } {
+  const result: any = {};
+
+  if (node.roletype !== undefined) {
+    result.roletype = node.roletype;
+  }
+
+  if (node.rolename !== undefined) {
+    result.rolename = node.rolename;
+  }
+
+  if (node.location !== undefined) {
+    result.location = node.location;
+  }
+
+  return { RoleSpec: result };
+}
+```
+
+#### ❌ BAD - Blind copying (only acceptable as initial placeholder)
+```ts
+RoleSpec(node: PG15.RoleSpec, context: TransformerContext): { RoleSpec: PG16.RoleSpec } {
+  const result: any = { ...node };
+  return { RoleSpec: result };
+}
+```
+
+
+#### No-Change Transformers
+For nodes that don't change between versions like this, we should probably just delete them as they should not be visited:
+```ts
+BooleanTest(node: PG16.BooleanTest, context: TransformerContext): any {
+  return { BooleanTest: node };
+}
+```
