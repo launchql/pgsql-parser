@@ -523,8 +523,8 @@ export class V15ToV16Transformer {
       if (val.String && val.String.str !== undefined) {
         result.sval = val.String.str;
         delete result.val;
-      } else if (val.Integer && val.Integer.ival !== undefined) {
-        result.ival = val.Integer.ival;
+      } else if (val.Integer !== undefined) {
+        result.ival = val.Integer;
         delete result.val;
       } else if (val.Float && val.Float.str !== undefined) {
         result.fval = val.Float.str;
@@ -538,7 +538,20 @@ export class V15ToV16Transformer {
     }
 
     if (result.ival !== undefined) {
-      result.ival = this.transform(result.ival as any, context);
+      const childContext: TransformerContext = {
+        ...context,
+        parentNodeTypes: [...(context.parentNodeTypes || []), 'A_Const']
+      };
+      
+      if (typeof result.ival === 'object' && result.ival !== null) {
+        if (Object.keys(result.ival).length === 0) {
+          const wrappedIval = { Integer: result.ival };
+          const transformedWrapped = this.transform(wrappedIval as any, childContext);
+          result.ival = transformedWrapped.Integer;
+        }
+      } else {
+        result.ival = this.transform(result.ival as any, childContext);
+      }
     }
 
     return { A_Const: result };
@@ -592,9 +605,13 @@ export class V15ToV16Transformer {
     }
 
     if (node.arrayBounds !== undefined) {
+      const childContext: TransformerContext = {
+        ...context,
+        parentNodeTypes: [...(context.parentNodeTypes || []), 'TypeName', 'arrayBounds']
+      };
       result.arrayBounds = Array.isArray(node.arrayBounds)
-        ? node.arrayBounds.map((item: any) => this.transform(item as any, context))
-        : this.transform(node.arrayBounds as any, context);
+        ? node.arrayBounds.map((item: any) => this.transform(item as any, childContext))
+        : this.transform(node.arrayBounds as any, childContext);
     }
 
     if (node.location !== undefined) {
@@ -674,11 +691,19 @@ export class V15ToV16Transformer {
     }
 
     if (node.lidx !== undefined) {
-      result.lidx = this.transform(node.lidx as any, context);
+      const childContext: TransformerContext = {
+        ...context,
+        parentNodeTypes: [...(context.parentNodeTypes || []), 'A_Indices']
+      };
+      result.lidx = this.transform(node.lidx as any, childContext);
     }
 
     if (node.uidx !== undefined) {
-      result.uidx = this.transform(node.uidx as any, context);
+      const childContext: TransformerContext = {
+        ...context,
+        parentNodeTypes: [...(context.parentNodeTypes || []), 'A_Indices']
+      };
+      result.uidx = this.transform(node.uidx as any, childContext);
     }
 
     return { A_Indices: result };
@@ -863,6 +888,18 @@ export class V15ToV16Transformer {
 
   Integer(node: PG15.Integer, context: TransformerContext): { Integer: PG16.Integer } {
     const result: any = { ...node };
+    
+    if (Object.keys(result).length === 0) {
+      const parentTypes = context.parentNodeTypes || [];
+      
+      const shouldTransform = 
+        parentTypes.includes('arrayBounds') && !parentTypes.includes('A_Indices');
+      
+      if (shouldTransform) {
+        result.ival = -1;
+      }
+    }
+    
     return { Integer: result };
   }
 
@@ -2815,7 +2852,11 @@ export class V15ToV16Transformer {
     }
 
     if (node.arg !== undefined) {
-      result.arg = this.transform(node.arg as any, context);
+      const childContext: TransformerContext = {
+        ...context,
+        parentNodeTypes: [...(context.parentNodeTypes || []), 'DefElem']
+      };
+      result.arg = this.transform(node.arg as any, childContext);
     }
 
     if (node.defaction !== undefined) {
