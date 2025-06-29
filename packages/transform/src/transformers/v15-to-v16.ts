@@ -892,13 +892,8 @@ export class V15ToV16Transformer {
       const parentTypes = context.parentNodeTypes || [];
       const contextData = context as any;
       
-      // TypeName arrayBounds context: Transform empty objects to ival: -1
-      if (parentTypes.includes('TypeName')) {
-        result.ival = -1;
-      }
-      
       // DefineStmt context: Only very specific cases from v14-to-v15
-      else if (parentTypes.includes('DefineStmt')) {
+      if (parentTypes.includes('DefineStmt')) {
         const defElemName = contextData.defElemName;
         
         // Only transform for very specific defElemName values that are documented in v14-to-v15
@@ -906,6 +901,10 @@ export class V15ToV16Transformer {
           result.ival = -100;  // v14-to-v15 line 464: ival === 0 || ival === -100
         } else if (defElemName === 'sspace') {
           result.ival = 0;     // v14-to-v15 line 468: ival === 0
+        }
+        // DefineStmt args context: Only for CREATE AGGREGATE statements (v14-to-v15 line 473)
+        else if (!defElemName && parentTypes.includes('DefineStmt') && !parentTypes.includes('DefElem')) {
+          result.ival = -1;    // v14-to-v15 line 473: !defElemName && (ival === -1 || ival === 0), default to -1
         }
       }
       
