@@ -1,12 +1,12 @@
 # PostgreSQL v15-to-v16 AST Transformer Status
 
 ## Current Status: **IN PROGRESS** 🟡
-- **Test Pass Rate**: 193/258 tests passing (74.8% success rate)
+- **Test Pass Rate**: 194/258 tests passing (75.2% success rate)
 - **Branch**: `transform/pg15-pg16` 
 - **PR**: [#182](https://github.com/launchql/pgsql-parser/pull/182)
 
 ## Progress Summary
-Started from a basic skeleton transformer and systematically implemented node wrapping and transformation logic across all node types. Made significant progress improving test pass rate from initial ~30% to current 74.8%.
+Started from a basic skeleton transformer and systematically implemented node wrapping and transformation logic across all node types. Made significant progress improving test pass rate from initial ~30% to current 75.2%.
 
 ## Key Achievements
 - ✅ Implemented comprehensive node transformation methods for 100+ node types
@@ -16,18 +16,18 @@ Started from a basic skeleton transformer and systematically implemented node wr
 - ✅ Implemented context-aware Integer transformation logic for DefineStmt contexts
 - ✅ Added GrantRoleStmt admin_opt to opt field transformation
 
-## Current Challenge: Remaining 65 Failing Tests
-**Root Issue**: Successfully resolved over-transformation and under-transformation issues for Integer objects. Maintained stable baseline of 193 passing tests after reverting INSERT transformation logic that caused regressions.
+## Current Challenge: Remaining 64 Failing Tests
+**Root Issue**: Successfully resolved over-transformation and under-transformation issues for Integer objects. Maintained stable baseline of 194 passing tests after reverting INSERT transformation logic that caused regressions.
 
 **Analysis Completed**:
 - ✅ Fixed over-transformation: A_Const ival transformation now conservative, only transforms in specific DefineStmt contexts
 - ✅ Fixed under-transformation: Added TypeName arrayBounds and DefineStmt args contexts to Integer method
 - ✅ Empty Integer objects in TypeName arrayBounds context now transform to `{"ival": -1}`
 - ✅ Empty Integer objects in DefineStmt args context now transform to `{"ival": -1}`
-- ✅ Reverted INSERT transformation logic to prevent regressions from 193 to 184 passing tests
-- 🔄 Need to continue systematic improvement of remaining 65 failing tests
+- ✅ Reverted INSERT transformation logic to prevent regressions from 194 to 184 passing tests
+- 🔄 Need to continue systematic improvement of remaining 64 failing tests
 
-## Failing Tests (65 total)
+## Failing Tests (64 total)
 
 ### Latest PostgreSQL Tests (9 tests)
 - [ ] latest/postgres/create_aggregate-6.sql
@@ -126,8 +126,8 @@ Started from a basic skeleton transformer and systematically implemented node wr
 5. Continue systematic improvement of remaining failing tests
 
 ## Test Categories
-- **Passing (193)**: Basic node transformations, most SQL constructs, Integer transformations in TypeName and DefineStmt contexts
-- **Failing (65)**: Complex nested structures, remaining transformation edge cases, INSERT VALUES contexts
+- **Passing (194)**: Basic node transformations, most SQL constructs, Integer transformations in TypeName and DefineStmt contexts
+- **Failing (64)**: Complex nested structures, remaining transformation edge cases, INSERT VALUES contexts
 
 ## Technical Notes
 - Following patterns from v14-to-v15 transformer as reference
