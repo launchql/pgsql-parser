@@ -886,15 +886,12 @@ export class V15ToV16Transformer {
   Integer(node: PG15.Integer, context: TransformerContext): { Integer: PG16.Integer } {
     const result: any = { ...node };
     
-    // Handle empty Integer objects that need to be transformed back from PG15 to PG16
-    // Based on specific patterns from v14-to-v15 transformer
     if (Object.keys(result).length === 0) {
       const parentTypes = context.parentNodeTypes || [];
-      const contextData = context as any;
       
       // DefineStmt context: Only very specific cases from v14-to-v15
       if (parentTypes.includes('DefineStmt')) {
-        const defElemName = contextData.defElemName;
+        const defElemName = (context as any).defElemName;
         
         // Only transform for very specific defElemName values that are documented in v14-to-v15
         if (defElemName === 'initcond') {
@@ -902,26 +899,12 @@ export class V15ToV16Transformer {
         } else if (defElemName === 'sspace') {
           result.ival = 0;     // v14-to-v15 line 468: ival === 0
         }
-        // DefineStmt args context: Only for CREATE AGGREGATE statements (v14-to-v15 line 473)
-        else if (!defElemName && parentTypes.includes('DefineStmt') && !parentTypes.includes('DefElem')) {
+        // DefineStmt args context: ival -1 or 0 should become empty Integer for aggregates (v14-to-v15 line 473)
+        // In reverse direction (v15-to-v16), empty Integer objects in DefineStmt args should transform to ival: -1
+        else if (!defElemName) {
           result.ival = -1;    // v14-to-v15 line 473: !defElemName && (ival === -1 || ival === 0), default to -1
         }
       }
-      
-      // AlterTableCmd context: Only for SET STATISTICS operations (specific case from v14-to-v15 line 456)
-      else if (parentTypes.includes('AlterTableCmd') && !parentTypes.includes('DefineStmt')) {
-        // Only transform for SET STATISTICS operations, not for CHECK constraints or other operations
-        const contextData = context as any;
-        if (contextData.alterTableSubtype === 'AT_SetStatistics') {
-          result.ival = -1;  // v14-to-v15 line 456: ival === 0 || ival === -1, default to -1
-        }
-      }
-      
-      // CreateSeqStmt context: DO NOT TRANSFORM most cases
-      // Most CreateSeqStmt DefElem args should remain as empty objects
-      // The v14-to-v15 transformer converts specific values TO empty objects
-      
-      
     }
     
     return { Integer: result };
