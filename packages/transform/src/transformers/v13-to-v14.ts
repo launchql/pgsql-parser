@@ -1025,7 +1025,7 @@ export class V13ToV14Transformer {
     }
 
     if (funcname === 'pg_collation_for') {
-      return 'COERCE_EXPLICIT_CALL';
+      return 'COERCE_SQL_SYNTAX';
     }
 
     if (explicitCallFunctions.includes(funcname.toLowerCase())) {
@@ -1073,23 +1073,23 @@ export class V13ToV14Transformer {
 
       if ((typeName === 'anyarray' || typeNode.arrayBounds) && allArgs && index !== undefined) {
         if (allArgs.length === 1 && typeNode.arrayBounds) {
-          if (typeNode.arrayBounds.length === 1 && 
+          if (typeNode.arrayBounds.length === 1 &&
               typeNode.arrayBounds[0]?.Integer?.ival === -1) {
             return true;
           }
         }
-        
+
         if (typeName === 'anyarray' && index > 0) {
           const prevArg = allArgs[index - 1];
           const prevTypeNode = prevArg?.TypeName || prevArg;
-          
+
           if (typeNode.location && prevTypeNode?.location) {
             const locationGap = typeNode.location - prevTypeNode.location;
             const prevTypeName = prevTypeNode.names?.[0]?.String?.str || '';
-            
+
             const baseGap = prevTypeName.length + 2; // "prevType, "
             const variadicGap = baseGap + 9; // + "variadic "
-            
+
             if (locationGap >= variadicGap - 1) {
               return true;
             }
@@ -1097,7 +1097,7 @@ export class V13ToV14Transformer {
         }
         return false;
       }
-      
+
       if (typeName === 'int4' || typeName === 'int' || typeName === 'text' || typeName === 'varchar') {
         return false;
       }
@@ -1115,13 +1115,7 @@ export class V13ToV14Transformer {
     const result: any = {};
 
     if (node.name !== undefined) {
-      const isInDropContext = context.parentNodeTypes?.includes('DropStmt');
-      const isInCommentContext = context.parentNodeTypes?.includes('CommentStmt');
-      const isInObjectWithArgsContext = context.parentNodeTypes?.includes('ObjectWithArgs');
-
-      if (!isInDropContext || (isInCommentContext && !isInObjectWithArgsContext)) {
-        result.name = node.name;
-      }
+      result.name = node.name;
     }
 
     if (node.argType !== undefined) {
@@ -1134,7 +1128,7 @@ export class V13ToV14Transformer {
 
     if (node.mode !== undefined) {
       const isInDropContext = context.parentNodeTypes?.includes('DropStmt');
-      
+
       if (node.mode === "FUNC_PARAM_IN") {
         result.mode = "FUNC_PARAM_DEFAULT";
       } else if (isInDropContext && node.mode === "FUNC_PARAM_VARIADIC") {
@@ -1950,22 +1944,22 @@ export class V13ToV14Transformer {
     }
 
     // Handle special cases for objfuncargs deletion in specific contexts
-    
+
     // Handle objfuncargs based on context
     const shouldCreateObjfuncargs = this.shouldCreateObjfuncargs(context);
     const shouldPreserveObjfuncargs = this.shouldPreserveObjfuncargs(context);
     const shouldCreateObjfuncargsFromObjargs = this.shouldCreateObjfuncargsFromObjargs(context);
-    
+
 
 
     if (shouldCreateObjfuncargsFromObjargs && result.objargs) {
       // Create objfuncargs from objargs, with smart parameter mode handling
       const originalObjfuncargs = (node as any).objfuncargs;
-      
+
       // Don't create objfuncargs in certain contexts where they shouldn't exist
-      const skipObjfuncargsContexts = ['CreateCastStmt'];
+      const skipObjfuncargsContexts = ['CreateCastStmt', 'CreateTransformStmt'];
       const shouldSkipObjfuncargs = skipObjfuncargsContexts.some(ctx => context.parentNodeTypes?.includes(ctx));
-      
+
       if (originalObjfuncargs && Array.isArray(originalObjfuncargs)) {
         if (!shouldSkipObjfuncargs) {
           result.objfuncargs = originalObjfuncargs.map((item: any) => {
@@ -1978,7 +1972,7 @@ export class V13ToV14Transformer {
             ? result.objargs.map((arg: any, index: number) => {
 
                 const transformedArgType = this.visit(arg, context);
-              
+
               // Check if there's an existing objfuncargs with original mode information
               let mode = 'FUNC_PARAM_DEFAULT';
               if (originalObjfuncargs && Array.isArray(originalObjfuncargs) && originalObjfuncargs[index]) {
@@ -1993,7 +1987,7 @@ export class V13ToV14Transformer {
                 const isVariadic = this.isVariadicParameterType(arg, index, result.objargs, context);
                 mode = isVariadic ? 'FUNC_PARAM_VARIADIC' : 'FUNC_PARAM_DEFAULT';
               }
-              
+
               // Extract parameter name if available from original objfuncargs
               let paramName: string | undefined;
               if (originalObjfuncargs && Array.isArray(originalObjfuncargs) && originalObjfuncargs[index]) {
@@ -2019,7 +2013,7 @@ export class V13ToV14Transformer {
           : [{
               FunctionParameter: {
                 argType: this.visit(result.objargs, context),
-                mode: (originalObjfuncargs && originalObjfuncargs[0] && originalObjfuncargs[0].FunctionParameter && originalObjfuncargs[0].FunctionParameter.mode) 
+                mode: (originalObjfuncargs && originalObjfuncargs[0] && originalObjfuncargs[0].FunctionParameter && originalObjfuncargs[0].FunctionParameter.mode)
                   ? this.mapFunctionParameterMode(originalObjfuncargs[0].FunctionParameter.mode, context)
                   : (() => {
                       const isVariadic = this.isVariadicParameterType(result.objargs, 0, [result.objargs], context);
@@ -2278,7 +2272,6 @@ export class V13ToV14Transformer {
     };
 
     const shouldAddParameterName = context && context.parentNodeTypes &&
-      !context.parentNodeTypes.includes('DropStmt') &&
       !context.parentNodeTypes.includes('ObjectWithArgs') &&
       !context.parentNodeTypes.includes('CreateTransformStmt');
 
@@ -2857,6 +2850,80 @@ export class V13ToV14Transformer {
     return { StatsElem: result };
   }
 
+  CreateStatsStmt(node: any, context: TransformerContext): { CreateStatsStmt: PG14.CreateStatsStmt } {
+    const result: any = {};
+
+    if (node.defnames !== undefined) {
+      result.defnames = Array.isArray(node.defnames)
+        ? node.defnames.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.defnames as any, context);
+    }
+
+    if (node.stat_types !== undefined) {
+      result.stat_types = Array.isArray(node.stat_types)
+        ? node.stat_types.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.stat_types as any, context);
+    }
+
+    if (node.exprs !== undefined) {
+      result.exprs = Array.isArray(node.exprs)
+        ? node.exprs.map((item: any) => {
+            // Check if this is a simple column reference
+            if (item && item.ColumnRef && item.ColumnRef.fields && 
+                Array.isArray(item.ColumnRef.fields) && item.ColumnRef.fields.length === 1 &&
+                item.ColumnRef.fields[0] && item.ColumnRef.fields[0].String) {
+              return {
+                StatsElem: {
+                  name: item.ColumnRef.fields[0].String.str || item.ColumnRef.fields[0].String.sval
+                }
+              };
+            } else {
+              const transformedExpr = this.transform(item as any, context);
+              return {
+                StatsElem: {
+                  expr: transformedExpr
+                }
+              };
+            }
+          })
+        : (() => {
+            // Handle single expression case
+            if (node.exprs && node.exprs.ColumnRef && node.exprs.ColumnRef.fields && 
+                Array.isArray(node.exprs.ColumnRef.fields) && node.exprs.ColumnRef.fields.length === 1 &&
+                node.exprs.ColumnRef.fields[0] && node.exprs.ColumnRef.fields[0].String) {
+              return {
+                StatsElem: {
+                  name: node.exprs.ColumnRef.fields[0].String.str || node.exprs.ColumnRef.fields[0].String.sval
+                }
+              };
+            } else {
+              const transformedExpr = this.transform(node.exprs as any, context);
+              return {
+                StatsElem: {
+                  expr: transformedExpr
+                }
+              };
+            }
+          })();
+    }
+
+    if (node.relations !== undefined) {
+      result.relations = Array.isArray(node.relations)
+        ? node.relations.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.relations as any, context);
+    }
+
+    if (node.stxcomment !== undefined) {
+      result.stxcomment = node.stxcomment;
+    }
+
+    if (node.if_not_exists !== undefined) {
+      result.if_not_exists = node.if_not_exists;
+    }
+
+    return { CreateStatsStmt: result };
+  }
+
   CreateStmt(node: any, context: TransformerContext): { CreateStmt: PG14.CreateStmt } {
     const result: any = {};
 
@@ -3108,6 +3175,4 @@ export class V13ToV14Transformer {
         return pg13Mode;
     }
   }
-
-
 }
