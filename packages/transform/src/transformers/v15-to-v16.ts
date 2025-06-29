@@ -880,7 +880,7 @@ export class V15ToV16Transformer {
   }
 
   SortBy(node: PG15.SortBy, context: TransformerContext): any {
-    return node;
+    return { SortBy: node };
   }
 
   GroupingSet(node: PG15.GroupingSet, context: TransformerContext): any {
