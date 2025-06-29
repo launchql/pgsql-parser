@@ -546,7 +546,7 @@ export class V15ToV16Transformer {
       // Handle empty Integer objects directly since transform() can't detect their type
       if (typeof result.ival === 'object' && Object.keys(result.ival).length === 0) {
         const parentTypes = childContext.parentNodeTypes || [];
-        if (parentTypes.includes('TypeName') ||
+        if (parentTypes.includes('TypeName') || 
             (parentTypes.includes('DefineStmt') && !(context as any).defElemName)) {
           result.ival = this.Integer(result.ival as any, childContext).Integer;
         }
@@ -912,7 +912,7 @@ export class V15ToV16Transformer {
         }
       }
     }
-
+    
     return { Integer: result };
   }
 
