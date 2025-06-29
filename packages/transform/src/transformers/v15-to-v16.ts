@@ -233,11 +233,7 @@ export class V15ToV16Transformer {
     }
 
     if (node.rexpr !== undefined) {
-      const childContext: TransformerContext = {
-        ...context,
-        parentNodeTypes: [...(context.parentNodeTypes || []), 'A_Expr', 'rexpr']
-      };
-      result.rexpr = this.transform(node.rexpr as any, childContext);
+      result.rexpr = this.transform(node.rexpr as any, context);
     }
 
     if (node.location !== undefined) {
@@ -547,12 +543,9 @@ export class V15ToV16Transformer {
         parentNodeTypes: [...(context.parentNodeTypes || []), 'A_Const']
       };
       
-      if (typeof result.ival === 'object' && result.ival !== null) {
-        if (Object.keys(result.ival).length === 0) {
-          const wrappedIval = { Integer: result.ival };
-          const transformedWrapped = this.transform(wrappedIval as any, childContext);
-          result.ival = transformedWrapped.Integer;
-        }
+      // Handle empty Integer objects directly since transform() can't detect their type
+      if (typeof result.ival === 'object' && Object.keys(result.ival).length === 0) {
+        result.ival = this.Integer(result.ival as any, childContext).Integer;
       } else {
         result.ival = this.transform(result.ival as any, childContext);
       }
@@ -611,7 +604,7 @@ export class V15ToV16Transformer {
     if (node.arrayBounds !== undefined) {
       const childContext: TransformerContext = {
         ...context,
-        parentNodeTypes: [...(context.parentNodeTypes || []), 'TypeName', 'arrayBounds']
+        parentNodeTypes: [...(context.parentNodeTypes || []), 'TypeName']
       };
       result.arrayBounds = Array.isArray(node.arrayBounds)
         ? node.arrayBounds.map((item: any) => this.transform(item as any, childContext))
@@ -643,6 +636,10 @@ export class V15ToV16Transformer {
 
   RangeVar(node: PG15.RangeVar, context: TransformerContext): { RangeVar: PG16.RangeVar } {
     const result: any = {};
+
+    if (node.catalogname !== undefined) {
+      result.catalogname = node.catalogname;
+    }
 
     if (node.schemaname !== undefined) {
       result.schemaname = node.schemaname;
@@ -695,19 +692,11 @@ export class V15ToV16Transformer {
     }
 
     if (node.lidx !== undefined) {
-      const childContext: TransformerContext = {
-        ...context,
-        parentNodeTypes: [...(context.parentNodeTypes || []), 'A_Indices']
-      };
-      result.lidx = this.transform(node.lidx as any, childContext);
+      result.lidx = this.transform(node.lidx as any, context);
     }
 
     if (node.uidx !== undefined) {
-      const childContext: TransformerContext = {
-        ...context,
-        parentNodeTypes: [...(context.parentNodeTypes || []), 'A_Indices']
-      };
-      result.uidx = this.transform(node.uidx as any, childContext);
+      result.uidx = this.transform(node.uidx as any, context);
     }
 
     return { A_Indices: result };
@@ -807,7 +796,11 @@ export class V15ToV16Transformer {
     }
 
     if (node.typeName !== undefined) {
-      result.typeName = this.transform(node.typeName as any, context);
+      const childContext: TransformerContext = {
+        ...context,
+        parentNodeTypes: [...(context.parentNodeTypes || []), 'TypeCast']
+      };
+      result.typeName = this.TypeName(node.typeName as any, childContext).TypeName;
     }
 
     if (node.location !== undefined) {
@@ -893,16 +886,49 @@ export class V15ToV16Transformer {
   Integer(node: PG15.Integer, context: TransformerContext): { Integer: PG16.Integer } {
     const result: any = { ...node };
     
+    // Handle empty Integer objects that need to be transformed back from PG15 to PG16
+    // Based on specific patterns from v14-to-v15 transformer
     if (Object.keys(result).length === 0) {
       const parentTypes = context.parentNodeTypes || [];
+      const contextData = context as any;
       
-      const shouldTransform = 
-        (parentTypes.includes('arrayBounds') && !parentTypes.includes('A_Indices')) ||
-        (parentTypes.includes('rexpr') && parentTypes.includes('A_Expr') && !parentTypes.includes('A_Indices'));
-      
-      if (shouldTransform) {
+      // TypeName arrayBounds context: In v14-to-v15, -1 values became empty objects
+      if (parentTypes.includes('TypeName')) {
         result.ival = -1;
       }
+      
+      // DefineStmt context: Various specific cases from v14-to-v15
+      else if (parentTypes.includes('DefineStmt')) {
+        const defElemName = contextData.defElemName;
+        
+        if (defElemName === 'initcond') {
+          result.ival = -100;  // v14-to-v15 line 464: ival === 0 || ival === -100
+        } else if (defElemName === 'sspace') {
+          result.ival = 0;     // v14-to-v15 line 468: ival === 0
+        } else {
+          result.ival = -1;    // v14-to-v15 line 473: ival === -1 || ival === 0, default to -1
+        }
+      }
+      
+      // AlterTableCmd context: In v14-to-v15, ival 0 or -1 became empty
+      else if (parentTypes.includes('AlterTableCmd') && !parentTypes.includes('DefineStmt')) {
+        result.ival = -1;  // v14-to-v15 line 456: ival === 0 || ival === -1, default to -1
+      }
+      
+      // CreateSeqStmt context: Various specific cases from v14-to-v15
+      else if (parentTypes.includes('CreateSeqStmt')) {
+        const defElemName = contextData.defElemName;
+        
+        if (defElemName === 'start' || defElemName === 'minvalue') {
+          result.ival = 0;     // v14-to-v15 lines 482, 486: ival === 0
+        } else if (defElemName === 'increment') {
+          result.ival = -1;    // v14-to-v15 line 490: ival === -1
+        } else {
+          result.ival = -1;    // Default for other CreateSeqStmt contexts
+        }
+      }
+      
+      
     }
     
     return { Integer: result };
@@ -931,13 +957,9 @@ export class V15ToV16Transformer {
     const result: any = {};
 
     if (node.items !== undefined) {
-      const childContext: TransformerContext = {
-        ...context,
-        parentNodeTypes: [...(context.parentNodeTypes || []), 'List', 'items']
-      };
       result.items = Array.isArray(node.items)
-        ? node.items.map((item: any) => this.transform(item as any, childContext))
-        : this.transform(node.items as any, childContext);
+        ? node.items.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.items as any, context);
     }
 
     return { List: result };
@@ -1229,6 +1251,10 @@ export class V15ToV16Transformer {
 
     if (node.initially_valid !== undefined) {
       result.initially_valid = node.initially_valid;
+    }
+
+    if (node.nulls_not_distinct !== undefined) {
+      result.nulls_not_distinct = node.nulls_not_distinct;
     }
 
     return { Constraint: result };
@@ -2155,9 +2181,6 @@ export class V15ToV16Transformer {
       result.unique = node.unique;
     }
 
-    if (node.nulls_not_distinct !== undefined) {
-      result.nulls_not_distinct = node.nulls_not_distinct;
-    }
 
     if (node.primary !== undefined) {
       result.primary = node.primary;
@@ -2861,11 +2884,7 @@ export class V15ToV16Transformer {
     }
 
     if (node.arg !== undefined) {
-      const childContext: TransformerContext = {
-        ...context,
-        parentNodeTypes: [...(context.parentNodeTypes || []), 'DefElem']
-      };
-      result.arg = this.transform(node.arg as any, childContext);
+      result.arg = this.transform(node.arg as any, context);
     }
 
     if (node.defaction !== undefined) {
@@ -3263,7 +3282,50 @@ export class V15ToV16Transformer {
 
 
   GrantRoleStmt(node: PG15.GrantRoleStmt, context: TransformerContext): { GrantRoleStmt: PG16.GrantRoleStmt } {
-    const result: any = { ...node };
+    const result: any = {};
+
+    if (node.granted_roles !== undefined) {
+      result.granted_roles = Array.isArray(node.granted_roles)
+        ? node.granted_roles.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.granted_roles as any, context);
+    }
+
+    if (node.grantee_roles !== undefined) {
+      result.grantee_roles = Array.isArray(node.grantee_roles)
+        ? node.grantee_roles.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.grantee_roles as any, context);
+    }
+
+    if (node.is_grant !== undefined) {
+      result.is_grant = node.is_grant;
+    }
+
+    if (node.behavior !== undefined) {
+      result.behavior = node.behavior;
+    }
+
+    const nodeAny = node as any;
+    if (nodeAny.admin_opt === true) {
+      result.opt = [
+        {
+          DefElem: {
+            defname: "admin",
+            arg: {
+              Boolean: {
+                boolval: true
+              }
+            },
+            defaction: "DEFELEM_UNSPEC"
+          }
+        }
+      ];
+    } else if (nodeAny.opt !== undefined) {
+      // Handle any existing opt field by transforming it
+      result.opt = Array.isArray(nodeAny.opt)
+        ? nodeAny.opt.map((item: any) => this.transform(item as any, context))
+        : this.transform(nodeAny.opt as any, context);
+    }
+
     return { GrantRoleStmt: result };
   }
 
