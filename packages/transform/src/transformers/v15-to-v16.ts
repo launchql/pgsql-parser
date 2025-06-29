@@ -1044,7 +1044,7 @@ export class V15ToV16Transformer {
   }
 
   CopyStmt(node: PG15.CopyStmt, context: TransformerContext): any {
-    return node;
+    return { CopyStmt: node };
   }
 
   AlterTableStmt(node: PG15.AlterTableStmt, context: TransformerContext): any {
@@ -1500,7 +1500,7 @@ export class V15ToV16Transformer {
   }
 
   DefineStmt(node: PG15.DefineStmt, context: TransformerContext): any {
-    return node;
+    return { DefineStmt: node };
   }
 
   AlterDatabaseStmt(node: PG15.AlterDatabaseStmt, context: TransformerContext): any {
