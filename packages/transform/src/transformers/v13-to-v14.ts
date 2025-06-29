@@ -1114,7 +1114,13 @@ export class V13ToV14Transformer {
     const result: any = {};
 
     if (node.name !== undefined) {
-      result.name = node.name;
+      // Don't add parameter names in DropStmt contexts
+      const isInDropStmtContext = context && context.parentNodeTypes && 
+        context.parentNodeTypes.includes('DropStmt');
+      
+      if (!isInDropStmtContext) {
+        result.name = node.name;
+      }
     }
 
     if (node.argType !== undefined) {
@@ -2276,7 +2282,10 @@ export class V13ToV14Transformer {
       !context.parentNodeTypes.includes('CreateTransformStmt') &&
       !context.parentNodeTypes.includes('DropStmt');
 
-    if (typeNameNode && typeNameNode.name && shouldAddParameterName) {
+    const isInDropStmtContext = context && context.parentNodeTypes && 
+      context.parentNodeTypes.includes('DropStmt');
+
+    if (typeNameNode && typeNameNode.name && shouldAddParameterName && !isInDropStmtContext) {
       functionParam.name = typeNameNode.name;
     }
 
