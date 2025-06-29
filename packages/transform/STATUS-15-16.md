@@ -1,12 +1,12 @@
 # PostgreSQL v15-to-v16 AST Transformer Status
 
 ## Current Status: **IN PROGRESS** 🟡
-- **Test Pass Rate**: 181/258 tests passing (70.2% success rate)
+- **Test Pass Rate**: 194/258 tests passing (75.2% success rate)
 - **Branch**: `transform/pg15-pg16` 
 - **PR**: [#182](https://github.com/launchql/pgsql-parser/pull/182)
 
 ## Progress Summary
-Started from a basic skeleton transformer and systematically implemented node wrapping and transformation logic across all node types. Made significant progress improving test pass rate from initial ~30% to current 70.2%.
+Started from a basic skeleton transformer and systematically implemented node wrapping and transformation logic across all node types. Made significant progress improving test pass rate from initial ~30% to current 75.2%.
 
 ## Key Achievements
 - ✅ Implemented comprehensive node transformation methods for 100+ node types
@@ -16,16 +16,17 @@ Started from a basic skeleton transformer and systematically implemented node wr
 - ✅ Implemented context-aware Integer transformation logic for DefineStmt contexts
 - ✅ Added GrantRoleStmt admin_opt to opt field transformation
 
-## Current Challenge: DefineStmt Args Integer Transformation
-**Root Issue**: Empty Integer objects in DefineStmt args context should transform to `{"ival": -1}` but the Integer method is never being called. The transformation happens through the general transform pipeline in DefineStmt method.
+## Current Challenge: Remaining 64 Failing Tests
+**Root Issue**: Successfully resolved over-transformation and under-transformation issues for Integer objects. Improved from 181 to 194 passing tests (13 test improvement).
 
 **Analysis Completed**:
-- Created extensive debug scripts to trace transformation flow
-- Discovered Integer method is bypassed - transformation occurs in DefineStmt.args processing
-- Identified that context information isn't properly propagated to detect DefineStmt args context
-- Need to modify DefineStmt method to pass proper context for args transformation
+- ✅ Fixed over-transformation: A_Const ival transformation now conservative, only transforms in specific DefineStmt contexts
+- ✅ Fixed under-transformation: Added TypeName arrayBounds and DefineStmt args contexts to Integer method
+- ✅ Empty Integer objects in TypeName arrayBounds context now transform to `{"ival": -1}`
+- ✅ Empty Integer objects in DefineStmt args context now transform to `{"ival": -1}`
+- 🔄 Need to continue systematic improvement of remaining 64 failing tests
 
-## Failing Tests (77 total)
+## Failing Tests (64 total)
 
 ### Latest PostgreSQL Tests (9 tests)
 - [ ] latest/postgres/create_aggregate-6.sql
@@ -124,8 +125,8 @@ Started from a basic skeleton transformer and systematically implemented node wr
 5. Continue systematic improvement of remaining failing tests
 
 ## Test Categories
-- **Passing (181)**: Basic node transformations, most SQL constructs
-- **Failing (77)**: Primarily DefineStmt args Integer transformations, some complex nested structures
+- **Passing (194)**: Basic node transformations, most SQL constructs, Integer transformations in TypeName and DefineStmt contexts
+- **Failing (64)**: Complex nested structures, remaining transformation edge cases
 
 ## Technical Notes
 - Following patterns from v14-to-v15 transformer as reference
