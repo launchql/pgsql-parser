@@ -469,9 +469,8 @@ export class V14ToV15Transformer {
         return { Integer: {} };
       }
       
-      
-      // DefineStmt args context: ival 0 should become empty Integer for aggregates
-      if (!defElemName && node.ival === 0) {
+      // DefineStmt args context: ival -1 or 0 should become empty Integer for aggregates
+      if (!defElemName && (node.ival === -1 || node.ival === 0)) {
         return { Integer: {} };
       }
     }
@@ -1334,12 +1333,7 @@ export class V14ToV15Transformer {
 
     if (node.args !== undefined) {
       result.args = Array.isArray(node.args)
-        ? node.args.map(item => {
-            if (item && typeof item === 'object' && 'Integer' in item && item.Integer.ival === -1) {
-              return { Integer: {} };
-            }
-            return this.transform(item as any, context);
-          })
+        ? node.args.map(item => this.transform(item as any, context))
         : this.transform(node.args as any, context);
     }
 
