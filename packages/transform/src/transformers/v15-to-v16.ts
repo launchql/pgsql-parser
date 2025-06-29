@@ -233,7 +233,11 @@ export class V15ToV16Transformer {
     }
 
     if (node.rexpr !== undefined) {
-      result.rexpr = this.transform(node.rexpr as any, context);
+      const childContext: TransformerContext = {
+        ...context,
+        parentNodeTypes: [...(context.parentNodeTypes || []), 'A_Expr', 'rexpr']
+      };
+      result.rexpr = this.transform(node.rexpr as any, childContext);
     }
 
     if (node.location !== undefined) {
@@ -893,7 +897,8 @@ export class V15ToV16Transformer {
       const parentTypes = context.parentNodeTypes || [];
       
       const shouldTransform = 
-        parentTypes.includes('arrayBounds') && !parentTypes.includes('A_Indices');
+        (parentTypes.includes('arrayBounds') && !parentTypes.includes('A_Indices')) ||
+        (parentTypes.includes('rexpr') && parentTypes.includes('A_Expr') && !parentTypes.includes('A_Indices'));
       
       if (shouldTransform) {
         result.ival = -1;
@@ -926,9 +931,13 @@ export class V15ToV16Transformer {
     const result: any = {};
 
     if (node.items !== undefined) {
+      const childContext: TransformerContext = {
+        ...context,
+        parentNodeTypes: [...(context.parentNodeTypes || []), 'List', 'items']
+      };
       result.items = Array.isArray(node.items)
-        ? node.items.map((item: any) => this.transform(item as any, context))
-        : this.transform(node.items as any, context);
+        ? node.items.map((item: any) => this.transform(item as any, childContext))
+        : this.transform(node.items as any, childContext);
     }
 
     return { List: result };
