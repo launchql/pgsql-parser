@@ -1160,23 +1160,9 @@ export class V13ToV14Transformer {
 
     if (node.mode !== undefined) {
       if (node.mode === "FUNC_PARAM_IN") {
-        // Check if this is likely an implicit parameter by looking at context
-        const isInDropContext = context.parentNodeTypes?.includes('DropStmt');
-        
-        if (isInDropContext) {
-          result.mode = "FUNC_PARAM_DEFAULT";
-        } else {
-          const hasName = node.name !== undefined;
-          const isCreateFunction = context.parentNodeTypes?.includes('CreateFunctionStmt');
-          
-          if (isCreateFunction && !hasName) {
-            result.mode = "FUNC_PARAM_DEFAULT";
-          } else {
-            result.mode = "FUNC_PARAM_DEFAULT";
-          }
-        }
+        result.mode = "FUNC_PARAM_DEFAULT";
       } else {
-        result.mode = node.mode; // Preserve all other modes unchanged
+        result.mode = node.mode;
       }
     }
 
