@@ -592,15 +592,7 @@ export class V15ToV16Transformer {
     }
 
     if (result.ival !== undefined) {
-      // Handle case where PG15 produces empty ival objects for negative integers
-      if (typeof result.ival === 'object' && Object.keys(result.ival).length === 0) {
-        const transformedIval = this.shouldTransformEmptyIval(context);
-        if (transformedIval) {
-          result.ival = transformedIval;
-        }
-      } else {
-        result.ival = this.transform(result.ival as any, context);
-      }
+      result.ival = this.transform(result.ival as any, context);
     }
 
     if (result.fval !== undefined) {
