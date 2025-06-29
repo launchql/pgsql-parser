@@ -1144,11 +1144,7 @@ export class V13ToV14Transformer {
     const result: any = {};
 
     if (node.name !== undefined) {
-      // Exclude parameter names in DropStmt contexts
-      const isInDropContext = context.parentNodeTypes?.includes('DropStmt');
-      if (!isInDropContext) {
-        result.name = node.name;
-      }
+      result.name = node.name;
     }
 
     if (node.argType !== undefined) {
