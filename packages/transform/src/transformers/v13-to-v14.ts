@@ -1854,11 +1854,15 @@ export class V13ToV14Transformer {
     }
 
     if (node.fromsql !== undefined) {
-      result.fromsql = this.transform(node.fromsql as any, childContext);
+      const wrappedFromsql = { ObjectWithArgs: node.fromsql };
+      const transformedFromsql = this.transform(wrappedFromsql as any, childContext);
+      result.fromsql = transformedFromsql.ObjectWithArgs;
     }
 
     if (node.tosql !== undefined) {
-      result.tosql = this.transform(node.tosql as any, childContext);
+      const wrappedTosql = { ObjectWithArgs: node.tosql };
+      const transformedTosql = this.transform(wrappedTosql as any, childContext);
+      result.tosql = transformedTosql.ObjectWithArgs;
     }
 
     if (node.replace !== undefined) {
@@ -1993,7 +1997,7 @@ export class V13ToV14Transformer {
       const originalObjfuncargs = (node as any).objfuncargs;
 
       // Don't create objfuncargs in certain contexts where they shouldn't exist
-      const skipObjfuncargsContexts = ['CreateTransformStmt'];
+      const skipObjfuncargsContexts: string[] = [];
       const shouldSkipObjfuncargs = skipObjfuncargsContexts.some(ctx => context.parentNodeTypes?.includes(ctx));
 
       if (originalObjfuncargs && Array.isArray(originalObjfuncargs)) {
