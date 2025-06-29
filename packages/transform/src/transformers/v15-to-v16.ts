@@ -39,11 +39,11 @@ export class V15ToV16Transformer {
     // Handle empty objects - check if they should be transformed as Integer nodes
     if (!nodeType) {
       const parentTypes = context.parentNodeTypes || [];
-      
+
       if (parentTypes.includes('TypeName')) {
         return this.Integer(node as any, context);
       }
-      
+
       return {};
     }
 
@@ -918,7 +918,7 @@ export class V15ToV16Transformer {
         }
       }
     }
-    
+
     return { Integer: result };
   }
 
