@@ -36,8 +36,14 @@ export class V15ToV16Transformer {
   visit(node: PG15.Node, context: TransformerContext = { parentNodeTypes: [] }): any {
     const nodeType = this.getNodeType(node);
 
-    // Handle empty objects
+    // Handle empty objects - check if they should be transformed as Integer nodes
     if (!nodeType) {
+      const parentTypes = context.parentNodeTypes || [];
+      
+      if (parentTypes.includes('TypeName')) {
+        return this.Integer(node as any, context);
+      }
+      
       return {};
     }
 
@@ -547,8 +553,7 @@ export class V15ToV16Transformer {
       if (typeof result.ival === 'object' && Object.keys(result.ival).length === 0) {
         const parentTypes = childContext.parentNodeTypes || [];
         if (parentTypes.includes('TypeName') || 
-            (parentTypes.includes('DefineStmt') && !(context as any).defElemName) ||
-            parentTypes.includes('FuncCall')) {
+            (parentTypes.includes('DefineStmt') && !(context as any).defElemName)) {
           result.ival = this.Integer(result.ival as any, childContext).Integer;
         }
       } else {
@@ -896,10 +901,6 @@ export class V15ToV16Transformer {
 
       if (parentTypes.includes('TypeName')) {
         result.ival = -1;  // Based on alter_table test failure pattern and rangetypes-289 arrayBounds
-      }
-      // FuncCall context: Based on strings-165.sql failure pattern
-      else if (parentTypes.includes('FuncCall')) {
-        result.ival = -1;  // FuncCall args with empty Integer objects should transform to ival: -1
       }
       // DefineStmt context: Only very specific cases from v14-to-v15
       else if (parentTypes.includes('DefineStmt')) {
@@ -3402,7 +3403,20 @@ export class V15ToV16Transformer {
   }
 
   CreateRangeStmt(node: PG15.CreateRangeStmt, context: TransformerContext): { CreateRangeStmt: PG16.CreateRangeStmt } {
-    const result: any = { ...node };
+    const result: any = {};
+
+    if (node.typeName !== undefined) {
+      result.typeName = Array.isArray(node.typeName)
+        ? node.typeName.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.typeName as any, context);
+    }
+
+    if (node.params !== undefined) {
+      result.params = Array.isArray(node.params)
+        ? node.params.map((item: any) => this.transform(item as any, context))
+        : this.transform(node.params as any, context);
+    }
+
     return { CreateRangeStmt: result };
   }
 
