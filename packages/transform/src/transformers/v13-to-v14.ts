@@ -549,6 +549,7 @@ export class V13ToV14Transformer {
     if (result.objects !== undefined) {
       const childContext = {
         ...context,
+        parentNodeTypes: [...(context.parentNodeTypes || []), 'DropStmt'],
         dropRemoveType: result.removeType
       };
       result.objects = Array.isArray(result.objects)
