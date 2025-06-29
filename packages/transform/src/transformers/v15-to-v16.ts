@@ -892,41 +892,35 @@ export class V15ToV16Transformer {
       const parentTypes = context.parentNodeTypes || [];
       const contextData = context as any;
       
-      // TypeName arrayBounds context: In v14-to-v15, -1 values became empty objects
+      // TypeName arrayBounds context: Transform empty objects to ival: -1
       if (parentTypes.includes('TypeName')) {
         result.ival = -1;
       }
       
-      // DefineStmt context: Various specific cases from v14-to-v15
+      // DefineStmt context: Only very specific cases from v14-to-v15
       else if (parentTypes.includes('DefineStmt')) {
         const defElemName = contextData.defElemName;
         
+        // Only transform for very specific defElemName values that are documented in v14-to-v15
         if (defElemName === 'initcond') {
           result.ival = -100;  // v14-to-v15 line 464: ival === 0 || ival === -100
         } else if (defElemName === 'sspace') {
           result.ival = 0;     // v14-to-v15 line 468: ival === 0
-        } else {
-          result.ival = -1;    // v14-to-v15 line 473: ival === -1 || ival === 0, default to -1
         }
       }
       
-      // AlterTableCmd context: In v14-to-v15, ival 0 or -1 became empty
+      // AlterTableCmd context: Only for SET STATISTICS operations (specific case from v14-to-v15 line 456)
       else if (parentTypes.includes('AlterTableCmd') && !parentTypes.includes('DefineStmt')) {
-        result.ival = -1;  // v14-to-v15 line 456: ival === 0 || ival === -1, default to -1
-      }
-      
-      // CreateSeqStmt context: Various specific cases from v14-to-v15
-      else if (parentTypes.includes('CreateSeqStmt')) {
-        const defElemName = contextData.defElemName;
-        
-        if (defElemName === 'start' || defElemName === 'minvalue') {
-          result.ival = 0;     // v14-to-v15 lines 482, 486: ival === 0
-        } else if (defElemName === 'increment') {
-          result.ival = -1;    // v14-to-v15 line 490: ival === -1
-        } else {
-          result.ival = -1;    // Default for other CreateSeqStmt contexts
+        // Only transform for SET STATISTICS operations, not for CHECK constraints or other operations
+        const contextData = context as any;
+        if (contextData.alterTableSubtype === 'AT_SetStatistics') {
+          result.ival = -1;  // v14-to-v15 line 456: ival === 0 || ival === -1, default to -1
         }
       }
+      
+      // CreateSeqStmt context: DO NOT TRANSFORM most cases
+      // Most CreateSeqStmt DefElem args should remain as empty objects
+      // The v14-to-v15 transformer converts specific values TO empty objects
       
       
     }
