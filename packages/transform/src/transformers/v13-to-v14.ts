@@ -3194,7 +3194,7 @@ export class V13ToV14Transformer {
         }
         return 'FUNC_PARAM_VARIADIC';
       case 'FUNC_PARAM_IN':
-        return 'FUNC_PARAM_IN';
+        return 'FUNC_PARAM_DEFAULT';
       default:
         return pg13Mode;
     }
