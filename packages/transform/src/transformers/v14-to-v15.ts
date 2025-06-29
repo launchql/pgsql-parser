@@ -252,9 +252,8 @@ export class V14ToV15Transformer {
       }
     }
     
-    
     // Handle ival field directly (not nested in val) - removed overly broad conversion
-    
+   
     return { A_Const: result };
   }
 
