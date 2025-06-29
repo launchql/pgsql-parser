@@ -2023,13 +2023,6 @@ export class V13ToV14Transformer {
       return undefined;
     }
 
-    // Handle general testfunc pattern - extract letter from function name ONLY if it has a letter suffix
-    const testfuncMatch = functionName.match(/test-?func(\d+)([a-z])/);
-    if (testfuncMatch) {
-      const letter = testfuncMatch[2];
-      return letter;
-    }
-
     // Handle specific functions from test cases that have parameter names
     if (functionName === 'invert') return 'x';
     if (functionName === 'dfunc' && isVariadic) return 'a'; // Only for VARIADIC parameters
@@ -2124,7 +2117,8 @@ export class V13ToV14Transformer {
 
               // Extract parameter name if available from original objfuncargs
               let paramName: string | undefined;
-              if (originalObjfuncargs && Array.isArray(originalObjfuncargs) && originalObjfuncargs[index]) {
+              if (originalObjfuncargs && Array.isArray(originalObjfuncargs) && originalObjfuncargs[index] &&
+                  !context.parentNodeTypes?.includes('DropStmt')) {
                 const originalParam = originalObjfuncargs[index];
                 if (originalParam && originalParam.FunctionParameter && originalParam.FunctionParameter.name) {
                   paramName = originalParam.FunctionParameter.name;
