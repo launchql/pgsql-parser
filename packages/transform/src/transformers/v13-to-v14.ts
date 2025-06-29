@@ -200,6 +200,11 @@ export class V13ToV14Transformer {
               if (isInCreateDomainContext) {
                 funcname = funcname.slice(1);
               }
+              
+              // Remove pg_catalog prefix from substring functions in most contexts
+              if (functionName === 'substring') {
+                funcname = funcname.slice(1);
+              }
             }
           }
         }else if (funcname.length === 1) {
@@ -950,20 +955,6 @@ export class V13ToV14Transformer {
       return 'COERCE_EXPLICIT_CALL';
     }
 
-    // Handle substring function specifically - depends on pg_catalog prefix
-    if (funcname.toLowerCase() === 'substring') {
-      // Check if the function has pg_catalog prefix by examining the node
-      if (node && node.funcname && Array.isArray(node.funcname) && node.funcname.length >= 2) {
-        const firstElement = node.funcname[0];
-        if (firstElement && typeof firstElement === 'object' && 'String' in firstElement) {
-          const prefix = firstElement.String.str || firstElement.String.sval;
-          if (prefix === 'pg_catalog') {
-            return 'COERCE_SQL_SYNTAX';
-          }
-        }
-      }
-      return 'COERCE_EXPLICIT_CALL';
-    }
 
     // Handle ltrim function specifically - depends on pg_catalog prefix
     if (funcname.toLowerCase() === 'ltrim') {
@@ -1010,7 +1001,8 @@ export class V13ToV14Transformer {
       'collation_for'
     ];
 
-    if (funcname === 'substring') {
+    // Handle substring function specifically - depends on pg_catalog prefix
+    if (funcname.toLowerCase() === 'substring') {
       // Check if the function has pg_catalog prefix by examining the node
       if (node && node.funcname && Array.isArray(node.funcname) && node.funcname.length >= 2) {
         const firstElement = node.funcname[0];
