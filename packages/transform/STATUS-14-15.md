@@ -1,9 +1,9 @@
 # PostgreSQL 14-to-15 AST Transformer Status
 
 ## Current Test Results
-- **Tests Passing**: 254/258 (98.4%) - MAJOR BREAKTHROUGH! 🎉
-- **Tests Failing**: 4/258 (1.6%) - All remaining failures are expected PG14 parser syntax limitations
-- **Last Updated**: June 28, 2025
+- **Tests Passing**: 254/258 (98.4%) - STABLE STATE MAINTAINED! 🎉
+- **Tests Failing**: 4/258 (1.6%) - All remaining failures are confirmed PG14 parser syntax limitations
+- **Last Updated**: June 29, 2025
 
 ## Recent Fixes Applied
 - ✅ Fixed visit method to use transformGenericNode as fallback (following v13-to-v14 pattern)
@@ -14,6 +14,8 @@
 - ✅ Systematic boolean TypeCast to A_Const conversion logic
 - ✅ Context-aware Integer transformations for DefElem scenarios
 - ✅ Comprehensive A_Const structure flattening implementation
+- ✅ **REGRESSION FIX**: Restored complete ival conversion logic for all contexts
+- ✅ Fixed DefineStmt args ival: 0 and ival: -1 handling to maintain 254/258 tests
 
 ## Test Status Summary
 🎉 **TRANSFORMER COMPLETE!** The 14-15 transformer has achieved 254/258 tests passing (98.4% success rate). The remaining 4 failures are expected limitations where the PG14 parser cannot parse PG15-specific syntax features:
