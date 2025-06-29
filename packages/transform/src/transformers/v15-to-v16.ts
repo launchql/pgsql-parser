@@ -544,8 +544,12 @@ export class V15ToV16Transformer {
       };
       
       // Handle empty Integer objects directly since transform() can't detect their type
+      // Only transform in very specific DefineStmt contexts, not all A_Const contexts
       if (typeof result.ival === 'object' && Object.keys(result.ival).length === 0) {
-        result.ival = this.Integer(result.ival as any, childContext).Integer;
+        const parentTypes = childContext.parentNodeTypes || [];
+        if (parentTypes.includes('DefineStmt') && !(context as any).defElemName) {
+          result.ival = this.Integer(result.ival as any, childContext).Integer;
+        }
       } else {
         result.ival = this.transform(result.ival as any, childContext);
       }
@@ -889,7 +893,7 @@ export class V15ToV16Transformer {
     if (Object.keys(result).length === 0) {
       const parentTypes = context.parentNodeTypes || [];
       
-      // DefineStmt context: Only very specific cases from v14-to-v15
+      // Only transform in very specific DefineStmt contexts that are well-documented
       if (parentTypes.includes('DefineStmt')) {
         const defElemName = (context as any).defElemName;
         
@@ -898,11 +902,6 @@ export class V15ToV16Transformer {
           result.ival = -100;  // v14-to-v15 line 464: ival === 0 || ival === -100
         } else if (defElemName === 'sspace') {
           result.ival = 0;     // v14-to-v15 line 468: ival === 0
-        }
-        // DefineStmt args context: ival -1 or 0 should become empty Integer for aggregates (v14-to-v15 line 473)
-        // In reverse direction (v15-to-v16), empty Integer objects in DefineStmt args should transform to ival: -1
-        else if (!defElemName) {
-          result.ival = -1;    // v14-to-v15 line 473: !defElemName && (ival === -1 || ival === 0), default to -1
         }
       }
     }
