@@ -575,16 +575,16 @@ export class V15ToV16Transformer {
     if (result.val) {
       const val: any = result.val;
       if (val.String && val.String.str !== undefined) {
-        result.sval = { sval: val.String.str };
+        result.sval = val.String.str;
         delete result.val;
       } else if (val.Integer && val.Integer.ival !== undefined) {
         result.ival = val.Integer.ival;
         delete result.val;
       } else if (val.Float && val.Float.str !== undefined) {
-        result.fval = { fval: val.Float.str };
+        result.fval = val.Float.str;
         delete result.val;
       } else if (val.BitString && val.BitString.str !== undefined) {
-        result.bsval = { bsval: val.BitString.str };
+        result.bsval = val.BitString.str;
         delete result.val;
       } else if (val.Null !== undefined) {
         delete result.val;
