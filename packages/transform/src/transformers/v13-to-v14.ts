@@ -197,15 +197,17 @@ export class V13ToV14Transformer {
             if (prefix === 'pg_catalog') {
               const isInCreateDomainContext = this.isInCreateDomainContext(context);
               const isInCallStmtContext = this.isInCallStmtContext(context);
+              const isInSelectTargetContext = this.isInSelectTargetContext(context);
 
               if (isInCreateDomainContext) {
                 funcname = funcname.slice(1);
+              } else if ((isInSelectTargetContext || this.isInReturningContext(context)) && functionName === 'substring') {
+                const hasThreeArgs = node.args && Array.isArray(node.args) && node.args.length === 3;
+                if (hasThreeArgs) {
+                  funcname = funcname.slice(1);
+                }
               }
               
-              // Remove pg_catalog prefix from substring functions in CallStmt contexts
-              if (isInCallStmtContext && functionName === 'substring') {
-                funcname = funcname.slice(1);
-              }
             }
           }
         }else if (funcname.length === 1) {
@@ -451,6 +453,19 @@ export class V13ToV14Transformer {
       }
       return false;
     });
+  }
+
+  private isInSelectTargetContext(context: TransformerContext): boolean {
+    const parentNodeTypes = context.parentNodeTypes || [];
+    // Check if we're in a SelectStmt and ResTarget context (which indicates targetList)
+    return parentNodeTypes.includes('SelectStmt') && parentNodeTypes.includes('ResTarget');
+  }
+
+  private isInReturningContext(context: TransformerContext): boolean {
+    const parentNodeTypes = context.parentNodeTypes || [];
+    // Check if we're in a ResTarget context within UPDATE or DELETE RETURNING clauses
+    return parentNodeTypes.includes('ResTarget') && 
+           (parentNodeTypes.includes('UpdateStmt') || parentNodeTypes.includes('DeleteStmt'));
   }
   private isInCreateIndexContext(context: TransformerContext): boolean {
     const path = context.path || [];
@@ -800,7 +815,7 @@ export class V13ToV14Transformer {
         if (result.name.objargs && !result.name.objfuncargs) {
           // Check if this is an operator by looking at the objname
           const isOperator = this.isOperatorName(result.name.objname);
-
+          
           if (!isOperator) {
             result.name.objfuncargs = Array.isArray(result.name.objargs)
               ? result.name.objargs.map((arg: any, index: number) => this.createFunctionParameterFromTypeName(arg, context, index))
@@ -1112,7 +1127,6 @@ export class V13ToV14Transformer {
 
   FunctionParameter(node: PG13.FunctionParameter, context: TransformerContext): { FunctionParameter: PG14.FunctionParameter } {
     const result: any = {};
-
 
     if (node.name !== undefined) {
       result.name = node.name;
@@ -2277,10 +2291,7 @@ export class V13ToV14Transformer {
       !context.parentNodeTypes.includes('CreateTransformStmt') &&
       !context.parentNodeTypes.includes('DropStmt');
 
-    const isInDropStmtContext = context && context.parentNodeTypes && 
-      context.parentNodeTypes.includes('DropStmt');
-
-    if (typeNameNode && typeNameNode.name && shouldAddParameterName && !isInDropStmtContext) {
+    if (typeNameNode && typeNameNode.name && shouldAddParameterName) {
       functionParam.name = typeNameNode.name;
     }
 
@@ -2306,6 +2317,7 @@ export class V13ToV14Transformer {
     }
     return false;
   }
+
 
   private transformA_Expr_Kind(kind: string): string {
     const pg13ToP14Map: { [key: string]: string } = {
@@ -3179,5 +3191,39 @@ export class V13ToV14Transformer {
       default:
         return pg13Mode;
     }
+  }
+
+  ReindexStmt(node: PG13.ReindexStmt, context: TransformerContext): { ReindexStmt: PG14.ReindexStmt } {
+    const result: any = {};
+
+    if (node.kind !== undefined) {
+      result.kind = node.kind;
+    }
+
+    if (node.relation !== undefined) {
+      result.relation = this.transform(node.relation as any, context);
+    }
+
+    if (node.name !== undefined) {
+      result.name = node.name;
+    }
+
+    const nodeAny = node as any;
+    if (nodeAny.options !== undefined) {
+      const params = [];
+      if (nodeAny.options & 1) { // REINDEXOPT_VERBOSE
+        params.push({
+          DefElem: {
+            defname: 'verbose',
+            defaction: 'DEFELEM_UNSPEC'
+          }
+        });
+      }
+      result.params = params;
+    } else if (nodeAny.params !== undefined) {
+      result.params = this.transform(nodeAny.params, context);
+    }
+
+    return { ReindexStmt: result };
   }
 }
