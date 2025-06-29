@@ -1156,7 +1156,7 @@ export class V13ToV14Transformer {
     }
 
     if (node.mode !== undefined) {
-      result.mode = this.mapFunctionParameterMode(node.mode, context);
+      result.mode = this.mapFunctionParameterMode(node.mode, context, !!node.name);
     }
 
     return { FunctionParameter: result };
@@ -3185,7 +3185,7 @@ export class V13ToV14Transformer {
     return bitNames.length > 0 ? bitNames.join(' | ') : `UNKNOWN(${value})`;
   }
 
-  private mapFunctionParameterMode(pg13Mode: string, context?: TransformerContext): string {
+  private mapFunctionParameterMode(pg13Mode: string, context?: TransformerContext, hasParameterName?: boolean): string {
     // Handle specific mode mappings between PG13 and PG14
     switch (pg13Mode) {
       case 'FUNC_PARAM_VARIADIC':
@@ -3194,7 +3194,7 @@ export class V13ToV14Transformer {
         }
         return 'FUNC_PARAM_VARIADIC';
       case 'FUNC_PARAM_IN':
-        return 'FUNC_PARAM_DEFAULT';
+        return 'FUNC_PARAM_IN';
       default:
         return pg13Mode;
     }
