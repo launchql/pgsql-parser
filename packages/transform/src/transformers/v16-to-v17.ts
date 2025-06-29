@@ -1,4 +1,5 @@
 import * as PG16 from '../16/types';
+import * as PG17 from '../17/types';
 import { TransformerContext } from './context';
 
 /**
@@ -66,7 +67,7 @@ export class V16ToV17Transformer {
     return node;
   }
 
-  ParseResult(node: PG16.ParseResult, context: TransformerContext): any {
+  ParseResult(node: PG16.ParseResult, context: TransformerContext): PG17.ParseResult {
     
     if (node && typeof node === 'object' && 'version' in node && 'stmts' in node) {
       return {
@@ -83,10 +84,10 @@ export class V16ToV17Transformer {
       };
     }
 
-    return node;
+    return node as PG17.ParseResult;
   }
 
-  RawStmt(node: PG16.RawStmt, context: TransformerContext): any {
+  RawStmt(node: PG16.RawStmt, context: TransformerContext): { RawStmt: PG17.RawStmt } {
     const result: any = {};
     
     if (node.stmt !== undefined) {
@@ -102,7 +103,7 @@ export class V16ToV17Transformer {
     return { RawStmt: result };
   }
 
-  SelectStmt(node: PG16.SelectStmt, context: TransformerContext): any {
+  SelectStmt(node: PG16.SelectStmt, context: TransformerContext): { SelectStmt: PG17.SelectStmt } {
     const result: any = {};
     
     if (node.distinctClause !== undefined) {
@@ -191,7 +192,7 @@ export class V16ToV17Transformer {
     return { SelectStmt: result };
   }
 
-  A_Expr(node: PG16.A_Expr, context: TransformerContext): any {
+  A_Expr(node: PG16.A_Expr, context: TransformerContext): { A_Expr: PG17.A_Expr } {
     const result: any = {};
     
     if (node.kind !== undefined) {
@@ -215,7 +216,7 @@ export class V16ToV17Transformer {
     return { A_Expr: result };
   }
 
-  InsertStmt(node: PG16.InsertStmt, context: TransformerContext): any {
+  InsertStmt(node: PG16.InsertStmt, context: TransformerContext): { InsertStmt: PG17.InsertStmt } {
     const result: any = {};
     
     if (node.relation !== undefined) {
@@ -247,7 +248,7 @@ export class V16ToV17Transformer {
     return { InsertStmt: result };
   }
 
-  UpdateStmt(node: PG16.UpdateStmt, context: TransformerContext): any {
+  UpdateStmt(node: PG16.UpdateStmt, context: TransformerContext): { UpdateStmt: PG17.UpdateStmt } {
     const result: any = {};
     
     if (node.relation !== undefined) {
@@ -278,7 +279,7 @@ export class V16ToV17Transformer {
     return { UpdateStmt: result };
   }
 
-  DeleteStmt(node: PG16.DeleteStmt, context: TransformerContext): any {
+  DeleteStmt(node: PG16.DeleteStmt, context: TransformerContext): { DeleteStmt: PG17.DeleteStmt } {
     const result: any = {};
     
     if (node.relation !== undefined) {
@@ -304,7 +305,7 @@ export class V16ToV17Transformer {
     return { DeleteStmt: result };
   }
 
-  WithClause(node: PG16.WithClause, context: TransformerContext): any {
+  WithClause(node: PG16.WithClause, context: TransformerContext): { WithClause: PG17.WithClause } {
     const result: any = {};
     
     if (node.ctes !== undefined) {
@@ -323,7 +324,7 @@ export class V16ToV17Transformer {
     return { WithClause: result };
   }
 
-  ResTarget(node: PG16.ResTarget, context: TransformerContext): any {
+  ResTarget(node: PG16.ResTarget, context: TransformerContext): { ResTarget: PG17.ResTarget } {
     const result: any = {};
     
     if (node.name !== undefined) {
@@ -344,7 +345,7 @@ export class V16ToV17Transformer {
     return { ResTarget: result };
   }
 
-  BoolExpr(node: PG16.BoolExpr, context: TransformerContext): any {
+  BoolExpr(node: PG16.BoolExpr, context: TransformerContext): { BoolExpr: PG17.BoolExpr } {
     const result: any = {};
     
     if (node.boolop !== undefined) {
@@ -362,7 +363,7 @@ export class V16ToV17Transformer {
     return { BoolExpr: result };
   }
 
-  FuncCall(node: PG16.FuncCall, context: TransformerContext): any {
+  FuncCall(node: PG16.FuncCall, context: TransformerContext): { FuncCall: PG17.FuncCall } {
     const result: any = {};
     
     if (node.funcname !== undefined) {
@@ -408,16 +409,16 @@ export class V16ToV17Transformer {
     return { FuncCall: result };
   }
 
-  FuncExpr(node: PG16.FuncExpr, context: TransformerContext): any {
-    return { FuncExpr: node };
+  FuncExpr(node: PG16.FuncExpr, context: TransformerContext): { FuncExpr: PG17.FuncExpr } {
+    return { FuncExpr: node as PG17.FuncExpr };
   }
 
-  A_Const(node: PG16.A_Const, context: TransformerContext): any {
+  A_Const(node: PG16.A_Const, context: TransformerContext): { A_Const: PG17.A_Const } {
     return { A_Const: node };
   }
 
-  ColumnRef(node: PG16.ColumnRef, context: TransformerContext): any {
-    return { ColumnRef: node };
+  ColumnRef(node: PG16.ColumnRef, context: TransformerContext): { ColumnRef: PG17.ColumnRef } {
+    return { ColumnRef: node as PG17.ColumnRef };
   }
 
   private isInCreateDomainContext(context: TransformerContext): boolean {
@@ -450,7 +451,7 @@ export class V16ToV17Transformer {
     return hasSelectStmt && !hasWithClause && !hasCommonTableExpr;
   }
 
-  TypeName(node: PG16.TypeName, context: TransformerContext): any {
+  TypeName(node: PG16.TypeName, context: TransformerContext): { TypeName: PG17.TypeName } {
     const result: any = {};
 
     if (node.names !== undefined) {
@@ -526,11 +527,11 @@ export class V16ToV17Transformer {
     return { TypeName: result };
   }
 
-  Alias(node: PG16.Alias, context: TransformerContext): any {
-    return { Alias: node };
+  Alias(node: PG16.Alias, context: TransformerContext): { Alias: PG17.Alias } {
+    return { Alias: node as PG17.Alias };
   }
 
-  RangeVar(node: PG16.RangeVar, context: TransformerContext): any {
+  RangeVar(node: PG16.RangeVar, context: TransformerContext): { RangeVar: PG17.RangeVar } {
     const result: any = {};
     
     if (node.catalogname !== undefined) {
@@ -558,31 +559,31 @@ export class V16ToV17Transformer {
     return { RangeVar: result };
   }
 
-  A_ArrayExpr(node: PG16.A_ArrayExpr, context: TransformerContext): any {
-    return { A_ArrayExpr: node };
+  A_ArrayExpr(node: PG16.A_ArrayExpr, context: TransformerContext): { A_ArrayExpr: PG17.A_ArrayExpr } {
+    return { A_ArrayExpr: node as PG17.A_ArrayExpr };
   }
 
-  A_Indices(node: PG16.A_Indices, context: TransformerContext): any {
-    return { A_Indices: node };
+  A_Indices(node: PG16.A_Indices, context: TransformerContext): { A_Indices: PG17.A_Indices } {
+    return { A_Indices: node as PG17.A_Indices };
   }
 
-  A_Indirection(node: PG16.A_Indirection, context: TransformerContext): any {
-    return { A_Indirection: node };
+  A_Indirection(node: PG16.A_Indirection, context: TransformerContext): { A_Indirection: PG17.A_Indirection } {
+    return { A_Indirection: node as PG17.A_Indirection };
   }
 
-  A_Star(node: PG16.A_Star, context: TransformerContext): any {
-    return { A_Star: node };
+  A_Star(node: PG16.A_Star, context: TransformerContext): { A_Star: PG17.A_Star } {
+    return { A_Star: node as PG17.A_Star };
   }
 
-  CaseExpr(node: PG16.CaseExpr, context: TransformerContext): any {
-    return { CaseExpr: node };
+  CaseExpr(node: PG16.CaseExpr, context: TransformerContext): { CaseExpr: PG17.CaseExpr } {
+    return { CaseExpr: node as PG17.CaseExpr };
   }
 
-  CoalesceExpr(node: PG16.CoalesceExpr, context: TransformerContext): any {
-    return { CoalesceExpr: node };
+  CoalesceExpr(node: PG16.CoalesceExpr, context: TransformerContext): { CoalesceExpr: PG17.CoalesceExpr } {
+    return { CoalesceExpr: node as PG17.CoalesceExpr };
   }
 
-  TypeCast(node: PG16.TypeCast, context: TransformerContext): any {
+  TypeCast(node: PG16.TypeCast, context: TransformerContext): { TypeCast: PG17.TypeCast } {
     const result: any = {};
     
     if (node.arg !== undefined) {
@@ -622,43 +623,44 @@ export class V16ToV17Transformer {
     return { TypeCast: result };
   }
 
-  CollateClause(node: PG16.CollateClause, context: TransformerContext): any {
-    return { CollateClause: node };
+  CollateClause(node: PG16.CollateClause, context: TransformerContext): { CollateClause: PG17.CollateClause } {
+    return { CollateClause: node as PG17.CollateClause };
   }
 
-  BooleanTest(node: PG16.BooleanTest, context: TransformerContext): any {
-    return { BooleanTest: node };
+  BooleanTest(node: PG16.BooleanTest, context: TransformerContext): { BooleanTest: PG17.BooleanTest } {
+    return { BooleanTest: node as PG17.BooleanTest };
   }
 
-  NullTest(node: PG16.NullTest, context: TransformerContext): any {
-    return { NullTest: node };
+  NullTest(node: PG16.NullTest, context: TransformerContext): { NullTest: PG17.NullTest } {
+    return { NullTest: node as PG17.NullTest };
   }
 
-  String(node: PG16.String, context: TransformerContext): any {
-    return { String: node };
+  String(node: PG16.String, context: TransformerContext): { String: PG17.String } {
+    return { String: node as PG17.String };
   }
   
-  Integer(node: PG16.Integer, context: TransformerContext): any {
-    return { Integer: node };
+  Integer(node: PG16.Integer, context: TransformerContext): { Integer: PG17.Integer } {
+    return { Integer: node as PG17.Integer };
   }
   
-  Float(node: PG16.Float, context: TransformerContext): any {
-    return { Float: node };
+  Float(node: PG16.Float, context: TransformerContext): { Float: PG17.Float } {
+    return { Float: node as PG17.Float };
   }
   
-  Boolean(node: PG16.Boolean, context: TransformerContext): any {
-    return { Boolean: node };
+  Boolean(node: PG16.Boolean, context: TransformerContext): { Boolean: PG17.Boolean } {
+    return { Boolean: node as PG17.Boolean };
   }
   
-  BitString(node: PG16.BitString, context: TransformerContext): any {
-    return { BitString: node };
+  BitString(node: PG16.BitString, context: TransformerContext): { BitString: PG17.BitString } {
+    return { BitString: node as PG17.BitString };
   }
   
-  Null(node: PG16.Node, context: TransformerContext): any {
+  // NOTE: there is no Null type in PG17
+  Null(node: any, context: TransformerContext): any {
     return { Null: node };
   }
 
-  List(node: PG16.List, context: TransformerContext): any {
+  List(node: PG16.List, context: TransformerContext): { List: PG17.List } {
     const result: any = {};
     
     if (node.items !== undefined) {
@@ -670,7 +672,7 @@ export class V16ToV17Transformer {
     return { List: result };
   }
 
-  CreateStmt(node: PG16.CreateStmt, context: TransformerContext): any {
+  CreateStmt(node: PG16.CreateStmt, context: TransformerContext): { CreateStmt: PG17.CreateStmt } {
     const result: any = {};
     
     if (node.relation !== undefined) {
@@ -721,7 +723,7 @@ export class V16ToV17Transformer {
     return { CreateStmt: result };
   }
 
-  ColumnDef(node: PG16.ColumnDef, context: TransformerContext): any {
+  ColumnDef(node: PG16.ColumnDef, context: TransformerContext): { ColumnDef: PG17.ColumnDef } {
     const result: any = {};
     
     if (node.colname !== undefined) {
@@ -784,31 +786,31 @@ export class V16ToV17Transformer {
     return { ColumnDef: result };
   }
 
-  Constraint(node: PG16.Constraint, context: TransformerContext): any {
-    return { Constraint: node };
+  Constraint(node: PG16.Constraint, context: TransformerContext): { Constraint: PG17.Constraint } {
+    return { Constraint: node as PG17.Constraint };
   }
 
-  SubLink(node: PG16.SubLink, context: TransformerContext): any {
-    return { SubLink: node };
+  SubLink(node: PG16.SubLink, context: TransformerContext): { SubLink: PG17.SubLink } {
+    return { SubLink: node as PG17.SubLink };
   }
 
-  CaseWhen(node: PG16.CaseWhen, context: TransformerContext): any {
-    return { CaseWhen: node };
+  CaseWhen(node: PG16.CaseWhen, context: TransformerContext): { CaseWhen: PG17.CaseWhen } {
+    return { CaseWhen: node as PG17.CaseWhen };
   }
 
-  WindowDef(node: PG16.WindowDef, context: TransformerContext): any {
-    return { WindowDef: node };
+  WindowDef(node: PG16.WindowDef, context: TransformerContext): { WindowDef: PG17.WindowDef } {
+    return { WindowDef: node as PG17.WindowDef };
   }
 
-  SortBy(node: PG16.SortBy, context: TransformerContext): any {
-    return { SortBy: node };
+  SortBy(node: PG16.SortBy, context: TransformerContext): { SortBy: PG17.SortBy } {
+    return { SortBy: node as PG17.SortBy };
   }
 
-  GroupingSet(node: PG16.GroupingSet, context: TransformerContext): any {
-    return { GroupingSet: node };
+  GroupingSet(node: PG16.GroupingSet, context: TransformerContext): { GroupingSet: PG17.GroupingSet } {
+    return { GroupingSet: node as PG17.GroupingSet };
   }
 
-  CommonTableExpr(node: PG16.CommonTableExpr, context: TransformerContext): any {
+  CommonTableExpr(node: PG16.CommonTableExpr, context: TransformerContext): { CommonTableExpr: PG17.CommonTableExpr } {
     const result: any = {};
     
     if (node.ctename !== undefined) {
@@ -838,159 +840,159 @@ export class V16ToV17Transformer {
     return { CommonTableExpr: result };
   }
 
-  ParamRef(node: PG16.ParamRef, context: TransformerContext): any {
-    return { ParamRef: node };
+  ParamRef(node: PG16.ParamRef, context: TransformerContext): { ParamRef: PG17.ParamRef } {
+    return { ParamRef: node as PG17.ParamRef };
   }
 
-  LockingClause(node: any, context: TransformerContext): any {
+  LockingClause(node: any, context: TransformerContext): { LockingClause: any } {
     return { LockingClause: node };
   }
 
-  MinMaxExpr(node: PG16.MinMaxExpr, context: TransformerContext): any {
-    return { MinMaxExpr: node };
+  MinMaxExpr(node: PG16.MinMaxExpr, context: TransformerContext): { MinMaxExpr: PG17.MinMaxExpr } {
+    return { MinMaxExpr: node as PG17.MinMaxExpr };
   }
 
-  RowExpr(node: PG16.RowExpr, context: TransformerContext): any {
-    return { RowExpr: node };
+  RowExpr(node: PG16.RowExpr, context: TransformerContext): { RowExpr: PG17.RowExpr } {
+    return { RowExpr: node as PG17.RowExpr };
   }
 
-  OpExpr(node: PG16.OpExpr, context: TransformerContext): any {
-    return { OpExpr: node };
+  OpExpr(node: PG16.OpExpr, context: TransformerContext): { OpExpr: PG17.OpExpr } {
+    return { OpExpr: node as PG17.OpExpr };
   }
 
-  DistinctExpr(node: PG16.DistinctExpr, context: TransformerContext): any {
-    return { DistinctExpr: node };
+  DistinctExpr(node: PG16.DistinctExpr, context: TransformerContext): { DistinctExpr: PG17.DistinctExpr } {
+    return { DistinctExpr: node as PG17.DistinctExpr };
   }
 
-  NullIfExpr(node: PG16.NullIfExpr, context: TransformerContext): any {
-    return { NullIfExpr: node };
+  NullIfExpr(node: PG16.NullIfExpr, context: TransformerContext): { NullIfExpr: PG17.NullIfExpr } {
+    return { NullIfExpr: node as PG17.NullIfExpr };
   }
 
-  ScalarArrayOpExpr(node: PG16.ScalarArrayOpExpr, context: TransformerContext): any {
-    return { ScalarArrayOpExpr: node };
+  ScalarArrayOpExpr(node: PG16.ScalarArrayOpExpr, context: TransformerContext): { ScalarArrayOpExpr: PG17.ScalarArrayOpExpr } {
+    return { ScalarArrayOpExpr: node as PG17.ScalarArrayOpExpr };
   }
 
-  Aggref(node: PG16.Aggref, context: TransformerContext): any {
-    return { Aggref: node };
+  Aggref(node: PG16.Aggref, context: TransformerContext): { Aggref: PG17.Aggref } {
+    return { Aggref: node as PG17.Aggref };
   }
 
-  WindowFunc(node: PG16.WindowFunc, context: TransformerContext): any {
-    return { WindowFunc: node };
+  WindowFunc(node: PG16.WindowFunc, context: TransformerContext): { WindowFunc: PG17.WindowFunc } {
+    return { WindowFunc: node as PG17.WindowFunc };
   }
 
-  FieldSelect(node: PG16.FieldSelect, context: TransformerContext): any {
-    return { FieldSelect: node };
+  FieldSelect(node: PG16.FieldSelect, context: TransformerContext): { FieldSelect: PG17.FieldSelect } {
+    return { FieldSelect: node as PG17.FieldSelect };
   }
 
-  RelabelType(node: PG16.RelabelType, context: TransformerContext): any {
-    return { RelabelType: node };
+  RelabelType(node: PG16.RelabelType, context: TransformerContext): { RelabelType: PG17.RelabelType } {
+    return { RelabelType: node as PG17.RelabelType };
   }
 
-  CoerceViaIO(node: PG16.CoerceViaIO, context: TransformerContext): any {
-    return { CoerceViaIO: node };
+  CoerceViaIO(node: PG16.CoerceViaIO, context: TransformerContext): { CoerceViaIO: PG17.CoerceViaIO } {
+    return { CoerceViaIO: node as PG17.CoerceViaIO };
   }
 
-  ArrayCoerceExpr(node: PG16.ArrayCoerceExpr, context: TransformerContext): any {
-    return { ArrayCoerceExpr: node };
+  ArrayCoerceExpr(node: PG16.ArrayCoerceExpr, context: TransformerContext): { ArrayCoerceExpr: PG17.ArrayCoerceExpr } {
+    return { ArrayCoerceExpr: node as PG17.ArrayCoerceExpr };
   }
 
-  ConvertRowtypeExpr(node: PG16.ConvertRowtypeExpr, context: TransformerContext): any {
-    return { ConvertRowtypeExpr: node };
+  ConvertRowtypeExpr(node: PG16.ConvertRowtypeExpr, context: TransformerContext): { ConvertRowtypeExpr: PG17.ConvertRowtypeExpr } {
+    return { ConvertRowtypeExpr: node as PG17.ConvertRowtypeExpr };
   }
 
-  NamedArgExpr(node: PG16.NamedArgExpr, context: TransformerContext): any {
-    return { NamedArgExpr: node };
+  NamedArgExpr(node: PG16.NamedArgExpr, context: TransformerContext): { NamedArgExpr: PG17.NamedArgExpr } {
+    return { NamedArgExpr: node as PG17.NamedArgExpr };
   }
 
-  ViewStmt(node: PG16.ViewStmt, context: TransformerContext): any {
-    return { ViewStmt: node };
+  ViewStmt(node: PG16.ViewStmt, context: TransformerContext): { ViewStmt: PG17.ViewStmt } {
+    return { ViewStmt: node as PG17.ViewStmt };
   }
 
-  IndexStmt(node: PG16.IndexStmt, context: TransformerContext): any {
-    return { IndexStmt: node };
+  IndexStmt(node: PG16.IndexStmt, context: TransformerContext): { IndexStmt: PG17.IndexStmt } {
+    return { IndexStmt: node as PG17.IndexStmt };
   }
 
-  IndexElem(node: PG16.IndexElem, context: TransformerContext): any {
-    return { IndexElem: node };
+  IndexElem(node: PG16.IndexElem, context: TransformerContext): { IndexElem: PG17.IndexElem } {
+    return { IndexElem: node as PG17.IndexElem };
   }
 
-  PartitionElem(node: PG16.PartitionElem, context: TransformerContext): any {
-    return { PartitionElem: node };
+  PartitionElem(node: PG16.PartitionElem, context: TransformerContext): { PartitionElem: PG17.PartitionElem } {
+    return { PartitionElem: node as PG17.PartitionElem };
   }
 
-  PartitionCmd(node: PG16.PartitionCmd, context: TransformerContext): any {
-    return { PartitionCmd: node };
+  PartitionCmd(node: PG16.PartitionCmd, context: TransformerContext): { PartitionCmd: PG17.PartitionCmd } {
+    return { PartitionCmd: node as PG17.PartitionCmd };
   }
 
-  JoinExpr(node: PG16.JoinExpr, context: TransformerContext): any {
-    return { JoinExpr: node };
+  JoinExpr(node: PG16.JoinExpr, context: TransformerContext): { JoinExpr: PG17.JoinExpr } {
+    return { JoinExpr: node as PG17.JoinExpr };
   }
 
-  FromExpr(node: PG16.FromExpr, context: TransformerContext): any {
-    return { FromExpr: node };
+  FromExpr(node: PG16.FromExpr, context: TransformerContext): { FromExpr: PG17.FromExpr } {
+    return { FromExpr: node as PG17.FromExpr };
   }
 
-  TransactionStmt(node: PG16.TransactionStmt, context: TransformerContext): any {
-    return { TransactionStmt: node };
+  TransactionStmt(node: PG16.TransactionStmt, context: TransformerContext): { TransactionStmt: PG17.TransactionStmt } {
+    return { TransactionStmt: node as PG17.TransactionStmt };
   }
 
-  VariableSetStmt(node: PG16.VariableSetStmt, context: TransformerContext): any {
-    return { VariableSetStmt: node };
+  VariableSetStmt(node: PG16.VariableSetStmt, context: TransformerContext): { VariableSetStmt: PG17.VariableSetStmt } {
+    return { VariableSetStmt: node as PG17.VariableSetStmt };
   }
 
-  VariableShowStmt(node: PG16.VariableShowStmt, context: TransformerContext): any {
-    return { VariableShowStmt: node };
+  VariableShowStmt(node: PG16.VariableShowStmt, context: TransformerContext): { VariableShowStmt: PG17.VariableShowStmt } {
+    return { VariableShowStmt: node as PG17.VariableShowStmt };
   }
 
-  CreateSchemaStmt(node: PG16.CreateSchemaStmt, context: TransformerContext): any {
-    return { CreateSchemaStmt: node };
+  CreateSchemaStmt(node: PG16.CreateSchemaStmt, context: TransformerContext): { CreateSchemaStmt: PG17.CreateSchemaStmt } {
+    return { CreateSchemaStmt: node as PG17.CreateSchemaStmt };
   }
 
-  RoleSpec(node: PG16.RoleSpec, context: TransformerContext): any {
-    return { RoleSpec: node };
+  RoleSpec(node: PG16.RoleSpec, context: TransformerContext): { RoleSpec: PG17.RoleSpec } {
+    return { RoleSpec: node as PG17.RoleSpec };
   }
 
-  DropStmt(node: PG16.DropStmt, context: TransformerContext): any {
-    return { DropStmt: node };
+  DropStmt(node: PG16.DropStmt, context: TransformerContext): { DropStmt: PG17.DropStmt } {
+    return { DropStmt: node as PG17.DropStmt };
   }
 
-  TruncateStmt(node: PG16.TruncateStmt, context: TransformerContext): any {
-    return { TruncateStmt: node };
+  TruncateStmt(node: PG16.TruncateStmt, context: TransformerContext): { TruncateStmt: PG17.TruncateStmt } {
+    return { TruncateStmt: node as PG17.TruncateStmt };
   }
 
-  ReturnStmt(node: PG16.ReturnStmt, context: TransformerContext): any {
-    return { ReturnStmt: node };
+  ReturnStmt(node: PG16.ReturnStmt, context: TransformerContext): { ReturnStmt: PG17.ReturnStmt } {
+    return { ReturnStmt: node as PG17.ReturnStmt };
   }
 
-  PLAssignStmt(node: PG16.PLAssignStmt, context: TransformerContext): any {
-    return { PLAssignStmt: node };
+  PLAssignStmt(node: PG16.PLAssignStmt, context: TransformerContext): { PLAssignStmt: PG17.PLAssignStmt } {
+    return { PLAssignStmt: node as PG17.PLAssignStmt };
   }
 
-  CopyStmt(node: PG16.CopyStmt, context: TransformerContext): any {
-    return { CopyStmt: node };
+  CopyStmt(node: PG16.CopyStmt, context: TransformerContext): { CopyStmt: PG17.CopyStmt } {
+    return { CopyStmt: node as PG17.CopyStmt };
   }
 
-  AlterTableStmt(node: PG16.AlterTableStmt, context: TransformerContext): any {
-    return { AlterTableStmt: node };
+  AlterTableStmt(node: PG16.AlterTableStmt, context: TransformerContext): { AlterTableStmt: PG17.AlterTableStmt } {
+    return { AlterTableStmt: node as PG17.AlterTableStmt };
   }
 
-  AlterTableCmd(node: PG16.AlterTableCmd, context: TransformerContext): any {
-    return { AlterTableCmd: node };
+  AlterTableCmd(node: PG16.AlterTableCmd, context: TransformerContext): { AlterTableCmd: PG17.AlterTableCmd } {
+    return { AlterTableCmd: node as PG17.AlterTableCmd };
   }
 
-  CreateFunctionStmt(node: PG16.CreateFunctionStmt, context: TransformerContext): any {
-    return { CreateFunctionStmt: node };
+  CreateFunctionStmt(node: PG16.CreateFunctionStmt, context: TransformerContext): { CreateFunctionStmt: PG17.CreateFunctionStmt } {
+    return { CreateFunctionStmt: node as PG17.CreateFunctionStmt };
   }
 
-  FunctionParameter(node: PG16.FunctionParameter, context: TransformerContext): any {
-    return { FunctionParameter: node };
+  FunctionParameter(node: PG16.FunctionParameter, context: TransformerContext): { FunctionParameter: PG17.FunctionParameter } {
+    return { FunctionParameter: node as PG17.FunctionParameter };
   }
 
-  CreateEnumStmt(node: PG16.CreateEnumStmt, context: TransformerContext): any {
-    return { CreateEnumStmt: node };
+  CreateEnumStmt(node: PG16.CreateEnumStmt, context: TransformerContext): { CreateEnumStmt: PG17.CreateEnumStmt } {
+    return { CreateEnumStmt: node as PG17.CreateEnumStmt };
   }
 
-  CreateDomainStmt(node: PG16.CreateDomainStmt, context: TransformerContext): any {
+  CreateDomainStmt(node: PG16.CreateDomainStmt, context: TransformerContext): { CreateDomainStmt: PG17.CreateDomainStmt } {
     const result: any = {};
     
     if (node.domainname !== undefined) {
@@ -1014,63 +1016,63 @@ export class V16ToV17Transformer {
     return { CreateDomainStmt: result };
   }
 
-  CreateRoleStmt(node: PG16.CreateRoleStmt, context: TransformerContext): any {
-    return { CreateRoleStmt: node };
+  CreateRoleStmt(node: PG16.CreateRoleStmt, context: TransformerContext): { CreateRoleStmt: PG17.CreateRoleStmt } {
+    return { CreateRoleStmt: node as PG17.CreateRoleStmt };
   }
 
-  DefElem(node: PG16.DefElem, context: TransformerContext): any {
-    return { DefElem: node };
+  DefElem(node: PG16.DefElem, context: TransformerContext): { DefElem: PG17.DefElem } {
+    return { DefElem: node as PG17.DefElem };
   }
 
-  CreateTableSpaceStmt(node: PG16.CreateTableSpaceStmt, context: TransformerContext): any {
-    return { CreateTableSpaceStmt: node };
+  CreateTableSpaceStmt(node: PG16.CreateTableSpaceStmt, context: TransformerContext): { CreateTableSpaceStmt: PG17.CreateTableSpaceStmt } {
+    return { CreateTableSpaceStmt: node as PG17.CreateTableSpaceStmt };
   }
 
-  DropTableSpaceStmt(node: PG16.DropTableSpaceStmt, context: TransformerContext): any {
-    return { DropTableSpaceStmt: node };
+  DropTableSpaceStmt(node: PG16.DropTableSpaceStmt, context: TransformerContext): { DropTableSpaceStmt: PG17.DropTableSpaceStmt } {
+    return { DropTableSpaceStmt: node as PG17.DropTableSpaceStmt };
   }
 
-  AlterTableSpaceOptionsStmt(node: PG16.AlterTableSpaceOptionsStmt, context: TransformerContext): any {
-    return { AlterTableSpaceOptionsStmt: node };
+  AlterTableSpaceOptionsStmt(node: PG16.AlterTableSpaceOptionsStmt, context: TransformerContext): { AlterTableSpaceOptionsStmt: PG17.AlterTableSpaceOptionsStmt } {
+    return { AlterTableSpaceOptionsStmt: node as PG17.AlterTableSpaceOptionsStmt };
   }
 
-  CreateExtensionStmt(node: PG16.CreateExtensionStmt, context: TransformerContext): any {
-    return { CreateExtensionStmt: node };
+  CreateExtensionStmt(node: PG16.CreateExtensionStmt, context: TransformerContext): { CreateExtensionStmt: PG17.CreateExtensionStmt } {
+    return { CreateExtensionStmt: node as PG17.CreateExtensionStmt };
   }
 
-  AlterExtensionStmt(node: PG16.AlterExtensionStmt, context: TransformerContext): any {
-    return { AlterExtensionStmt: node };
+  AlterExtensionStmt(node: PG16.AlterExtensionStmt, context: TransformerContext): { AlterExtensionStmt: PG17.AlterExtensionStmt } {
+    return { AlterExtensionStmt: node as PG17.AlterExtensionStmt };
   }
 
-  CreateFdwStmt(node: PG16.CreateFdwStmt, context: TransformerContext): any {
-    return { CreateFdwStmt: node };
+  CreateFdwStmt(node: PG16.CreateFdwStmt, context: TransformerContext): { CreateFdwStmt: PG17.CreateFdwStmt } {
+    return { CreateFdwStmt: node as PG17.CreateFdwStmt };
   }
 
-  SetOperationStmt(node: PG16.SetOperationStmt, context: TransformerContext): any {
-    return { SetOperationStmt: node };
+  SetOperationStmt(node: PG16.SetOperationStmt, context: TransformerContext): { SetOperationStmt: PG17.SetOperationStmt } {
+    return { SetOperationStmt: node as PG17.SetOperationStmt };
   }
 
-  ReplicaIdentityStmt(node: PG16.ReplicaIdentityStmt, context: TransformerContext): any {
-    return { ReplicaIdentityStmt: node };
+  ReplicaIdentityStmt(node: PG16.ReplicaIdentityStmt, context: TransformerContext): { ReplicaIdentityStmt: PG17.ReplicaIdentityStmt } {
+    return { ReplicaIdentityStmt: node as PG17.ReplicaIdentityStmt };
   }
 
-  AlterCollationStmt(node: PG16.AlterCollationStmt, context: TransformerContext): any {
-    return { AlterCollationStmt: node };
+  AlterCollationStmt(node: PG16.AlterCollationStmt, context: TransformerContext): { AlterCollationStmt: PG17.AlterCollationStmt } {
+    return { AlterCollationStmt: node as PG17.AlterCollationStmt };
   }
 
-  AlterDomainStmt(node: PG16.AlterDomainStmt, context: TransformerContext): any {
-    return { AlterDomainStmt: node };
+  AlterDomainStmt(node: PG16.AlterDomainStmt, context: TransformerContext): { AlterDomainStmt: PG17.AlterDomainStmt } {
+    return { AlterDomainStmt: node as PG17.AlterDomainStmt };
   }
 
-  PrepareStmt(node: PG16.PrepareStmt, context: TransformerContext): any {
-    return { PrepareStmt: node };
+  PrepareStmt(node: PG16.PrepareStmt, context: TransformerContext): { PrepareStmt: PG17.PrepareStmt } {
+    return { PrepareStmt: node as PG17.PrepareStmt };
   }
 
-  ExecuteStmt(node: PG16.ExecuteStmt, context: TransformerContext): any {
-    return { ExecuteStmt: node };
+  ExecuteStmt(node: PG16.ExecuteStmt, context: TransformerContext): { ExecuteStmt: PG17.ExecuteStmt } {
+    return { ExecuteStmt: node as PG17.ExecuteStmt };
   }
 
-  DeallocateStmt(node: PG16.DeallocateStmt, context: TransformerContext): any {
+  DeallocateStmt(node: PG16.DeallocateStmt, context: TransformerContext): { DeallocateStmt: PG17.DeallocateStmt } {
     const result: any = {};
     
     if (node.name !== undefined) {
@@ -1084,275 +1086,275 @@ export class V16ToV17Transformer {
     return { DeallocateStmt: result };
   }
 
-  NotifyStmt(node: PG16.NotifyStmt, context: TransformerContext): any {
-    return { NotifyStmt: node };
+  NotifyStmt(node: PG16.NotifyStmt, context: TransformerContext): { NotifyStmt: PG17.NotifyStmt } {
+    return { NotifyStmt: node as PG17.NotifyStmt };
   }
 
-  ListenStmt(node: PG16.ListenStmt, context: TransformerContext): any {
-    return { ListenStmt: node };
+  ListenStmt(node: PG16.ListenStmt, context: TransformerContext): { ListenStmt: PG17.ListenStmt } {
+    return { ListenStmt: node as PG17.ListenStmt };
   }
 
-  UnlistenStmt(node: PG16.UnlistenStmt, context: TransformerContext): any {
-    return { UnlistenStmt: node };
+  UnlistenStmt(node: PG16.UnlistenStmt, context: TransformerContext): { UnlistenStmt: PG17.UnlistenStmt } {
+    return { UnlistenStmt: node as PG17.UnlistenStmt };
   }
 
-  CheckPointStmt(node: PG16.CheckPointStmt, context: TransformerContext): any {
-    return { CheckPointStmt: node };
+  CheckPointStmt(node: PG16.CheckPointStmt, context: TransformerContext): { CheckPointStmt: PG17.CheckPointStmt } {
+    return { CheckPointStmt: node as PG17.CheckPointStmt };
   }
 
-  LoadStmt(node: PG16.LoadStmt, context: TransformerContext): any {
-    return { LoadStmt: node };
+  LoadStmt(node: PG16.LoadStmt, context: TransformerContext): { LoadStmt: PG17.LoadStmt } {
+    return { LoadStmt: node as PG17.LoadStmt };
   }
 
-  DiscardStmt(node: PG16.DiscardStmt, context: TransformerContext): any {
-    return { DiscardStmt: node };
+  DiscardStmt(node: PG16.DiscardStmt, context: TransformerContext): { DiscardStmt: PG17.DiscardStmt } {
+    return { DiscardStmt: node as PG17.DiscardStmt };
   }
 
-  CommentStmt(node: PG16.CommentStmt, context: TransformerContext): any {
-    return { CommentStmt: node };
+  CommentStmt(node: PG16.CommentStmt, context: TransformerContext): { CommentStmt: PG17.CommentStmt } {
+    return { CommentStmt: node as PG17.CommentStmt };
   }
 
-  LockStmt(node: PG16.LockStmt, context: TransformerContext): any {
-    return { LockStmt: node };
+  LockStmt(node: PG16.LockStmt, context: TransformerContext): { LockStmt: PG17.LockStmt } {
+    return { LockStmt: node as PG17.LockStmt };
   }
 
-  CreatePolicyStmt(node: PG16.CreatePolicyStmt, context: TransformerContext): any {
-    return { CreatePolicyStmt: node };
+  CreatePolicyStmt(node: PG16.CreatePolicyStmt, context: TransformerContext): { CreatePolicyStmt: PG17.CreatePolicyStmt } {
+    return { CreatePolicyStmt: node as PG17.CreatePolicyStmt };
   }
 
-  AlterPolicyStmt(node: PG16.AlterPolicyStmt, context: TransformerContext): any {
-    return { AlterPolicyStmt: node };
+  AlterPolicyStmt(node: PG16.AlterPolicyStmt, context: TransformerContext): { AlterPolicyStmt: PG17.AlterPolicyStmt } {
+    return { AlterPolicyStmt: node as PG17.AlterPolicyStmt };
   }
 
-  CreateUserMappingStmt(node: PG16.CreateUserMappingStmt, context: TransformerContext): any {
-    return { CreateUserMappingStmt: node };
+  CreateUserMappingStmt(node: PG16.CreateUserMappingStmt, context: TransformerContext): { CreateUserMappingStmt: PG17.CreateUserMappingStmt } {
+    return { CreateUserMappingStmt: node as PG17.CreateUserMappingStmt };
   }
 
-  CreateStatsStmt(node: PG16.CreateStatsStmt, context: TransformerContext): any {
-    return { CreateStatsStmt: node };
+  CreateStatsStmt(node: PG16.CreateStatsStmt, context: TransformerContext): { CreateStatsStmt: PG17.CreateStatsStmt } {
+    return { CreateStatsStmt: node as PG17.CreateStatsStmt };
   }
 
-  StatsElem(node: PG16.StatsElem, context: TransformerContext): any {
-    return { StatsElem: node };
+  StatsElem(node: PG16.StatsElem, context: TransformerContext): { StatsElem: PG17.StatsElem } {
+    return { StatsElem: node as PG17.StatsElem };
   }
 
-  CreatePublicationStmt(node: PG16.CreatePublicationStmt, context: TransformerContext): any {
-    return { CreatePublicationStmt: node };
+  CreatePublicationStmt(node: PG16.CreatePublicationStmt, context: TransformerContext): { CreatePublicationStmt: PG17.CreatePublicationStmt } {
+    return { CreatePublicationStmt: node as PG17.CreatePublicationStmt };
   }
 
-  CreateSubscriptionStmt(node: PG16.CreateSubscriptionStmt, context: TransformerContext): any {
-    return { CreateSubscriptionStmt: node };
+  CreateSubscriptionStmt(node: PG16.CreateSubscriptionStmt, context: TransformerContext): { CreateSubscriptionStmt: PG17.CreateSubscriptionStmt } {
+    return { CreateSubscriptionStmt: node as PG17.CreateSubscriptionStmt };
   }
 
-  AlterPublicationStmt(node: PG16.AlterPublicationStmt, context: TransformerContext): any {
-    return { AlterPublicationStmt: node };
+  AlterPublicationStmt(node: PG16.AlterPublicationStmt, context: TransformerContext): { AlterPublicationStmt: PG17.AlterPublicationStmt } {
+    return { AlterPublicationStmt: node as PG17.AlterPublicationStmt };
   }
 
-  AlterSubscriptionStmt(node: PG16.AlterSubscriptionStmt, context: TransformerContext): any {
-    return { AlterSubscriptionStmt: node };
+  AlterSubscriptionStmt(node: PG16.AlterSubscriptionStmt, context: TransformerContext): { AlterSubscriptionStmt: PG17.AlterSubscriptionStmt } {
+    return { AlterSubscriptionStmt: node as PG17.AlterSubscriptionStmt };
   }
 
-  DropSubscriptionStmt(node: PG16.DropSubscriptionStmt, context: TransformerContext): any {
-    return { DropSubscriptionStmt: node };
+  DropSubscriptionStmt(node: PG16.DropSubscriptionStmt, context: TransformerContext): { DropSubscriptionStmt: PG17.DropSubscriptionStmt } {
+    return { DropSubscriptionStmt: node as PG17.DropSubscriptionStmt };
   }
 
-  DoStmt(node: PG16.DoStmt, context: TransformerContext): any {
-    return { DoStmt: node };
+  DoStmt(node: PG16.DoStmt, context: TransformerContext): { DoStmt: PG17.DoStmt } {
+    return { DoStmt: node as PG17.DoStmt };
   }
 
-  InlineCodeBlock(node: PG16.InlineCodeBlock, context: TransformerContext): any {
-    return { InlineCodeBlock: node };
+  InlineCodeBlock(node: PG16.InlineCodeBlock, context: TransformerContext): { InlineCodeBlock: PG17.InlineCodeBlock } {
+    return { InlineCodeBlock: node as PG17.InlineCodeBlock };
   }
 
-  CallContext(node: PG16.CallContext, context: TransformerContext): any {
-    return { CallContext: node };
+  CallContext(node: PG16.CallContext, context: TransformerContext): { CallContext: PG17.CallContext } {
+    return { CallContext: node as PG17.CallContext };
   }
 
-  ConstraintsSetStmt(node: PG16.ConstraintsSetStmt, context: TransformerContext): any {
-    return { ConstraintsSetStmt: node };
+  ConstraintsSetStmt(node: PG16.ConstraintsSetStmt, context: TransformerContext): { ConstraintsSetStmt: PG17.ConstraintsSetStmt } {
+    return { ConstraintsSetStmt: node as PG17.ConstraintsSetStmt };
   }
 
-  AlterSystemStmt(node: PG16.AlterSystemStmt, context: TransformerContext): any {
-    return { AlterSystemStmt: node };
+  AlterSystemStmt(node: PG16.AlterSystemStmt, context: TransformerContext): { AlterSystemStmt: PG17.AlterSystemStmt } {
+    return { AlterSystemStmt: node as PG17.AlterSystemStmt };
   }
 
-  VacuumRelation(node: PG16.VacuumRelation, context: TransformerContext): any {
-    return { VacuumRelation: node };
+  VacuumRelation(node: PG16.VacuumRelation, context: TransformerContext): { VacuumRelation: PG17.VacuumRelation } {
+    return { VacuumRelation: node as PG17.VacuumRelation };
   }
 
-  DropOwnedStmt(node: PG16.DropOwnedStmt, context: TransformerContext): any {
-    return { DropOwnedStmt: node };
+  DropOwnedStmt(node: PG16.DropOwnedStmt, context: TransformerContext): { DropOwnedStmt: PG17.DropOwnedStmt } {
+    return { DropOwnedStmt: node as PG17.DropOwnedStmt };
   }
 
-  ReassignOwnedStmt(node: PG16.ReassignOwnedStmt, context: TransformerContext): any {
-    return { ReassignOwnedStmt: node };
+  ReassignOwnedStmt(node: PG16.ReassignOwnedStmt, context: TransformerContext): { ReassignOwnedStmt: PG17.ReassignOwnedStmt } {
+    return { ReassignOwnedStmt: node as PG17.ReassignOwnedStmt };
   }
 
-  AlterTSDictionaryStmt(node: PG16.AlterTSDictionaryStmt, context: TransformerContext): any {
-    return { AlterTSDictionaryStmt: node };
+  AlterTSDictionaryStmt(node: PG16.AlterTSDictionaryStmt, context: TransformerContext): { AlterTSDictionaryStmt: PG17.AlterTSDictionaryStmt } {
+    return { AlterTSDictionaryStmt: node as PG17.AlterTSDictionaryStmt };
   }
 
-  AlterTSConfigurationStmt(node: PG16.AlterTSConfigurationStmt, context: TransformerContext): any {
-    return { AlterTSConfigurationStmt: node };
+  AlterTSConfigurationStmt(node: PG16.AlterTSConfigurationStmt, context: TransformerContext): { AlterTSConfigurationStmt: PG17.AlterTSConfigurationStmt } {
+    return { AlterTSConfigurationStmt: node as PG17.AlterTSConfigurationStmt };
   }
 
-  ClosePortalStmt(node: PG16.ClosePortalStmt, context: TransformerContext): any {
-    return { ClosePortalStmt: node };
+  ClosePortalStmt(node: PG16.ClosePortalStmt, context: TransformerContext): { ClosePortalStmt: PG17.ClosePortalStmt } {
+    return { ClosePortalStmt: node as PG17.ClosePortalStmt };
   }
 
-  FetchStmt(node: PG16.FetchStmt, context: TransformerContext): any {
-    return { FetchStmt: node };
+  FetchStmt(node: PG16.FetchStmt, context: TransformerContext): { FetchStmt: PG17.FetchStmt } {
+    return { FetchStmt: node as PG17.FetchStmt };
   }
 
-  AlterStatsStmt(node: PG16.AlterStatsStmt, context: TransformerContext): any {
-    return { AlterStatsStmt: node };
+  AlterStatsStmt(node: PG16.AlterStatsStmt, context: TransformerContext): { AlterStatsStmt: PG17.AlterStatsStmt } {
+    return { AlterStatsStmt: node as any };
   }
 
-  ObjectWithArgs(node: PG16.ObjectWithArgs, context: TransformerContext): any {
-    return { ObjectWithArgs: node };
+  ObjectWithArgs(node: PG16.ObjectWithArgs, context: TransformerContext): { ObjectWithArgs: PG17.ObjectWithArgs } {
+    return { ObjectWithArgs: node as PG17.ObjectWithArgs };
   }
 
-  AlterOperatorStmt(node: PG16.AlterOperatorStmt, context: TransformerContext): any {
-    return { AlterOperatorStmt: node };
+  AlterOperatorStmt(node: PG16.AlterOperatorStmt, context: TransformerContext): { AlterOperatorStmt: PG17.AlterOperatorStmt } {
+    return { AlterOperatorStmt: node as PG17.AlterOperatorStmt };
   }
 
-  AlterFdwStmt(node: PG16.AlterFdwStmt, context: TransformerContext): any {
-    return { AlterFdwStmt: node };
+  AlterFdwStmt(node: PG16.AlterFdwStmt, context: TransformerContext): { AlterFdwStmt: PG17.AlterFdwStmt } {
+    return { AlterFdwStmt: node as PG17.AlterFdwStmt };
   }
 
-  CreateForeignServerStmt(node: PG16.CreateForeignServerStmt, context: TransformerContext): any {
-    return { CreateForeignServerStmt: node };
+  CreateForeignServerStmt(node: PG16.CreateForeignServerStmt, context: TransformerContext): { CreateForeignServerStmt: PG17.CreateForeignServerStmt } {
+    return { CreateForeignServerStmt: node as PG17.CreateForeignServerStmt };
   }
 
-  AlterForeignServerStmt(node: PG16.AlterForeignServerStmt, context: TransformerContext): any {
-    return { AlterForeignServerStmt: node };
+  AlterForeignServerStmt(node: PG16.AlterForeignServerStmt, context: TransformerContext): { AlterForeignServerStmt: PG17.AlterForeignServerStmt } {
+    return { AlterForeignServerStmt: node as PG17.AlterForeignServerStmt };
   }
 
-  AlterUserMappingStmt(node: PG16.AlterUserMappingStmt, context: TransformerContext): any {
-    return { AlterUserMappingStmt: node };
+  AlterUserMappingStmt(node: PG16.AlterUserMappingStmt, context: TransformerContext): { AlterUserMappingStmt: PG17.AlterUserMappingStmt } {
+    return { AlterUserMappingStmt: node as PG17.AlterUserMappingStmt };
   }
 
-  DropUserMappingStmt(node: PG16.DropUserMappingStmt, context: TransformerContext): any {
-    return { DropUserMappingStmt: node };
+  DropUserMappingStmt(node: PG16.DropUserMappingStmt, context: TransformerContext): { DropUserMappingStmt: PG17.DropUserMappingStmt } {
+    return { DropUserMappingStmt: node as PG17.DropUserMappingStmt };
   }
 
-  ImportForeignSchemaStmt(node: PG16.ImportForeignSchemaStmt, context: TransformerContext): any {
-    return { ImportForeignSchemaStmt: node };
+  ImportForeignSchemaStmt(node: PG16.ImportForeignSchemaStmt, context: TransformerContext): { ImportForeignSchemaStmt: PG17.ImportForeignSchemaStmt } {
+    return { ImportForeignSchemaStmt: node as PG17.ImportForeignSchemaStmt };
   }
 
-  ClusterStmt(node: PG16.ClusterStmt, context: TransformerContext): any {
-    return { ClusterStmt: node };
+  ClusterStmt(node: PG16.ClusterStmt, context: TransformerContext): { ClusterStmt: PG17.ClusterStmt } {
+    return { ClusterStmt: node as PG17.ClusterStmt };
   }
 
-  VacuumStmt(node: PG16.VacuumStmt, context: TransformerContext): any {
-    return { VacuumStmt: node };
+  VacuumStmt(node: PG16.VacuumStmt, context: TransformerContext): { VacuumStmt: PG17.VacuumStmt } {
+    return { VacuumStmt: node as PG17.VacuumStmt };
   }
 
-  ExplainStmt(node: PG16.ExplainStmt, context: TransformerContext): any {
-    return { ExplainStmt: node };
+  ExplainStmt(node: PG16.ExplainStmt, context: TransformerContext): { ExplainStmt: PG17.ExplainStmt } {
+    return { ExplainStmt: node as PG17.ExplainStmt };
   }
 
-  ReindexStmt(node: PG16.ReindexStmt, context: TransformerContext): any {
-    return { ReindexStmt: node };
+  ReindexStmt(node: PG16.ReindexStmt, context: TransformerContext): { ReindexStmt: PG17.ReindexStmt } {
+    return { ReindexStmt: node as PG17.ReindexStmt };
   }
 
-  CallStmt(node: PG16.CallStmt, context: TransformerContext): any {
-    return { CallStmt: node };
+  CallStmt(node: PG16.CallStmt, context: TransformerContext): { CallStmt: PG17.CallStmt } {
+    return { CallStmt: node as PG17.CallStmt };
   }
 
-  CreatedbStmt(node: PG16.CreatedbStmt, context: TransformerContext): any {
-    return { CreatedbStmt: node };
+  CreatedbStmt(node: PG16.CreatedbStmt, context: TransformerContext): { CreatedbStmt: PG17.CreatedbStmt } {
+    return { CreatedbStmt: node as PG17.CreatedbStmt };
   }
 
-  DropdbStmt(node: PG16.DropdbStmt, context: TransformerContext): any {
-    return { DropdbStmt: node };
+  DropdbStmt(node: PG16.DropdbStmt, context: TransformerContext): { DropdbStmt: PG17.DropdbStmt } {
+    return { DropdbStmt: node as PG17.DropdbStmt };
   }
 
-  RenameStmt(node: PG16.RenameStmt, context: TransformerContext): any {
-    return { RenameStmt: node };
+  RenameStmt(node: PG16.RenameStmt, context: TransformerContext): { RenameStmt: PG17.RenameStmt } {
+    return { RenameStmt: node as PG17.RenameStmt };
   }
 
-  AlterOwnerStmt(node: PG16.AlterOwnerStmt, context: TransformerContext): any {
-    return { AlterOwnerStmt: node };
+  AlterOwnerStmt(node: PG16.AlterOwnerStmt, context: TransformerContext): { AlterOwnerStmt: PG17.AlterOwnerStmt } {
+    return { AlterOwnerStmt: node as PG17.AlterOwnerStmt };
   }
 
-  GrantStmt(node: PG16.GrantStmt, context: TransformerContext): any {
-    return { GrantStmt: node };
+  GrantStmt(node: PG16.GrantStmt, context: TransformerContext): { GrantStmt: PG17.GrantStmt } {
+    return { GrantStmt: node as PG17.GrantStmt };
   }
 
-  GrantRoleStmt(node: PG16.GrantRoleStmt, context: TransformerContext): any {
-    return { GrantRoleStmt: node };
+  GrantRoleStmt(node: PG16.GrantRoleStmt, context: TransformerContext): { GrantRoleStmt: PG17.GrantRoleStmt } {
+    return { GrantRoleStmt: node as PG17.GrantRoleStmt };
   }
 
-  SecLabelStmt(node: PG16.SecLabelStmt, context: TransformerContext): any {
-    return { SecLabelStmt: node };
+  SecLabelStmt(node: PG16.SecLabelStmt, context: TransformerContext): { SecLabelStmt: PG17.SecLabelStmt } {
+    return { SecLabelStmt: node as PG17.SecLabelStmt };
   }
 
-  AlterDefaultPrivilegesStmt(node: PG16.AlterDefaultPrivilegesStmt, context: TransformerContext): any {
-    return { AlterDefaultPrivilegesStmt: node };
+  AlterDefaultPrivilegesStmt(node: PG16.AlterDefaultPrivilegesStmt, context: TransformerContext): { AlterDefaultPrivilegesStmt: PG17.AlterDefaultPrivilegesStmt } {
+    return { AlterDefaultPrivilegesStmt: node as PG17.AlterDefaultPrivilegesStmt };
   }
 
-  CreateConversionStmt(node: PG16.CreateConversionStmt, context: TransformerContext): any {
-    return { CreateConversionStmt: node };
+  CreateConversionStmt(node: PG16.CreateConversionStmt, context: TransformerContext): { CreateConversionStmt: PG17.CreateConversionStmt } {
+    return { CreateConversionStmt: node as PG17.CreateConversionStmt };
   }
 
-  CreateCastStmt(node: PG16.CreateCastStmt, context: TransformerContext): any {
-    return { CreateCastStmt: node };
+  CreateCastStmt(node: PG16.CreateCastStmt, context: TransformerContext): { CreateCastStmt: PG17.CreateCastStmt } {
+    return { CreateCastStmt: node as PG17.CreateCastStmt };
   }
 
-  CreatePLangStmt(node: PG16.CreatePLangStmt, context: TransformerContext): any {
-    return { CreatePLangStmt: node };
+  CreatePLangStmt(node: PG16.CreatePLangStmt, context: TransformerContext): { CreatePLangStmt: PG17.CreatePLangStmt } {
+    return { CreatePLangStmt: node as PG17.CreatePLangStmt };
   }
 
-  CreateTransformStmt(node: PG16.CreateTransformStmt, context: TransformerContext): any {
-    return { CreateTransformStmt: node };
+  CreateTransformStmt(node: PG16.CreateTransformStmt, context: TransformerContext): { CreateTransformStmt: PG17.CreateTransformStmt } {
+    return { CreateTransformStmt: node as PG17.CreateTransformStmt };
   }
 
-  CreateTrigStmt(node: PG16.CreateTrigStmt, context: TransformerContext): any {
-    return { CreateTrigStmt: node };
+  CreateTrigStmt(node: PG16.CreateTrigStmt, context: TransformerContext): { CreateTrigStmt: PG17.CreateTrigStmt } {
+    return { CreateTrigStmt: node as PG17.CreateTrigStmt };
   }
 
-  TriggerTransition(node: PG16.TriggerTransition, context: TransformerContext): any {
-    return { TriggerTransition: node };
+  TriggerTransition(node: PG16.TriggerTransition, context: TransformerContext): { TriggerTransition: PG17.TriggerTransition } {
+    return { TriggerTransition: node as PG17.TriggerTransition };
   }
 
-  CreateEventTrigStmt(node: PG16.CreateEventTrigStmt, context: TransformerContext): any {
-    return { CreateEventTrigStmt: node };
+  CreateEventTrigStmt(node: PG16.CreateEventTrigStmt, context: TransformerContext): { CreateEventTrigStmt: PG17.CreateEventTrigStmt } {
+    return { CreateEventTrigStmt: node as PG17.CreateEventTrigStmt };
   }
 
-  AlterEventTrigStmt(node: PG16.AlterEventTrigStmt, context: TransformerContext): any {
-    return { AlterEventTrigStmt: node };
+  AlterEventTrigStmt(node: PG16.AlterEventTrigStmt, context: TransformerContext): { AlterEventTrigStmt: PG17.AlterEventTrigStmt } {
+    return { AlterEventTrigStmt: node as PG17.AlterEventTrigStmt };
   }
 
-  CreateOpClassStmt(node: PG16.CreateOpClassStmt, context: TransformerContext): any {
-    return { CreateOpClassStmt: node };
+  CreateOpClassStmt(node: PG16.CreateOpClassStmt, context: TransformerContext): { CreateOpClassStmt: PG17.CreateOpClassStmt } {
+    return { CreateOpClassStmt: node as PG17.CreateOpClassStmt };
   }
 
-  CreateOpFamilyStmt(node: PG16.CreateOpFamilyStmt, context: TransformerContext): any {
-    return { CreateOpFamilyStmt: node };
+  CreateOpFamilyStmt(node: PG16.CreateOpFamilyStmt, context: TransformerContext): { CreateOpFamilyStmt: PG17.CreateOpFamilyStmt } {
+    return { CreateOpFamilyStmt: node as PG17.CreateOpFamilyStmt };
   }
 
-  AlterOpFamilyStmt(node: PG16.AlterOpFamilyStmt, context: TransformerContext): any {
-    return { AlterOpFamilyStmt: node };
+  AlterOpFamilyStmt(node: PG16.AlterOpFamilyStmt, context: TransformerContext): { AlterOpFamilyStmt: PG17.AlterOpFamilyStmt } {
+    return { AlterOpFamilyStmt: node as PG17.AlterOpFamilyStmt };
   }
 
-  MergeStmt(node: PG16.MergeStmt, context: TransformerContext): any {
-    return { MergeStmt: node };
+  MergeStmt(node: PG16.MergeStmt, context: TransformerContext): { MergeStmt: PG17.MergeStmt } {
+    return { MergeStmt: node as PG17.MergeStmt };
   }
 
-  AlterTableMoveAllStmt(node: PG16.AlterTableMoveAllStmt, context: TransformerContext): any {
-    return { AlterTableMoveAllStmt: node };
+  AlterTableMoveAllStmt(node: PG16.AlterTableMoveAllStmt, context: TransformerContext): { AlterTableMoveAllStmt: PG17.AlterTableMoveAllStmt } {
+    return { AlterTableMoveAllStmt: node as PG17.AlterTableMoveAllStmt };
   }
 
-  CreateSeqStmt(node: PG16.CreateSeqStmt, context: TransformerContext): any {
-    return { CreateSeqStmt: node };
+  CreateSeqStmt(node: PG16.CreateSeqStmt, context: TransformerContext): { CreateSeqStmt: PG17.CreateSeqStmt } {
+    return { CreateSeqStmt: node as PG17.CreateSeqStmt };
   }
 
-  AlterSeqStmt(node: PG16.AlterSeqStmt, context: TransformerContext): any {
-    return { AlterSeqStmt: node };
+  AlterSeqStmt(node: PG16.AlterSeqStmt, context: TransformerContext): { AlterSeqStmt: PG17.AlterSeqStmt } {
+    return { AlterSeqStmt: node as PG17.AlterSeqStmt };
   }
 
-  CompositeTypeStmt(node: PG16.CompositeTypeStmt, context: TransformerContext): any {
+  CompositeTypeStmt(node: PG16.CompositeTypeStmt, context: TransformerContext): { CompositeTypeStmt: PG17.CompositeTypeStmt } {
     const result: any = {};
     
     if (node.typevar !== undefined) {
@@ -1367,111 +1369,113 @@ export class V16ToV17Transformer {
     return { CompositeTypeStmt: result };
   }
 
-  CreateRangeStmt(node: PG16.CreateRangeStmt, context: TransformerContext): any {
-    return { CreateRangeStmt: node };
+  CreateRangeStmt(node: PG16.CreateRangeStmt, context: TransformerContext): { CreateRangeStmt: PG17.CreateRangeStmt } {
+    return { CreateRangeStmt: node as PG17.CreateRangeStmt };
   }
 
-  AlterEnumStmt(node: PG16.AlterEnumStmt, context: TransformerContext): any {
-    return { AlterEnumStmt: node };
+  AlterEnumStmt(node: PG16.AlterEnumStmt, context: TransformerContext): { AlterEnumStmt: PG17.AlterEnumStmt } {
+    return { AlterEnumStmt: node as PG17.AlterEnumStmt };
   }
 
-  AlterTypeStmt(node: PG16.AlterTypeStmt, context: TransformerContext): any {
-    return { AlterTypeStmt: node };
+  AlterTypeStmt(node: PG16.AlterTypeStmt, context: TransformerContext): { AlterTypeStmt: PG17.AlterTypeStmt } {
+    return { AlterTypeStmt: node as PG17.AlterTypeStmt };
   }
 
-  AlterRoleStmt(node: PG16.AlterRoleStmt, context: TransformerContext): any {
-    return { AlterRoleStmt: node };
+  AlterRoleStmt(node: PG16.AlterRoleStmt, context: TransformerContext): { AlterRoleStmt: PG17.AlterRoleStmt } {
+    return { AlterRoleStmt: node as PG17.AlterRoleStmt };
   }
 
-  DropRoleStmt(node: PG16.DropRoleStmt, context: TransformerContext): any {
-    return { DropRoleStmt: node };
+  DropRoleStmt(node: PG16.DropRoleStmt, context: TransformerContext): { DropRoleStmt: PG17.DropRoleStmt } {
+    return { DropRoleStmt: node as PG17.DropRoleStmt };
   }
 
+  // NOTE PG 17 has a no CreateAggregateStmt?
+  // In PostgreSQL 17, the CreateAggregateStmt has been removed from the backend parser infrastructure and replaced by CreateFunctionStmt with a kind = OBJECT_AGGREGATE variant.
   CreateAggregateStmt(node: PG16.DefineStmt, context: TransformerContext): any {
     return { CreateAggregateStmt: node };
   }
 
-  CreateTableAsStmt(node: PG16.CreateTableAsStmt, context: TransformerContext): any {
-    return { CreateTableAsStmt: node };
+  CreateTableAsStmt(node: PG16.CreateTableAsStmt, context: TransformerContext): { CreateTableAsStmt: PG17.CreateTableAsStmt } {
+    return { CreateTableAsStmt: node as PG17.CreateTableAsStmt };
   }
 
-  RefreshMatViewStmt(node: PG16.RefreshMatViewStmt, context: TransformerContext): any {
-    return { RefreshMatViewStmt: node };
+  RefreshMatViewStmt(node: PG16.RefreshMatViewStmt, context: TransformerContext): { RefreshMatViewStmt: PG17.RefreshMatViewStmt } {
+    return { RefreshMatViewStmt: node as PG17.RefreshMatViewStmt };
   }
 
-  AccessPriv(node: PG16.AccessPriv, context: TransformerContext): any {
-    return node;
+  AccessPriv(node: PG16.AccessPriv, context: TransformerContext): { AccessPriv: PG17.AccessPriv } {
+    return { AccessPriv: node as PG17.AccessPriv };
   }
 
-  DefineStmt(node: PG16.DefineStmt, context: TransformerContext): any {
-    return { DefineStmt: node };
+  DefineStmt(node: PG16.DefineStmt, context: TransformerContext): { DefineStmt: PG17.DefineStmt } {
+    return { DefineStmt: node as PG17.DefineStmt };
   }
 
-  AlterDatabaseStmt(node: PG16.AlterDatabaseStmt, context: TransformerContext): any {
-    return node;
+  AlterDatabaseStmt(node: PG16.AlterDatabaseStmt, context: TransformerContext): { AlterDatabaseStmt: PG17.AlterDatabaseStmt } {
+    return { AlterDatabaseStmt: node as PG17.AlterDatabaseStmt };
   }
 
-  AlterDatabaseRefreshCollStmt(node: PG16.AlterDatabaseRefreshCollStmt, context: TransformerContext): any {
-    return node;
+  AlterDatabaseRefreshCollStmt(node: PG16.AlterDatabaseRefreshCollStmt, context: TransformerContext): { AlterDatabaseRefreshCollStmt: PG17.AlterDatabaseRefreshCollStmt } {
+    return { AlterDatabaseRefreshCollStmt: node as PG17.AlterDatabaseRefreshCollStmt };
   }
 
-  AlterDatabaseSetStmt(node: PG16.AlterDatabaseSetStmt, context: TransformerContext): any {
-    return node;
+  AlterDatabaseSetStmt(node: PG16.AlterDatabaseSetStmt, context: TransformerContext): { AlterDatabaseSetStmt: PG17.AlterDatabaseSetStmt } {
+    return { AlterDatabaseSetStmt: node as PG17.AlterDatabaseSetStmt };
   }
 
-  DeclareCursorStmt(node: PG16.DeclareCursorStmt, context: TransformerContext): any {
-    return { DeclareCursorStmt: node };
+  DeclareCursorStmt(node: PG16.DeclareCursorStmt, context: TransformerContext): { DeclareCursorStmt: PG17.DeclareCursorStmt } {
+    return { DeclareCursorStmt: node as PG17.DeclareCursorStmt };
   }
 
-  PublicationObjSpec(node: PG16.PublicationObjSpec, context: TransformerContext): any {
-    return node;
+  PublicationObjSpec(node: PG16.PublicationObjSpec, context: TransformerContext): { PublicationObjSpec: PG17.PublicationObjSpec } {
+    return { PublicationObjSpec: node as PG17.PublicationObjSpec };
   }
 
-  PublicationTable(node: PG16.PublicationTable, context: TransformerContext): any {
-    return node;
+  PublicationTable(node: PG16.PublicationTable, context: TransformerContext): { PublicationTable: PG17.PublicationTable } {
+    return { PublicationTable: node as PG17.PublicationTable };
   }
 
-  CreateAmStmt(node: PG16.CreateAmStmt, context: TransformerContext): any {
-    return { CreateAmStmt: node };
+  CreateAmStmt(node: PG16.CreateAmStmt, context: TransformerContext): { CreateAmStmt: PG17.CreateAmStmt } {
+    return { CreateAmStmt: node as PG17.CreateAmStmt };
   }
 
-  IntoClause(node: PG16.IntoClause, context: TransformerContext): any {
-    return node;
+  IntoClause(node: PG16.IntoClause, context: TransformerContext): { IntoClause: PG17.IntoClause } {
+    return { IntoClause: node as PG17.IntoClause };
   }
 
-  OnConflictExpr(node: PG16.OnConflictExpr, context: TransformerContext): any {
-    return node;
+  OnConflictExpr(node: PG16.OnConflictExpr, context: TransformerContext): { OnConflictExpr: PG17.OnConflictExpr } {
+    return { OnConflictExpr: node as PG17.OnConflictExpr };
   }
 
-  ScanToken(node: PG16.ScanToken, context: TransformerContext): any {
-    return node;
+  ScanToken(node: PG16.ScanToken, context: TransformerContext): { ScanToken: PG17.ScanToken } {
+    return { ScanToken: node as PG17.ScanToken };
   }
 
-  CreateOpClassItem(node: PG16.CreateOpClassItem, context: TransformerContext): any {
-    return node;
+  CreateOpClassItem(node: PG16.CreateOpClassItem, context: TransformerContext): { CreateOpClassItem: PG17.CreateOpClassItem } {
+    return { CreateOpClassItem: node as PG17.CreateOpClassItem };
   }
 
-  Var(node: PG16.Var, context: TransformerContext): any {
-    return node;
+  Var(node: PG16.Var, context: TransformerContext): { Var: PG17.Var } {
+    return { Var: node as PG17.Var };
   }
 
-  TableFunc(node: PG16.TableFunc, context: TransformerContext): any {
-    return node;
+  TableFunc(node: PG16.TableFunc, context: TransformerContext): { TableFunc: PG17.TableFunc } {
+    return { TableFunc: node as PG17.TableFunc };
   }
 
-  RangeTableFunc(node: PG16.RangeTableFunc, context: TransformerContext): any {
-    return node;
+  RangeTableFunc(node: PG16.RangeTableFunc, context: TransformerContext): { RangeTableFunc: PG17.RangeTableFunc } {
+    return { RangeTableFunc: node as PG17.RangeTableFunc };
   }
 
-  RangeTableFuncCol(node: PG16.RangeTableFuncCol, context: TransformerContext): any {
-    return node;
+  RangeTableFuncCol(node: PG16.RangeTableFuncCol, context: TransformerContext): { RangeTableFuncCol: PG17.RangeTableFuncCol } {
+    return { RangeTableFuncCol: node as PG17.RangeTableFuncCol };
   }
 
-  JsonArrayQueryConstructor(node: PG16.JsonArrayQueryConstructor, context: TransformerContext): any {
-    return node;
+  JsonArrayQueryConstructor(node: PG16.JsonArrayQueryConstructor, context: TransformerContext): { JsonArrayQueryConstructor: PG17.JsonArrayQueryConstructor } {
+    return { JsonArrayQueryConstructor: node as PG17.JsonArrayQueryConstructor };
   }
 
-  RangeFunction(node: PG16.RangeFunction, context: TransformerContext): any {
+  RangeFunction(node: PG16.RangeFunction, context: TransformerContext): { RangeFunction: PG17.RangeFunction } {
     const result: any = {};
     
     if (node.lateral !== undefined) {
@@ -1500,7 +1504,7 @@ export class V16ToV17Transformer {
     return { RangeFunction: result };
   }
 
-  XmlSerialize(node: PG16.XmlSerialize, context: TransformerContext): any {
+  XmlSerialize(node: PG16.XmlSerialize, context: TransformerContext): { XmlSerialize: PG17.XmlSerialize } {
     const result: any = {};
     
     if (node.xmloption !== undefined) {
@@ -1519,11 +1523,11 @@ export class V16ToV17Transformer {
     return { XmlSerialize: result };
   }
 
-  RuleStmt(node: PG16.RuleStmt, context: TransformerContext): any {
-    return { RuleStmt: node };
+  RuleStmt(node: PG16.RuleStmt, context: TransformerContext): { RuleStmt: PG17.RuleStmt } {
+    return { RuleStmt: node as PG17.RuleStmt };
   }
 
-  GroupingFunc(node: PG16.GroupingFunc, context: TransformerContext): any {
+  GroupingFunc(node: PG16.GroupingFunc, context: TransformerContext): { GroupingFunc: PG17.GroupingFunc } {
     const result: any = {};
     
     if (node.args !== undefined) {
@@ -1546,7 +1550,7 @@ export class V16ToV17Transformer {
     return { GroupingFunc: result };
   }
 
-  MultiAssignRef(node: PG16.MultiAssignRef, context: TransformerContext): any {
+  MultiAssignRef(node: PG16.MultiAssignRef, context: TransformerContext): { MultiAssignRef: PG17.MultiAssignRef } {
     const result: any = {};
     
     if (node.source !== undefined) {
@@ -1562,7 +1566,7 @@ export class V16ToV17Transformer {
     return { MultiAssignRef: result };
   }
 
-  CurrentOfExpr(node: PG16.CurrentOfExpr, context: TransformerContext): any {
+  CurrentOfExpr(node: PG16.CurrentOfExpr, context: TransformerContext): { CurrentOfExpr: PG17.CurrentOfExpr } {
     const result: any = {};
     
     if (node.cursor_name !== undefined) {
@@ -1575,19 +1579,19 @@ export class V16ToV17Transformer {
     return { CurrentOfExpr: result };
   }
 
-  TableLikeClause(node: PG16.TableLikeClause, context: TransformerContext): any {
-    return { TableLikeClause: node };
+  TableLikeClause(node: PG16.TableLikeClause, context: TransformerContext): { TableLikeClause: PG17.TableLikeClause } {
+    return { TableLikeClause: node as PG17.TableLikeClause };
   }
 
-  AlterFunctionStmt(node: PG16.AlterFunctionStmt, context: TransformerContext): any {
-    return { AlterFunctionStmt: node };
+  AlterFunctionStmt(node: PG16.AlterFunctionStmt, context: TransformerContext): { AlterFunctionStmt: PG17.AlterFunctionStmt } {
+    return { AlterFunctionStmt: node as PG17.AlterFunctionStmt };
   }
 
-  AlterObjectSchemaStmt(node: PG16.AlterObjectSchemaStmt, context: TransformerContext): any {
-    return { AlterObjectSchemaStmt: node };
+  AlterObjectSchemaStmt(node: PG16.AlterObjectSchemaStmt, context: TransformerContext): { AlterObjectSchemaStmt: PG17.AlterObjectSchemaStmt } {
+    return { AlterObjectSchemaStmt: node as PG17.AlterObjectSchemaStmt };
   }
 
-  AlterRoleSetStmt(node: PG16.AlterRoleSetStmt, context: TransformerContext): any {
+  AlterRoleSetStmt(node: PG16.AlterRoleSetStmt, context: TransformerContext): { AlterRoleSetStmt: PG17.AlterRoleSetStmt } {
     const result: any = {};
     
     if (node.role !== undefined) {
@@ -1603,8 +1607,8 @@ export class V16ToV17Transformer {
     return { AlterRoleSetStmt: result };
   }
 
-  CreateForeignTableStmt(node: PG16.CreateForeignTableStmt, context: TransformerContext): any {
-    return { CreateForeignTableStmt: node };
+  CreateForeignTableStmt(node: PG16.CreateForeignTableStmt, context: TransformerContext): { CreateForeignTableStmt: PG17.CreateForeignTableStmt } {
+    return { CreateForeignTableStmt: node as PG17.CreateForeignTableStmt };
   }
 
   private getFuncformatValue(node: any, funcname: any, context: TransformerContext): string {
@@ -1682,7 +1686,7 @@ export class V16ToV17Transformer {
     return false;
   }
 
-  RangeTableSample(node: PG16.RangeTableSample, context: TransformerContext): any {
+  RangeTableSample(node: PG16.RangeTableSample, context: TransformerContext): { RangeTableSample: PG17.RangeTableSample } {
     const result: any = {};
     
     if (node.relation !== undefined) {
@@ -1708,7 +1712,7 @@ export class V16ToV17Transformer {
     return { RangeTableSample: result };
   }
 
-  SQLValueFunction(node: PG16.SQLValueFunction, context: TransformerContext): any {
+  SQLValueFunction(node: PG16.SQLValueFunction, context: TransformerContext): { SQLValueFunction: PG17.SQLValueFunction } {
     const result: any = {};
     
     if (node.op !== undefined) {
@@ -1727,7 +1731,7 @@ export class V16ToV17Transformer {
     return { SQLValueFunction: result };
   }
 
-  XmlExpr(node: PG16.XmlExpr, context: TransformerContext): any {
+  XmlExpr(node: PG16.XmlExpr, context: TransformerContext): { XmlExpr: PG17.XmlExpr } {
     const result: any = {};
     
     if (node.op !== undefined) {
@@ -1767,7 +1771,7 @@ export class V16ToV17Transformer {
     return { XmlExpr: result };
   }
 
-  RangeSubselect(node: PG16.RangeSubselect, context: TransformerContext): any {
+  RangeSubselect(node: PG16.RangeSubselect, context: TransformerContext): { RangeSubselect: PG17.RangeSubselect } {
     const result: any = {};
     
     if (node.lateral !== undefined) {
@@ -1783,7 +1787,7 @@ export class V16ToV17Transformer {
     return { RangeSubselect: result };
   }
 
-  SetToDefault(node: PG16.SetToDefault, context: TransformerContext): any {
+  SetToDefault(node: PG16.SetToDefault, context: TransformerContext): { SetToDefault: PG17.SetToDefault } {
     const result: any = {};
     
     if (node.location !== undefined) {
