@@ -58,12 +58,12 @@ export class V15ToV16Transformer {
 
   getNodeType(node: PG15.Node): any {
     const keys = Object.keys(node);
-    
+
     // Handle parse result structure with version and stmts
     if (keys.length === 2 && keys.includes('version') && keys.includes('stmts')) {
       return 'ParseResult';
     }
-    
+
     return keys[0];
   }
 
@@ -542,11 +542,11 @@ export class V15ToV16Transformer {
         ...context,
         parentNodeTypes: [...(context.parentNodeTypes || []), 'A_Const']
       };
-      
+
       // Handle empty Integer objects directly since transform() can't detect their type
       if (typeof result.ival === 'object' && Object.keys(result.ival).length === 0) {
         const parentTypes = childContext.parentNodeTypes || [];
-        if (parentTypes.includes('TypeName') || 
+        if (parentTypes.includes('TypeName') ||
             (parentTypes.includes('DefineStmt') && !(context as any).defElemName)) {
           result.ival = this.Integer(result.ival as any, childContext).Integer;
         }
@@ -889,17 +889,17 @@ export class V15ToV16Transformer {
 
   Integer(node: PG15.Integer, context: TransformerContext): { Integer: PG16.Integer } {
     const result: any = { ...node };
-    
+
     if (Object.keys(result).length === 0) {
       const parentTypes = context.parentNodeTypes || [];
-      
+
       if (parentTypes.includes('TypeName')) {
         result.ival = -1;  // Based on alter_table test failure pattern
       }
       // DefineStmt context: Only very specific cases from v14-to-v15
       else if (parentTypes.includes('DefineStmt')) {
         const defElemName = (context as any).defElemName;
-        
+
         // Only transform for very specific defElemName values that are documented in v14-to-v15
         if (defElemName === 'initcond') {
           result.ival = -100;  // v14-to-v15 line 464: ival === 0 || ival === -100
@@ -912,7 +912,7 @@ export class V15ToV16Transformer {
         }
       }
     }
-    
+
     return { Integer: result };
   }
 
@@ -3771,3 +3771,4 @@ export class V15ToV16Transformer {
     return { GrantStmt: result };
   }
 }
+aamzing
