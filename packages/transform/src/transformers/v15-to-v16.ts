@@ -866,12 +866,6 @@ export class V15ToV16Transformer {
 
   Integer(node: PG15.Integer, context: TransformerContext): any {
     const result: any = { ...node };
-    
-    // Handle case where PG15 produces empty Integer nodes for negative values in arrayBounds
-    if (Object.keys(result).length === 0) {
-      result.ival = -1;
-    }
-    
     return { Integer: result };
   }
 
