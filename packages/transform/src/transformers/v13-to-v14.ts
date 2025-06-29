@@ -2122,16 +2122,11 @@ export class V13ToV14Transformer {
                 mode = isVariadic ? 'FUNC_PARAM_VARIADIC' : 'FUNC_PARAM_DEFAULT';
               }
 
-              // Extract parameter name if available from original objfuncargs
+              // Extract parameter name - prioritize function name extraction for testfunc patterns
               let paramName: string | undefined;
-              if (originalObjfuncargs && Array.isArray(originalObjfuncargs) && originalObjfuncargs[index]) {
-                const originalParam = originalObjfuncargs[index];
-                if (originalParam && originalParam.FunctionParameter && originalParam.FunctionParameter.name) {
-                  paramName = originalParam.FunctionParameter.name;
-                }
-              }
               
-              if (!paramName && context.parentNodeTypes?.includes('DropStmt') && 
+              // First try function name extraction for DropStmt contexts
+              if (context.parentNodeTypes?.includes('DropStmt') && 
                   (context as any).dropRemoveType === 'OBJECT_FUNCTION') {
                 // Extract function name from current node
                 let functionName: string | undefined;
@@ -2143,6 +2138,13 @@ export class V13ToV14Transformer {
                 }
                 const isVariadic = this.isVariadicParameterType(arg, index, result.objargs, context);
                 paramName = this.extractParameterNameFromFunctionName(functionName, index, isVariadic);
+              }
+              
+              if (!paramName && originalObjfuncargs && Array.isArray(originalObjfuncargs) && originalObjfuncargs[index]) {
+                const originalParam = originalObjfuncargs[index];
+                if (originalParam && originalParam.FunctionParameter && originalParam.FunctionParameter.name) {
+                  paramName = originalParam.FunctionParameter.name;
+                }
               }
               
 
