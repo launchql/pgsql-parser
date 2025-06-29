@@ -1093,6 +1093,18 @@ export class V13ToV14Transformer {
     return null;
   }
 
+  private functionHasExplicitModes(parameters: any[]): boolean {
+    if (!parameters || !Array.isArray(parameters)) {
+      return false;
+    }
+    
+    // Check if any parameter has explicit OUT, INOUT, or VARIADIC mode
+    return parameters.some(param => {
+      const mode = param?.FunctionParameter?.mode;
+      return mode === 'FUNC_PARAM_OUT' || mode === 'FUNC_PARAM_INOUT' || mode === 'FUNC_PARAM_VARIADIC';
+    });
+  }
+
   private isVariadicParameterType(argType: any, index?: number, allArgs?: any[], context?: TransformerContext): boolean {
     if (!argType) return false;
 
@@ -1859,10 +1871,13 @@ export class V13ToV14Transformer {
   CreateFunctionStmt(node: PG13.CreateFunctionStmt, context: TransformerContext): { CreateFunctionStmt: PG14.CreateFunctionStmt } {
     const result: any = { ...node };
 
-    // Create child context with CreateFunctionStmt as parent
+    const hasExplicitModes = this.functionHasExplicitModes(node.parameters);
+
+    // Create child context with CreateFunctionStmt as parent and explicit mode info
     const childContext: TransformerContext = {
       ...context,
-      parentNodeTypes: [...(context.parentNodeTypes || []), 'CreateFunctionStmt']
+      parentNodeTypes: [...(context.parentNodeTypes || []), 'CreateFunctionStmt'],
+      functionHasExplicitModes: hasExplicitModes
     };
 
     if (node.funcname !== undefined) {
@@ -3194,6 +3209,15 @@ export class V13ToV14Transformer {
         }
         return 'FUNC_PARAM_VARIADIC';
       case 'FUNC_PARAM_IN':
+        if (context && context.parentNodeTypes?.includes('DropStmt')) {
+          return 'FUNC_PARAM_IN';
+        }
+        
+        // Check if this function has explicit mode keywords by looking for OUT/INOUT parameters
+        if (context && context.functionHasExplicitModes) {
+          return 'FUNC_PARAM_IN';
+        }
+        
         return 'FUNC_PARAM_DEFAULT';
       default:
         return pg13Mode;
