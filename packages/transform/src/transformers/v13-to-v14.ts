@@ -979,19 +979,20 @@ export class V13ToV14Transformer {
       return false;
     }
 
-    const firstElement = objname[0];
-    if (!firstElement || typeof firstElement !== 'object' || !('String' in firstElement)) {
-      return false;
+    for (const element of objname) {
+      if (element && typeof element === 'object' && 'String' in element) {
+        const name = element.String?.str;
+        if (name && typeof name === 'string') {
+          // Check if it's an operator symbol (contains operator characters)
+          const operatorChars = /[+\-*/<>=!~@#%^&|`?]/;
+          if (operatorChars.test(name)) {
+            return true;
+          }
+        }
+      }
     }
 
-    const name = firstElement.String?.str;
-    if (!name || typeof name !== 'string') {
-      return false;
-    }
-
-    // Check if it's an operator symbol (contains operator characters)
-    const operatorChars = /[+\-*/<>=!~@#%^&|`?]/;
-    return operatorChars.test(name);
+    return false;
   }
 
   private getFuncformatValue(node: any, context: TransformerContext): string {
@@ -1110,13 +1111,20 @@ export class V13ToV14Transformer {
       return false;
     }
     
-    // 1. It has no parameters with FUNC_PARAM_IN (which indicates implicit parameters)
-    const hasImplicitParams = parameters.some(param => {
+    // Check if ALL parameters have explicit modes (IN, OUT, INOUT, VARIADIC)
+    return parameters.every(param => {
       const mode = param?.FunctionParameter?.mode;
-      return mode === 'FUNC_PARAM_IN';
+      return mode === 'FUNC_PARAM_IN' || mode === 'FUNC_PARAM_OUT' || 
+             mode === 'FUNC_PARAM_INOUT' || mode === 'FUNC_PARAM_VARIADIC';
     });
+  }
+
+  private hasOnlyExplicitInParameters(parameters: any[]): boolean {
+    if (!parameters || !Array.isArray(parameters)) {
+      return false;
+    }
     
-    return !hasImplicitParams;
+    return false;
   }
 
   private isVariadicParameterType(argType: any, index?: number, allArgs?: any[], context?: TransformerContext): boolean {
@@ -1695,6 +1703,8 @@ export class V13ToV14Transformer {
     } else {
       if (node.options === 48) {
         result.options = 288;
+      } else if (node.options === 50) {
+        result.options = 290;
       } else {
         result.options = (node.options & ~32) | 256;
       }
@@ -1891,13 +1901,15 @@ export class V13ToV14Transformer {
 
     const hasExplicitModes = this.functionHasExplicitModes(node.parameters);
     const allHaveExplicitModes = this.allParametersHaveExplicitModes(node.parameters);
+    const hasOnlyExplicitIn = this.hasOnlyExplicitInParameters(node.parameters);
 
     // Create child context with CreateFunctionStmt as parent and explicit mode info
     const childContext: TransformerContext = {
       ...context,
       parentNodeTypes: [...(context.parentNodeTypes || []), 'CreateFunctionStmt'],
       functionHasExplicitModes: hasExplicitModes,
-      allParametersHaveExplicitModes: allHaveExplicitModes
+      allParametersHaveExplicitModes: allHaveExplicitModes,
+      hasOnlyExplicitInParameters: hasOnlyExplicitIn
     };
 
     if (node.funcname !== undefined) {
@@ -3271,7 +3283,7 @@ export class V13ToV14Transformer {
         }
         
         if (context && context.functionHasExplicitModes) {
-          if (context.allParametersHaveExplicitModes) {
+          if (context.hasOnlyExplicitInParameters) {
             return 'FUNC_PARAM_IN';
           }
           return 'FUNC_PARAM_DEFAULT';
