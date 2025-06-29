@@ -111,7 +111,14 @@ export class V15ToV16Transformer {
   }
 
   getNodeType(node: PG15.Node): any {
-    return Object.keys(node)[0];
+    const keys = Object.keys(node);
+    
+    // Handle parse result structure with version and stmts
+    if (keys.length === 2 && keys.includes('version') && keys.includes('stmts')) {
+      return 'ParseResult';
+    }
+    
+    return keys[0];
   }
 
   getNodeData(node: PG15.Node): any {
