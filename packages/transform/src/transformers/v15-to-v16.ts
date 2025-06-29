@@ -544,30 +544,6 @@ export class V15ToV16Transformer {
       result.ival = this.transform(result.ival as any, context);
     }
 
-    if (result.fval !== undefined) {
-      result.fval = this.transform(result.fval as any, context);
-    }
-
-    if (result.boolval !== undefined) {
-      result.boolval = this.transform(result.boolval as any, context);
-    }
-
-    if (result.sval !== undefined) {
-      result.sval = this.transform(result.sval as any, context);
-    }
-
-    if (result.bsval !== undefined) {
-      result.bsval = this.transform(result.bsval as any, context);
-    }
-
-    if (result.isnull !== undefined) {
-      result.isnull = result.isnull;
-    }
-
-    if (result.location !== undefined) {
-      result.location = result.location;
-    }
-
     return { A_Const: result };
   }
 
@@ -890,16 +866,12 @@ export class V15ToV16Transformer {
 
   Integer(node: PG15.Integer, context: TransformerContext): any {
     const result: any = { ...node };
-
-    // Handle case where PG15 produces empty Integer nodes that need different handling based on context
-    if (Object.keys(node).length === 0) {
-      if (context.parentNodeTypes.includes('TypeName')) {
-        result.ival = -1;
-      } else if (context.parentNodeTypes.includes('A_Const')) {
-        result.ival = -1;
-      }
+    
+    // Handle case where PG15 produces empty Integer nodes for negative values in arrayBounds
+    if (Object.keys(result).length === 0) {
+      result.ival = -1;
     }
-
+    
     return { Integer: result };
   }
 
