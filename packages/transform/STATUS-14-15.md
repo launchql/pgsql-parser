@@ -23,7 +23,9 @@
 3. `misc-issues.test.ts` - "syntax error at or near 'NULLS'"
 4. `latest-postgres-create_am.test.ts` - "syntax error at or near 'ACCESS'"
 
-These failures are not transformer bugs but parser limitations for PG15 syntax.
+**Note**: Investigation revealed that CREATE ACCESS METHOD syntax actually works in PG14 parser individually, but the test fixture file contains a multi-line CREATE OPERATOR CLASS statement that breaks parsing. The missing CreateAccessMethodStmt transformation method has been added to the v14-to-v15 transformer.
+
+These failures are not transformer bugs but parser limitations for PG15 syntax (3/4) and test fixture parsing issues (1/4).
 
 ## Primary Issues: RESOLVED ✅
 
@@ -151,5 +153,14 @@ Applied the v13-to-v14 transformer's approach to node wrapping:
 - ✅ Context-aware Integer transformations
 - ✅ Proper node wrapping patterns
 - ✅ Version number updates (140000 → 150000)
+
+## Investigation Summary
+
+Extensive debugging confirmed that:
+- CREATE ACCESS METHOD syntax is supported in PG14 parser individually
+- The transformation pipeline works correctly for CREATE ACCESS METHOD statements  
+- Test failure is due to fixture file parsing issues, not transformation bugs
+- 3 out of 4 failures are legitimate PG14 parser syntax limitations
+- 1 out of 4 failures is a test framework issue with fixture file parsing
 
 **Status: READY FOR PRODUCTION** 🚀

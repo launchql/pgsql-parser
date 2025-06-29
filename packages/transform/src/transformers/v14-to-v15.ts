@@ -1499,4 +1499,9 @@ export class V14ToV15Transformer {
     const result = this.transformGenericNode(node, context);
     return { CreateForeignTableStmt: result };
   }
+
+  CreateAccessMethodStmt(node: any, context: TransformerContext): any {
+    const result = this.transformGenericNode(node, context);
+    return { CreateAccessMethodStmt: result };
+  }
 }
