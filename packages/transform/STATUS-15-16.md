@@ -1,57 +1,135 @@
 # PostgreSQL v15-to-v16 AST Transformer Status
 
 ## Current Status: **IN PROGRESS** 🟡
-- **Test Pass Rate**: 184/258 tests passing (71.3% success rate)
-- **Branch**: `pg15-pg16-transformer` 
-- **PR**: [#175](https://github.com/launchql/pgsql-parser/pull/175)
+- **Test Pass Rate**: 181/258 tests passing (70.2% success rate)
+- **Branch**: `transform/pg15-pg16` 
+- **PR**: [#182](https://github.com/launchql/pgsql-parser/pull/182)
 
 ## Progress Summary
-Started from a basic skeleton transformer and systematically implemented node wrapping and transformation logic across all node types. Made significant progress improving test pass rate from initial ~30% to current 71.3%.
+Started from a basic skeleton transformer and systematically implemented node wrapping and transformation logic across all node types. Made significant progress improving test pass rate from initial ~30% to current 70.2%.
 
 ## Key Achievements
 - ✅ Implemented comprehensive node transformation methods for 100+ node types
 - ✅ Fixed node wrapping issues across SelectStmt, InsertStmt, UpdateStmt, DeleteStmt
 - ✅ Resolved PartitionSpec strategy mapping in CreateStmt method
 - ✅ Added proper Array handling to transform method for nested node processing
-- ✅ Established stable baseline of 184/258 tests passing locally
+- ✅ Implemented context-aware Integer transformation logic for DefineStmt contexts
+- ✅ Added GrantRoleStmt admin_opt to opt field transformation
 
-## Current Challenge: Negative Integer Transformation
-**Root Issue**: PG15 produces `"ival": {}` (empty objects) where PG16 expects `"ival": {"ival": -3}` for negative integers in A_Const nodes.
+## Current Challenge: DefineStmt Args Integer Transformation
+**Root Issue**: Empty Integer objects in DefineStmt args context should transform to `{"ival": -1}` but the Integer method is never being called. The transformation happens through the general transform pipeline in DefineStmt method.
 
 **Analysis Completed**:
-- Created detailed debug scripts to analyze transformation flow
-- Identified that A_Const method calls `this.transform()` on empty ival objects
-- Empty objects `{}` don't get routed to Integer method due to missing node wrapper structure
-- Need targeted fix that distinguishes between zero values (should remain empty) and negative values (need nested structure)
+- Created extensive debug scripts to trace transformation flow
+- Discovered Integer method is bypassed - transformation occurs in DefineStmt.args processing
+- Identified that context information isn't properly propagated to detect DefineStmt args context
+- Need to modify DefineStmt method to pass proper context for args transformation
 
-**Attempted Solutions**:
-- ❌ Broad A_Const fix (transforms all empty ival objects) - caused test pass rate to drop to 144/258
-- ❌ Context-based detection (constraint/ALTER TABLE contexts) - caused test pass rate to drop to 174/258
-- ✅ Successfully reverted to stable 184/258 baseline after testing approaches
-- 🔄 Dual-parse approach explored but @pgsql/parser returns empty objects for all SQL queries
+## Failing Tests (77 total)
+
+### Latest PostgreSQL Tests (9 tests)
+- [ ] latest/postgres/create_aggregate-6.sql
+- [ ] latest/postgres/create_am-62.sql
+- [ ] latest/postgres/create_function_sql-6.sql
+- [ ] latest/postgres/create_index-55.sql
+- [ ] latest/postgres/create_operator-14.sql
+- [ ] latest/postgres/create_procedure-62.sql
+- [ ] latest/postgres/create_role-80.sql
+- [ ] latest/postgres/create_type-55.sql
+- [ ] latest/postgres/create_view-274.sql
+
+### Miscellaneous Tests (3 tests)
+- [ ] misc/inflection-20.sql
+- [ ] misc/issues-13.sql
+- [ ] pretty/misc-7.sql
+
+### Original Tests (65 tests)
+- [ ] original/a_expr-1.sql
+- [ ] original/custom-5.sql
+- [ ] original/define-1.sql
+- [ ] original/sequences/sequences-3.sql
+- [ ] original/statements/select-2.sql
+- [ ] original/upstream/aggregates-205.sql
+- [ ] original/upstream/alter_generic-36.sql
+- [ ] original/upstream/alter_table-15.sql
+- [ ] original/upstream/arrays-1.sql
+- [ ] original/upstream/brin-5.sql
+- [ ] original/upstream/case-7.sql
+- [ ] original/upstream/create_aggregate-6.sql
+- [ ] original/upstream/create_function_3-6.sql
+- [ ] original/upstream/create_index-55.sql
+- [ ] original/upstream/create_table-33.sql
+- [ ] original/upstream/create_view-209.sql
+- [ ] original/upstream/date-257.sql
+- [ ] original/upstream/dbsize-1.sql
+- [ ] original/upstream/domain-40.sql
+- [ ] original/upstream/drop_if_exists-67.sql
+- [ ] original/upstream/enum-91.sql
+- [ ] original/upstream/event_trigger-98.sql
+- [ ] original/upstream/float8-79.sql
+- [ ] original/upstream/foreign_data-202.sql
+- [ ] original/upstream/foreign_key-54.sql
+- [ ] original/upstream/geometry-1.sql
+- [ ] original/upstream/gin-1.sql
+- [ ] original/upstream/inherit-174.sql
+- [ ] original/upstream/insert-13.sql
+- [ ] original/upstream/int2-37.sql
+- [ ] original/upstream/int4-39.sql
+- [ ] original/upstream/int8-66.sql
+- [ ] original/upstream/interval-132.sql
+- [ ] original/upstream/join-14.sql
+- [ ] original/upstream/json-53.sql
+- [ ] original/upstream/jsonb-53.sql
+- [ ] original/upstream/misc_functions-6.sql
+- [ ] original/upstream/money-47.sql
+- [ ] original/upstream/name-34.sql
+- [ ] original/upstream/numeric-549.sql
+- [ ] original/upstream/numeric_big-535.sql
+- [ ] original/upstream/numerology-6.sql
+- [ ] original/upstream/object_address-18.sql
+- [ ] original/upstream/plpgsql-333.sql
+- [ ] original/upstream/polymorphism-2.sql
+- [ ] original/upstream/privileges-265.sql
+- [ ] original/upstream/psql_crosstab-1.sql
+- [ ] original/upstream/rangetypes-285.sql
+- [ ] original/upstream/returning-16.sql
+- [ ] original/upstream/rolenames-2.sql
+- [ ] original/upstream/rowsecurity-167.sql
+- [ ] original/upstream/rowtypes-81.sql
+- [ ] original/upstream/sanity_check-3.sql
+- [ ] original/upstream/select-77.sql
+- [ ] original/upstream/sequence-9.sql
+- [ ] original/upstream/strings-165.sql
+- [ ] original/upstream/tablesample-44.sql
+- [ ] original/upstream/text-19.sql
+- [ ] original/upstream/triggers-62.sql
+- [ ] original/upstream/type_sanity-1.sql
+- [ ] original/upstream/union-87.sql
+- [ ] original/upstream/updatable_views-2.sql
+- [ ] original/upstream/window-24.sql
+- [ ] original/upstream/with-39.sql
+- [ ] original/upstream/xmlmap-3.sql
 
 ## Debug Tools Created
-- `debug_transformation_flow_detailed.js` - Analyzes exact transformation flow for negative integers
-- `debug_sql_value_analysis.js` - Compares PG15 vs PG16 behavior across test cases
-- `debug_ival_contexts.js` - Analyzes empty ival contexts across different SQL scenarios
-- `debug_alternative_approach.js` - Explores alternative detection methods beyond context analysis
-- `debug_insert_negative.js` - Tests specific INSERT statement with negative value
-- `debug_zero_vs_negative.js` - Compares zero vs negative value handling
-- `debug_context_analysis.js` - Analyzes context-dependent transformation patterns
+- `debug-transformation-source.js` - Traces DefineStmt args transformation pipeline
+- `debug-context-propagation.js` - Analyzes context information flow through transformer
+- `debug-integer-bypass.js` - Confirms Integer method is never called
+- Multiple analysis scripts for specific failing test patterns
 
 ## Next Steps
-1. Investigate alternative approaches beyond context-based and dual-parse methods
-2. Consider advanced pattern matching or heuristic detection for negative integer cases
-3. Explore selective transformation targeting only high-confidence scenarios
-4. Verify specific failing test cases like `alter_table-234.sql`
-5. Continue systematic improvement of remaining 74 failing tests
+1. Fix DefineStmt method to pass proper context for args transformation
+2. Ensure empty Integer objects in DefineStmt args context transform to `{"ival": -1}`
+3. Test the fix against the specific failing CREATE AGGREGATE case
+4. Run full test suite to verify improvements
+5. Continue systematic improvement of remaining failing tests
 
 ## Test Categories
-- **Passing (184)**: Basic node transformations, most SQL constructs
-- **Failing (74)**: Primarily negative integer transformations, some complex nested structures
+- **Passing (181)**: Basic node transformations, most SQL constructs
+- **Failing (77)**: Primarily DefineStmt args Integer transformations, some complex nested structures
 
 ## Technical Notes
-- Following patterns from v13-to-v14 transformer as reference
+- Following patterns from v14-to-v15 transformer as reference
 - Focus only on v15-to-v16 transformer per user instructions
 - Ignoring CI failures per user directive, focusing on local test improvements
 - Maintaining systematic approach to avoid regressions
+- Root cause identified: context propagation issue in DefineStmt args processing
