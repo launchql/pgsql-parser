@@ -547,8 +547,7 @@ export class V15ToV16Transformer {
       if (typeof result.ival === 'object' && Object.keys(result.ival).length === 0) {
         const parentTypes = childContext.parentNodeTypes || [];
         if (parentTypes.includes('TypeName') || 
-            (parentTypes.includes('DefineStmt') && !(context as any).defElemName) ||
-            (parentTypes.includes('InsertStmt') && parentTypes.includes('SelectStmt') && parentTypes.includes('List'))) {
+            (parentTypes.includes('DefineStmt') && !(context as any).defElemName)) {
           result.ival = this.Integer(result.ival as any, childContext).Integer;
         }
       } else {
@@ -911,9 +910,6 @@ export class V15ToV16Transformer {
         else if (!defElemName) {
           result.ival = -1;    // v14-to-v15 line 473: !defElemName && (ival === -1 || ival === 0), default to -1
         }
-      }
-      else {
-        result.ival = -3;  // Based on CI failure showing expected ival: -3
       }
     }
     
