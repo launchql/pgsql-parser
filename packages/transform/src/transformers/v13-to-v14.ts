@@ -1,4 +1,5 @@
 import * as PG13 from '../13/types';
+import * as PG14 from '../14/types';
 import { TransformerContext } from './context';
 
 export class V13ToV14Transformer {
@@ -149,7 +150,7 @@ export class V13ToV14Transformer {
     return node;
   }
 
-  ParseResult(node: PG13.ParseResult, context: TransformerContext): any {
+  ParseResult(node: PG13.ParseResult, context: TransformerContext): PG14.ParseResult {
     if (node && typeof node === 'object' && 'version' in node && 'stmts' in node) {
       return {
         version: 140007,
@@ -161,10 +162,10 @@ export class V13ToV14Transformer {
         })
       };
     }
-    return node;
+    return node as PG14.ParseResult;
   }
 
-  FuncCall(node: PG13.FuncCall, context: TransformerContext): any {
+  FuncCall(node: PG13.FuncCall, context: TransformerContext): { FuncCall: PG14.FuncCall } {
     const result: any = {};
 
     if (node.funcname !== undefined) {
@@ -497,7 +498,7 @@ export class V13ToV14Transformer {
   }
 
 
-  CallStmt(node: PG13.CallStmt, context: TransformerContext): any {
+  CallStmt(node: PG13.CallStmt, context: TransformerContext): { CallStmt: PG14.CallStmt } {
     const result: any = { ...node };
 
     if (node.funccall !== undefined) {
@@ -509,7 +510,7 @@ export class V13ToV14Transformer {
     return { CallStmt: result };
   }
 
-  CommentStmt(node: any, context: TransformerContext): any {
+  CommentStmt(node: PG13.CommentStmt, context: TransformerContext): { CommentStmt: PG14.CommentStmt } {
     const result: any = { ...node };
 
     if (result.object !== undefined) {
@@ -531,7 +532,7 @@ export class V13ToV14Transformer {
     return { CommentStmt: result };
   }
 
-  DropStmt(node: any, context: TransformerContext): any {
+  DropStmt(node: PG13.DropStmt, context: TransformerContext): { DropStmt: PG14.DropStmt } {
     const result: any = { ...node };
 
     if (result.objects !== undefined) {
@@ -563,7 +564,7 @@ export class V13ToV14Transformer {
     return { DropStmt: result };
   }
 
-  InsertStmt(node: PG13.InsertStmt, context: TransformerContext): any {
+  InsertStmt(node: PG13.InsertStmt, context: TransformerContext): { InsertStmt: PG14.InsertStmt } {
     const result: any = { ...node };
 
     // Create child context with InsertStmt as parent
@@ -615,7 +616,7 @@ export class V13ToV14Transformer {
     return { InsertStmt: result };
   }
 
-  UpdateStmt(node: any, context: TransformerContext): any {
+  UpdateStmt(node: PG13.UpdateStmt, context: TransformerContext): { UpdateStmt: PG14.UpdateStmt } {
     const result: any = { ...node };
 
     // Create child context with UpdateStmt as parent
@@ -669,7 +670,7 @@ export class V13ToV14Transformer {
     return { UpdateStmt: result };
   }
 
-  DeleteStmt(node: any, context: TransformerContext): any {
+  DeleteStmt(node: PG13.DeleteStmt, context: TransformerContext): { DeleteStmt: PG14.DeleteStmt } {
     const result: any = { ...node };
 
     // Create child context with DeleteStmt as parent
@@ -717,7 +718,7 @@ export class V13ToV14Transformer {
     return { DeleteStmt: result };
   }
 
-  CreateOpClassStmt(node: any, context: TransformerContext): any {
+  CreateOpClassStmt(node: PG13.CreateOpClassStmt, context: TransformerContext): { CreateOpClassStmt: PG14.CreateOpClassStmt } {
     const result: any = { ...node };
 
     // Create child context with CreateOpClassStmt as parent
@@ -755,7 +756,7 @@ export class V13ToV14Transformer {
     return { CreateOpClassStmt: result };
   }
 
-  CreateOpClassItem(node: any, context: TransformerContext): any {
+  CreateOpClassItem(node: PG13.CreateOpClassItem, context: TransformerContext): { CreateOpClassItem: PG14.CreateOpClassItem } {
     const result: any = { ...node };
 
     // Create child context with CreateOpClassItem as parent
@@ -804,6 +805,7 @@ export class V13ToV14Transformer {
     return { CreateOpClassItem: result };
   }
 
+  // NOTE: apparently this is NOT even a thing in PG13???
   CreateAccessMethodStmt(node: any, context: TransformerContext): any {
     const result: any = { ...node };
 
@@ -826,7 +828,7 @@ export class V13ToV14Transformer {
     return { CreateAccessMethodStmt: result };
   }
 
-  GrantStmt(node: any, context: TransformerContext): any {
+  GrantStmt(node: PG13.GrantStmt, context: TransformerContext): { GrantStmt: PG14.GrantStmt } {
     const result: any = { ...node };
 
     // Create child context with GrantStmt as parent
@@ -856,6 +858,7 @@ export class V13ToV14Transformer {
     return { GrantStmt: result };
   }
 
+  // NOTE: apparently this is NOT even a thing in PG13???
   RevokeStmt(node: any, context: TransformerContext): any {
     const result: any = { ...node };
 
@@ -886,7 +889,7 @@ export class V13ToV14Transformer {
     return { RevokeStmt: result };
   }
 
-  ResTarget(node: PG13.ResTarget, context: TransformerContext): any {
+  ResTarget(node: PG13.ResTarget, context: TransformerContext): { ResTarget: PG14.ResTarget } {
     const result: any = { ...node };
 
     if (node.name !== undefined) {
@@ -1035,8 +1038,6 @@ export class V13ToV14Transformer {
     return 'COERCE_EXPLICIT_CALL';
   }
 
-
-
   private getFunctionNameFromContext(context: TransformerContext): string | null {
     if (context.nodeStack) {
       for (let i = context.nodeStack.length - 1; i >= 0; i--) {
@@ -1110,7 +1111,7 @@ export class V13ToV14Transformer {
     return false;
   }
 
-  FunctionParameter(node: PG13.FunctionParameter, context: TransformerContext): any {
+  FunctionParameter(node: PG13.FunctionParameter, context: TransformerContext): { FunctionParameter: PG14.FunctionParameter } {
     const result: any = {};
 
     if (node.name !== undefined) {
@@ -1146,7 +1147,7 @@ export class V13ToV14Transformer {
     return { FunctionParameter: result };
   }
 
-  AlterFunctionStmt(node: PG13.AlterFunctionStmt, context: TransformerContext): any {
+  AlterFunctionStmt(node: PG13.AlterFunctionStmt, context: TransformerContext): { AlterFunctionStmt: PG14.AlterFunctionStmt } {
     const result: any = {};
 
     // Create child context with AlterFunctionStmt as parent
@@ -1192,7 +1193,7 @@ export class V13ToV14Transformer {
     return { AlterFunctionStmt: result };
   }
 
-  AlterOwnerStmt(node: PG13.AlterOwnerStmt, context: TransformerContext): any {
+  AlterOwnerStmt(node: PG13.AlterOwnerStmt, context: TransformerContext): { AlterOwnerStmt: PG14.AlterOwnerStmt } {
     const result: any = {};
 
     if (node.objectType !== undefined) {
@@ -1224,7 +1225,7 @@ export class V13ToV14Transformer {
     return { AlterOwnerStmt: result };
   }
 
-  AlterTableStmt(node: PG13.AlterTableStmt, context: TransformerContext): any {
+  AlterTableStmt(node: PG13.AlterTableStmt, context: TransformerContext): { AlterTableStmt: PG14.AlterTableStmt } {
     const result: any = { ...node };
 
     if ('relkind' in result) {
@@ -1245,7 +1246,7 @@ export class V13ToV14Transformer {
     return { AlterTableStmt: result };
   }
 
-  CreateTableAsStmt(node: PG13.CreateTableAsStmt, context: TransformerContext): any {
+  CreateTableAsStmt(node: PG13.CreateTableAsStmt, context: TransformerContext): { CreateTableAsStmt: PG14.CreateTableAsStmt } {
     const result: any = { ...node };
 
     if ('relkind' in result) {
@@ -1264,7 +1265,7 @@ export class V13ToV14Transformer {
     return { CreateTableAsStmt: result };
   }
 
-  RawStmt(node: PG13.RawStmt, context: TransformerContext): any {
+  RawStmt(node: PG13.RawStmt, context: TransformerContext): { RawStmt: PG14.RawStmt } {
     const result: any = {};
 
     if (node.stmt !== undefined) {
@@ -1282,7 +1283,7 @@ export class V13ToV14Transformer {
     return { RawStmt: result };
   }
 
-  SelectStmt(node: PG13.SelectStmt, context: TransformerContext): any {
+  SelectStmt(node: PG13.SelectStmt, context: TransformerContext): { SelectStmt: PG14.SelectStmt } {
     const result: any = {};
 
     if (node.distinctClause !== undefined) {
@@ -1410,7 +1411,7 @@ export class V13ToV14Transformer {
     return { SelectStmt: result };
   }
 
-  RangeSubselect(node: PG13.RangeSubselect, context: TransformerContext): any {
+  RangeSubselect(node: PG13.RangeSubselect, context: TransformerContext): { RangeSubselect: PG14.RangeSubselect } {
     const result: any = {};
 
     if (node.lateral !== undefined) {
@@ -1428,7 +1429,7 @@ export class V13ToV14Transformer {
     return { RangeSubselect: result };
   }
 
-  CommonTableExpr(node: PG13.CommonTableExpr, context: TransformerContext): any {
+  CommonTableExpr(node: PG13.CommonTableExpr, context: TransformerContext): { CommonTableExpr: PG14.CommonTableExpr } {
     const result: any = { ...node };
 
     if (node.ctename !== undefined) {
@@ -1495,7 +1496,7 @@ export class V13ToV14Transformer {
     return { CommonTableExpr: result };
   }
 
-  SubLink(node: PG13.SubLink, context: TransformerContext): any {
+  SubLink(node: PG13.SubLink, context: TransformerContext): { SubLink: PG14.SubLink } {
     const result: any = {};
 
     if (node.xpr !== undefined) {
@@ -1529,7 +1530,7 @@ export class V13ToV14Transformer {
     return { SubLink: result };
   }
 
-  CopyStmt(node: PG13.CopyStmt, context: TransformerContext): any {
+  CopyStmt(node: PG13.CopyStmt, context: TransformerContext): { CopyStmt: PG14.CopyStmt } {
     const result: any = {};
 
     if (node.relation !== undefined) {
@@ -1571,7 +1572,7 @@ export class V13ToV14Transformer {
     return { CopyStmt: result };
   }
 
-  CreateEnumStmt(node: PG13.CreateEnumStmt, context: TransformerContext): any {
+  CreateEnumStmt(node: PG13.CreateEnumStmt, context: TransformerContext): { CreateEnumStmt: PG14.CreateEnumStmt } {
     const result: any = {};
 
     if (node.typeName !== undefined) {
@@ -1589,7 +1590,7 @@ export class V13ToV14Transformer {
     return { CreateEnumStmt: result };
   }
 
-  DefineStmt(node: PG13.DefineStmt, context: TransformerContext): any {
+  DefineStmt(node: PG13.DefineStmt, context: TransformerContext): { DefineStmt: PG14.DefineStmt } {
     const result: any = {};
 
     if (node.kind !== undefined) {
@@ -1629,7 +1630,7 @@ export class V13ToV14Transformer {
     return { DefineStmt: result };
   }
 
-  DoStmt(node: PG13.DoStmt, context: TransformerContext): any {
+  DoStmt(node: PG13.DoStmt, context: TransformerContext): { DoStmt: PG14.DoStmt } {
     const result: any = {};
 
     if (node.args !== undefined) {
@@ -1641,7 +1642,7 @@ export class V13ToV14Transformer {
     return { DoStmt: result };
   }
 
-  DeclareCursorStmt(node: PG13.DeclareCursorStmt, context: TransformerContext): any {
+  DeclareCursorStmt(node: PG13.DeclareCursorStmt, context: TransformerContext): { DeclareCursorStmt: PG14.DeclareCursorStmt } {
     const result: any = {};
 
     if (node.portalname !== undefined) {
@@ -1665,7 +1666,7 @@ export class V13ToV14Transformer {
     return { DeclareCursorStmt: result };
   }
 
-  VacuumStmt(node: PG13.VacuumStmt, context: TransformerContext): any {
+  VacuumStmt(node: PG13.VacuumStmt, context: TransformerContext): { VacuumStmt: PG14.VacuumStmt } {
     const result: any = {};
 
     if (node.options !== undefined) {
@@ -1687,7 +1688,7 @@ export class V13ToV14Transformer {
     return { VacuumStmt: result };
   }
 
-  VacuumRelation(node: PG13.VacuumRelation, context: TransformerContext): any {
+  VacuumRelation(node: PG13.VacuumRelation, context: TransformerContext): { VacuumRelation: PG14.VacuumRelation } {
     const result: any = {};
 
     if (node.relation !== undefined) {
@@ -1703,7 +1704,7 @@ export class V13ToV14Transformer {
     return { VacuumRelation: result };
   }
 
-  RangeVar(node: PG13.RangeVar, context: TransformerContext): any {
+  RangeVar(node: PG13.RangeVar, context: TransformerContext): { RangeVar: PG14.RangeVar } {
     const result: any = {};
 
     if (node.catalogname !== undefined) {
@@ -1738,7 +1739,7 @@ export class V13ToV14Transformer {
     return { RangeVar: result };
   }
 
-  IntoClause(node: PG13.IntoClause, context: TransformerContext): any {
+  IntoClause(node: PG13.IntoClause, context: TransformerContext): { IntoClause: PG14.IntoClause } {
     const result: any = {};
 
     if (node.rel !== undefined) {
@@ -1776,7 +1777,7 @@ export class V13ToV14Transformer {
     return { IntoClause: result };
   }
 
-  CreateCastStmt(node: PG13.CreateCastStmt, context: TransformerContext): any {
+  CreateCastStmt(node: PG13.CreateCastStmt, context: TransformerContext): { CreateCastStmt: PG14.CreateCastStmt } {
     const result: any = {};
 
     if (node.sourcetype !== undefined) {
@@ -1808,7 +1809,7 @@ export class V13ToV14Transformer {
     return { CreateCastStmt: result };
   }
 
-  CreateTransformStmt(node: PG13.CreateTransformStmt, context: TransformerContext): any {
+  CreateTransformStmt(node: PG13.CreateTransformStmt, context: TransformerContext): { CreateTransformStmt: PG14.CreateTransformStmt } {
     const result: any = {};
 
     const childContext: TransformerContext = {
@@ -1840,7 +1841,7 @@ export class V13ToV14Transformer {
     return { CreateTransformStmt: result };
   }
 
-  CreateFunctionStmt(node: PG13.CreateFunctionStmt, context: TransformerContext): any {
+  CreateFunctionStmt(node: PG13.CreateFunctionStmt, context: TransformerContext): { CreateFunctionStmt: PG14.CreateFunctionStmt } {
     const result: any = { ...node };
 
     // Create child context with CreateFunctionStmt as parent
@@ -1874,7 +1875,7 @@ export class V13ToV14Transformer {
     return { CreateFunctionStmt: result };
   }
 
-  TableLikeClause(node: PG13.TableLikeClause, context: TransformerContext): any {
+  TableLikeClause(node: PG13.TableLikeClause, context: TransformerContext): { TableLikeClause: PG14.TableLikeClause } {
     const result: any = {};
 
     if (node.relation !== undefined) {
@@ -1910,7 +1911,7 @@ export class V13ToV14Transformer {
   }
 
 
-  ObjectWithArgs(node: PG13.ObjectWithArgs, context: TransformerContext): any {
+  ObjectWithArgs(node: PG13.ObjectWithArgs, context: TransformerContext): { ObjectWithArgs: PG14.ObjectWithArgs } {
     const result: any = { ...node };
 
     if (result.objname !== undefined) {
@@ -2371,36 +2372,36 @@ export class V13ToV14Transformer {
     return false;
   }
 
-  String(node: PG13.String, context: TransformerContext): any {
+  String(node: PG13.String, context: TransformerContext): { String: PG14.String } {
     const result: any = { ...node };
     return { String: result };
   }
 
-  BitString(node: PG13.BitString, context: TransformerContext): any {
+  BitString(node: PG13.BitString, context: TransformerContext): { BitString: PG14.BitString } {
     const result: any = { ...node };
 
     return { BitString: result };
   }
 
-  Float(node: PG13.Float, context: TransformerContext): any {
+  Float(node: PG13.Float, context: TransformerContext): { Float: PG14.Float } {
     const result: any = { ...node };
 
     return { Float: result };
   }
 
-  Integer(node: PG13.Integer, context: TransformerContext): any {
+  Integer(node: PG13.Integer, context: TransformerContext): { Integer: PG14.Integer } {
     const result: any = { ...node };
 
     return { Integer: result };
   }
 
-  Null(node: PG13.Null, context: TransformerContext): any {
+  Null(node: PG13.Null, context: TransformerContext): { Null: PG14.Null } {
     const result: any = { ...node };
 
     return { Null: result };
   }
 
-  List(node: any, context: TransformerContext): any {
+  List(node: any, context: TransformerContext): { List: PG14.List } {
     const result: any = {};
 
     if (node.items !== undefined) {
@@ -2412,7 +2413,7 @@ export class V13ToV14Transformer {
     return { List: result };
   }
 
-  A_Expr(node: any, context: TransformerContext): any {
+  A_Expr(node: any, context: TransformerContext): { A_Expr: PG14.A_Expr } {
     const result: any = {};
 
     if (node.kind !== undefined) {
@@ -2450,7 +2451,7 @@ export class V13ToV14Transformer {
     return { A_Expr: result };
   }
 
-  RoleSpec(node: any, context: TransformerContext): any {
+  RoleSpec(node: any, context: TransformerContext): { RoleSpec: PG14.RoleSpec } {
     const result: any = {};
 
     if (node.roletype !== undefined) {
@@ -2469,7 +2470,7 @@ export class V13ToV14Transformer {
   }
 
 
-  AlterTableCmd(node: any, context: TransformerContext): any {
+  AlterTableCmd(node: any, context: TransformerContext): { AlterTableCmd: PG14.AlterTableCmd } {
     const result: any = {};
 
     if (node.subtype !== undefined) {
@@ -2503,7 +2504,7 @@ export class V13ToV14Transformer {
     return { AlterTableCmd: result };
   }
 
-  TypeName(node: any, context: TransformerContext): any {
+  TypeName(node: any, context: TransformerContext): { TypeName: PG14.TypeName } {
     const result: any = {};
 
     if (node.names !== undefined) {
@@ -2547,7 +2548,7 @@ export class V13ToV14Transformer {
     return { TypeName: result };
   }
 
-  ColumnRef(node: any, context: TransformerContext): any {
+  ColumnRef(node: any, context: TransformerContext): { ColumnRef: PG14.ColumnRef } {
     const result: any = {};
 
     if (node.fields !== undefined) {
@@ -2563,7 +2564,7 @@ export class V13ToV14Transformer {
     return { ColumnRef: result };
   }
 
-  A_Const(node: any, context: TransformerContext): any {
+  A_Const(node: any, context: TransformerContext): { A_Const: PG14.A_Const } {
     const result: any = {};
 
     if (node.val !== undefined) {
@@ -2577,12 +2578,12 @@ export class V13ToV14Transformer {
     return { A_Const: result };
   }
 
-  A_Star(node: any, context: TransformerContext): any {
+  A_Star(node: any, context: TransformerContext): { A_Star: PG14.A_Star } {
     const result: any = { ...node };
     return { A_Star: result };
   }
 
-  SortBy(node: any, context: TransformerContext): any {
+  SortBy(node: any, context: TransformerContext): { SortBy: PG14.SortBy } {
     const result: any = {};
 
     if (node.node !== undefined) {
@@ -2610,7 +2611,7 @@ export class V13ToV14Transformer {
     return { SortBy: result };
   }
 
-  CreateDomainStmt(node: any, context: TransformerContext): any {
+  CreateDomainStmt(node: any, context: TransformerContext): { CreateDomainStmt: PG14.CreateDomainStmt } {
     const result: any = {};
 
     // Create child context with CreateDomainStmt as parent
@@ -2642,7 +2643,7 @@ export class V13ToV14Transformer {
     return { CreateDomainStmt: result };
   }
 
-  CreateSeqStmt(node: any, context: TransformerContext): any {
+  CreateSeqStmt(node: any, context: TransformerContext): { CreateSeqStmt: PG14.CreateSeqStmt } {
     const result: any = {};
 
     if (node.sequence !== undefined) {
@@ -2670,7 +2671,7 @@ export class V13ToV14Transformer {
     return { CreateSeqStmt: result };
   }
 
-  WithClause(node: PG13.WithClause, context: TransformerContext): any {
+  WithClause(node: PG13.WithClause, context: TransformerContext): { WithClause: PG14.WithClause } {
     console.log('WithClause called with:', {
       ctes: node.ctes,
       ctesType: typeof node.ctes,
@@ -2724,7 +2725,7 @@ export class V13ToV14Transformer {
     return true;
   }
 
-  AlterSeqStmt(node: any, context: TransformerContext): any {
+  AlterSeqStmt(node: any, context: TransformerContext): { AlterSeqStmt: PG14.AlterSeqStmt } {
     const result: any = {};
 
     if (node.sequence !== undefined) {
@@ -2748,7 +2749,7 @@ export class V13ToV14Transformer {
     return { AlterSeqStmt: result };
   }
 
-  CTECycleClause(node: any, context: TransformerContext): any {
+  CTECycleClause(node: any, context: TransformerContext): { CTECycleClause: PG14.CTECycleClause } {
     const result: any = {};
 
     if (node.cycle_col_list !== undefined) {
@@ -2780,7 +2781,7 @@ export class V13ToV14Transformer {
     return { CTECycleClause: result };
   }
 
-  CTESearchClause(node: any, context: TransformerContext): any {
+  CTESearchClause(node: any, context: TransformerContext): { CTESearchClause: PG14.CTESearchClause } {
     const result: any = {};
 
     if (node.search_col_list !== undefined) {
@@ -2804,7 +2805,7 @@ export class V13ToV14Transformer {
     return { CTESearchClause: result };
   }
 
-  PLAssignStmt(node: any, context: TransformerContext): any {
+  PLAssignStmt(node: any, context: TransformerContext): { PLAssignStmt: PG14.PLAssignStmt } {
     const result: any = {};
 
     if (node.name !== undefined) {
@@ -2832,7 +2833,7 @@ export class V13ToV14Transformer {
     return { PLAssignStmt: result };
   }
 
-  ReturnStmt(node: any, context: TransformerContext): any {
+  ReturnStmt(node: any, context: TransformerContext): { ReturnStmt: PG14.ReturnStmt } {
     const result: any = {};
 
     if (node.returnval !== undefined) {
@@ -2842,7 +2843,7 @@ export class V13ToV14Transformer {
     return { ReturnStmt: result };
   }
 
-  StatsElem(node: any, context: TransformerContext): any {
+  StatsElem(node: any, context: TransformerContext): { StatsElem: PG14.StatsElem } {
     const result: any = {};
 
     if (node.name !== undefined) {
@@ -2856,7 +2857,7 @@ export class V13ToV14Transformer {
     return { StatsElem: result };
   }
 
-  CreateStmt(node: any, context: TransformerContext): any {
+  CreateStmt(node: any, context: TransformerContext): { CreateStmt: PG14.CreateStmt } {
     const result: any = {};
 
     if (node.relation !== undefined) {
@@ -2918,7 +2919,7 @@ export class V13ToV14Transformer {
     return { CreateStmt: result };
   }
 
-  CreatePolicyStmt(node: any, context: TransformerContext): any {
+  CreatePolicyStmt(node: any, context: TransformerContext): { CreatePolicyStmt: PG14.CreatePolicyStmt } {
     const result: any = {};
 
     if (node.policy_name !== undefined) {
@@ -2954,7 +2955,7 @@ export class V13ToV14Transformer {
     return { CreatePolicyStmt: result };
   }
 
-  RenameStmt(node: any, context: TransformerContext): any {
+  RenameStmt(node: any, context: TransformerContext): { RenameStmt: PG14.RenameStmt } {
     const result: any = {};
 
     // Create child context with RenameStmt as parent
@@ -3000,7 +3001,7 @@ export class V13ToV14Transformer {
   }
 
 
-  AlterObjectSchemaStmt(node: any, context: TransformerContext): any {
+  AlterObjectSchemaStmt(node: any, context: TransformerContext): { AlterObjectSchemaStmt: PG14.AlterObjectSchemaStmt } {
     const result: any = {};
 
     // Create child context with AlterObjectSchemaStmt as parent
