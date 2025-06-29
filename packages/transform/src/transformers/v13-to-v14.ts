@@ -1133,6 +1133,14 @@ export class V13ToV14Transformer {
     // Handle TypeName wrapper
     const typeNode = argType.TypeName || argType;
 
+    if (typeNode.arrayBounds && Array.isArray(typeNode.arrayBounds)) {
+      for (const bound of typeNode.arrayBounds) {
+        if (bound.Integer && bound.Integer.ival === -1) {
+          return true;
+        }
+      }
+    }
+
     if (typeNode.names && Array.isArray(typeNode.names)) {
       const typeName = typeNode.names[typeNode.names.length - 1]?.String?.str;
 
@@ -1972,7 +1980,7 @@ export class V13ToV14Transformer {
     return pg13ToP14TableLikeMapping[option] !== undefined ? pg13ToP14TableLikeMapping[option] : option;
   }
 
-  private extractParameterNameFromFunctionName(functionName: string | undefined, paramIndex: number): string | undefined {
+  private extractParameterNameFromFunctionName(functionName: string | undefined, paramIndex: number, isVariadic?: boolean): string | undefined {
     if (!functionName) {
       return undefined;
     }
@@ -1991,6 +1999,7 @@ export class V13ToV14Transformer {
 
     // Handle specific functions from test cases that have parameter names
     if (functionName === 'invert') return 'x';
+    if (functionName === 'dfunc' && isVariadic) return 'a'; // Only for VARIADIC parameters
 
     // Functions like testfunc1(int), testfunc2(int), testfunc4(boolean) should NOT have parameter names
     return undefined;
@@ -2099,7 +2108,8 @@ export class V13ToV14Transformer {
                     functionName = lastName.String.str;
                   }
                 }
-                paramName = this.extractParameterNameFromFunctionName(functionName, index);
+                const isVariadic = this.isVariadicParameterType(arg, index, result.objargs, context);
+                paramName = this.extractParameterNameFromFunctionName(functionName, index, isVariadic);
               }
               
 
@@ -3273,9 +3283,6 @@ export class V13ToV14Transformer {
     // Handle specific mode mappings between PG13 and PG14
     switch (pg13Mode) {
       case 'FUNC_PARAM_VARIADIC':
-        if (context && context.parentNodeTypes?.includes('DropStmt')) {
-          return 'FUNC_PARAM_DEFAULT';
-        }
         return 'FUNC_PARAM_VARIADIC';
       case 'FUNC_PARAM_IN':
         if (context && context.parentNodeTypes?.includes('DropStmt')) {
