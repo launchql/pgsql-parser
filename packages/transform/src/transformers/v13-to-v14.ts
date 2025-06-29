@@ -527,7 +527,8 @@ export class V13ToV14Transformer {
         if (firstArg && typeof firstArg === 'object' && ('TypeCast' in firstArg || 'FuncCall' in firstArg)) {
           return true; // Function call syntax
         }
-        if (firstArg && typeof firstArg === 'object' && 'ColumnRef' in firstArg) {
+        // If first argument is simple (ColumnRef, A_Const), it's likely SQL syntax
+        if (firstArg && typeof firstArg === 'object' && ('ColumnRef' in firstArg || 'A_Const' in firstArg)) {
           return false; // SQL syntax: FROM...FOR
         }
       }
