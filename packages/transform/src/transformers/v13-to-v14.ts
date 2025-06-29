@@ -1043,12 +1043,12 @@ export class V13ToV14Transformer {
       'position', 'overlay',
       'extract', 'timezone', 'xmlexists',
       'current_date', 'current_time', 'current_timestamp',
-      'localtime', 'localtimestamp', 'overlaps',
-      'collation_for'
+      'localtime', 'localtimestamp', 'overlaps'
     ];
 
-    // Handle substring function specifically - depends on pg_catalog prefix
-    if (funcname.toLowerCase() === 'substring') {
+    // Handle specific functions that depend on pg_catalog prefix
+    const pgCatalogSqlSyntaxFunctions = ['substring', 'pg_collation_for'];
+    if (pgCatalogSqlSyntaxFunctions.includes(funcname.toLowerCase())) {
       // Check if the function has pg_catalog prefix by examining the node
       if (node && node.funcname && Array.isArray(node.funcname) && node.funcname.length >= 2) {
         const firstElement = node.funcname[0];
@@ -1062,9 +1062,6 @@ export class V13ToV14Transformer {
       return 'COERCE_EXPLICIT_CALL';
     }
 
-    if (funcname === 'pg_collation_for') {
-      return 'COERCE_SQL_SYNTAX';
-    }
 
     if (explicitCallFunctions.includes(funcname.toLowerCase())) {
       return 'COERCE_EXPLICIT_CALL';
@@ -1147,7 +1144,11 @@ export class V13ToV14Transformer {
     const result: any = {};
 
     if (node.name !== undefined) {
-      result.name = node.name;
+      // Exclude parameter names in DropStmt contexts
+      const isInDropContext = context.parentNodeTypes?.includes('DropStmt');
+      if (!isInDropContext) {
+        result.name = node.name;
+      }
     }
 
     if (node.argType !== undefined) {
@@ -1159,11 +1160,7 @@ export class V13ToV14Transformer {
     }
 
     if (node.mode !== undefined) {
-      if (node.mode === "FUNC_PARAM_IN") {
-        result.mode = "FUNC_PARAM_DEFAULT";
-      } else {
-        result.mode = node.mode;
-      }
+      result.mode = this.mapFunctionParameterMode(node.mode, context);
     }
 
     return { FunctionParameter: result };
