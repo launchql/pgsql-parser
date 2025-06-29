@@ -1073,7 +1073,7 @@ export class V13ToV14Transformer {
       if ((typeName === 'anyarray' || typeNode.arrayBounds) && allArgs && index !== undefined) {
         if (allArgs.length === 1 && typeNode.arrayBounds) {
           if (typeNode.arrayBounds.length === 1 &&
-              typeNode.arrayBounds[0]?.Integer?.ival === -1) {
+              typeNode.arrayBounds[0]?.Integer !== undefined) {
             return true;
           }
         }

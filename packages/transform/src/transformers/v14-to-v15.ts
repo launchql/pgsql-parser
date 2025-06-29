@@ -82,7 +82,8 @@ export class V14ToV15Transformer {
             transformedData[key] = value.map(item => {
               // In PG15, -1 values in arrayBounds are represented as empty Integer objects
               if (item && typeof item === 'object' && 'Integer' in item && 
-                  item.Integer && item.Integer.ival === -1) {
+                  item.Integer && item.Integer.ival === -1 && 
+                  key === 'arrayBounds' && !context.parentNodeTypes?.includes('DefineStmt')) {
                 return { Integer: {} };
               }
               return this.transform(item as any, context);
@@ -116,7 +117,8 @@ export class V14ToV15Transformer {
           result[key] = value.map(item => {
             // In PG15, -1 values in arrayBounds are represented as empty Integer objects
             if (item && typeof item === 'object' && 'Integer' in item && 
-                item.Integer && item.Integer.ival === -1) {
+                item.Integer && item.Integer.ival === -1 && 
+                key === 'arrayBounds' && !context.parentNodeTypes?.includes('DefineStmt')) {
               return { Integer: {} };
             }
             return this.transform(item as any, context);
