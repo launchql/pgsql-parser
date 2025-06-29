@@ -1,7 +1,7 @@
 # PostgreSQL v15-to-v16 AST Transformer Status
 
 ## Current Status: **IN PROGRESS** 🟡
-- **Test Pass Rate**: 194/258 tests passing (75.2% success rate)
+- **Test Pass Rate**: 194/258 tests passing (75.2% success rate) - **STABLE BASELINE**
 - **Branch**: `transform/pg15-pg16` 
 - **PR**: [#182](https://github.com/launchql/pgsql-parser/pull/182)
 
@@ -17,15 +17,16 @@ Started from a basic skeleton transformer and systematically implemented node wr
 - ✅ Added GrantRoleStmt admin_opt to opt field transformation
 
 ## Current Challenge: Remaining 64 Failing Tests
-**Root Issue**: Successfully resolved over-transformation and under-transformation issues for Integer objects. Maintained stable baseline of 194 passing tests after reverting INSERT transformation logic that caused regressions.
+**Root Issue**: Successfully established stable baseline of 194 passing tests with conservative Integer transformation logic. Multiple attempts to add FuncCall context transformation caused regressions, indicating need for more targeted approach.
 
 **Analysis Completed**:
-- ✅ Fixed over-transformation: A_Const ival transformation now conservative, only transforms in specific DefineStmt contexts
+- ✅ Fixed over-transformation: A_Const ival transformation now conservative, only transforms in specific contexts
 - ✅ Fixed under-transformation: Added TypeName arrayBounds and DefineStmt args contexts to Integer method
 - ✅ Empty Integer objects in TypeName arrayBounds context now transform to `{"ival": -1}`
 - ✅ Empty Integer objects in DefineStmt args context now transform to `{"ival": -1}`
-- ✅ Reverted INSERT transformation logic to prevent regressions from 194 to 184 passing tests
-- 🔄 Need to continue systematic improvement of remaining 64 failing tests
+- ✅ Reverted INSERT and FuncCall transformation logic to prevent regressions
+- ✅ Maintained stable baseline of 194 passing tests through multiple iterations
+- 🔄 Need systematic analysis of remaining 64 failing tests without causing regressions
 
 ## Failing Tests (64 total)
 
@@ -119,11 +120,11 @@ Started from a basic skeleton transformer and systematically implemented node wr
 - Multiple analysis scripts for specific failing test patterns
 
 ## Next Steps
-1. Fix DefineStmt method to pass proper context for args transformation
-2. Ensure empty Integer objects in DefineStmt args context transform to `{"ival": -1}`
-3. Test the fix against the specific failing CREATE AGGREGATE case
-4. Run full test suite to verify improvements
-5. Continue systematic improvement of remaining failing tests
+1. Analyze specific failing test patterns without broad transformation approaches
+2. Identify minimal, targeted fixes that don't affect the 194 passing tests
+3. Focus on individual failing test cases to understand precise transformation requirements
+4. Implement extremely conservative fixes that only address specific edge cases
+5. Maintain 194 passing tests baseline while incrementally improving failing tests
 
 ## Test Categories
 - **Passing (194)**: Basic node transformations, most SQL constructs, Integer transformations in TypeName and DefineStmt contexts
