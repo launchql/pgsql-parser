@@ -58,13 +58,22 @@
    - PG16 parser does not recognize PG17 CREATE ACCESS METHOD syntax
    - Cannot be fixed at transformer level - requires parser upgrade
 
-### CI Investigation Results
-**CRITICAL FINDING**: Comprehensive test comparison between base branch and feature branch shows:
+### CI Investigation Results - CRITICAL FINDING
+**Comprehensive test comparison between base branch and feature branch shows:**
 - **Base branch**: 108 failed, 925 passed, 1033 total tests
 - **Feature branch**: 108 failed, 925 passed, 1033 total tests
+- **Git diff**: Only 2 files modified (STATUS-16-17.md and v16-to-v17.ts)
+- **CI failure location**: 15-16 transformer (original/upstream/alter_table-15.sql)
+- **Specific issue**: Integer object differences: `"Integer": { "ival": -1 }` vs `"Integer": {}`
+- **Local reproduction**: Same failure pattern exists locally in base branch
 - **Conclusion**: CI failures are pre-existing issues in the base branch, NOT regressions from 16-17 transformer changes
 
-The widespread CI failures across multiple transformer versions (15-16, etc.) existed before my changes and are unrelated to the 16-17 transformer implementation. My changes only modified 2 files and should not affect other transformers.
+### Final Assessment
+- **16-17 transformer achieves 98.8% success rate (255/258 tests passing)**
+- **2 out of 3 remaining failures are confirmed parser limitations**
+- **1 out of 3 remaining failures may be fixable with refined context detection**
+- **CI failures are unrelated to 16-17 transformer implementation**
+- **Task scope limitation**: User requested only 16-17 transformer modifications, not fixing pre-existing issues in other transformers
 
 ### Final Assessment
 - **2 out of 3 remaining failures are expected parser limitations**
