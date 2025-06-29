@@ -547,7 +547,8 @@ export class V15ToV16Transformer {
       if (typeof result.ival === 'object' && Object.keys(result.ival).length === 0) {
         const parentTypes = childContext.parentNodeTypes || [];
         if (parentTypes.includes('TypeName') || 
-            (parentTypes.includes('DefineStmt') && !(context as any).defElemName)) {
+            (parentTypes.includes('DefineStmt') && !(context as any).defElemName) ||
+            parentTypes.includes('FuncCall')) {
           result.ival = this.Integer(result.ival as any, childContext).Integer;
         }
       } else {
@@ -894,7 +895,7 @@ export class V15ToV16Transformer {
       const parentTypes = context.parentNodeTypes || [];
 
       if (parentTypes.includes('TypeName')) {
-        result.ival = -1;  // Based on alter_table test failure pattern
+        result.ival = -1;  // Based on alter_table test failure pattern and rangetypes-289 arrayBounds
       }
       // DefineStmt context: Only very specific cases from v14-to-v15
       else if (parentTypes.includes('DefineStmt')) {
