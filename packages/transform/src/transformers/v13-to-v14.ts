@@ -2023,11 +2023,6 @@ export class V13ToV14Transformer {
       return undefined;
     }
 
-    // Only add parameter names for specific known test functions that actually have them
-    if (functionName === 'testfunc5b') return 'a';
-    if (functionName === 'testfunc6b' || functionName === 'test-func6b') return 'b';
-    if (functionName === 'testfunc7b' || functionName === 'test-func7b') return 'c';
-
     // Handle general testfunc pattern - extract letter from function name ONLY if it has a letter suffix
     const testfuncMatch = functionName.match(/test-?func(\d+)([a-z])/);
     if (testfuncMatch) {
