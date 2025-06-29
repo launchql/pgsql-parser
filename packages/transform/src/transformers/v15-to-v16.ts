@@ -897,6 +897,10 @@ export class V15ToV16Transformer {
       if (parentTypes.includes('TypeName')) {
         result.ival = -1;  // Based on alter_table test failure pattern and rangetypes-289 arrayBounds
       }
+      // FuncCall context: Based on strings-165.sql failure pattern
+      else if (parentTypes.includes('FuncCall')) {
+        result.ival = -1;  // FuncCall args with empty Integer objects should transform to ival: -1
+      }
       // DefineStmt context: Only very specific cases from v14-to-v15
       else if (parentTypes.includes('DefineStmt')) {
         const defElemName = (context as any).defElemName;
