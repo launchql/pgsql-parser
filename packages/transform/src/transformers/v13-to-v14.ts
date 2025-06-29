@@ -553,7 +553,13 @@ export class V13ToV14Transformer {
         dropRemoveType: result.removeType
       };
       result.objects = Array.isArray(result.objects)
-        ? result.objects.map((item: any) => this.transform(item, childContext))
+        ? result.objects.map((item: any) => {
+            const transformedItem = this.transform(item, childContext);
+            
+            
+            
+            return transformedItem;
+          })
         : this.transform(result.objects, childContext);
     }
 
@@ -1070,13 +1076,7 @@ export class V13ToV14Transformer {
         return true;
       }
 
-      if ((typeName === 'anyarray' || typeNode.arrayBounds) && allArgs && index !== undefined) {
-        if (allArgs.length === 1 && typeNode.arrayBounds) {
-          if (typeNode.arrayBounds.length === 1 &&
-              typeNode.arrayBounds[0]?.Integer !== undefined) {
-            return true;
-          }
-        }
+      if (typeName === 'anyarray' && allArgs && index !== undefined) {
 
         if (typeName === 'anyarray' && index > 0) {
           const prevArg = allArgs[index - 1];
@@ -1113,14 +1113,9 @@ export class V13ToV14Transformer {
   FunctionParameter(node: PG13.FunctionParameter, context: TransformerContext): { FunctionParameter: PG14.FunctionParameter } {
     const result: any = {};
 
+
     if (node.name !== undefined) {
-      // Don't add parameter names in DropStmt contexts
-      const isInDropStmtContext = context && context.parentNodeTypes && 
-        context.parentNodeTypes.includes('DropStmt');
-      
-      if (!isInDropStmtContext) {
-        result.name = node.name;
-      }
+      result.name = node.name;
     }
 
     if (node.argType !== undefined) {
@@ -2001,6 +1996,7 @@ export class V13ToV14Transformer {
                   paramName = originalParam.FunctionParameter.name;
                 }
               }
+              
 
               const parameter: any = {
                 FunctionParameter: {
@@ -2009,8 +2005,7 @@ export class V13ToV14Transformer {
                 }
               };
 
-              // Don't add parameter names in DropStmt contexts
-              if (paramName && !context.parentNodeTypes?.includes('DropStmt')) {
+              if (paramName) {
                 parameter.FunctionParameter.name = paramName;
               }
 
