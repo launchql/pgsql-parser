@@ -1957,7 +1957,7 @@ export class V13ToV14Transformer {
       const originalObjfuncargs = (node as any).objfuncargs;
 
       // Don't create objfuncargs in certain contexts where they shouldn't exist
-      const skipObjfuncargsContexts = ['CreateCastStmt', 'CreateTransformStmt'];
+      const skipObjfuncargsContexts = ['CreateTransformStmt'];
       const shouldSkipObjfuncargs = skipObjfuncargsContexts.some(ctx => context.parentNodeTypes?.includes(ctx));
 
       if (originalObjfuncargs && Array.isArray(originalObjfuncargs)) {
