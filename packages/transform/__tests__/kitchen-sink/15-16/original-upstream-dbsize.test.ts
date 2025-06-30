@@ -4,8 +4,8 @@ const fixtures = new FixtureTestUtils(15, 16);
 
 it('original-upstream-dbsize', async () => {
   await fixtures.runFixtureTests([
-  // "original/upstream/dbsize-1.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/dbsize-2.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/dbsize-1.sql",
+  "original/upstream/dbsize-2.sql",
   "original/upstream/dbsize-3.sql",
   "original/upstream/dbsize-4.sql",
   "original/upstream/dbsize-5.sql",

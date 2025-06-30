@@ -191,7 +191,7 @@ it('latest-postgres-create_index', async () => {
   "latest/postgres/create_index-185.sql",
   "latest/postgres/create_index-186.sql",
   "latest/postgres/create_index-187.sql",
-  // "latest/postgres/create_index-188.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "latest/postgres/create_index-188.sql",
   "latest/postgres/create_index-189.sql",
   "latest/postgres/create_index-190.sql",
   "latest/postgres/create_index-191.sql",
@@ -210,7 +210,7 @@ it('latest-postgres-create_index', async () => {
   "latest/postgres/create_index-204.sql",
   "latest/postgres/create_index-205.sql",
   "latest/postgres/create_index-206.sql",
-  // "latest/postgres/create_index-207.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "latest/postgres/create_index-207.sql",
   "latest/postgres/create_index-208.sql",
   "latest/postgres/create_index-209.sql",
   "latest/postgres/create_index-210.sql",
@@ -329,7 +329,7 @@ it('latest-postgres-create_index', async () => {
   "latest/postgres/create_index-323.sql",
   "latest/postgres/create_index-324.sql",
   "latest/postgres/create_index-325.sql",
-  // "latest/postgres/create_index-326.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  // "latest/postgres/create_index-326.sql", // REMOVED: 15-16 transformer fails with syntax error at end of input
   "latest/postgres/create_index-327.sql",
   "latest/postgres/create_index-328.sql",
   "latest/postgres/create_index-329.sql",

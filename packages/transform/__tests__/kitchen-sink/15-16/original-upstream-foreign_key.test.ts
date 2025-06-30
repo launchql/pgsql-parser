@@ -4,8 +4,8 @@ const fixtures = new FixtureTestUtils(15, 16);
 
 it('original-upstream-foreign_key', async () => {
   await fixtures.runFixtureTests([
-  // "original/upstream/foreign_key-1.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/foreign_key-2.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/foreign_key-1.sql",
+  "original/upstream/foreign_key-2.sql",
   "original/upstream/foreign_key-3.sql",
   "original/upstream/foreign_key-4.sql",
   "original/upstream/foreign_key-5.sql",
@@ -57,8 +57,8 @@ it('original-upstream-foreign_key', async () => {
   "original/upstream/foreign_key-51.sql",
   "original/upstream/foreign_key-52.sql",
   "original/upstream/foreign_key-53.sql",
-  // "original/upstream/foreign_key-54.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/foreign_key-55.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/foreign_key-54.sql",
+  "original/upstream/foreign_key-55.sql",
   "original/upstream/foreign_key-56.sql",
   "original/upstream/foreign_key-57.sql",
   "original/upstream/foreign_key-58.sql",
@@ -179,12 +179,12 @@ it('original-upstream-foreign_key', async () => {
   "original/upstream/foreign_key-173.sql",
   "original/upstream/foreign_key-174.sql",
   "original/upstream/foreign_key-175.sql",
-  // "original/upstream/foreign_key-176.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/foreign_key-176.sql",
   "original/upstream/foreign_key-177.sql",
   "original/upstream/foreign_key-178.sql",
   "original/upstream/foreign_key-179.sql",
   "original/upstream/foreign_key-180.sql",
-  // "original/upstream/foreign_key-181.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/foreign_key-181.sql",
   "original/upstream/foreign_key-182.sql",
   "original/upstream/foreign_key-183.sql",
   "original/upstream/foreign_key-184.sql",
@@ -195,7 +195,7 @@ it('original-upstream-foreign_key', async () => {
   "original/upstream/foreign_key-189.sql",
   "original/upstream/foreign_key-190.sql",
   "original/upstream/foreign_key-191.sql",
-  // "original/upstream/foreign_key-192.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/foreign_key-192.sql",
   "original/upstream/foreign_key-193.sql",
   "original/upstream/foreign_key-194.sql",
   "original/upstream/foreign_key-195.sql",
@@ -203,7 +203,7 @@ it('original-upstream-foreign_key', async () => {
   "original/upstream/foreign_key-197.sql",
   "original/upstream/foreign_key-198.sql",
   "original/upstream/foreign_key-199.sql",
-  // "original/upstream/foreign_key-200.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/foreign_key-200.sql",
   "original/upstream/foreign_key-201.sql",
   "original/upstream/foreign_key-202.sql",
   "original/upstream/foreign_key-203.sql",

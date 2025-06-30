@@ -237,9 +237,9 @@ it('original-upstream-alter_table', async () => {
   "original/upstream/alter_table-231.sql",
   "original/upstream/alter_table-232.sql",
   "original/upstream/alter_table-233.sql",
-  // "original/upstream/alter_table-234.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/alter_table-234.sql",
   "original/upstream/alter_table-235.sql",
-  // "original/upstream/alter_table-236.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/alter_table-236.sql",
   "original/upstream/alter_table-237.sql",
   "original/upstream/alter_table-238.sql",
   "original/upstream/alter_table-239.sql",
@@ -271,8 +271,8 @@ it('original-upstream-alter_table', async () => {
   "original/upstream/alter_table-265.sql",
   "original/upstream/alter_table-266.sql",
   "original/upstream/alter_table-267.sql",
-  // "original/upstream/alter_table-268.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/alter_table-269.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/alter_table-268.sql",
+  "original/upstream/alter_table-269.sql",
   "original/upstream/alter_table-270.sql",
   "original/upstream/alter_table-271.sql",
   "original/upstream/alter_table-272.sql",
@@ -692,7 +692,7 @@ it('original-upstream-alter_table', async () => {
   "original/upstream/alter_table-686.sql",
   "original/upstream/alter_table-687.sql",
   "original/upstream/alter_table-688.sql",
-  // "original/upstream/alter_table-689.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/alter_table-689.sql",
   "original/upstream/alter_table-690.sql",
   "original/upstream/alter_table-691.sql",
   "original/upstream/alter_table-692.sql",

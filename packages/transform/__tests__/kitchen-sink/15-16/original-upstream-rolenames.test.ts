@@ -5,8 +5,8 @@ const fixtures = new FixtureTestUtils(15, 16);
 it('original-upstream-rolenames', async () => {
   await fixtures.runFixtureTests([
   "original/upstream/rolenames-1.sql",
-  // "original/upstream/rolenames-2.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/rolenames-3.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/rolenames-2.sql",
+  "original/upstream/rolenames-3.sql",
   "original/upstream/rolenames-4.sql",
   "original/upstream/rolenames-5.sql",
   "original/upstream/rolenames-6.sql",

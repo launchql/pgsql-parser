@@ -4,8 +4,8 @@ const fixtures = new FixtureTestUtils(15, 16);
 
 it('original-upstream-foreign_data', async () => {
   await fixtures.runFixtureTests([
-  // "original/upstream/foreign_data-1.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/foreign_data-2.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/foreign_data-1.sql",
+  "original/upstream/foreign_data-2.sql",
   "original/upstream/foreign_data-3.sql",
   "original/upstream/foreign_data-4.sql",
   "original/upstream/foreign_data-5.sql",
@@ -205,7 +205,7 @@ it('original-upstream-foreign_data', async () => {
   "original/upstream/foreign_data-199.sql",
   "original/upstream/foreign_data-200.sql",
   "original/upstream/foreign_data-201.sql",
-  // "original/upstream/foreign_data-202.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/foreign_data-202.sql",
   "original/upstream/foreign_data-203.sql",
   "original/upstream/foreign_data-204.sql",
   "original/upstream/foreign_data-205.sql",
@@ -370,7 +370,7 @@ it('original-upstream-foreign_data', async () => {
   "original/upstream/foreign_data-364.sql",
   "original/upstream/foreign_data-365.sql",
   "original/upstream/foreign_data-366.sql",
-  // "original/upstream/foreign_data-367.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/foreign_data-367.sql",
   "original/upstream/foreign_data-368.sql",
   "original/upstream/foreign_data-369.sql",
   "original/upstream/foreign_data-370.sql",

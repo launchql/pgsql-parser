@@ -39,7 +39,7 @@ it('original-upstream-alter_generic', async () => {
   "original/upstream/alter_generic-33.sql",
   "original/upstream/alter_generic-34.sql",
   "original/upstream/alter_generic-35.sql",
-  // "original/upstream/alter_generic-36.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/alter_generic-36.sql",
   "original/upstream/alter_generic-37.sql",
   "original/upstream/alter_generic-38.sql",
   "original/upstream/alter_generic-39.sql",

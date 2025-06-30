@@ -9,7 +9,7 @@ it('latest-postgres-create_function_sql', async () => {
   "latest/postgres/create_function_sql-3.sql",
   "latest/postgres/create_function_sql-4.sql",
   "latest/postgres/create_function_sql-5.sql",
-  // "latest/postgres/create_function_sql-6.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "latest/postgres/create_function_sql-6.sql",
   "latest/postgres/create_function_sql-7.sql",
   "latest/postgres/create_function_sql-8.sql",
   "latest/postgres/create_function_sql-9.sql",
@@ -61,7 +61,7 @@ it('latest-postgres-create_function_sql', async () => {
   "latest/postgres/create_function_sql-55.sql",
   "latest/postgres/create_function_sql-56.sql",
   "latest/postgres/create_function_sql-57.sql",
-  // "latest/postgres/create_function_sql-58.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "latest/postgres/create_function_sql-58.sql",
   "latest/postgres/create_function_sql-59.sql",
   "latest/postgres/create_function_sql-60.sql",
   "latest/postgres/create_function_sql-61.sql",

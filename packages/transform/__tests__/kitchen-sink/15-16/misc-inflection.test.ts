@@ -4,8 +4,8 @@ const fixtures = new FixtureTestUtils(15, 16);
 
 it('misc-inflection', async () => {
   await fixtures.runFixtureTests([
-  // "misc/inflection-1.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "misc/inflection-2.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "misc/inflection-1.sql",
+  "misc/inflection-2.sql",
   "misc/inflection-3.sql",
   "misc/inflection-4.sql",
   "misc/inflection-5.sql",
@@ -23,7 +23,7 @@ it('misc-inflection', async () => {
   "misc/inflection-17.sql",
   "misc/inflection-18.sql",
   "misc/inflection-19.sql",
-  // "misc/inflection-20.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "misc/inflection-20.sql",
   "misc/inflection-21.sql",
   "misc/inflection-22.sql",
   "misc/inflection-23.sql",

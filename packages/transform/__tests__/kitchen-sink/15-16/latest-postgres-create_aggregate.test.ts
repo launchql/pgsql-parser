@@ -18,8 +18,8 @@ it('latest-postgres-create_aggregate', async () => {
   "latest/postgres/create_aggregate-12.sql",
   "latest/postgres/create_aggregate-13.sql",
   "latest/postgres/create_aggregate-14.sql",
-  // "latest/postgres/create_aggregate-15.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "latest/postgres/create_aggregate-16.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "latest/postgres/create_aggregate-15.sql",
+  "latest/postgres/create_aggregate-16.sql",
   "latest/postgres/create_aggregate-17.sql",
   "latest/postgres/create_aggregate-18.sql",
   "latest/postgres/create_aggregate-19.sql",

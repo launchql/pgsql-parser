@@ -4,8 +4,8 @@ const fixtures = new FixtureTestUtils(15, 16);
 
 it('original-upstream-geometry', async () => {
   await fixtures.runFixtureTests([
-  // "original/upstream/geometry-1.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/geometry-2.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/geometry-1.sql",
+  "original/upstream/geometry-2.sql",
   "original/upstream/geometry-3.sql",
   "original/upstream/geometry-4.sql",
   "original/upstream/geometry-5.sql",

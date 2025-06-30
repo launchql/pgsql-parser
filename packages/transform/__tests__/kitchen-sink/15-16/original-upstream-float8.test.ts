@@ -4,8 +4,8 @@ const fixtures = new FixtureTestUtils(15, 16);
 
 it('original-upstream-float8', async () => {
   await fixtures.runFixtureTests([
-  // "original/upstream/float8-1.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/float8-2.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/float8-1.sql",
+  "original/upstream/float8-2.sql",
   "original/upstream/float8-3.sql",
   "original/upstream/float8-4.sql",
   "original/upstream/float8-5.sql",
@@ -82,12 +82,12 @@ it('original-upstream-float8', async () => {
   "original/upstream/float8-76.sql",
   "original/upstream/float8-77.sql",
   "original/upstream/float8-78.sql",
-  // "original/upstream/float8-79.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/float8-80.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/float8-81.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/float8-82.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/float8-83.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/float8-84.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/float8-85.sql" // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/float8-79.sql",
+  "original/upstream/float8-80.sql",
+  "original/upstream/float8-81.sql",
+  "original/upstream/float8-82.sql",
+  "original/upstream/float8-83.sql",
+  "original/upstream/float8-84.sql",
+  "original/upstream/float8-85.sql"
 ]);
 });

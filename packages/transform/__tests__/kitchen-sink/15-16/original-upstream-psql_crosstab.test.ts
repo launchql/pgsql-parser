@@ -4,8 +4,8 @@ const fixtures = new FixtureTestUtils(15, 16);
 
 it('original-upstream-psql_crosstab', async () => {
   await fixtures.runFixtureTests([
-  // "original/upstream/psql_crosstab-1.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/psql_crosstab-2.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/psql_crosstab-1.sql",
+  "original/upstream/psql_crosstab-2.sql",
   "original/upstream/psql_crosstab-3.sql",
   "original/upstream/psql_crosstab-4.sql",
   "original/upstream/psql_crosstab-5.sql",

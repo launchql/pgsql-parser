@@ -56,7 +56,7 @@ it('original-upstream-jsonb', async () => {
   "original/upstream/jsonb-50.sql",
   "original/upstream/jsonb-51.sql",
   "original/upstream/jsonb-52.sql",
-  // "original/upstream/jsonb-53.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/jsonb-53.sql",
   "original/upstream/jsonb-54.sql",
   "original/upstream/jsonb-55.sql",
   "original/upstream/jsonb-56.sql",
@@ -457,9 +457,9 @@ it('original-upstream-jsonb', async () => {
   "original/upstream/jsonb-451.sql",
   "original/upstream/jsonb-452.sql",
   "original/upstream/jsonb-453.sql",
-  // "original/upstream/jsonb-454.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/jsonb-455.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/jsonb-456.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/jsonb-454.sql",
+  "original/upstream/jsonb-455.sql",
+  "original/upstream/jsonb-456.sql",
   "original/upstream/jsonb-457.sql",
   "original/upstream/jsonb-458.sql",
   "original/upstream/jsonb-459.sql",
@@ -531,10 +531,10 @@ it('original-upstream-jsonb', async () => {
   "original/upstream/jsonb-525.sql",
   "original/upstream/jsonb-526.sql",
   "original/upstream/jsonb-527.sql",
-  // "original/upstream/jsonb-528.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/jsonb-529.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/jsonb-530.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/jsonb-531.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/jsonb-528.sql",
+  "original/upstream/jsonb-529.sql",
+  "original/upstream/jsonb-530.sql",
+  "original/upstream/jsonb-531.sql",
   "original/upstream/jsonb-532.sql",
   "original/upstream/jsonb-533.sql",
   "original/upstream/jsonb-534.sql",

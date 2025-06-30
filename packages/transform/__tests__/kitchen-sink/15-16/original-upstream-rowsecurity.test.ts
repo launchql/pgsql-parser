@@ -170,9 +170,9 @@ it('original-upstream-rowsecurity', async () => {
   "original/upstream/rowsecurity-164.sql",
   "original/upstream/rowsecurity-165.sql",
   "original/upstream/rowsecurity-166.sql",
-  // "original/upstream/rowsecurity-167.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/rowsecurity-167.sql",
   "original/upstream/rowsecurity-168.sql",
-  // "original/upstream/rowsecurity-169.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/rowsecurity-169.sql",
   "original/upstream/rowsecurity-170.sql",
   "original/upstream/rowsecurity-171.sql",
   "original/upstream/rowsecurity-172.sql",
@@ -245,7 +245,7 @@ it('original-upstream-rowsecurity', async () => {
   "original/upstream/rowsecurity-239.sql",
   "original/upstream/rowsecurity-240.sql",
   "original/upstream/rowsecurity-241.sql",
-  // "original/upstream/rowsecurity-242.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/rowsecurity-242.sql",
   "original/upstream/rowsecurity-243.sql",
   "original/upstream/rowsecurity-244.sql",
   "original/upstream/rowsecurity-245.sql",
@@ -255,7 +255,7 @@ it('original-upstream-rowsecurity', async () => {
   "original/upstream/rowsecurity-249.sql",
   "original/upstream/rowsecurity-250.sql",
   "original/upstream/rowsecurity-251.sql",
-  // "original/upstream/rowsecurity-252.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/rowsecurity-252.sql",
   "original/upstream/rowsecurity-253.sql",
   "original/upstream/rowsecurity-254.sql",
   "original/upstream/rowsecurity-255.sql",

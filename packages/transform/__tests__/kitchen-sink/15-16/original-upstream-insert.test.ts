@@ -16,7 +16,7 @@ it('original-upstream-insert', async () => {
   "original/upstream/insert-10.sql",
   "original/upstream/insert-11.sql",
   "original/upstream/insert-12.sql",
-  // "original/upstream/insert-13.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/insert-13.sql",
   "original/upstream/insert-14.sql",
   "original/upstream/insert-15.sql",
   "original/upstream/insert-16.sql",

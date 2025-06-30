@@ -336,7 +336,7 @@ it('original-upstream-plpgsql', async () => {
   "original/upstream/plpgsql-330.sql",
   "original/upstream/plpgsql-331.sql",
   "original/upstream/plpgsql-332.sql",
-  // "original/upstream/plpgsql-333.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/plpgsql-333.sql",
   "original/upstream/plpgsql-334.sql",
   "original/upstream/plpgsql-335.sql",
   "original/upstream/plpgsql-336.sql",
@@ -689,11 +689,11 @@ it('original-upstream-plpgsql', async () => {
   "original/upstream/plpgsql-683.sql",
   "original/upstream/plpgsql-684.sql",
   "original/upstream/plpgsql-685.sql",
-  // "original/upstream/plpgsql-686.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/plpgsql-686.sql",
   "original/upstream/plpgsql-687.sql",
   "original/upstream/plpgsql-688.sql",
   "original/upstream/plpgsql-689.sql",
-  // "original/upstream/plpgsql-690.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/plpgsql-690.sql",
   "original/upstream/plpgsql-691.sql",
   "original/upstream/plpgsql-692.sql",
   "original/upstream/plpgsql-693.sql",

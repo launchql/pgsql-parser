@@ -42,15 +42,15 @@ it('original-upstream-int4', async () => {
   "original/upstream/int4-36.sql",
   "original/upstream/int4-37.sql",
   "original/upstream/int4-38.sql",
-  // "original/upstream/int4-39.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/int4-39.sql",
   "original/upstream/int4-40.sql",
-  // "original/upstream/int4-41.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/int4-41.sql",
   "original/upstream/int4-42.sql",
   "original/upstream/int4-43.sql",
-  // "original/upstream/int4-44.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/int4-44.sql",
   "original/upstream/int4-45.sql",
-  // "original/upstream/int4-46.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/int4-47.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/int4-46.sql",
+  "original/upstream/int4-47.sql",
   "original/upstream/int4-48.sql",
   "original/upstream/int4-49.sql",
   "original/upstream/int4-50.sql",
@@ -61,12 +61,12 @@ it('original-upstream-int4', async () => {
   "original/upstream/int4-55.sql",
   "original/upstream/int4-56.sql",
   "original/upstream/int4-57.sql",
-  // "original/upstream/int4-58.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/int4-59.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/int4-60.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/int4-61.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/int4-62.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/int4-63.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/int4-58.sql",
+  "original/upstream/int4-59.sql",
+  "original/upstream/int4-60.sql",
+  "original/upstream/int4-61.sql",
+  "original/upstream/int4-62.sql",
+  "original/upstream/int4-63.sql",
   "original/upstream/int4-64.sql",
   "original/upstream/int4-65.sql"
 ]);

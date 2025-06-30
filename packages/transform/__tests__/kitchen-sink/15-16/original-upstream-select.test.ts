@@ -80,7 +80,7 @@ it('original-upstream-select', async () => {
   "original/upstream/select-74.sql",
   "original/upstream/select-75.sql",
   "original/upstream/select-76.sql",
-  // "original/upstream/select-77.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/select-77.sql",
   "original/upstream/select-78.sql",
   "original/upstream/select-79.sql",
   "original/upstream/select-80.sql"

@@ -40,15 +40,15 @@ it('original-upstream-int2', async () => {
   "original/upstream/int2-34.sql",
   "original/upstream/int2-35.sql",
   "original/upstream/int2-36.sql",
-  // "original/upstream/int2-37.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/int2-37.sql",
   "original/upstream/int2-38.sql",
   "original/upstream/int2-39.sql",
   "original/upstream/int2-40.sql",
   "original/upstream/int2-41.sql",
   "original/upstream/int2-42.sql",
-  // "original/upstream/int2-43.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/int2-44.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/int2-45.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/int2-43.sql",
+  "original/upstream/int2-44.sql",
+  "original/upstream/int2-45.sql",
   "original/upstream/int2-46.sql",
   "original/upstream/int2-47.sql"
 ]);

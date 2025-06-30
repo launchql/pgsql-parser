@@ -5,7 +5,7 @@ const fixtures = new FixtureTestUtils(15, 16);
 it('original-upstream-updatable_views', async () => {
   await fixtures.runFixtureTests([
   "original/upstream/updatable_views-1.sql",
-  // "original/upstream/updatable_views-2.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/updatable_views-2.sql",
   "original/upstream/updatable_views-3.sql",
   "original/upstream/updatable_views-4.sql",
   "original/upstream/updatable_views-5.sql",
@@ -69,10 +69,10 @@ it('original-upstream-updatable_views', async () => {
   "original/upstream/updatable_views-63.sql",
   "original/upstream/updatable_views-64.sql",
   "original/upstream/updatable_views-65.sql",
-  // "original/upstream/updatable_views-66.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/updatable_views-67.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/updatable_views-66.sql",
+  "original/upstream/updatable_views-67.sql",
   "original/upstream/updatable_views-68.sql",
-  // "original/upstream/updatable_views-69.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/updatable_views-69.sql",
   "original/upstream/updatable_views-70.sql",
   "original/upstream/updatable_views-71.sql",
   "original/upstream/updatable_views-72.sql",
@@ -81,7 +81,7 @@ it('original-upstream-updatable_views', async () => {
   "original/upstream/updatable_views-75.sql",
   "original/upstream/updatable_views-76.sql",
   "original/upstream/updatable_views-77.sql",
-  // "original/upstream/updatable_views-78.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/updatable_views-78.sql",
   "original/upstream/updatable_views-79.sql",
   "original/upstream/updatable_views-80.sql",
   "original/upstream/updatable_views-81.sql",
@@ -95,7 +95,7 @@ it('original-upstream-updatable_views', async () => {
   "original/upstream/updatable_views-89.sql",
   "original/upstream/updatable_views-90.sql",
   "original/upstream/updatable_views-91.sql",
-  // "original/upstream/updatable_views-92.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/updatable_views-92.sql",
   "original/upstream/updatable_views-93.sql",
   "original/upstream/updatable_views-94.sql",
   "original/upstream/updatable_views-95.sql",
@@ -111,7 +111,7 @@ it('original-upstream-updatable_views', async () => {
   "original/upstream/updatable_views-105.sql",
   "original/upstream/updatable_views-106.sql",
   "original/upstream/updatable_views-107.sql",
-  // "original/upstream/updatable_views-108.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/updatable_views-108.sql",
   "original/upstream/updatable_views-109.sql",
   "original/upstream/updatable_views-110.sql",
   "original/upstream/updatable_views-111.sql",
@@ -138,7 +138,7 @@ it('original-upstream-updatable_views', async () => {
   "original/upstream/updatable_views-132.sql",
   "original/upstream/updatable_views-133.sql",
   "original/upstream/updatable_views-134.sql",
-  // "original/upstream/updatable_views-135.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/updatable_views-135.sql",
   "original/upstream/updatable_views-136.sql",
   "original/upstream/updatable_views-137.sql",
   "original/upstream/updatable_views-138.sql",
@@ -167,7 +167,7 @@ it('original-upstream-updatable_views', async () => {
   "original/upstream/updatable_views-161.sql",
   "original/upstream/updatable_views-162.sql",
   "original/upstream/updatable_views-163.sql",
-  // "original/upstream/updatable_views-164.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/updatable_views-164.sql",
   "original/upstream/updatable_views-165.sql",
   "original/upstream/updatable_views-166.sql",
   "original/upstream/updatable_views-167.sql",
@@ -255,10 +255,10 @@ it('original-upstream-updatable_views', async () => {
   "original/upstream/updatable_views-249.sql",
   "original/upstream/updatable_views-250.sql",
   "original/upstream/updatable_views-251.sql",
-  // "original/upstream/updatable_views-252.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/updatable_views-252.sql",
   "original/upstream/updatable_views-253.sql",
   "original/upstream/updatable_views-254.sql",
-  // "original/upstream/updatable_views-255.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/updatable_views-255.sql",
   "original/upstream/updatable_views-256.sql",
   "original/upstream/updatable_views-257.sql",
   "original/upstream/updatable_views-258.sql",
@@ -300,7 +300,7 @@ it('original-upstream-updatable_views', async () => {
   "original/upstream/updatable_views-294.sql",
   "original/upstream/updatable_views-295.sql",
   "original/upstream/updatable_views-296.sql",
-  // "original/upstream/updatable_views-297.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/updatable_views-297.sql",
   "original/upstream/updatable_views-298.sql",
   "original/upstream/updatable_views-299.sql",
   "original/upstream/updatable_views-300.sql",

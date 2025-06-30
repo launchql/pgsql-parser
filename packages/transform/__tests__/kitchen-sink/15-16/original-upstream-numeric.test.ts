@@ -552,18 +552,18 @@ it('original-upstream-numeric', async () => {
   "original/upstream/numeric-546.sql",
   "original/upstream/numeric-547.sql",
   "original/upstream/numeric-548.sql",
-  // "original/upstream/numeric-549.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/numeric-549.sql",
   "original/upstream/numeric-550.sql",
-  // "original/upstream/numeric-551.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/numeric-551.sql",
   "original/upstream/numeric-552.sql",
   "original/upstream/numeric-553.sql",
-  // "original/upstream/numeric-554.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/numeric-554.sql",
   "original/upstream/numeric-555.sql",
   "original/upstream/numeric-556.sql",
   "original/upstream/numeric-557.sql",
   "original/upstream/numeric-558.sql",
   "original/upstream/numeric-559.sql",
-  // "original/upstream/numeric-560.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/numeric-560.sql",
   "original/upstream/numeric-561.sql",
   "original/upstream/numeric-562.sql",
   "original/upstream/numeric-563.sql",
@@ -642,15 +642,15 @@ it('original-upstream-numeric', async () => {
   "original/upstream/numeric-636.sql",
   "original/upstream/numeric-637.sql",
   "original/upstream/numeric-638.sql",
-  // "original/upstream/numeric-639.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/numeric-639.sql",
   "original/upstream/numeric-640.sql",
   "original/upstream/numeric-641.sql",
   "original/upstream/numeric-642.sql",
   "original/upstream/numeric-643.sql",
   "original/upstream/numeric-644.sql",
-  // "original/upstream/numeric-645.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/numeric-646.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/numeric-647.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/numeric-645.sql",
+  "original/upstream/numeric-646.sql",
+  "original/upstream/numeric-647.sql",
   "original/upstream/numeric-648.sql",
   "original/upstream/numeric-649.sql",
   "original/upstream/numeric-650.sql",

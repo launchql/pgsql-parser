@@ -4,8 +4,8 @@ const fixtures = new FixtureTestUtils(15, 16);
 
 it('original-upstream-create_index', async () => {
   await fixtures.runFixtureTests([
-  // "original/upstream/create_index-1.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/create_index-2.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/create_index-1.sql",
+  "original/upstream/create_index-2.sql",
   "original/upstream/create_index-3.sql",
   "original/upstream/create_index-4.sql",
   "original/upstream/create_index-5.sql",
@@ -58,7 +58,7 @@ it('original-upstream-create_index', async () => {
   "original/upstream/create_index-52.sql",
   "original/upstream/create_index-53.sql",
   "original/upstream/create_index-54.sql",
-  // "original/upstream/create_index-55.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/create_index-55.sql",
   "original/upstream/create_index-56.sql",
   "original/upstream/create_index-57.sql",
   "original/upstream/create_index-58.sql",
@@ -110,7 +110,7 @@ it('original-upstream-create_index', async () => {
   "original/upstream/create_index-104.sql",
   "original/upstream/create_index-105.sql",
   "original/upstream/create_index-106.sql",
-  // "original/upstream/create_index-107.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/create_index-107.sql",
   "original/upstream/create_index-108.sql",
   "original/upstream/create_index-109.sql",
   "original/upstream/create_index-110.sql",

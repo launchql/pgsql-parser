@@ -4,8 +4,8 @@ const fixtures = new FixtureTestUtils(15, 16);
 
 it('original-upstream-int8', async () => {
   await fixtures.runFixtureTests([
-  // "original/upstream/int8-1.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/int8-2.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/int8-1.sql",
+  "original/upstream/int8-2.sql",
   "original/upstream/int8-3.sql",
   "original/upstream/int8-4.sql",
   "original/upstream/int8-5.sql",
@@ -69,8 +69,8 @@ it('original-upstream-int8', async () => {
   "original/upstream/int8-63.sql",
   "original/upstream/int8-64.sql",
   "original/upstream/int8-65.sql",
-  // "original/upstream/int8-66.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/int8-67.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/int8-66.sql",
+  "original/upstream/int8-67.sql",
   "original/upstream/int8-68.sql",
   "original/upstream/int8-69.sql",
   "original/upstream/int8-70.sql",
@@ -129,15 +129,15 @@ it('original-upstream-int8', async () => {
   "original/upstream/int8-123.sql",
   "original/upstream/int8-124.sql",
   "original/upstream/int8-125.sql",
-  // "original/upstream/int8-126.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/int8-127.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/int8-128.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/int8-129.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/int8-130.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/int8-131.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/int8-132.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/int8-133.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/int8-134.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/int8-126.sql",
+  "original/upstream/int8-127.sql",
+  "original/upstream/int8-128.sql",
+  "original/upstream/int8-129.sql",
+  "original/upstream/int8-130.sql",
+  "original/upstream/int8-131.sql",
+  "original/upstream/int8-132.sql",
+  "original/upstream/int8-133.sql",
+  "original/upstream/int8-134.sql",
   "original/upstream/int8-135.sql",
   "original/upstream/int8-136.sql"
 ]);

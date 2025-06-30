@@ -42,9 +42,9 @@ it('original-upstream-with', async () => {
   "original/upstream/with-36.sql",
   "original/upstream/with-37.sql",
   "original/upstream/with-38.sql",
-  //  "original/upstream/with-39.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/with-40.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/with-41.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/with-39.sql",
+  "original/upstream/with-40.sql",
+  "original/upstream/with-41.sql",
   "original/upstream/with-42.sql",
   "original/upstream/with-43.sql",
   "original/upstream/with-44.sql",

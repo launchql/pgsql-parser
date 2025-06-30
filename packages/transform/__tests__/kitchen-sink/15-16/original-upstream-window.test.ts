@@ -27,7 +27,7 @@ it('original-upstream-window', async () => {
   "original/upstream/window-21.sql",
   "original/upstream/window-22.sql",
   "original/upstream/window-23.sql",
-  // "original/upstream/window-24.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/window-24.sql",
   "original/upstream/window-25.sql",
   "original/upstream/window-26.sql",
   "original/upstream/window-27.sql",

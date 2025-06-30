@@ -4,8 +4,8 @@ const fixtures = new FixtureTestUtils(15, 16);
 
 it('original-upstream-money', async () => {
   await fixtures.runFixtureTests([
-  // "original/upstream/money-1.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/money-2.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/money-1.sql",
+  "original/upstream/money-2.sql",
   "original/upstream/money-3.sql",
   "original/upstream/money-4.sql",
   "original/upstream/money-5.sql",
@@ -50,14 +50,14 @@ it('original-upstream-money', async () => {
   "original/upstream/money-44.sql",
   "original/upstream/money-45.sql",
   "original/upstream/money-46.sql",
-  // "original/upstream/money-47.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/money-48.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/money-47.sql",
+  "original/upstream/money-48.sql",
   "original/upstream/money-49.sql",
   "original/upstream/money-50.sql",
   "original/upstream/money-51.sql",
   "original/upstream/money-52.sql",
   "original/upstream/money-53.sql",
-  // "original/upstream/money-54.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/money-54.sql",
   "original/upstream/money-55.sql"
 ]);
 });
