@@ -73,7 +73,9 @@ describe('Full Transform Flow Tests', () => {
   testFiles.forEach((filename) => {
     it(`tests end-to-end flow for ${filename}`, async () => {
       const sql = generated[filename as keyof typeof generated];
-
+      if (!sql) {
+        throw new Error(`SQL for ${filename} not found`);
+      }
       // Step 1: Parse with PG13
       const pg13Ast = await pg13Parser.parse(sql);
 
