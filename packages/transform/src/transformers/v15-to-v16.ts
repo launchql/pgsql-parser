@@ -415,9 +415,19 @@ export class V15ToV16Transformer {
     const result: any = {};
 
     if (node.funcname !== undefined) {
-      result.funcname = Array.isArray(node.funcname)
-        ? node.funcname.map((item: any) => this.transform(item as any, context))
-        : this.transform(node.funcname as any, context);
+
+      if (node.funcname.length === 1 && (node.funcname[0] as any)?.String?.sval === 'json_object') {
+        result.funcname = [
+          {
+            String: { sval: 'pg_catalog' }
+          },
+          { String: { sval: 'json_object' } }
+        ];
+      } else {
+        result.funcname = Array.isArray(node.funcname)
+          ? node.funcname.map((item: any) => this.transform(item as any, context))
+          : this.transform(node.funcname as any, context);
+      }
     }
 
     if (node.args !== undefined) {
