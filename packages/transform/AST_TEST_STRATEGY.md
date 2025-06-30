@@ -19,9 +19,14 @@ we have all the tests for each transformation type, in it's own folder, which ca
 
 ## Workflow
 
+### Single Transformer Scope
+```bash
+yarn test __tests__/kitchen-sink/13-14
+```
+
 ### Single Test Focus
 ```bash
-yarn test --testNamePattern="specific-test"
+yarn test __tests__/kitchen-sink/13-14 --testNamePattern="specific-test"
 ```
 
 ### Regression Check
@@ -41,12 +46,5 @@ yarn build && yarn test
 3. **Verify**: Check no regressions with full test suite
 4. **Commit**: Stage files explicitly (`git add <file>`)
 5. **Document**: Update progress in `TESTS.md`
-
-## Final Deliverable
-
-Create `packages/transform/TESTS.md` with:
-- Total passing tests
-- Total failing tests
-- Status by transformation version
 
 **Rule**: No regressions allowed - all previously passing tests must continue to pass.

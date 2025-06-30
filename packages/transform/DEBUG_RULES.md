@@ -18,7 +18,7 @@ console.log(result15);
 // { version: 15, result: { version: 150007, stmts: [...] } }
 
 // Using PgParser class
-const parser = new PgParser(16);
+const parser = new PgParser({version: 16});
 const result16 = await parser.parse('SELECT * FROM users');
 ```
 
@@ -156,13 +156,13 @@ You MUST use `await` or `.then()` when calling parser methods:
 ```javascript
 // ❌ WRONG - returns unresolved Promise, not AST
 const { Parser } = require('@pgsql/parser');
-const parser = new Parser(13);
-const result = parser.parse(sql, { version: '13' }); // Missing await!
+const parser = new Parser({version: 13});
+const result = parser.parse(sql); // Missing await!
 
 // ✅ CORRECT - returns actual AST structure  
 const { Parser } = require('@pgsql/parser');
-const parser = new Parser(13);
-const result = await parser.parse(sql, { version: '13' }); // With await
+const parser = new Parser({version: 13});
+const result = await parser.parse(sql); // With await
 ```
 
 **Impact on Transformers:** If parser calls are not properly awaited, the transformer will receive empty objects `{}` instead of AST structures, causing visitor pattern methods (like `FuncCall`) to never be invoked.
