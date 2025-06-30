@@ -554,8 +554,7 @@ export class V15ToV16Transformer {
         const parentTypes = childContext.parentNodeTypes || [];
         
         if (parentTypes.includes('TypeName') || 
-            (parentTypes.includes('DefineStmt') && !(context as any).defElemName) ||
-            (parentTypes.includes('InsertStmt') && parentTypes.includes('SelectStmt') && parentTypes.includes('List'))) {
+            (parentTypes.includes('DefineStmt') && !(context as any).defElemName)) {
           result.ival = this.Integer(result.ival as any, childContext).Integer;
         }
       } else {
@@ -903,9 +902,6 @@ export class V15ToV16Transformer {
 
       if (parentTypes.includes('TypeName')) {
         result.ival = -1;  // Based on alter_table test failure pattern and rangetypes-289 arrayBounds
-      }
-      else if (parentTypes.includes('InsertStmt') && parentTypes.includes('SelectStmt') && parentTypes.includes('List') && parentTypes.includes('A_Const')) {
-        result.ival = -3;  // Based on alter_table test failure pattern for INSERT VALUES
       }
       // DefineStmt context: Only very specific cases from v14-to-v15
       else if (parentTypes.includes('DefineStmt')) {
