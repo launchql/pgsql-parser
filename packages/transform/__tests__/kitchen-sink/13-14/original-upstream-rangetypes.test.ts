@@ -305,7 +305,7 @@ it('original-upstream-rangetypes', async () => {
   "original/upstream/rangetypes-299.sql",
 "original/upstream/rangetypes-300.sql",
   "original/upstream/rangetypes-301.sql",
-  "original/upstream/rangetypes-302.sql"
-"original/upstream/rangetypes-281.sql",
+  "original/upstream/rangetypes-302.sql",
+  "original/upstream/rangetypes-281.sql",
 ]);
 });
