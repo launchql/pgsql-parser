@@ -65,10 +65,10 @@ it('latest-postgres-create_am', async () => {
   "latest/postgres/create_am-59.sql",
   "latest/postgres/create_am-60.sql",
   "latest/postgres/create_am-61.sql",
-  // "latest/postgres/create_am-62.sql", // REMOVED: PG15 parser fails with "syntax error at or near 'DEFAULT'"
+  "latest/postgres/create_am-62.sql",
   "latest/postgres/create_am-63.sql",
   "latest/postgres/create_am-64.sql",
-  // "latest/postgres/create_am-65.sql", // REMOVED: PG15 parser fails with "syntax error at or near 'DEFAULT'"
+  "latest/postgres/create_am-65.sql",
   "latest/postgres/create_am-66.sql",
   "latest/postgres/create_am-67.sql",
   "latest/postgres/create_am-68.sql",
@@ -77,7 +77,7 @@ it('latest-postgres-create_am', async () => {
   "latest/postgres/create_am-71.sql",
   "latest/postgres/create_am-72.sql",
   "latest/postgres/create_am-73.sql",
-  // "latest/postgres/create_am-74.sql", // REMOVED: PG15 parser fails with "syntax error at or near 'DEFAULT'"
+  "latest/postgres/create_am-74.sql",
   "latest/postgres/create_am-75.sql",
   "latest/postgres/create_am-76.sql",
   "latest/postgres/create_am-77.sql",
@@ -99,7 +99,7 @@ it('latest-postgres-create_am', async () => {
   "latest/postgres/create_am-93.sql",
   "latest/postgres/create_am-94.sql",
   "latest/postgres/create_am-95.sql",
-  // "latest/postgres/create_am-96.sql", // REMOVED: PG15 parser fails with "syntax error at or near 'DEFAULT'"
+  "latest/postgres/create_am-96.sql",
   "latest/postgres/create_am-97.sql",
   "latest/postgres/create_am-98.sql",
   "latest/postgres/create_am-99.sql",
@@ -109,10 +109,10 @@ it('latest-postgres-create_am', async () => {
   "latest/postgres/create_am-103.sql",
   "latest/postgres/create_am-104.sql",
   "latest/postgres/create_am-105.sql",
-  // "latest/postgres/create_am-106.sql", // REMOVED: PG15 parser fails with "syntax error at or near 'DEFAULT'"
+  "latest/postgres/create_am-106.sql",
   "latest/postgres/create_am-107.sql",
   "latest/postgres/create_am-108.sql",
-  // "latest/postgres/create_am-109.sql", // REMOVED: PG15 parser fails with "syntax error at or near 'DEFAULT'"
+  "latest/postgres/create_am-109.sql",
   "latest/postgres/create_am-110.sql",
   "latest/postgres/create_am-111.sql",
   "latest/postgres/create_am-112.sql",

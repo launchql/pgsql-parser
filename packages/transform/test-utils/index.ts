@@ -4,6 +4,7 @@ import { readFileSync } from 'fs';
 import * as path from 'path';
 import { expect } from '@jest/globals';
 import { diff } from 'jest-diff';
+import { skipTests } from './skip-tests';
 const parser13 = new Parser({ version: 13 });
 const parser14 = new Parser({ version: 14 });
 const parser15 = new Parser({ version: 15 });
@@ -191,6 +192,18 @@ export class FixtureTestUtils {
     
     const entries = this.getTestEntries(filters);
     for (const [relativePath, sql] of entries) {
+      // Check if this test should be skipped
+      const skipEntry = skipTests.find(([versionPrevious, versionNext, test, reason]) => 
+        versionPrevious === this.versionPrevious && 
+        versionNext === this.versionNext && 
+        test === relativePath
+      );
+      
+      if (skipEntry) {
+        console.log(`⏭️  SKIPPING: ${relativePath} - ${skipEntry[3]}`);
+        continue;
+      }
+      
       try {
         await this.expectParseTransformParseToBeEqual(relativePath, sql);
       } catch (error: any) {
