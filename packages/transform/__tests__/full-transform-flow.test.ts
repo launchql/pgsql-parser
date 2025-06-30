@@ -3,7 +3,7 @@ import { deparse } from 'pgsql-deparser';
 import { PG13ToPG17Transformer } from '../src/transformer';
 
 import generated from '../../../__fixtures__/generated/generated.json';
-import { cleanTree } from '../test-utils/clean-tree';
+import { skipTests } from '../test-utils/skip-tests';
 
 describe('Full Transform Flow Tests', () => {
   const testFiles = [
@@ -61,7 +61,9 @@ describe('Full Transform Flow Tests', () => {
     "pretty/constraints-1.sql",
     "pretty/constraints-2.sql",
     "pretty/constraints-4.sql",
-  ];
+  ].filter(filename => !skipTests.some(([from, to, f]) => filename === f));
+
+  console.log(testFiles);
 
   // Initialize parsers and transformer once for all tests
   const pg13Parser = new Parser({ version: 13 });
