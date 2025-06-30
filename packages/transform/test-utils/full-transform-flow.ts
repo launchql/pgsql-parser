@@ -2,6 +2,10 @@ import { Parser } from '@pgsql/parser';
 import { deparse } from 'pgsql-deparser';
 import { cleanTree } from './clean-tree';
 import { PG13ToPG17Transformer } from '../src/transformer';
+import { readFileSync } from 'fs';
+import * as path from 'path';
+import { skipTests } from './skip-tests';
+import { expect } from '@jest/globals';
 
 /**
  * Result of the full transformation flow
@@ -121,4 +125,73 @@ export async function expectSqlTransformWithContains(
   });
   
   return result;
+}
+
+/**
+ * Utility class for running full transformation flow tests with fixtures
+ */
+export class FullTransformFlowFixture {
+  private fixtures: Record<string, string>;
+  private pg13Parser: Parser<13>;
+  private pg17Parser: Parser<17>;
+  private transformer: PG13ToPG17Transformer;
+
+  constructor() {
+    // Initialize parsers and transformer once
+    this.pg13Parser = new Parser({ version: 13 });
+    this.pg17Parser = new Parser({ version: 17 });
+    this.transformer = new PG13ToPG17Transformer();
+
+    // Load fixtures
+    const GENERATED_JSON = path.join(__dirname, '../../../__fixtures__/generated/generated.json');
+    this.fixtures = JSON.parse(readFileSync(GENERATED_JSON, 'utf-8'));
+  }
+
+  /**
+   * Run the full transformation flow test for a single file
+   */
+  async runTransformFlowTest(filename: string): Promise<void> {
+    const sql = this.fixtures[filename as keyof typeof this.fixtures];
+    if (!sql) {
+      throw new Error(`SQL for ${filename} not found`);
+    }
+
+    // Step 1: Parse with PG13
+    const pg13Ast = await this.pg13Parser.parse(sql);
+
+    // Step 2: Transform PG13 → PG17
+    const pg17Ast = this.transformer.transform(pg13Ast as any);
+
+    // Step 3: Deparse with PG17 deparser
+    const deparsedSql = await deparse(pg17Ast, {
+      pretty: true
+    });
+
+    // Step 4: Parse deparsed SQL with PG13
+    const pg13Ast2 = await this.pg13Parser.parse(deparsedSql);
+    
+    // Step 5: Parse deparsed SQL with PG17
+    const pg17Ast2 = await this.pg17Parser.parse(deparsedSql);
+    
+    // Step 6: Deparse again with PG17 deparser
+    const deparsedSql2 = await deparse(pg17Ast2 as any, {
+      pretty: true
+    });
+
+    // Step 7: Compare the two deparsed SQLs - they should be identical
+    expect(deparsedSql2).toEqual(deparsedSql);
+
+    // Basic assertions
+    expect(deparsedSql).toBeDefined();
+    expect(typeof deparsedSql).toBe('string');
+  }
+
+  /**
+   * Run tests for all files or a filtered list
+   */
+  async runAllTests(testFiles: string[]): Promise<void> {
+    for (const filename of testFiles) {
+      await this.runTransformFlowTest(filename);
+    }
+  }
 }

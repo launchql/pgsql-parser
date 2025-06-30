@@ -213,3 +213,6 @@ export class FixtureTestUtils {
     }
   }
 }
+
+// Re-export the full transform flow utilities
+export { FullTransformFlowFixture } from './full-transform-flow';
