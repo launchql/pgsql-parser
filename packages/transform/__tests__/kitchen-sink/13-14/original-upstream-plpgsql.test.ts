@@ -712,7 +712,7 @@ it('original-upstream-plpgsql', async () => {
   "original/upstream/plpgsql-706.sql",
   "original/upstream/plpgsql-707.sql",
   "original/upstream/plpgsql-708.sql",
-  // "original/upstream/plpgsql-709.sql", // REMOVED: AST transformer bug - converts FUNC_PARAM_IN to FUNC_PARAM_DEFAULT in CREATE FUNCTION statements with default parameter values
+"original/upstream/plpgsql-709.sql",
   "original/upstream/plpgsql-710.sql",
   "original/upstream/plpgsql-711.sql",
   "original/upstream/plpgsql-712.sql",
@@ -735,7 +735,7 @@ it('original-upstream-plpgsql', async () => {
   "original/upstream/plpgsql-729.sql",
   "original/upstream/plpgsql-730.sql",
   "original/upstream/plpgsql-731.sql",
-  // "original/upstream/plpgsql-732.sql", // REMOVED: AST transformer bug - incorrectly removes parameter names from objfuncargs in DROP FUNCTION statements
+"original/upstream/plpgsql-732.sql",
   "original/upstream/plpgsql-733.sql",
   "original/upstream/plpgsql-734.sql",
   "original/upstream/plpgsql-735.sql",
@@ -831,7 +831,7 @@ it('original-upstream-plpgsql', async () => {
   "original/upstream/plpgsql-825.sql",
   "original/upstream/plpgsql-826.sql",
   "original/upstream/plpgsql-827.sql",
-  // "original/upstream/plpgsql-828.sql", // REMOVED: AST transformer bug - incorrectly removes parameter names from objfuncargs in DROP FUNCTION statements with multiple parameters
+"original/upstream/plpgsql-828.sql",
   "original/upstream/plpgsql-829.sql",
   "original/upstream/plpgsql-830.sql",
   "original/upstream/plpgsql-831.sql",

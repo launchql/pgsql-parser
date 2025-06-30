@@ -6,9 +6,9 @@ it('misc-issues', async () => {
   await fixtures.runFixtureTests([
   "misc/issues-1.sql",
   "misc/issues-2.sql",
-  // "misc/issues-3.sql", // REMOVED: PG13 parser fails with "syntax error at or near 'NULLS'"
+"misc/issues-3.sql",
   "misc/issues-4.sql",
-  // "misc/issues-5.sql", // REMOVED: PG13 parser fails with "syntax error at or near 'NULLS'"
+"misc/issues-5.sql",
   "misc/issues-6.sql",
   "misc/issues-7.sql",
   "misc/issues-8.sql",
