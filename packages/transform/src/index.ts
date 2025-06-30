@@ -16,4 +16,9 @@ export { V14ToV15Transformer } from './transformers/v14-to-v15';
 export { V15ToV16Transformer } from './transformers/v15-to-v16';
 export { V16ToV17Transformer } from './transformers/v16-to-v17';
 
+export { PG13ToPG17Transformer as DirectPG13ToPG17Transformer } from './transformers-full/v13-to-v17';
+export { PG14ToPG17Transformer as DirectPG14ToPG17Transformer } from './transformers-full/v14-to-v17';
+export { PG15ToPG17Transformer as DirectPG15ToPG17Transformer } from './transformers-full/v15-to-v17';
+export { PG16ToPG17Transformer as DirectPG16ToPG17Transformer } from './transformers-full/v16-to-v17';
+
 export { PG13Node, PG14Node, PG15Node, PG16Node, PG17Node, PG13Types, PG14Types, PG15Types, PG16Types, PG17Types };
