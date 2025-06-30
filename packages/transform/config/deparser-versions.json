@@ -1,0 +1,55 @@
+{
+  "packageName": "pgsql-deparser",
+  "versions": {
+    "13": {
+      "deparserVersion": "13.17.0",
+      "typesVersion": "13.11.1",
+      "pgVersion": "13",
+      "npmTag": "v13"
+    },
+    "14": {
+      "deparserVersion": "14.0.0",
+      "typesVersion": "14.1.1",
+      "pgVersion": "14",
+      "npmTag": "v14"
+    },
+    "15": {
+      "deparserVersion": "15.0.0",
+      "typesVersion": "15.1.1",
+      "pgVersion": "15",
+      "npmTag": "v15"
+    },
+    "16": {
+      "deparserVersion": "16.0.0",
+      "typesVersion": "16.1.1",
+      "pgVersion": "16",
+      "npmTag": "v16"
+    }
+  },
+  "packageTemplate": {
+    "author": "Dan Lynch <pyramation@gmail.com>",
+    "homepage": "https://github.com/launchql/pgsql-parser",
+    "license": "MIT",
+    "publishConfig": {
+      "access": "public",
+      "directory": "dist"
+    },
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/launchql/pgsql-parser"
+    },
+    "bugs": {
+      "url": "https://github.com/launchql/pgsql-parser/issues"
+    },
+    "keywords": [
+      "sql",
+      "postgres",
+      "postgresql",
+      "pg",
+      "query",
+      "ast",
+      "deparser",
+      "database"
+    ]
+  }
+}

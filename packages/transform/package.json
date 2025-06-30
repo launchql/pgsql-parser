@@ -31,6 +31,7 @@
     "strip-deparser-types": "ts-node scripts/strip-deparser-types.ts",
     "strip-all-types": "npm run strip-types && npm run strip-direct-types",
     "generate-deparsers": "ts-node scripts/generate-version-deparsers.ts",
+    "generate-packages": "ts-node scripts/generate-version-packages.ts",
     "organize-versions": "ts-node scripts/organize-transformers-by-version.ts",
     "prepare-versions": "npm run strip-all-types && npm run organize-versions",
     "lint": "eslint . --fix",

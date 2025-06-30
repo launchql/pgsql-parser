@@ -235,6 +235,14 @@ function organizeByVersion(): void {
   } catch (error) {
     console.error('Failed to generate deparser files:', error);
   }
+  
+  // Generate package.json files
+  console.log('\nGenerating package.json files...');
+  try {
+    execSync('npx ts-node scripts/generate-version-packages.ts', { stdio: 'inherit' });
+  } catch (error) {
+    console.error('Failed to generate package files:', error);
+  }
 }
 
 // Run the script
