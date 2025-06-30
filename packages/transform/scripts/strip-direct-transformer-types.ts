@@ -45,7 +45,7 @@ function stripTypes(sourceFile: ts.SourceFile, fileName: string): string {
           if (importPath.includes('transformers/v')) {
             const transformerMatch = importPath.match(/transformers\/(v\d+-to-v\d+)/);
             if (transformerMatch) {
-              const newPath = `../${transformerMatch[1]}`;
+              const newPath = `./${transformerMatch[1]}`;
               return ts.factory.updateImportDeclaration(
                 node,
                 node.modifiers,
