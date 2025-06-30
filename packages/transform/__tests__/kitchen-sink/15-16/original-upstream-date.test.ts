@@ -260,7 +260,7 @@ it('original-upstream-date', async () => {
   "original/upstream/date-254.sql",
   "original/upstream/date-255.sql",
   "original/upstream/date-256.sql",
-  //  "original/upstream/date-257.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/date-257.sql",
   "original/upstream/date-258.sql",
   "original/upstream/date-259.sql",
   "original/upstream/date-260.sql"

@@ -871,30 +871,6 @@ export class V15ToV16Transformer {
 
   Integer(node: PG15.Integer, context: TransformerContext): { Integer: PG16.Integer } {
     const result: any = { ...node };
-
-    if (Object.keys(result).length === 0) {
-      const parentTypes = context.parentNodeTypes || [];
-
-      if (parentTypes.includes('TypeName')) {
-        result.ival = -1;  // Based on alter_table test failure pattern and rangetypes-289 arrayBounds
-      }
-      // DefineStmt context: Only very specific cases from v14-to-v15
-      else if (parentTypes.includes('DefineStmt')) {
-        const defElemName = (context as any).defElemName;
-
-        // Only transform for very specific defElemName values that are documented in v14-to-v15
-        if (defElemName === 'initcond') {
-          result.ival = -100;  // v14-to-v15 line 464: ival === 0 || ival === -100
-        } else if (defElemName === 'sspace') {
-          result.ival = 0;     // v14-to-v15 line 468: ival === 0
-        }
-        // DefineStmt args context: empty Integer objects should transform to ival: -1
-        else if (!defElemName) {
-          result.ival = -1;    // v14-to-v15 line 473: !defElemName && (ival === -1 || ival === 0), default to -1
-        }
-      }
-    }
-
     return { Integer: result };
   }
 

@@ -19,8 +19,8 @@ it('original-upstream-alter_generic', async () => {
   "original/upstream/alter_generic-13.sql",
   "original/upstream/alter_generic-14.sql",
   "original/upstream/alter_generic-15.sql",
-  // "original/upstream/alter_generic-16.sql", // REMOVED: 15-16 transformer fails with Integer object differences
-  // "original/upstream/alter_generic-17.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/alter_generic-16.sql",
+  "original/upstream/alter_generic-17.sql",
   "original/upstream/alter_generic-18.sql",
   "original/upstream/alter_generic-19.sql",
   "original/upstream/alter_generic-20.sql",

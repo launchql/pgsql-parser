@@ -65,7 +65,7 @@ it('original-upstream-arrays', async () => {
   "original/upstream/arrays-59.sql",
   "original/upstream/arrays-60.sql",
   "original/upstream/arrays-61.sql",
-  // "original/upstream/arrays-62.sql", // REMOVED: 15-16 transformer fails with Integer object differences
+  "original/upstream/arrays-62.sql",
   "original/upstream/arrays-63.sql",
   "original/upstream/arrays-64.sql",
   "original/upstream/arrays-65.sql",
