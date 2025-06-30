@@ -35,7 +35,7 @@
     "types": "index.d.ts",
     "description": "PostgreSQL AST Deparser",
     "scripts": {
-      "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
+      "copy": "copyfiles -f ../../../../LICENSE README.md package.json dist",
       "clean": "rimraf dist",
       "prepare": "npm run build",
       "build": "npm run clean && tsc && tsc -p tsconfig.esm.json && npm run copy"

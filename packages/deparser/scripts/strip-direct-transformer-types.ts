@@ -19,7 +19,6 @@ const OUTPUT_DIR = 'versions/direct';
 // Types to strip and replace with 'any'
 const TYPES_TO_STRIP = [
   'PG13', 'PG14', 'PG15', 'PG16', 'PG17',
-  'V13Types', 'V14Types', 'V15Types', 'V16Types', 'V17Types',
   'TransformerContext'
 ];
 
