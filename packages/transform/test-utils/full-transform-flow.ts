@@ -52,8 +52,8 @@ export async function fullTransformFlow(
   } = options;
 
   // Initialize parsers and transformer
-  const pg13Parser = new Parser(13);
-  const pg17Parser = new Parser(17);
+  const pg13Parser = new Parser({ version: 13 });
+  const pg17Parser = new Parser({ version: 17 });
   const transformer = new PG13ToPG17Transformer();
 
   // Step 1: Parse with PG13
