@@ -219,9 +219,17 @@ function organizeByVersion(): void {
 
   console.log('\nDone! Transformers are organized in version-specific directories.');
   
+  // Copy deparser files
+  console.log('\nCopying deparser files...');
+  const { execSync } = require('child_process');
+  try {
+    execSync('npx ts-node scripts/strip-deparser-types.ts', { stdio: 'inherit' });
+  } catch (error) {
+    console.error('Failed to copy deparser files:', error);
+  }
+  
   // Now generate the deparser index files
   console.log('\nGenerating deparser index files...');
-  const { execSync } = require('child_process');
   try {
     execSync('npx ts-node scripts/generate-version-deparsers.ts', { stdio: 'inherit' });
   } catch (error) {

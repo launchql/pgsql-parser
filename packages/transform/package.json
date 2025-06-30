@@ -28,6 +28,7 @@
     "build:proto": "ts-node scripts/pg-proto-parser",
     "strip-types": "ts-node scripts/strip-transformer-types.ts",
     "strip-direct-types": "ts-node scripts/strip-direct-transformer-types.ts",
+    "strip-deparser-types": "ts-node scripts/strip-deparser-types.ts",
     "strip-all-types": "npm run strip-types && npm run strip-direct-types",
     "generate-deparsers": "ts-node scripts/generate-version-deparsers.ts",
     "organize-versions": "ts-node scripts/organize-transformers-by-version.ts",
