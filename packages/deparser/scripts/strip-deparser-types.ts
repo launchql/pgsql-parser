@@ -7,7 +7,7 @@ import * as path from 'path';
  * Replaces @pgsql/types imports and t.* type references with 'any'
  */
 
-const DEPARSER_SRC_DIR = '../deparser/src';
+const DEPARSER_SRC_DIR = 'src';
 const VERSIONS_DIR = 'versions';
 const VERSIONS = [13, 14, 15, 16];
 

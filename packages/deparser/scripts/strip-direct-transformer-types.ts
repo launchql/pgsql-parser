@@ -3,18 +3,18 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 /**
- * Script to strip types from transformer files and replace them with 'any'
- * This creates lightweight versions of the transformers for better tree-shaking
+ * Script to strip types from direct transformer files and replace them with 'any'
+ * Also removes overload signatures and adjusts imports to use generated versions
  */
 
-const TRANSFORMER_FILES = [
-  'src/transformers/v13-to-v14.ts',
-  'src/transformers/v14-to-v15.ts',
-  'src/transformers/v15-to-v16.ts',
-  'src/transformers/v16-to-v17.ts'
+const DIRECT_TRANSFORMER_FILES = [
+  '../transform/src/transformers-direct/v13-to-v17/index.ts',
+  '../transform/src/transformers-direct/v14-to-v17/index.ts',
+  '../transform/src/transformers-direct/v15-to-v17/index.ts',
+  '../transform/src/transformers-direct/v16-to-v17/index.ts'
 ];
 
-const OUTPUT_DIR = 'versions';
+const OUTPUT_DIR = 'versions/direct';
 
 // Types to strip and replace with 'any'
 const TYPES_TO_STRIP = [
@@ -23,21 +23,72 @@ const TYPES_TO_STRIP = [
   'TransformerContext'
 ];
 
-function stripTypes(sourceFile: ts.SourceFile): string {
+function stripTypes(sourceFile: ts.SourceFile, fileName: string): string {
   const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
   
   const transformer: ts.TransformerFactory<ts.SourceFile> = (context) => {
+    let hasTransformMethod = false;
+    
     const visit: ts.Visitor = (node) => {
-      // Remove import declarations for type modules
+      // Update import paths to use generated versions
       if (ts.isImportDeclaration(node)) {
         const moduleSpecifier = node.moduleSpecifier;
         if (ts.isStringLiteral(moduleSpecifier)) {
           const importPath = moduleSpecifier.text;
-          // Remove imports for version-specific types and context
-          if (importPath.includes('/types') || importPath.includes('/context')) {
+          
+          // Remove imports for type modules
+          if (importPath.includes('/types')) {
             return undefined;
           }
+          
+          // Update transformer imports to use versions directory
+          if (importPath.includes('transformers/v')) {
+            const transformerMatch = importPath.match(/transformers\/(v\d+-to-v\d+)/);
+            if (transformerMatch) {
+              const newPath = `./${transformerMatch[1]}`;
+              return ts.factory.updateImportDeclaration(
+                node,
+                node.modifiers,
+                node.importClause,
+                ts.factory.createStringLiteral(newPath),
+                node.assertClause
+              );
+            }
+          }
         }
+      }
+
+      // Handle method declarations - remove overloads, keep implementation
+      if (ts.isMethodDeclaration(node) && node.name && node.name.getText() === 'transform') {
+        // If it's just a signature (no body), skip it
+        if (!node.body) {
+          return undefined;
+        }
+        
+        hasTransformMethod = true;
+        
+        // Replace the implementation with 'any' types
+        return ts.factory.updateMethodDeclaration(
+          node,
+          node.modifiers,
+          node.asteriskToken,
+          node.name,
+          node.questionToken,
+          node.typeParameters,
+          node.parameters.map(param => 
+            ts.factory.updateParameterDeclaration(
+              param,
+              param.modifiers,
+              param.dotDotDotToken,
+              param.name,
+              param.questionToken,
+              ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword),
+              param.initializer
+            )
+          ),
+          ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword),
+          node.body
+        );
       }
 
       // Replace type references with 'any'
@@ -50,11 +101,6 @@ function stripTypes(sourceFile: ts.SourceFile): string {
           if (TYPES_TO_STRIP.includes(namespace)) {
             return ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword);
           }
-        }
-        
-        // Check for TransformerContext
-        if (typeName === 'TransformerContext') {
-          return ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword);
         }
       }
 
@@ -135,6 +181,10 @@ function stripTypes(sourceFile: ts.SourceFile): string {
         if (TYPES_TO_STRIP.some(type => typeText.includes(type))) {
           return node.expression; // Remove the assertion entirely
         }
+        // Also check for any 'as' expression that ends with .ParseResult or .Node
+        if (typeText.match(/\.(ParseResult|Node)$/)) {
+          return node.expression;
+        }
       }
 
       // Handle property declarations with types
@@ -152,22 +202,6 @@ function stripTypes(sourceFile: ts.SourceFile): string {
         }
       }
 
-      // Handle interface declarations - remove them entirely
-      if (ts.isInterfaceDeclaration(node)) {
-        const name = node.name.getText();
-        if (TYPES_TO_STRIP.some(type => name.includes(type))) {
-          return undefined;
-        }
-      }
-
-      // Handle type alias declarations - remove them entirely
-      if (ts.isTypeAliasDeclaration(node)) {
-        const name = node.name.getText();
-        if (TYPES_TO_STRIP.some(type => name.includes(type))) {
-          return undefined;
-        }
-      }
-
       return ts.visitEachChild(node, visit, context);
     };
 
@@ -180,12 +214,21 @@ function stripTypes(sourceFile: ts.SourceFile): string {
   // Add header comment
   const headerComment = `/**
  * Auto-generated file with types stripped for better tree-shaking
- * DO NOT EDIT - Generated by strip-transformer-types.ts
+ * DO NOT EDIT - Generated by strip-direct-transformer-types.ts
  */
 
 `;
   
-  return headerComment + printer.printFile(transformedSourceFile);
+  let code = printer.printFile(transformedSourceFile);
+  
+  // Post-process to remove any remaining type references
+  // Remove 'as PGxx.ParseResult' and 'as PGxx.Node' patterns
+  code = code.replace(/\s+as\s+PG\d+\.(ParseResult|Node)/g, '');
+  
+  // Remove any remaining type casts with version types
+  code = code.replace(/\s+as\s+(V\d+Types|PG\d+)\.[A-Za-z]+/g, '');
+  
+  return headerComment + code;
 }
 
 function processFile(filePath: string): void {
@@ -201,7 +244,7 @@ function processFile(filePath: string): void {
     true
   );
   
-  const strippedCode = stripTypes(sourceFile);
+  const strippedCode = stripTypes(sourceFile, filePath);
   
   // Create output directory if it doesn't exist
   const outputPath = path.join(process.cwd(), OUTPUT_DIR);
@@ -209,8 +252,13 @@ function processFile(filePath: string): void {
     fs.mkdirSync(outputPath, { recursive: true });
   }
   
-  // Write the stripped file
-  const outputFileName = path.basename(filePath);
+  // Extract version info from path (e.g., v13-to-v17)
+  const versionMatch = filePath.match(/v(\d+)-to-v(\d+)/);
+  if (!versionMatch) {
+    throw new Error(`Could not extract version info from ${filePath}`);
+  }
+  
+  const outputFileName = `${versionMatch[0]}.ts`;
   const outputFilePath = path.join(outputPath, outputFileName);
   fs.writeFileSync(outputFilePath, strippedCode);
   
@@ -218,9 +266,9 @@ function processFile(filePath: string): void {
 }
 
 function main() {
-  console.log('Stripping types from transformer files...\n');
+  console.log('Stripping types from direct transformer files...\n');
   
-  for (const file of TRANSFORMER_FILES) {
+  for (const file of DIRECT_TRANSFORMER_FILES) {
     try {
       processFile(file);
     } catch (error) {
@@ -228,7 +276,7 @@ function main() {
     }
   }
   
-  console.log('\nDone! Stripped transformer files are in the versions/ directory.');
+  console.log('\nDone! Stripped direct transformer files are in the versions/direct/ directory.');
 }
 
 // Run the script

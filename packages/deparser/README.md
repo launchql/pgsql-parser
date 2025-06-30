@@ -69,6 +69,23 @@ console.log(deparse(stmt));
 // Output: SELECT * FROM another_table
 ```
 
+### Latest Version (PostgreSQL 17)
+
+```sh
+npm install pgsql-deparser
+```
+
+### Version-Specific Packages (PostgreSQL 13-16)
+
+While we highly recommend using PG17, for PostgreSQL versions 13-16, use the version-specific packages:
+
+```sh
+npm install pgsql-deparser@v13  # PostgreSQL 13
+npm install pgsql-deparser@v14  # PostgreSQL 14
+npm install pgsql-deparser@v15  # PostgreSQL 15
+npm install pgsql-deparser@v16  # PostgreSQL 16
+```
+
 ## Options
 
 The deparser accepts optional configuration for formatting and output control:

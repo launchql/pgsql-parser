@@ -76,49 +76,13 @@ ${transformers.map(t => `    to${t.targetVersion}: ${t.className}`).join(',\n')}
 `;
 }
 
-function createReadme(version: number, transformers: TransformerMapping['transformers']): string {
-  const transformerList = transformers.map(t => 
-    `- \`${t.className}\` - Transform from v${version} to v${t.targetVersion}`
-  ).join('\n');
-
-  return `# PostgreSQL Version ${version} Transformers
-
-This directory contains all transformers that start from PostgreSQL version ${version}.
-
-## Available Transformers
-
-${transformerList}
-
-## Usage
-
-### Individual Transformers
-
-\`\`\`javascript
-import { ${transformers[0].className} } from './${path.basename(transformers[0].fileName, '.ts')}';
-
-const transformer = new ${transformers[0].className}();
-const result = transformer.transform(node);
-\`\`\`
-
-### All Transformers
-
-\`\`\`javascript
-import { getTransformersForV${version} } from './index';
-
-const transformers = getTransformersForV${version}();
-const v${transformers[0].targetVersion}Result = new transformers.to${transformers[0].targetVersion}().transform(node);
-\`\`\`
-
-## Files
-
-${transformers.map(t => `- \`${path.basename(t.fileName)}\` - ${t.className}`).join('\n')}
-- \`index.js\` - Exports all transformers and convenience function
-- \`README.md\` - This file
-
-## Note
-
-These are type-stripped versions optimized for bundle size. For TypeScript support, use the original source files.
-`;
+function copyReadme(versionDir: string): void {
+  const sourcePath = path.join(__dirname, '..', 'README.md');
+  const destPath = path.join(versionDir, 'README.md');
+  
+  if (fs.existsSync(sourcePath)) {
+    fs.copyFileSync(sourcePath, destPath);
+  }
 }
 
 function organizeByVersion(): void {
@@ -154,8 +118,7 @@ function organizeByVersion(): void {
     console.log(`  ✓ Created index.js`);
 
     // Create README
-    const readmeContent = createReadme(mapping.sourceVersion, mapping.transformers);
-    fs.writeFileSync(path.join(versionDir, 'README.md'), readmeContent);
+    copyReadme(versionDir);
     console.log(`  ✓ Created README.md`);
 
     console.log('');

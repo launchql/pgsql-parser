@@ -29,55 +29,38 @@ function loadConfig(): Config {
 }
 
 function generatePackageJson(packageName: string, version: string, versionConfig: VersionConfig, template: Record<string, any>): any {
-  return {
+  // Start with the template and override only the version-specific fields
+  const packageJson: any = {
+    ...template,
     name: packageName,
     version: versionConfig.deparserVersion,
-    description: `PostgreSQL v${version} AST Deparser - Transforms v${version} ASTs to v17 and deparses them`,
-    main: "index.js",
-    module: "esm/index.js",
-    types: "index.d.ts",
-    ...template,
-    scripts: {
-      "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
-      "clean": "rimraf dist",
-      "prepare": "npm run build",
-      "build": "npm run clean && tsc && tsc -p tsconfig.esm.json && npm run copy"
-    },
     dependencies: {
       [`@pgsql/types`]: `^${versionConfig.typesVersion}`
-    },
-    keywords: [
-      ...template.keywords,
-      `v${version}`,
-      `postgresql-${version}`
-    ]
+    }
   };
+  
+  return packageJson;
 }
 
 function generateTsConfig(): any {
   return {
     "compilerOptions": {
-      "target": "es2018",
+      "outDir": "dist",
+      "rootDir": "src/",  
+      "target": "es2022",
       "module": "commonjs",
-      "lib": ["es2018"],
-      "declaration": true,
-      "outDir": "./dist",
-      "rootDir": "./",
-      "strict": false,
       "esModuleInterop": true,
-      "skipLibCheck": true,
       "forceConsistentCasingInFileNames": true,
-      "moduleResolution": "node",
-      "resolveJsonModule": true
+      "strict": true,
+      "strictNullChecks": false,
+      "skipLibCheck": true,
+      "sourceMap": false,
+      "declaration": true,
+      "resolveJsonModule": true,
+      "moduleResolution": "node"
     },
-    "include": [
-      "**/*.ts"
-    ],
-    "exclude": [
-      "node_modules",
-      "dist",
-      "**/*.test.ts"
-    ]
+    "include": ["src/**/*.ts"],
+    "exclude": ["dist", "node_modules", "**/*.spec.*", "**/*.test.*"]
   };
 }
 
@@ -125,8 +108,7 @@ function generateVersionPackages(): void {
     fs.writeFileSync(tsConfigEsmPath, JSON.stringify(tsConfigEsm, null, 2));
     console.log(`  ✓ Created tsconfig.esm.json`);
     
-    // Update README with package name and npm tag
-    updateReadmeWithPackageName(version, config.packageName, versionConfig.npmTag);
+
     
     console.log('');
   }
@@ -134,52 +116,7 @@ function generateVersionPackages(): void {
   console.log('Done! Package files have been generated for all versions.');
 }
 
-function updateReadmeWithPackageName(version: string, packageName: string, npmTag: string): void {
-  const versionDir = path.join(VERSIONS_DIR, version);
-  const readmePath = path.join(versionDir, 'README.md');
-  
-  if (!fs.existsSync(readmePath)) {
-    return;
-  }
-  
-  let content = fs.readFileSync(readmePath, 'utf-8');
-  
-  // Remove any existing installation sections
-  content = content.replace(/## Installation[\s\S]*?(?=##|$)/gm, '');
-  
-  // Add installation instructions at the beginning
-  const installSection = `## Installation
 
-\`\`\`bash
-# Install specific version using npm tag
-npm install ${packageName}@${npmTag}
-
-# Or using yarn
-yarn add ${packageName}@${npmTag}
-\`\`\`
-
-`;
-  
-  // Insert after the title
-  const lines = content.split('\n');
-  const titleIndex = lines.findIndex(line => line.startsWith('# '));
-  if (titleIndex !== -1) {
-    // Find the next non-empty line after title
-    let insertIndex = titleIndex + 1;
-    while (insertIndex < lines.length && lines[insertIndex].trim() === '') {
-      insertIndex++;
-    }
-    lines.splice(insertIndex, 0, installSection);
-    content = lines.join('\n');
-  }
-  
-  // Update import examples
-  content = content.replace(/from '\.\/index'/g, `from '${packageName}'`);
-  content = content.replace(/from 'pgsql-deparser-v\d+'/g, `from '${packageName}'`);
-  
-  fs.writeFileSync(readmePath, content);
-  console.log(`  ✓ Updated README.md with package name`);
-}
 
 // Run the script
 generateVersionPackages();

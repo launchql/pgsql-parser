@@ -90,52 +90,7 @@ function updateVersionDirectory(config: VersionConfig): void {
   console.log(`  ✓ Created index.ts with deparser functionality`);
 }
 
-function updateReadme(version: number): void {
-  const versionDir = path.join(VERSIONS_DIR, version.toString());
-  const readmePath = path.join(versionDir, 'README.md');
-  
-  const readmeContent = `# PostgreSQL Version ${version} Deparser
 
-This directory contains a deparser for PostgreSQL version ${version} that automatically transforms ASTs to v17 format before deparsing.
-
-## Usage
-
-\`\`\`javascript
-import { deparse, deparseSync } from './index';
-
-// Async deparse
-const sql = await deparse(pgNode);
-
-// Sync deparse
-const sql = deparseSync(pgNode);
-
-// With options
-const sql = await deparse(pgNode, {
-  paramPrefix: '$',
-  trimSpace: true
-});
-\`\`\`
-
-## How it Works
-
-1. The deparser uses the \`PG${version}ToPG17Transformer\` to transform your v${version} AST to v17 format
-2. It then uses the standard \`pgsql-deparser\` to generate SQL from the v17 AST
-3. This ensures compatibility with the latest deparser while supporting older AST versions
-
-## Files
-
-- \`index.ts\` - Main deparser exports
-- \`v${version}-to-v17.ts\` - Direct transformer to v17
-- Other transformer files are dependencies for the direct transformer
-
-## Note
-
-These are type-stripped versions optimized for bundle size. For TypeScript support with full types, use the original source files from the main package.
-`;
-
-  fs.writeFileSync(readmePath, readmeContent);
-  console.log(`  ✓ Updated README.md`);
-}
 
 function main(): void {
   console.log('Generating version-specific deparsers...\n');
@@ -143,7 +98,7 @@ function main(): void {
   for (const config of versionConfigs) {
     console.log(`Processing version ${config.version}...`);
     updateVersionDirectory(config);
-    updateReadme(config.version);
+
     console.log('');
   }
 
