@@ -1,7 +1,6 @@
 import * as PG13 from '../13/types';
 import * as PG14 from '../14/types';
 import { TransformerContext } from './context';
-
 export class V13ToV14Transformer {
 
   transform(node: PG13.Node, context: TransformerContext = { parentNodeTypes: [] }): any {
