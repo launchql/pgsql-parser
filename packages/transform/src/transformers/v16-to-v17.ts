@@ -7,7 +7,7 @@ import { TransformerContext } from './context';
  * Transforms PostgreSQL v16 AST nodes to v17 format
  */
 export class V16ToV17Transformer {
-  
+
   transform(node: PG16.Node, context: TransformerContext = { parentNodeTypes: [] }): any {
     if (node == null) {
       return null;
@@ -31,12 +31,12 @@ export class V16ToV17Transformer {
 
   visit(node: PG16.Node, context: TransformerContext = { parentNodeTypes: [] }): any {
     const nodeType = this.getNodeType(node);
-    
+
     // Handle empty objects
     if (!nodeType) {
       return {};
     }
-    
+
     const nodeData = this.getNodeData(node);
 
     const methodName = nodeType as keyof this;
@@ -45,11 +45,11 @@ export class V16ToV17Transformer {
         ...context,
         parentNodeTypes: [...context.parentNodeTypes, nodeType]
       };
-      
+
       const result = (this[methodName] as any)(nodeData, childContext);
       return result;
     }
-    
+
     // If no specific method, return the node as-is
     return node;
   }
@@ -68,7 +68,7 @@ export class V16ToV17Transformer {
   }
 
   ParseResult(node: PG16.ParseResult, context: TransformerContext): PG17.ParseResult {
-    
+
     if (node && typeof node === 'object' && 'version' in node && 'stmts' in node) {
       return {
         version: 170004, // PG17 version
@@ -89,7 +89,7 @@ export class V16ToV17Transformer {
 
   RawStmt(node: PG16.RawStmt, context: TransformerContext): { RawStmt: PG17.RawStmt } {
     const result: any = {};
-    
+
     if (node.stmt !== undefined) {
       result.stmt = this.transform(node.stmt as any, context);
     }
@@ -99,13 +99,13 @@ export class V16ToV17Transformer {
     if (node.stmt_len !== undefined) {
       result.stmt_len = node.stmt_len;
     }
-    
+
     return { RawStmt: result };
   }
 
   SelectStmt(node: PG16.SelectStmt, context: TransformerContext): { SelectStmt: PG17.SelectStmt } {
     const result: any = {};
-    
+
     if (node.distinctClause !== undefined) {
       result.distinctClause = Array.isArray(node.distinctClause)
         ? node.distinctClause.map(item => this.transform(item as any, context))
@@ -149,7 +149,7 @@ export class V16ToV17Transformer {
         inValuesClause: true
       };
       result.valuesLists = Array.isArray(node.valuesLists)
-        ? node.valuesLists.map(item => Array.isArray(item) 
+        ? node.valuesLists.map(item => Array.isArray(item)
             ? item.map(subItem => this.transform(subItem as any, valuesContext))
             : this.transform(item as any, valuesContext))
         : this.transform(node.valuesLists as any, valuesContext);
@@ -188,13 +188,13 @@ export class V16ToV17Transformer {
     if (node.rarg !== undefined) {
       result.rarg = this.transform(node.rarg as any, context);
     }
-    
+
     return { SelectStmt: result };
   }
 
   A_Expr(node: PG16.A_Expr, context: TransformerContext): { A_Expr: PG17.A_Expr } {
     const result: any = {};
-    
+
     if (node.kind !== undefined) {
       result.kind = node.kind;
     }
@@ -212,13 +212,13 @@ export class V16ToV17Transformer {
     if (node.location !== undefined) {
       result.location = node.location;
     }
-    
+
     return { A_Expr: result };
   }
 
   InsertStmt(node: PG16.InsertStmt, context: TransformerContext): { InsertStmt: PG17.InsertStmt } {
     const result: any = {};
-    
+
     if (node.relation !== undefined) {
       result.relation = this.transform(node.relation as any, context);
     }
@@ -244,13 +244,13 @@ export class V16ToV17Transformer {
     if (node.override !== undefined) {
       result.override = node.override;
     }
-    
+
     return { InsertStmt: result };
   }
 
   UpdateStmt(node: PG16.UpdateStmt, context: TransformerContext): { UpdateStmt: PG17.UpdateStmt } {
     const result: any = {};
-    
+
     if (node.relation !== undefined) {
       result.relation = this.transform(node.relation as any, context);
     }
@@ -275,13 +275,13 @@ export class V16ToV17Transformer {
     if (node.withClause !== undefined) {
       result.withClause = this.transform(node.withClause as any, context);
     }
-    
+
     return { UpdateStmt: result };
   }
 
   DeleteStmt(node: PG16.DeleteStmt, context: TransformerContext): { DeleteStmt: PG17.DeleteStmt } {
     const result: any = {};
-    
+
     if (node.relation !== undefined) {
       result.relation = this.transform(node.relation as any, context);
     }
@@ -301,13 +301,13 @@ export class V16ToV17Transformer {
     if (node.withClause !== undefined) {
       result.withClause = this.transform(node.withClause as any, context);
     }
-    
+
     return { DeleteStmt: result };
   }
 
   WithClause(node: PG16.WithClause, context: TransformerContext): { WithClause: PG17.WithClause } {
     const result: any = {};
-    
+
     if (node.ctes !== undefined) {
       const cteContext = { ...context, inCTE: true };
       result.ctes = Array.isArray(node.ctes)
@@ -320,13 +320,13 @@ export class V16ToV17Transformer {
     if (node.location !== undefined) {
       result.location = node.location;
     }
-    
+
     return { WithClause: result };
   }
 
   ResTarget(node: PG16.ResTarget, context: TransformerContext): { ResTarget: PG17.ResTarget } {
     const result: any = {};
-    
+
     if (node.name !== undefined) {
       result.name = node.name;
     }
@@ -341,13 +341,13 @@ export class V16ToV17Transformer {
     if (node.location !== undefined) {
       result.location = node.location;
     }
-    
+
     return { ResTarget: result };
   }
 
   BoolExpr(node: PG16.BoolExpr, context: TransformerContext): { BoolExpr: PG17.BoolExpr } {
     const result: any = {};
-    
+
     if (node.boolop !== undefined) {
       result.boolop = node.boolop;
     }
@@ -359,13 +359,13 @@ export class V16ToV17Transformer {
     if (node.location !== undefined) {
       result.location = node.location;
     }
-    
+
     return { BoolExpr: result };
   }
 
   FuncCall(node: PG16.FuncCall, context: TransformerContext): { FuncCall: PG17.FuncCall } {
     const result: any = {};
-    
+
     if (node.funcname !== undefined) {
       result.funcname = Array.isArray(node.funcname)
         ? node.funcname.map(item => this.transform(item as any, context))
@@ -402,10 +402,10 @@ export class V16ToV17Transformer {
     if (node.location !== undefined) {
       result.location = node.location;
     }
-    
+
     const funcformatValue = this.getFuncformatValue(node, result.funcname, context);
     result.funcformat = funcformatValue;
-    
+
     return { FuncCall: result };
   }
 
@@ -420,6 +420,7 @@ export class V16ToV17Transformer {
   ColumnRef(node: PG16.ColumnRef, context: TransformerContext): { ColumnRef: PG17.ColumnRef } {
     return { ColumnRef: node as PG17.ColumnRef };
   }
+
 
   private isInCreateDomainContext(context: TransformerContext): boolean {
     return context.parentNodeTypes.includes('CreateDomainStmt');
@@ -533,7 +534,7 @@ export class V16ToV17Transformer {
 
   RangeVar(node: PG16.RangeVar, context: TransformerContext): { RangeVar: PG17.RangeVar } {
     const result: any = {};
-    
+
     if (node.catalogname !== undefined) {
       result.catalogname = node.catalogname;
     }
@@ -555,7 +556,7 @@ export class V16ToV17Transformer {
     if (node.location !== undefined) {
       result.location = node.location;
     }
-    
+
     return { RangeVar: result };
   }
 
@@ -592,7 +593,7 @@ export class V16ToV17Transformer {
     if (node.typeName !== undefined) {
       let typeName = this.transform(node.typeName as any, context);
       
-      // Add pg_catalog prefix for JSON types in simple SELECT contexts
+      // Add pg_catalog prefix for JSON types in simple SELECT contexts, but NOT in WITH clauses
       if (typeName && typeName.names && Array.isArray(typeName.names) && typeName.names.length === 1) {
         const firstElement = typeName.names[0];
         if (firstElement && typeof firstElement === 'object' && 'String' in firstElement) {
@@ -602,7 +603,10 @@ export class V16ToV17Transformer {
             const hasResTarget = context.parentNodeTypes.includes('ResTarget');
             const hasList = context.parentNodeTypes.includes('List');
             const hasA_Expr = context.parentNodeTypes.includes('A_Expr');
-            if ((hasSelectStmt && hasResTarget) || (hasSelectStmt && hasList) || hasA_Expr) {
+            const hasWithClause = context.parentNodeTypes.includes('WithClause');
+            const hasCommonTableExpr = context.parentNodeTypes.includes('CommonTableExpr');
+            
+            if (((hasSelectStmt && hasResTarget) || (hasSelectStmt && hasList) || hasA_Expr) && !hasWithClause && !hasCommonTableExpr) {
               const pgCatalogElement = {
                 String: {
                   sval: 'pg_catalog'
@@ -638,23 +642,23 @@ export class V16ToV17Transformer {
   String(node: PG16.String, context: TransformerContext): { String: PG17.String } {
     return { String: node as PG17.String };
   }
-  
+
   Integer(node: PG16.Integer, context: TransformerContext): { Integer: PG17.Integer } {
     return { Integer: node as PG17.Integer };
   }
-  
+
   Float(node: PG16.Float, context: TransformerContext): { Float: PG17.Float } {
     return { Float: node as PG17.Float };
   }
-  
+
   Boolean(node: PG16.Boolean, context: TransformerContext): { Boolean: PG17.Boolean } {
     return { Boolean: node as PG17.Boolean };
   }
-  
+
   BitString(node: PG16.BitString, context: TransformerContext): { BitString: PG17.BitString } {
     return { BitString: node as PG17.BitString };
   }
-  
+
   // NOTE: there is no Null type in PG17
   Null(node: any, context: TransformerContext): any {
     return { Null: node };
@@ -662,19 +666,19 @@ export class V16ToV17Transformer {
 
   List(node: PG16.List, context: TransformerContext): { List: PG17.List } {
     const result: any = {};
-    
+
     if (node.items !== undefined) {
       result.items = Array.isArray(node.items)
         ? node.items.map(item => this.transform(item as any, context))
         : this.transform(node.items as any, context);
     }
-    
+
     return { List: result };
   }
 
   CreateStmt(node: PG16.CreateStmt, context: TransformerContext): { CreateStmt: PG17.CreateStmt } {
     const result: any = {};
-    
+
     if (node.relation !== undefined) {
       result.relation = this.transform(node.relation as any, context);
     }
@@ -719,13 +723,13 @@ export class V16ToV17Transformer {
     if (node.if_not_exists !== undefined) {
       result.if_not_exists = node.if_not_exists;
     }
-    
+
     return { CreateStmt: result };
   }
 
   ColumnDef(node: PG16.ColumnDef, context: TransformerContext): { ColumnDef: PG17.ColumnDef } {
     const result: any = {};
-    
+
     if (node.colname !== undefined) {
       result.colname = node.colname;
     }
@@ -782,7 +786,7 @@ export class V16ToV17Transformer {
     if (node.location !== undefined) {
       result.location = node.location;
     }
-    
+
     return { ColumnDef: result };
   }
 
@@ -812,7 +816,7 @@ export class V16ToV17Transformer {
 
   CommonTableExpr(node: PG16.CommonTableExpr, context: TransformerContext): { CommonTableExpr: PG17.CommonTableExpr } {
     const result: any = {};
-    
+
     if (node.ctename !== undefined) {
       result.ctename = node.ctename;
     }
@@ -836,7 +840,7 @@ export class V16ToV17Transformer {
     if (node.location !== undefined) {
       result.location = node.location;
     }
-    
+
     return { CommonTableExpr: result };
   }
 
@@ -994,7 +998,7 @@ export class V16ToV17Transformer {
 
   CreateDomainStmt(node: PG16.CreateDomainStmt, context: TransformerContext): { CreateDomainStmt: PG17.CreateDomainStmt } {
     const result: any = {};
-    
+
     if (node.domainname !== undefined) {
       result.domainname = Array.isArray(node.domainname)
         ? node.domainname.map(item => this.transform(item as any, context))
@@ -1074,15 +1078,15 @@ export class V16ToV17Transformer {
 
   DeallocateStmt(node: PG16.DeallocateStmt, context: TransformerContext): { DeallocateStmt: PG17.DeallocateStmt } {
     const result: any = {};
-    
+
     if (node.name !== undefined) {
       result.name = node.name;
     }
-    
+
     if (node.name === undefined || node.name === null) {
       result.isall = true;
     }
-    
+
     return { DeallocateStmt: result };
   }
 
@@ -1356,7 +1360,7 @@ export class V16ToV17Transformer {
 
   CompositeTypeStmt(node: PG16.CompositeTypeStmt, context: TransformerContext): { CompositeTypeStmt: PG17.CompositeTypeStmt } {
     const result: any = {};
-    
+
     if (node.typevar !== undefined) {
       result.typevar = this.transform(node.typevar as any, context);
     }
@@ -1365,7 +1369,7 @@ export class V16ToV17Transformer {
         ? node.coldeflist.map(item => this.transform(item as any, context))
         : this.transform(node.coldeflist as any, context);
     }
-    
+
     return { CompositeTypeStmt: result };
   }
 
@@ -1477,7 +1481,7 @@ export class V16ToV17Transformer {
 
   RangeFunction(node: PG16.RangeFunction, context: TransformerContext): { RangeFunction: PG17.RangeFunction } {
     const result: any = {};
-    
+
     if (node.lateral !== undefined) {
       result.lateral = node.lateral;
     }
@@ -1500,13 +1504,13 @@ export class V16ToV17Transformer {
         ? node.coldeflist.map(item => this.transform(item as any, context))
         : this.transform(node.coldeflist as any, context);
     }
-    
+
     return { RangeFunction: result };
   }
 
   XmlSerialize(node: PG16.XmlSerialize, context: TransformerContext): { XmlSerialize: PG17.XmlSerialize } {
     const result: any = {};
-    
+
     if (node.xmloption !== undefined) {
       result.xmloption = node.xmloption;
     }
@@ -1519,7 +1523,7 @@ export class V16ToV17Transformer {
     if (node.location !== undefined) {
       result.location = node.location;
     }
-    
+
     return { XmlSerialize: result };
   }
 
@@ -1529,7 +1533,7 @@ export class V16ToV17Transformer {
 
   GroupingFunc(node: PG16.GroupingFunc, context: TransformerContext): { GroupingFunc: PG17.GroupingFunc } {
     const result: any = {};
-    
+
     if (node.args !== undefined) {
       result.args = Array.isArray(node.args)
         ? node.args.map((item: any) => this.transform(item as any, context))
@@ -1546,13 +1550,13 @@ export class V16ToV17Transformer {
     if (node.location !== undefined) {
       result.location = node.location;
     }
-    
+
     return { GroupingFunc: result };
   }
 
   MultiAssignRef(node: PG16.MultiAssignRef, context: TransformerContext): { MultiAssignRef: PG17.MultiAssignRef } {
     const result: any = {};
-    
+
     if (node.source !== undefined) {
       result.source = this.transform(node.source as any, context);
     }
@@ -1562,20 +1566,20 @@ export class V16ToV17Transformer {
     if (node.ncolumns !== undefined) {
       result.ncolumns = node.ncolumns;
     }
-    
+
     return { MultiAssignRef: result };
   }
 
   CurrentOfExpr(node: PG16.CurrentOfExpr, context: TransformerContext): { CurrentOfExpr: PG17.CurrentOfExpr } {
     const result: any = {};
-    
+
     if (node.cursor_name !== undefined) {
       result.cursor_name = node.cursor_name;
     }
     if (node.cursor_param !== undefined) {
       result.cursor_param = node.cursor_param;
     }
-    
+
     return { CurrentOfExpr: result };
   }
 
@@ -1593,7 +1597,7 @@ export class V16ToV17Transformer {
 
   AlterRoleSetStmt(node: PG16.AlterRoleSetStmt, context: TransformerContext): { AlterRoleSetStmt: PG17.AlterRoleSetStmt } {
     const result: any = {};
-    
+
     if (node.role !== undefined) {
       result.role = this.transform(node.role as any, context);
     }
@@ -1603,7 +1607,7 @@ export class V16ToV17Transformer {
     if (node.setstmt !== undefined) {
       result.setstmt = this.transform(node.setstmt as any, context);
     }
-    
+
     return { AlterRoleSetStmt: result };
   }
 
@@ -1613,13 +1617,13 @@ export class V16ToV17Transformer {
 
   private getFuncformatValue(node: any, funcname: any, context: TransformerContext): string {
     const functionName = this.getFunctionName(node, funcname);
-    
+
     if (!functionName) {
       return 'COERCE_EXPLICIT_CALL';
     }
 
     const hasPgCatalogPrefix = this.hasPgCatalogPrefix(funcname);
-    
+
     const sqlSyntaxFunctions = [
       'trim', 'ltrim', 'rtrim', 'btrim',
       'position', 'overlay', 'substring',
@@ -1688,7 +1692,7 @@ export class V16ToV17Transformer {
 
   RangeTableSample(node: PG16.RangeTableSample, context: TransformerContext): { RangeTableSample: PG17.RangeTableSample } {
     const result: any = {};
-    
+
     if (node.relation !== undefined) {
       result.relation = this.transform(node.relation as any, context);
     }
@@ -1708,13 +1712,13 @@ export class V16ToV17Transformer {
     if (node.location !== undefined) {
       result.location = node.location;
     }
-    
+
     return { RangeTableSample: result };
   }
 
   SQLValueFunction(node: PG16.SQLValueFunction, context: TransformerContext): { SQLValueFunction: PG17.SQLValueFunction } {
     const result: any = {};
-    
+
     if (node.op !== undefined) {
       result.op = node.op;
     }
@@ -1727,13 +1731,13 @@ export class V16ToV17Transformer {
     if (node.location !== undefined) {
       result.location = node.location;
     }
-    
+
     return { SQLValueFunction: result };
   }
 
   XmlExpr(node: PG16.XmlExpr, context: TransformerContext): { XmlExpr: PG17.XmlExpr } {
     const result: any = {};
-    
+
     if (node.op !== undefined) {
       result.op = node.op;
     }
@@ -1767,13 +1771,13 @@ export class V16ToV17Transformer {
     if (node.location !== undefined) {
       result.location = node.location;
     }
-    
+
     return { XmlExpr: result };
   }
 
   RangeSubselect(node: PG16.RangeSubselect, context: TransformerContext): { RangeSubselect: PG17.RangeSubselect } {
     const result: any = {};
-    
+
     if (node.lateral !== undefined) {
       result.lateral = node.lateral;
     }
@@ -1783,17 +1787,17 @@ export class V16ToV17Transformer {
     if (node.alias !== undefined) {
       result.alias = this.transform(node.alias as any, context);
     }
-    
+
     return { RangeSubselect: result };
   }
 
   SetToDefault(node: PG16.SetToDefault, context: TransformerContext): { SetToDefault: PG17.SetToDefault } {
     const result: any = {};
-    
+
     if (node.location !== undefined) {
       result.location = node.location;
     }
-    
+
     return { SetToDefault: result };
   }
 }
