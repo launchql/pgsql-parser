@@ -20,8 +20,8 @@ const pgVersions = Object.keys(config['libpg-query']);
 
 pgVersions.forEach(pgVersion => {
   const libpgQueryVersion = config['libpg-query'][pgVersion];
-
   const typesVersion = config['@pgsql/types'][pgVersion];
+  const npmTag = config['npmTag'][pgVersion];
 
   // For pgsql-parser, we only have versions 13 and 17
   let pgsqlParserVersion = config['pgsql-parser'][pgVersion];
@@ -48,7 +48,7 @@ pgVersions.forEach(pgVersion => {
     .replace(/{{VERSION}}/g, `${pgVersion}.0.0`)
     .replace(/{{LIBPG_QUERY_VERSION}}/g, libpgQueryVersion)
     .replace(/{{PGSQL_PARSER_VERSION}}/g, pgsqlParserVersion)
-    .replace(/{{VERSION_TAG}}/g, `v${pgVersion}`)
+    .replace(/{{VERSION_TAG}}/g, `${npmTag}`)
     .replace(/{{TYPES_VERSION}}/g, typesVersion);
 
   fs.writeFileSync(

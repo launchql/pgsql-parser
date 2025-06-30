@@ -5,25 +5,25 @@
       "deparserVersion": "13.17.0",
       "typesVersion": "13.11.1",
       "pgVersion": "13",
-      "npmTag": "v13"
+      "npmTag": "pg13"
     },
     "14": {
       "deparserVersion": "14.0.0",
       "typesVersion": "14.1.1",
       "pgVersion": "14",
-      "npmTag": "v14"
+      "npmTag": "pg14"
     },
     "15": {
       "deparserVersion": "15.0.0",
       "typesVersion": "15.1.1",
       "pgVersion": "15",
-      "npmTag": "v15"
+      "npmTag": "pg15"
     },
     "16": {
       "deparserVersion": "16.0.0",
       "typesVersion": "16.1.1",
       "pgVersion": "16",
-      "npmTag": "v16"
+      "npmTag": "pg16"
     }
   },
   "packageTemplate": {
