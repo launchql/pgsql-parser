@@ -284,7 +284,7 @@ it('original-upstream-rangetypes', async () => {
   "original/upstream/rangetypes-278.sql",
   "original/upstream/rangetypes-279.sql",
   "original/upstream/rangetypes-280.sql",
-  // "original/upstream/rangetypes-281.sql", // REMOVED: AST transformer bug - converts FUNC_PARAM_DEFAULT to FUNC_PARAM_IN for function parameters
+"original/upstream/rangetypes-281.sql",
   "original/upstream/rangetypes-282.sql",
   "original/upstream/rangetypes-283.sql",
   "original/upstream/rangetypes-284.sql",
@@ -297,15 +297,15 @@ it('original-upstream-rangetypes', async () => {
   "original/upstream/rangetypes-291.sql",
   "original/upstream/rangetypes-292.sql",
   "original/upstream/rangetypes-293.sql",
-  // "original/upstream/rangetypes-294.sql", // REMOVED: AST transformer bug - converts FUNC_PARAM_DEFAULT to FUNC_PARAM_IN for function parameters
+"original/upstream/rangetypes-294.sql",
   "original/upstream/rangetypes-295.sql",
   "original/upstream/rangetypes-296.sql",
   "original/upstream/rangetypes-297.sql",
   "original/upstream/rangetypes-298.sql",
   "original/upstream/rangetypes-299.sql",
-  // "original/upstream/rangetypes-300.sql", // REMOVED: AST transformer bug - converts FUNC_PARAM_DEFAULT to FUNC_PARAM_IN for function parameters
+"original/upstream/rangetypes-300.sql",
   "original/upstream/rangetypes-301.sql",
   "original/upstream/rangetypes-302.sql"
-  // "original/upstream/rangetypes-281.sql", // REMOVED: AST transformer bug - converts FUNC_PARAM_DEFAULT to FUNC_PARAM_IN for function parameters
+"original/upstream/rangetypes-281.sql",
 ]);
 });

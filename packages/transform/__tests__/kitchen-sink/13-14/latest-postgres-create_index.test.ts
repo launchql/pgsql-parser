@@ -74,8 +74,8 @@ it('latest-postgres-create_index', async () => {
   "latest/postgres/create_index-68.sql",
   "latest/postgres/create_index-69.sql",
   "latest/postgres/create_index-70.sql",
-  // "latest/postgres/create_index-71.sql", // REMOVED: PG13 parser fails with "syntax error at or near 'NULLS'"
-  // "latest/postgres/create_index-72.sql", // REMOVED: PG13 parser fails with "syntax error at or near 'NULLS'"
+"latest/postgres/create_index-71.sql",
+"latest/postgres/create_index-72.sql",
   "latest/postgres/create_index-73.sql",
   "latest/postgres/create_index-74.sql",
   "latest/postgres/create_index-75.sql",
@@ -85,10 +85,10 @@ it('latest-postgres-create_index', async () => {
   "latest/postgres/create_index-79.sql",
   "latest/postgres/create_index-80.sql",
   "latest/postgres/create_index-81.sql",
-  // "latest/postgres/create_index-82.sql", // REMOVED: PG13 parser fails with "syntax error at or near 'NULLS'"
-  // "latest/postgres/create_index-83.sql", // REMOVED: PG13 parser fails with "syntax error at or near 'NULLS'"
+"latest/postgres/create_index-82.sql",
+"latest/postgres/create_index-83.sql",
   "latest/postgres/create_index-84.sql",
-  // "latest/postgres/create_index-85.sql", // REMOVED: PG13 parser fails with "syntax error at or near 'NULLS'"
+"latest/postgres/create_index-85.sql",
   "latest/postgres/create_index-86.sql",
   "latest/postgres/create_index-87.sql",
   "latest/postgres/create_index-88.sql",
@@ -187,7 +187,7 @@ it('latest-postgres-create_index', async () => {
   "latest/postgres/create_index-181.sql",
   "latest/postgres/create_index-182.sql",
   "latest/postgres/create_index-183.sql",
-  // "latest/postgres/create_index-184.sql", // REMOVED: PG13 parser fails with "syntax error at or near 'NULLS'"
+"latest/postgres/create_index-184.sql",
   "latest/postgres/create_index-185.sql",
   "latest/postgres/create_index-186.sql",
   "latest/postgres/create_index-187.sql",
@@ -213,7 +213,7 @@ it('latest-postgres-create_index', async () => {
   "latest/postgres/create_index-207.sql",
   "latest/postgres/create_index-208.sql",
   "latest/postgres/create_index-209.sql",
-  // "latest/postgres/create_index-210.sql", // REMOVED: PG13 parser fails with "syntax error at or near 'CONCURRENTLY'"
+"latest/postgres/create_index-210.sql",
   "latest/postgres/create_index-211.sql",
   "latest/postgres/create_index-212.sql",
   "latest/postgres/create_index-213.sql",
@@ -225,14 +225,14 @@ it('latest-postgres-create_index', async () => {
   "latest/postgres/create_index-219.sql",
   "latest/postgres/create_index-220.sql",
   "latest/postgres/create_index-221.sql",
-  // "latest/postgres/create_index-222.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
-  // "latest/postgres/create_index-223.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
+"latest/postgres/create_index-222.sql",
+"latest/postgres/create_index-223.sql",
   "latest/postgres/create_index-224.sql",
   "latest/postgres/create_index-225.sql",
   "latest/postgres/create_index-226.sql",
-  // "latest/postgres/create_index-227.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
-  // "latest/postgres/create_index-228.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
-  // "latest/postgres/create_index-229.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
+"latest/postgres/create_index-227.sql",
+"latest/postgres/create_index-228.sql",
+"latest/postgres/create_index-229.sql",
   "latest/postgres/create_index-230.sql",
   "latest/postgres/create_index-231.sql",
   "latest/postgres/create_index-232.sql",
@@ -240,26 +240,26 @@ it('latest-postgres-create_index', async () => {
   "latest/postgres/create_index-234.sql",
   "latest/postgres/create_index-235.sql",
   "latest/postgres/create_index-236.sql",
-  // "latest/postgres/create_index-237.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
+"latest/postgres/create_index-237.sql",
   "latest/postgres/create_index-238.sql",
   "latest/postgres/create_index-239.sql",
   "latest/postgres/create_index-240.sql",
   "latest/postgres/create_index-241.sql",
   "latest/postgres/create_index-242.sql",
-  // "latest/postgres/create_index-243.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
+"latest/postgres/create_index-243.sql",
   "latest/postgres/create_index-244.sql",
   "latest/postgres/create_index-245.sql",
   "latest/postgres/create_index-246.sql",
   "latest/postgres/create_index-247.sql",
   "latest/postgres/create_index-248.sql",
   "latest/postgres/create_index-249.sql",
-  // "latest/postgres/create_index-250.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
+"latest/postgres/create_index-250.sql",
   "latest/postgres/create_index-251.sql",
   "latest/postgres/create_index-252.sql",
   "latest/postgres/create_index-253.sql",
   "latest/postgres/create_index-254.sql",
   "latest/postgres/create_index-255.sql",
-  // "latest/postgres/create_index-256.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
+"latest/postgres/create_index-256.sql",
   "latest/postgres/create_index-257.sql",
   "latest/postgres/create_index-258.sql",
   "latest/postgres/create_index-259.sql",
@@ -278,17 +278,17 @@ it('latest-postgres-create_index', async () => {
   "latest/postgres/create_index-272.sql",
   "latest/postgres/create_index-273.sql",
   "latest/postgres/create_index-274.sql",
-  // "latest/postgres/create_index-275.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
-  // "latest/postgres/create_index-276.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
+"latest/postgres/create_index-275.sql",
+"latest/postgres/create_index-276.sql",
   "latest/postgres/create_index-277.sql",
-  // "latest/postgres/create_index-278.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
-  // "latest/postgres/create_index-279.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
+"latest/postgres/create_index-278.sql",
+"latest/postgres/create_index-279.sql",
   "latest/postgres/create_index-280.sql",
   "latest/postgres/create_index-281.sql",
   "latest/postgres/create_index-282.sql",
-  // "latest/postgres/create_index-283.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
+"latest/postgres/create_index-283.sql",
   "latest/postgres/create_index-284.sql",
-  // "latest/postgres/create_index-285.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
+"latest/postgres/create_index-285.sql",
   "latest/postgres/create_index-286.sql",
   "latest/postgres/create_index-287.sql",
   "latest/postgres/create_index-288.sql",
@@ -299,13 +299,13 @@ it('latest-postgres-create_index', async () => {
   "latest/postgres/create_index-293.sql",
   "latest/postgres/create_index-294.sql",
   "latest/postgres/create_index-295.sql",
-  // "latest/postgres/create_index-296.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
+"latest/postgres/create_index-296.sql",
   "latest/postgres/create_index-297.sql",
   "latest/postgres/create_index-298.sql",
   "latest/postgres/create_index-299.sql",
-  // "latest/postgres/create_index-300.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
+"latest/postgres/create_index-300.sql",
   "latest/postgres/create_index-301.sql",
-  // "latest/postgres/create_index-302.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
+"latest/postgres/create_index-302.sql",
   "latest/postgres/create_index-303.sql",
   "latest/postgres/create_index-304.sql",
   "latest/postgres/create_index-305.sql",
@@ -314,34 +314,34 @@ it('latest-postgres-create_index', async () => {
   "latest/postgres/create_index-308.sql",
   "latest/postgres/create_index-309.sql",
   "latest/postgres/create_index-310.sql",
-  // "latest/postgres/create_index-311.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
+"latest/postgres/create_index-311.sql",
   "latest/postgres/create_index-312.sql",
   "latest/postgres/create_index-313.sql",
   "latest/postgres/create_index-314.sql",
   "latest/postgres/create_index-315.sql",
   "latest/postgres/create_index-316.sql",
   "latest/postgres/create_index-317.sql",
-  // "latest/postgres/create_index-318.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
+"latest/postgres/create_index-318.sql",
   "latest/postgres/create_index-319.sql",
-  // "latest/postgres/create_index-320.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
-  // "latest/postgres/create_index-321.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
-  // "latest/postgres/create_index-322.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
-  // "latest/postgres/create_index-323.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
-  // "latest/postgres/create_index-324.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
-  // "latest/postgres/create_index-325.sql", // REMOVED: PG13 parser fails with "syntax error at or near 'CONCURRENTLY'"
-  // "latest/postgres/create_index-326.sql", // REMOVED: PG13 parser fails with "syntax error at or near 'CONCURRENTLY'"
-  // "latest/postgres/create_index-327.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
+"latest/postgres/create_index-320.sql",
+"latest/postgres/create_index-321.sql",
+"latest/postgres/create_index-322.sql",
+"latest/postgres/create_index-323.sql",
+"latest/postgres/create_index-324.sql",
+"latest/postgres/create_index-325.sql",
+"latest/postgres/create_index-326.sql",
+"latest/postgres/create_index-327.sql",
   "latest/postgres/create_index-328.sql",
   "latest/postgres/create_index-329.sql",
   "latest/postgres/create_index-330.sql",
   "latest/postgres/create_index-331.sql",
   "latest/postgres/create_index-332.sql",
   "latest/postgres/create_index-333.sql",
-  // "latest/postgres/create_index-334.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
+"latest/postgres/create_index-334.sql",
   "latest/postgres/create_index-335.sql",
   "latest/postgres/create_index-336.sql",
-  // "latest/postgres/create_index-337.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
-  // "latest/postgres/create_index-338.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
+"latest/postgres/create_index-337.sql",
+"latest/postgres/create_index-338.sql",
   "latest/postgres/create_index-339.sql",
   "latest/postgres/create_index-340.sql",
   "latest/postgres/create_index-341.sql",
@@ -354,7 +354,7 @@ it('latest-postgres-create_index', async () => {
   "latest/postgres/create_index-348.sql",
   "latest/postgres/create_index-349.sql",
   "latest/postgres/create_index-350.sql",
-  // "latest/postgres/create_index-351.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
+"latest/postgres/create_index-351.sql",
   "latest/postgres/create_index-352.sql",
   "latest/postgres/create_index-353.sql",
   "latest/postgres/create_index-354.sql",
@@ -368,20 +368,20 @@ it('latest-postgres-create_index', async () => {
   "latest/postgres/create_index-362.sql",
   "latest/postgres/create_index-363.sql",
   "latest/postgres/create_index-364.sql",
-  // "latest/postgres/create_index-365.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
-  // "latest/postgres/create_index-366.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
+"latest/postgres/create_index-365.sql",
+"latest/postgres/create_index-366.sql",
   "latest/postgres/create_index-367.sql",
-  // "latest/postgres/create_index-368.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
+"latest/postgres/create_index-368.sql",
   "latest/postgres/create_index-369.sql",
   "latest/postgres/create_index-370.sql",
   "latest/postgres/create_index-371.sql",
-  // "latest/postgres/create_index-372.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
-  // "latest/postgres/create_index-373.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
+"latest/postgres/create_index-372.sql",
+"latest/postgres/create_index-373.sql",
   "latest/postgres/create_index-374.sql",
   "latest/postgres/create_index-375.sql",
   "latest/postgres/create_index-376.sql",
   "latest/postgres/create_index-377.sql",
-  // "latest/postgres/create_index-378.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
+"latest/postgres/create_index-378.sql",
   "latest/postgres/create_index-379.sql",
   "latest/postgres/create_index-380.sql",
   "latest/postgres/create_index-381.sql",
@@ -406,7 +406,7 @@ it('latest-postgres-create_index', async () => {
   "latest/postgres/create_index-400.sql",
   "latest/postgres/create_index-401.sql",
   "latest/postgres/create_index-402.sql",
-  // "latest/postgres/create_index-403.sql", // REMOVED: AST transformer bug - missing params array with concurrently DefElem in ReindexStmt
+"latest/postgres/create_index-403.sql",
   "latest/postgres/create_index-404.sql",
   "latest/postgres/create_index-405.sql",
   "latest/postgres/create_index-406.sql",

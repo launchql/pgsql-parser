@@ -105,7 +105,7 @@ it('original-upstream-json', async () => {
   "original/upstream/json-99.sql",
   "original/upstream/json-100.sql",
   "original/upstream/json-101.sql",
-  // "original/upstream/json-102.sql", // REMOVED: 15-16 transformer fails with function name transformation - adds pg_catalog schema qualification
+"original/upstream/json-102.sql",
   "original/upstream/json-103.sql",
   "original/upstream/json-104.sql",
   "original/upstream/json-105.sql",
