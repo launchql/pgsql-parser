@@ -80,11 +80,6 @@ export class V14ToV15Transformer {
         if (Array.isArray(value)) {
           if (key === 'arrayBounds') {
             transformedData[key] = value.map(item => {
-              // In PG15, -1 values in arrayBounds are represented as empty Integer objects
-              if (item && typeof item === 'object' && 'Integer' in item && 
-                  item.Integer && item.Integer.ival === -1) {
-                return { Integer: {} };
-              }
               return this.transform(item as any, context);
             });
           } else {
@@ -114,11 +109,6 @@ export class V14ToV15Transformer {
       if (Array.isArray(value)) {
         if (key === 'arrayBounds') {
           result[key] = value.map(item => {
-            // In PG15, -1 values in arrayBounds are represented as empty Integer objects
-            if (item && typeof item === 'object' && 'Integer' in item && 
-                item.Integer && item.Integer.ival === -1) {
-              return { Integer: {} };
-            }
             return this.transform(item as any, context);
           });
         } else {
@@ -231,8 +221,7 @@ export class V14ToV15Transformer {
         delete result.val;
       } else if (val.Integer !== undefined) {
         if (val.Integer.ival !== undefined) {
-          // In PG15, certain integer values in A_Const are converted to empty objects
-          if (val.Integer.ival <= 0) {
+          if (val.Integer.ival === 0) {
             result.ival = {};
           } else {
             result.ival = { ival: val.Integer.ival };
@@ -453,7 +442,7 @@ export class V14ToV15Transformer {
     }
     
     // AlterTableCmd context: SET STATISTICS with ival 0 or -1 -> empty Integer
-    if (context.parentNodeTypes?.includes('AlterTableCmd') && !context.parentNodeTypes?.includes('DefineStmt') && (node.ival === 0 || node.ival === -1)) {
+    if (context.parentNodeTypes?.includes('AlterTableCmd') && !context.parentNodeTypes?.includes('DefineStmt') && (node.ival === 0)) {
       return { Integer: {} };
     }
     
@@ -461,7 +450,7 @@ export class V14ToV15Transformer {
     if (context.parentNodeTypes?.includes('DefineStmt')) {
       const defElemName = (context as any).defElemName;
       
-      if (defElemName === 'initcond' && (node.ival === 0 || node.ival === -100)) {
+      if (defElemName === 'initcond' && (node.ival === 0)) {
         return { Integer: {} };
       }
       
@@ -469,8 +458,8 @@ export class V14ToV15Transformer {
         return { Integer: {} };
       }
       
-      // DefineStmt args context: ival -1 or 0 should become empty Integer for aggregates
-      if (!defElemName && (node.ival === -1 || node.ival === 0)) {
+      // DefineStmt args context: ival 0 should become empty Integer for aggregates
+      if (!defElemName && (node.ival === 0)) {
         return { Integer: {} };
       }
     }
@@ -487,7 +476,7 @@ export class V14ToV15Transformer {
         return { Integer: {} };
       }
       
-      if (defElemName === 'increment' && node.ival === -1) {
+      if (defElemName === 'increment' && node.ival === 0) {
         return { Integer: {} };
       }
     }

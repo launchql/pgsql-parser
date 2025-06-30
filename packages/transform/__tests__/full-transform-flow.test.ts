@@ -64,8 +64,8 @@ describe('Full Transform Flow Tests', () => {
   ];
 
   // Initialize parsers and transformer once for all tests
-  const pg13Parser = new Parser(13);
-  const pg17Parser = new Parser(17);
+  const pg13Parser = new Parser({ version: 13 });
+  const pg17Parser = new Parser({ version: 17 });
   const transformer = new PG13ToPG17Transformer();
 
   testFiles.forEach((filename) => {

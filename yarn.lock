@@ -1227,10 +1227,10 @@
     node-addon-api "^3.2.1"
     node-gyp-build "^4.3.0"
 
-"@pgsql/parser@^1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@pgsql/parser/-/parser-1.1.2.tgz#236980701427520f84a1f1405d14363190326d9a"
-  integrity sha512-3QOu5uSAkVdzeFupabTRBVTfxmBO62y5LCUEewG1JfSmX27aqP+z+b3F4rPhNl2AvjMP8OCL+N4KJ860AqBDmQ==
+"@pgsql/parser@^1.1.4":
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/@pgsql/parser/-/parser-1.1.4.tgz#9063c8599cd40c38b2d1d49c9df9bd971b31e583"
+  integrity sha512-RZ+6cDULpq6qNxVJafHXYw4w2h1SkLy3SKJDiPR0NGMlnJTeGAWXLoJcgIfnlE0CCpNXPMXrz65A2ppsyOofsw==
 
 "@pgsql/types@^17.6.1":
   version "17.6.1"

@@ -64,7 +64,7 @@ async function generateASTsForVersion(version) {
   console.log(`\nGenerating ASTs for PostgreSQL ${version}...`);
   
   try {
-    const parser = new Parser(version);
+    const parser = new Parser({ version });
     
     for (const [filename, queryList] of Object.entries(queries)) {
       console.log(`  Processing ${filename}...`);

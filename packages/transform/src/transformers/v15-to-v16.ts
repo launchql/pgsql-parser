@@ -36,14 +36,8 @@ export class V15ToV16Transformer {
   visit(node: PG15.Node, context: TransformerContext = { parentNodeTypes: [] }): any {
     const nodeType = this.getNodeType(node);
 
-    // Handle empty objects - check if they should be transformed as Integer nodes
+    // Handle empty objects
     if (!nodeType) {
-      const parentTypes = context.parentNodeTypes || [];
-
-      if (parentTypes.includes('TypeName')) {
-        return this.Integer(node as any, context);
-      }
-
       return {};
     }
 
@@ -540,25 +534,6 @@ export class V15ToV16Transformer {
         delete result.val;
       } else if (val.Null !== undefined) {
         delete result.val;
-      }
-    }
-
-    if (result.ival !== undefined) {
-      const childContext: TransformerContext = {
-        ...context,
-        parentNodeTypes: [...(context.parentNodeTypes || []), 'A_Const']
-      };
-
-      // Handle empty Integer objects directly since transform() can't detect their type
-      if (typeof result.ival === 'object' && Object.keys(result.ival).length === 0) {
-        const parentTypes = childContext.parentNodeTypes || [];
-        
-        if (parentTypes.includes('TypeName') || 
-            (parentTypes.includes('DefineStmt') && !(context as any).defElemName)) {
-          result.ival = this.Integer(result.ival as any, childContext).Integer;
-        }
-      } else {
-        result.ival = this.transform(result.ival as any, childContext);
       }
     }
 
