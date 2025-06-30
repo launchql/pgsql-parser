@@ -1,5 +1,5 @@
-import * as V14Types from '../../14/types';
-import * as V17Types from '../../17/types';
+import * as PG14 from '../../14/types';
+import * as PG17 from '../../17/types';
 import { V14ToV15Transformer } from '../../transformers/v14-to-v15';
 import { V15ToV16Transformer } from '../../transformers/v15-to-v16';
 import { V16ToV17Transformer } from '../../transformers/v16-to-v17';
@@ -16,7 +16,7 @@ export class PG14ToPG17Transformer {
   /**
    * Transform a complete parse result from PG14 to PG17
    */
-  transform(parseResult: V14Types.ParseResult): V17Types.ParseResult {
+  transform(parseResult: PG14.ParseResult): PG17.ParseResult {
     if (!parseResult || !parseResult.stmts) {
       throw new Error('Invalid parse result');
     }
@@ -49,9 +49,3 @@ export class PG14ToPG17Transformer {
     return this.v16ToV17.transform(transformedStmt, { parentNodeTypes: [] });
   }
 }
-
-// Export the transformer instance for convenience
-export const pg14ToPg17Transformer = new PG14ToPG17Transformer();
-
-// Re-export types for convenience
-export { V14Types, V17Types };
