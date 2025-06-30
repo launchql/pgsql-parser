@@ -38,7 +38,8 @@
       "copy": "copyfiles -f ../../../../LICENSE README.md package.json dist",
       "clean": "rimraf dist",
       "prepare": "npm run build",
-      "build": "npm run clean && tsc && tsc -p tsconfig.esm.json && npm run copy"
+      "build": "npm run clean && tsc && tsc -p tsconfig.esm.json && npm run copy",
+      "publish:pkg": "npm publish --tag {{VERSION_TAG}}"
     },
     "publishConfig": {
       "access": "public",

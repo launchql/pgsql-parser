@@ -27,7 +27,8 @@
     "build:dev": "npm run clean && tsc --declarationMap && tsc -p tsconfig.esm.json && npm run copy",
     "lint": "eslint . --fix",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "publish:pkg": "npm publish --tag {{VERSION_TAG}}"
   },
   "keywords": [
     "sql",

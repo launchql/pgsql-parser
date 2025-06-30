@@ -38,6 +38,8 @@ function generatePackageJson(packageName: string, version: string, versionConfig
       [`@pgsql/types`]: `^${versionConfig.typesVersion}`
     }
   };
+
+  packageJson.scripts['publish:pkg'] = `npm publish --tag ${versionConfig.npmTag}`;
   
   return packageJson;
 }

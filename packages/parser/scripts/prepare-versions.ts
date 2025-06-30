@@ -48,6 +48,7 @@ pgVersions.forEach(pgVersion => {
     .replace(/{{VERSION}}/g, `${pgVersion}.0.0`)
     .replace(/{{LIBPG_QUERY_VERSION}}/g, libpgQueryVersion)
     .replace(/{{PGSQL_PARSER_VERSION}}/g, pgsqlParserVersion)
+    .replace(/{{VERSION_TAG}}/g, `v${pgVersion}`)
     .replace(/{{TYPES_VERSION}}/g, typesVersion);
 
   fs.writeFileSync(
