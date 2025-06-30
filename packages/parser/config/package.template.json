@@ -1,13 +1,13 @@
 {
   "name": "pgsql-parser",
-  "version": "17.7.2",
+  "version": "{{VERSION}}",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "The real PostgreSQL query parser",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
   "homepage": "https://github.com/launchql/pgsql-parser",
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "MIT",
   "publishConfig": {
     "access": "public",
     "directory": "dist"
@@ -20,15 +20,14 @@
     "url": "https://github.com/launchql/pgsql-parser/issues"
   },
   "scripts": {
-    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
+    "copy": "copyfiles -f ../../../../LICENSE README.md package.json dist",
     "clean": "rimraf dist",
     "prepare": "npm run build",
     "build": "npm run clean && tsc && tsc -p tsconfig.esm.json && npm run copy",
     "build:dev": "npm run clean && tsc --declarationMap && tsc -p tsconfig.esm.json && npm run copy",
     "lint": "eslint . --fix",
     "test": "jest",
-    "test:watch": "jest --watch",
-    "prepare-versions": "ts-node scripts/prepare-versions.ts"
+    "test:watch": "jest --watch"
   },
   "keywords": [
     "sql",
@@ -40,8 +39,8 @@
     "database"
   ],
   "dependencies": {
-    "@pgsql/types": "^17.6.1",
-    "libpg-query": "17.5.2",
-    "pgsql-deparser": "^17.8.1"
+    "@pgsql/types": "{{TYPES_VERSION}}",
+    "libpg-query": "{{LIBPG_QUERY_VERSION}}",
+    "pgsql-deparser": "{{PGSQL_PARSER_VERSION}}"
   }
 }
