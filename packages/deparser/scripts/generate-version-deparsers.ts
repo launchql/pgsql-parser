@@ -18,22 +18,22 @@ const versionConfigs: VersionConfig[] = [
   {
     version: 13,
     directTransformerClass: 'PG13ToPG17Transformer',
-    directTransformerFile: './v13-to-v17'
+    directTransformerFile: './v13-to-v17-direct'
   },
   {
     version: 14,
     directTransformerClass: 'PG14ToPG17Transformer',
-    directTransformerFile: './v14-to-v17'
+    directTransformerFile: './v14-to-v17-direct'
   },
   {
     version: 15,
     directTransformerClass: 'PG15ToPG17Transformer',
-    directTransformerFile: './v15-to-v17'
+    directTransformerFile: './v15-to-v17-direct'
   },
   {
     version: 16,
     directTransformerClass: 'PG16ToPG17Transformer',
-    directTransformerFile: './v16-to-v17'
+    directTransformerFile: './v16-to-v17-direct'
   }
 ];
 
@@ -76,16 +76,22 @@ function updateVersionDirectory(config: VersionConfig): void {
     return;
   }
 
+  // Create src directory if it doesn't exist
+  const srcDir = path.join(versionDir, 'src');
+  if (!fs.existsSync(srcDir)) {
+    fs.mkdirSync(srcDir, { recursive: true });
+  }
+
   // Remove old index.js if it exists
-  const oldIndexPath = path.join(versionDir, 'index.js');
+  const oldIndexPath = path.join(srcDir, 'index.js');
   if (fs.existsSync(oldIndexPath)) {
     fs.unlinkSync(oldIndexPath);
     console.log(`  ✓ Removed old index.js`);
   }
 
-  // Generate new index.ts
+  // Generate new index.ts in src directory
   const indexContent = generateDeparserIndex(config);
-  const indexPath = path.join(versionDir, 'index.ts');
+  const indexPath = path.join(srcDir, 'index.ts');
   fs.writeFileSync(indexPath, indexContent);
   console.log(`  ✓ Created index.ts with deparser functionality`);
 }

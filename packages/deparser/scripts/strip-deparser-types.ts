@@ -258,7 +258,7 @@ function copyDeparserToVersions(): void {
   for (const version of VERSIONS) {
     console.log(`Processing version ${version}...`);
     
-    const versionDeparserDir = path.join(VERSIONS_DIR, version.toString(), 'deparser');
+    const versionDeparserDir = path.join(VERSIONS_DIR, version.toString(), 'src', 'deparser');
     
     // Create deparser directory
     if (!fs.existsSync(versionDeparserDir)) {

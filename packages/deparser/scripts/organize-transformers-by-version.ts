@@ -90,19 +90,29 @@ function organizeByVersion(): void {
 
   for (const mapping of versionMappings) {
     const versionDir = path.join(VERSIONS_DIR, mapping.sourceVersion.toString());
+    const srcDir = path.join(versionDir, 'src');
     
-    // Create version directory
-    if (!fs.existsSync(versionDir)) {
-      fs.mkdirSync(versionDir, { recursive: true });
+    // Create version directory and src subdirectory
+    if (!fs.existsSync(srcDir)) {
+      fs.mkdirSync(srcDir, { recursive: true });
     }
 
     console.log(`Processing version ${mapping.sourceVersion}...`);
 
-    // Copy transformers
+    // Copy transformers to src directory
     for (const transformer of mapping.transformers) {
       const sourcePath = path.join(VERSIONS_DIR, transformer.fileName);
-      const destFileName = path.basename(transformer.fileName);
-      const destPath = path.join(versionDir, destFileName);
+      let destFileName = path.basename(transformer.fileName);
+      
+      // Rename direct transformers to avoid conflicts
+      if (transformer.fileName.startsWith('direct/')) {
+        const match = destFileName.match(/v(\d+)-to-v(\d+)\.ts/);
+        if (match) {
+          destFileName = `v${match[1]}-to-v${match[2]}-direct.ts`;
+        }
+      }
+      
+      const destPath = path.join(srcDir, destFileName);
 
       if (fs.existsSync(sourcePath)) {
         copyTransformer(sourcePath, destPath);
@@ -112,12 +122,12 @@ function organizeByVersion(): void {
       }
     }
 
-    // Create index file
+    // Create index file in src directory
     const indexContent = createIndexFile(mapping.sourceVersion, mapping.transformers);
-    fs.writeFileSync(path.join(versionDir, 'index.js'), indexContent);
+    fs.writeFileSync(path.join(srcDir, 'index.js'), indexContent);
     console.log(`  ✓ Created index.js`);
 
-    // Create README
+    // Create README in version directory (not in src)
     copyReadme(versionDir);
     console.log(`  ✓ Created README.md`);
 
@@ -128,11 +138,11 @@ function organizeByVersion(): void {
   console.log('Copying dependency transformers...');
   
   // v14 needs v14-to-v15 for its direct transformer
-  const v14Dir = path.join(VERSIONS_DIR, '14');
+  const v14SrcDir = path.join(VERSIONS_DIR, '14', 'src');
   if (fs.existsSync(path.join(VERSIONS_DIR, 'v14-to-v15.ts'))) {
     copyTransformer(
       path.join(VERSIONS_DIR, 'v14-to-v15.ts'),
-      path.join(v14Dir, 'v14-to-v15.ts')
+      path.join(v14SrcDir, 'v14-to-v15.ts')
     );
     console.log('  ✓ Copied v14-to-v15.ts to v14 directory (dependency)');
   }
@@ -141,7 +151,7 @@ function organizeByVersion(): void {
   if (fs.existsSync(path.join(VERSIONS_DIR, 'v15-to-v16.ts'))) {
     copyTransformer(
       path.join(VERSIONS_DIR, 'v15-to-v16.ts'),
-      path.join(v14Dir, 'v15-to-v16.ts')
+      path.join(v14SrcDir, 'v15-to-v16.ts')
     );
     console.log('  ✓ Copied v15-to-v16.ts to v14 directory (dependency)');
   }
@@ -149,32 +159,32 @@ function organizeByVersion(): void {
   if (fs.existsSync(path.join(VERSIONS_DIR, 'v16-to-v17.ts'))) {
     copyTransformer(
       path.join(VERSIONS_DIR, 'v16-to-v17.ts'),
-      path.join(v14Dir, 'v16-to-v17.ts')
+      path.join(v14SrcDir, 'v16-to-v17.ts')
     );
     console.log('  ✓ Copied v16-to-v17.ts to v14 directory (dependency)');
   }
 
   // v13 needs all transformers for its direct transformer
-  const v13Dir = path.join(VERSIONS_DIR, '13');
+  const v13SrcDir = path.join(VERSIONS_DIR, '13', 'src');
   const v13Dependencies = ['v13-to-v14.ts', 'v14-to-v15.ts', 'v15-to-v16.ts', 'v16-to-v17.ts'];
   for (const dep of v13Dependencies) {
     if (fs.existsSync(path.join(VERSIONS_DIR, dep))) {
       copyTransformer(
         path.join(VERSIONS_DIR, dep),
-        path.join(v13Dir, dep)
+        path.join(v13SrcDir, dep)
       );
       console.log(`  ✓ Copied ${dep} to v13 directory (dependency)`);
     }
   }
 
   // v15 needs v15-to-v16 and v16-to-v17 for its direct transformer
-  const v15Dir = path.join(VERSIONS_DIR, '15');
+  const v15SrcDir = path.join(VERSIONS_DIR, '15', 'src');
   const v15Dependencies = ['v15-to-v16.ts', 'v16-to-v17.ts'];
   for (const dep of v15Dependencies) {
     if (fs.existsSync(path.join(VERSIONS_DIR, dep))) {
       copyTransformer(
         path.join(VERSIONS_DIR, dep),
-        path.join(v15Dir, dep)
+        path.join(v15SrcDir, dep)
       );
       console.log(`  ✓ Copied ${dep} to v15 directory (dependency)`);
     }
