@@ -4,11 +4,11 @@ import { readFileSync } from 'fs';
 import * as path from 'path';
 import { expect } from '@jest/globals';
 import { diff } from 'jest-diff';
-const parser13 = new Parser({ version: 13 });
-const parser14 = new Parser({ version: 14 });
-const parser15 = new Parser({ version: 15 });
-const parser16 = new Parser({ version: 16 });
-const parser17 = new Parser({ version: 17 });
+const parser13 = new Parser(13);
+const parser14 = new Parser(14);
+const parser15 = new Parser(15);
+const parser16 = new Parser(16);
+const parser17 = new Parser(17);
 
 import { ASTTransformer } from '../src/transformer';
 
