@@ -212,3 +212,20 @@ SELECT
     ELSE 'normal'
   END AS tier
 FROM players;
+
+-- 14. A trigger
+
+CREATE TRIGGER decrease_job_queue_count_on_delete 
+ AFTER DELETE ON dashboard_jobs.jobs 
+ FOR EACH ROW
+ WHEN ( OLD.queue_name IS NOT NULL ) 
+ EXECUTE PROCEDURE dashboard_jobs.tg_decrease_job_queue_count ();
+
+-- 15. default privileges
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA dashboard_jobs 
+ GRANT EXECUTE ON FUNCTIONS  TO administrator;
+
+-- 16. grant execute on function
+
+GRANT EXECUTE ON FUNCTION dashboard_private.uuid_generate_seeded_uuid TO PUBLIC;

@@ -20,3 +20,9 @@ CREATE POLICY complex_policy ON documents
   );
 
 CREATE POLICY simple_policy ON posts FOR SELECT TO public USING (published = true);
+
+CREATE POLICY "simple_policy" ON posts FOR SELECT TO public USING (published = true);
+
+CREATE POLICY "Simple Policy" ON posts FOR SELECT TO public USING (published = true);
+
+CREATE POLICY SimplePolicy ON posts FOR SELECT TO public USING (published = true);

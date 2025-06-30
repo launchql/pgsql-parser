@@ -1,6 +1,6 @@
 {
   "name": "pgsql-parser",
-  "version": "17.7.2",
+  "version": "17.7.5",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "The real PostgreSQL query parser",
   "main": "index.js",
@@ -27,7 +27,8 @@
     "build:dev": "npm run clean && tsc --declarationMap && tsc -p tsconfig.esm.json && npm run copy",
     "lint": "eslint . --fix",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "test:ast": "ts-node scripts/test-ast.ts"
   },
   "keywords": [
     "sql",
@@ -40,7 +41,7 @@
   ],
   "dependencies": {
     "@pgsql/types": "^17.6.1",
-    "libpg-query": "17.5.2",
-    "pgsql-deparser": "^17.8.1"
+    "libpg-query": "17.5.5",
+    "pgsql-deparser": "^17.8.3"
   }
 }

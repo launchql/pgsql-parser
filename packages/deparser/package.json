@@ -1,6 +1,6 @@
 {
   "name": "pgsql-deparser",
-  "version": "17.8.1",
+  "version": "17.8.3",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostgreSQL AST Deparser",
   "main": "index.js",
@@ -46,7 +46,7 @@
     "database"
   ],
   "devDependencies": {
-    "libpg-query": "17.5.2"
+    "libpg-query": "17.5.5"
   },
   "dependencies": {
     "@pgsql/types": "^17.6.1"

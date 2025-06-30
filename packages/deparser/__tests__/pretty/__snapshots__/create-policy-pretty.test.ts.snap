@@ -1,18 +1,32 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Pretty CREATE POLICY formatting should format basic CREATE POLICY with pretty option enabled 1`] = `
-"CREATE POLICY "user_policy"
+exports[`non-pretty: pretty/create_policy-1.sql 1`] = `"CREATE POLICY user_policy ON users AS PERMISSIVE FOR ALL TO authenticated_users USING (user_id = current_user_id())"`;
+
+exports[`non-pretty: pretty/create_policy-2.sql 1`] = `"CREATE POLICY admin_policy ON sensitive_data AS RESTRICTIVE FOR SELECT TO admin_role USING (department = current_user_department()) WITH CHECK (approved = true)"`;
+
+exports[`non-pretty: pretty/create_policy-3.sql 1`] = `"CREATE POLICY complex_policy ON documents AS PERMISSIVE FOR UPDATE TO document_editors USING (owner_id = current_user_id() OR (shared = true AND permissions @> '{"edit": true}')) WITH CHECK (status <> 'archived' AND last_modified > (now() - '1 day'::interval))"`;
+
+exports[`non-pretty: pretty/create_policy-4.sql 1`] = `"CREATE POLICY simple_policy ON posts AS PERMISSIVE FOR SELECT TO PUBLIC USING (published = true)"`;
+
+exports[`non-pretty: pretty/create_policy-5.sql 1`] = `"CREATE POLICY simple_policy ON posts AS PERMISSIVE FOR SELECT TO PUBLIC USING (published = true)"`;
+
+exports[`non-pretty: pretty/create_policy-6.sql 1`] = `"CREATE POLICY "Simple Policy" ON posts AS PERMISSIVE FOR SELECT TO PUBLIC USING (published = true)"`;
+
+exports[`non-pretty: pretty/create_policy-7.sql 1`] = `"CREATE POLICY simplepolicy ON posts AS PERMISSIVE FOR SELECT TO PUBLIC USING (published = true)"`;
+
+exports[`pretty: pretty/create_policy-1.sql 1`] = `
+"CREATE POLICY user_policy
   ON users
   AS PERMISSIVE
   FOR ALL
   TO authenticated_users
   USING (
     user_id = current_user_id()
-  );"
+  )"
 `;
 
-exports[`Pretty CREATE POLICY formatting should format complex CREATE POLICY with pretty option enabled 1`] = `
-"CREATE POLICY "admin_policy"
+exports[`pretty: pretty/create_policy-2.sql 1`] = `
+"CREATE POLICY admin_policy
   ON sensitive_data
   AS RESTRICTIVE
   FOR SELECT
@@ -22,52 +36,66 @@ exports[`Pretty CREATE POLICY formatting should format complex CREATE POLICY wit
   )
   WITH CHECK (
     approved = true
-  );"
+  )"
 `;
 
-exports[`Pretty CREATE POLICY formatting should format simple CREATE POLICY with pretty option enabled 1`] = `
-"CREATE POLICY "simple_policy"
+exports[`pretty: pretty/create_policy-3.sql 1`] = `
+"CREATE POLICY complex_policy
+  ON documents
+  AS PERMISSIVE
+  FOR UPDATE
+  TO document_editors
+  USING (
+    owner_id = current_user_id()
+      OR (shared = true
+      AND permissions @> '{"edit": true}')
+  )
+  WITH CHECK (
+    status <> 'archived'
+      AND last_modified > (now() - '1 day'::interval)
+  )"
+`;
+
+exports[`pretty: pretty/create_policy-4.sql 1`] = `
+"CREATE POLICY simple_policy
   ON posts
   AS PERMISSIVE
   FOR SELECT
-  TO public
+  TO PUBLIC
   USING (
     published = true
-  );"
+  )"
 `;
 
-exports[`Pretty CREATE POLICY formatting should format very complex CREATE POLICY with pretty option enabled 1`] = `
-"CREATE POLICY "complex_policy"
-  ON sensitive_data
-  AS RESTRICTIVE
+exports[`pretty: pretty/create_policy-5.sql 1`] = `
+"CREATE POLICY simple_policy
+  ON posts
+  AS PERMISSIVE
   FOR SELECT
-  TO admin_role
+  TO PUBLIC
   USING (
-    department = current_user_department()
-      AND EXISTS (SELECT
-      1
-    FROM user_permissions
-    WHERE
-      (user_id = current_user_id()
-      AND permission = 'read_sensitive'))
-  )
-  WITH CHECK (
-    approved = true
-      AND created_by = current_user_id()
-  );"
+    published = true
+  )"
 `;
 
-exports[`Pretty CREATE POLICY formatting should maintain single-line format for complex policy when pretty disabled 1`] = `"CREATE POLICY "admin_policy" ON sensitive_data AS RESTRICTIVE FOR SELECT TO admin_role USING (department = current_user_department()) WITH CHECK (approved = true);"`;
+exports[`pretty: pretty/create_policy-6.sql 1`] = `
+"CREATE POLICY "Simple Policy"
+  ON posts
+  AS PERMISSIVE
+  FOR SELECT
+  TO PUBLIC
+  USING (
+    published = true
+  )"
+`;
 
-exports[`Pretty CREATE POLICY formatting should maintain single-line format when pretty option disabled 1`] = `"CREATE POLICY "user_policy" ON users AS PERMISSIVE FOR ALL TO authenticated_users USING (user_id = current_user_id());"`;
-
-exports[`Pretty CREATE POLICY formatting should use custom newline and tab characters in pretty mode 1`] = `
-"CREATE POLICY "user_policy"
-    ON users
-    AS PERMISSIVE
-    FOR ALL
-    TO authenticated_users
-    USING (
-        user_id = current_user_id()
-    );"
+exports[`pretty: pretty/create_policy-7.sql 1`] = `
+"CREATE POLICY simplepolicy
+  ON posts
+  AS PERMISSIVE
+  FOR SELECT
+  TO PUBLIC
+  USING (
+    published = true
+  )"
 `;

@@ -1,0 +1,224 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`non-pretty: pretty/casing-1.sql 1`] = `"INSERT INTO users (name) VALUES ('John Doe')"`;
+
+exports[`non-pretty: pretty/casing-2.sql 1`] = `"INSERT INTO users (name) VALUES ('ADMINISTRATOR')"`;
+
+exports[`non-pretty: pretty/casing-3.sql 1`] = `"INSERT INTO users (name) VALUES ('lowercase')"`;
+
+exports[`non-pretty: pretty/casing-4.sql 1`] = `"INSERT INTO users (name) VALUES ('camelCaseString')"`;
+
+exports[`non-pretty: pretty/casing-5.sql 1`] = `"INSERT INTO users (name) VALUES ('snake_case_string')"`;
+
+exports[`non-pretty: pretty/casing-6.sql 1`] = `"INSERT INTO users (name) VALUES ('kebab-case-value')"`;
+
+exports[`non-pretty: pretty/casing-7.sql 1`] = `"INSERT INTO data.snapshots (metadata) VALUES ('{"Type": "Full", "Status": "OK"}')"`;
+
+exports[`non-pretty: pretty/casing-8.sql 1`] = `"INSERT INTO "AppSchema"."User Data" ("Full Name") VALUES ('Jane Smith')"`;
+
+exports[`non-pretty: pretty/casing-9.sql 1`] = `"INSERT INTO logtable (message) VALUES ('Init'), ('Reboot'), ('ERROR'), ('Warning'), ('info')"`;
+
+exports[`non-pretty: pretty/casing-10.sql 1`] = `"INSERT INTO metrics.logs (message) VALUES ('NOW()')"`;
+
+exports[`non-pretty: pretty/casing-11.sql 1`] = `"INSERT INTO users (name) VALUES ('SELECT')"`;
+
+exports[`non-pretty: pretty/casing-12.sql 1`] = `"INSERT INTO users (name) VALUES ('john_doe@example.com')"`;
+
+exports[`non-pretty: pretty/casing-13.sql 1`] = `"SELECT 'MixedCase'"`;
+
+exports[`non-pretty: pretty/casing-14.sql 1`] = `"SELECT 'UPPERCASE'"`;
+
+exports[`non-pretty: pretty/casing-15.sql 1`] = `"SELECT 'lowercase'"`;
+
+exports[`non-pretty: pretty/casing-16.sql 1`] = `"SELECT 'camelCase'"`;
+
+exports[`non-pretty: pretty/casing-17.sql 1`] = `"SELECT 'snake_case'"`;
+
+exports[`non-pretty: pretty/casing-18.sql 1`] = `"SELECT 'kebab-case'"`;
+
+exports[`non-pretty: pretty/casing-19.sql 1`] = `"SELECT 'SELECT * FROM users'"`;
+
+exports[`non-pretty: pretty/casing-20.sql 1`] = `"SELECT 'sum(a + b)'"`;
+
+exports[`non-pretty: pretty/casing-21.sql 1`] = `"SELECT name AS "UserLabel" FROM users"`;
+
+exports[`non-pretty: pretty/casing-22.sql 1`] = `"SELECT * FROM users WHERE name = 'camelCaseString'"`;
+
+exports[`non-pretty: pretty/casing-23.sql 1`] = `"SELECT * FROM users WHERE name = 'lowercase'"`;
+
+exports[`non-pretty: pretty/casing-24.sql 1`] = `"SELECT * FROM users WHERE name = 'ADMINISTRATOR'"`;
+
+exports[`non-pretty: pretty/casing-25.sql 1`] = `"SELECT * FROM logs WHERE message LIKE 'Warn%'"`;
+
+exports[`non-pretty: pretty/casing-26.sql 1`] = `"SELECT * FROM alerts WHERE level IN ('Low', 'MEDIUM', 'High', 'CRITICAL')"`;
+
+exports[`non-pretty: pretty/casing-27.sql 1`] = `"SELECT 'It''s working'"`;
+
+exports[`non-pretty: pretty/casing-28.sql 1`] = `"SELECT E'Line1\\\\nLine2'"`;
+
+exports[`non-pretty: pretty/casing-29.sql 1`] = `"SELECT 'Status: ✅'"`;
+
+exports[`non-pretty: pretty/casing-30.sql 1`] = `"SELECT 'ALERT' AS "Level""`;
+
+exports[`non-pretty: pretty/casing-31.sql 1`] = `"SELECT "HandleInsert"('TYPE_A', 'Region-1')"`;
+
+exports[`non-pretty: pretty/casing-32.sql 1`] = `"SELECT * FROM "dataPoints""`;
+
+exports[`pretty: pretty/casing-1.sql 1`] = `
+"INSERT INTO users (
+  name
+) VALUES
+  ('John Doe')"
+`;
+
+exports[`pretty: pretty/casing-2.sql 1`] = `
+"INSERT INTO users (
+  name
+) VALUES
+  ('ADMINISTRATOR')"
+`;
+
+exports[`pretty: pretty/casing-3.sql 1`] = `
+"INSERT INTO users (
+  name
+) VALUES
+  ('lowercase')"
+`;
+
+exports[`pretty: pretty/casing-4.sql 1`] = `
+"INSERT INTO users (
+  name
+) VALUES
+  ('camelCaseString')"
+`;
+
+exports[`pretty: pretty/casing-5.sql 1`] = `
+"INSERT INTO users (
+  name
+) VALUES
+  ('snake_case_string')"
+`;
+
+exports[`pretty: pretty/casing-6.sql 1`] = `
+"INSERT INTO users (
+  name
+) VALUES
+  ('kebab-case-value')"
+`;
+
+exports[`pretty: pretty/casing-7.sql 1`] = `
+"INSERT INTO data.snapshots (
+  metadata
+) VALUES
+  ('{"Type": "Full", "Status": "OK"}')"
+`;
+
+exports[`pretty: pretty/casing-8.sql 1`] = `
+"INSERT INTO "AppSchema"."User Data" (
+  "Full Name"
+) VALUES
+  ('Jane Smith')"
+`;
+
+exports[`pretty: pretty/casing-9.sql 1`] = `
+"INSERT INTO logtable (
+  message
+) VALUES
+  ('Init'),
+  ('Reboot'),
+  ('ERROR'),
+  ('Warning'),
+  ('info')"
+`;
+
+exports[`pretty: pretty/casing-10.sql 1`] = `
+"INSERT INTO metrics.logs (
+  message
+) VALUES
+  ('NOW()')"
+`;
+
+exports[`pretty: pretty/casing-11.sql 1`] = `
+"INSERT INTO users (
+  name
+) VALUES
+  ('SELECT')"
+`;
+
+exports[`pretty: pretty/casing-12.sql 1`] = `
+"INSERT INTO users (
+  name
+) VALUES
+  ('john_doe@example.com')"
+`;
+
+exports[`pretty: pretty/casing-13.sql 1`] = `"SELECT 'MixedCase'"`;
+
+exports[`pretty: pretty/casing-14.sql 1`] = `"SELECT 'UPPERCASE'"`;
+
+exports[`pretty: pretty/casing-15.sql 1`] = `"SELECT 'lowercase'"`;
+
+exports[`pretty: pretty/casing-16.sql 1`] = `"SELECT 'camelCase'"`;
+
+exports[`pretty: pretty/casing-17.sql 1`] = `"SELECT 'snake_case'"`;
+
+exports[`pretty: pretty/casing-18.sql 1`] = `"SELECT 'kebab-case'"`;
+
+exports[`pretty: pretty/casing-19.sql 1`] = `"SELECT 'SELECT * FROM users'"`;
+
+exports[`pretty: pretty/casing-20.sql 1`] = `"SELECT 'sum(a + b)'"`;
+
+exports[`pretty: pretty/casing-21.sql 1`] = `
+"SELECT name AS "UserLabel"
+FROM users"
+`;
+
+exports[`pretty: pretty/casing-22.sql 1`] = `
+"SELECT *
+FROM users
+WHERE
+  name = 'camelCaseString'"
+`;
+
+exports[`pretty: pretty/casing-23.sql 1`] = `
+"SELECT *
+FROM users
+WHERE
+  name = 'lowercase'"
+`;
+
+exports[`pretty: pretty/casing-24.sql 1`] = `
+"SELECT *
+FROM users
+WHERE
+  name = 'ADMINISTRATOR'"
+`;
+
+exports[`pretty: pretty/casing-25.sql 1`] = `
+"SELECT *
+FROM logs
+WHERE
+  message LIKE 'Warn%'"
+`;
+
+exports[`pretty: pretty/casing-26.sql 1`] = `
+"SELECT *
+FROM alerts
+WHERE
+  level IN ('Low', 'MEDIUM', 'High', 'CRITICAL')"
+`;
+
+exports[`pretty: pretty/casing-27.sql 1`] = `"SELECT 'It''s working'"`;
+
+exports[`pretty: pretty/casing-28.sql 1`] = `"SELECT E'Line1\\\\nLine2'"`;
+
+exports[`pretty: pretty/casing-29.sql 1`] = `"SELECT 'Status: ✅'"`;
+
+exports[`pretty: pretty/casing-30.sql 1`] = `"SELECT 'ALERT' AS "Level""`;
+
+exports[`pretty: pretty/casing-31.sql 1`] = `"SELECT "HandleInsert"('TYPE_A', 'Region-1')"`;
+
+exports[`pretty: pretty/casing-32.sql 1`] = `
+"SELECT *
+FROM "dataPoints""
+`;
