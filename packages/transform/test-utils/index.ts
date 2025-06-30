@@ -11,7 +11,7 @@ const parser15 = new Parser({ version: 15 });
 const parser16 = new Parser({ version: 16 });
 const parser17 = new Parser({ version: 17 });
 
-import { ASTTransformer } from '../src/transformer';
+import { ASTTransformer } from '../src/multi-version-transformer';
 
 /**
  * Get the appropriate parsers for version transformation

@@ -1,10 +1,9 @@
 import { Parser } from '@pgsql/parser';
 import { deparse } from 'pgsql-deparser';
 import { cleanTree } from './clean-tree';
-import { PG13ToPG17Transformer } from '../src/transformer';
+import { PG13ToPG17Transformer } from '../src/transformers-direct/v13-to-v17';
 import { readFileSync } from 'fs';
 import * as path from 'path';
-import { skipTests } from './skip-tests';
 import { expect } from '@jest/globals';
 
 /**

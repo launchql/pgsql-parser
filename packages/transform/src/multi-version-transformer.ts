@@ -1,6 +1,3 @@
-import { ParseResult } from './17/types';
-import * as V17Types from './17/types';
-import * as V13Types from './13/types';
 import { V13ToV14Transformer } from './transformers/v13-to-v14';
 import { V14ToV15Transformer } from './transformers/v14-to-v15';
 import { V15ToV16Transformer } from './transformers/v15-to-v16';
@@ -72,33 +69,5 @@ export class ASTTransformer {
 
   transform16To17(ast: any): any {
     return this.transform(ast, 16, 17);
-  }
-}
-
-/**
- * Composite transformer that handles the complete PG13 → PG17 transformation
- * including proper handling of parse result structure with stmts array
- */
-export class PG13ToPG17Transformer {
-  private astTransformer = new ASTTransformer();
-
-  transform(parseResult: V13Types.ParseResult): V17Types.ParseResult {
-    if (!parseResult || !parseResult.stmts) {
-      throw new Error('Invalid parse result');
-    }
-
-    const transformedStmts = parseResult.stmts.map((stmtWrapper: any) => {
-      if (stmtWrapper.stmt) {
-        const transformedStmt = this.astTransformer.transform13To17(stmtWrapper.stmt);
-        return { ...stmtWrapper, stmt: transformedStmt };
-      }
-      return stmtWrapper;
-    });
-
-    return {
-      ...parseResult,
-      version: 170004,
-      stmts: transformedStmts
-    };
   }
 }
