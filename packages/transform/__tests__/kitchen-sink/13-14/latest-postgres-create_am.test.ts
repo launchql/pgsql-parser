@@ -56,29 +56,29 @@ it('latest-postgres-create_am', async () => {
   "latest/postgres/create_am-50.sql",
   "latest/postgres/create_am-51.sql",
   "latest/postgres/create_am-52.sql",
-  // "latest/postgres/create_am-53.sql", // REMOVED: PG13 parser fails with "syntax error at or near 'ACCESS'"
+  "latest/postgres/create_am-53.sql",
   "latest/postgres/create_am-54.sql",
-  // "latest/postgres/create_am-55.sql", // REMOVED: PG13 parser fails with "syntax error at or near 'ACCESS'"
+  "latest/postgres/create_am-55.sql",
   "latest/postgres/create_am-56.sql",
-  // "latest/postgres/create_am-57.sql", // REMOVED: PG13 parser fails with "syntax error at or near 'ACCESS'"
+  "latest/postgres/create_am-57.sql",
   "latest/postgres/create_am-58.sql",
   "latest/postgres/create_am-59.sql",
   "latest/postgres/create_am-60.sql",
   "latest/postgres/create_am-61.sql",
-  // "latest/postgres/create_am-62.sql", // REMOVED: PG13 parser fails with "syntax error at or near 'ACCESS'"
+  "latest/postgres/create_am-62.sql",
   "latest/postgres/create_am-63.sql",
   "latest/postgres/create_am-64.sql",
-  // "latest/postgres/create_am-65.sql", // REMOVED: PG13 parser fails with "syntax error at or near 'ACCESS'"
+  "latest/postgres/create_am-65.sql",
   "latest/postgres/create_am-66.sql",
   "latest/postgres/create_am-67.sql",
   "latest/postgres/create_am-68.sql",
   "latest/postgres/create_am-69.sql",
-  // "latest/postgres/create_am-70.sql", // REMOVED: PG13 parser fails with "syntax error at or near 'ACCESS'"
+  "latest/postgres/create_am-70.sql",
   "latest/postgres/create_am-71.sql",
   "latest/postgres/create_am-72.sql",
-  // "latest/postgres/create_am-73.sql", // REMOVED: PG13 parser fails with "syntax error at or near 'ACCESS'"
-  // "latest/postgres/create_am-74.sql", // REMOVED: PG13 parser fails with "syntax error at or near 'ACCESS'"
-  // "latest/postgres/create_am-75.sql", // REMOVED: PG13 parser fails with "syntax error at or near 'ACCESS'"
+  "latest/postgres/create_am-73.sql",
+  "latest/postgres/create_am-74.sql",
+  "latest/postgres/create_am-75.sql",
   "latest/postgres/create_am-76.sql",
   "latest/postgres/create_am-77.sql",
   "latest/postgres/create_am-78.sql",
@@ -89,17 +89,17 @@ it('latest-postgres-create_am', async () => {
   "latest/postgres/create_am-83.sql",
   "latest/postgres/create_am-84.sql",
   "latest/postgres/create_am-85.sql",
-  // "latest/postgres/create_am-86.sql", // REMOVED: PG13 parser fails with "syntax error at or near 'ACCESS'"
+  "latest/postgres/create_am-86.sql",
   "latest/postgres/create_am-87.sql",
   "latest/postgres/create_am-88.sql",
   "latest/postgres/create_am-89.sql",
-  // "latest/postgres/create_am-90.sql", // REMOVED: PG13 parser fails with "syntax error at or near 'ACCESS'"
+  "latest/postgres/create_am-90.sql",
   "latest/postgres/create_am-91.sql",
   "latest/postgres/create_am-92.sql",
   "latest/postgres/create_am-93.sql",
-  // "latest/postgres/create_am-94.sql", // REMOVED: PG13 parser fails with "syntax error at or near 'ACCESS'"
+  "latest/postgres/create_am-94.sql",
   "latest/postgres/create_am-95.sql",
-  // "latest/postgres/create_am-96.sql", // REMOVED: PG13 parser fails with "syntax error at or near 'ACCESS'"
+  "latest/postgres/create_am-96.sql",
   "latest/postgres/create_am-97.sql",
   "latest/postgres/create_am-98.sql",
   "latest/postgres/create_am-99.sql",
@@ -107,15 +107,15 @@ it('latest-postgres-create_am', async () => {
   "latest/postgres/create_am-101.sql",
   "latest/postgres/create_am-102.sql",
   "latest/postgres/create_am-103.sql",
-  // "latest/postgres/create_am-104.sql", // REMOVED: PG13 parser fails with "syntax error at or near 'ACCESS'"
+  "latest/postgres/create_am-104.sql",
   "latest/postgres/create_am-105.sql",
-  // "latest/postgres/create_am-106.sql", // REMOVED: PG13 parser fails with "syntax error at or near 'ACCESS'"
+  "latest/postgres/create_am-106.sql",
   "latest/postgres/create_am-107.sql",
   "latest/postgres/create_am-108.sql",
-  // "latest/postgres/create_am-109.sql", // REMOVED: PG13 parser fails with "syntax error at or near 'ACCESS'"
+  "latest/postgres/create_am-109.sql",
   "latest/postgres/create_am-110.sql",
   "latest/postgres/create_am-111.sql",
-  // "latest/postgres/create_am-112.sql", // REMOVED: PG13 parser fails with "syntax error at or near 'ACCESS'"
+  "latest/postgres/create_am-112.sql",
   "latest/postgres/create_am-113.sql",
   "latest/postgres/create_am-114.sql",
   "latest/postgres/create_am-115.sql",
