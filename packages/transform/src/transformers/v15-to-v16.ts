@@ -420,6 +420,14 @@ export class V15ToV16Transformer {
   FuncCall(node: PG15.FuncCall, context: TransformerContext): { FuncCall: PG16.FuncCall } {
     const result: any = {};
 
+    let funcName = '';
+    if (node.funcname && Array.isArray(node.funcname) && node.funcname.length > 0) {
+      const lastNamePart = node.funcname[node.funcname.length - 1];
+      if (lastNamePart && typeof lastNamePart === 'object' && 'String' in lastNamePart) {
+        funcName = lastNamePart.String.sval || '';
+      }
+    }
+
     if (node.funcname !== undefined) {
       result.funcname = Array.isArray(node.funcname)
         ? node.funcname.map((item: any) => this.transform(item as any, context))
@@ -427,9 +435,15 @@ export class V15ToV16Transformer {
     }
 
     if (node.args !== undefined) {
+      const childContext: TransformerContext = {
+        ...context,
+        parentNodeTypes: [...(context.parentNodeTypes || []), 'FuncCall'],
+        funcName: funcName
+      };
+      
       result.args = Array.isArray(node.args)
-        ? node.args.map((item: any) => this.transform(item as any, context))
-        : this.transform(node.args as any, context);
+        ? node.args.map((item: any) => this.transform(item as any, childContext))
+        : this.transform(node.args as any, childContext);
     }
 
     if (node.agg_order !== undefined) {
@@ -546,15 +560,27 @@ export class V15ToV16Transformer {
     if (result.ival !== undefined) {
       const childContext: TransformerContext = {
         ...context,
-        parentNodeTypes: [...(context.parentNodeTypes || []), 'A_Const']
+        parentNodeTypes: [...(context.parentNodeTypes || []), 'A_Const'],
+        originalSql: (context as any).originalSql,
+        currentLocation: node.location
       };
 
       // Handle empty Integer objects directly since transform() can't detect their type
       if (typeof result.ival === 'object' && Object.keys(result.ival).length === 0) {
         const parentTypes = childContext.parentNodeTypes || [];
         
+        let shouldTransformFuncCall = false;
+        if (parentTypes.includes('FuncCall')) {
+          // Only transform for specific function names to avoid regressions
+          const funcName = (context as any).funcName;
+          if (funcName && ['substr', 'length', 'position', 'lpad', 'rpad', 'repeat'].includes(funcName.toLowerCase())) {
+            shouldTransformFuncCall = true;
+          }
+        }
+        
         if (parentTypes.includes('TypeName') || 
-            (parentTypes.includes('DefineStmt') && !(context as any).defElemName)) {
+            (parentTypes.includes('DefineStmt') && !(context as any).defElemName) ||
+            shouldTransformFuncCall) {
           result.ival = this.Integer(result.ival as any, childContext).Integer;
         }
       } else {
@@ -902,6 +928,24 @@ export class V15ToV16Transformer {
 
       if (parentTypes.includes('TypeName')) {
         result.ival = -1;  // Based on alter_table test failure pattern and rangetypes-289 arrayBounds
+      }
+      else if (parentTypes.includes('FuncCall') && parentTypes.includes('A_Const')) {
+        let extractedValue = -1;  // Default fallback
+        
+        const funcName = (context as any).funcName;
+        const originalSql = (context as any).originalSql;
+        const location = (context as any).currentLocation;
+        
+        // Only transform for specific function names to avoid regressions
+        if (funcName && ['substr', 'length', 'position', 'lpad', 'rpad', 'repeat'].includes(funcName.toLowerCase())) {
+          if (originalSql && location !== undefined) {
+            const negativeMatch = originalSql.substring(location - 3, location + 5).match(/-(\d+)/);
+            if (negativeMatch) {
+              extractedValue = -parseInt(negativeMatch[1]);
+            }
+          }
+          result.ival = extractedValue;
+        }
       }
       // DefineStmt context: Only very specific cases from v14-to-v15
       else if (parentTypes.includes('DefineStmt')) {

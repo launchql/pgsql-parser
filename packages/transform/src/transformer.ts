@@ -11,7 +11,7 @@ export class ASTTransformer {
     '16-17': new V16ToV17Transformer(),
   };
 
-  transform(ast: any, fromVersion: number, toVersion: number): any {
+  transform(ast: any, fromVersion: number, toVersion: number, additionalContext?: any): any {
     if (fromVersion === toVersion) {
       return ast;
     }
@@ -36,7 +36,11 @@ export class ASTTransformer {
           currentAst = this.transformers['14-15'].transform(currentAst, { parentNodeTypes: [] });
           break;
         case '15-16':
-          currentAst = this.transformers['15-16'].transform(currentAst, { parentNodeTypes: [] });
+          const context15to16 = { 
+            parentNodeTypes: [],
+            ...(arguments[3] || {}) // Pass through any additional context from the caller
+          };
+          currentAst = this.transformers['15-16'].transform(currentAst, context15to16);
           break;
         case '16-17':
           currentAst = this.transformers['16-17'].transform(currentAst, { parentNodeTypes: [] });
