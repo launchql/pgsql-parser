@@ -78,8 +78,9 @@ export async function expectTransformedAstToEqualParsedAst(
     astToTransform.stmts = astToTransform.stmts.map((stmtWrapper: any, index: number) => {
       if (stmtWrapper.stmt) {
         try {
-          // Transform the actual statement using the ASTTransformer
-          const transformedStmt = transformer.transform(stmtWrapper.stmt, versionPrevious, versionNext);
+          // Transform the actual statement using the ASTTransformer with SQL context
+          const contextWithSql = { originalSql: sql };
+          const transformedStmt = transformer.transform(stmtWrapper.stmt, versionPrevious, versionNext, contextWithSql);
           return { ...stmtWrapper, stmt: transformedStmt };
         } catch (error: any) {
           const errorMessage = [
