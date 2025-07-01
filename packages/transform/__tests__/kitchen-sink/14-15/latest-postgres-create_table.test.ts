@@ -44,6 +44,10 @@ it('latest-postgres-create_table', async () => {
   "latest/postgres/create_table-38.sql",
   "latest/postgres/create_table-39.sql",
   "latest/postgres/create_table-40.sql",
-  "latest/postgres/create_table-41.sql"
+  "latest/postgres/create_table-41.sql",
+  "latest/postgres/create_table-42.sql",
+  "latest/postgres/create_table-43.sql",
+  "latest/postgres/create_table-44.sql",
+  "latest/postgres/create_table-45.sql"
 ]);
 });
