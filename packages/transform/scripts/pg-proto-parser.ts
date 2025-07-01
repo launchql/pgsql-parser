@@ -15,7 +15,7 @@ for (const version of versions) {
       wrappedNodeTypeExport: true
     },
     enums: {
-      enabled: false,
+      enabled: true,
       enumsAsTypeUnion: true
     },
     utils: {
