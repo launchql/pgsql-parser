@@ -132,6 +132,7 @@ await deparse(stmt);
 | [**@pgsql/cli**](./packages/pgsql-cli) | Unified CLI for all PostgreSQL AST operations | • Parse SQL to AST<br>• Deparse AST to SQL<br>• Generate TypeScript from protobuf<br>• Single tool for all operations |
 | [**@pgsql/utils**](./packages/utils) | Type-safe AST node creation utilities | • Programmatic AST construction<br>• Runtime Schema<br>• Seamless integration with types |
 | [**pg-proto-parser**](./packages/proto-parser) | PostgreSQL protobuf parser and code generator | • Generate TypeScript interfaces from protobuf<br>• Create enum mappings and utilities<br>• AST helper generation |
+| [**@pgsql/transform**](./packages/transform) | Multi-version PostgreSQL AST transformer | • Transform ASTs between PostgreSQL versions (13→17)<br>• Single source of truth deparser pipeline<br>• Backward compatibility for legacy SQL |
 
 
 ## 🛠️ Development
@@ -216,6 +217,126 @@ const query: { SelectStmt: SelectStmt } = t.nodes.selectStmt({
 console.log(await deparse(query));
 // SELECT name, email FROM users WHERE age > 18
 ```
+
+## AST Transformation Between PostgreSQL Versions
+
+The `@pgsql/transform` package enables transformation of PostgreSQL ASTs between different PostgreSQL versions, providing a crucial component for building a single source of truth deparser that works with legacy SQL code.
+
+### Core Use Case
+
+The transform package serves as the backbone for maintaining backward compatibility in the deparser pipeline. It allows you to:
+
+- **Transform legacy ASTs**: Convert ASTs from older PostgreSQL versions (13, 14, 15, 16) to the latest version (17)
+- **Build unified deparsers**: Create a single deparser that can handle SQL from multiple PostgreSQL versions
+- **Maintain compatibility**: Support legacy codebases while leveraging the latest PostgreSQL parser features
+
+### Key Limitation
+
+The transform package only supports ASTs that derive from SQL parseable by PostgreSQL 17. This means:
+
+- ✅ **Supported**: SQL code from PG13-16 that is still valid in PG17
+- ❌ **Not supported**: Deprecated PG13 syntax that was removed in later versions
+- ❌ **Not supported**: SQL that cannot be parsed by the PG17 parser
+
+This limitation is by design - it ensures that all transformed ASTs can be reliably deparsed using the latest PostgreSQL grammar.
+
+### Installation
+
+```bash
+npm install @pgsql/transform
+```
+
+### Basic Usage
+
+#### Multi-Version Transformer
+
+```typescript
+import { ASTTransformer } from '@pgsql/transform';
+
+const transformer = new ASTTransformer();
+
+// Transform from any version to PG17
+const pg17Ast = transformer.transformToLatest(pg13Ast, 13);
+
+// Transform between specific versions
+const pg15Ast = transformer.transform(pg13Ast, 13, 15);
+
+// Convenience methods for common transformations
+const pg17FromPg13 = transformer.transform13To17(pg13Ast);
+const pg17FromPg14 = transformer.transform14To17(pg14Ast);
+```
+
+#### Direct Transformers
+
+For better performance when you know the source and target versions:
+
+```typescript
+import { 
+  PG13ToPG17Transformer,
+  PG14ToPG17Transformer,
+  PG15ToPG17Transformer,
+  PG16ToPG17Transformer 
+} from '@pgsql/transform';
+
+// Direct transformation from PG13 to PG17
+const pg13to17 = new PG13ToPG17Transformer();
+const pg17Ast = pg13to17.transform(pg13Ast);
+
+// Works with both individual nodes and ParseResult objects
+const transformedParseResult = pg13to17.transform(pg13ParseResult);
+```
+
+#### Integration with Parser and Deparser
+
+```typescript
+import { parse } from '@pgsql/parser'; // Multi-version parser
+import { deparse } from 'pgsql-deparser';
+import { PG13ToPG17Transformer } from '@pgsql/transform';
+
+// Parse with older PostgreSQL version
+const pg13Ast = await parse('SELECT * FROM users', { version: 13 });
+
+// Transform to latest version for deparser
+const transformer = new PG13ToPG17Transformer();
+const pg17Ast = transformer.transform(pg13Ast);
+
+// Deparse using latest grammar
+const sql = await deparse(pg17Ast);
+console.log(sql); // SELECT * FROM users
+```
+
+### Transformation Chain
+
+The package supports both incremental and direct transformations:
+
+**Incremental Chain**: PG13 → PG14 → PG15 → PG16 → PG17
+- Each step handles version-specific changes
+- Useful for debugging transformation issues
+- Allows intermediate version targeting
+
+**Direct Transformers**: PG13 → PG17, PG14 → PG17, etc.
+- Optimized single-step transformations
+- Better performance for common use cases
+- Internally chains the incremental transformers
+
+### Version Support
+
+| Source Version | Target Versions | Transformer Class |
+|----------------|-----------------|-------------------|
+| PostgreSQL 13  | 14, 15, 16, 17  | `V13ToV14Transformer`, `PG13ToPG17Transformer` |
+| PostgreSQL 14  | 15, 16, 17      | `V14ToV15Transformer`, `PG14ToPG17Transformer` |
+| PostgreSQL 15  | 16, 17          | `V15ToV16Transformer`, `PG15ToPG17Transformer` |
+| PostgreSQL 16  | 17              | `V16ToV17Transformer`, `PG16ToPG17Transformer` |
+
+### Architecture
+
+The transform package is designed to work seamlessly with the broader pgsql-parser ecosystem:
+
+1. **Parse** legacy SQL using version-specific parsers
+2. **Transform** the resulting AST to the latest version
+3. **Deparse** using the unified, latest-version deparser
+
+This architecture enables a single source of truth for SQL generation while maintaining support for legacy codebases.
 
 ## Related
 
