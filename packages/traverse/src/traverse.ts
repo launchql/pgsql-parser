@@ -1,8 +1,9 @@
 
 import type { Node, ParseResult } from '@pgsql/types';
-import { runtimeSchema } from '../../transform/src/17/runtime-schema';
+import type { FieldSpec, NodeSpec } from '@pgsql/transform';
+import { PG17RuntimeSchema as runtimeSchema } from '@pgsql/transform';
 
-const schemaMap = new Map(runtimeSchema.map(spec => [spec.name, spec]));
+const schemaMap = new Map<string, NodeSpec>(runtimeSchema.map((spec: NodeSpec) => [spec.name, spec]));
 
 export type NodeTag = keyof Node;
 
@@ -85,7 +86,9 @@ export function walk(
           const value = nodeData[key];
           if (Array.isArray(value)) {
             value.forEach((item, index) => {
-              walk(item, actualCallback, path, [...path.keyPath, key, index]);
+              if (typeof item === 'object' && item !== null) {
+                walk(item, actualCallback, path, [...path.keyPath, key, index]);
+              }
             });
           } else if (typeof value === 'object' && value !== null) {
             walk(value, actualCallback, path, [...path.keyPath, key]);

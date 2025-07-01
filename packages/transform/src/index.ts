@@ -23,3 +23,5 @@ export { PG15ToPG17Transformer } from './transformers-direct/v15-to-v17';
 export { PG16ToPG17Transformer } from './transformers-direct/v16-to-v17';
 
 export { PG13Node, PG14Node, PG15Node, PG16Node, PG17Node, PG13Types, PG14Types, PG15Types, PG16Types, PG17Types };
+
+export { runtimeSchema as PG17RuntimeSchema, FieldSpec, NodeSpec } from './17/runtime-schema';

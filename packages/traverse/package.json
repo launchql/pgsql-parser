@@ -30,7 +30,8 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@pgsql/types": "^17.6.1"
+    "@pgsql/types": "^17.6.1",
+    "@pgsql/transform": "^17.7.1"
   },
   "keywords": [
     "sql",
