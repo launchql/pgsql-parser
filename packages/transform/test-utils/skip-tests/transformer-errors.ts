@@ -1,13 +1,7 @@
-export type SkipTest = [
-    versionPrevious: number,
-    versionNext: number,
-    test: string,
-    reason: string
-];
+import { SkipTest } from "./types";
 
 export const transformerErrors: SkipTest[] = [
     [16, 17, "pretty/misc-5.sql", "16-17 transformer fails WITH clause TypeCast prefix issue: transformer adds pg_catalog prefix to JSON types when expected output has none"],
-    [16, 17, "misc/quotes_etc-26.sql", "16-17 Parser-level \v character escape sequence difference: PG16 parser outputs 'v' but PG17 parser outputs '\u000b' (vertical tab)"],
     [16, 17, "latest/postgres/create_am-96.sql", "16-17 transformer fails with 'syntax error at or near 'DEFAULT'"],
     [16, 17, "latest/postgres/create_am-74.sql", "16-17 transformer fails with 'syntax error at or near 'DEFAULT'"],
     [16, 17, "latest/postgres/create_am-65.sql", "16-17 transformer fails with 'syntax error at or near 'DEFAULT'"],
@@ -15,15 +9,8 @@ export const transformerErrors: SkipTest[] = [
     [16, 17, "latest/postgres/create_am-106.sql", "16-17 transformer fails with 'syntax error at or near 'DEFAULT'"],
 
     [15, 16, "original/upstream/json-102.sql", "15-16 transformer fails with function name transformation - adds pg_catalog schema qualification"],
-    
-
-    // [15, 16, "latest/postgres/create_index-85.sql", "15-16 transformer fails with missing nulls_not_distinct property"],
-    // [15, 16, "latest/postgres/create_index-83.sql", "15-16 transformer fails with missing nulls_not_distinct property"],
-    // [15, 16, "latest/postgres/create_index-72.sql", "15-16 transformer fails with missing nulls_not_distinct property"],
+    [15, 16, "latest/postgres/create_view-281.sql", "15-16 transformer fails with AST transformation mismatch"],
     [15, 16, "latest/postgres/create_index-326.sql", "15-16 transformer fails with syntax error at end of input"],
-    [15, 16, "latest/postgres/create_index-184.sql", "15-16 transformer fails with missing nulls_not_distinct property"],
-
-    [14, 15, "latest/postgres/create_index-345.sql", "AST transformation mismatch (extra \"num\": 1 field)"],
 
     [13, 14, "original/upstream/rangetypes-300.sql", "AST transformer bug - converts FUNC_PARAM_DEFAULT to FUNC_PARAM_IN for function parameters"],
     [13, 14, "original/upstream/rangetypes-294.sql", "AST transformer bug - converts FUNC_PARAM_DEFAULT to FUNC_PARAM_IN for function parameters"],
@@ -94,4 +81,4 @@ export const transformerErrors: SkipTest[] = [
     [13, 14, "latest/postgres/create_function_sql-91.sql", "AST transformer bug - converts FUNC_PARAM_DEFAULT to FUNC_PARAM_IN in CREATE FUNCTION statements with default parameter values"],
     [13, 14, "latest/postgres/create_function_sql-90.sql", "AST transformer bug - converts FUNC_PARAM_DEFAULT to FUNC_PARAM_IN in CREATE FUNCTION statements with default parameter values"],
     [13, 14, "latest/postgres/create_function_sql-115.sql", "AST transformer bug - incorrectly adds parameter names to objfuncargs in DROP FUNCTION statements"],
-];   
+];

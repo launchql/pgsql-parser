@@ -1,9 +1,4 @@
-export type SkipTest = [
-    versionPrevious: number,
-    versionNext: number,
-    test: string,
-    reason: string
-];
+import { SkipTest } from "./types";
 
 export const parserErrors: SkipTest[] = [
     [16, 17, "latest/postgres/create_am-62.sql", "16-17 parser fails with 'syntax error at or near 'DEFAULT'"],
