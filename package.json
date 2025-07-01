@@ -20,7 +20,8 @@
     "build:dev": "lerna run build:dev --stream; yarn symlink",
     "lint": "lerna run lint --parallel",
     "symlink": "symlink-workspace --logLevel error",
-    "postinstall": "yarn symlink"
+    "postinstall": "yarn symlink",
+    "bump-versions": "ts-node scripts/bump-versions.ts"
   },
   "devDependencies": {
     "@types/jest": "^29.5.11",
@@ -39,6 +40,7 @@
     "prettier": "^3.0.2",
     "rimraf": "4.4.1",
     "strip-ansi": "^6",
+    "semver": "^7.7.2",
     "symlink-workspace": "^1.10.0",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.2",

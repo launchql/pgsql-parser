@@ -33,7 +33,14 @@
     "fixtures:upstream-diff": "ts-node scripts/make-upstream-diff.ts",
     "lint": "eslint . --fix",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "strip-transformer-types": "ts-node scripts/strip-transformer-types.ts",
+    "strip-direct-transformer-types": "ts-node scripts/strip-direct-transformer-types.ts",
+    "strip-deparser-types": "ts-node scripts/strip-deparser-types.ts",
+    "organize-transformers": "ts-node scripts/organize-transformers-by-version.ts",
+    "generate-version-deparsers": "ts-node scripts/generate-version-deparsers.ts",
+    "generate-packages": "ts-node scripts/generate-version-packages.ts",
+    "prepare-versions": "npm run strip-transformer-types && npm run strip-direct-transformer-types && npm run strip-deparser-types && npm run organize-transformers && npm run generate-version-deparsers && npm run generate-packages"
   },
   "keywords": [
     "sql",

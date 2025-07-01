@@ -28,6 +28,7 @@
     "lint": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch",
+    "prepare-versions": "ts-node scripts/prepare-versions.ts",
     "test:ast": "ts-node scripts/test-ast.ts"
   },
   "keywords": [

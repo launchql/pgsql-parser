@@ -1,0 +1,42 @@
+{
+  "name": "pgsql-parser",
+  "version": "{{PGSQL_PARSER_VERSION}}",
+  "author": "Dan Lynch <pyramation@gmail.com>",
+  "description": "The real PostgreSQL query parser",
+  "main": "index.js",
+  "module": "esm/index.js",
+  "types": "index.d.ts",
+  "homepage": "https://github.com/launchql/pgsql-parser",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/launchql/pgsql-parser"
+  },
+  "bugs": {
+    "url": "https://github.com/launchql/pgsql-parser/issues"
+  },
+  "scripts": {
+    "copy": "copyfiles -f ../../../../LICENSE README.md package.json dist",
+    "clean": "rimraf dist",
+    "build": "npm run clean && tsc && tsc -p tsconfig.esm.json && npm run copy",
+    "publish:pkg": "npm publish --tag {{VERSION_TAG}}"
+  },
+  "keywords": [
+    "sql",
+    "postgres",
+    "postgresql",
+    "pg",
+    "parser",
+    "query",
+    "database"
+  ],
+  "dependencies": {
+    "@pgsql/types": "{{TYPES_VERSION}}",
+    "libpg-query": "{{LIBPG_QUERY_VERSION}}",
+    "pgsql-deparser": "{{PGSQL_DEPARSER_VERSION}}"
+  }
+}

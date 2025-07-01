@@ -5,8 +5,8 @@ import { sync as globSync } from 'glob';
 import { parse, deparse } from 'libpg-query';
 import { ParseResult, RawStmt } from '@pgsql/types';
 import { deparse as ourDeparse } from '../src';
-import { cleanTree } from '../src/utils';
-import { splitStatements, generateStatementKey } from '../src/utils/statement-splitter';
+import { cleanTree } from './clean-utils';
+import { splitStatements, generateStatementKey } from './statement-splitter';
 
 const FIXTURE_DIR = path.join(__dirname, '../../../__fixtures__/kitchen-sink');
 const OUT_DIR = path.join(__dirname, '../../../__fixtures__/generated');

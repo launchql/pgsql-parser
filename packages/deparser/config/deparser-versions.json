@@ -1,0 +1,39 @@
+{
+  "packageName": "pgsql-deparser",
+  "packageTemplate": {
+    "author": "Dan Lynch <pyramation@gmail.com>",
+    "homepage": "https://github.com/launchql/pgsql-parser",
+    "license": "MIT",
+    "main": "index.js",
+    "module": "esm/index.js",
+    "types": "index.d.ts",
+    "description": "PostgreSQL AST Deparser",
+    "scripts": {
+      "copy": "copyfiles -f ../../../../LICENSE README.md package.json dist",
+      "clean": "rimraf dist",
+      "build": "npm run clean && tsc && tsc -p tsconfig.esm.json && npm run copy",
+      "publish:pkg": "npm publish --tag {{VERSION_TAG}}"
+    },
+    "publishConfig": {
+      "access": "public",
+      "directory": "dist"
+    },
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/launchql/pgsql-parser"
+    },
+    "bugs": {
+      "url": "https://github.com/launchql/pgsql-parser/issues"
+    },
+    "keywords": [
+      "sql",
+      "postgres",
+      "postgresql",
+      "pg",
+      "query",
+      "ast",
+      "deparser",
+      "database"
+    ]
+  }
+}

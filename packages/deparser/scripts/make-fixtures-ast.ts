@@ -4,7 +4,7 @@ import * as fs from 'fs';
 import { sync as globSync } from 'glob';
 import { parse } from 'libpg-query';
 import { ParseResult, RawStmt } from '@pgsql/types';
-import { cleanTree } from '../src/utils';
+import { cleanTree } from './clean-utils';
 
 const FIXTURE_DIR = path.join(__dirname, '../../../__fixtures__/legacy');
 const OUT_DIR = path.join(__dirname, '../../../__fixtures__/generated/asts');

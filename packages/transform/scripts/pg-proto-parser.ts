@@ -1,7 +1,7 @@
 import { PgProtoParser, PgProtoParserOptions } from 'pg-proto-parser';
 import { resolve, join } from 'path';
 
-const versions = ['13', '17'];
+const versions = ['13', '14', '15', '16', '17'];
 const baseDir = resolve(join(__dirname, '../../../__fixtures__/proto'));
 
 for (const version of versions) {
@@ -17,6 +17,19 @@ for (const version of versions) {
     enums: {
       enabled: true,
       enumsAsTypeUnion: true
+    },
+    utils: {
+      enums: {
+        enabled: true,
+        unidirectional: true,
+        toIntFilename: 'enum-to-int.ts',
+        toStringFilename: 'enum-to-str.ts'
+      }
+    },
+    runtimeSchema: {
+      enabled: true,
+      filename: 'runtime-schema.ts',
+      format: 'typescript'
     }
   };
 

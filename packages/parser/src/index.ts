@@ -5,6 +5,6 @@ export {
 } from 'libpg-query';
 
 export {
-  deparse as deparse,
-  deparseSync as deparseSync,
+  deparse,
+  deparseSync
 } from 'pgsql-deparser';

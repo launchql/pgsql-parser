@@ -1,6 +1,6 @@
 import { parse } from 'libpg-query';
 import { deparseSync as deparse, DeparserOptions } from '../src';
-import { cleanTree } from '../src/utils';
+import { cleanTree } from '../scripts/clean-utils';
 import { readFileSync } from 'fs';
 import * as path from 'path';
 import { expect } from '@jest/globals';
