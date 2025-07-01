@@ -2744,7 +2744,12 @@ export class Deparser implements DeparserVisitor {
               }
               return this.visit(option, context);
             });
-          output.push(`(${optionStrs.join(' ')})`);
+          if (context.isPretty()) {
+            const indentedOptions = optionStrs.map(option => context.indent(option));
+            output.push('(\n' + indentedOptions.join('\n') + '\n)');
+          } else {
+            output.push(`(${optionStrs.join(' ')})`);
+          }
         }
         break;
       case 'CONSTR_PRIMARY':
@@ -4689,10 +4694,7 @@ export class Deparser implements DeparserVisitor {
         const commandsStr = commands
           .map(cmd => {
             const cmdStr = this.visit(cmd, alterContext);
-            if (cmdStr.startsWith('ADD CONSTRAINT') || cmdStr.startsWith('ADD ')) {
-              return context.newline() + context.indent(cmdStr);
-            }
-            return cmdStr;
+            return context.newline() + context.indent(cmdStr);
           })
           .join(',');
         output.push(commandsStr);
