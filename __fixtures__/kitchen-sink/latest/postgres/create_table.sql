@@ -126,3 +126,28 @@ CREATE TABLE mlvl_leaf PARTITION OF mlvl_sub FOR VALUES FROM (1) TO (10);
 DROP FUNCTION plusone(INT);
 DROP TYPE comp_type;
 DROP DOMAIN posint;
+
+-- generated columns  
+CREATE TABLE generated_cols (
+  a INT,
+  b INT GENERATED ALWAYS AS (a * 2) STORED
+);
+
+-- composite types
+CREATE TYPE comp_type AS (x INT, y TEXT);
+CREATE TABLE uses_comp (
+  id INT,
+  data comp_type
+);
+
+-- generated columns
+CREATE TABLE public.users (
+    user_id INTEGER GENERATED ALWAYS AS IDENTITY (
+        START WITH 1000
+        INCREMENT BY 5
+        CACHE 10
+    ),
+    username TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
