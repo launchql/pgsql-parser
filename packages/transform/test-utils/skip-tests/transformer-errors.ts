@@ -22,7 +22,7 @@ export const transformerErrors: SkipTest[] = [
     [15, 16, "latest/postgres/create_index-326.sql", "15-16 transformer fails with syntax error at end of input"],
     [15, 16, "latest/postgres/create_index-184.sql", "15-16 transformer fails with missing nulls_not_distinct property"],
 
-    [14, 15, "latest/postgres/create_index-345.sql", "AST transformation mismatch (extra \"num\": 1 field)"],
+    // [14, 15, "latest/postgres/create_index-345.sql", "AST transformation mismatch (extra \"num\": 1 field)"],
 
     [13, 14, "original/upstream/rangetypes-300.sql", "AST transformer bug - converts FUNC_PARAM_DEFAULT to FUNC_PARAM_IN for function parameters"],
     [13, 14, "original/upstream/rangetypes-294.sql", "AST transformer bug - converts FUNC_PARAM_DEFAULT to FUNC_PARAM_IN for function parameters"],
@@ -93,4 +93,4 @@ export const transformerErrors: SkipTest[] = [
     [13, 14, "latest/postgres/create_function_sql-91.sql", "AST transformer bug - converts FUNC_PARAM_DEFAULT to FUNC_PARAM_IN in CREATE FUNCTION statements with default parameter values"],
     [13, 14, "latest/postgres/create_function_sql-90.sql", "AST transformer bug - converts FUNC_PARAM_DEFAULT to FUNC_PARAM_IN in CREATE FUNCTION statements with default parameter values"],
     [13, 14, "latest/postgres/create_function_sql-115.sql", "AST transformer bug - incorrectly adds parameter names to objfuncargs in DROP FUNCTION statements"],
-]; 
+];  
