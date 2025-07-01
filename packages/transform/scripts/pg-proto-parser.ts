@@ -15,21 +15,16 @@ for (const version of versions) {
       wrappedNodeTypeExport: true
     },
     enums: {
-      enabled: true,
+      enabled: false,
       enumsAsTypeUnion: true
     },
     utils: {
       enums: {
-        enabled: true,
-        unidirectional: true,
-        toIntFilename: 'enum-to-int.ts',
-        toStringFilename: 'enum-to-str.ts'
+        enabled: false
       }
     },
     runtimeSchema: {
-      enabled: true,
-      filename: 'runtime-schema.ts',
-      format: 'typescript'
+      enabled: false
     }
   };
 
