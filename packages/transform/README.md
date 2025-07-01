@@ -14,7 +14,7 @@
 
 `@pgsql/transform` is a TypeScript library for transforming PostgreSQL ASTs between different PostgreSQL versions. It serves as a crucial component for building a single source of truth deparser that can handle SQL from multiple PostgreSQL versions while maintaining backward compatibility.
 
-## 🎯 Core Purpose
+## Transforming ASTs Between PG Versions
 
 The transform package enables you to:
 
@@ -22,7 +22,7 @@ The transform package enables you to:
 - **Build unified deparsers**: Create a single deparser pipeline that works with multiple PostgreSQL versions
 - **Maintain backward compatibility**: Support legacy codebases while leveraging the latest PostgreSQL features
 
-## ⚠️ Key Limitation
+## Key Limitation
 
 This package only supports ASTs derived from SQL that is parseable by PostgreSQL 17. This means:
 
@@ -32,7 +32,7 @@ This package only supports ASTs derived from SQL that is parseable by PostgreSQL
 
 This design ensures all transformed ASTs can be reliably deparsed using the latest PostgreSQL grammar.
 
-## 📦 Installation
+## Installation
 
 ```bash
 npm install @pgsql/transform
