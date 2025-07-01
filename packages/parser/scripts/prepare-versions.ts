@@ -1,9 +1,9 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-// Read the versions configuration
-const configPath = path.join(__dirname, '../config/parser-versions.json');
-const config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+// Read the versions configuration from root
+const rootConfigPath = path.join(__dirname, '../../../config/versions.json');
+const rootConfig = JSON.parse(fs.readFileSync(rootConfigPath, 'utf-8'));
 
 // Read the package.json template
 const templatePath = path.join(__dirname, '../config/package.template.json');
@@ -16,20 +16,22 @@ if (!fs.existsSync(versionsDir)) {
 }
 
 // Generate version-specific packages
-const pgVersions = Object.keys(config['libpg-query']);
+const pgVersions = Object.keys(rootConfig.versions);
 
 pgVersions.forEach(pgVersion => {
-  const libpgQueryVersion = config['libpg-query'][pgVersion];
-  const typesVersion = config['@pgsql/types'][pgVersion];
-  const npmTag = config['npmTag'][pgVersion];
-
-  // For pgsql-parser, we only have versions 13 and 17
-  let pgsqlParserVersion = config['pgsql-parser'][pgVersion];
-  if (!pgsqlParserVersion) {
-    // If specific version doesn't exist, skip this PG version
-    console.log(`Skipping PG${pgVersion} - no pgsql-parser version available`);
+  const versionInfo = rootConfig.versions[pgVersion];
+  
+  // Skip if no libpg-query or pgsql-parser version available
+  if (!versionInfo['libpg-query'] || !versionInfo['pgsql-parser']) {
+    console.log(`Skipping PG${pgVersion} - missing libpg-query or pgsql-parser version`);
     return;
   }
+  
+  const libpgQueryVersion = versionInfo['libpg-query'];
+  const pgsqlParserVersion = versionInfo['pgsql-parser'];
+  const pgsqlDeparserVersion = versionInfo['pgsql-deparser'];
+  const typesVersion = versionInfo['@pgsql/types'];
+  const npmTag = versionInfo['npmTag'];
 
   // Create version directory
   const versionDir = path.join(versionsDir, `${pgVersion}`);
@@ -45,11 +47,11 @@ pgVersions.forEach(pgVersion => {
 
   // Generate package.json
   const packageJson = packageTemplate
-    .replace(/{{VERSION}}/g, `${pgVersion}.0.0`)
     .replace(/{{LIBPG_QUERY_VERSION}}/g, libpgQueryVersion)
-    .replace(/{{PGSQL_PARSER_VERSION}}/g, pgsqlParserVersion)
     .replace(/{{VERSION_TAG}}/g, `${npmTag}`)
-    .replace(/{{TYPES_VERSION}}/g, typesVersion);
+    .replace(/{{TYPES_VERSION}}/g, typesVersion)
+    .replace(/{{PGSQL_DEPARSER_VERSION}}/g, pgsqlDeparserVersion)
+    .replace(/{{PGSQL_PARSER_VERSION}}/g, pgsqlParserVersion);
 
   fs.writeFileSync(
     path.join(versionDir, 'package.json'),

@@ -1,6 +1,6 @@
 {
   "name": "pgsql-parser",
-  "version": "{{VERSION}}",
+  "version": "{{PGSQL_PARSER_VERSION}}",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "The real PostgreSQL query parser",
   "main": "index.js",
@@ -22,12 +22,7 @@
   "scripts": {
     "copy": "copyfiles -f ../../../../LICENSE README.md package.json dist",
     "clean": "rimraf dist",
-    "prepare": "npm run build",
     "build": "npm run clean && tsc && tsc -p tsconfig.esm.json && npm run copy",
-    "build:dev": "npm run clean && tsc --declarationMap && tsc -p tsconfig.esm.json && npm run copy",
-    "lint": "eslint . --fix",
-    "test": "jest",
-    "test:watch": "jest --watch",
     "publish:pkg": "npm publish --tag {{VERSION_TAG}}"
   },
   "keywords": [
@@ -42,6 +37,6 @@
   "dependencies": {
     "@pgsql/types": "{{TYPES_VERSION}}",
     "libpg-query": "{{LIBPG_QUERY_VERSION}}",
-    "pgsql-deparser": "{{PGSQL_PARSER_VERSION}}"
+    "pgsql-deparser": "{{PGSQL_DEPARSER_VERSION}}"
   }
 }

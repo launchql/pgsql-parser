@@ -7,39 +7,52 @@ import * as path from 'path';
  */
 
 const VERSIONS_DIR = 'versions';
-const CONFIG_FILE = 'config/deparser-versions.json';
+const ROOT_CONFIG_FILE = '../../config/versions.json';
+const LOCAL_CONFIG_FILE = 'config/deparser-versions.json';
 
-interface VersionConfig {
-  deparserVersion: string;
-  typesVersion: string;
-  pgVersion: string;
+interface VersionInfo {
+  'libpg-query': string;
+  'pgsql-parser': string;
+  'pgsql-deparser': string | null;
+  '@pgsql/types': string;
   npmTag: string;
 }
 
-interface Config {
+interface RootConfig {
+  versions: Record<string, VersionInfo>;
+}
+
+interface LocalConfig {
   packageName: string;
-  versions: Record<string, VersionConfig>;
   packageTemplate: Record<string, any>;
 }
 
-function loadConfig(): Config {
-  const configPath = path.join(process.cwd(), CONFIG_FILE);
-  const configContent = fs.readFileSync(configPath, 'utf-8');
-  return JSON.parse(configContent);
+function loadConfigs(): { rootConfig: RootConfig; localConfig: LocalConfig } {
+  // Load root versions config
+  const rootConfigPath = path.join(__dirname, '..', ROOT_CONFIG_FILE);
+  const rootConfigContent = fs.readFileSync(rootConfigPath, 'utf-8');
+  const rootConfig: RootConfig = JSON.parse(rootConfigContent);
+  
+  // Load local package template config
+  const localConfigPath = path.join(process.cwd(), LOCAL_CONFIG_FILE);
+  const localConfigContent = fs.readFileSync(localConfigPath, 'utf-8');
+  const localConfig: LocalConfig = JSON.parse(localConfigContent);
+  
+  return { rootConfig, localConfig };
 }
 
-function generatePackageJson(packageName: string, version: string, versionConfig: VersionConfig, template: Record<string, any>): any {
+function generatePackageJson(packageName: string, pgVersion: string, versionInfo: VersionInfo, template: Record<string, any>): any {
   // Start with the template and override only the version-specific fields
   const packageJson: any = {
     ...template,
     name: packageName,
-    version: versionConfig.deparserVersion,
+    version: versionInfo['pgsql-deparser'],
     dependencies: {
-      [`@pgsql/types`]: `^${versionConfig.typesVersion}`
+      [`@pgsql/types`]: `^${versionInfo['@pgsql/types']}`
     }
   };
 
-  packageJson.scripts['publish:pkg'] = `npm publish --tag ${versionConfig.npmTag}`;
+  packageJson.scripts['publish:pkg'] = `npm publish --tag ${versionInfo.npmTag}`;
   
   return packageJson;
 }
@@ -80,12 +93,18 @@ function generateTsConfigEsm(): any {
 function generateVersionPackages(): void {
   console.log('Generating package.json files for each version...\n');
   
-  const config = loadConfig();
+  const { rootConfig, localConfig } = loadConfigs();
   
-  for (const [version, versionConfig] of Object.entries(config.versions)) {
-    console.log(`Processing version ${version}...`);
+  for (const [pgVersion, versionInfo] of Object.entries(rootConfig.versions)) {
+    // Skip versions that don't have pgsql-deparser
+    if (!versionInfo['pgsql-deparser']) {
+      console.log(`Skipping PG${pgVersion} - no pgsql-deparser version available`);
+      continue;
+    }
     
-    const versionDir = path.join(VERSIONS_DIR, version);
+    console.log(`Processing version ${pgVersion}...`);
+    
+    const versionDir = path.join(VERSIONS_DIR, pgVersion);
     
     if (!fs.existsSync(versionDir)) {
       console.error(`  ✗ Version directory ${versionDir} does not exist!`);
@@ -93,7 +112,7 @@ function generateVersionPackages(): void {
     }
     
     // Generate package.json
-    const packageJson = generatePackageJson(config.packageName, version, versionConfig, config.packageTemplate);
+    const packageJson = generatePackageJson(localConfig.packageName, pgVersion, versionInfo, localConfig.packageTemplate);
     const packageJsonPath = path.join(versionDir, 'package.json');
     fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
     console.log(`  ✓ Created package.json`);

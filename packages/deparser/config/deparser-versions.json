@@ -1,31 +1,5 @@
 {
   "packageName": "pgsql-deparser",
-  "versions": {
-    "13": {
-      "deparserVersion": "13.17.0",
-      "typesVersion": "13.11.1",
-      "pgVersion": "13",
-      "npmTag": "pg13"
-    },
-    "14": {
-      "deparserVersion": "14.0.0",
-      "typesVersion": "14.1.1",
-      "pgVersion": "14",
-      "npmTag": "pg14"
-    },
-    "15": {
-      "deparserVersion": "15.0.0",
-      "typesVersion": "15.1.1",
-      "pgVersion": "15",
-      "npmTag": "pg15"
-    },
-    "16": {
-      "deparserVersion": "16.0.0",
-      "typesVersion": "16.1.1",
-      "pgVersion": "16",
-      "npmTag": "pg16"
-    }
-  },
   "packageTemplate": {
     "author": "Dan Lynch <pyramation@gmail.com>",
     "homepage": "https://github.com/launchql/pgsql-parser",
@@ -37,7 +11,6 @@
     "scripts": {
       "copy": "copyfiles -f ../../../../LICENSE README.md package.json dist",
       "clean": "rimraf dist",
-      "prepare": "npm run build",
       "build": "npm run clean && tsc && tsc -p tsconfig.esm.json && npm run copy",
       "publish:pkg": "npm publish --tag {{VERSION_TAG}}"
     },
