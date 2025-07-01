@@ -786,6 +786,10 @@ export class V14ToV15Transformer {
       result.name = node.name;
     }
 
+    if (node.num !== undefined) {
+      result.num = node.num;
+    }
+
     if (node.newowner !== undefined) {
       result.newowner = this.transform(node.newowner as any, context);
     }
