@@ -1,6 +1,6 @@
 {
   "name": "@pgsql/cli",
-  "version": "1.31.7",
+  "version": "1.31.8",
   "description": "Unified CLI for PostgreSQL AST parsing, deparsing, and code generation",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "main": "index.js",
@@ -52,8 +52,8 @@
     "minimist": "1.2.8",
     "mkdirp": "3.0.1",
     "nested-obj": "^0.0.1",
-    "pg-proto-parser": "^1.29.1",
-    "pgsql-deparser": "^17.8.5",
-    "pgsql-parser": "^17.7.7"
+    "pg-proto-parser": "^1.29.2",
+    "pgsql-deparser": "^17.9.0",
+    "pgsql-parser": "^17.7.8"
   }
 }

@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [17.8.0](https://github.com/launchql/pgsql-parser/compare/@pgsql/transform@17.7.1...@pgsql/transform@17.8.0) (2025-07-01)
+
+
+### Bug Fixes
+
+* add missing nulls_not_distinct property handling in IndexStmt ([caee212](https://github.com/launchql/pgsql-parser/commit/caee212c298320a89ce9443099597ebe089eac2f))
+* add missing nulls_not_distinct property to IndexStmt transformer ([07c0ab4](https://github.com/launchql/pgsql-parser/commit/07c0ab47ce1ae10bd6ac0925b32ab9d6e821fefd))
+* preserve num field in AlterTableCmd 14->15 transformation ([f52083c](https://github.com/launchql/pgsql-parser/commit/f52083c69916ff2195dbe40fca6fe06927791d4f))
+* resolve 15-16 transformer AST mismatch for create_view-281.sql ([80d169e](https://github.com/launchql/pgsql-parser/commit/80d169e441bbb65e4b72a20f54947cb1a3abf528))
+* resolve TypeScript compilation error with proper cross-package imports ([9d8ecbc](https://github.com/launchql/pgsql-parser/commit/9d8ecbca7a95b6a40eb1bb2f4c25c28508e4612f))
+
+
+### Features
+
+* Add comprehensive documentation for @pgsql/transform package ([b757a7b](https://github.com/launchql/pgsql-parser/commit/b757a7b438881b8035d5588836ffc4c00f1f13bb))
+
+
+
+
+
 ## [17.7.1](https://github.com/launchql/pgsql-parser/compare/@pgsql/transform@17.7.0...@pgsql/transform@17.7.1) (2025-07-01)
 
 **Note:** Version bump only for package @pgsql/transform

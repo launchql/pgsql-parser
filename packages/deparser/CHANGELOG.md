@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [17.9.0](https://github.com/launchql/pgsql-parser/compare/pgsql-deparser@17.8.5...pgsql-deparser@17.9.0) (2025-07-01)
+
+
+### Bug Fixes
+
+* add COLLATE clause support to ALTER TABLE ADD COLUMN ([b778ed0](https://github.com/launchql/pgsql-parser/commit/b778ed0f640cbe6c3f818cfdf8314ca468a9f7ac))
+* correct ALTER TABLE ADD IDENTITY column generation ([590e82f](https://github.com/launchql/pgsql-parser/commit/590e82f31907eff1305e91ec46b1dd34899a2a1d))
+
+
+### Features
+
+* add multi-line pretty formatting for ALTER TABLE statements ([cb2ba9f](https://github.com/launchql/pgsql-parser/commit/cb2ba9f79f5a838aefac40c7e8ef1ae38b1c6d09))
+* implement pretty printing for ALTER TABLE ADD COLUMN statements ([65a0002](https://github.com/launchql/pgsql-parser/commit/65a00026382e0b0721d3558898dab7e9518f65b3))
+
+
+
+
+
 ## [17.8.5](https://github.com/launchql/pgsql-parser/compare/pgsql-deparser@17.8.4...pgsql-deparser@17.8.5) (2025-07-01)
 
 **Note:** Version bump only for package pgsql-deparser
