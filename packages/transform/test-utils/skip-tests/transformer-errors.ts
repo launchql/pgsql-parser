@@ -9,7 +9,9 @@ export const transformerErrors: SkipTest[] = [
     [16, 17, "latest/postgres/create_am-106.sql", "16-17 transformer fails with 'syntax error at or near 'DEFAULT'"],
 
     [15, 16, "original/upstream/json-102.sql", "15-16 transformer fails with function name transformation - adds pg_catalog schema qualification"],
+    
     [15, 16, "latest/postgres/create_view-281.sql", "15-16 transformer fails with AST transformation mismatch"],
+
     // [15, 16, "latest/postgres/create_index-85.sql", "15-16 transformer fails with missing nulls_not_distinct property"],
     // [15, 16, "latest/postgres/create_index-83.sql", "15-16 transformer fails with missing nulls_not_distinct property"],
     // [15, 16, "latest/postgres/create_index-72.sql", "15-16 transformer fails with missing nulls_not_distinct property"],

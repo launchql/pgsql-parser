@@ -686,7 +686,7 @@ select
   overlay('foo' placing 'bar' from 2 for 3) as ovl2,
   position('foo' in 'foobar') as p,
   substring('foo' from 2 for 3) as s,
-  substring('foo' similar 'f' escape '#') as ss,
+  substring('foo' from '%o%') as ss,  -- if you're extracting using a pattern  
   substring('foo' from 'oo') as ssf,  -- historically-permitted abuse
   trim(' ' from ' foo ') as bt,
   trim(leading ' ' from ' foo ') as lt,
