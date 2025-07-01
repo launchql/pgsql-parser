@@ -1,2 +1,2 @@
-export type { Visitor, VisitorContext } from './traverse';
-export { visit } from './traverse';
+export { walk, visit, NodePath } from './traverse';
+export type { Visitor, VisitorContext, Walker, NodeTag } from './traverse';

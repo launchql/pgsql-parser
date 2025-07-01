@@ -10,102 +10,112 @@ npm install @pgsql/traverse
 
 ## Usage
 
-### Basic Traversal
+### New Walk API (Recommended)
+
+The new `walk` function provides improved traversal with NodePath context and early return support:
+
+```typescript
+import { walk, NodePath } from '@pgsql/traverse';
+import type { Walker, Visitor } from '@pgsql/traverse';
+
+// Using a simple walker function
+const walker: Walker = (path: NodePath) => {
+  console.log(`Visiting ${path.tag} at path:`, path.path);
+  
+  // Return false to skip traversing children
+  if (path.tag === 'SelectStmt') {
+    return false; // Skip SELECT statement children
+  }
+};
+
+walk(ast, walker);
+
+// Using a visitor object (recommended for multiple node types)
+const visitor: Visitor = {
+  SelectStmt: (path) => {
+    console.log('SELECT statement:', path.node);
+  },
+  RangeVar: (path) => {
+    console.log('Table:', path.node.relname);
+    console.log('Path to table:', path.path);
+    console.log('Parent node:', path.parent?.tag);
+  }
+};
+
+walk(ast, visitor);
+```
+
+### NodePath Class
+
+The `NodePath` class provides rich context information:
+
+```typescript
+class NodePath<TTag extends NodeTag = NodeTag> {
+  tag: TTag;           // Node type (e.g., 'SelectStmt', 'RangeVar')
+  node: Node[TTag];    // The actual node data
+  parent: NodePath | null;  // Parent NodePath (null for root)
+  keyPath: readonly (string | number)[];  // Full path array
+  
+  get path(): (string | number)[];  // Copy of keyPath
+  get key(): string | number;       // Last element of path
+}
+```
+
+### Runtime Schema Integration
+
+The new implementation uses PostgreSQL's runtime schema to precisely determine which fields contain Node types that need traversal, eliminating guesswork and improving accuracy.
+
+### Legacy Visit API (Backward Compatible)
+
+The original `visit` function is still available for backward compatibility:
 
 ```typescript
 import { visit } from '@pgsql/traverse';
-import type { Visitor } from '@pgsql/traverse';
 
-const visitor: Visitor = {
+const visitor = {
   SelectStmt: (node, ctx) => {
     console.log('Found SELECT statement:', node);
+    console.log('Path:', ctx.path);
   },
   RangeVar: (node, ctx) => {
     console.log('Found table reference:', node.relname);
   }
 };
 
-const ast = {
-  SelectStmt: {
-    targetList: [
-      {
-        ResTarget: {
-          val: {
-            ColumnRef: {
-              fields: [{ A_Star: {} }]
-            }
-          }
-        }
-      }
-    ],
-    fromClause: [
-      {
-        RangeVar: {
-          relname: 'users',
-          inh: true,
-          relpersistence: 'p'
-        }
-      }
-    ],
-    limitOption: 'LIMIT_OPTION_DEFAULT',
-    op: 'SETOP_NONE'
-  }
-};
-
+// Parse some SQL and traverse the AST
+const ast = /* your parsed AST */;
 visit(ast, visitor);
 ```
 
 ### Working with ParseResult
 
 ```typescript
-import { visit } from '@pgsql/traverse';
-import type { Visitor } from '@pgsql/traverse';
+import { walk } from '@pgsql/traverse';
 
-const visitor: Visitor = {
-  ParseResult: (node, ctx) => {
-    console.log('PostgreSQL version:', node.version);
+const visitor = {
+  ParseResult: (path) => {
+    console.log('Parse result version:', path.node.version);
+    console.log('Number of statements:', path.node.stmts.length);
   },
-  RawStmt: (node, ctx) => {
-    console.log('Found statement at path:', ctx.path);
+  SelectStmt: (path) => {
+    console.log('SELECT statement found');
   }
 };
 
-const parseResult = {
-  ParseResult: {
-    version: 170004,
-    stmts: [
-      {
-        RawStmt: {
-          stmt: {
-            SelectStmt: {
-              targetList: [],
-              limitOption: 'LIMIT_OPTION_DEFAULT',
-              op: 'SETOP_NONE'
-            }
-          }
-        }
-      }
-    ]
-  }
-};
-
-visit(parseResult, visitor);
+walk(parseResult, visitor);
 ```
 
 ### Using Visitor Context
 
-The visitor context provides useful information about the current traversal state:
+The visitor context provides information about the current traversal state:
 
 ```typescript
-import { visit } from '@pgsql/traverse';
-import type { Visitor, VisitorContext } from '@pgsql/traverse';
-
-const visitor: Visitor = {
-  RangeVar: (node, ctx: VisitorContext) => {
-    console.log('Table name:', node.relname);
-    console.log('Path to this node:', ctx.path);
-    console.log('Parent object:', ctx.parent);
-    console.log('Key in parent:', ctx.key);
+const visitor = {
+  RangeVar: (path) => {
+    console.log('Table name:', path.node.relname);
+    console.log('Path to this node:', path.path);
+    console.log('Parent node:', path.parent?.tag);
+    console.log('Key in parent:', path.key);
   }
 };
 ```
@@ -144,37 +154,94 @@ console.log('Columns referenced:', columnRefs);
 
 ## API
 
-### `visit(node, visitor, ctx?)`
+### `walk(root, callback, parent?, keyPath?)`
 
-Recursively visits a PostgreSQL AST node, calling any matching visitor functions.
+Walks the tree of PostgreSQL AST nodes using runtime schema for precise traversal.
 
 **Parameters:**
-- `node: KnownNode` - The AST node to traverse (can be a ParseResult, wrapped node, or any PostgreSQL AST node)
-- `visitor: Visitor` - Object containing visitor functions for different node types
-- `ctx?: VisitorContext` - Optional initial context (usually not needed)
+- `root`: The AST node to traverse
+- `callback`: A walker function or visitor object
+- `parent?`: Optional parent NodePath (for internal use)
+- `keyPath?`: Optional key path array (for internal use)
+
+**Example:**
+```typescript
+walk(ast, {
+  SelectStmt: (path) => {
+    // Handle SELECT statements
+    // Return false to skip children
+  },
+  RangeVar: (path) => {
+    // Handle table references
+  }
+});
+```
+
+### `visit(node, visitor, ctx?)` (Legacy)
+
+Recursively visits a PostgreSQL AST node, calling any matching visitor functions. Maintained for backward compatibility.
+
+**Parameters:**
+- `node`: The AST node to traverse
+- `visitor`: An object with visitor functions for different node types
+- `ctx?`: Optional initial visitor context
 
 ### Types
 
 #### `Visitor`
 
-An object where keys are PostgreSQL AST node type names and values are visitor functions:
+An object type where keys are node type names and values are walker functions:
 
 ```typescript
 type Visitor = {
-  [K in keyof KnownNode]?: (node: KnownNode[K], ctx: VisitorContext) => void;
+  [TTag in NodeTag]?: Walker<NodePath<TTag>>;
 };
 ```
 
-#### `VisitorContext`
+#### `Walker`
 
-Context information provided to each visitor function:
+A function that receives a NodePath and can return false to skip children:
+
+```typescript
+type Walker<TNodePath extends NodePath = NodePath> = (
+  path: TNodePath,
+) => boolean | void;
+```
+
+#### `NodePath`
+
+A class that encapsulates node traversal context:
+
+```typescript
+class NodePath<TTag extends NodeTag = NodeTag> {
+  tag: TTag;                                    // Node type
+  node: Node[TTag];                            // Node data
+  parent: NodePath | null;                     // Parent path
+  keyPath: readonly (string | number)[];       // Full path
+  
+  get path(): (string | number)[];             // Path copy
+  get key(): string | number;                  // Current key
+}
+```
+
+#### `VisitorContext` (Legacy)
+
+Context information provided to legacy visitor functions:
 
 ```typescript
 type VisitorContext = {
-  path: (string | number)[];  // Path to current node (e.g., ['SelectStmt', 'fromClause', 0])
-  parent: any;                // Parent object containing this node
-  key: string | number;       // Key or index of this node in its parent
+  path: (string | number)[];  // Path to current node
+  parent: any;                // Parent node
+  key: string | number;       // Key in parent node
 };
+```
+
+#### `NodeTag`
+
+Union type of all PostgreSQL AST node type names:
+
+```typescript
+type NodeTag = keyof Node;
 ```
 
 ## Supported Node Types
