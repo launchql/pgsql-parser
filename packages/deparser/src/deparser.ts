@@ -2704,20 +2704,42 @@ export class Deparser implements DeparserVisitor {
             .map(option => {
               if (option.DefElem) {
                 const defElem = option.DefElem;
-                const argValue = defElem.arg ? this.visit(defElem.arg, context) : '';
-                if (defElem.defname === 'start') {
+                if (defElem.defname === 'sequence_name') {
+                  if (defElem.arg && defElem.arg.List) {
+                    const nameList = ListUtils.unwrapList(defElem.arg)
+                      .map(item => this.visit(item, context))
+                      .join('.');
+                    return `SEQUENCE NAME ${nameList}`;
+                  }
+                  return 'SEQUENCE NAME';
+                } else if (defElem.defname === 'start') {
+                  const argValue = defElem.arg ? this.visit(defElem.arg, context) : '';
                   return `START WITH ${argValue}`;
                 } else if (defElem.defname === 'increment') {
+                  const argValue = defElem.arg ? this.visit(defElem.arg, context) : '';
                   return `INCREMENT BY ${argValue}`;
                 } else if (defElem.defname === 'minvalue') {
-                  return `MINVALUE ${argValue}`;
+                  if (defElem.arg) {
+                    const argValue = this.visit(defElem.arg, context);
+                    return `MINVALUE ${argValue}`;
+                  } else {
+                    return 'NO MINVALUE';
+                  }
                 } else if (defElem.defname === 'maxvalue') {
-                  return `MAXVALUE ${argValue}`;
+                  if (defElem.arg) {
+                    const argValue = this.visit(defElem.arg, context);
+                    return `MAXVALUE ${argValue}`;
+                  } else {
+                    return 'NO MAXVALUE';
+                  }
                 } else if (defElem.defname === 'cache') {
+                  const argValue = defElem.arg ? this.visit(defElem.arg, context) : '';
                   return `CACHE ${argValue}`;
                 } else if (defElem.defname === 'cycle') {
+                  const argValue = defElem.arg ? this.visit(defElem.arg, context) : '';
                   return argValue === 'true' ? 'CYCLE' : 'NO CYCLE';
                 }
+                const argValue = defElem.arg ? this.visit(defElem.arg, context) : '';
                 return `${defElem.defname.toUpperCase()} ${argValue}`;
               }
               return this.visit(option, context);
@@ -5234,11 +5256,10 @@ export class Deparser implements DeparserVisitor {
           if (node.name) {
             output.push(QuoteUtils.quote(node.name));
           }
-          output.push('ADD GENERATED');
+          output.push('ADD');
           if (node.def) {
             output.push(this.visit(node.def, context));
           }
-          output.push('AS IDENTITY');
           break;
         case 'AT_SetIdentity':
           output.push('ALTER COLUMN');
