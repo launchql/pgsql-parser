@@ -411,7 +411,7 @@ export class V15ToV16Transformer {
     return { BoolExpr: result };
   }
 
-  FuncCall(node: PG15.FuncCall, context: TransformerContext): { FuncCall: PG16.FuncCall } {
+  FuncCall(node: PG15.FuncCall, context: TransformerContext): { FuncCall: PG16.FuncCall } | { ColumnRef: PG16.ColumnRef } {
     const result: any = {};
 
     if (node.funcname !== undefined) {
@@ -423,6 +423,17 @@ export class V15ToV16Transformer {
           },
           { String: { sval: 'json_object' } }
         ];
+      } else if (node.funcname.length === 2 && 
+                 (node.funcname[0] as any)?.String?.sval === 'pg_catalog' && 
+                 (node.funcname[1] as any)?.String?.sval === 'system_user' &&
+                 node.funcformat === 'COERCE_SQL_SYNTAX') {
+        return {
+          ColumnRef: {
+            fields: [
+              { String: { sval: 'system_user' } }
+            ]
+          }
+        };
       } else {
         result.funcname = Array.isArray(node.funcname)
           ? node.funcname.map((item: any) => this.transform(item as any, context))
@@ -550,7 +561,22 @@ export class V15ToV16Transformer {
     return { A_Const: result };
   }
 
-  ColumnRef(node: PG15.ColumnRef, context: TransformerContext): { ColumnRef: PG16.ColumnRef } {
+  ColumnRef(node: PG15.ColumnRef, context: TransformerContext): { ColumnRef: PG16.ColumnRef } | { FuncCall: PG16.FuncCall } {
+    if (node.fields && Array.isArray(node.fields) && node.fields.length === 1) {
+      const field = node.fields[0];
+      if ((field as any)?.String?.sval === 'system_user') {
+        return {
+          FuncCall: {
+            funcname: [
+              { String: { sval: 'pg_catalog' } },
+              { String: { sval: 'system_user' } }
+            ],
+            funcformat: 'COERCE_SQL_SYNTAX'
+          }
+        };
+      }
+    }
+
     const result: any = {};
 
     if (node.fields !== undefined) {
@@ -630,7 +656,32 @@ export class V15ToV16Transformer {
     return { Alias: result };
   }
 
-  RangeVar(node: PG15.RangeVar, context: TransformerContext): { RangeVar: PG16.RangeVar } {
+  RangeVar(node: PG15.RangeVar, context: TransformerContext): { RangeVar: PG16.RangeVar } | { RangeFunction: PG16.RangeFunction } {
+    if (node.relname === 'system_user' && node.inh === true && node.relpersistence === 'p') {
+      return {
+        RangeFunction: {
+          functions: [
+            {
+              List: {
+                items: [
+                  {
+                    FuncCall: {
+                      funcname: [
+                        { String: { sval: 'pg_catalog' } },
+                        { String: { sval: 'system_user' } }
+                      ],
+                      funcformat: 'COERCE_SQL_SYNTAX'
+                    }
+                  },
+                  {} as any
+                ]
+              }
+            }
+          ]
+        }
+      };
+    }
+
     const result: any = {};
 
     if (node.catalogname !== undefined) {
@@ -908,7 +959,13 @@ export class V15ToV16Transformer {
 
     if (node.items !== undefined) {
       result.items = Array.isArray(node.items)
-        ? node.items.map((item: any) => this.transform(item as any, context))
+        ? node.items.map((item: any) => {
+            const transformed = this.transform(item as any, context);
+            if (transformed === null) {
+              return {};
+            }
+            return transformed;
+          })
         : this.transform(node.items as any, context);
     }
 
