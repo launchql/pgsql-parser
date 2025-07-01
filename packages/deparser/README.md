@@ -80,11 +80,16 @@ npm install pgsql-deparser
 While we highly recommend using PG17, for PostgreSQL versions 13-16, use the version-specific packages:
 
 ```sh
-npm install pgsql-deparser@v13  # PostgreSQL 13
-npm install pgsql-deparser@v14  # PostgreSQL 14
-npm install pgsql-deparser@v15  # PostgreSQL 15
-npm install pgsql-deparser@v16  # PostgreSQL 16
+npm install pgsql-deparser@pg13  # PostgreSQL 13
+npm install pgsql-deparser@pg14  # PostgreSQL 14
+npm install pgsql-deparser@pg15  # PostgreSQL 15
+npm install pgsql-deparser@pg16  # PostgreSQL 16
 ```
+
+**Version Status:**
+- **PG17**: 🚀 Recommended (stable + modern AST)
+- **PG14-16**: ⚠️ Experimental (modern AST, hardening in progress)
+- **PG13**: Stable (legacy AST format)
 
 ## Options
 
