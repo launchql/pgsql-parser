@@ -105,7 +105,7 @@ it('original-upstream-json', async () => {
   "original/upstream/json-99.sql",
   "original/upstream/json-100.sql",
   "original/upstream/json-101.sql",
-"original/upstream/json-102.sql",
+  "original/upstream/json-102.sql",
   "original/upstream/json-103.sql",
   "original/upstream/json-104.sql",
   "original/upstream/json-105.sql",
@@ -269,6 +269,6 @@ it('original-upstream-json', async () => {
   "original/upstream/json-263.sql",
   "original/upstream/json-264.sql",
   "original/upstream/json-265.sql",
-  "original/upstream/json-266.sql",
+  "original/upstream/json-266.sql"
 ]);
 });

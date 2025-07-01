@@ -16,6 +16,9 @@ it('pretty-misc', async () => {
   "pretty/misc-10.sql",
   "pretty/misc-11.sql",
   "pretty/misc-12.sql",
-  "pretty/misc-13.sql"
+  "pretty/misc-13.sql",
+  "pretty/misc-14.sql",
+  "pretty/misc-15.sql",
+  "pretty/misc-16.sql"
 ]);
 });

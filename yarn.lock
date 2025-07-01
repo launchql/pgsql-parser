@@ -650,9 +650,9 @@
     chalk "^4.0.0"
 
 "@jridgewell/gen-mapping@^0.3.5":
-  version "0.3.10"
-  resolved "https://registry.yarnpkg.com/@jridgewell/gen-mapping/-/gen-mapping-0.3.10.tgz#1cad974c8478e644c5cbce2a4b738137bb64bd4f"
-  integrity sha512-HM2F4B9N4cA0RH2KQiIZOHAZqtP4xGS4IZ+SFe1SIbO4dyjf9MTY2Bo3vHYnm0hglWfXqBrzUBSa+cJfl3Xvrg==
+  version "0.3.11"
+  resolved "https://registry.yarnpkg.com/@jridgewell/gen-mapping/-/gen-mapping-0.3.11.tgz#02faf35e82eb08a465704d501f60cd073f8d1715"
+  integrity sha512-C512c1ytBTio4MrpWKlJpyFHT6+qfFL8SZ58zBzJ1OOzUEjHeF1BtjY2fH7n4x/g2OV/KiiMLAivOp1DXmiMMw==
   dependencies:
     "@jridgewell/sourcemap-codec" "^1.5.0"
     "@jridgewell/trace-mapping" "^0.3.24"
@@ -663,9 +663,9 @@
   integrity sha512-bRISgCIjP20/tbWSPWMEi54QVPRZExkuD9lJL+UIxUKtwVJA8wW1Trb1jMs1RFXo1CBTNZ/5hpC9QvmKWdopKw==
 
 "@jridgewell/sourcemap-codec@^1.4.10", "@jridgewell/sourcemap-codec@^1.4.14", "@jridgewell/sourcemap-codec@^1.5.0":
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.5.2.tgz#4f25c8f17f28ccf70ed16e03f8fbf6d3998cb8fd"
-  integrity sha512-gKYheCylLIedI+CSZoDtGkFV9YEBxRRVcfCH7OfAqh4TyUyRjEE6WVE/aXDXX0p8BIe/QgLcaAoI0220KRRFgg==
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.5.3.tgz#2d7bbc63fdfe4e4fa6b3478f651ec3844e284c1b"
+  integrity sha512-AiR5uKpFxP3PjO4R19kQGIMwxyRyPuXmKEEy301V1C0+1rVjS94EZQXf1QKZYN8Q0YM+estSPhmx5JwNftv6nw==
 
 "@jridgewell/trace-mapping@0.3.9":
   version "0.3.9"
@@ -676,9 +676,9 @@
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
 "@jridgewell/trace-mapping@^0.3.12", "@jridgewell/trace-mapping@^0.3.18", "@jridgewell/trace-mapping@^0.3.24", "@jridgewell/trace-mapping@^0.3.25":
-  version "0.3.27"
-  resolved "https://registry.yarnpkg.com/@jridgewell/trace-mapping/-/trace-mapping-0.3.27.tgz#3139cfeafce3aa9918454cce8b219eee39fd7df2"
-  integrity sha512-VO95AxtSFMelbg3ouljAYnfvTEwSWVt/2YLf+U5Ejd8iT5mXE2Sa/1LGyvySMne2CGsepGLI7KpF3EzE3Aq9Mg==
+  version "0.3.28"
+  resolved "https://registry.yarnpkg.com/@jridgewell/trace-mapping/-/trace-mapping-0.3.28.tgz#655017f73353f1e0eb1a0ecbd5edec01438c5e18"
+  integrity sha512-KNNHHwW3EIp4EDYOvYFGyIFfx36R2dNJYH4knnZlF8T5jdbD5Wx8xmSaQ2gP9URkJ04LGEtlcCtwArKcmFcwKw==
   dependencies:
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
@@ -1226,7 +1226,7 @@
   resolved "https://registry.yarnpkg.com/@pgsql/parser/-/parser-1.1.4.tgz#9063c8599cd40c38b2d1d49c9df9bd971b31e583"
   integrity sha512-RZ+6cDULpq6qNxVJafHXYw4w2h1SkLy3SKJDiPR0NGMlnJTeGAWXLoJcgIfnlE0CCpNXPMXrz65A2ppsyOofsw==
 
-"@pgsql/types@^17.6.1":
+"@pgsql/types@^17.6.0", "@pgsql/types@^17.6.1":
   version "17.6.1"
   resolved "https://registry.yarnpkg.com/@pgsql/types/-/types-17.6.1.tgz#fcbe4910321bd0dfa38aa0c26d87eff7b098d0e9"
   integrity sha512-Hk51+nyOxS7Dy5oySWywyNZxo5HndX1VDXT4ZEBD+p+vvMFM2Vc+sKSuByCiI8banou4edbgdnOC251IOuq7QQ==
@@ -1476,9 +1476,9 @@
   integrity sha512-hov8bUuiLiyFPGyFPE1lwWhmzYbirOXQNNo40+y3zow8aFVTeyn3VWL0VFFfdNddA8S4Vf0Tc062rzyNr7Paag==
 
 "@types/node@*", "@types/node@>=13.7.0":
-  version "24.0.7"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-24.0.7.tgz#ee580f7850c7eabaeef61ef96b8d8c04fdf94f53"
-  integrity sha512-YIEUUr4yf8q8oQoXPpSlnvKNVKDQlPMWrmOcgzoduo7kvA2UF0/BwJ/eMKFTiTtkNL17I0M6Xe2tvwFU7be6iw==
+  version "24.0.8"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-24.0.8.tgz#98f50977fe76ab78d02fc3bcb7f6c3b5f79a363c"
+  integrity sha512-WytNrFSgWO/esSH9NbpWUfTMGQwCGIKfCmNlmFDNiI5gGhgMmEA+V1AEvKLeBNvvtBnailJtkrEa2OIISwrVAA==
   dependencies:
     undici-types "~7.8.0"
 
@@ -4560,12 +4560,12 @@ libnpmpublish@7.1.4:
     sigstore "^1.4.0"
     ssri "^10.0.1"
 
-libpg-query@17.5.2:
-  version "17.5.2"
-  resolved "https://registry.yarnpkg.com/libpg-query/-/libpg-query-17.5.2.tgz#1d3663f482dc2fb253948a0d2d4bc3540b10d752"
-  integrity sha512-9VhuzWrWyZ6AalSCtF2+BDx/aHpp8JKLAsYa1qF77x7f+kJ5BxAXvdRYOduNNFqdwu67110eFpoBr6BtN4WH/A==
+libpg-query@17.5.5:
+  version "17.5.5"
+  resolved "https://registry.yarnpkg.com/libpg-query/-/libpg-query-17.5.5.tgz#6446641f0a2dc0ec12fccb1bbd14374ae191cece"
+  integrity sha512-vzD5sjv1Kqf5EtoxzO1pcL43Y5k9o84wmPWAxomhhBS1crEgLlkwuVi28aSE5SGz7UZOu+KqO5eLmGPt1ySGRg==
   dependencies:
-    "@pgsql/types" "^17.6.1"
+    "@pgsql/types" "^17.6.0"
 
 lines-and-columns@^1.1.6:
   version "1.2.4"
