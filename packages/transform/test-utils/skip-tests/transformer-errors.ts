@@ -16,11 +16,11 @@ export const transformerErrors: SkipTest[] = [
 
     [15, 16, "original/upstream/json-102.sql", "15-16 transformer fails with function name transformation - adds pg_catalog schema qualification"],
     [15, 16, "latest/postgres/create_view-281.sql", "15-16 transformer fails with AST transformation mismatch"],
-    [15, 16, "latest/postgres/create_index-85.sql", "15-16 transformer fails with missing nulls_not_distinct property"],
-    [15, 16, "latest/postgres/create_index-83.sql", "15-16 transformer fails with missing nulls_not_distinct property"],
-    [15, 16, "latest/postgres/create_index-72.sql", "15-16 transformer fails with missing nulls_not_distinct property"],
+    // [15, 16, "latest/postgres/create_index-85.sql", "15-16 transformer fails with missing nulls_not_distinct property"],
+    // [15, 16, "latest/postgres/create_index-83.sql", "15-16 transformer fails with missing nulls_not_distinct property"],
+    // [15, 16, "latest/postgres/create_index-72.sql", "15-16 transformer fails with missing nulls_not_distinct property"],
     [15, 16, "latest/postgres/create_index-326.sql", "15-16 transformer fails with syntax error at end of input"],
-    [15, 16, "latest/postgres/create_index-184.sql", "15-16 transformer fails with missing nulls_not_distinct property"],
+    // [15, 16, "latest/postgres/create_index-184.sql", "15-16 transformer fails with missing nulls_not_distinct property"],
 
     [14, 15, "latest/postgres/create_index-345.sql", "AST transformation mismatch (extra \"num\": 1 field)"],
 
@@ -93,4 +93,4 @@ export const transformerErrors: SkipTest[] = [
     [13, 14, "latest/postgres/create_function_sql-91.sql", "AST transformer bug - converts FUNC_PARAM_DEFAULT to FUNC_PARAM_IN in CREATE FUNCTION statements with default parameter values"],
     [13, 14, "latest/postgres/create_function_sql-90.sql", "AST transformer bug - converts FUNC_PARAM_DEFAULT to FUNC_PARAM_IN in CREATE FUNCTION statements with default parameter values"],
     [13, 14, "latest/postgres/create_function_sql-115.sql", "AST transformer bug - incorrectly adds parameter names to objfuncargs in DROP FUNCTION statements"],
-]; 
+];  

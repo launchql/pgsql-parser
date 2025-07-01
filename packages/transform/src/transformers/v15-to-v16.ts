@@ -2131,6 +2131,9 @@ export class V15ToV16Transformer {
       result.unique = node.unique;
     }
 
+    if (node.nulls_not_distinct !== undefined) {
+      result.nulls_not_distinct = node.nulls_not_distinct;
+    }
 
     if (node.primary !== undefined) {
       result.primary = node.primary;
