@@ -194,6 +194,7 @@ describe('traverse', () => {
   it('should handle ParseResult nodes', () => {
     const parseResultVisited: any[] = [];
     const rawStmtVisited: any[] = [];
+    const selectStmtVisited: any[] = [];
     
     const visitor = {
       ParseResult: (node: any, ctx: any) => {
@@ -201,6 +202,9 @@ describe('traverse', () => {
       },
       RawStmt: (node: any, ctx: any) => {
         rawStmtVisited.push({ node, ctx });
+      },
+      SelectStmt: (node: any, ctx: any) => {
+        selectStmtVisited.push({ node, ctx });
       }
     };
 
@@ -227,6 +231,10 @@ describe('traverse', () => {
 
     expect(parseResultVisited).toHaveLength(1);
     expect(rawStmtVisited).toHaveLength(1);
+    expect(selectStmtVisited).toHaveLength(1);
+    expect(parseResultVisited[0].node.version).toBe(170004);
+    expect(rawStmtVisited[0].node.stmt).toBeDefined();
+    expect(selectStmtVisited[0].node.limitOption).toBe('LIMIT_OPTION_DEFAULT');
   });
 
   it('should provide correct visitor context', () => {

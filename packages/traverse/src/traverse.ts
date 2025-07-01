@@ -114,18 +114,34 @@ export function visit(
   visitor: { [key: string]: (node: any, ctx: VisitorContext) => void },
   ctx: VisitorContext = { path: [], parent: null, key: '' }
 ): void {
-  const legacyVisitor: Visitor = {};
-  
-  for (const [nodeType, visitFn] of Object.entries(visitor)) {
-    legacyVisitor[nodeType] = (path: NodePath) => {
-      const legacyCtx: VisitorContext = {
-        path: path.path,
-        parent: path.parent?.node || null,
-        key: path.key
-      };
-      visitFn(path.node, legacyCtx);
-    };
+  if (node == null || typeof node !== 'object') return;
+
+  const nodeType = Object.keys(node)[0] as string;
+  const nodeData = node[nodeType];
+
+  const visitFn = visitor[nodeType];
+  if (visitFn) {
+    visitFn(nodeData, ctx);
   }
-  
-  walk(node, legacyVisitor);
+
+  for (const key in nodeData) {
+    const value = (nodeData as any)[key];
+    if (Array.isArray(value)) {
+      value.forEach((item, index) => {
+        if (typeof item === 'object' && item !== null && Object.keys(item).length === 1) {
+          visit(item, visitor, {
+            parent: value,
+            key: index,
+            path: [...ctx.path, key, index],
+          });
+        }
+      });
+    } else if (typeof value === 'object' && value !== null && Object.keys(value).length === 1) {
+      visit(value, visitor, {
+        parent: nodeData,
+        key,
+        path: [...ctx.path, key],
+      });
+    }
+  }
 }
