@@ -1,7 +1,7 @@
 
-import type { Node, ParseResult } from '@pgsql/types';
-import type { FieldSpec, NodeSpec } from '@pgsql/transform';
-import { PG17RuntimeSchema as runtimeSchema } from '@pgsql/transform';
+import type { Node } from '@pgsql/types';
+import type { NodeSpec } from './17/runtime-schema';
+import { runtimeSchema } from './17/runtime-schema';
 
 const schemaMap = new Map<string, NodeSpec>(runtimeSchema.map((spec: NodeSpec) => [spec.name, spec]));
 

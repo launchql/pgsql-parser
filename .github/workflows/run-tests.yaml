@@ -27,3 +27,6 @@ jobs:
 
       - name: transform
         run: cd ./packages/transform && yarn test
+
+      - name: traverse
+        run: cd ./packages/traverse && yarn test
