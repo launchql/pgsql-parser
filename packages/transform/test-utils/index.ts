@@ -216,3 +216,62 @@ export class FixtureTestUtils {
 
 // Re-export the full transform flow utilities
 export { FullTransformFlowFixture } from './full-transform-flow';
+
+/**
+ * Legacy fixture utility for testing direct transformations
+ * Uses the legacy SQL fixtures for testing direct transformers
+ */
+export class LegacyFixtureTestUtils {
+  private fixtures: Record<string, string>;
+
+  constructor() {
+    const LEGACY_JSON = path.join(__dirname, '../../../__fixtures__/legacy/13-legacy-check.json');
+    this.fixtures = JSON.parse(readFileSync(LEGACY_JSON, 'utf-8'));
+  }
+
+  getTestEntries(filters: string[]) {
+    if (filters.length === 0) {
+      return Object.entries(this.fixtures);
+    }
+    return Object.entries(this.fixtures).filter(([relPath]) =>
+      filters.some(filter => relPath.includes(filter))
+    );
+  }
+
+  getAllTestEntries() {
+    return Object.entries(this.fixtures);
+  }
+
+  getTestEntry(key: string): string | undefined {
+    return this.fixtures[key];
+  }
+
+  async runLegacyTests(filters: string[], testFn: (relativePath: string, sql: string) => Promise<void>) {
+    if (filters.length === 0) {
+      console.log('no filters provided, skipping tests.');
+      return;
+    }
+    
+    const entries = this.getTestEntries(filters);
+    for (const [relativePath, sql] of entries) {
+      try {
+        await testFn(relativePath, sql);
+      } catch (error: any) {
+        console.error(`\n❌ FAILED: ${relativePath}`);
+        throw error;
+      }
+    }
+  }
+
+  async runAllLegacyTests(testFn: (relativePath: string, sql: string) => Promise<void>) {
+    const entries = this.getTestEntries([]);
+    for (const [relativePath, sql] of entries) {
+      try {
+        await testFn(relativePath, sql);
+      } catch (error: any) {
+        console.error(`\n❌ FAILED: ${relativePath}`);
+        throw error;
+      }
+    }
+  }
+}
