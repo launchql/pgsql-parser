@@ -4725,46 +4725,114 @@ export class Deparser implements DeparserVisitor {
           }
           if (node.def) {
             const colDefData = this.getNodeData(node.def);
-            const parts: string[] = [];
+            
+            if (context.isPretty()) {
+              const parts: string[] = [];
+              const indentedParts: string[] = [];
+              
+              if (colDefData.colname) {
+                parts.push(QuoteUtils.quote(colDefData.colname));
+              }
 
-            if (colDefData.colname) {
-              parts.push(QuoteUtils.quote(colDefData.colname));
+              if (colDefData.typeName) {
+                parts.push(this.TypeName(colDefData.typeName, context));
+              }
+
+              if (colDefData.is_not_null) {
+                indentedParts.push('NOT NULL');
+              }
+
+              if (colDefData.collClause) {
+                indentedParts.push(this.CollateClause(colDefData.collClause, context));
+              }
+
+              if (colDefData.constraints) {
+                const constraints = ListUtils.unwrapList(colDefData.constraints);
+                constraints.forEach(constraint => {
+                  const columnConstraintContext = context.spawn('ColumnDef', { isColumnConstraint: true });
+                  const constraintStr = this.visit(constraint, columnConstraintContext);
+                  
+                  if (constraintStr.includes('REFERENCES') && constraintStr.includes('ON DELETE')) {
+                    const refMatch = constraintStr.match(/^(.*REFERENCES[^)]*\([^)]*\))\s*(ON\s+DELETE\s+CASCADE.*)$/);
+                    if (refMatch) {
+                      indentedParts.push(refMatch[1]);
+                      indentedParts.push(refMatch[2]);
+                    } else {
+                      indentedParts.push(constraintStr);
+                    }
+                  } else if (constraintStr === 'UNIQUE' && colDefData.raw_default) {
+                    const defaultStr = 'DEFAULT ' + this.visit(colDefData.raw_default, context);
+                    indentedParts.push('UNIQUE ' + defaultStr);
+                  } else {
+                    indentedParts.push(constraintStr);
+                  }
+                });
+              }
+
+              if (colDefData.raw_default && !colDefData.constraints?.some((c: any) => {
+                const constraintStr = this.visit(c, context.spawn('ColumnDef', { isColumnConstraint: true }));
+                return constraintStr === 'UNIQUE';
+              })) {
+                const defaultStr = 'DEFAULT ' + this.visit(colDefData.raw_default, context);
+                indentedParts.push(defaultStr);
+              }
+
+              if (colDefData.fdwoptions && colDefData.fdwoptions.length > 0) {
+                indentedParts.push('OPTIONS');
+                const columnContext = context.spawn('ColumnDef');
+                const options = ListUtils.unwrapList(colDefData.fdwoptions).map(opt => this.visit(opt, columnContext));
+                indentedParts.push(`(${options.join(', ')})`);
+              }
+
+              let result = parts.join(' ');
+              if (indentedParts.length > 0) {
+                const indentedStr = indentedParts.map(part => context.indent(part)).join(context.newline());
+                result += context.newline() + indentedStr;
+              }
+              
+              output.push(result);
+            } else {
+              const parts: string[] = [];
+
+              if (colDefData.colname) {
+                parts.push(QuoteUtils.quote(colDefData.colname));
+              }
+
+              if (colDefData.typeName) {
+                parts.push(this.TypeName(colDefData.typeName, context));
+              }
+
+              if (colDefData.collClause) {
+                parts.push(this.CollateClause(colDefData.collClause, context));
+              }
+
+              if (colDefData.fdwoptions && colDefData.fdwoptions.length > 0) {
+                parts.push('OPTIONS');
+                const columnContext = context.spawn('ColumnDef');
+                const options = ListUtils.unwrapList(colDefData.fdwoptions).map(opt => this.visit(opt, columnContext));
+                parts.push(`(${options.join(', ')})`);
+              }
+
+              if (colDefData.constraints) {
+                const constraints = ListUtils.unwrapList(colDefData.constraints);
+                const constraintStrs = constraints.map(constraint => {
+                  const columnConstraintContext = context.spawn('ColumnDef', { isColumnConstraint: true });
+                  return this.visit(constraint, columnConstraintContext);
+                });
+                parts.push(...constraintStrs);
+              }
+
+              if (colDefData.raw_default) {
+                parts.push('DEFAULT');
+                parts.push(this.visit(colDefData.raw_default, context));
+              }
+
+              if (colDefData.is_not_null) {
+                parts.push('NOT NULL');
+              }
+
+              output.push(parts.join(' '));
             }
-
-            if (colDefData.typeName) {
-              parts.push(this.TypeName(colDefData.typeName, context));
-            }
-
-            if (colDefData.collClause) {
-              parts.push(this.CollateClause(colDefData.collClause, context));
-            }
-
-            if (colDefData.fdwoptions && colDefData.fdwoptions.length > 0) {
-              parts.push('OPTIONS');
-              const columnContext = context.spawn('ColumnDef');
-              const options = ListUtils.unwrapList(colDefData.fdwoptions).map(opt => this.visit(opt, columnContext));
-              parts.push(`(${options.join(', ')})`);
-            }
-
-            if (colDefData.constraints) {
-              const constraints = ListUtils.unwrapList(colDefData.constraints);
-              const constraintStrs = constraints.map(constraint => {
-                const columnConstraintContext = context.spawn('ColumnDef', { isColumnConstraint: true });
-                return this.visit(constraint, columnConstraintContext);
-              });
-              parts.push(...constraintStrs);
-            }
-
-            if (colDefData.raw_default) {
-              parts.push('DEFAULT');
-              parts.push(this.visit(colDefData.raw_default, context));
-            }
-
-            if (colDefData.is_not_null) {
-              parts.push('NOT NULL');
-            }
-
-            output.push(parts.join(' '));
           }
           if (node.behavior === 'DROP_CASCADE') {
             output.push('CASCADE');
