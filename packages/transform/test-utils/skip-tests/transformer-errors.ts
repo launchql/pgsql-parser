@@ -7,7 +7,7 @@ export type SkipTest = [
 
 export const transformerErrors: SkipTest[] = [
     [16, 17, "pretty/misc-5.sql", "16-17 transformer fails WITH clause TypeCast prefix issue: transformer adds pg_catalog prefix to JSON types when expected output has none"],
-    [16, 17, "misc/quotes_etc-26.sql", "16-17 Parser-level \v character escape sequence difference: PG16 parser outputs 'v' but PG17 parser outputs '\u000b' (vertical tab)"],
+    // [16, 17, "misc/quotes_etc-26.sql", "16-17 Parser-level \v character escape sequence difference: PG16 parser outputs 'v' but PG17 parser outputs '\u000b' (vertical tab)"],
     [16, 17, "latest/postgres/create_am-96.sql", "16-17 transformer fails with 'syntax error at or near 'DEFAULT'"],
     [16, 17, "latest/postgres/create_am-74.sql", "16-17 transformer fails with 'syntax error at or near 'DEFAULT'"],
     [16, 17, "latest/postgres/create_am-65.sql", "16-17 transformer fails with 'syntax error at or near 'DEFAULT'"],
@@ -93,4 +93,4 @@ export const transformerErrors: SkipTest[] = [
     [13, 14, "latest/postgres/create_function_sql-91.sql", "AST transformer bug - converts FUNC_PARAM_DEFAULT to FUNC_PARAM_IN in CREATE FUNCTION statements with default parameter values"],
     [13, 14, "latest/postgres/create_function_sql-90.sql", "AST transformer bug - converts FUNC_PARAM_DEFAULT to FUNC_PARAM_IN in CREATE FUNCTION statements with default parameter values"],
     [13, 14, "latest/postgres/create_function_sql-115.sql", "AST transformer bug - incorrectly adds parameter names to objfuncargs in DROP FUNCTION statements"],
-]; 
+];  

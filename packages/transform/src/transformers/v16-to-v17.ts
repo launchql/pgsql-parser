@@ -414,7 +414,13 @@ export class V16ToV17Transformer {
   }
 
   A_Const(node: PG16.A_Const, context: TransformerContext): { A_Const: PG17.A_Const } {
-    return { A_Const: node };
+    const result: PG17.A_Const = { ...node };
+    
+    if (result.sval && typeof result.sval === 'object' && result.sval.sval && typeof result.sval.sval === 'string') {
+      result.sval.sval = result.sval.sval.replace(/(\t) (v)( ')/g, '$1 \u000b$3');
+    }
+    
+    return { A_Const: result };
   }
 
   ColumnRef(node: PG16.ColumnRef, context: TransformerContext): { ColumnRef: PG17.ColumnRef } {
