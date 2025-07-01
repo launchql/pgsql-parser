@@ -23,9 +23,9 @@ npm install @pgsql/traverse
 
 ## Usage
 
-### New Walk API (Recommended)
+### Walk API (Recommended)
 
-The new `walk` function provides improved traversal with NodePath context and early return support:
+The `walk` function provides improved traversal with NodePath context and early return support:
 
 ```typescript
 import { walk, NodePath } from '@pgsql/traverse';
@@ -78,7 +78,7 @@ class NodePath<TTag extends NodeTag = NodeTag> {
 
 The new implementation uses PostgreSQL's runtime schema to precisely determine which fields contain Node types that need traversal, eliminating guesswork and improving accuracy.
 
-### Legacy Visit API (Backward Compatible)
+### Visit API
 
 The original `visit` function is still available for backward compatibility:
 
@@ -303,6 +303,7 @@ visit(ast, visitor);
 * [@pgsql/types](https://www.npmjs.com/package/@pgsql/types): Offers TypeScript type definitions for PostgreSQL AST nodes, facilitating type-safe construction, analysis, and manipulation of ASTs.
 * [@pgsql/enums](https://www.npmjs.com/package/@pgsql/enums): Provides TypeScript enum definitions for PostgreSQL constants, enabling type-safe usage of PostgreSQL enums and constants in your applications.
 * [@pgsql/utils](https://www.npmjs.com/package/@pgsql/utils): A comprehensive utility library for PostgreSQL, offering type-safe AST node creation and enum value conversions, simplifying the construction and manipulation of PostgreSQL ASTs.
+* [@pgsql/traverse](https://www.npmjs.com/package/@pgsql/traverse): PostgreSQL AST traversal utilities for pgsql-parser, providing a visitor pattern for traversing PostgreSQL Abstract Syntax Tree nodes, similar to Babel's traverse functionality but specifically designed for PostgreSQL AST structures.
 * [pg-proto-parser](https://www.npmjs.com/package/pg-proto-parser): A TypeScript tool that parses PostgreSQL Protocol Buffers definitions to generate TypeScript interfaces, utility functions, and JSON mappings for enums.
 * [libpg-query](https://github.com/launchql/libpg-query-node): The real PostgreSQL parser exposed for Node.js, used primarily in `pgsql-parser` for parsing and deparsing SQL queries.
 

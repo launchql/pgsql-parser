@@ -37,6 +37,9 @@ npm install -g @pgsql/cli
 # For programmatic AST construction
 npm install @pgsql/utils
 
+# For programmatic AST visiting/traversal
+npm install @pgsql/traverse
+
 # For protobuf parsing and code generation
 npm install pg-proto-parser
 ```
@@ -123,6 +126,38 @@ const stmt: { SelectStmt: SelectStmt } = t.nodes.selectStmt({
 await deparse(stmt);
 ```
 
+#### Walk/Traverse an AST
+```typescript
+import { walk, NodePath } from '@pgsql/traverse';
+import type { Walker, Visitor } from '@pgsql/traverse';
+
+// Using a simple walker function
+const walker: Walker = (path: NodePath) => {
+  console.log(`Visiting ${path.tag} at path:`, path.path);
+  
+  // Return false to skip traversing children
+  if (path.tag === 'SelectStmt') {
+    return false; // Skip SELECT statement children
+  }
+};
+
+walk(ast, walker);
+
+// Using a visitor object (recommended for multiple node types)
+const visitor: Visitor = {
+  SelectStmt: (path) => {
+    console.log('SELECT statement:', path.node);
+  },
+  RangeVar: (path) => {
+    console.log('Table:', path.node.relname);
+    console.log('Path to table:', path.path);
+    console.log('Parent node:', path.parent?.tag);
+  }
+};
+
+walk(ast, visitor);
+```
+
 ## 📦 Packages 
 
 | Package | Description | Key Features |
@@ -133,7 +168,7 @@ await deparse(stmt);
 | [**@pgsql/utils**](./packages/utils) | Type-safe AST node creation utilities | • Programmatic AST construction<br>• Runtime Schema<br>• Seamless integration with types |
 | [**pg-proto-parser**](./packages/proto-parser) | PostgreSQL protobuf parser and code generator | • Generate TypeScript interfaces from protobuf<br>• Create enum mappings and utilities<br>• AST helper generation |
 | [**@pgsql/transform**](./packages/transform) | Multi-version PostgreSQL AST transformer | • Transform ASTs between PostgreSQL versions (13→17)<br>• Single source of truth deparser pipeline<br>• Backward compatibility for legacy SQL |
-
+| [**@pgsql/traverse**](./packages/traverse) | PostgreSQL AST traversal utilities | • Visitor pattern for traversing PostgreSQL AST nodes<br>• NodePath context with parent/path information<br>• Runtime schema-based precise traversal |
 
 ## 🛠️ Development
 
@@ -226,6 +261,7 @@ console.log(await deparse(query));
 * [@pgsql/types](https://www.npmjs.com/package/@pgsql/types): Offers TypeScript type definitions for PostgreSQL AST nodes, facilitating type-safe construction, analysis, and manipulation of ASTs.
 * [@pgsql/enums](https://www.npmjs.com/package/@pgsql/enums): Provides TypeScript enum definitions for PostgreSQL constants, enabling type-safe usage of PostgreSQL enums and constants in your applications.
 * [@pgsql/utils](https://www.npmjs.com/package/@pgsql/utils): A comprehensive utility library for PostgreSQL, offering type-safe AST node creation and enum value conversions, simplifying the construction and manipulation of PostgreSQL ASTs.
+* [@pgsql/traverse](https://www.npmjs.com/package/@pgsql/traverse): PostgreSQL AST traversal utilities for pgsql-parser, providing a visitor pattern for traversing PostgreSQL Abstract Syntax Tree nodes, similar to Babel's traverse functionality but specifically designed for PostgreSQL AST structures.
 * [pg-proto-parser](https://www.npmjs.com/package/pg-proto-parser): A TypeScript tool that parses PostgreSQL Protocol Buffers definitions to generate TypeScript interfaces, utility functions, and JSON mappings for enums.
 * [libpg-query](https://github.com/launchql/libpg-query-node): The real PostgreSQL parser exposed for Node.js, used primarily in `pgsql-parser` for parsing and deparsing SQL queries.
 
