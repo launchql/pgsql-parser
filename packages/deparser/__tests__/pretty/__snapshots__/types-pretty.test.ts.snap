@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`non-pretty: pretty/types-1.sql 1`] = `"CREATE TYPE mood AS ENUM ('sad', 'ok', 'happy')"`;
+
+exports[`non-pretty: pretty/types-2.sql 1`] = `"CREATE TYPE "AlertLevel" AS ENUM ('Low', 'MEDIUM', 'High', 'CRITICAL')"`;
+
+exports[`non-pretty: pretty/types-3.sql 1`] = `"CREATE TYPE address AS (street text, city text, zip_code int)"`;
+
+exports[`non-pretty: pretty/types-4.sql 1`] = `"CREATE TYPE "PostalInfo" AS ("Street" text, "City" text, "ZipCode" int)"`;
+
+exports[`non-pretty: pretty/types-5.sql 1`] = `"CREATE TYPE public.user_metadata AS (key text, value jsonb)"`;
+
+exports[`non-pretty: pretty/types-6.sql 1`] = `"CREATE TYPE tsrange_custom AS RANGE (subtype = timestamp with time zone, subtype_diff = timestamp_diff, canonical = normalize_tsrange)"`;
+
+exports[`non-pretty: pretty/types-7.sql 1`] = `"CREATE TYPE version_enum AS ENUM ('1.0', '1.1', '2.0')"`;
+
+exports[`non-pretty: pretty/types-8.sql 1`] = `"CREATE TYPE full_location AS (address address, region_code char(2))"`;
+
+exports[`non-pretty: pretty/types-9.sql 1`] = `"CREATE TYPE "Workflow-State" AS ENUM ('draft', 'in-review', 'needs-fix', 'finalized')"`;
+
+exports[`pretty: pretty/types-1.sql 1`] = `"CREATE TYPE mood AS ENUM ('sad', 'ok', 'happy')"`;
+
+exports[`pretty: pretty/types-2.sql 1`] = `"CREATE TYPE "AlertLevel" AS ENUM ('Low', 'MEDIUM', 'High', 'CRITICAL')"`;
+
+exports[`pretty: pretty/types-3.sql 1`] = `"CREATE TYPE address AS (street text, city text, zip_code int)"`;
+
+exports[`pretty: pretty/types-4.sql 1`] = `"CREATE TYPE "PostalInfo" AS ("Street" text, "City" text, "ZipCode" int)"`;
+
+exports[`pretty: pretty/types-5.sql 1`] = `"CREATE TYPE public.user_metadata AS (key text, value jsonb)"`;
+
+exports[`pretty: pretty/types-6.sql 1`] = `"CREATE TYPE tsrange_custom AS RANGE (subtype = timestamp with time zone, subtype_diff = timestamp_diff, canonical = normalize_tsrange)"`;
+
+exports[`pretty: pretty/types-7.sql 1`] = `"CREATE TYPE version_enum AS ENUM ('1.0', '1.1', '2.0')"`;
+
+exports[`pretty: pretty/types-8.sql 1`] = `"CREATE TYPE full_location AS (address address, region_code char(2))"`;
+
+exports[`pretty: pretty/types-9.sql 1`] = `"CREATE TYPE "Workflow-State" AS ENUM ('draft', 'in-review', 'needs-fix', 'finalized')"`;

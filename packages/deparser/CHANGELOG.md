@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [17.8.3](https://github.com/launchql/pgsql-parser/compare/pgsql-deparser@17.8.2...pgsql-deparser@17.8.3) (2025-06-27)
+
+
+### Bug Fixes
+
+* improve CREATE TABLE constraint indentation using proper context indentLevel ([22d5915](https://github.com/launchql/pgsql-parser/commit/22d5915933313a2f5dfca998dbde7a2cb59e2a2e))
+* update formatWindowFrame and deparseOperatorName to accept context parameters ([18236c0](https://github.com/launchql/pgsql-parser/commit/18236c0c071080084862997eb1d66bda67d40c66))
+* update RenameStmt to pass objtype when spawning AlterTypeStmt context ([14326c3](https://github.com/launchql/pgsql-parser/commit/14326c3c79587fdab1be6103fe8c054a15ca315f))
+
+
+### Features
+
+* improve indentation for boolean expressions and SELECT clauses ([6cc2f4e](https://github.com/launchql/pgsql-parser/commit/6cc2f4e4566541c671d5ffc42625d4c47ea76aa5))
+* make SqlFormatter private and add context-aware indentation ([2a76b3d](https://github.com/launchql/pgsql-parser/commit/2a76b3d3f7e63837d9a3d3bc5a04d16a519b9278))
+
+
+
+
+
+## [17.8.2](https://github.com/launchql/pgsql-parser/compare/pgsql-deparser@17.8.1...pgsql-deparser@17.8.2) (2025-06-26)
+
+
+### Reverts
+
+* Revert "Fix CHECK constraint closing parenthesis alignment" ([e247c55](https://github.com/launchql/pgsql-parser/commit/e247c5563f7bd7ad9e8d8b864c7e2a9356d487ec))
+
+
+
+
+
 ## [17.8.1](https://github.com/launchql/pgsql-parser/compare/pgsql-deparser@17.8.0...pgsql-deparser@17.8.1) (2025-06-23)
 
 **Note:** Version bump only for package pgsql-deparser

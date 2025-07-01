@@ -6,5 +6,5 @@ export {
 
 export {
   deparse,
-  deparseSync,
+  deparseSync
 } from 'pgsql-deparser';

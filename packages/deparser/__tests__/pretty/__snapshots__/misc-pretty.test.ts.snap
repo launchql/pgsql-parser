@@ -1,8 +1,38 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Pretty Misc SQL formatting should format misc-1: Complex CTE with joins and aggregation (non-pretty) 1`] = `"WITH recent_orders AS (SELECT o.id, o.user_id, o.created_at FROM orders AS o WHERE o.created_at > (now() - '30 days'::interval)), high_value_orders AS (SELECT r.user_id, count(*) AS order_count, sum(oi.price * oi.quantity) AS total_spent FROM recent_orders AS r JOIN order_items AS oi ON r.id = oi.order_id GROUP BY r.user_id) SELECT u.id, u.name, h.total_spent FROM users AS u JOIN high_value_orders AS h ON u.id = h.user_id WHERE h.total_spent > 1000 ORDER BY h.total_spent DESC"`;
+exports[`non-pretty: pretty/misc-1.sql 1`] = `"WITH recent_orders AS (SELECT o.id, o.user_id, o.created_at FROM orders AS o WHERE o.created_at > (now() - '30 days'::interval)), high_value_orders AS (SELECT r.user_id, count(*) AS order_count, sum(oi.price * oi.quantity) AS total_spent FROM recent_orders AS r JOIN order_items AS oi ON r.id = oi.order_id GROUP BY r.user_id) SELECT u.id, u.name, h.total_spent FROM users AS u JOIN high_value_orders AS h ON u.id = h.user_id WHERE h.total_spent > 1000 ORDER BY h.total_spent DESC"`;
 
-exports[`Pretty Misc SQL formatting should format misc-1: Complex CTE with joins and aggregation (pretty) 1`] = `
+exports[`non-pretty: pretty/misc-2.sql 1`] = `"SELECT department, employee_id, count(*) FILTER (WHERE status = 'active') OVER (PARTITION BY department) AS active_count, rank() OVER (PARTITION BY department ORDER BY salary DESC) AS salary_rank FROM employee_status GROUP BY GROUPING SETS (department, (department, employee_id))"`;
+
+exports[`non-pretty: pretty/misc-3.sql 1`] = `"SELECT u.id, u.name, j.key, j.value FROM users AS u, LATERAL jsonb_each_text(u.preferences) AS j(key, value) WHERE j.key LIKE 'notif_%' AND CAST(j.value AS boolean) = true"`;
+
+exports[`non-pretty: pretty/misc-4.sql 1`] = `"SELECT p.id, p.title, CASE WHEN EXISTS (SELECT 1 FROM reviews AS r WHERE r.product_id = p.id AND r.rating >= 4) THEN 'Popular' ELSE 'Unrated' END AS status FROM products AS p WHERE p.archived = false"`;
+
+exports[`non-pretty: pretty/misc-5.sql 1`] = `"WITH logs AS (SELECT id, payload::json ->> 'event' AS event, CAST(payload::json ->> 'ts' AS pg_catalog.timestamp) AS ts FROM event_log WHERE ts > (now() - '7 days'::interval)) SELECT event, count(*) AS freq FROM ( SELECT DISTINCT event, ts::date AS event_day FROM logs ) AS d GROUP BY event ORDER BY freq DESC"`;
+
+exports[`non-pretty: pretty/misc-6.sql 1`] = `"SELECT o.id AS order_id, u.name AS user_name, p.name AS product_name, s.status, sh.shipped_at, r.refund_amount FROM orders AS o JOIN users AS u ON o.user_id = u.id JOIN order_items AS oi ON oi.order_id = o.id JOIN products AS p ON (p.id = oi.product_id AND p.available = true) OR (p.sku = oi.product_sku AND (p.discontinued = false OR p.replacement_id IS NOT NULL)) LEFT JOIN shipping AS sh ON sh.order_id = o.id AND ((sh.carrier = 'UPS' AND sh.tracking_number IS NOT NULL) OR (sh.carrier = 'FedEx' AND sh.shipped_at > (o.created_at + '1 day'::interval))) LEFT JOIN statuses AS s ON s.id = o.status_id AND (s.name <> 'cancelled' OR (s.name = 'cancelled' AND s.updated_at > (now() - '7 days'::interval))) LEFT JOIN refunds AS r ON r.order_id = o.id AND ((r.status = 'approved' AND r.processed_at IS NOT NULL) OR (r.status = 'pending' AND r.requested_at < (now() - '14 days'::interval))) WHERE o.created_at > (now() - '90 days'::interval) AND u.active = true AND (s.status = 'shipped' OR (s.status = 'processing' AND EXISTS (SELECT 1 FROM order_notes AS n WHERE (n.order_id = o.id AND n.note ILIKE '%expedite%')))) ORDER BY o.created_at DESC"`;
+
+exports[`non-pretty: pretty/misc-7.sql 1`] = `"SELECT CASE WHEN n = 2 THEN ARRAY['month'] WHEN n = 4 THEN ARRAY['year'] WHEN n = 6 THEN ARRAY['year', 'month'] WHEN n = 8 THEN ARRAY['day'] WHEN n = 1024 THEN ARRAY['hour'] WHEN n = 1032 THEN ARRAY['day', 'hour'] WHEN n = 2048 THEN ARRAY['minute'] WHEN n = 3072 THEN ARRAY['hour', 'minute'] WHEN n = 3080 THEN ARRAY['day', 'minute'] WHEN n = 4096 THEN ARRAY['second'] WHEN n = 6144 THEN ARRAY['minute', 'second'] WHEN n = 7168 THEN ARRAY['hour', 'second'] WHEN n = 7176 THEN ARRAY['day', 'second'] WHEN n = 32767 THEN CAST(ARRAY[] AS text[]) END"`;
+
+exports[`non-pretty: pretty/misc-8.sql 1`] = `"SELECT CASE WHEN n = 2 OR n = 3 THEN ARRAY['month', COALESCE(extra_label, 'unknown')] WHEN n IN (4, 5) THEN CASE WHEN is_leap_year THEN ARRAY['year', 'leap'] ELSE ARRAY['year'] END WHEN n = 6 THEN ARRAY['year', 'month', 'quarter'] WHEN n = 8 THEN ARRAY['day', 'week', compute_label(n)] WHEN n = 1024 THEN ARRAY['hour', format('%s-hour', extra_label)] WHEN n = 1032 AND flag = true THEN ARRAY['day', 'hour', 'flagged'] WHEN n BETWEEN 2048 AND 2049 THEN ARRAY['minute', 'tick'] WHEN n = 3072 THEN ARRAY['hour', 'minute', current_setting('timezone')] WHEN n = 3080 THEN ARRAY['day', 'minute', to_char(now(), 'HH24:MI')] WHEN n IN (4096, 4097, 4098) THEN ARRAY['second', 'millisecond'] WHEN n = 6144 THEN ARRAY['minute', 'second', CASE WHEN use_micro = true THEN 'microsecond' ELSE 'none' END] WHEN n = 7168 OR (n > 7170 AND n < 7180) THEN ARRAY['hour', 'second', 'buffered'] WHEN n = 7176 THEN ARRAY['day', 'second', extra_info::text] WHEN n = 32767 THEN CAST(ARRAY[] AS text[]) ELSE ARRAY['undefined', 'unknown', 'fallback'] END"`;
+
+exports[`non-pretty: pretty/misc-9.sql 1`] = `"SELECT user_id, CASE WHEN EXISTS (SELECT 1 FROM logins WHERE logins.user_id = users.user_id AND success = false) THEN 'risky' ELSE 'safe' END AS risk_status FROM users"`;
+
+exports[`non-pretty: pretty/misc-10.sql 1`] = `"SELECT * FROM orders WHERE status = (CASE WHEN shipped_at IS NOT NULL THEN 'shipped' WHEN canceled_at IS NOT NULL THEN 'canceled' ELSE 'processing' END)"`;
+
+exports[`non-pretty: pretty/misc-11.sql 1`] = `"SELECT * FROM users AS u, LATERAL ( SELECT CASE WHEN u.is_admin THEN 'admin_dashboard' ELSE 'user_dashboard' END AS dashboard_view ) AS derived"`;
+
+exports[`non-pretty: pretty/misc-12.sql 1`] = `"SELECT id, (SELECT CASE WHEN count(*) > 5 THEN 'frequent' ELSE 'occasional' END FROM purchases AS p WHERE p.user_id = u.id) AS purchase_freq FROM users AS u"`;
+
+exports[`non-pretty: pretty/misc-13.sql 1`] = `"SELECT id, CASE WHEN rank() OVER (ORDER BY score DESC) = 1 THEN 'top' ELSE 'normal' END AS tier FROM players"`;
+
+exports[`non-pretty: pretty/misc-14.sql 1`] = `"CREATE TRIGGER decrease_job_queue_count_on_delete AFTER DELETE ON dashboard_jobs.jobs FOR EACH ROW WHEN ( old.queue_name IS NOT NULL ) EXECUTE FUNCTION dashboard_jobs.tg_decrease_job_queue_count ()"`;
+
+exports[`non-pretty: pretty/misc-15.sql 1`] = `"ALTER DEFAULT PRIVILEGES IN SCHEMA dashboard_jobs GRANT EXECUTE ON FUNCTIONS TO administrator"`;
+
+exports[`non-pretty: pretty/misc-16.sql 1`] = `"GRANT EXECUTE ON FUNCTION dashboard_private.uuid_generate_seeded_uuid TO PUBLIC"`;
+
+exports[`pretty: pretty/misc-1.sql 1`] = `
 "WITH 
   recent_orders AS (SELECT
     o.id,
@@ -31,9 +61,7 @@ ORDER BY
   h.total_spent DESC"
 `;
 
-exports[`Pretty Misc SQL formatting should format misc-2: Window functions with FILTER and GROUPING SETS (non-pretty) 1`] = `"SELECT department, employee_id, count(*) FILTER (WHERE status = 'active') OVER (PARTITION BY department) AS active_count, rank() OVER (PARTITION BY department ORDER BY salary DESC) AS salary_rank FROM employee_status GROUP BY GROUPING SETS (department, (department, employee_id))"`;
-
-exports[`Pretty Misc SQL formatting should format misc-2: Window functions with FILTER and GROUPING SETS (pretty) 1`] = `
+exports[`pretty: pretty/misc-2.sql 1`] = `
 "SELECT
   department,
   employee_id,
@@ -47,9 +75,7 @@ GROUP BY
   GROUPING SETS (department, (department, employee_id))"
 `;
 
-exports[`Pretty Misc SQL formatting should format misc-3: LATERAL joins with JSON functions (non-pretty) 1`] = `"SELECT u.id, u.name, j.key, j.value FROM users AS u, LATERAL jsonb_each_text(u.preferences) AS j(key, value) WHERE j.key LIKE 'notif_%' AND CAST(j.value AS boolean) = true"`;
-
-exports[`Pretty Misc SQL formatting should format misc-3: LATERAL joins with JSON functions (pretty) 1`] = `
+exports[`pretty: pretty/misc-3.sql 1`] = `
 "SELECT
   u.id,
   u.name,
@@ -61,15 +87,12 @@ WHERE
   AND CAST(j.value AS boolean) = true"
 `;
 
-exports[`Pretty Misc SQL formatting should format misc-4: EXISTS with nested subqueries and CASE (non-pretty) 1`] = `"SELECT p.id, p.title, CASE WHEN EXISTS (SELECT 1 FROM reviews AS r WHERE r.product_id = p.id AND r.rating >= 4) THEN 'Popular' ELSE 'Unrated' END AS status FROM products AS p WHERE p.archived = false"`;
-
-exports[`Pretty Misc SQL formatting should format misc-4: EXISTS with nested subqueries and CASE (pretty) 1`] = `
+exports[`pretty: pretty/misc-4.sql 1`] = `
 "SELECT
   p.id,
   p.title,
 CASE 
-  WHEN EXISTS (SELECT
-    1
+  WHEN EXISTS (SELECT 1
   FROM reviews AS r
   WHERE
     r.product_id = p.id
@@ -81,14 +104,12 @@ WHERE
   p.archived = false"
 `;
 
-exports[`Pretty Misc SQL formatting should format misc-5: Nested CTEs with type casts and subqueries (non-pretty) 1`] = `"WITH logs AS (SELECT id, CAST(payload AS pg_catalog.json) ->> 'event' AS event, CAST(CAST(payload AS pg_catalog.json) ->> 'ts' AS pg_catalog.timestamp) AS ts FROM event_log WHERE ts > (now() - '7 days'::interval)) SELECT event, count(*) AS freq FROM ( SELECT DISTINCT event, ts::date AS event_day FROM logs ) AS d GROUP BY event ORDER BY freq DESC"`;
-
-exports[`Pretty Misc SQL formatting should format misc-5: Nested CTEs with type casts and subqueries (pretty) 1`] = `
+exports[`pretty: pretty/misc-5.sql 1`] = `
 "WITH 
 logs AS (SELECT
   id,
-  CAST(payload AS pg_catalog.json) ->> 'event' AS event,
-  CAST(CAST(payload AS pg_catalog.json) ->> 'ts' AS pg_catalog.timestamp) AS ts
+  payload::json ->> 'event' AS event,
+  CAST(payload::json ->> 'ts' AS pg_catalog.timestamp) AS ts
 FROM event_log
 WHERE
   ts > (now() - '7 days'::interval))
@@ -105,9 +126,7 @@ ORDER BY
   freq DESC"
 `;
 
-exports[`Pretty Misc SQL formatting should format misc-6: Complex multi-table joins with nested conditions (non-pretty) 1`] = `"SELECT o.id AS order_id, u.name AS user_name, p.name AS product_name, s.status, sh.shipped_at, r.refund_amount FROM orders AS o JOIN users AS u ON o.user_id = u.id JOIN order_items AS oi ON oi.order_id = o.id JOIN products AS p ON (p.id = oi.product_id AND p.available = true) OR (p.sku = oi.product_sku AND (p.discontinued = false OR p.replacement_id IS NOT NULL)) LEFT JOIN shipping AS sh ON sh.order_id = o.id AND ((sh.carrier = 'UPS' AND sh.tracking_number IS NOT NULL) OR (sh.carrier = 'FedEx' AND sh.shipped_at > (o.created_at + '1 day'::interval))) LEFT JOIN statuses AS s ON s.id = o.status_id AND (s.name <> 'cancelled' OR (s.name = 'cancelled' AND s.updated_at > (now() - '7 days'::interval))) LEFT JOIN refunds AS r ON r.order_id = o.id AND ((r.status = 'approved' AND r.processed_at IS NOT NULL) OR (r.status = 'pending' AND r.requested_at < (now() - '14 days'::interval))) WHERE o.created_at > (now() - '90 days'::interval) AND u.active = true AND (s.status = 'shipped' OR (s.status = 'processing' AND EXISTS (SELECT 1 FROM order_notes AS n WHERE (n.order_id = o.id AND n.note ILIKE '%expedite%')))) ORDER BY o.created_at DESC"`;
-
-exports[`Pretty Misc SQL formatting should format misc-6: Complex multi-table joins with nested conditions (pretty) 1`] = `
+exports[`pretty: pretty/misc-6.sql 1`] = `
 "SELECT
   o.id AS order_id,
   u.name AS user_name,
@@ -143,8 +162,7 @@ WHERE
   AND u.active = true
   AND (s.status = 'shipped'
   OR (s.status = 'processing'
-  AND EXISTS (SELECT
-  1
+  AND EXISTS (SELECT 1
 FROM order_notes AS n
 WHERE
   (n.order_id = o.id
@@ -153,9 +171,7 @@ ORDER BY
   o.created_at DESC"
 `;
 
-exports[`Pretty Misc SQL formatting should format misc-7: Large Case Stmt (non-pretty) 1`] = `"SELECT CASE WHEN n = 2 THEN ARRAY['month'] WHEN n = 4 THEN ARRAY['year'] WHEN n = 6 THEN ARRAY['year', 'month'] WHEN n = 8 THEN ARRAY['day'] WHEN n = 1024 THEN ARRAY['hour'] WHEN n = 1032 THEN ARRAY['day', 'hour'] WHEN n = 2048 THEN ARRAY['minute'] WHEN n = 3072 THEN ARRAY['hour', 'minute'] WHEN n = 3080 THEN ARRAY['day', 'minute'] WHEN n = 4096 THEN ARRAY['second'] WHEN n = 6144 THEN ARRAY['minute', 'second'] WHEN n = 7168 THEN ARRAY['hour', 'second'] WHEN n = 7176 THEN ARRAY['day', 'second'] WHEN n = 32767 THEN CAST(ARRAY[] AS text[]) END"`;
-
-exports[`Pretty Misc SQL formatting should format misc-7: Large Case Stmt (pretty) 1`] = `
+exports[`pretty: pretty/misc-7.sql 1`] = `
 "SELECT
 CASE 
   WHEN n = 2 THEN ARRAY['month'] 
@@ -175,9 +191,7 @@ CASE
 END"
 `;
 
-exports[`Pretty Misc SQL formatting should format misc-8: Large Case Stmt (non-pretty) 1`] = `"SELECT CASE WHEN n = 2 OR n = 3 THEN ARRAY['month', COALESCE(extra_label, 'unknown')] WHEN n IN (4, 5) THEN CASE WHEN is_leap_year THEN ARRAY['year', 'leap'] ELSE ARRAY['year'] END WHEN n = 6 THEN ARRAY['year', 'month', 'quarter'] WHEN n = 8 THEN ARRAY['day', 'week', compute_label(n)] WHEN n = 1024 THEN ARRAY['hour', format('%s-hour', extra_label)] WHEN n = 1032 AND flag = true THEN ARRAY['day', 'hour', 'flagged'] WHEN n BETWEEN 2048 AND 2049 THEN ARRAY['minute', 'tick'] WHEN n = 3072 THEN ARRAY['hour', 'minute', current_setting('timezone')] WHEN n = 3080 THEN ARRAY['day', 'minute', to_char(now(), 'HH24:MI')] WHEN n IN (4096, 4097, 4098) THEN ARRAY['second', 'millisecond'] WHEN n = 6144 THEN ARRAY['minute', 'second', CASE WHEN use_micro = true THEN 'microsecond' ELSE 'none' END] WHEN n = 7168 OR (n > 7170 AND n < 7180) THEN ARRAY['hour', 'second', 'buffered'] WHEN n = 7176 THEN ARRAY['day', 'second', CAST(extra_info AS text)] WHEN n = 32767 THEN CAST(ARRAY[] AS text[]) ELSE ARRAY['undefined', 'unknown', 'fallback'] END"`;
-
-exports[`Pretty Misc SQL formatting should format misc-8: Large Case Stmt (pretty) 1`] = `
+exports[`pretty: pretty/misc-8.sql 1`] = `
 "SELECT
 CASE 
   WHEN n = 2
@@ -202,20 +216,17 @@ END]
   WHEN n = 7168
     OR (n > 7170
     AND n < 7180) THEN ARRAY['hour', 'second', 'buffered'] 
-  WHEN n = 7176 THEN ARRAY['day', 'second', CAST(extra_info AS text)] 
+  WHEN n = 7176 THEN ARRAY['day', 'second', extra_info::text] 
   WHEN n = 32767 THEN CAST(ARRAY[] AS text[]) 
   ELSE ARRAY['undefined', 'unknown', 'fallback'] 
 END"
 `;
 
-exports[`Pretty Misc SQL formatting should format misc-9: Large Case Stmt (non-pretty) 1`] = `"SELECT user_id, CASE WHEN EXISTS (SELECT 1 FROM logins WHERE logins.user_id = users.user_id AND success = false) THEN 'risky' ELSE 'safe' END AS risk_status FROM users"`;
-
-exports[`Pretty Misc SQL formatting should format misc-9: Large Case Stmt (pretty) 1`] = `
+exports[`pretty: pretty/misc-9.sql 1`] = `
 "SELECT
   user_id,
 CASE 
-  WHEN EXISTS (SELECT
-    1
+  WHEN EXISTS (SELECT 1
   FROM logins
   WHERE
     logins.user_id = users.user_id
@@ -225,11 +236,8 @@ END AS risk_status
 FROM users"
 `;
 
-exports[`Pretty Misc SQL formatting should format misc-10: Where Clause (non-pretty) 1`] = `"SELECT * FROM orders WHERE status = (CASE WHEN shipped_at IS NOT NULL THEN 'shipped' WHEN canceled_at IS NOT NULL THEN 'canceled' ELSE 'processing' END)"`;
-
-exports[`Pretty Misc SQL formatting should format misc-10: Where Clause (pretty) 1`] = `
-"SELECT
-  *
+exports[`pretty: pretty/misc-10.sql 1`] = `
+"SELECT *
 FROM orders
 WHERE
   status = (CASE 
@@ -239,11 +247,8 @@ WHERE
 END)"
 `;
 
-exports[`Pretty Misc SQL formatting should format misc-11: Lateral Join (non-pretty) 1`] = `"SELECT * FROM users AS u, LATERAL ( SELECT CASE WHEN u.is_admin THEN 'admin_dashboard' ELSE 'user_dashboard' END AS dashboard_view ) AS derived"`;
-
-exports[`Pretty Misc SQL formatting should format misc-11: Lateral Join (pretty) 1`] = `
-"SELECT
-  *
+exports[`pretty: pretty/misc-11.sql 1`] = `
+"SELECT *
 FROM users AS u, LATERAL ( SELECT
 CASE 
   WHEN u.is_admin THEN 'admin_dashboard' 
@@ -251,9 +256,7 @@ CASE
 END AS dashboard_view ) AS derived"
 `;
 
-exports[`Pretty Misc SQL formatting should format misc-12: Scalar Subquery (non-pretty) 1`] = `"SELECT id, (SELECT CASE WHEN count(*) > 5 THEN 'frequent' ELSE 'occasional' END FROM purchases AS p WHERE p.user_id = u.id) AS purchase_freq FROM users AS u"`;
-
-exports[`Pretty Misc SQL formatting should format misc-12: Scalar Subquery (pretty) 1`] = `
+exports[`pretty: pretty/misc-12.sql 1`] = `
 "SELECT
   id,
 (SELECT
@@ -267,9 +270,7 @@ WHERE
 FROM users AS u"
 `;
 
-exports[`Pretty Misc SQL formatting should format misc-13: Window Function (non-pretty) 1`] = `"SELECT id, CASE WHEN rank() OVER (ORDER BY score DESC) = 1 THEN 'top' ELSE 'normal' END AS tier FROM players"`;
-
-exports[`Pretty Misc SQL formatting should format misc-13: Window Function (pretty) 1`] = `
+exports[`pretty: pretty/misc-13.sql 1`] = `
 "SELECT
   id,
 CASE 
@@ -278,3 +279,19 @@ CASE
 END AS tier
 FROM players"
 `;
+
+exports[`pretty: pretty/misc-14.sql 1`] = `
+"CREATE TRIGGER decrease_job_queue_count_on_delete
+  AFTER DELETE
+  ON dashboard_jobs.jobs
+  FOR EACH ROW
+  WHEN (old.queue_name IS NOT NULL)
+  EXECUTE PROCEDURE dashboard_jobs.tg_decrease_job_queue_count()"
+`;
+
+exports[`pretty: pretty/misc-15.sql 1`] = `
+"ALTER DEFAULT PRIVILEGES IN SCHEMA dashboard_jobs
+  GRANT EXECUTE ON FUNCTIONS TO administrator"
+`;
+
+exports[`pretty: pretty/misc-16.sql 1`] = `"GRANT EXECUTE ON FUNCTION dashboard_private.uuid_generate_seeded_uuid TO PUBLIC"`;
