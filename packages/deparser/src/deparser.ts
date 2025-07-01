@@ -4735,6 +4735,10 @@ export class Deparser implements DeparserVisitor {
               parts.push(this.TypeName(colDefData.typeName, context));
             }
 
+            if (colDefData.collClause) {
+              parts.push(this.CollateClause(colDefData.collClause, context));
+            }
+
             if (colDefData.fdwoptions && colDefData.fdwoptions.length > 0) {
               parts.push('OPTIONS');
               const columnContext = context.spawn('ColumnDef');
