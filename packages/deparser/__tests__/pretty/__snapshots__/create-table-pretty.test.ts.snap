@@ -2,7 +2,7 @@
 
 exports[`non-pretty: pretty/create_table-1.sql 1`] = `"CREATE TABLE users (id serial PRIMARY KEY, name text NOT NULL, email text UNIQUE)"`;
 
-exports[`non-pretty: pretty/create_table-2.sql 1`] = `"CREATE TABLE products (id serial PRIMARY KEY, name varchar(255) NOT NULL, price numeric(10, 2) CHECK (price > 0), category_id int, description text, created_at pg_catalog.timestamp DEFAULT now(), updated_at pg_catalog.timestamp, UNIQUE (name, category_id), FOREIGN KEY (category_id) REFERENCES categories (id))"`;
+exports[`non-pretty: pretty/create_table-2.sql 1`] = `"CREATE TABLE products (id serial PRIMARY KEY, name varchar(255) NOT NULL, price numeric(10, 2) CHECK (price > 0), category_id int, description text, created_at timestamp DEFAULT now(), updated_at timestamp, UNIQUE (name, category_id), FOREIGN KEY (category_id) REFERENCES categories (id))"`;
 
 exports[`non-pretty: pretty/create_table-3.sql 1`] = `"CREATE TABLE orders (id serial PRIMARY KEY, subtotal numeric(10, 2) NOT NULL, tax_rate numeric(5, 4) DEFAULT 0.0825, tax_amount numeric(10, 2) GENERATED ALWAYS AS (subtotal * tax_rate) STORED, total numeric(10, 2) GENERATED ALWAYS AS (subtotal + tax_amount) STORED)"`;
 
@@ -10,7 +10,7 @@ exports[`non-pretty: pretty/create_table-4.sql 1`] = `"CREATE TABLE sales (id se
 
 exports[`non-pretty: pretty/create_table-5.sql 1`] = `"CREATE TEMPORARY TABLE temp_calculations (id int, value numeric(15, 5), result text)"`;
 
-exports[`non-pretty: pretty/create_table-6.sql 1`] = `"CREATE TABLE orders (id serial PRIMARY KEY, user_id int NOT NULL, total numeric(10, 2) CHECK (total > 0), status varchar(20) DEFAULT 'pending', created_at pg_catalog.timestamp DEFAULT now(), FOREIGN KEY (user_id) REFERENCES users (id))"`;
+exports[`non-pretty: pretty/create_table-6.sql 1`] = `"CREATE TABLE orders (id serial PRIMARY KEY, user_id int NOT NULL, total numeric(10, 2) CHECK (total > 0), status varchar(20) DEFAULT 'pending', created_at timestamp DEFAULT now(), FOREIGN KEY (user_id) REFERENCES users (id))"`;
 
 exports[`pretty: pretty/create_table-1.sql 1`] = `
 "CREATE TABLE users (
@@ -27,8 +27,8 @@ exports[`pretty: pretty/create_table-2.sql 1`] = `
   price numeric(10, 2) CHECK (price > 0),
   category_id int,
   description text,
-  created_at pg_catalog.timestamp DEFAULT now(),
-  updated_at pg_catalog.timestamp,
+  created_at timestamp DEFAULT now(),
+  updated_at timestamp,
   UNIQUE (name, category_id),
   FOREIGN KEY(category_id)
     REFERENCES categories (id)
@@ -68,7 +68,7 @@ exports[`pretty: pretty/create_table-6.sql 1`] = `
   user_id int NOT NULL,
   total numeric(10, 2) CHECK (total > 0),
   status varchar(20) DEFAULT 'pending',
-  created_at pg_catalog.timestamp DEFAULT now(),
+  created_at timestamp DEFAULT now(),
   FOREIGN KEY(user_id)
     REFERENCES users (id)
 )"

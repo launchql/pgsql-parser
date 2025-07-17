@@ -1,0 +1,200 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`non-pretty: misc/pg_catalog-1.sql 1`] = `"SELECT pg_catalog.json_object('{}')"`;
+
+exports[`non-pretty: misc/pg_catalog-2.sql 1`] = `"SELECT * FROM generate_series(1, 5)"`;
+
+exports[`non-pretty: misc/pg_catalog-3.sql 1`] = `"SELECT get_byte('\\xDEADBEEF'::bytea, 1)"`;
+
+exports[`non-pretty: misc/pg_catalog-4.sql 1`] = `"SELECT now()"`;
+
+exports[`non-pretty: misc/pg_catalog-5.sql 1`] = `"SELECT clock_timestamp()"`;
+
+exports[`non-pretty: misc/pg_catalog-6.sql 1`] = `"SELECT to_char(now(), 'YYYY-MM-DD HH24:MI:SS')"`;
+
+exports[`non-pretty: misc/pg_catalog-7.sql 1`] = `"SELECT json_build_object('name', 'Alice', 'age', 30)"`;
+
+exports[`non-pretty: misc/pg_catalog-8.sql 1`] = `"SELECT pg_typeof(42), pg_typeof('hello'), pg_typeof(now())"`;
+
+exports[`non-pretty: misc/pg_catalog-9.sql 1`] = `"SELECT SUBSTRING('abcdefg' FROM 2 FOR 3)"`;
+
+exports[`non-pretty: misc/pg_catalog-10.sql 1`] = `"SELECT replace('hello world', 'l', 'L')"`;
+
+exports[`non-pretty: misc/pg_catalog-11.sql 1`] = `"SELECT length('yolo')"`;
+
+exports[`non-pretty: misc/pg_catalog-12.sql 1`] = `"SELECT POSITION('G' IN 'ChatGPT')"`;
+
+exports[`non-pretty: misc/pg_catalog-13.sql 1`] = `"SELECT TRIM(BOTH FROM '  padded text  ')"`;
+
+exports[`non-pretty: misc/pg_catalog-14.sql 1`] = `"SELECT ltrim('---abc', '-')"`;
+
+exports[`non-pretty: misc/pg_catalog-15.sql 1`] = `"SELECT array_agg(id) FROM ( VALUES (1), (2), (3) ) AS t(id)"`;
+
+exports[`non-pretty: misc/pg_catalog-16.sql 1`] = `"SELECT string_agg(name, ', ') FROM ( VALUES ('Alice'), ('Bob'), ('Carol') ) AS t(name)"`;
+
+exports[`non-pretty: misc/pg_catalog-17.sql 1`] = `"SELECT json_agg(name) FROM ( VALUES ('A'), ('B') ) AS t(name)"`;
+
+exports[`non-pretty: misc/pg_catalog-timestamp-etc-1.sql 1`] = `"CREATE TABLE public."ACTIVITY" ("ACTIVITY_ID" bigint NOT NULL, "PUBLISHED" timestamp(2) with time zone)"`;
+
+exports[`non-pretty: misc/pg_catalog-timestamp-etc-2.sql 1`] = `"CREATE TABLE public."ACTIVITY" ("ACTIVITY_ID" bigint NOT NULL, "PUBLISHED" timestamp(2))"`;
+
+exports[`non-pretty: misc/pg_catalog-timestamp-etc-3.sql 1`] = `"CREATE TABLE public."EXAMPLE" ("MESSAGE" text)"`;
+
+exports[`non-pretty: misc/pg_catalog-timestamp-etc-4.sql 1`] = `"CREATE TABLE public."EXAMPLE_TIME" ("START_TIME" time)"`;
+
+exports[`non-pretty: misc/pg_catalog-timestamp-etc-5.sql 1`] = `"CREATE TABLE public."EXAMPLE_TIMETZ" ("START_TIME" time with time zone)"`;
+
+exports[`non-pretty: misc/pg_catalog-timestamp-etc-6.sql 1`] = `"CREATE TABLE public."EXAMPLE_TIME_PRECISION" ("START_TIME" time(3))"`;
+
+exports[`non-pretty: misc/pg_catalog-timestamp-etc-7.sql 1`] = `"CREATE TABLE public."EXAMPLE_TIMETZ_PRECISION" ("START_TIME" time(3) with time zone)"`;
+
+exports[`non-pretty: misc/pg_catalog-timestamp-etc-8.sql 1`] = `"CREATE TABLE public."EXAMPLE_TIMESTAMP" ("CREATED_AT" timestamp)"`;
+
+exports[`non-pretty: misc/pg_catalog-timestamp-etc-9.sql 1`] = `"CREATE TABLE public."EXAMPLE_TIMESTAMPTZ" ("CREATED_AT" timestamp with time zone)"`;
+
+exports[`non-pretty: misc/pg_catalog-timestamp-etc-10.sql 1`] = `"CREATE TABLE public."EXAMPLE_INTERVAL" ("DURATION" interval)"`;
+
+exports[`non-pretty: misc/pg_catalog-timestamp-etc-11.sql 1`] = `"CREATE TABLE public."EXAMPLE_INTERVAL_PRECISION" ("DURATION" interval(2))"`;
+
+exports[`non-pretty: misc/pg_catalog-timestamp-etc-12.sql 1`] = `"CREATE TABLE public."EXAMPLE_DATE" ("BIRTHDAY" date)"`;
+
+exports[`non-pretty: misc/pg_catalog-timestamp-etc-13.sql 1`] = `"CREATE TABLE public."EXAMPLE_BOOL" ("IS_ACTIVE" boolean)"`;
+
+exports[`pretty: misc/pg_catalog-1.sql 1`] = `"SELECT pg_catalog.json_object('{}')"`;
+
+exports[`pretty: misc/pg_catalog-2.sql 1`] = `
+"SELECT *
+FROM generate_series(1, 5)"
+`;
+
+exports[`pretty: misc/pg_catalog-3.sql 1`] = `"SELECT get_byte('\\xDEADBEEF'::bytea, 1)"`;
+
+exports[`pretty: misc/pg_catalog-4.sql 1`] = `"SELECT now()"`;
+
+exports[`pretty: misc/pg_catalog-5.sql 1`] = `"SELECT clock_timestamp()"`;
+
+exports[`pretty: misc/pg_catalog-6.sql 1`] = `"SELECT to_char(now(), 'YYYY-MM-DD HH24:MI:SS')"`;
+
+exports[`pretty: misc/pg_catalog-7.sql 1`] = `"SELECT json_build_object('name', 'Alice', 'age', 30)"`;
+
+exports[`pretty: misc/pg_catalog-8.sql 1`] = `
+"SELECT
+  pg_typeof(42),
+  pg_typeof('hello'),
+  pg_typeof(now())"
+`;
+
+exports[`pretty: misc/pg_catalog-9.sql 1`] = `"SELECT SUBSTRING('abcdefg' FROM 2 FOR 3)"`;
+
+exports[`pretty: misc/pg_catalog-10.sql 1`] = `"SELECT replace('hello world', 'l', 'L')"`;
+
+exports[`pretty: misc/pg_catalog-11.sql 1`] = `"SELECT length('yolo')"`;
+
+exports[`pretty: misc/pg_catalog-12.sql 1`] = `"SELECT POSITION('G' IN 'ChatGPT')"`;
+
+exports[`pretty: misc/pg_catalog-13.sql 1`] = `"SELECT TRIM(BOTH FROM '  padded text  ')"`;
+
+exports[`pretty: misc/pg_catalog-14.sql 1`] = `"SELECT ltrim('---abc', '-')"`;
+
+exports[`pretty: misc/pg_catalog-15.sql 1`] = `
+"SELECT array_agg(id)
+FROM ( VALUES
+  (1),
+  (2),
+  (3) ) AS t(id)"
+`;
+
+exports[`pretty: misc/pg_catalog-16.sql 1`] = `
+"SELECT string_agg(name, ', ')
+FROM ( VALUES
+  ('Alice'),
+  ('Bob'),
+  ('Carol') ) AS t(name)"
+`;
+
+exports[`pretty: misc/pg_catalog-17.sql 1`] = `
+"SELECT json_agg(name)
+FROM ( VALUES
+  ('A'),
+  ('B') ) AS t(name)"
+`;
+
+exports[`pretty: misc/pg_catalog-timestamp-etc-1.sql 1`] = `
+"CREATE TABLE public."ACTIVITY" (
+  "ACTIVITY_ID" bigint NOT NULL,
+  "PUBLISHED" timestamp(2) with time zone
+)"
+`;
+
+exports[`pretty: misc/pg_catalog-timestamp-etc-2.sql 1`] = `
+"CREATE TABLE public."ACTIVITY" (
+  "ACTIVITY_ID" bigint NOT NULL,
+  "PUBLISHED" timestamp(2)
+)"
+`;
+
+exports[`pretty: misc/pg_catalog-timestamp-etc-3.sql 1`] = `
+"CREATE TABLE public."EXAMPLE" (
+  "MESSAGE" text
+)"
+`;
+
+exports[`pretty: misc/pg_catalog-timestamp-etc-4.sql 1`] = `
+"CREATE TABLE public."EXAMPLE_TIME" (
+  "START_TIME" time
+)"
+`;
+
+exports[`pretty: misc/pg_catalog-timestamp-etc-5.sql 1`] = `
+"CREATE TABLE public."EXAMPLE_TIMETZ" (
+  "START_TIME" time with time zone
+)"
+`;
+
+exports[`pretty: misc/pg_catalog-timestamp-etc-6.sql 1`] = `
+"CREATE TABLE public."EXAMPLE_TIME_PRECISION" (
+  "START_TIME" time(3)
+)"
+`;
+
+exports[`pretty: misc/pg_catalog-timestamp-etc-7.sql 1`] = `
+"CREATE TABLE public."EXAMPLE_TIMETZ_PRECISION" (
+  "START_TIME" time(3) with time zone
+)"
+`;
+
+exports[`pretty: misc/pg_catalog-timestamp-etc-8.sql 1`] = `
+"CREATE TABLE public."EXAMPLE_TIMESTAMP" (
+  "CREATED_AT" timestamp
+)"
+`;
+
+exports[`pretty: misc/pg_catalog-timestamp-etc-9.sql 1`] = `
+"CREATE TABLE public."EXAMPLE_TIMESTAMPTZ" (
+  "CREATED_AT" timestamp with time zone
+)"
+`;
+
+exports[`pretty: misc/pg_catalog-timestamp-etc-10.sql 1`] = `
+"CREATE TABLE public."EXAMPLE_INTERVAL" (
+  "DURATION" interval
+)"
+`;
+
+exports[`pretty: misc/pg_catalog-timestamp-etc-11.sql 1`] = `
+"CREATE TABLE public."EXAMPLE_INTERVAL_PRECISION" (
+  "DURATION" interval(2)
+)"
+`;
+
+exports[`pretty: misc/pg_catalog-timestamp-etc-12.sql 1`] = `
+"CREATE TABLE public."EXAMPLE_DATE" (
+  "BIRTHDAY" date
+)"
+`;
+
+exports[`pretty: misc/pg_catalog-timestamp-etc-13.sql 1`] = `
+"CREATE TABLE public."EXAMPLE_BOOL" (
+  "IS_ACTIVE" boolean
+)"
+`;

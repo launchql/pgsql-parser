@@ -20,7 +20,7 @@ exports[`non-pretty: pretty/constraints-9.sql 1`] = `"ALTER TABLE finance.transa
 
 exports[`non-pretty: pretty/constraints-10.sql 1`] = `"ALTER TABLE school.enrollments ADD CONSTRAINT fk_student_course FOREIGN KEY (student_id, course_id) REFERENCES school.courses_students (student_id, course_id)"`;
 
-exports[`non-pretty: pretty/constraints-11.sql 1`] = `"CREATE TABLE orders (id serial PRIMARY KEY, user_id int NOT NULL, total numeric(10, 2) CHECK (total > 0), status varchar(20) DEFAULT 'pending', created_at pg_catalog.timestamp DEFAULT now(), CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE, CONSTRAINT unique_user_date UNIQUE (user_id, created_at), CONSTRAINT check_status CHECK (status IN ('pending', 'completed', 'cancelled')))"`;
+exports[`non-pretty: pretty/constraints-11.sql 1`] = `"CREATE TABLE orders (id serial PRIMARY KEY, user_id int NOT NULL, total numeric(10, 2) CHECK (total > 0), status varchar(20) DEFAULT 'pending', created_at timestamp DEFAULT now(), CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE, CONSTRAINT unique_user_date UNIQUE (user_id, created_at), CONSTRAINT check_status CHECK (status IN ('pending', 'completed', 'cancelled')))"`;
 
 exports[`non-pretty: pretty/constraints-12.sql 1`] = `"ALTER TABLE products ADD CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories (id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED"`;
 
@@ -104,7 +104,7 @@ exports[`pretty: pretty/constraints-11.sql 1`] = `
   user_id int NOT NULL,
   total numeric(10, 2) CHECK (total > 0),
   status varchar(20) DEFAULT 'pending',
-  created_at pg_catalog.timestamp DEFAULT now(),
+  created_at timestamp DEFAULT now(),
   CONSTRAINT fk_user
     FOREIGN KEY(user_id)
     REFERENCES users (id)

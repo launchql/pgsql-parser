@@ -1830,6 +1830,20 @@ export class Deparser implements DeparserVisitor {
           } else {
             typeName = 'time with time zone';
           }
+        } else if (type === 'timestamp') {
+          if (args) {
+            typeName = `timestamp(${args})`;
+            args = null; // Don't apply args again in mods()
+          } else {
+            typeName = 'timestamp';
+          }
+        } else if (type === 'time') {
+          if (args) {
+            typeName = `time(${args})`;
+            args = null; // Don't apply args again in mods()
+          } else {
+            typeName = 'time';
+          }
         }
 
         let result = mods(typeName, args);
