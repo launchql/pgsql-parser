@@ -1,6 +1,6 @@
 {
   "name": "pgsql-parser",
-  "version": "17.7.8",
+  "version": "17.7.9",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "The real PostgreSQL query parser",
   "main": "index.js",
@@ -43,6 +43,6 @@
   "dependencies": {
     "@pgsql/types": "^17.6.1",
     "libpg-query": "17.5.5",
-    "pgsql-deparser": "^17.9.0"
+    "pgsql-deparser": "^17.9.1"
   }
 }
