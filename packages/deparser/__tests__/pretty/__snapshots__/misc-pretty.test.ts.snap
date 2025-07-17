@@ -8,7 +8,7 @@ exports[`non-pretty: pretty/misc-3.sql 1`] = `"SELECT u.id, u.name, j.key, j.val
 
 exports[`non-pretty: pretty/misc-4.sql 1`] = `"SELECT p.id, p.title, CASE WHEN EXISTS (SELECT 1 FROM reviews AS r WHERE r.product_id = p.id AND r.rating >= 4) THEN 'Popular' ELSE 'Unrated' END AS status FROM products AS p WHERE p.archived = false"`;
 
-exports[`non-pretty: pretty/misc-5.sql 1`] = `"WITH logs AS (SELECT id, payload::json ->> 'event' AS event, CAST(payload::json ->> 'ts' AS pg_catalog.timestamp) AS ts FROM event_log WHERE ts > (now() - '7 days'::interval)) SELECT event, count(*) AS freq FROM ( SELECT DISTINCT event, ts::date AS event_day FROM logs ) AS d GROUP BY event ORDER BY freq DESC"`;
+exports[`non-pretty: pretty/misc-5.sql 1`] = `"WITH logs AS (SELECT id, payload::json ->> 'event' AS event, CAST(payload::json ->> 'ts' AS timestamp) AS ts FROM event_log WHERE ts > (now() - '7 days'::interval)) SELECT event, count(*) AS freq FROM ( SELECT DISTINCT event, ts::date AS event_day FROM logs ) AS d GROUP BY event ORDER BY freq DESC"`;
 
 exports[`non-pretty: pretty/misc-6.sql 1`] = `"SELECT o.id AS order_id, u.name AS user_name, p.name AS product_name, s.status, sh.shipped_at, r.refund_amount FROM orders AS o JOIN users AS u ON o.user_id = u.id JOIN order_items AS oi ON oi.order_id = o.id JOIN products AS p ON (p.id = oi.product_id AND p.available = true) OR (p.sku = oi.product_sku AND (p.discontinued = false OR p.replacement_id IS NOT NULL)) LEFT JOIN shipping AS sh ON sh.order_id = o.id AND ((sh.carrier = 'UPS' AND sh.tracking_number IS NOT NULL) OR (sh.carrier = 'FedEx' AND sh.shipped_at > (o.created_at + '1 day'::interval))) LEFT JOIN statuses AS s ON s.id = o.status_id AND (s.name <> 'cancelled' OR (s.name = 'cancelled' AND s.updated_at > (now() - '7 days'::interval))) LEFT JOIN refunds AS r ON r.order_id = o.id AND ((r.status = 'approved' AND r.processed_at IS NOT NULL) OR (r.status = 'pending' AND r.requested_at < (now() - '14 days'::interval))) WHERE o.created_at > (now() - '90 days'::interval) AND u.active = true AND (s.status = 'shipped' OR (s.status = 'processing' AND EXISTS (SELECT 1 FROM order_notes AS n WHERE (n.order_id = o.id AND n.note ILIKE '%expedite%')))) ORDER BY o.created_at DESC"`;
 
@@ -109,7 +109,7 @@ exports[`pretty: pretty/misc-5.sql 1`] = `
 logs AS (SELECT
   id,
   payload::json ->> 'event' AS event,
-  CAST(payload::json ->> 'ts' AS pg_catalog.timestamp) AS ts
+  CAST(payload::json ->> 'ts' AS timestamp) AS ts
 FROM event_log
 WHERE
   ts > (now() - '7 days'::interval))
