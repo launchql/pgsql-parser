@@ -99,7 +99,7 @@ The deparser accepts optional configuration for formatting and output control:
 import { deparseSync as deparse } from 'pgsql-deparser';
 
 const options = {
-  pretty: true,           // Enable pretty formatting (default: false)
+  pretty: true,           // Enable pretty formatting (default: true)
   newline: '\n',         // Newline character (default: '\n')
   tab: '  ',             // Tab/indentation character (default: '  ')
   semicolons: true       // Add semicolons to statements (default: true)
@@ -110,7 +110,7 @@ const sql = deparse(ast, options);
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `pretty` | `boolean` | `false` | Enable pretty formatting with indentation and line breaks |
+| `pretty` | `boolean` | `true` | Enable pretty formatting with indentation and line breaks |
 | `newline` | `string` | `'\n'` | Character(s) used for line breaks |
 | `tab` | `string` | `'  '` | Character(s) used for indentation |
 | `semicolons` | `boolean` | `true` | Add semicolons to SQL statements |
