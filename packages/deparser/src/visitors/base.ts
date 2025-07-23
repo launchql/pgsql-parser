@@ -48,7 +48,7 @@ export class DeparserContext {
 
   constructor({
     indentLevel = 0,
-    prettyMode = false,
+    prettyMode = true,
     isStringLiteral,
     parentNodeTypes = [],
     formatter,

@@ -16,20 +16,20 @@ describe('Entry Point Refactoring', () => {
 
   describe('ParseResult handling', () => {
     it('should handle bare ParseResult (duck-typed)', () => {
-      const result = Deparser.deparse(parseResult);
+      const result = Deparser.deparse(parseResult, { pretty: false });
       expect(result).toContain('SELECT * FROM users WHERE id = 1');
       expect(result).toContain('INSERT INTO logs (message) VALUES (\'test\')');
     });
 
     it('should handle wrapped ParseResult', () => {
       const wrappedParseResult = { ParseResult: parseResult } as t.Node;
-      const result = Deparser.deparse(wrappedParseResult);
+      const result = Deparser.deparse(wrappedParseResult, { pretty: false });
       expect(result).toContain('SELECT * FROM users WHERE id = 1');
       expect(result).toContain('INSERT INTO logs (message) VALUES (\'test\')');
     });
 
     it('should preserve semicolons based on stmt_len', () => {
-      const result = Deparser.deparse(parseResult);
+      const result = Deparser.deparse(parseResult, { pretty: false });
       // The first statement should have a semicolon if stmt_len is set
       const lines = result.split('\n').filter(line => line.trim());
       if (parseResult.stmts?.[0]?.stmt_len) {
@@ -42,7 +42,7 @@ describe('Entry Point Refactoring', () => {
     it('should handle wrapped RawStmt', () => {
       const rawStmt = parseResult.stmts![0];
       const wrappedRawStmt = { RawStmt: rawStmt } as t.Node;
-      const result = Deparser.deparse(wrappedRawStmt);
+      const result = Deparser.deparse(wrappedRawStmt, { pretty: false });
       expect(result).toContain('SELECT * FROM users WHERE id = 1');
     });
 
@@ -50,7 +50,7 @@ describe('Entry Point Refactoring', () => {
       const rawStmt = parseResult.stmts![0];
       if (rawStmt.stmt_len) {
         const wrappedRawStmt = { RawStmt: rawStmt } as t.Node;
-        const result = Deparser.deparse(wrappedRawStmt);
+        const result = Deparser.deparse(wrappedRawStmt, { pretty: false });
         expect(result).toMatch(/;$/);
       }
     });
@@ -59,14 +59,14 @@ describe('Entry Point Refactoring', () => {
   describe('Array handling', () => {
     it('should handle array of statements', () => {
       const statements = parseResult.stmts!.map(rawStmt => rawStmt.stmt!);
-      const result = Deparser.deparse(statements);
+      const result = Deparser.deparse(statements, { pretty: false });
       expect(result).toContain('SELECT * FROM users WHERE id = 1');
       expect(result).toContain('INSERT INTO logs (message) VALUES (\'test\')');
     });
 
     it('should handle array of wrapped nodes', () => {
       const wrappedNodes = parseResult.stmts!.map(rawStmt => ({ RawStmt: rawStmt } as t.Node));
-      const result = Deparser.deparse(wrappedNodes);
+      const result = Deparser.deparse(wrappedNodes, { pretty: false });
       expect(result).toContain('SELECT * FROM users WHERE id = 1');
       expect(result).toContain('INSERT INTO logs (message) VALUES (\'test\')');
     });
@@ -75,7 +75,7 @@ describe('Entry Point Refactoring', () => {
   describe('Single node handling', () => {
     it('should handle single statement', () => {
       const stmt = parseResult.stmts![0].stmt!;
-      const result = Deparser.deparse(stmt);
+      const result = Deparser.deparse(stmt, { pretty: false });
       expect(result).toContain('SELECT * FROM users WHERE id = 1');
     });
   });
