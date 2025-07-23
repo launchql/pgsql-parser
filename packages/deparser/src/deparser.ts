@@ -79,7 +79,7 @@ export interface DeparserOptions {
   functionDelimiter?: string;  // Default: '$$'
   // Alternative delimiter when the default is found in the body
   functionDelimiterFallback?: string;  // Default: '$EOFCODE$'
-  pretty?: boolean;  // Default: false
+  pretty?: boolean;  // Default: true
 }
 
 // Type guards for better type safety

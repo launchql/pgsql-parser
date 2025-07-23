@@ -3,7 +3,7 @@ export class SqlFormatter {
   private tabChar: string;
   private prettyMode: boolean;
 
-  constructor(newlineChar: string = '\n', tabChar: string = '  ', prettyMode: boolean = false) {
+  constructor(newlineChar: string = '\n', tabChar: string = '  ', prettyMode: boolean = true) {
     this.newlineChar = newlineChar;
     this.tabChar = tabChar;
     this.prettyMode = prettyMode;
