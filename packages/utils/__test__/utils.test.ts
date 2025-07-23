@@ -25,7 +25,7 @@ it('simple SelectStmt', () => {
   (stmt.SelectStmt.fromClause[0] as {RangeVar: RangeVar}).RangeVar.relname = 'another_table';
 
   expect(stmt).toMatchSnapshot();
-  expect(deparse(stmt)).toMatchSnapshot();
+  expect(deparse(stmt, { pretty: false })).toMatchSnapshot();
 });
 
 it('SelectStmt with WHERE clause', () => {
@@ -68,7 +68,7 @@ it('SelectStmt with WHERE clause', () => {
     op: 'SETOP_NONE'
   });
   
-  expect(deparse(selectStmt, {})).toEqual(`SELECT * FROM myschema.mytable WHERE a = CAST('t' AS boolean)`);
+  expect(deparse(selectStmt, { pretty: false })).toEqual(`SELECT * FROM myschema.mytable WHERE a = CAST('t' AS boolean)`);
 });
 
 it('queries', () => {
@@ -106,7 +106,7 @@ it('queries', () => {
     op: 'SETOP_NONE'
   });
 
-  expect(deparse(query, {})).toEqual(`SELECT name, email FROM users WHERE age > 18`);
+  expect(deparse(query, { pretty: false })).toEqual(`SELECT name, email FROM users WHERE age > 18`);
   
 });
 it('dynamic creation of tables', () => {
@@ -142,6 +142,6 @@ it('dynamic creation of tables', () => {
   });
 
   // `deparse` function converts AST to SQL string
-  const sql = deparse(createStmt);
+  const sql = deparse(createStmt, { pretty: false });
   expect(sql).toMatchSnapshot();
 })
