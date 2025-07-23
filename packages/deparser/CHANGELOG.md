@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [17.10.0](https://github.com/launchql/pgsql-parser/compare/pgsql-deparser@17.9.1...pgsql-deparser@17.10.0) (2025-07-23)
+
+
+### Features
+
+* make pretty print the default option ([71eba83](https://github.com/launchql/pgsql-parser/commit/71eba8350a0d057e867d6dc9ed8b4013ebb99370))
+
+
+
+
+
 ## [17.9.1](https://github.com/launchql/pgsql-parser/compare/pgsql-deparser@17.9.0...pgsql-deparser@17.9.1) (2025-07-17)
 
 **Note:** Version bump only for package pgsql-deparser

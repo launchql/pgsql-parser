@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [17.8.2](https://github.com/launchql/pgsql-parser/compare/@pgsql/transform@17.8.1...@pgsql/transform@17.8.2) (2025-07-23)
+
+**Note:** Version bump only for package @pgsql/transform
+
+
+
+
+
 ## [17.8.1](https://github.com/launchql/pgsql-parser/compare/@pgsql/transform@17.8.0...@pgsql/transform@17.8.1) (2025-07-17)
 
 **Note:** Version bump only for package @pgsql/transform

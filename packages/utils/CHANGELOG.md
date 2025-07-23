@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [17.7.9](https://github.com/launchql/pgsql-parser/compare/@pgsql/utils@17.7.8...@pgsql/utils@17.7.9) (2025-07-23)
+
+
+### Bug Fixes
+
+* update utils tests to handle pretty:true default ([c17f8e7](https://github.com/launchql/pgsql-parser/commit/c17f8e7c65b32c31ca341ff1c4e3e06602cddb25))
+
+
+
+
+
 ## [17.7.8](https://github.com/launchql/pgsql-parser/compare/@pgsql/utils@17.7.7...@pgsql/utils@17.7.8) (2025-07-17)
 
 **Note:** Version bump only for package @pgsql/utils
