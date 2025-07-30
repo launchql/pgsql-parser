@@ -46,6 +46,12 @@ npm install pg-proto-parser
 
 ### Basic Usage
 
+- [Parse SQL to AST](#parse-sql-to-ast)
+- [Convert AST back to SQL](#convert-ast-back-to-sql)
+- [Build AST with Types](#build-ast-with-types)
+- [Build AST Programmatically](#build-ast-programmatically)
+- [Walk/Traverse an AST](#walktraverse-an-ast)
+
 #### Parse SQL to AST
 ```typescript
 import { parse } from 'pgsql-parser';
