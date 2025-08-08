@@ -35,7 +35,7 @@
   "devDependencies": {
     "@pgsql/parser": "^1.2.0",
     "pg-proto-parser": "^1.29.2",
-    "pgsql-deparser": "^17.10.0"
+    "pgsql-deparser": "^17.11.0"
   },
   "keywords": []
 }
