@@ -42,7 +42,7 @@
   ],
   "dependencies": {
     "@pgsql/types": "^17.6.1",
-    "libpg-query": "17.5.5",
+    "libpg-query": "17.6.0",
     "pgsql-deparser": "^17.10.0"
   }
 }

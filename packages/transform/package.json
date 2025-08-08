@@ -33,7 +33,7 @@
     "test:ast": "ts-node scripts/test-ast.ts"
   },
   "devDependencies": {
-    "@pgsql/parser": "^1.1.4",
+    "@pgsql/parser": "^1.2.0",
     "pg-proto-parser": "^1.29.2",
     "pgsql-deparser": "^17.10.0"
   },

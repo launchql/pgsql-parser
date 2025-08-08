@@ -1221,10 +1221,10 @@
     node-addon-api "^3.2.1"
     node-gyp-build "^4.3.0"
 
-"@pgsql/parser@^1.1.4":
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/@pgsql/parser/-/parser-1.1.4.tgz#9063c8599cd40c38b2d1d49c9df9bd971b31e583"
-  integrity sha512-RZ+6cDULpq6qNxVJafHXYw4w2h1SkLy3SKJDiPR0NGMlnJTeGAWXLoJcgIfnlE0CCpNXPMXrz65A2ppsyOofsw==
+"@pgsql/parser@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@pgsql/parser/-/parser-1.2.0.tgz#601f495d8e12f67291b0bea669d08c5f403ccfb3"
+  integrity sha512-OjplMlaqp3kQGkPZY4GhLfwyJt22PImDP+Bf+rlnQ8y7IdQdZ0X1xydwAEHzIDybjKeh17atYnuod1m+Wdlwgw==
 
 "@pgsql/types@^17.6.0", "@pgsql/types@^17.6.1":
   version "17.6.1"
@@ -4560,10 +4560,10 @@ libnpmpublish@7.1.4:
     sigstore "^1.4.0"
     ssri "^10.0.1"
 
-libpg-query@17.5.5:
-  version "17.5.5"
-  resolved "https://registry.yarnpkg.com/libpg-query/-/libpg-query-17.5.5.tgz#6446641f0a2dc0ec12fccb1bbd14374ae191cece"
-  integrity sha512-vzD5sjv1Kqf5EtoxzO1pcL43Y5k9o84wmPWAxomhhBS1crEgLlkwuVi28aSE5SGz7UZOu+KqO5eLmGPt1ySGRg==
+libpg-query@17.6.0:
+  version "17.6.0"
+  resolved "https://registry.yarnpkg.com/libpg-query/-/libpg-query-17.6.0.tgz#0fbc6f597bbb2e2fa46bc9c664d58a1510535522"
+  integrity sha512-r4zOTcLTGYS5PlLQAicJ6Yi/tvZFag42YUuNEO8pi8bwt/ZZ4kj514J4QV5bOx0mZzPLF6agbfNXQVxGgmHR8g==
   dependencies:
     "@pgsql/types" "^17.6.0"
 
