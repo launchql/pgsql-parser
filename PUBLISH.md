@@ -77,6 +77,10 @@ cd packages/parser/versions/17
 # Build the package
 npm run build
 
+# cd to dist/
+
+cd dist/
+
 # Publish with the correct tag
 npm publish --tag pg17
 ```
@@ -128,6 +132,9 @@ cd packages/deparser/versions/17
 # Build the package
 npm run build
 
+# dist
+cd dist/
+
 # Publish with the correct tag
 npm publish --tag pg17
 ```
@@ -143,127 +150,8 @@ npm run prepare-versions
 for version in versions/*/; do
   cd "$version"
   npm run build
+  cd dist/
   npm run publish:pkg  # Uses the npmTag from config
   cd ..
 done
 ```
-
-### 3. Other Packages
-
-For packages without multi-version publishing (utils, traverse, cli, etc.):
-
-```bash
-cd packages/{package-name}
-npm run build
-npm publish
-```
-
-## Lerna Publishing
-
-For coordinated publishing across the entire monorepo:
-
-```bash
-# Publish all packages that have changed
-lerna publish
-
-# Publish with a specific version bump
-lerna publish major|minor|patch
-
-# Publish from a specific branch (main only by default)
-lerna publish --allow-branch main
-```
-
-The Lerna configuration (`lerna.json`) is set up with:
-- Independent versioning for each package
-- Conventional commits for automatic changelog generation
-- Restricted to publishing from the `main` branch
-
-## Complete Publishing Procedure
-
-### For a New Release
-
-1. **Update version configuration** in `config/versions.json` if needed
-2. **Build the monorepo**:
-   ```bash
-   yarn && yarn build
-   ```
-
-3. **Prepare multi-version packages**:
-   ```bash
-   # Parser versions
-   cd packages/parser && npm run prepare-versions && cd ../..
-   
-   # Deparser versions  
-   cd packages/deparser && npm run prepare-versions && cd ../..
-   ```
-
-4. **Publish packages** (choose one approach):
-
-   **Option A: Individual package publishing**
-   ```bash
-   # Publish parser versions
-   cd packages/parser
-   for version in versions/*/; do
-     cd "$version" && npm run build && npm run publish:pkg && cd ..
-   done
-   cd ../..
-   
-   # Publish deparser versions
-   cd packages/deparser  
-   for version in versions/*/; do
-     cd "$version" && npm run build && npm run publish:pkg && cd ..
-   done
-   cd ../..
-   
-   # Publish other packages
-   cd packages/utils && npm run build && npm publish && cd ../..
-   cd packages/traverse && npm run build && npm publish && cd ../..
-   # ... repeat for other packages
-   ```
-
-   **Option B: Lerna coordinated publishing**
-   ```bash
-   lerna publish
-   ```
-
-### For Emergency Patches
-
-1. **Create a patch branch** from the target version
-2. **Apply fixes** to the relevant packages
-3. **Update version numbers** in `config/versions.json`
-4. **Follow the complete publishing procedure** above
-
-## Troubleshooting
-
-### Common Issues
-
-**Build failures**: Ensure you've run `yarn && yarn build` in the root directory first.
-
-**Version conflicts**: Check that `config/versions.json` has consistent version numbers across all packages.
-
-**npm tag issues**: Verify that the npmTag in the configuration matches what you're publishing with.
-
-**Permission errors**: Ensure you're logged into npm with an account that has publish permissions for the `@pgsql` scope and `pgsql-*` packages.
-
-### Verification
-
-After publishing, verify the packages are available:
-
-```bash
-# Check latest versions
-npm view pgsql-parser dist-tags
-npm view pgsql-deparser dist-tags
-
-# Check specific version tags
-npm view pgsql-parser@pg17
-npm view pgsql-deparser@pg17
-```
-
-## Package Dependencies
-
-The multi-version system maintains these relationships:
-- `pgsql-parser` depends on `libpg-query`, `pgsql-deparser`, and `@pgsql/types`
-- `pgsql-deparser` depends only on `@pgsql/types`
-- All versions must be compatible within the same PostgreSQL version
-
-When updating versions, ensure all related packages are updated together to maintain compatibility.

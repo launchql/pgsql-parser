@@ -3,7 +3,7 @@
     "13": {
       "libpg-query": "13.6.0",
       "pgsql-parser": "13.19.0",
-      "pgsql-deparser": "13.18.0",
+      "pgsql-deparser": "13.19.0",
       "@pgsql/types": "13.11.1",
       "npmTag": "pg13"
     },
