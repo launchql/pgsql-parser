@@ -53,55 +53,7 @@ yarn bump-versions
 
 ## Package Publishing Workflows
 
-### 1. Parser Package (`pgsql-parser`)
-
-The parser package uses a version preparation script to generate multiple version-specific packages.
-
-#### Prepare Versions
-```bash
-cd packages/parser
-npm run prepare-versions
-```
-
-This script (`scripts/prepare-versions.ts`):
-- Reads version configuration from `config/versions.json`
-- Creates version-specific directories in `packages/parser/versions/`
-- Generates `package.json`, `tsconfig.json`, and source files for each PostgreSQL version
-- Each version gets its own libpg-query dependency and npm tag
-
-#### Build and Publish Individual Versions
-```bash
-# Navigate to a specific version directory
-cd packages/parser/versions/17
-
-# Build the package
-npm run build
-
-# cd to dist/
-
-cd dist/
-
-# Publish with the correct tag
-npm publish --tag pg17
-```
-
-#### Publish All Parser Versions
-```bash
-cd packages/parser
-
-# Prepare all versions
-npm run prepare-versions
-
-# Build and publish each version
-for version in versions/*/; do
-  cd "$version"
-  npm run build
-  npm run publish:pkg  # Uses the npmTag from config
-  cd ..
-done
-```
-
-### 2. Deparser Package (`pgsql-deparser`)
+### 1. Deparser Package (`pgsql-deparser`)
 
 The deparser package uses a template-based approach for multi-version publishing.
 
@@ -155,3 +107,52 @@ for version in versions/*/; do
   cd ..
 done
 ```
+
+### 2. Parser Package (`pgsql-parser`)
+
+The parser package uses a version preparation script to generate multiple version-specific packages.
+
+#### Prepare Versions
+```bash
+cd packages/parser
+npm run prepare-versions
+```
+
+This script (`scripts/prepare-versions.ts`):
+- Reads version configuration from `config/versions.json`
+- Creates version-specific directories in `packages/parser/versions/`
+- Generates `package.json`, `tsconfig.json`, and source files for each PostgreSQL version
+- Each version gets its own libpg-query dependency and npm tag
+
+#### Build and Publish Individual Versions
+```bash
+# Navigate to a specific version directory
+cd packages/parser/versions/17
+
+# Build the package
+npm run build
+
+# cd to dist/
+
+cd dist/
+
+# Publish with the correct tag
+npm publish --tag pg17
+```
+
+#### Publish All Parser Versions
+```bash
+cd packages/parser
+
+# Prepare all versions
+npm run prepare-versions
+
+# Build and publish each version
+for version in versions/*/; do
+  cd "$version"
+  npm run build
+  npm run publish:pkg  # Uses the npmTag from config
+  cd ..
+done
+```
+
