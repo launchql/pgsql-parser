@@ -30,7 +30,7 @@
     },
     "17": {
       "libpg-query": "17.6.0",
-      "pgsql-parser": "17.8.1",
+      "pgsql-parser": "17.8.2",
       "pgsql-deparser": "17.11.1",
       "@pgsql/types": "17.6.1",
       "npmTag": "pg17"
