@@ -1,6 +1,6 @@
 {
   "name": "@pgsql/transform",
-  "version": "17.8.2",
+  "version": "17.8.3",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "Transform PostgreSQL AST types for pgsql-parser",
   "main": "index.js",
@@ -35,7 +35,7 @@
   "devDependencies": {
     "@pgsql/parser": "^1.2.0",
     "pg-proto-parser": "^1.29.2",
-    "pgsql-deparser": "^17.11.0"
+    "pgsql-deparser": "^17.11.1"
   },
   "keywords": []
 }

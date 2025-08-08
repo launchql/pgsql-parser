@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.31.11](https://github.com/launchql/pgsql-parser/compare/@pgsql/cli@1.31.10...@pgsql/cli@1.31.11) (2025-08-08)
+
+**Note:** Version bump only for package @pgsql/cli
+
+
+
+
+
 ## [1.31.10](https://github.com/launchql/pgsql-parser/compare/@pgsql/cli@1.31.9...@pgsql/cli@1.31.10) (2025-07-23)
 
 **Note:** Version bump only for package @pgsql/cli
