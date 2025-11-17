@@ -2258,7 +2258,7 @@ export class Deparser implements DeparserVisitor {
         if (isSimpleArgument && (arg.includes('(') || arg.startsWith('-'))) {
         } else {
           const cleanTypeName = typeName.replace('pg_catalog.', '');
-          return `${arg}::${cleanTypeName}`;
+          return this.context.parens(`${arg}::${cleanTypeName}`);
         }
       }
     }
