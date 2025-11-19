@@ -7,7 +7,7 @@
     "type": "git",
     "url": "https://github.com/launchql/pgsql-parser"
   },
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "MIT",
   "publishConfig": {
     "access": "restricted"
   },
