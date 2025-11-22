@@ -7,7 +7,7 @@
   "module": "esm/index.js",
   "types": "index.d.ts",
   "homepage": "https://github.com/launchql/pgsql-parser/tree/master/packages/proto-parser#readme",
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "MIT",
   "publishConfig": {
     "access": "public",
     "directory": "dist"
