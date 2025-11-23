@@ -11,23 +11,22 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
 
-      - name: deps
-        run: yarn
+      - name: setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: install dependencies
+        run: pnpm install
 
       - name: build
-        run: yarn build
+        run: pnpm build
 
-      - name: deparser
-        run: cd ./packages/deparser && yarn test
-
-      - name: proto-parser
-        run: cd ./packages/proto-parser && yarn test
-
-      - name: utils
-        run: cd ./packages/utils && yarn test
-
-      - name: transform
-        run: cd ./packages/transform && yarn test
-
-      - name: traverse
-        run: cd ./packages/traverse && yarn test
+      - name: test
+        run: pnpm test

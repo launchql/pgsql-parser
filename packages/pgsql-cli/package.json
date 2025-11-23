@@ -55,5 +55,8 @@
     "pg-proto-parser": "^1.30.0",
     "pgsql-deparser": "^17.12.0",
     "pgsql-parser": "^17.9.0"
+  },
+  "devDependencies": {
+    "@types/minimist": "^1.2.5"
   }
 }
