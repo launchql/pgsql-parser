@@ -45,8 +45,8 @@ importers:
         specifier: ^8.2.4
         version: 8.2.4(@types/node@20.19.25)(encoding@0.1.13)
       makage:
-        specifier: ^0.1.2
-        version: 0.1.2
+        specifier: ^0.1.3
+        version: 0.1.3
       prettier:
         specifier: ^3.0.2
         version: 3.6.2
@@ -76,8 +76,8 @@ importers:
         specifier: 17.6.0
         version: 17.6.0
       makage:
-        specifier: ^0.1.2
-        version: 0.1.2
+        specifier: ^0.1.3
+        version: 0.1.3
     publishDirectory: dist
 
   packages/parser:
@@ -93,8 +93,8 @@ importers:
         version: link:../deparser/dist
     devDependencies:
       makage:
-        specifier: ^0.1.2
-        version: 0.1.2
+        specifier: ^0.1.3
+        version: 0.1.3
     publishDirectory: dist
 
   packages/pgsql-cli:
@@ -134,8 +134,8 @@ importers:
         specifier: ^1.2.5
         version: 1.2.5
       makage:
-        specifier: ^0.1.2
-        version: 0.1.2
+        specifier: ^0.1.3
+        version: 0.1.3
 
   packages/proto-parser:
     dependencies:
@@ -171,8 +171,8 @@ importers:
         specifier: ^7.27.0
         version: 7.27.0
       makage:
-        specifier: ^0.1.2
-        version: 0.1.2
+        specifier: ^0.1.3
+        version: 0.1.3
       recast:
         specifier: 0.23.11
         version: 0.23.11
@@ -184,8 +184,8 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0
       makage:
-        specifier: ^0.1.2
-        version: 0.1.2
+        specifier: ^0.1.3
+        version: 0.1.3
       pg-proto-parser:
         specifier: workspace:*
         version: link:../proto-parser/dist
@@ -204,8 +204,8 @@ importers:
         version: link:../proto-parser/dist
     devDependencies:
       makage:
-        specifier: ^0.1.2
-        version: 0.1.2
+        specifier: ^0.1.3
+        version: 0.1.3
     publishDirectory: dist
 
   packages/utils:
@@ -218,8 +218,8 @@ importers:
         version: 0.1.1
     devDependencies:
       makage:
-        specifier: ^0.1.2
-        version: 0.1.2
+        specifier: ^0.1.3
+        version: 0.1.3
       pg-proto-parser:
         specifier: workspace:*
         version: link:../proto-parser/dist
@@ -2604,8 +2604,8 @@ packages:
     resolution: {integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==}
     engines: {node: '>=10'}
 
-  makage@0.1.2:
-    resolution: {integrity: sha512-qHjXOmSBAJRbRwF2LUQtIlY0I2sgM1s2HWKj0n19E1XXHXu7mpzV6ed39l5wDHifJtQSPCqTem+SPwx9wMdSvA==}
+  makage@0.1.3:
+    resolution: {integrity: sha512-0AJdf+1dhAIcL5ieDrBKScEpiZ/o0dx+6HKQmbJvOsj0IreaKT6XHboChFoLbi0+geiKR6XuMHfbf9Xk/bPNaw==}
     hasBin: true
 
   make-dir@2.1.0:
@@ -6724,7 +6724,7 @@ snapshots:
     dependencies:
       yallist: 4.0.0
 
-  makage@0.1.2: {}
+  makage@0.1.3: {}
 
   make-dir@2.1.0:
     dependencies:

@@ -58,6 +58,6 @@
   },
   "devDependencies": {
     "@types/minimist": "^1.2.5",
-    "makage": "^0.1.2"
+    "makage": "^0.1.3"
   }
 }

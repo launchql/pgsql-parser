@@ -46,6 +46,6 @@
     "pgsql-deparser": "workspace:*"
   },
   "devDependencies": {
-    "makage": "^0.1.2"
+    "makage": "^0.1.3"
   }
 }
