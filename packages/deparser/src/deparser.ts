@@ -2261,7 +2261,7 @@ export class Deparser implements DeparserVisitor {
           const cleanTypeName = typeName.replace('pg_catalog.', '');
           // Wrap FuncCall arguments in parentheses to prevent operator precedence issues
           if (isFunctionCall) {
-            return context.parens(`${arg}::${cleanTypeName}`);
+            return `${context.parens(arg)}::${cleanTypeName}`;
           }
           return `${arg}::${cleanTypeName}`;
         }
