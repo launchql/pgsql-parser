@@ -72,3 +72,6 @@ SELECT (1 IS NOT NULL) IS DISTINCT FROM (2 IS NOT NULL);
 -- https://github.com/launchql/pgsql-parser/issues/101
 select "A" from "table_name";
 select "AA" from "table_name";
+
+-- https://github.com/launchql/pgsql-parser/issues/219
+ALTER PUBLICATION "my_publication" OWNER TO "postgres";
