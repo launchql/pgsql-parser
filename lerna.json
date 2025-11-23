@@ -13,7 +13,7 @@
   "command": {
     "create": {
       "homepage": "https://github.com/launchql/pgsql-parser",
-      "license": "SEE LICENSE IN LICENSE",
+      "license": "MIT",
       "access": "restricted"
     },
     "publish": {
