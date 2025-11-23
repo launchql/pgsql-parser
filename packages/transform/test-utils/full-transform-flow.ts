@@ -4,7 +4,6 @@ import { cleanTree } from './clean-tree';
 import { PG13ToPG17Transformer } from '../src/transformers-direct/v13-to-v17';
 import { readFileSync } from 'fs';
 import * as path from 'path';
-import { expect } from '@jest/globals';
 
 /**
  * Result of the full transformation flow

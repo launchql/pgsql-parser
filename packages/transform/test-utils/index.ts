@@ -2,7 +2,6 @@ import { Parser } from '@pgsql/parser';
 import { cleanTree } from './clean-tree';
 import { readFileSync } from 'fs';
 import * as path from 'path';
-import { expect } from '@jest/globals';
 import { diff } from 'jest-diff';
 import { skipTests } from './skip-tests';
 const parser13 = new Parser({ version: 13 });

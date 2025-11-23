@@ -20,9 +20,9 @@
     "url": "https://github.com/launchql/pgsql-parser/issues"
   },
   "scripts": {
-    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
-    "clean": "rimraf dist",
-    "prepare": "npm run build",
+    "copy": "makage assets",
+    "clean": "makage clean dist",
+    "prepublishOnly": "npm run build",
     "build": "npm run clean && tsc && tsc -p tsconfig.esm.json && npm run copy",
     "build:dev": "npm run clean && tsc --declarationMap && tsc -p tsconfig.esm.json && npm run copy",
     "kitchen-sink": "npm run fixtures && npm run fixtures:kitchen-sink",
@@ -53,7 +53,8 @@
     "database"
   ],
   "devDependencies": {
-    "libpg-query": "17.6.0"
+    "libpg-query": "17.6.0",
+    "makage": "^0.1.3"
   },
   "dependencies": {
     "@pgsql/types": "^17.6.1"

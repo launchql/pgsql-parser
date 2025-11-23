@@ -22,9 +22,9 @@
     "pgsql": "index.js"
   },
   "scripts": {
-    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
-    "clean": "rimraf dist",
-    "prepare": "npm run build",
+    "copy": "makage assets",
+    "clean": "makage clean dist",
+    "prepublishOnly": "npm run build",
     "build": "npm run clean && tsc && tsc -p tsconfig.esm.json && npm run copy",
     "build:dev": "npm run clean && tsc --declarationMap && tsc -p tsconfig.esm.json && npm run copy",
     "dev": "ts-node src/index",
@@ -51,9 +51,13 @@
     "glob": "8.0.3",
     "minimist": "1.2.8",
     "mkdirp": "3.0.1",
-    "nested-obj": "^0.0.1",
-    "pg-proto-parser": "^1.30.0",
-    "pgsql-deparser": "^17.12.0",
-    "pgsql-parser": "^17.9.0"
+    "nested-obj": "^0.1.1",
+    "pg-proto-parser": "workspace:*",
+    "pgsql-deparser": "workspace:*",
+    "pgsql-parser": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/minimist": "^1.2.5",
+    "makage": "^0.1.3"
   }
 }

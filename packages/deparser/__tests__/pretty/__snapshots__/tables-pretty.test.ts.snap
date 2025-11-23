@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`non-pretty: pretty/tables-1.sql 1`] = `"CREATE TABLE public.users (id serial PRIMARY KEY, name text NOT NULL)"`;
 

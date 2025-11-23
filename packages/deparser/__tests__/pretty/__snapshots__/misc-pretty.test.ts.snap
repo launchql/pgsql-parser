@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`non-pretty: pretty/misc-1.sql 1`] = `"WITH recent_orders AS (SELECT o.id, o.user_id, o.created_at FROM orders AS o WHERE o.created_at > (now() - '30 days'::interval)), high_value_orders AS (SELECT r.user_id, count(*) AS order_count, sum(oi.price * oi.quantity) AS total_spent FROM recent_orders AS r JOIN order_items AS oi ON r.id = oi.order_id GROUP BY r.user_id) SELECT u.id, u.name, h.total_spent FROM users AS u JOIN high_value_orders AS h ON u.id = h.user_id WHERE h.total_spent > 1000 ORDER BY h.total_spent DESC"`;
 

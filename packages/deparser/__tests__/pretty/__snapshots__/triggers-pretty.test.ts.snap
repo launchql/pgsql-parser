@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`non-pretty: pretty/triggers-1.sql 1`] = `"CREATE TRIGGER audit_insert_trigger AFTER INSERT ON public.users FOR EACH ROW EXECUTE FUNCTION log_user_insert ()"`;
 
