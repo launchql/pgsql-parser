@@ -1,5 +1,6 @@
 
 import type { Node } from '@pgsql/types';
+
 import type { NodeSpec } from './17/runtime-schema';
 import { runtimeSchema } from './17/runtime-schema';
 
@@ -47,10 +48,10 @@ export function walk(
   const actualCallback: Walker = typeof callback === 'function' 
     ? callback 
     : (path: NodePath) => {
-        const visitor = callback as Visitor;
-        const visitFn = visitor[path.tag];
-        return visitFn ? visitFn(path) : undefined;
-      };
+      const visitor = callback as Visitor;
+      const visitFn = visitor[path.tag];
+      return visitFn ? visitFn(path) : undefined;
+    };
 
   if (Array.isArray(root)) {
     root.forEach((node, index) => {
@@ -70,7 +71,9 @@ export function walk(
       const nodeSpec = schemaMap.get(tag);
       if (nodeSpec) {
         for (const field of nodeSpec.fields) {
-          if (field.type === 'Node' && nodeData[field.name] != null) {
+          // Check if field type is 'Node' or any other node type (e.g., 'WithClause', 'SelectStmt', etc.)
+          const isNodeType = field.type === 'Node' || schemaMap.has(field.type);
+          if (isNodeType && nodeData[field.name] != null) {
             const value = nodeData[field.name];
             if (field.isArray && Array.isArray(value)) {
               value.forEach((item, index) => {
