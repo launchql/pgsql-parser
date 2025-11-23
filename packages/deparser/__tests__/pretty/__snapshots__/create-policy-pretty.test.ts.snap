@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`non-pretty: pretty/create_policy-1.sql 1`] = `"CREATE POLICY user_policy ON users AS PERMISSIVE FOR ALL TO authenticated_users USING (user_id = current_user_id())"`;
 

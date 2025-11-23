@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`non-pretty: pretty/cte-1.sql 1`] = `"WITH regional_sales AS (SELECT region, sum(sales_amount) AS total_sales FROM sales GROUP BY region) SELECT * FROM regional_sales"`;
 

@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`non-pretty: pretty/constraints-1.sql 1`] = `"ALTER TABLE public.users ADD CONSTRAINT users_pkey PRIMARY KEY (id)"`;
 

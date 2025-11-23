@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`non-pretty: pretty/procedures-1.sql 1`] = `"SELECT handle_insert('TYPE_A')"`;
 

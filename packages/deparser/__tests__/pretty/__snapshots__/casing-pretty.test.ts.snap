@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`non-pretty: pretty/casing-1.sql 1`] = `"INSERT INTO users (name) VALUES ('John Doe')"`;
 
