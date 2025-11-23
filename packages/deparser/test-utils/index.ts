@@ -3,7 +3,6 @@ import { deparseSync as deparse, DeparserOptions } from '../src';
 import { cleanTree } from '../scripts/clean-utils';
 import { readFileSync } from 'fs';
 import * as path from 'path';
-import { expect } from '@jest/globals';
 import { diff } from 'jest-diff'
 
 export async function expectParseDeparse(sql1: string, options: DeparserOptions = { pretty: false }) {
