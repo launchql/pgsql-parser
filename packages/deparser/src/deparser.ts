@@ -195,6 +195,121 @@ export class Deparser implements DeparserVisitor {
     return delimiter;
   }
 
+  /**
+   * Maps ObjectType enum values to their corresponding SQL keywords
+   * Used by AlterOwnerStmt, AlterObjectSchemaStmt, and other statements that need object type keywords
+   */
+  private getObjectTypeKeyword(objectType: string): string {
+    switch (objectType) {
+      case 'OBJECT_TABLE':
+        return 'TABLE';
+      case 'OBJECT_VIEW':
+        return 'VIEW';
+      case 'OBJECT_INDEX':
+        return 'INDEX';
+      case 'OBJECT_SEQUENCE':
+        return 'SEQUENCE';
+      case 'OBJECT_FUNCTION':
+        return 'FUNCTION';
+      case 'OBJECT_PROCEDURE':
+        return 'PROCEDURE';
+      case 'OBJECT_SCHEMA':
+        return 'SCHEMA';
+      case 'OBJECT_DATABASE':
+        return 'DATABASE';
+      case 'OBJECT_DOMAIN':
+        return 'DOMAIN';
+      case 'OBJECT_AGGREGATE':
+        return 'AGGREGATE';
+      case 'OBJECT_CONVERSION':
+        return 'CONVERSION';
+      case 'OBJECT_LANGUAGE':
+        return 'LANGUAGE';
+      case 'OBJECT_OPERATOR':
+        return 'OPERATOR';
+      case 'OBJECT_OPFAMILY':
+        return 'OPERATOR FAMILY';
+      case 'OBJECT_OPCLASS':
+        return 'OPERATOR CLASS';
+      case 'OBJECT_TSDICTIONARY':
+        return 'TEXT SEARCH DICTIONARY';
+      case 'OBJECT_TSCONFIGURATION':
+        return 'TEXT SEARCH CONFIGURATION';
+      case 'OBJECT_EVENT_TRIGGER':
+        return 'EVENT TRIGGER';
+      case 'OBJECT_FDW':
+        return 'FOREIGN DATA WRAPPER';
+      case 'OBJECT_FOREIGN_SERVER':
+        return 'SERVER';
+      case 'OBJECT_TYPE':
+        return 'TYPE';
+      case 'OBJECT_COLLATION':
+        return 'COLLATION';
+      case 'OBJECT_PUBLICATION':
+        return 'PUBLICATION';
+      case 'OBJECT_ACCESS_METHOD':
+        return 'ACCESS METHOD';
+      case 'OBJECT_AMOP':
+        return 'OPERATOR CLASS';
+      case 'OBJECT_AMPROC':
+        return 'OPERATOR CLASS';
+      case 'OBJECT_ATTRIBUTE':
+        return 'ATTRIBUTE';
+      case 'OBJECT_CAST':
+        return 'CAST';
+      case 'OBJECT_COLUMN':
+        return 'COLUMN';
+      case 'OBJECT_DEFAULT':
+        return 'DEFAULT';
+      case 'OBJECT_DEFACL':
+        return 'DEFAULT PRIVILEGES';
+      case 'OBJECT_DOMCONSTRAINT':
+        return 'DOMAIN';
+      case 'OBJECT_EXTENSION':
+        return 'EXTENSION';
+      case 'OBJECT_FOREIGN_TABLE':
+        return 'FOREIGN TABLE';
+      case 'OBJECT_LARGEOBJECT':
+        return 'LARGE OBJECT';
+      case 'OBJECT_MATVIEW':
+        return 'MATERIALIZED VIEW';
+      case 'OBJECT_PARAMETER_ACL':
+        return 'PARAMETER';
+      case 'OBJECT_POLICY':
+        return 'POLICY';
+      case 'OBJECT_PUBLICATION_NAMESPACE':
+        return 'PUBLICATION';
+      case 'OBJECT_PUBLICATION_REL':
+        return 'PUBLICATION';
+      case 'OBJECT_ROLE':
+        return 'ROLE';
+      case 'OBJECT_ROUTINE':
+        return 'ROUTINE';
+      case 'OBJECT_RULE':
+        return 'RULE';
+      case 'OBJECT_STATISTIC_EXT':
+        return 'STATISTICS';
+      case 'OBJECT_SUBSCRIPTION':
+        return 'SUBSCRIPTION';
+      case 'OBJECT_TABCONSTRAINT':
+        return 'CONSTRAINT';
+      case 'OBJECT_TABLESPACE':
+        return 'TABLESPACE';
+      case 'OBJECT_TRANSFORM':
+        return 'TRANSFORM';
+      case 'OBJECT_TRIGGER':
+        return 'TRIGGER';
+      case 'OBJECT_TSPARSER':
+        return 'TEXT SEARCH PARSER';
+      case 'OBJECT_TSTEMPLATE':
+        return 'TEXT SEARCH TEMPLATE';
+      case 'OBJECT_USER_MAPPING':
+        return 'USER MAPPING';
+      default:
+        throw new Error(`Unsupported objectType: ${objectType}`);
+    }
+  }
+
   deparse(node: Node, context?: DeparserContext): string | null {
     if (node == null) {
       return null;
@@ -5986,11 +6101,15 @@ export class Deparser implements DeparserVisitor {
       if (context.parentNodeTypes.includes('CreateExtensionStmt') || context.parentNodeTypes.includes('AlterExtensionStmt') || context.parentNodeTypes.includes('CreateFdwStmt') || context.parentNodeTypes.includes('AlterFdwStmt')) {
         // AlterExtensionStmt specific cases
         if (context.parentNodeTypes.includes('AlterExtensionStmt')) {
-          if (node.defname === 'to') {
-            return `TO ${argValue}`;
+          if (node.defname === 'new_version') {
+            // argValue is unquoted due to DefElem context, so we need to quote it
+            const quotedValue = typeof argValue === 'string' && !argValue.startsWith("'")
+              ? `'${argValue}'`
+              : argValue;
+            return `UPDATE TO ${quotedValue}`;
           }
           if (node.defname === 'schema') {
-            return `SCHEMA ${argValue}`;
+            return `SET SCHEMA ${argValue}`;
           }
         }
 
@@ -6295,6 +6414,38 @@ export class Deparser implements DeparserVisitor {
         .map(option => this.visit(option, extContext))
         .join(' ');
       output.push(options);
+    }
+
+    return output.join(' ');
+  }
+
+  AlterExtensionContentsStmt(node: t.AlterExtensionContentsStmt, context: DeparserContext): string {
+    const output: string[] = ['ALTER', 'EXTENSION'];
+
+    if (node.extname) {
+      output.push(this.quoteIfNeeded(node.extname));
+    }
+
+    // Handle action: 1 = ADD, -1 = DROP
+    if (node.action === 1) {
+      output.push('ADD');
+    } else if (node.action === -1) {
+      output.push('DROP');
+    }
+
+    // Add object type keyword
+    if (node.objtype) {
+      try {
+        output.push(this.getObjectTypeKeyword(node.objtype));
+      } catch {
+        // Fallback to the raw objtype if not supported
+        output.push(node.objtype.toString());
+      }
+    }
+
+    // Add the object itself
+    if (node.object) {
+      output.push(this.visit(node.object, context));
     }
 
     return output.join(' ');
@@ -8219,76 +8370,7 @@ export class Deparser implements DeparserVisitor {
       throw new Error('AlterOwnerStmt requires objectType');
     }
 
-    switch (node.objectType) {
-      case 'OBJECT_TABLE':
-        output.push('TABLE');
-        break;
-      case 'OBJECT_VIEW':
-        output.push('VIEW');
-        break;
-      case 'OBJECT_INDEX':
-        output.push('INDEX');
-        break;
-      case 'OBJECT_SEQUENCE':
-        output.push('SEQUENCE');
-        break;
-      case 'OBJECT_FUNCTION':
-        output.push('FUNCTION');
-        break;
-      case 'OBJECT_PROCEDURE':
-        output.push('PROCEDURE');
-        break;
-      case 'OBJECT_SCHEMA':
-        output.push('SCHEMA');
-        break;
-      case 'OBJECT_DATABASE':
-        output.push('DATABASE');
-        break;
-      case 'OBJECT_DOMAIN':
-        output.push('DOMAIN');
-        break;
-      case 'OBJECT_AGGREGATE':
-        output.push('AGGREGATE');
-        break;
-      case 'OBJECT_CONVERSION':
-        output.push('CONVERSION');
-        break;
-      case 'OBJECT_LANGUAGE':
-        output.push('LANGUAGE');
-        break;
-      case 'OBJECT_OPERATOR':
-        output.push('OPERATOR');
-        break;
-      case 'OBJECT_OPFAMILY':
-        output.push('OPERATOR FAMILY');
-        break;
-      case 'OBJECT_OPCLASS':
-        output.push('OPERATOR CLASS');
-        break;
-      case 'OBJECT_TSDICTIONARY':
-        output.push('TEXT SEARCH DICTIONARY');
-        break;
-      case 'OBJECT_TSCONFIGURATION':
-        output.push('TEXT SEARCH CONFIGURATION');
-        break;
-      case 'OBJECT_EVENT_TRIGGER':
-        output.push('EVENT TRIGGER');
-        break;
-      case 'OBJECT_FDW':
-        output.push('FOREIGN DATA WRAPPER');
-        break;
-      case 'OBJECT_FOREIGN_SERVER':
-        output.push('SERVER');
-        break;
-      case 'OBJECT_TYPE':
-        output.push('TYPE');
-        break;
-      case 'OBJECT_COLLATION':
-        output.push('COLLATION');
-        break;
-      default:
-        throw new Error(`Unsupported AlterOwnerStmt objectType: ${node.objectType}`);
-    }
+    output.push(this.getObjectTypeKeyword(node.objectType));
 
     if (node.relation) {
       output.push(this.RangeVar(node.relation, context));
@@ -11156,66 +11238,11 @@ export class Deparser implements DeparserVisitor {
   AlterObjectSchemaStmt(node: t.AlterObjectSchemaStmt, context: DeparserContext): string {
     const output: string[] = ['ALTER'];
 
-    switch (node.objectType) {
-      case 'OBJECT_TABLE':
-        output.push('TABLE');
-        break;
-      case 'OBJECT_VIEW':
-        output.push('VIEW');
-        break;
-      case 'OBJECT_FUNCTION':
-        output.push('FUNCTION');
-        break;
-      case 'OBJECT_TYPE':
-        output.push('TYPE');
-        break;
-      case 'OBJECT_DOMAIN':
-        output.push('DOMAIN');
-        break;
-      case 'OBJECT_SEQUENCE':
-        output.push('SEQUENCE');
-        break;
-      case 'OBJECT_OPCLASS':
-        output.push('OPERATOR CLASS');
-        break;
-      case 'OBJECT_OPFAMILY':
-        output.push('OPERATOR FAMILY');
-        break;
-      case 'OBJECT_OPERATOR':
-        output.push('OPERATOR');
-        break;
-      case 'OBJECT_TYPE':
-        output.push('TYPE');
-        break;
-      case 'OBJECT_COLLATION':
-        output.push('COLLATION');
-        break;
-      case 'OBJECT_CONVERSION':
-        output.push('CONVERSION');
-        break;
-      case 'OBJECT_TSPARSER':
-        output.push('TEXT SEARCH PARSER');
-        break;
-      case 'OBJECT_TSCONFIGURATION':
-        output.push('TEXT SEARCH CONFIGURATION');
-        break;
-      case 'OBJECT_TSTEMPLATE':
-        output.push('TEXT SEARCH TEMPLATE');
-        break;
-      case 'OBJECT_TSDICTIONARY':
-        output.push('TEXT SEARCH DICTIONARY');
-        break;
-      case 'OBJECT_AGGREGATE':
-        output.push('AGGREGATE');
-        break;
-      case 'OBJECT_FOREIGN_TABLE':
-        output.push('FOREIGN TABLE');
-        break;
-      case 'OBJECT_MATVIEW':
-        output.push('MATERIALIZED VIEW');
-        break;
-      default:
-        output.push(node.objectType.toString());
+    try {
+      output.push(this.getObjectTypeKeyword(node.objectType));
+    } catch {
+      // Fallback to objectType string if not supported
+      output.push(node.objectType.toString());
     }
 
     if (node.missing_ok) {
