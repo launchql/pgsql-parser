@@ -3,7 +3,7 @@
 you can put any sql here packages/transform/scripts/input.sql
 
 then in packages/transform
-yarn test:ast
+pnpm test:ast
 
 it will generate
 packages/transform/scripts/output-v13.json
@@ -225,7 +225,7 @@ Always consult the enum files when debugging transformation issues involving num
 **⚠️ CRITICAL RULE: Never look at CI logs or use CI-related commands during development.**
 
 When debugging transformation issues:
-- Run tests locally using `yarn test __tests__/kitchen-sink/13-14` or similar
+- Run tests locally using `pnpm test __tests__/kitchen-sink/13-14` or similar
 - Examine local test output and failure messages
 - Reproduce issues locally and verify fixes locally
 - Only push changes after verifying they work locally
@@ -238,7 +238,7 @@ This ensures faster feedback loops and prevents dependency on external CI system
 **⚠️ CRITICAL RULE: Never look at CI logs or use CI-related commands during development.**
 
 When debugging transformation issues:
-- Run tests locally using `yarn test __tests__/kitchen-sink/13-14` or similar
+- Run tests locally using `pnpm test __tests__/kitchen-sink/13-14` or similar
 - Examine local test output and failure messages
 - Reproduce issues locally and verify fixes locally
 - Only push changes after verifying they work locally

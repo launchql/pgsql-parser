@@ -7,7 +7,7 @@ This guide covers the multi-version publishing workflow for the pgsql-parser mon
 Before publishing any packages, you must build the entire monorepo:
 
 ```bash
-yarn && yarn build
+pnpm install && pnpm build
 ```
 
 This installs all dependencies and builds all packages in the correct order using Lerna.
@@ -48,7 +48,7 @@ All version mappings are centrally managed in `config/versions.json`:
 In the root:
 
 ```
-yarn bump-versions
+pnpm bump-versions
 ```
 
 ## Package Publishing Workflows

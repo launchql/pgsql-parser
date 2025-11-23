@@ -1,22 +1,22 @@
 # Development Guide
 
-This project is a Yarn/Lerna workspace for PostgreSQL parser and deparser functionality. Follow these steps to get started with development.
+This project is a pnpm/Lerna workspace for PostgreSQL parser and deparser functionality. Follow these steps to get started with development.
 
 ## Prerequisites
 
-- Node.js (v14 or higher recommended)
-- Yarn package manager
+- Node.js (v18 or higher recommended)
+- pnpm package manager
 
 ## Initial Setup
 
 1. Install dependencies:
 ```bash
-yarn
+pnpm install
 ```
 
 2. Build all packages:
 ```bash
-yarn build
+pnpm build
 ```
 
 ## Running Tests
@@ -29,10 +29,10 @@ To run tests for a specific package, navigate to that package's directory and us
 
 ```bash
 cd packages/deparser
-yarn test:watch
+pnpm test:watch
 ```
 
-you can also run `yarn test` if you don't need to watch.
+you can also run `pnpm test` if you don't need to watch.
 
 This will start Jest in watch mode, which will automatically re-run tests when files change.
 
@@ -62,11 +62,11 @@ packages/
 
 ## Common Commands
 
-- `yarn build`: Build all packages
-- `yarn test`: Run all tests
-- `yarn test:watch`: Run tests in watch mode
-- `yarn lint`: Run linter
-- `yarn clean`: Clean build artifacts
+- `pnpm build`: Build all packages
+- `pnpm test`: Run all tests
+- `pnpm test:watch`: Run tests in watch mode
+- `pnpm lint`: Run linter
+- `pnpm clean`: Clean build artifacts
 
 ## Notes
 

@@ -183,10 +183,10 @@ This project uses Yarn workspaces and Lerna for monorepo management. See [DEVELO
 ### Setup
 ```bash
 # Install dependencies
-yarn install
+pnpm install
 
 # Build all packages
-yarn build
+pnpm build
 ```
 
 ### Building Individual Packages

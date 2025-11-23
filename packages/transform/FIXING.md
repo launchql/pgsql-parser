@@ -25,15 +25,15 @@ Welcome! This guide will walk you through the process of solving skipped transfo
 4. **Install dependencies and build the project**:
 
    ```bash
-   yarn
-   yarn build
+   pnpm
+   pnpm build
    ```
 
 5. **Navigate to the transform package and run tests**:
 
    ```bash
    cd packages/transform
-   yarn test
+   pnpm test
    ```
 
 ---
@@ -59,7 +59,7 @@ Each entry looks like this:
 You can run an individual test like this:
 
 ```bash
-yarn test __tests__/kitchen-sink/16-17/pretty-misc.test.ts
+pnpm test __tests__/kitchen-sink/16-17/pretty-misc.test.ts
 ```
 
 ---
@@ -71,7 +71,7 @@ yarn test __tests__/kitchen-sink/16-17/pretty-misc.test.ts
 3. Re-run the test to confirm it now passes:
 
 ```bash
-yarn test __tests__/kitchen-sink/16-17/pretty-misc.test.ts
+pnpm test __tests__/kitchen-sink/16-17/pretty-misc.test.ts
 ```
 
 Then, commit your fix and open a pull request.
