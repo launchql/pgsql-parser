@@ -1,5 +1,5 @@
-import { visit, walk, NodePath } from '../src';
 import type { Visitor, Walker } from '../src';
+import { NodePath,visit, walk } from '../src';
 
 describe('traverse', () => {
   it('should visit SelectStmt nodes with new walk API', () => {
@@ -122,13 +122,13 @@ describe('traverse', () => {
     const visitedNodes: string[] = [];
     
     const visitor: Visitor = {
-      A_Expr: (path: NodePath) => {
+      A_Expr: (_path: NodePath) => {
         visitedNodes.push('A_Expr');
       },
-      ColumnRef: (path: NodePath) => {
+      ColumnRef: (_path: NodePath) => {
         visitedNodes.push('ColumnRef');
       },
-      A_Const: (path: NodePath) => {
+      A_Const: (_path: NodePath) => {
         visitedNodes.push('A_Const');
       }
     };
@@ -389,5 +389,101 @@ describe('traverse', () => {
     expect(targetListVisited[1].ctx.key).toBe(1);
     expect(targetListVisited[0].ctx.path).toEqual(['targetList', 0]);
     expect(targetListVisited[1].ctx.path).toEqual(['targetList', 1]);
+  });
+
+  it('should traverse WithClause nodes', () => {
+    const visitedNodes: string[] = [];
+    
+    const walker: Walker = (path: NodePath) => {
+      visitedNodes.push(path.tag);
+    };
+
+    const ast = {
+      SelectStmt: {
+        withClause: {
+          WithClause: {
+            ctes: [
+              {
+                CommonTableExpr: {
+                  ctename: 'cte1',
+                  ctequery: {
+                    SelectStmt: {
+                      targetList: [] as any[],
+                      limitOption: 'LIMIT_OPTION_DEFAULT',
+                      op: 'SETOP_NONE'
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        targetList: [] as any[],
+        limitOption: 'LIMIT_OPTION_DEFAULT',
+        op: 'SETOP_NONE'
+      }
+    };
+
+    walk(ast, walker);
+
+    expect(visitedNodes).toContain('SelectStmt');
+    expect(visitedNodes).toContain('WithClause');
+    expect(visitedNodes).toContain('CommonTableExpr');
+    expect(visitedNodes.filter(n => n === 'SelectStmt')).toHaveLength(2);
+  });
+
+  it('should traverse union larg and rarg nodes', () => {
+    const visitedNodes: string[] = [];
+    
+    const walker: Walker = (path: NodePath) => {
+      visitedNodes.push(path.tag);
+    };
+
+    const ast = {
+      SelectStmt: {
+        larg: {
+          SelectStmt: {
+            targetList: [
+              {
+                ResTarget: {
+                  val: {
+                    A_Const: {
+                      ival: { Integer: { ival: 1 } }
+                    }
+                  }
+                }
+              }
+            ],
+            limitOption: 'LIMIT_OPTION_DEFAULT',
+            op: 'SETOP_NONE'
+          }
+        },
+        op: 'SETOP_UNION',
+        rarg: {
+          SelectStmt: {
+            targetList: [
+              {
+                ResTarget: {
+                  val: {
+                    A_Const: {
+                      ival: { Integer: { ival: 2 } }
+                    }
+                  }
+                }
+              }
+            ],
+            limitOption: 'LIMIT_OPTION_DEFAULT',
+            op: 'SETOP_NONE'
+          }
+        }
+      }
+    };
+
+    walk(ast, walker);
+
+    expect(visitedNodes).toContain('SelectStmt');
+    expect(visitedNodes.filter(n => n === 'SelectStmt')).toHaveLength(3);
+    expect(visitedNodes).toContain('ResTarget');
+    expect(visitedNodes).toContain('A_Const');
   });
 });
