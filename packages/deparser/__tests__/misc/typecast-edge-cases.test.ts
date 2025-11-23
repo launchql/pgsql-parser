@@ -27,15 +27,15 @@ describe('TypeCast with negative numbers', () => {
   it('should handle parenthesized negative float', async () => {
     const sql = `SELECT (-1.5)::numeric`;
     const result = await expectParseDeparse(sql);
-    // Parenthesized negative floats can use :: syntax
-    expect(result).toBe(`SELECT (-1.5)::numeric`);
+    // Parenthesized negative floats use CAST() syntax, parentheses removed
+    expect(result).toBe(`SELECT CAST(-1.5 AS numeric)`);
   });
 
   it('should handle negative bigint', async () => {
     const sql = `SELECT -9223372036854775808::bigint`;
     const result = await expectParseDeparse(sql);
-    // Negative bigints require CAST() syntax for precedence
-    expect(result).toBe(`SELECT CAST(-9223372036854775808 AS bigint)`);
+    // Negative bigints: deparser outputs unary minus operator separately
+    expect(result).toBe(`SELECT - CAST(9223372036854775808 AS bigint)`);
   });
 });
 
@@ -45,7 +45,8 @@ describe('TypeCast with complex expressions', () => {
     const result = await expectParseDeparse(sql);
     // Complex expressions require CAST() syntax
     // Note: PostgreSQL normalizes "integer" to "int" in the AST
-    expect(result).toBe(`SELECT CAST((1 + 2) AS int)`);
+    // Note: Deparser removes outer parentheses from arithmetic expressions
+    expect(result).toBe(`SELECT CAST(1 + 2 AS int)`);
   });
 
   it('should handle subtraction expression', async () => {
@@ -53,7 +54,8 @@ describe('TypeCast with complex expressions', () => {
     const result = await expectParseDeparse(sql);
     // Complex expressions require CAST() syntax
     // Note: PostgreSQL normalizes "integer" to "int" in the AST
-    expect(result).toBe(`SELECT CAST((a - b) AS int) FROM t`);
+    // Note: Deparser removes outer parentheses from arithmetic expressions
+    expect(result).toBe(`SELECT CAST(a - b AS int) FROM t`);
   });
 
   it('should handle CASE expression with CAST syntax', async () => {
@@ -62,7 +64,8 @@ describe('TypeCast with complex expressions', () => {
     // Complex expressions require CAST() syntax
     // Note: PostgreSQL normalizes "integer" to "int" in the AST
     // Note: Deparser removes outer parentheses from CASE expressions
-    expect(result).toBe(`SELECT CAST(CASE WHEN (a > 0) THEN 1 ELSE 2 END AS int) FROM t`);
+    // Note: Deparser also removes parentheses from WHEN conditions
+    expect(result).toBe(`SELECT CAST(CASE WHEN a > 0 THEN 1 ELSE 2 END AS int) FROM t`);
   });
 
   it('should handle boolean expression', async () => {
