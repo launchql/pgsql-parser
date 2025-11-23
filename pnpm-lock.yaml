@@ -20,9 +20,6 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^7.10.0
         version: 7.18.0(eslint@8.57.1)(typescript@5.9.3)
-      copyfiles:
-        specifier: ^2.4.1
-        version: 2.4.1
       eslint:
         specifier: ^8.56.0
         version: 8.57.1
@@ -47,12 +44,12 @@ importers:
       lerna:
         specifier: ^8.2.4
         version: 8.2.4(@types/node@20.19.25)(encoding@0.1.13)
+      makage:
+        specifier: ^0.1.2
+        version: 0.1.2
       prettier:
         specifier: ^3.0.2
         version: 3.6.2
-      rimraf:
-        specifier: 4.4.1
-        version: 4.4.1
       semver:
         specifier: ^7.7.2
         version: 7.7.3
@@ -78,6 +75,9 @@ importers:
       libpg-query:
         specifier: 17.6.0
         version: 17.6.0
+      makage:
+        specifier: ^0.1.2
+        version: 0.1.2
     publishDirectory: dist
 
   packages/parser:
@@ -91,6 +91,10 @@ importers:
       pgsql-deparser:
         specifier: ^17.12.0
         version: 17.12.0
+    devDependencies:
+      makage:
+        specifier: ^0.1.2
+        version: 0.1.2
     publishDirectory: dist
 
   packages/pgsql-cli:
@@ -129,6 +133,9 @@ importers:
       '@types/minimist':
         specifier: ^1.2.5
         version: 1.2.5
+      makage:
+        specifier: ^0.1.2
+        version: 0.1.2
 
   packages/proto-parser:
     dependencies:
@@ -163,6 +170,9 @@ importers:
       '@types/babel__generator':
         specifier: ^7.27.0
         version: 7.27.0
+      makage:
+        specifier: ^0.1.2
+        version: 0.1.2
       recast:
         specifier: 0.23.6
         version: 0.23.6
@@ -173,6 +183,9 @@ importers:
       '@pgsql/parser':
         specifier: ^1.2.0
         version: 1.2.0
+      makage:
+        specifier: ^0.1.2
+        version: 0.1.2
       pg-proto-parser:
         specifier: ^1.30.0
         version: 1.30.0
@@ -189,6 +202,10 @@ importers:
       pg-proto-parser:
         specifier: ^1.30.0
         version: 1.30.0
+    devDependencies:
+      makage:
+        specifier: ^0.1.2
+        version: 0.1.2
     publishDirectory: dist
 
   packages/utils:
@@ -200,6 +217,9 @@ importers:
         specifier: 0.0.1
         version: 0.0.1
     devDependencies:
+      makage:
+        specifier: ^0.1.2
+        version: 0.1.2
       pg-proto-parser:
         specifier: ^1.30.0
         version: 1.30.0
@@ -1388,10 +1408,6 @@ packages:
   convert-source-map@2.0.0:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
 
-  copyfiles@2.4.1:
-    resolution: {integrity: sha512-fereAvAvxDrQDOXybk3Qu3dPbOoKoysFMWtkY3mv5BsL8//OSZVL5DCLYqgRfY5cWirgRzlC+WSrxp6Bo3eNZg==}
-    hasBin: true
-
   core-util-is@1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
 
@@ -2124,9 +2140,6 @@ packages:
     resolution: {integrity: sha512-fKzAra0rGJUUBwGBgNkHZuToZcn+TtXHpeCgmkMJMMYx1sQDYaCSyjJBSCa2nH1DGm7s3n1oBnohoVTBaN7Lww==}
     engines: {node: '>=8'}
 
-  isarray@0.0.1:
-    resolution: {integrity: sha512-D2S+3GLxWH+uhrNEcoh/fnmYeP8E8/zHl644d/jdA0g2uyXvy3sb0qxotE+ne0LtccHknQzWwZEzhak7oJ0COQ==}
-
   isarray@1.0.0:
     resolution: {integrity: sha512-VLghIWNM6ELQzo7zwmcg0NmTVyWKYjvIeM83yjp0wRDTmUnrM678fQbcKBo6n2CJEF0szoG//ytg+TKla89ALQ==}
 
@@ -2489,6 +2502,10 @@ packages:
     resolution: {integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==}
     engines: {node: '>=10'}
 
+  makage@0.1.2:
+    resolution: {integrity: sha512-qHjXOmSBAJRbRwF2LUQtIlY0I2sgM1s2HWKj0n19E1XXHXu7mpzV6ed39l5wDHifJtQSPCqTem+SPwx9wMdSvA==}
+    hasBin: true
+
   make-dir@2.1.0:
     resolution: {integrity: sha512-LS9X+dc8KLxXCb8dni79fLIIUA5VyZoyjSMCwTluaXA0o27cCK0bhXkpgw+sTXVpPy/lSO57ilRixqk0vDmtRA==}
     engines: {node: '>=6'}
@@ -2704,9 +2721,6 @@ packages:
 
   node-releases@2.0.27:
     resolution: {integrity: sha512-nmh3lCkYZ3grZvqcCH+fjmQ7X+H0OeZgP40OierEaAptX4XofMh5kwNbWh7lBduUzCcV/8kZ+NDLCwm2iorIlA==}
-
-  noms@0.0.0:
-    resolution: {integrity: sha512-lNDU9VJaOPxUmXcLb+HQFeUgQQPtMI24Gt6hgfuMHRJgMRHMF/qZ4HJD3GDru4sSw9IQl2jPjAYnQrdIeLbwow==}
 
   nopt@7.2.1:
     resolution: {integrity: sha512-taM24ViiimT/XntxbPyJQzCG+p4EKOpgD3mxFwW38mGjVUrfERQOeY4EDHjdnptttfHuHQXFx+lTP08Q+mLa/w==}
@@ -3089,9 +3103,6 @@ packages:
     resolution: {integrity: sha512-SLBrDU/Srs/9EoWhU5GdbAoxG1GzpQHo/6qiGItaoLJ1thmYpcNIM1qISEUvyHBzfGlWIyd6p2DNi1oV1VmAuw==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
 
-  readable-stream@1.0.34:
-    resolution: {integrity: sha512-ok1qVCJuRkNmvebYikljxJA/UEsKwLl2nI1OmaqAu4/UE+h0wKCHok4XkL/gvi39OacXvw59RJUOFUkDib2rHg==}
-
   readable-stream@2.3.8:
     resolution: {integrity: sha512-8p0AUk4XODgIewSi0l8Epjs+EVnWiK7NoDIEGU0HhE7+ZyY8D1IMY7odu5lRrFXGg71L15KG8QrPmum45RTtdA==}
 
@@ -3288,9 +3299,6 @@ packages:
   string-width@5.1.2:
     resolution: {integrity: sha512-HnLOCR3vjcY8beoNLtcjZ5/nxn2afmME6lhrDrebokqMap+XbeW8n9TXpPDOqdGK5qcI3oT0GKTW6wC7EMiVqA==}
     engines: {node: '>=12'}
-
-  string_decoder@0.10.31:
-    resolution: {integrity: sha512-ev2QzSzWPYmy9GuqfIVildA4OdcGLeFZQrq5ys6RtiuF+RQQiZWr8TZNyAcuVXyQRYfEO+MsoB/1BuQVhOJuoQ==}
 
   string_decoder@1.1.1:
     resolution: {integrity: sha512-n/ShnvDi6FHbbVfviro+WojiFzv+s8MPMHBczVePfUpDJLwoLT0ht1l4YwBCbi8pJAveEEdnkHyPyTP/mzRfwg==}
@@ -3534,10 +3542,6 @@ packages:
   universalify@2.0.1:
     resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==}
     engines: {node: '>= 10.0.0'}
-
-  untildify@4.0.0:
-    resolution: {integrity: sha512-KK8xQ1mkzZeg9inewmFVDNkg3l5LUhoq9kN6iWYB/CC9YMG8HA+c1Q8HwDe6dEX7kErrEVNVBO3fWsVq5iDgtw==}
-    engines: {node: '>=8'}
 
   upath@2.0.1:
     resolution: {integrity: sha512-1uEe95xksV1O0CYKXo8vQvN1JEbtJp7lb7C5U9HMsIp6IVwntkH/oNUzyVNQSd4S1sYk2FpSSW44FqMc8qee5w==}
@@ -5220,16 +5224,6 @@ snapshots:
 
   convert-source-map@2.0.0: {}
 
-  copyfiles@2.4.1:
-    dependencies:
-      glob: 7.2.3
-      minimatch: 3.1.2
-      mkdirp: 1.0.4
-      noms: 0.0.0
-      through2: 2.0.5
-      untildify: 4.0.0
-      yargs: 16.2.0
-
   core-util-is@1.0.3: {}
 
   cosmiconfig@9.0.0(typescript@5.9.3):
@@ -5963,8 +5957,6 @@ snapshots:
     dependencies:
       is-docker: 2.2.1
 
-  isarray@0.0.1: {}
-
   isarray@1.0.0: {}
 
   isexe@2.0.0: {}
@@ -6618,6 +6610,8 @@ snapshots:
     dependencies:
       yallist: 4.0.0
 
+  makage@0.1.2: {}
+
   make-dir@2.1.0:
     dependencies:
       pify: 4.0.1
@@ -6836,11 +6830,6 @@ snapshots:
   node-machine-id@1.1.12: {}
 
   node-releases@2.0.27: {}
-
-  noms@0.0.0:
-    dependencies:
-      inherits: 2.0.4
-      readable-stream: 1.0.34
 
   nopt@7.2.1:
     dependencies:
@@ -7296,13 +7285,6 @@ snapshots:
     dependencies:
       mute-stream: 1.0.0
 
-  readable-stream@1.0.34:
-    dependencies:
-      core-util-is: 1.0.3
-      inherits: 2.0.4
-      isarray: 0.0.1
-      string_decoder: 0.10.31
-
   readable-stream@2.3.8:
     dependencies:
       core-util-is: 1.0.3
@@ -7502,8 +7484,6 @@ snapshots:
       eastasianwidth: 0.2.0
       emoji-regex: 9.2.2
       strip-ansi: 7.1.2
-
-  string_decoder@0.10.31: {}
 
   string_decoder@1.1.1:
     dependencies:
@@ -7707,8 +7687,6 @@ snapshots:
   universal-user-agent@6.0.1: {}
 
   universalify@2.0.1: {}
-
-  untildify@4.0.0: {}
 
   upath@2.0.1: {}
 

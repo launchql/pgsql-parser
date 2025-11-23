@@ -20,9 +20,9 @@
     "url": "https://github.com/launchql/pgsql-parser/issues"
   },
   "scripts": {
-    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
-    "clean": "rimraf dist",
-    "prepare": "npm run build",
+    "copy": "makage assets",
+    "clean": "makage clean dist",
+    "prepublishOnly": "npm run build",
     "build": "npm run build:proto && npm run clean && tsc && tsc -p tsconfig.esm.json && npm run copy",
     "build:dev": "npm run clean && tsc --declarationMap && tsc -p tsconfig.esm.json && npm run copy",
     "build:proto": "ts-node scripts/pg-proto-parser",
@@ -35,7 +35,8 @@
   "devDependencies": {
     "@pgsql/parser": "^1.2.0",
     "pg-proto-parser": "^1.30.0",
-    "pgsql-deparser": "^17.12.0"
+    "pgsql-deparser": "^17.12.0",
+    "makage": "^0.1.2"
   },
   "keywords": []
 }
