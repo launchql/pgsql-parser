@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [17.2.0](https://github.com/launchql/pgsql-parser/compare/@pgsql/traverse@17.1.0...@pgsql/traverse@17.2.0) (2025-11-23)
+
+**Note:** Version bump only for package @pgsql/traverse
+
+
+
+
+
 # 17.1.0 (2025-07-01)
 
 
