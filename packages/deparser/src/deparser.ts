@@ -8286,6 +8286,9 @@ export class Deparser implements DeparserVisitor {
       case 'OBJECT_COLLATION':
         output.push('COLLATION');
         break;
+      case 'OBJECT_PUBLICATION':
+        output.push('PUBLICATION');
+        break;
       default:
         throw new Error(`Unsupported AlterOwnerStmt objectType: ${node.objectType}`);
     }
