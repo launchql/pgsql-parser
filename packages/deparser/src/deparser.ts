@@ -6101,11 +6101,15 @@ export class Deparser implements DeparserVisitor {
       if (context.parentNodeTypes.includes('CreateExtensionStmt') || context.parentNodeTypes.includes('AlterExtensionStmt') || context.parentNodeTypes.includes('CreateFdwStmt') || context.parentNodeTypes.includes('AlterFdwStmt')) {
         // AlterExtensionStmt specific cases
         if (context.parentNodeTypes.includes('AlterExtensionStmt')) {
-          if (node.defname === 'to') {
-            return `TO ${argValue}`;
+          if (node.defname === 'new_version') {
+            // argValue is unquoted due to DefElem context, so we need to quote it
+            const quotedValue = typeof argValue === 'string' && !argValue.startsWith("'")
+              ? `'${argValue}'`
+              : argValue;
+            return `UPDATE TO ${quotedValue}`;
           }
           if (node.defname === 'schema') {
-            return `SCHEMA ${argValue}`;
+            return `SET SCHEMA ${argValue}`;
           }
         }
 
@@ -6410,6 +6414,38 @@ export class Deparser implements DeparserVisitor {
         .map(option => this.visit(option, extContext))
         .join(' ');
       output.push(options);
+    }
+
+    return output.join(' ');
+  }
+
+  AlterExtensionContentsStmt(node: t.AlterExtensionContentsStmt, context: DeparserContext): string {
+    const output: string[] = ['ALTER', 'EXTENSION'];
+
+    if (node.extname) {
+      output.push(this.quoteIfNeeded(node.extname));
+    }
+
+    // Handle action: 1 = ADD, -1 = DROP
+    if (node.action === 1) {
+      output.push('ADD');
+    } else if (node.action === -1) {
+      output.push('DROP');
+    }
+
+    // Add object type keyword
+    if (node.objtype) {
+      try {
+        output.push(this.getObjectTypeKeyword(node.objtype));
+      } catch {
+        // Fallback to the raw objtype if not supported
+        output.push(node.objtype.toString());
+      }
+    }
+
+    // Add the object itself
+    if (node.object) {
+      output.push(this.visit(node.object, context));
     }
 
     return output.join(' ');
