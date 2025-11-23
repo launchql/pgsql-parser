@@ -2366,81 +2366,31 @@ export class Deparser implements DeparserVisitor {
   }
 
   /**
-   * Helper: Check if a TypeName node represents a built-in pg_catalog type.
-   * Uses AST structure, not rendered strings.
-   */
-  private isBuiltinPgCatalogType(typeNameNode: t.TypeName): boolean {
-    if (!typeNameNode.names) {
-      return false;
-    }
-
-    const names = typeNameNode.names.map((name: any) => {
-      if (name.String) {
-        return name.String.sval || name.String.str;
-      }
-      return '';
-    }).filter(Boolean);
-
-    if (names.length === 0) {
-      return false;
-    }
-
-    // Check if it's a qualified pg_catalog type
-    if (names.length === 2 && names[0] === 'pg_catalog') {
-      return pgCatalogTypes.includes(names[1]);
-    }
-
-    // Check if it's an unqualified built-in type
-    if (names.length === 1) {
-      const typeName = names[0];
-      if (pgCatalogTypes.includes(typeName)) {
-        return true;
-      }
-      
-      // Check aliases
-      for (const [realType, aliases] of pgCatalogTypeAliases) {
-        if (aliases.includes(typeName)) {
-          return true;
-        }
-      }
-    }
-
-    return false;
-  }
-
-  /**
-   * Helper: Get normalized type name from TypeName node (strips pg_catalog prefix).
-   * Uses AST structure, not rendered strings.
-   */
-  private normalizeTypeName(typeNameNode: t.TypeName): string {
-    if (!typeNameNode.names) {
-      return '';
-    }
-
-    const names = typeNameNode.names.map((name: any) => {
-      if (name.String) {
-        return name.String.sval || name.String.str;
-      }
-      return '';
-    }).filter(Boolean);
-
-    if (names.length === 0) {
-      return '';
-    }
-
-    // If qualified with pg_catalog, return just the type name
-    if (names.length === 2 && names[0] === 'pg_catalog') {
-      return names[1];
-    }
-
-    // Otherwise return the first (and typically only) name
-    return names[0];
-  }
-
-  /**
-   * Helper: Determine if an argument node needs CAST() syntax based on AST structure.
-   * Returns true if the argument has complex structure that requires CAST() syntax.
-   * Uses AST predicates, not string inspection.
+   * Determine if an argument node needs CAST() syntax based on AST structure.
+   * 
+   * This method inspects the AST node type and properties to decide whether
+   * the argument can safely use PostgreSQL's :: cast syntax or requires
+   * the more explicit CAST(... AS ...) syntax.
+   * 
+   * @param argNode - The AST node representing the cast argument
+   * @returns true if CAST() syntax is required, false if :: syntax can be used
+   * 
+   * Decision logic:
+   * - FuncCall: Can use :: (TypeCast will add parentheses for precedence)
+   * - A_Const (positive): Can use :: (simple literal)
+   * - A_Const (negative): Requires CAST() (precedence issues with -1::type)
+   * - ColumnRef: Can use :: (simple column reference)
+   * - All other types: Require CAST() (complex expressions, operators, etc.)
+   * 
+   * @example
+   * // Returns false (can use ::)
+   * argumentNeedsCastSyntax({ A_Const: { ival: 42 } })
+   * 
+   * // Returns true (needs CAST)
+   * argumentNeedsCastSyntax({ A_Const: { ival: -1 } })
+   * 
+   * // Returns true (needs CAST)
+   * argumentNeedsCastSyntax({ A_Expr: { ... } })
    */
   private argumentNeedsCastSyntax(argNode: any): boolean {
     const argType = this.getNodeType(argNode);
@@ -2500,6 +2450,41 @@ export class Deparser implements DeparserVisitor {
     return true;
   }
 
+  /**
+   * Deparse a TypeCast node to SQL.
+   * 
+   * Chooses between PostgreSQL's two cast syntaxes:
+   * - :: syntax: Cleaner, preferred for simple cases (e.g., '123'::integer)
+   * - CAST() syntax: Required for complex expressions and special cases
+   * 
+   * Decision logic:
+   * 1. pg_catalog.bpchar: Always use CAST() for round-trip fidelity
+   * 2. pg_catalog types with simple args: Use :: syntax (cleaner)
+   * 3. pg_catalog types with complex args: Use CAST() (precedence safety)
+   * 4. All other types: Use CAST() (default)
+   * 
+   * Simple args: positive constants, column refs, function calls
+   * Complex args: negative numbers, expressions, operators, etc.
+   * 
+   * @param node - The TypeCast AST node
+   * @param context - The deparser context
+   * @returns The deparsed SQL string
+   * 
+   * @example
+   * // Simple constant -> :: syntax
+   * TypeCast({ arg: { A_Const: { ival: 123 } }, typeName: 'integer' })
+   * // Returns: "123::integer"
+   * 
+   * @example
+   * // Negative number -> CAST() syntax
+   * TypeCast({ arg: { A_Const: { ival: -1 } }, typeName: 'integer' })
+   * // Returns: "CAST(-1 AS integer)"
+   * 
+   * @example
+   * // pg_catalog.bpchar -> CAST() syntax
+   * TypeCast({ arg: { A_Const: { sval: 'x' } }, typeName: { names: ['pg_catalog', 'bpchar'] } })
+   * // Returns: "CAST('x' AS pg_catalog.bpchar)"
+   */
   TypeCast(node: t.TypeCast, context: DeparserContext): string {
     const arg = this.visit(node.arg, context);
     const typeName = this.TypeName(node.typeName, context);
