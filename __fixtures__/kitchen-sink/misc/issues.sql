@@ -72,3 +72,6 @@ SELECT (1 IS NOT NULL) IS DISTINCT FROM (2 IS NOT NULL);
 -- https://github.com/launchql/pgsql-parser/issues/101
 select "A" from "table_name";
 select "AA" from "table_name";
+
+-- https://github.com/launchql/pgsql-parser/issues/217
+SELECT CAST(t.date AT TIME ZONE $$America/New_York$$ AS text)::date FROM tbl t;

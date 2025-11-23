@@ -16,7 +16,8 @@ const testCases = [
   'pretty/misc-13.sql',
   'pretty/misc-14.sql',
   'pretty/misc-15.sql',
-  'pretty/misc-16.sql'
+  'pretty/misc-16.sql',
+  'pretty/misc-17.sql',
 ];
 
 const prettyTest = new PrettyTest(testCases);
