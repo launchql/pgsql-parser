@@ -32,6 +32,8 @@ exports[`non-pretty: pretty/misc-15.sql 1`] = `"ALTER DEFAULT PRIVILEGES IN SCHE
 
 exports[`non-pretty: pretty/misc-16.sql 1`] = `"GRANT EXECUTE ON FUNCTION dashboard_private.uuid_generate_seeded_uuid TO PUBLIC"`;
 
+exports[`non-pretty: pretty/misc-17.sql 1`] = `"SELECT CAST((t.date AT TIME ZONE 'America/New_York')::text AS date) FROM tbl AS t"`;
+
 exports[`pretty: pretty/misc-1.sql 1`] = `
 "WITH 
   recent_orders AS (SELECT
@@ -295,3 +297,8 @@ exports[`pretty: pretty/misc-15.sql 1`] = `
 `;
 
 exports[`pretty: pretty/misc-16.sql 1`] = `"GRANT EXECUTE ON FUNCTION dashboard_private.uuid_generate_seeded_uuid TO PUBLIC"`;
+
+exports[`pretty: pretty/misc-17.sql 1`] = `
+"SELECT CAST((t.date AT TIME ZONE 'America/New_York')::text AS date)
+FROM tbl AS t"
+`;
