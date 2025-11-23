@@ -2255,9 +2255,14 @@ export class Deparser implements DeparserVisitor {
 
       if (isSimpleArgument || isFunctionCall) {
         // For simple arguments, avoid :: syntax if they have complex structure
-        if (isSimpleArgument && (arg.includes('(') || arg.startsWith('-'))) {
-        } else {
+        const shouldUseCastSyntax = isSimpleArgument && (arg.includes('(') || arg.startsWith('-'));
+        
+        if (!shouldUseCastSyntax) {
           const cleanTypeName = typeName.replace('pg_catalog.', '');
+          // Wrap FuncCall arguments in parentheses to prevent operator precedence issues
+          if (isFunctionCall) {
+            return `(${arg})::${cleanTypeName}`;
+          }
           return `${arg}::${cleanTypeName}`;
         }
       }
