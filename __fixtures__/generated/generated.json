@@ -21285,6 +21285,7 @@
   "misc/issues-14.sql": "SELECT (1 IS NOT NULL) IS DISTINCT FROM (2 IS NOT NULL)",
   "misc/issues-15.sql": "select \"A\" from \"table_name\"",
   "misc/issues-16.sql": "select \"AA\" from \"table_name\"",
+  "misc/issues-17.sql": "ALTER PUBLICATION \"my_publication\" OWNER TO \"postgres\"",
   "misc/inflection-1.sql": "CREATE SCHEMA inflection",
   "misc/inflection-2.sql": "GRANT USAGE ON SCHEMA inflection TO PUBLIC",
   "misc/inflection-3.sql": "ALTER DEFAULT PRIVILEGES IN SCHEMA inflection \n GRANT EXECUTE ON FUNCTIONS  TO PUBLIC",
