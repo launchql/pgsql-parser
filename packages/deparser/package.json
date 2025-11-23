@@ -1,6 +1,6 @@
 {
   "name": "pgsql-deparser",
-  "version": "17.12.0",
+  "version": "17.12.1",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostgreSQL AST Deparser",
   "main": "index.js",
