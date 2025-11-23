@@ -2346,40 +2346,186 @@ export class Deparser implements DeparserVisitor {
     return `COALESCE(${argStrs.join(', ')})`;
   }
 
+  /**
+   * Helper: Check if a TypeName node's names array matches a specific qualified path.
+   * Example: isQualifiedName(node.names, ['pg_catalog', 'bpchar']) checks for pg_catalog.bpchar
+   */
+  private isQualifiedName(names: any[] | undefined, expectedPath: string[]): boolean {
+    if (!names || names.length !== expectedPath.length) {
+      return false;
+    }
+    
+    for (let i = 0; i < expectedPath.length; i++) {
+      const nameValue = (names[i] as any)?.String?.sval;
+      if (nameValue !== expectedPath[i]) {
+        return false;
+      }
+    }
+    
+    return true;
+  }
+
+  /**
+   * Helper: Check if a TypeName node represents a built-in pg_catalog type.
+   * Uses AST structure, not rendered strings.
+   */
+  private isBuiltinPgCatalogType(typeNameNode: t.TypeName): boolean {
+    if (!typeNameNode.names) {
+      return false;
+    }
+
+    const names = typeNameNode.names.map((name: any) => {
+      if (name.String) {
+        return name.String.sval || name.String.str;
+      }
+      return '';
+    }).filter(Boolean);
+
+    if (names.length === 0) {
+      return false;
+    }
+
+    // Check if it's a qualified pg_catalog type
+    if (names.length === 2 && names[0] === 'pg_catalog') {
+      return pgCatalogTypes.includes(names[1]);
+    }
+
+    // Check if it's an unqualified built-in type
+    if (names.length === 1) {
+      const typeName = names[0];
+      if (pgCatalogTypes.includes(typeName)) {
+        return true;
+      }
+      
+      // Check aliases
+      for (const [realType, aliases] of pgCatalogTypeAliases) {
+        if (aliases.includes(typeName)) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   * Helper: Get normalized type name from TypeName node (strips pg_catalog prefix).
+   * Uses AST structure, not rendered strings.
+   */
+  private normalizeTypeName(typeNameNode: t.TypeName): string {
+    if (!typeNameNode.names) {
+      return '';
+    }
+
+    const names = typeNameNode.names.map((name: any) => {
+      if (name.String) {
+        return name.String.sval || name.String.str;
+      }
+      return '';
+    }).filter(Boolean);
+
+    if (names.length === 0) {
+      return '';
+    }
+
+    // If qualified with pg_catalog, return just the type name
+    if (names.length === 2 && names[0] === 'pg_catalog') {
+      return names[1];
+    }
+
+    // Otherwise return the first (and typically only) name
+    return names[0];
+  }
+
+  /**
+   * Helper: Determine if an argument node needs CAST() syntax based on AST structure.
+   * Returns true if the argument has complex structure that requires CAST() syntax.
+   * Uses AST predicates, not string inspection.
+   */
+  private argumentNeedsCastSyntax(argNode: any): boolean {
+    const argType = this.getNodeType(argNode);
+    
+    // FuncCall nodes can use :: syntax (TypeCast will add parentheses)
+    if (argType === 'FuncCall') {
+      return false;
+    }
+    
+    // Simple constants and column references can use :: syntax
+    if (argType === 'A_Const' || argType === 'ColumnRef') {
+      // Check for A_Const with special cases that might need CAST syntax
+      if (argType === 'A_Const') {
+        // Unwrap the node to get the actual A_Const data
+        const nodeAny = (argNode.A_Const || argNode) as any;
+        
+        // Check if this is a negative number (needs parentheses with :: syntax)
+        // Negative numbers can be represented as negative ival or as fval starting with '-'
+        if (nodeAny.ival !== undefined) {
+          const ivalValue = typeof nodeAny.ival === 'object' ? nodeAny.ival.ival : nodeAny.ival;
+          if (typeof ivalValue === 'number' && ivalValue < 0) {
+            return true; // Negative integer needs CAST() to avoid precedence issues
+          }
+        }
+        
+        if (nodeAny.fval !== undefined) {
+          const fvalValue = typeof nodeAny.fval === 'object' ? nodeAny.fval.fval : nodeAny.fval;
+          const fvalStr = String(fvalValue);
+          if (fvalStr.startsWith('-')) {
+            return true; // Negative float needs CAST() to avoid precedence issues
+          }
+        }
+        
+        // Check for Integer/Float in val field
+        if (nodeAny.val) {
+          if (nodeAny.val.Integer?.ival !== undefined && nodeAny.val.Integer.ival < 0) {
+            return true;
+          }
+          if (nodeAny.val.Float?.fval !== undefined) {
+            const fvalStr = String(nodeAny.val.Float.fval);
+            if (fvalStr.startsWith('-')) {
+              return true;
+            }
+          }
+        }
+        
+        // All other A_Const types (positive numbers, strings, booleans, null, bit strings) are simple
+        return false;
+      }
+      
+      // ColumnRef can always use :: syntax
+      return false;
+    }
+    
+    // All other node types (A_Expr, SubLink, TypeCast, A_Indirection, RowExpr, etc.)
+    // are considered complex and should use CAST() syntax
+    return true;
+  }
+
   TypeCast(node: t.TypeCast, context: DeparserContext): string {
     const arg = this.visit(node.arg, context);
     const typeName = this.TypeName(node.typeName, context);
 
-    // Check if this is a bpchar typecast that should preserve original syntax for AST consistency
-    if (typeName === 'bpchar' || typeName === 'pg_catalog.bpchar') {
-      const names = node.typeName?.names;
-      const isQualifiedBpchar = names && names.length === 2 &&
-                               (names[0] as any)?.String?.sval === 'pg_catalog' &&
-                               (names[1] as any)?.String?.sval === 'bpchar';
-
-      if (isQualifiedBpchar) {
-        return `CAST(${arg} AS ${typeName})`;
-      }
+    // Special handling for bpchar: preserve pg_catalog.bpchar with CAST() syntax for round-trip fidelity
+    if (this.isQualifiedName(node.typeName?.names, ['pg_catalog', 'bpchar'])) {
+      return `CAST(${arg} AS ${typeName})`;
     }
 
+    // Check if this is a built-in pg_catalog type based on the rendered type name
     if (this.isPgCatalogType(typeName)) {
       const argType = this.getNodeType(node.arg);
 
-      const isSimpleArgument = argType === 'A_Const' || argType === 'ColumnRef';
-      const isFunctionCall = argType === 'FuncCall';
-
-      if (isSimpleArgument || isFunctionCall) {
-        // For simple arguments, avoid :: syntax if they have complex structure
-        const shouldUseCastSyntax = isSimpleArgument && (arg.includes('(') || arg.startsWith('-'));
+      // Determine if we can use :: syntax based on AST structure
+      const needsCastSyntax = this.argumentNeedsCastSyntax(node.arg);
+      
+      if (!needsCastSyntax) {
+        // Strip pg_catalog prefix from the rendered type name for :: syntax
+        const cleanTypeName = typeName.replace(/^pg_catalog\./, '');
         
-        if (!shouldUseCastSyntax) {
-          const cleanTypeName = typeName.replace('pg_catalog.', '');
-          // Wrap FuncCall arguments in parentheses to prevent operator precedence issues
-          if (isFunctionCall) {
-            return `${context.parens(arg)}::${cleanTypeName}`;
-          }
-          return `${arg}::${cleanTypeName}`;
+        // For FuncCall, wrap in parentheses to prevent operator precedence issues
+        if (argType === 'FuncCall') {
+          return `${context.parens(arg)}::${cleanTypeName}`;
         }
+        
+        return `${arg}::${cleanTypeName}`;
       }
     }
 
