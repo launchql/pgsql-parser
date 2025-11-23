@@ -1,9 +1,10 @@
 import { Node } from '@pgsql/types';
-import { DeparserContext, DeparserVisitor } from './visitors/base';
-import { SqlFormatter } from './utils/sql-formatter';
-import { QuoteUtils } from './utils/quote-utils';
-import { ListUtils } from './utils/list-utils';
 import * as t from '@pgsql/types';
+
+import { ListUtils } from './utils/list-utils';
+import { QuoteUtils } from './utils/quote-utils';
+import { SqlFormatter } from './utils/sql-formatter';
+import { DeparserContext, DeparserVisitor } from './visitors/base';
 
 /**
  * List of real PostgreSQL built-in types as they appear in pg_catalog.pg_type.typname.
@@ -201,112 +202,112 @@ export class Deparser implements DeparserVisitor {
    */
   private getObjectTypeKeyword(objectType: string): string {
     switch (objectType) {
-      case 'OBJECT_TABLE':
-        return 'TABLE';
-      case 'OBJECT_VIEW':
-        return 'VIEW';
-      case 'OBJECT_INDEX':
-        return 'INDEX';
-      case 'OBJECT_SEQUENCE':
-        return 'SEQUENCE';
-      case 'OBJECT_FUNCTION':
-        return 'FUNCTION';
-      case 'OBJECT_PROCEDURE':
-        return 'PROCEDURE';
-      case 'OBJECT_SCHEMA':
-        return 'SCHEMA';
-      case 'OBJECT_DATABASE':
-        return 'DATABASE';
-      case 'OBJECT_DOMAIN':
-        return 'DOMAIN';
-      case 'OBJECT_AGGREGATE':
-        return 'AGGREGATE';
-      case 'OBJECT_CONVERSION':
-        return 'CONVERSION';
-      case 'OBJECT_LANGUAGE':
-        return 'LANGUAGE';
-      case 'OBJECT_OPERATOR':
-        return 'OPERATOR';
-      case 'OBJECT_OPFAMILY':
-        return 'OPERATOR FAMILY';
-      case 'OBJECT_OPCLASS':
-        return 'OPERATOR CLASS';
-      case 'OBJECT_TSDICTIONARY':
-        return 'TEXT SEARCH DICTIONARY';
-      case 'OBJECT_TSCONFIGURATION':
-        return 'TEXT SEARCH CONFIGURATION';
-      case 'OBJECT_EVENT_TRIGGER':
-        return 'EVENT TRIGGER';
-      case 'OBJECT_FDW':
-        return 'FOREIGN DATA WRAPPER';
-      case 'OBJECT_FOREIGN_SERVER':
-        return 'SERVER';
-      case 'OBJECT_TYPE':
-        return 'TYPE';
-      case 'OBJECT_COLLATION':
-        return 'COLLATION';
-      case 'OBJECT_PUBLICATION':
-        return 'PUBLICATION';
-      case 'OBJECT_ACCESS_METHOD':
-        return 'ACCESS METHOD';
-      case 'OBJECT_AMOP':
-        return 'OPERATOR CLASS';
-      case 'OBJECT_AMPROC':
-        return 'OPERATOR CLASS';
-      case 'OBJECT_ATTRIBUTE':
-        return 'ATTRIBUTE';
-      case 'OBJECT_CAST':
-        return 'CAST';
-      case 'OBJECT_COLUMN':
-        return 'COLUMN';
-      case 'OBJECT_DEFAULT':
-        return 'DEFAULT';
-      case 'OBJECT_DEFACL':
-        return 'DEFAULT PRIVILEGES';
-      case 'OBJECT_DOMCONSTRAINT':
-        return 'DOMAIN';
-      case 'OBJECT_EXTENSION':
-        return 'EXTENSION';
-      case 'OBJECT_FOREIGN_TABLE':
-        return 'FOREIGN TABLE';
-      case 'OBJECT_LARGEOBJECT':
-        return 'LARGE OBJECT';
-      case 'OBJECT_MATVIEW':
-        return 'MATERIALIZED VIEW';
-      case 'OBJECT_PARAMETER_ACL':
-        return 'PARAMETER';
-      case 'OBJECT_POLICY':
-        return 'POLICY';
-      case 'OBJECT_PUBLICATION_NAMESPACE':
-        return 'PUBLICATION';
-      case 'OBJECT_PUBLICATION_REL':
-        return 'PUBLICATION';
-      case 'OBJECT_ROLE':
-        return 'ROLE';
-      case 'OBJECT_ROUTINE':
-        return 'ROUTINE';
-      case 'OBJECT_RULE':
-        return 'RULE';
-      case 'OBJECT_STATISTIC_EXT':
-        return 'STATISTICS';
-      case 'OBJECT_SUBSCRIPTION':
-        return 'SUBSCRIPTION';
-      case 'OBJECT_TABCONSTRAINT':
-        return 'CONSTRAINT';
-      case 'OBJECT_TABLESPACE':
-        return 'TABLESPACE';
-      case 'OBJECT_TRANSFORM':
-        return 'TRANSFORM';
-      case 'OBJECT_TRIGGER':
-        return 'TRIGGER';
-      case 'OBJECT_TSPARSER':
-        return 'TEXT SEARCH PARSER';
-      case 'OBJECT_TSTEMPLATE':
-        return 'TEXT SEARCH TEMPLATE';
-      case 'OBJECT_USER_MAPPING':
-        return 'USER MAPPING';
-      default:
-        throw new Error(`Unsupported objectType: ${objectType}`);
+    case 'OBJECT_TABLE':
+      return 'TABLE';
+    case 'OBJECT_VIEW':
+      return 'VIEW';
+    case 'OBJECT_INDEX':
+      return 'INDEX';
+    case 'OBJECT_SEQUENCE':
+      return 'SEQUENCE';
+    case 'OBJECT_FUNCTION':
+      return 'FUNCTION';
+    case 'OBJECT_PROCEDURE':
+      return 'PROCEDURE';
+    case 'OBJECT_SCHEMA':
+      return 'SCHEMA';
+    case 'OBJECT_DATABASE':
+      return 'DATABASE';
+    case 'OBJECT_DOMAIN':
+      return 'DOMAIN';
+    case 'OBJECT_AGGREGATE':
+      return 'AGGREGATE';
+    case 'OBJECT_CONVERSION':
+      return 'CONVERSION';
+    case 'OBJECT_LANGUAGE':
+      return 'LANGUAGE';
+    case 'OBJECT_OPERATOR':
+      return 'OPERATOR';
+    case 'OBJECT_OPFAMILY':
+      return 'OPERATOR FAMILY';
+    case 'OBJECT_OPCLASS':
+      return 'OPERATOR CLASS';
+    case 'OBJECT_TSDICTIONARY':
+      return 'TEXT SEARCH DICTIONARY';
+    case 'OBJECT_TSCONFIGURATION':
+      return 'TEXT SEARCH CONFIGURATION';
+    case 'OBJECT_EVENT_TRIGGER':
+      return 'EVENT TRIGGER';
+    case 'OBJECT_FDW':
+      return 'FOREIGN DATA WRAPPER';
+    case 'OBJECT_FOREIGN_SERVER':
+      return 'SERVER';
+    case 'OBJECT_TYPE':
+      return 'TYPE';
+    case 'OBJECT_COLLATION':
+      return 'COLLATION';
+    case 'OBJECT_PUBLICATION':
+      return 'PUBLICATION';
+    case 'OBJECT_ACCESS_METHOD':
+      return 'ACCESS METHOD';
+    case 'OBJECT_AMOP':
+      return 'OPERATOR CLASS';
+    case 'OBJECT_AMPROC':
+      return 'OPERATOR CLASS';
+    case 'OBJECT_ATTRIBUTE':
+      return 'ATTRIBUTE';
+    case 'OBJECT_CAST':
+      return 'CAST';
+    case 'OBJECT_COLUMN':
+      return 'COLUMN';
+    case 'OBJECT_DEFAULT':
+      return 'DEFAULT';
+    case 'OBJECT_DEFACL':
+      return 'DEFAULT PRIVILEGES';
+    case 'OBJECT_DOMCONSTRAINT':
+      return 'DOMAIN';
+    case 'OBJECT_EXTENSION':
+      return 'EXTENSION';
+    case 'OBJECT_FOREIGN_TABLE':
+      return 'FOREIGN TABLE';
+    case 'OBJECT_LARGEOBJECT':
+      return 'LARGE OBJECT';
+    case 'OBJECT_MATVIEW':
+      return 'MATERIALIZED VIEW';
+    case 'OBJECT_PARAMETER_ACL':
+      return 'PARAMETER';
+    case 'OBJECT_POLICY':
+      return 'POLICY';
+    case 'OBJECT_PUBLICATION_NAMESPACE':
+      return 'PUBLICATION';
+    case 'OBJECT_PUBLICATION_REL':
+      return 'PUBLICATION';
+    case 'OBJECT_ROLE':
+      return 'ROLE';
+    case 'OBJECT_ROUTINE':
+      return 'ROUTINE';
+    case 'OBJECT_RULE':
+      return 'RULE';
+    case 'OBJECT_STATISTIC_EXT':
+      return 'STATISTICS';
+    case 'OBJECT_SUBSCRIPTION':
+      return 'SUBSCRIPTION';
+    case 'OBJECT_TABCONSTRAINT':
+      return 'CONSTRAINT';
+    case 'OBJECT_TABLESPACE':
+      return 'TABLESPACE';
+    case 'OBJECT_TRANSFORM':
+      return 'TRANSFORM';
+    case 'OBJECT_TRIGGER':
+      return 'TRIGGER';
+    case 'OBJECT_TSPARSER':
+      return 'TEXT SEARCH PARSER';
+    case 'OBJECT_TSTEMPLATE':
+      return 'TEXT SEARCH TEMPLATE';
+    case 'OBJECT_USER_MAPPING':
+      return 'USER MAPPING';
+    default:
+      throw new Error(`Unsupported objectType: ${objectType}`);
     }
   }
 
@@ -438,17 +439,17 @@ export class Deparser implements DeparserVisitor {
       }
 
       switch (node.op) {
-        case 'SETOP_UNION':
-          output.push('UNION');
-          break;
-        case 'SETOP_INTERSECT':
-          output.push('INTERSECT');
-          break;
-        case 'SETOP_EXCEPT':
-          output.push('EXCEPT');
-          break;
-        default:
-          throw new Error(`Bad SelectStmt op: ${node.op}`);
+      case 'SETOP_UNION':
+        output.push('UNION');
+        break;
+      case 'SETOP_INTERSECT':
+        output.push('INTERSECT');
+        break;
+      case 'SETOP_EXCEPT':
+        output.push('EXCEPT');
+        break;
+      default:
+        throw new Error(`Bad SelectStmt op: ${node.op}`);
       }
 
       if (node.all) {
@@ -682,207 +683,207 @@ export class Deparser implements DeparserVisitor {
     const rexpr = node.rexpr;
 
     switch (kind) {
-      case 'AEXPR_OP':
-        if (lexpr && rexpr) {
-          const operator = this.deparseOperatorName(name, context);
-          let leftExpr = this.visit(lexpr, context);
-          let rightExpr = this.visit(rexpr, context);
+    case 'AEXPR_OP':
+      if (lexpr && rexpr) {
+        const operator = this.deparseOperatorName(name, context);
+        let leftExpr = this.visit(lexpr, context);
+        let rightExpr = this.visit(rexpr, context);
 
-          // Check if left expression needs parentheses
-          let leftNeedsParens = false;
-          if (lexpr && 'A_Expr' in lexpr && lexpr.A_Expr?.kind === 'AEXPR_OP') {
-            const leftOp = this.deparseOperatorName(ListUtils.unwrapList(lexpr.A_Expr.name), context);
-            if (this.needsParentheses(leftOp, operator, 'left')) {
-              leftNeedsParens = true;
-            }
-          }
-          if (lexpr && this.isComplexExpression(lexpr)) {
+        // Check if left expression needs parentheses
+        let leftNeedsParens = false;
+        if (lexpr && 'A_Expr' in lexpr && lexpr.A_Expr?.kind === 'AEXPR_OP') {
+          const leftOp = this.deparseOperatorName(ListUtils.unwrapList(lexpr.A_Expr.name), context);
+          if (this.needsParentheses(leftOp, operator, 'left')) {
             leftNeedsParens = true;
           }
-          if (leftNeedsParens) {
-            leftExpr = context.parens(leftExpr);
-          }
+        }
+        if (lexpr && this.isComplexExpression(lexpr)) {
+          leftNeedsParens = true;
+        }
+        if (leftNeedsParens) {
+          leftExpr = context.parens(leftExpr);
+        }
 
-          // Check if right expression needs parentheses
-          let rightNeedsParens = false;
-          if (rexpr && 'A_Expr' in rexpr && rexpr.A_Expr?.kind === 'AEXPR_OP') {
-            const rightOp = this.deparseOperatorName(ListUtils.unwrapList(rexpr.A_Expr.name), context);
-            if (this.needsParentheses(rightOp, operator, 'right')) {
-              rightNeedsParens = true;
-            }
-          }
-          if (rexpr && this.isComplexExpression(rexpr)) {
+        // Check if right expression needs parentheses
+        let rightNeedsParens = false;
+        if (rexpr && 'A_Expr' in rexpr && rexpr.A_Expr?.kind === 'AEXPR_OP') {
+          const rightOp = this.deparseOperatorName(ListUtils.unwrapList(rexpr.A_Expr.name), context);
+          if (this.needsParentheses(rightOp, operator, 'right')) {
             rightNeedsParens = true;
           }
-          if (rightNeedsParens) {
-            rightExpr = context.parens(rightExpr);
-          }
-
-          return context.format([leftExpr, operator, rightExpr]);
-        }else if (rexpr) {
-          return context.format([
-            this.deparseOperatorName(name, context),
-            this.visit(rexpr, context)
-          ]);
-        }
-        break;
-      case 'AEXPR_OP_ANY':
-        return context.format([
-          this.visit(lexpr, context),
-          this.deparseOperatorName(name, context),
-          'ANY',
-          context.parens(this.visit(rexpr, context))
-        ]);
-      case 'AEXPR_OP_ALL':
-        return context.format([
-          this.visit(lexpr, context),
-          this.deparseOperatorName(name, context),
-          'ALL',
-          context.parens(this.visit(rexpr, context))
-        ]);
-      case 'AEXPR_DISTINCT': {
-        let leftExpr = this.visit(lexpr, context);
-        let rightExpr = this.visit(rexpr, context);
-
-        // Add parentheses for complex expressions
-        if (lexpr && this.isComplexExpression(lexpr)) {
-          leftExpr = context.parens(leftExpr);
         }
         if (rexpr && this.isComplexExpression(rexpr)) {
+          rightNeedsParens = true;
+        }
+        if (rightNeedsParens) {
           rightExpr = context.parens(rightExpr);
         }
 
+        return context.format([leftExpr, operator, rightExpr]);
+      }else if (rexpr) {
         return context.format([
-          leftExpr,
-          'IS DISTINCT FROM',
-          rightExpr
+          this.deparseOperatorName(name, context),
+          this.visit(rexpr, context)
         ]);
       }
-      case 'AEXPR_NOT_DISTINCT': {
-        let leftExpr = this.visit(lexpr, context);
-        let rightExpr = this.visit(rexpr, context);
+      break;
+    case 'AEXPR_OP_ANY':
+      return context.format([
+        this.visit(lexpr, context),
+        this.deparseOperatorName(name, context),
+        'ANY',
+        context.parens(this.visit(rexpr, context))
+      ]);
+    case 'AEXPR_OP_ALL':
+      return context.format([
+        this.visit(lexpr, context),
+        this.deparseOperatorName(name, context),
+        'ALL',
+        context.parens(this.visit(rexpr, context))
+      ]);
+    case 'AEXPR_DISTINCT': {
+      let leftExpr = this.visit(lexpr, context);
+      let rightExpr = this.visit(rexpr, context);
 
-        // Add parentheses for complex expressions
-        if (lexpr && this.isComplexExpression(lexpr)) {
-          leftExpr = context.parens(leftExpr);
-        }
-        if (rexpr && this.isComplexExpression(rexpr)) {
-          rightExpr = context.parens(rightExpr);
-        }
+      // Add parentheses for complex expressions
+      if (lexpr && this.isComplexExpression(lexpr)) {
+        leftExpr = context.parens(leftExpr);
+      }
+      if (rexpr && this.isComplexExpression(rexpr)) {
+        rightExpr = context.parens(rightExpr);
+      }
 
+      return context.format([
+        leftExpr,
+        'IS DISTINCT FROM',
+        rightExpr
+      ]);
+    }
+    case 'AEXPR_NOT_DISTINCT': {
+      let leftExpr = this.visit(lexpr, context);
+      let rightExpr = this.visit(rexpr, context);
+
+      // Add parentheses for complex expressions
+      if (lexpr && this.isComplexExpression(lexpr)) {
+        leftExpr = context.parens(leftExpr);
+      }
+      if (rexpr && this.isComplexExpression(rexpr)) {
+        rightExpr = context.parens(rightExpr);
+      }
+
+      return context.format([
+        leftExpr,
+        'IS NOT DISTINCT FROM',
+        rightExpr
+      ]);
+    }
+    case 'AEXPR_NULLIF':
+      return context.format([
+        'NULLIF',
+        context.parens([
+          this.visit(lexpr, context),
+          this.visit(rexpr, context)
+        ].join(', '))
+      ]);
+    case 'AEXPR_IN':
+      const inOperator = this.deparseOperatorName(name, context);
+      if (inOperator === '<>' || inOperator === '!=') {
         return context.format([
-          leftExpr,
-          'IS NOT DISTINCT FROM',
-          rightExpr
+          this.visit(lexpr, context),
+          'NOT IN',
+          context.parens(this.visit(rexpr, context))
+        ]);
+      } else {
+        return context.format([
+          this.visit(lexpr, context),
+          'IN',
+          context.parens(this.visit(rexpr, context))
         ]);
       }
-      case 'AEXPR_NULLIF':
+    case 'AEXPR_LIKE':
+      const likeOp = this.deparseOperatorName(name, context);
+      if (likeOp === '!~~') {
         return context.format([
-          'NULLIF',
-          context.parens([
-            this.visit(lexpr, context),
-            this.visit(rexpr, context)
-          ].join(', '))
+          this.visit(lexpr, context),
+          'NOT LIKE',
+          this.visit(rexpr, context)
         ]);
-      case 'AEXPR_IN':
-        const inOperator = this.deparseOperatorName(name, context);
-        if (inOperator === '<>' || inOperator === '!=') {
-          return context.format([
-            this.visit(lexpr, context),
-            'NOT IN',
-            context.parens(this.visit(rexpr, context))
-          ]);
-        } else {
-          return context.format([
-            this.visit(lexpr, context),
-            'IN',
-            context.parens(this.visit(rexpr, context))
-          ]);
-        }
-      case 'AEXPR_LIKE':
-        const likeOp = this.deparseOperatorName(name, context);
-        if (likeOp === '!~~') {
-          return context.format([
-            this.visit(lexpr, context),
-            'NOT LIKE',
-            this.visit(rexpr, context)
-          ]);
-        } else {
-          return context.format([
-            this.visit(lexpr, context),
-            'LIKE',
-            this.visit(rexpr, context)
-          ]);
-        }
-      case 'AEXPR_ILIKE':
-        const ilikeOp = this.deparseOperatorName(name, context);
-        if (ilikeOp === '!~~*') {
-          return context.format([
-            this.visit(lexpr, context),
-            'NOT ILIKE',
-            this.visit(rexpr, context)
-          ]);
-        } else {
-          return context.format([
-            this.visit(lexpr, context),
-            'ILIKE',
-            this.visit(rexpr, context)
-          ]);
-        }
-      case 'AEXPR_SIMILAR':
-        const similarOp = this.deparseOperatorName(name, context);
-        let rightExpr: string;
+      } else {
+        return context.format([
+          this.visit(lexpr, context),
+          'LIKE',
+          this.visit(rexpr, context)
+        ]);
+      }
+    case 'AEXPR_ILIKE':
+      const ilikeOp = this.deparseOperatorName(name, context);
+      if (ilikeOp === '!~~*') {
+        return context.format([
+          this.visit(lexpr, context),
+          'NOT ILIKE',
+          this.visit(rexpr, context)
+        ]);
+      } else {
+        return context.format([
+          this.visit(lexpr, context),
+          'ILIKE',
+          this.visit(rexpr, context)
+        ]);
+      }
+    case 'AEXPR_SIMILAR':
+      const similarOp = this.deparseOperatorName(name, context);
+      let rightExpr: string;
 
-        if (rexpr && 'FuncCall' in rexpr &&
+      if (rexpr && 'FuncCall' in rexpr &&
             rexpr.FuncCall?.funcname?.length === 2 &&
             (rexpr.FuncCall.funcname[0] as any)?.String?.sval === 'pg_catalog' &&
             (rexpr.FuncCall.funcname[1] as any)?.String?.sval === 'similar_to_escape') {
-          const args = rexpr.FuncCall.args || [];
-          rightExpr = this.visit(args[0], context);
-          if (args.length > 1) {
-            rightExpr += ` ESCAPE ${this.visit(args[1], context)}`;
-          }
-        } else {
-          rightExpr = this.visit(rexpr, context);
+        const args = rexpr.FuncCall.args || [];
+        rightExpr = this.visit(args[0], context);
+        if (args.length > 1) {
+          rightExpr += ` ESCAPE ${this.visit(args[1], context)}`;
         }
+      } else {
+        rightExpr = this.visit(rexpr, context);
+      }
 
-        if (similarOp === '!~') {
-          return context.format([
-            this.visit(lexpr, context),
-            'NOT SIMILAR TO',
-            rightExpr
-          ]);
-        } else {
-          return context.format([
-            this.visit(lexpr, context),
-            'SIMILAR TO',
-            rightExpr
-          ]);
-        }
-      case 'AEXPR_BETWEEN':
+      if (similarOp === '!~') {
         return context.format([
           this.visit(lexpr, context),
-          'BETWEEN',
-          this.visitBetweenRange(rexpr, context)
+          'NOT SIMILAR TO',
+          rightExpr
         ]);
-      case 'AEXPR_NOT_BETWEEN':
+      } else {
         return context.format([
           this.visit(lexpr, context),
-          'NOT BETWEEN',
-          this.visitBetweenRange(rexpr, context)
+          'SIMILAR TO',
+          rightExpr
         ]);
-      case 'AEXPR_BETWEEN_SYM':
-        return context.format([
-          this.visit(lexpr, context),
-          'BETWEEN SYMMETRIC',
-          this.visitBetweenRange(rexpr, context)
-        ]);
-      case 'AEXPR_NOT_BETWEEN_SYM':
-        return context.format([
-          this.visit(lexpr, context),
-          'NOT BETWEEN SYMMETRIC',
-          this.visitBetweenRange(rexpr, context)
-        ]);
+      }
+    case 'AEXPR_BETWEEN':
+      return context.format([
+        this.visit(lexpr, context),
+        'BETWEEN',
+        this.visitBetweenRange(rexpr, context)
+      ]);
+    case 'AEXPR_NOT_BETWEEN':
+      return context.format([
+        this.visit(lexpr, context),
+        'NOT BETWEEN',
+        this.visitBetweenRange(rexpr, context)
+      ]);
+    case 'AEXPR_BETWEEN_SYM':
+      return context.format([
+        this.visit(lexpr, context),
+        'BETWEEN SYMMETRIC',
+        this.visitBetweenRange(rexpr, context)
+      ]);
+    case 'AEXPR_NOT_BETWEEN_SYM':
+      return context.format([
+        this.visit(lexpr, context),
+        'NOT BETWEEN SYMMETRIC',
+        this.visitBetweenRange(rexpr, context)
+      ]);
     }
 
     throw new Error(`Unhandled A_Expr kind: ${kind}`);
@@ -910,15 +911,15 @@ export class Deparser implements DeparserVisitor {
   private getOperatorPrecedence(operator: string): number {
     const precedence: { [key: string]: number } = {
       '||': 1,    // string concatenation
-      'OR': 2,    // logical OR
-      'AND': 3,   // logical AND
-      'NOT': 4,   // logical NOT
-      'IS': 5,    // IS NULL, IS NOT NULL, etc.
-      'IN': 5,    // IN, NOT IN
-      'BETWEEN': 5, // BETWEEN, NOT BETWEEN
-      'LIKE': 5,  // LIKE, ILIKE, SIMILAR TO
-      'ILIKE': 5,
-      'SIMILAR': 5,
+      OR: 2,    // logical OR
+      AND: 3,   // logical AND
+      NOT: 4,   // logical NOT
+      IS: 5,    // IS NULL, IS NOT NULL, etc.
+      IN: 5,    // IN, NOT IN
+      BETWEEN: 5, // BETWEEN, NOT BETWEEN
+      LIKE: 5,  // LIKE, ILIKE, SIMILAR TO
+      ILIKE: 5,
+      SIMILAR: 5,
       '<': 6,     // comparison operators
       '<=': 6,
       '>': 6,
@@ -1395,26 +1396,26 @@ export class Deparser implements DeparserVisitor {
     // return formatStr.replace('%s', () => andArgs); // ✅ Function callback prevents interpretation
 
     switch (boolop) {
-      case 'AND_EXPR':
-        if (context.isPretty() && args.length > 1) {
-          const andArgs = args.map(arg => this.visit(arg, boolContext)).join(context.newline() + context.indent('AND '));
-          return formatStr.replace('%s', () => andArgs);
-        } else {
-          const andArgs = args.map(arg => this.visit(arg, boolContext)).join(' AND ');
-          return formatStr.replace('%s', () => andArgs);
-        }
-      case 'OR_EXPR':
-        if (context.isPretty() && args.length > 1) {
-          const orArgs = args.map(arg => this.visit(arg, boolContext)).join(context.newline() + context.indent('OR '));
-          return formatStr.replace('%s', () => orArgs);
-        } else {
-          const orArgs = args.map(arg => this.visit(arg, boolContext)).join(' OR ');
-          return formatStr.replace('%s', () => orArgs);
-        }
-      case 'NOT_EXPR':
-        return `NOT (${this.visit(args[0], context)})`;
-      default:
-        throw new Error(`Unhandled BoolExpr boolop: ${boolop}`);
+    case 'AND_EXPR':
+      if (context.isPretty() && args.length > 1) {
+        const andArgs = args.map(arg => this.visit(arg, boolContext)).join(context.newline() + context.indent('AND '));
+        return formatStr.replace('%s', () => andArgs);
+      } else {
+        const andArgs = args.map(arg => this.visit(arg, boolContext)).join(' AND ');
+        return formatStr.replace('%s', () => andArgs);
+      }
+    case 'OR_EXPR':
+      if (context.isPretty() && args.length > 1) {
+        const orArgs = args.map(arg => this.visit(arg, boolContext)).join(context.newline() + context.indent('OR '));
+        return formatStr.replace('%s', () => orArgs);
+      } else {
+        const orArgs = args.map(arg => this.visit(arg, boolContext)).join(' OR ');
+        return formatStr.replace('%s', () => orArgs);
+      }
+    case 'NOT_EXPR':
+      return `NOT (${this.visit(args[0], context)})`;
+    default:
+      throw new Error(`Unhandled BoolExpr boolop: ${boolop}`);
     }
   }
 
@@ -2158,35 +2159,35 @@ export class Deparser implements DeparserVisitor {
   formatSingleTypeMod(typemod: number, typeName: string): string | null {
 
     switch (typeName) {
-      case 'varchar':
-      case 'bpchar':
-      case 'char':
-        if (typemod > 4) {
-          return (typemod - 64).toString();
+    case 'varchar':
+    case 'bpchar':
+    case 'char':
+      if (typemod > 4) {
+        return (typemod - 64).toString();
+      }
+      break;
+    case 'numeric':
+    case 'decimal':
+      if (typemod > 4) {
+        const modValue = typemod - 4;
+        const precision = (modValue >> 16) & 0xFFFF;
+        const scale = modValue & 0xFFFF;
+        if (scale > 0) {
+          return `${precision},${scale}`;
+        } else {
+          return precision.toString();
         }
-        break;
-      case 'numeric':
-      case 'decimal':
-        if (typemod > 4) {
-          const modValue = typemod - 4;
-          const precision = (modValue >> 16) & 0xFFFF;
-          const scale = modValue & 0xFFFF;
-          if (scale > 0) {
-            return `${precision},${scale}`;
-          } else {
-            return precision.toString();
-          }
-        }
-        break;
-      case 'time':
-      case 'timetz':
-      case 'timestamp':
-      case 'timestamptz':
-      case 'interval':
-        if (typemod >= 0) {
-          return typemod.toString();
-        }
-        break;
+      }
+      break;
+    case 'time':
+    case 'timetz':
+    case 'timestamp':
+    case 'timestamptz':
+    case 'interval':
+      if (typemod >= 0) {
+        return typemod.toString();
+      }
+      break;
     }
 
     return null;
@@ -2194,35 +2195,35 @@ export class Deparser implements DeparserVisitor {
 
   getPgCatalogTypeName(typeName: string, size: string | null): string {
     switch (typeName) {
-      case 'bpchar':
-        if (size != null) {
-          return 'char';
-        }
-        return 'pg_catalog.bpchar';
-      case 'varchar':
-        return 'varchar';
-      case 'numeric':
-        return 'numeric';
-      case 'bool':
-        return 'boolean';
-      case 'int2':
-        return 'smallint';
-      case 'int4':
-        return 'int';
-      case 'int8':
-        return 'bigint';
-      case 'real':
-        return 'pg_catalog.float4';
-      case 'time':
-        return 'time';
-      case 'timestamp':
-        return 'timestamp';
-      case 'interval':
-        return 'interval';
-      case 'bit':
-        return 'bit';
-      default:
-        return `pg_catalog.${typeName}`;
+    case 'bpchar':
+      if (size != null) {
+        return 'char';
+      }
+      return 'pg_catalog.bpchar';
+    case 'varchar':
+      return 'varchar';
+    case 'numeric':
+      return 'numeric';
+    case 'bool':
+      return 'boolean';
+    case 'int2':
+      return 'smallint';
+    case 'int4':
+      return 'int';
+    case 'int8':
+      return 'bigint';
+    case 'real':
+      return 'pg_catalog.float4';
+    case 'time':
+      return 'time';
+    case 'timestamp':
+      return 'timestamp';
+    case 'interval':
+      return 'interval';
+    case 'bit':
+      return 'bit';
+    default:
+      return `pg_catalog.${typeName}`;
     }
   }
 
@@ -2346,40 +2347,186 @@ export class Deparser implements DeparserVisitor {
     return `COALESCE(${argStrs.join(', ')})`;
   }
 
+  /**
+   * Helper: Check if a TypeName node's names array matches a specific qualified path.
+   * Example: isQualifiedName(node.names, ['pg_catalog', 'bpchar']) checks for pg_catalog.bpchar
+   */
+  private isQualifiedName(names: any[] | undefined, expectedPath: string[]): boolean {
+    if (!names || names.length !== expectedPath.length) {
+      return false;
+    }
+    
+    for (let i = 0; i < expectedPath.length; i++) {
+      const nameValue = (names[i] as any)?.String?.sval;
+      if (nameValue !== expectedPath[i]) {
+        return false;
+      }
+    }
+    
+    return true;
+  }
+
+  /**
+   * Helper: Check if a TypeName node represents a built-in pg_catalog type.
+   * Uses AST structure, not rendered strings.
+   */
+  private isBuiltinPgCatalogType(typeNameNode: t.TypeName): boolean {
+    if (!typeNameNode.names) {
+      return false;
+    }
+
+    const names = typeNameNode.names.map((name: any) => {
+      if (name.String) {
+        return name.String.sval || name.String.str;
+      }
+      return '';
+    }).filter(Boolean);
+
+    if (names.length === 0) {
+      return false;
+    }
+
+    // Check if it's a qualified pg_catalog type
+    if (names.length === 2 && names[0] === 'pg_catalog') {
+      return pgCatalogTypes.includes(names[1]);
+    }
+
+    // Check if it's an unqualified built-in type
+    if (names.length === 1) {
+      const typeName = names[0];
+      if (pgCatalogTypes.includes(typeName)) {
+        return true;
+      }
+      
+      // Check aliases
+      for (const [realType, aliases] of pgCatalogTypeAliases) {
+        if (aliases.includes(typeName)) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   * Helper: Get normalized type name from TypeName node (strips pg_catalog prefix).
+   * Uses AST structure, not rendered strings.
+   */
+  private normalizeTypeName(typeNameNode: t.TypeName): string {
+    if (!typeNameNode.names) {
+      return '';
+    }
+
+    const names = typeNameNode.names.map((name: any) => {
+      if (name.String) {
+        return name.String.sval || name.String.str;
+      }
+      return '';
+    }).filter(Boolean);
+
+    if (names.length === 0) {
+      return '';
+    }
+
+    // If qualified with pg_catalog, return just the type name
+    if (names.length === 2 && names[0] === 'pg_catalog') {
+      return names[1];
+    }
+
+    // Otherwise return the first (and typically only) name
+    return names[0];
+  }
+
+  /**
+   * Helper: Determine if an argument node needs CAST() syntax based on AST structure.
+   * Returns true if the argument has complex structure that requires CAST() syntax.
+   * Uses AST predicates, not string inspection.
+   */
+  private argumentNeedsCastSyntax(argNode: any): boolean {
+    const argType = this.getNodeType(argNode);
+    
+    // FuncCall nodes can use :: syntax (TypeCast will add parentheses)
+    if (argType === 'FuncCall') {
+      return false;
+    }
+    
+    // Simple constants and column references can use :: syntax
+    if (argType === 'A_Const' || argType === 'ColumnRef') {
+      // Check for A_Const with special cases that might need CAST syntax
+      if (argType === 'A_Const') {
+        // Unwrap the node to get the actual A_Const data
+        const nodeAny = (argNode.A_Const || argNode) as any;
+        
+        // Check if this is a negative number (needs parentheses with :: syntax)
+        // Negative numbers can be represented as negative ival or as fval starting with '-'
+        if (nodeAny.ival !== undefined) {
+          const ivalValue = typeof nodeAny.ival === 'object' ? nodeAny.ival.ival : nodeAny.ival;
+          if (typeof ivalValue === 'number' && ivalValue < 0) {
+            return true; // Negative integer needs CAST() to avoid precedence issues
+          }
+        }
+        
+        if (nodeAny.fval !== undefined) {
+          const fvalValue = typeof nodeAny.fval === 'object' ? nodeAny.fval.fval : nodeAny.fval;
+          const fvalStr = String(fvalValue);
+          if (fvalStr.startsWith('-')) {
+            return true; // Negative float needs CAST() to avoid precedence issues
+          }
+        }
+        
+        // Check for Integer/Float in val field
+        if (nodeAny.val) {
+          if (nodeAny.val.Integer?.ival !== undefined && nodeAny.val.Integer.ival < 0) {
+            return true;
+          }
+          if (nodeAny.val.Float?.fval !== undefined) {
+            const fvalStr = String(nodeAny.val.Float.fval);
+            if (fvalStr.startsWith('-')) {
+              return true;
+            }
+          }
+        }
+        
+        // All other A_Const types (positive numbers, strings, booleans, null, bit strings) are simple
+        return false;
+      }
+      
+      // ColumnRef can always use :: syntax
+      return false;
+    }
+    
+    // All other node types (A_Expr, SubLink, TypeCast, A_Indirection, RowExpr, etc.)
+    // are considered complex and should use CAST() syntax
+    return true;
+  }
+
   TypeCast(node: t.TypeCast, context: DeparserContext): string {
     const arg = this.visit(node.arg, context);
     const typeName = this.TypeName(node.typeName, context);
 
-    // Check if this is a bpchar typecast that should preserve original syntax for AST consistency
-    if (typeName === 'bpchar' || typeName === 'pg_catalog.bpchar') {
-      const names = node.typeName?.names;
-      const isQualifiedBpchar = names && names.length === 2 &&
-                               (names[0] as any)?.String?.sval === 'pg_catalog' &&
-                               (names[1] as any)?.String?.sval === 'bpchar';
-
-      if (isQualifiedBpchar) {
-        return `CAST(${arg} AS ${typeName})`;
-      }
+    // Special handling for bpchar: preserve pg_catalog.bpchar with CAST() syntax for round-trip fidelity
+    if (this.isQualifiedName(node.typeName?.names, ['pg_catalog', 'bpchar'])) {
+      return `CAST(${arg} AS ${typeName})`;
     }
 
+    // Check if this is a built-in pg_catalog type based on the rendered type name
     if (this.isPgCatalogType(typeName)) {
       const argType = this.getNodeType(node.arg);
 
-      const isSimpleArgument = argType === 'A_Const' || argType === 'ColumnRef';
-      const isFunctionCall = argType === 'FuncCall';
-
-      if (isSimpleArgument || isFunctionCall) {
-        // For simple arguments, avoid :: syntax if they have complex structure
-        const shouldUseCastSyntax = isSimpleArgument && (arg.includes('(') || arg.startsWith('-'));
+      // Determine if we can use :: syntax based on AST structure
+      const needsCastSyntax = this.argumentNeedsCastSyntax(node.arg);
+      
+      if (!needsCastSyntax) {
+        // Strip pg_catalog prefix from the rendered type name for :: syntax
+        const cleanTypeName = typeName.replace(/^pg_catalog\./, '');
         
-        if (!shouldUseCastSyntax) {
-          const cleanTypeName = typeName.replace('pg_catalog.', '');
-          // Wrap FuncCall arguments in parentheses to prevent operator precedence issues
-          if (isFunctionCall) {
-            return `${context.parens(arg)}::${cleanTypeName}`;
-          }
-          return `${arg}::${cleanTypeName}`;
+        // For FuncCall, wrap in parentheses to prevent operator precedence issues
+        if (argType === 'FuncCall') {
+          return `${context.parens(arg)}::${cleanTypeName}`;
         }
+        
+        return `${arg}::${cleanTypeName}`;
       }
     }
 
@@ -2417,24 +2564,24 @@ export class Deparser implements DeparserVisitor {
     output.push(this.visit(node.arg, boolContext));
 
     switch (node.booltesttype as string) {
-      case 'IS_TRUE':
-        output.push('IS TRUE');
-        break;
-      case 'IS_NOT_TRUE':
-        output.push('IS NOT TRUE');
-        break;
-      case 'IS_FALSE':
-        output.push('IS FALSE');
-        break;
-      case 'IS_NOT_FALSE':
-        output.push('IS NOT FALSE');
-        break;
-      case 'IS_UNKNOWN':
-        output.push('IS UNKNOWN');
-        break;
-      case 'IS_NOT_UNKNOWN':
-        output.push('IS NOT UNKNOWN');
-        break;
+    case 'IS_TRUE':
+      output.push('IS TRUE');
+      break;
+    case 'IS_NOT_TRUE':
+      output.push('IS NOT TRUE');
+      break;
+    case 'IS_FALSE':
+      output.push('IS FALSE');
+      break;
+    case 'IS_NOT_FALSE':
+      output.push('IS NOT FALSE');
+      break;
+    case 'IS_UNKNOWN':
+      output.push('IS UNKNOWN');
+      break;
+    case 'IS_NOT_UNKNOWN':
+      output.push('IS NOT UNKNOWN');
+      break;
     }
 
     return output.join(' ');
@@ -2446,12 +2593,12 @@ export class Deparser implements DeparserVisitor {
     output.push(this.visit(node.arg, context));
 
     switch (node.nulltesttype as string) {
-      case 'IS_NULL':
-        output.push('IS NULL');
-        break;
-      case 'IS_NOT_NULL':
-        output.push('IS NOT NULL');
-        break;
+    case 'IS_NULL':
+      output.push('IS NULL');
+      break;
+    case 'IS_NOT_NULL':
+      output.push('IS NOT NULL');
+      break;
     }
 
     return output.join(' ');
@@ -2491,16 +2638,16 @@ export class Deparser implements DeparserVisitor {
 
   preserveOperatorDefElemCase(defName: string): string {
     const caseMap: { [key: string]: string } = {
-      'leftarg': 'Leftarg',
-      'rightarg': 'Rightarg',
-      'procedure': 'Procedure',
-      'function': 'Function',
-      'commutator': 'Commutator',
-      'negator': 'Negator',
-      'restrict': 'Restrict',
-      'join': 'Join',
-      'hashes': 'Hashes',
-      'merges': 'Merges'
+      leftarg: 'Leftarg',
+      rightarg: 'Rightarg',
+      procedure: 'Procedure',
+      function: 'Function',
+      commutator: 'Commutator',
+      negator: 'Negator',
+      restrict: 'Restrict',
+      join: 'Join',
+      hashes: 'Hashes',
+      merges: 'Merges'
     };
 
     return caseMap[defName.toLowerCase()] || defName;
@@ -2663,15 +2810,15 @@ export class Deparser implements DeparserVisitor {
     if (node.partspec) {
       output.push('PARTITION BY');
       switch (node.partspec.strategy) {
-        case 'PARTITION_STRATEGY_HASH':
-          output.push('HASH');
-          break;
-        case 'PARTITION_STRATEGY_LIST':
-          output.push('LIST');
-          break;
-        case 'PARTITION_STRATEGY_RANGE':
-          output.push('RANGE');
-          break;
+      case 'PARTITION_STRATEGY_HASH':
+        output.push('HASH');
+        break;
+      case 'PARTITION_STRATEGY_LIST':
+        output.push('LIST');
+        break;
+      case 'PARTITION_STRATEGY_RANGE':
+        output.push('RANGE');
+        break;
       }
       if (node.partspec.partParams && node.partspec.partParams.length > 0) {
         const partParams = ListUtils.unwrapList(node.partspec.partParams)
@@ -2684,15 +2831,15 @@ export class Deparser implements DeparserVisitor {
     if (node.oncommit && node.oncommit !== 'ONCOMMIT_NOOP') {
       output.push('ON COMMIT');
       switch (node.oncommit) {
-        case 'ONCOMMIT_PRESERVE_ROWS':
-          output.push('PRESERVE ROWS');
-          break;
-        case 'ONCOMMIT_DELETE_ROWS':
-          output.push('DELETE ROWS');
-          break;
-        case 'ONCOMMIT_DROP':
-          output.push('DROP');
-          break;
+      case 'ONCOMMIT_PRESERVE_ROWS':
+        output.push('PRESERVE ROWS');
+        break;
+      case 'ONCOMMIT_DELETE_ROWS':
+        output.push('DELETE ROWS');
+        break;
+      case 'ONCOMMIT_DROP':
+        output.push('DROP');
+        break;
       }
     }
 
@@ -2773,320 +2920,320 @@ export class Deparser implements DeparserVisitor {
     }
 
     switch (node.contype) {
-      case 'CONSTR_NULL':
-        output.push('NULL');
-        break;
-      case 'CONSTR_NOTNULL':
-        output.push('NOT NULL');
-        break;
-      case 'CONSTR_DEFAULT':
-        output.push('DEFAULT');
-        if (node.raw_expr) {
-          output.push(this.visit(node.raw_expr, context));
-        }
-        break;
-      case 'CONSTR_CHECK':
-        if (context.isPretty() && !context.isColumnConstraint) {
-          output.push('\n' + context.indent('CHECK'));
-        } else {
-          output.push('CHECK');
-        }
-        if (node.raw_expr) {
-          if (context.isPretty()) {
-            const checkExpr = this.visit(node.raw_expr, context);
-            if (checkExpr.includes('\n')) {
-              output.push('(\n' + context.indent(checkExpr) + '\n)');
-            } else {
-              output.push(`(${checkExpr})`);
-            }
+    case 'CONSTR_NULL':
+      output.push('NULL');
+      break;
+    case 'CONSTR_NOTNULL':
+      output.push('NOT NULL');
+      break;
+    case 'CONSTR_DEFAULT':
+      output.push('DEFAULT');
+      if (node.raw_expr) {
+        output.push(this.visit(node.raw_expr, context));
+      }
+      break;
+    case 'CONSTR_CHECK':
+      if (context.isPretty() && !context.isColumnConstraint) {
+        output.push('\n' + context.indent('CHECK'));
+      } else {
+        output.push('CHECK');
+      }
+      if (node.raw_expr) {
+        if (context.isPretty()) {
+          const checkExpr = this.visit(node.raw_expr, context);
+          if (checkExpr.includes('\n')) {
+            output.push('(\n' + context.indent(checkExpr) + '\n)');
           } else {
-            output.push(context.parens(this.visit(node.raw_expr, context)));
+            output.push(`(${checkExpr})`);
           }
-        }
-        // Handle NOT VALID for check constraints
-        if (node.skip_validation) {
-          output.push('NOT VALID');
-        }
-        // Handle NO INHERIT for check constraints - only for table constraints, not domain constraints
-        if (node.is_no_inherit && !context.isDomainConstraint) {
-          output.push('NO INHERIT');
-        }
-        break;
-      case 'CONSTR_GENERATED':
-        output.push('GENERATED');
-        if (node.generated_when === 'a') {
-          output.push('ALWAYS');
-        } else if (node.generated_when === 's') {
-          output.push('BY DEFAULT');
-        }
-        output.push('AS');
-        if (node.raw_expr) {
+        } else {
           output.push(context.parens(this.visit(node.raw_expr, context)));
         }
-        output.push('STORED');
-        break;
-      case 'CONSTR_IDENTITY':
-        output.push('GENERATED');
-        if (node.generated_when === 'a') {
-          output.push('ALWAYS');
-        } else if (node.generated_when === 'd' || node.generated_when === 's') {
-          output.push('BY DEFAULT');
-        }
-        output.push('AS IDENTITY');
-        if (node.options && node.options.length > 0) {
-          const optionStrs = ListUtils.unwrapList(node.options)
-            .map(option => {
-              if (option.DefElem) {
-                const defElem = option.DefElem;
-                if (defElem.defname === 'sequence_name') {
-                  if (defElem.arg && defElem.arg.List) {
-                    const nameList = ListUtils.unwrapList(defElem.arg)
-                      .map(item => this.visit(item, context))
-                      .join('.');
-                    return `SEQUENCE NAME ${nameList}`;
-                  }
-                  return 'SEQUENCE NAME';
-                } else if (defElem.defname === 'start') {
-                  const argValue = defElem.arg ? this.visit(defElem.arg, context) : '';
-                  return `START WITH ${argValue}`;
-                } else if (defElem.defname === 'increment') {
-                  const argValue = defElem.arg ? this.visit(defElem.arg, context) : '';
-                  return `INCREMENT BY ${argValue}`;
-                } else if (defElem.defname === 'minvalue') {
-                  if (defElem.arg) {
-                    const argValue = this.visit(defElem.arg, context);
-                    return `MINVALUE ${argValue}`;
-                  } else {
-                    return 'NO MINVALUE';
-                  }
-                } else if (defElem.defname === 'maxvalue') {
-                  if (defElem.arg) {
-                    const argValue = this.visit(defElem.arg, context);
-                    return `MAXVALUE ${argValue}`;
-                  } else {
-                    return 'NO MAXVALUE';
-                  }
-                } else if (defElem.defname === 'cache') {
-                  const argValue = defElem.arg ? this.visit(defElem.arg, context) : '';
-                  return `CACHE ${argValue}`;
-                } else if (defElem.defname === 'cycle') {
-                  const argValue = defElem.arg ? this.visit(defElem.arg, context) : '';
-                  return argValue === 'true' ? 'CYCLE' : 'NO CYCLE';
+      }
+      // Handle NOT VALID for check constraints
+      if (node.skip_validation) {
+        output.push('NOT VALID');
+      }
+      // Handle NO INHERIT for check constraints - only for table constraints, not domain constraints
+      if (node.is_no_inherit && !context.isDomainConstraint) {
+        output.push('NO INHERIT');
+      }
+      break;
+    case 'CONSTR_GENERATED':
+      output.push('GENERATED');
+      if (node.generated_when === 'a') {
+        output.push('ALWAYS');
+      } else if (node.generated_when === 's') {
+        output.push('BY DEFAULT');
+      }
+      output.push('AS');
+      if (node.raw_expr) {
+        output.push(context.parens(this.visit(node.raw_expr, context)));
+      }
+      output.push('STORED');
+      break;
+    case 'CONSTR_IDENTITY':
+      output.push('GENERATED');
+      if (node.generated_when === 'a') {
+        output.push('ALWAYS');
+      } else if (node.generated_when === 'd' || node.generated_when === 's') {
+        output.push('BY DEFAULT');
+      }
+      output.push('AS IDENTITY');
+      if (node.options && node.options.length > 0) {
+        const optionStrs = ListUtils.unwrapList(node.options)
+          .map(option => {
+            if (option.DefElem) {
+              const defElem = option.DefElem;
+              if (defElem.defname === 'sequence_name') {
+                if (defElem.arg && defElem.arg.List) {
+                  const nameList = ListUtils.unwrapList(defElem.arg)
+                    .map(item => this.visit(item, context))
+                    .join('.');
+                  return `SEQUENCE NAME ${nameList}`;
                 }
+                return 'SEQUENCE NAME';
+              } else if (defElem.defname === 'start') {
                 const argValue = defElem.arg ? this.visit(defElem.arg, context) : '';
-                return `${defElem.defname.toUpperCase()} ${argValue}`;
+                return `START WITH ${argValue}`;
+              } else if (defElem.defname === 'increment') {
+                const argValue = defElem.arg ? this.visit(defElem.arg, context) : '';
+                return `INCREMENT BY ${argValue}`;
+              } else if (defElem.defname === 'minvalue') {
+                if (defElem.arg) {
+                  const argValue = this.visit(defElem.arg, context);
+                  return `MINVALUE ${argValue}`;
+                } else {
+                  return 'NO MINVALUE';
+                }
+              } else if (defElem.defname === 'maxvalue') {
+                if (defElem.arg) {
+                  const argValue = this.visit(defElem.arg, context);
+                  return `MAXVALUE ${argValue}`;
+                } else {
+                  return 'NO MAXVALUE';
+                }
+              } else if (defElem.defname === 'cache') {
+                const argValue = defElem.arg ? this.visit(defElem.arg, context) : '';
+                return `CACHE ${argValue}`;
+              } else if (defElem.defname === 'cycle') {
+                const argValue = defElem.arg ? this.visit(defElem.arg, context) : '';
+                return argValue === 'true' ? 'CYCLE' : 'NO CYCLE';
               }
-              return this.visit(option, context);
-            });
-          if (context.isPretty()) {
-            const indentedOptions = optionStrs.map(option => context.indent(option));
-            output.push('(\n' + indentedOptions.join('\n') + '\n)');
-          } else {
-            output.push(`(${optionStrs.join(' ')})`);
-          }
-        }
-        break;
-      case 'CONSTR_PRIMARY':
-        output.push('PRIMARY KEY');
-        if (node.keys && node.keys.length > 0) {
-          const keyList = ListUtils.unwrapList(node.keys)
-            .map(key => this.visit(key, context))
-            .join(', ');
-          output.push(`(${keyList})`);
-        }
-        if (node.indexname) {
-          output.push('USING INDEX');
-          output.push(node.indexname);
-        }
-        break;
-      case 'CONSTR_UNIQUE':
-        if (context.isPretty() && !context.isColumnConstraint) {
-          output.push('\n' + context.indent('UNIQUE'));
-        } else {
-          output.push('UNIQUE');
-        }
-        if (node.nulls_not_distinct) {
-          output.push('NULLS NOT DISTINCT');
-        }
-        if (node.keys && node.keys.length > 0) {
-          const keyList = ListUtils.unwrapList(node.keys)
-            .map(key => this.visit(key, context))
-            .join(', ');
-          output.push(`(${keyList})`);
-        }
-        if (node.indexname) {
-          output.push('USING INDEX');
-          output.push(node.indexname);
-        }
-        break;
-      case 'CONSTR_FOREIGN':
-        // Only add "FOREIGN KEY" for table-level constraints, not column-level constraints
-        if (!context.isColumnConstraint) {
-          if (context.isPretty()) {
-            output.push('\n' + context.indent('FOREIGN KEY'));
-            if (node.fk_attrs && node.fk_attrs.length > 0) {
-              const fkAttrs = ListUtils.unwrapList(node.fk_attrs)
-                .map(attr => this.visit(attr, context))
-                .join(', ');
-              output.push(`(${fkAttrs})`);
+              const argValue = defElem.arg ? this.visit(defElem.arg, context) : '';
+              return `${defElem.defname.toUpperCase()} ${argValue}`;
             }
-            output.push('\n' + context.indent('REFERENCES'));
-          } else {
-            output.push('FOREIGN KEY');
-            if (node.fk_attrs && node.fk_attrs.length > 0) {
-              const fkAttrs = ListUtils.unwrapList(node.fk_attrs)
-                .map(attr => this.visit(attr, context))
-                .join(', ');
-              output.push(`(${fkAttrs})`);
-            }
-            output.push('REFERENCES');
-          }
+            return this.visit(option, context);
+          });
+        if (context.isPretty()) {
+          const indentedOptions = optionStrs.map(option => context.indent(option));
+          output.push('(\n' + indentedOptions.join('\n') + '\n)');
         } else {
+          output.push(`(${optionStrs.join(' ')})`);
+        }
+      }
+      break;
+    case 'CONSTR_PRIMARY':
+      output.push('PRIMARY KEY');
+      if (node.keys && node.keys.length > 0) {
+        const keyList = ListUtils.unwrapList(node.keys)
+          .map(key => this.visit(key, context))
+          .join(', ');
+        output.push(`(${keyList})`);
+      }
+      if (node.indexname) {
+        output.push('USING INDEX');
+        output.push(node.indexname);
+      }
+      break;
+    case 'CONSTR_UNIQUE':
+      if (context.isPretty() && !context.isColumnConstraint) {
+        output.push('\n' + context.indent('UNIQUE'));
+      } else {
+        output.push('UNIQUE');
+      }
+      if (node.nulls_not_distinct) {
+        output.push('NULLS NOT DISTINCT');
+      }
+      if (node.keys && node.keys.length > 0) {
+        const keyList = ListUtils.unwrapList(node.keys)
+          .map(key => this.visit(key, context))
+          .join(', ');
+        output.push(`(${keyList})`);
+      }
+      if (node.indexname) {
+        output.push('USING INDEX');
+        output.push(node.indexname);
+      }
+      break;
+    case 'CONSTR_FOREIGN':
+      // Only add "FOREIGN KEY" for table-level constraints, not column-level constraints
+      if (!context.isColumnConstraint) {
+        if (context.isPretty()) {
+          output.push('\n' + context.indent('FOREIGN KEY'));
+          if (node.fk_attrs && node.fk_attrs.length > 0) {
+            const fkAttrs = ListUtils.unwrapList(node.fk_attrs)
+              .map(attr => this.visit(attr, context))
+              .join(', ');
+            output.push(`(${fkAttrs})`);
+          }
+          output.push('\n' + context.indent('REFERENCES'));
+        } else {
+          output.push('FOREIGN KEY');
+          if (node.fk_attrs && node.fk_attrs.length > 0) {
+            const fkAttrs = ListUtils.unwrapList(node.fk_attrs)
+              .map(attr => this.visit(attr, context))
+              .join(', ');
+            output.push(`(${fkAttrs})`);
+          }
           output.push('REFERENCES');
         }
-        if (node.pktable) {
-          if (context.isPretty() && !context.isColumnConstraint) {
-            const lastIndex = output.length - 1;
-            if (lastIndex >= 0 && output[lastIndex].includes('REFERENCES')) {
-              output[lastIndex] += ' ' + this.RangeVar(node.pktable, context);
-            } else {
-              output.push(this.RangeVar(node.pktable, context));
-            }
+      } else {
+        output.push('REFERENCES');
+      }
+      if (node.pktable) {
+        if (context.isPretty() && !context.isColumnConstraint) {
+          const lastIndex = output.length - 1;
+          if (lastIndex >= 0 && output[lastIndex].includes('REFERENCES')) {
+            output[lastIndex] += ' ' + this.RangeVar(node.pktable, context);
           } else {
             output.push(this.RangeVar(node.pktable, context));
           }
+        } else {
+          output.push(this.RangeVar(node.pktable, context));
         }
-        if (node.pk_attrs && node.pk_attrs.length > 0) {
-          const pkAttrs = ListUtils.unwrapList(node.pk_attrs)
-            .map(attr => this.visit(attr, context))
-            .join(', ');
-          if (context.isPretty() && !context.isColumnConstraint) {
-            const lastIndex = output.length - 1;
-            if (lastIndex >= 0) {
-              output[lastIndex] += ` (${pkAttrs})`;
-            } else {
-              output.push(`(${pkAttrs})`);
-            }
+      }
+      if (node.pk_attrs && node.pk_attrs.length > 0) {
+        const pkAttrs = ListUtils.unwrapList(node.pk_attrs)
+          .map(attr => this.visit(attr, context))
+          .join(', ');
+        if (context.isPretty() && !context.isColumnConstraint) {
+          const lastIndex = output.length - 1;
+          if (lastIndex >= 0) {
+            output[lastIndex] += ` (${pkAttrs})`;
           } else {
             output.push(`(${pkAttrs})`);
           }
+        } else {
+          output.push(`(${pkAttrs})`);
         }
-        if (node.fk_matchtype && node.fk_matchtype !== 's') {
-          let matchClause = '';
-          switch (node.fk_matchtype) {
-            case 'f':
-              matchClause = 'MATCH FULL';
-              break;
-            case 'p':
-              matchClause = 'MATCH PARTIAL';
-              break;
-          }
-          if (context.isPretty() && !context.isColumnConstraint) {
-            output.push('\n' + context.indent(matchClause));
-          } else {
-            output.push(matchClause);
-          }
+      }
+      if (node.fk_matchtype && node.fk_matchtype !== 's') {
+        let matchClause = '';
+        switch (node.fk_matchtype) {
+        case 'f':
+          matchClause = 'MATCH FULL';
+          break;
+        case 'p':
+          matchClause = 'MATCH PARTIAL';
+          break;
         }
-        if (node.fk_upd_action && node.fk_upd_action !== 'a') {
-          let updateClause = 'ON UPDATE ';
-          switch (node.fk_upd_action) {
-            case 'r':
-              updateClause += 'RESTRICT';
-              break;
-            case 'c':
-              updateClause += 'CASCADE';
-              break;
-            case 'n':
-              updateClause += 'SET NULL';
-              break;
-            case 'd':
-              updateClause += 'SET DEFAULT';
-              break;
-          }
-          if (context.isPretty()) {
-            output.push('\n' + context.indent(updateClause));
-          } else {
-            output.push('ON UPDATE');
-            output.push(updateClause.replace('ON UPDATE ', ''));
-          }
+        if (context.isPretty() && !context.isColumnConstraint) {
+          output.push('\n' + context.indent(matchClause));
+        } else {
+          output.push(matchClause);
         }
-        if (node.fk_del_action && node.fk_del_action !== 'a') {
-          let deleteClause = 'ON DELETE ';
-          switch (node.fk_del_action) {
-            case 'r':
-              deleteClause += 'RESTRICT';
-              break;
-            case 'c':
-              deleteClause += 'CASCADE';
-              break;
-            case 'n':
-              deleteClause += 'SET NULL';
-              break;
-            case 'd':
-              deleteClause += 'SET DEFAULT';
-              break;
-          }
-          if (context.isPretty()) {
-            output.push('\n' + context.indent(deleteClause));
-          } else {
-            output.push('ON DELETE');
-            output.push(deleteClause.replace('ON DELETE ', ''));
-          }
+      }
+      if (node.fk_upd_action && node.fk_upd_action !== 'a') {
+        let updateClause = 'ON UPDATE ';
+        switch (node.fk_upd_action) {
+        case 'r':
+          updateClause += 'RESTRICT';
+          break;
+        case 'c':
+          updateClause += 'CASCADE';
+          break;
+        case 'n':
+          updateClause += 'SET NULL';
+          break;
+        case 'd':
+          updateClause += 'SET DEFAULT';
+          break;
         }
-        // Handle NOT VALID for foreign key constraints - only for table constraints, not domain constraints
-        if (node.skip_validation && !context.isDomainConstraint) {
-          if (context.isPretty() && !context.isColumnConstraint) {
-            output.push('\n' + context.indent('NOT VALID'));
-          } else {
-            output.push('NOT VALID');
-          }
+        if (context.isPretty()) {
+          output.push('\n' + context.indent(updateClause));
+        } else {
+          output.push('ON UPDATE');
+          output.push(updateClause.replace('ON UPDATE ', ''));
         }
-        break;
-      case 'CONSTR_ATTR_DEFERRABLE':
-        output.push('DEFERRABLE');
-        break;
-      case 'CONSTR_ATTR_NOT_DEFERRABLE':
-        output.push('NOT DEFERRABLE');
-        break;
-      case 'CONSTR_ATTR_DEFERRED':
-        output.push('INITIALLY DEFERRED');
-        break;
-      case 'CONSTR_ATTR_IMMEDIATE':
-        output.push('INITIALLY IMMEDIATE');
-        break;
-      case 'CONSTR_EXCLUSION':
-        output.push('EXCLUDE');
-        if (node.access_method) {
-          output.push('USING');
-          output.push(node.access_method);
+      }
+      if (node.fk_del_action && node.fk_del_action !== 'a') {
+        let deleteClause = 'ON DELETE ';
+        switch (node.fk_del_action) {
+        case 'r':
+          deleteClause += 'RESTRICT';
+          break;
+        case 'c':
+          deleteClause += 'CASCADE';
+          break;
+        case 'n':
+          deleteClause += 'SET NULL';
+          break;
+        case 'd':
+          deleteClause += 'SET DEFAULT';
+          break;
         }
-        if (node.exclusions && node.exclusions.length > 0) {
-          const exclusionElements = ListUtils.unwrapList(node.exclusions).map(elem => {
-            if (this.getNodeType(elem) === 'List') {
-              const elemList = ListUtils.unwrapList(elem);
-              if (elemList.length >= 2) {
-                const column = this.visit(elemList[0], context);
-                // Extract operator string from nested List structure
-                const operatorNode = elemList[1];
-                let operator = '';
-                if (this.getNodeType(operatorNode) === 'List') {
-                  const operatorList = ListUtils.unwrapList(operatorNode);
-                  if (operatorList.length > 0 && operatorList[0].String) {
-                    operator = operatorList[0].String.sval;
-                  }
-                } else if (operatorNode.String) {
-                  operator = operatorNode.String.sval;
-                } else {
-                  operator = this.visit(operatorNode, context);
+        if (context.isPretty()) {
+          output.push('\n' + context.indent(deleteClause));
+        } else {
+          output.push('ON DELETE');
+          output.push(deleteClause.replace('ON DELETE ', ''));
+        }
+      }
+      // Handle NOT VALID for foreign key constraints - only for table constraints, not domain constraints
+      if (node.skip_validation && !context.isDomainConstraint) {
+        if (context.isPretty() && !context.isColumnConstraint) {
+          output.push('\n' + context.indent('NOT VALID'));
+        } else {
+          output.push('NOT VALID');
+        }
+      }
+      break;
+    case 'CONSTR_ATTR_DEFERRABLE':
+      output.push('DEFERRABLE');
+      break;
+    case 'CONSTR_ATTR_NOT_DEFERRABLE':
+      output.push('NOT DEFERRABLE');
+      break;
+    case 'CONSTR_ATTR_DEFERRED':
+      output.push('INITIALLY DEFERRED');
+      break;
+    case 'CONSTR_ATTR_IMMEDIATE':
+      output.push('INITIALLY IMMEDIATE');
+      break;
+    case 'CONSTR_EXCLUSION':
+      output.push('EXCLUDE');
+      if (node.access_method) {
+        output.push('USING');
+        output.push(node.access_method);
+      }
+      if (node.exclusions && node.exclusions.length > 0) {
+        const exclusionElements = ListUtils.unwrapList(node.exclusions).map(elem => {
+          if (this.getNodeType(elem) === 'List') {
+            const elemList = ListUtils.unwrapList(elem);
+            if (elemList.length >= 2) {
+              const column = this.visit(elemList[0], context);
+              // Extract operator string from nested List structure
+              const operatorNode = elemList[1];
+              let operator = '';
+              if (this.getNodeType(operatorNode) === 'List') {
+                const operatorList = ListUtils.unwrapList(operatorNode);
+                if (operatorList.length > 0 && operatorList[0].String) {
+                  operator = operatorList[0].String.sval;
                 }
-                return `${column} WITH ${operator}`;
+              } else if (operatorNode.String) {
+                operator = operatorNode.String.sval;
+              } else {
+                operator = this.visit(operatorNode, context);
               }
+              return `${column} WITH ${operator}`;
             }
-            return this.visit(elem, context);
-          });
-          output.push(`(${exclusionElements.join(', ')})`);
-        }
-        break;
+          }
+          return this.visit(elem, context);
+        });
+        output.push(`(${exclusionElements.join(', ')})`);
+      }
+      break;
     }
 
     // Handle deferrable constraints for all constraint types that support it
@@ -3137,30 +3284,30 @@ export class Deparser implements DeparserVisitor {
     const subselect = context.parens(this.visit(node.subselect, context));
 
     switch (node.subLinkType) {
-      case 'ANY_SUBLINK':
-        if (node.testexpr && node.operName) {
-          const testExpr = this.visit(node.testexpr, context);
-          const operator = this.deparseOperatorName(node.operName, context);
-          return `${testExpr} ${operator} ANY ${subselect}`;
-        } else if (node.testexpr) {
-          const testExpr = this.visit(node.testexpr, context);
-          return `${testExpr} IN ${subselect}`;
-        }
-        return subselect;
-      case 'ALL_SUBLINK':
-        if (node.testexpr && node.operName) {
-          const testExpr = this.visit(node.testexpr, context);
-          const operator = this.deparseOperatorName(node.operName, context);
-          return `${testExpr} ${operator} ALL ${subselect}`;
-        }
-        return subselect;
-      case 'EXISTS_SUBLINK':
-        return `EXISTS ${subselect}`;
-      case 'ARRAY_SUBLINK':
-        return `ARRAY${subselect}`;
-      case 'EXPR_SUBLINK':
-      default:
-        return subselect;
+    case 'ANY_SUBLINK':
+      if (node.testexpr && node.operName) {
+        const testExpr = this.visit(node.testexpr, context);
+        const operator = this.deparseOperatorName(node.operName, context);
+        return `${testExpr} ${operator} ANY ${subselect}`;
+      } else if (node.testexpr) {
+        const testExpr = this.visit(node.testexpr, context);
+        return `${testExpr} IN ${subselect}`;
+      }
+      return subselect;
+    case 'ALL_SUBLINK':
+      if (node.testexpr && node.operName) {
+        const testExpr = this.visit(node.testexpr, context);
+        const operator = this.deparseOperatorName(node.operName, context);
+        return `${testExpr} ${operator} ALL ${subselect}`;
+      }
+      return subselect;
+    case 'EXISTS_SUBLINK':
+      return `EXISTS ${subselect}`;
+    case 'ARRAY_SUBLINK':
+      return `ARRAY${subselect}`;
+    case 'EXPR_SUBLINK':
+    default:
+      return subselect;
     }
   }
 
@@ -3347,25 +3494,25 @@ export class Deparser implements DeparserVisitor {
 
   GroupingSet(node: t.GroupingSet, context: DeparserContext): string {
     switch (node.kind) {
-      case 'GROUPING_SET_EMPTY':
-        return '()';
-      case 'GROUPING_SET_SIMPLE':
-        // Not present in raw parse trees
-        return '';
-      case 'GROUPING_SET_ROLLUP':
-        const rollupContent = ListUtils.unwrapList(node.content);
-        const rollupStrs = rollupContent.map(c => this.visit(c, context));
-        return `ROLLUP (${rollupStrs.join(', ')})`;
-      case 'GROUPING_SET_CUBE':
-        const cubeContent = ListUtils.unwrapList(node.content);
-        const cubeStrs = cubeContent.map(c => this.visit(c, context));
-        return `CUBE (${cubeStrs.join(', ')})`;
-      case 'GROUPING_SET_SETS':
-        const setsContent = ListUtils.unwrapList(node.content);
-        const setsStrs = setsContent.map(c => this.visit(c, context));
-        return `GROUPING SETS (${setsStrs.join(', ')})`;
-      default:
-        return '';
+    case 'GROUPING_SET_EMPTY':
+      return '()';
+    case 'GROUPING_SET_SIMPLE':
+      // Not present in raw parse trees
+      return '';
+    case 'GROUPING_SET_ROLLUP':
+      const rollupContent = ListUtils.unwrapList(node.content);
+      const rollupStrs = rollupContent.map(c => this.visit(c, context));
+      return `ROLLUP (${rollupStrs.join(', ')})`;
+    case 'GROUPING_SET_CUBE':
+      const cubeContent = ListUtils.unwrapList(node.content);
+      const cubeStrs = cubeContent.map(c => this.visit(c, context));
+      return `CUBE (${cubeStrs.join(', ')})`;
+    case 'GROUPING_SET_SETS':
+      const setsContent = ListUtils.unwrapList(node.content);
+      const setsStrs = setsContent.map(c => this.visit(c, context));
+      return `GROUPING SETS (${setsStrs.join(', ')})`;
+    default:
+      return '';
     }
   }
 
@@ -3407,20 +3554,20 @@ export class Deparser implements DeparserVisitor {
     const output: string[] = [];
 
     switch (node.strength) {
-      case 'LCS_FORUPDATE':
-        output.push('FOR UPDATE');
-        break;
-      case 'LCS_FORSHARE':
-        output.push('FOR SHARE');
-        break;
-      case 'LCS_FORKEYSHARE':
-        output.push('FOR KEY SHARE');
-        break;
-      case 'LCS_FORNOKEYUPDATE':
-        output.push('FOR NO KEY UPDATE');
-        break;
-      default:
-        throw new Error(`Unsupported locking strength: ${node.strength}`);
+    case 'LCS_FORUPDATE':
+      output.push('FOR UPDATE');
+      break;
+    case 'LCS_FORSHARE':
+      output.push('FOR SHARE');
+      break;
+    case 'LCS_FORKEYSHARE':
+      output.push('FOR KEY SHARE');
+      break;
+    case 'LCS_FORNOKEYUPDATE':
+      output.push('FOR NO KEY UPDATE');
+      break;
+    default:
+      throw new Error(`Unsupported locking strength: ${node.strength}`);
     }
 
     if (node.lockedRels && node.lockedRels.length > 0) {
@@ -3669,12 +3816,12 @@ export class Deparser implements DeparserVisitor {
 
     if (node.withCheckOption) {
       switch (node.withCheckOption) {
-        case 'CASCADED_CHECK_OPTION':
-          output.push('WITH CASCADED CHECK OPTION');
-          break;
-        case 'LOCAL_CHECK_OPTION':
-          output.push('WITH LOCAL CHECK OPTION');
-          break;
+      case 'CASCADED_CHECK_OPTION':
+        output.push('WITH CASCADED CHECK OPTION');
+        break;
+      case 'LOCAL_CHECK_OPTION':
+        output.push('WITH LOCAL CHECK OPTION');
+        break;
       }
     }
 
@@ -3786,23 +3933,23 @@ export class Deparser implements DeparserVisitor {
 
     if (node.ordering) {
       switch (node.ordering) {
-        case 'SORTBY_ASC':
-          output.push('ASC');
-          break;
-        case 'SORTBY_DESC':
-          output.push('DESC');
-          break;
+      case 'SORTBY_ASC':
+        output.push('ASC');
+        break;
+      case 'SORTBY_DESC':
+        output.push('DESC');
+        break;
       }
     }
 
     if (node.nulls_ordering) {
       switch (node.nulls_ordering) {
-        case 'SORTBY_NULLS_FIRST':
-          output.push('NULLS FIRST');
-          break;
-        case 'SORTBY_NULLS_LAST':
-          output.push('NULLS LAST');
-          break;
+      case 'SORTBY_NULLS_FIRST':
+        output.push('NULLS FIRST');
+        break;
+      case 'SORTBY_NULLS_LAST':
+        output.push('NULLS LAST');
+        break;
       }
     }
 
@@ -3950,27 +4097,27 @@ export class Deparser implements DeparserVisitor {
     }
 
     switch (node.jointype) {
-      case 'JOIN_INNER':
-        if (node.isNatural) {
-          joinStr += 'JOIN';
-        }
-        else if (!node.quals && (!node.usingClause || node.usingClause.length === 0)) {
-          joinStr += 'CROSS JOIN';
-        } else {
-          joinStr += 'JOIN';
-        }
-        break;
-      case 'JOIN_LEFT':
-        joinStr += 'LEFT JOIN';
-        break;
-      case 'JOIN_FULL':
-        joinStr += 'FULL JOIN';
-        break;
-      case 'JOIN_RIGHT':
-        joinStr += 'RIGHT JOIN';
-        break;
-      default:
+    case 'JOIN_INNER':
+      if (node.isNatural) {
         joinStr += 'JOIN';
+      }
+      else if (!node.quals && (!node.usingClause || node.usingClause.length === 0)) {
+        joinStr += 'CROSS JOIN';
+      } else {
+        joinStr += 'JOIN';
+      }
+      break;
+    case 'JOIN_LEFT':
+      joinStr += 'LEFT JOIN';
+      break;
+    case 'JOIN_FULL':
+      joinStr += 'FULL JOIN';
+      break;
+    case 'JOIN_RIGHT':
+      joinStr += 'RIGHT JOIN';
+      break;
+    default:
+      joinStr += 'JOIN';
     }
 
     if (node.rarg) {
@@ -4066,56 +4213,56 @@ export class Deparser implements DeparserVisitor {
     const output: string[] = [];
 
     switch (node.kind) {
-      case 'TRANS_STMT_BEGIN':
-        output.push('BEGIN');
-        break;
-      case 'TRANS_STMT_START':
-        output.push('START TRANSACTION');
-        break;
-      case 'TRANS_STMT_COMMIT':
-        output.push('COMMIT');
-        break;
-      case 'TRANS_STMT_ROLLBACK':
-        output.push('ROLLBACK');
-        break;
-      case 'TRANS_STMT_SAVEPOINT':
-        output.push('SAVEPOINT');
-        if (node.savepoint_name) {
-          output.push(QuoteUtils.quote(node.savepoint_name));
-        }
-        break;
-      case 'TRANS_STMT_RELEASE':
-        output.push('RELEASE SAVEPOINT');
-        if (node.savepoint_name) {
-          output.push(QuoteUtils.quote(node.savepoint_name));
-        }
-        break;
-      case 'TRANS_STMT_ROLLBACK_TO':
-        output.push('ROLLBACK TO');
-        if (node.savepoint_name) {
-          output.push(QuoteUtils.quote(node.savepoint_name));
-        }
-        break;
-      case 'TRANS_STMT_PREPARE':
-        output.push('PREPARE TRANSACTION');
-        if (node.gid) {
-          output.push(`'${node.gid}'`);
-        }
-        break;
-      case 'TRANS_STMT_COMMIT_PREPARED':
-        output.push('COMMIT PREPARED');
-        if (node.gid) {
-          output.push(`'${node.gid}'`);
-        }
-        break;
-      case 'TRANS_STMT_ROLLBACK_PREPARED':
-        output.push('ROLLBACK PREPARED');
-        if (node.gid) {
-          output.push(`'${node.gid}'`);
-        }
-        break;
-      default:
-        throw new Error(`Unsupported TransactionStmt kind: ${node.kind}`);
+    case 'TRANS_STMT_BEGIN':
+      output.push('BEGIN');
+      break;
+    case 'TRANS_STMT_START':
+      output.push('START TRANSACTION');
+      break;
+    case 'TRANS_STMT_COMMIT':
+      output.push('COMMIT');
+      break;
+    case 'TRANS_STMT_ROLLBACK':
+      output.push('ROLLBACK');
+      break;
+    case 'TRANS_STMT_SAVEPOINT':
+      output.push('SAVEPOINT');
+      if (node.savepoint_name) {
+        output.push(QuoteUtils.quote(node.savepoint_name));
+      }
+      break;
+    case 'TRANS_STMT_RELEASE':
+      output.push('RELEASE SAVEPOINT');
+      if (node.savepoint_name) {
+        output.push(QuoteUtils.quote(node.savepoint_name));
+      }
+      break;
+    case 'TRANS_STMT_ROLLBACK_TO':
+      output.push('ROLLBACK TO');
+      if (node.savepoint_name) {
+        output.push(QuoteUtils.quote(node.savepoint_name));
+      }
+      break;
+    case 'TRANS_STMT_PREPARE':
+      output.push('PREPARE TRANSACTION');
+      if (node.gid) {
+        output.push(`'${node.gid}'`);
+      }
+      break;
+    case 'TRANS_STMT_COMMIT_PREPARED':
+      output.push('COMMIT PREPARED');
+      if (node.gid) {
+        output.push(`'${node.gid}'`);
+      }
+      break;
+    case 'TRANS_STMT_ROLLBACK_PREPARED':
+      output.push('ROLLBACK PREPARED');
+      if (node.gid) {
+        output.push(`'${node.gid}'`);
+      }
+      break;
+    default:
+      throw new Error(`Unsupported TransactionStmt kind: ${node.kind}`);
     }
 
     // Handle transaction options (e.g., READ ONLY, ISOLATION LEVEL)
@@ -4176,104 +4323,104 @@ export class Deparser implements DeparserVisitor {
 
   VariableSetStmt(node: t.VariableSetStmt, context: DeparserContext): string {
     switch (node.kind) {
-      case 'VAR_SET_VALUE':
-        const localPrefix = node.is_local ? 'LOCAL ' : '';
-        const args = node.args ? ListUtils.unwrapList(node.args).map(arg => {
-          const nodeData = this.getNodeData(arg);
-          if (nodeData.sval !== undefined) {
-            const svalValue = typeof nodeData.sval === 'object' ? nodeData.sval.sval : nodeData.sval;
-            if (svalValue === '' || svalValue.includes(' ') || svalValue.includes('-') || /[A-Z]/.test(svalValue) || /^\d/.test(svalValue) || svalValue.includes('.') || svalValue.includes('$') || svalValue.toLowerCase() === 'all' || /^[+-]\d/.test(svalValue)) {
-              return `'${svalValue}'`;
-            }
-            return svalValue;
+    case 'VAR_SET_VALUE':
+      const localPrefix = node.is_local ? 'LOCAL ' : '';
+      const args = node.args ? ListUtils.unwrapList(node.args).map(arg => {
+        const nodeData = this.getNodeData(arg);
+        if (nodeData.sval !== undefined) {
+          const svalValue = typeof nodeData.sval === 'object' ? nodeData.sval.sval : nodeData.sval;
+          if (svalValue === '' || svalValue.includes(' ') || svalValue.includes('-') || /[A-Z]/.test(svalValue) || /^\d/.test(svalValue) || svalValue.includes('.') || svalValue.includes('$') || svalValue.toLowerCase() === 'all' || /^[+-]\d/.test(svalValue)) {
+            return `'${svalValue}'`;
           }
-          return this.visit(arg, context);
-        }).join(', ') : '';
-
-        // Handle args - always include TO clause if args exist (even if empty string)
-        const paramName = node.name && (node.name.includes('.') || node.name.includes('-') || /[A-Z]/.test(node.name)) ? `"${node.name}"` : node.name;
-        if (!node.args || node.args.length === 0) {
-          return `SET ${localPrefix}${paramName}`;
+          return svalValue;
         }
-        return `SET ${localPrefix}${paramName} TO ${args}`;
-      case 'VAR_SET_DEFAULT':
-        const defaultParamName = node.name && (node.name.includes('.') || node.name.includes('-') || /[A-Z]/.test(node.name)) ? `"${node.name}"` : node.name;
-        return `SET ${defaultParamName} TO DEFAULT`;
-      case 'VAR_SET_CURRENT':
-        const currentParamName = node.name && (node.name.includes('.') || node.name.includes('-') || /[A-Z]/.test(node.name)) ? `"${node.name}"` : node.name;
-        return `SET ${currentParamName} FROM CURRENT`;
-      case 'VAR_SET_MULTI':
-        if (node.name === 'TRANSACTION' || node.name === 'SESSION CHARACTERISTICS') {
-          // Handle SET TRANSACTION statements specially
-          const transactionOptions: string[] = [];
-          if (node.args) {
-            const args = ListUtils.unwrapList(node.args);
-            for (const arg of args) {
-              if (arg.DefElem) {
-                const defElem = arg.DefElem;
-                if (defElem.defname === 'transaction_isolation') {
-                  const value = defElem.arg ? this.visit(defElem.arg, context) : '';
-                  transactionOptions.push(`ISOLATION LEVEL ${value.replace(/'/g, '').toUpperCase()}`);
-                } else if (defElem.defname === 'transaction_read_only') {
-                  // Handle both A_Const with ival (integer) and sval (string) values
-                  let boolValue = false;
-                  if (defElem.arg) {
-                    const nodeData = this.getNodeData(defElem.arg);
-                    if (nodeData.ival !== undefined) {
-                      // Handle nested ival structure: { ival: { ival: 1 } }
-                      const ivalValue = typeof nodeData.ival === 'object' ? nodeData.ival.ival : nodeData.ival;
-                      boolValue = ivalValue === 1;
-                    } else if (nodeData.sval !== undefined) {
-                      // Handle nested sval structure: { sval: { sval: "value" } }
-                      const svalValue = typeof nodeData.sval === 'object' ? nodeData.sval.sval : nodeData.sval;
-                      const stringValue = svalValue.replace(/'/g, '');
-                      boolValue = stringValue.toLowerCase() === 'on' || stringValue.toLowerCase() === 'true';
-                    }
+        return this.visit(arg, context);
+      }).join(', ') : '';
+
+      // Handle args - always include TO clause if args exist (even if empty string)
+      const paramName = node.name && (node.name.includes('.') || node.name.includes('-') || /[A-Z]/.test(node.name)) ? `"${node.name}"` : node.name;
+      if (!node.args || node.args.length === 0) {
+        return `SET ${localPrefix}${paramName}`;
+      }
+      return `SET ${localPrefix}${paramName} TO ${args}`;
+    case 'VAR_SET_DEFAULT':
+      const defaultParamName = node.name && (node.name.includes('.') || node.name.includes('-') || /[A-Z]/.test(node.name)) ? `"${node.name}"` : node.name;
+      return `SET ${defaultParamName} TO DEFAULT`;
+    case 'VAR_SET_CURRENT':
+      const currentParamName = node.name && (node.name.includes('.') || node.name.includes('-') || /[A-Z]/.test(node.name)) ? `"${node.name}"` : node.name;
+      return `SET ${currentParamName} FROM CURRENT`;
+    case 'VAR_SET_MULTI':
+      if (node.name === 'TRANSACTION' || node.name === 'SESSION CHARACTERISTICS') {
+        // Handle SET TRANSACTION statements specially
+        const transactionOptions: string[] = [];
+        if (node.args) {
+          const args = ListUtils.unwrapList(node.args);
+          for (const arg of args) {
+            if (arg.DefElem) {
+              const defElem = arg.DefElem;
+              if (defElem.defname === 'transaction_isolation') {
+                const value = defElem.arg ? this.visit(defElem.arg, context) : '';
+                transactionOptions.push(`ISOLATION LEVEL ${value.replace(/'/g, '').toUpperCase()}`);
+              } else if (defElem.defname === 'transaction_read_only') {
+                // Handle both A_Const with ival (integer) and sval (string) values
+                let boolValue = false;
+                if (defElem.arg) {
+                  const nodeData = this.getNodeData(defElem.arg);
+                  if (nodeData.ival !== undefined) {
+                    // Handle nested ival structure: { ival: { ival: 1 } }
+                    const ivalValue = typeof nodeData.ival === 'object' ? nodeData.ival.ival : nodeData.ival;
+                    boolValue = ivalValue === 1;
+                  } else if (nodeData.sval !== undefined) {
+                    // Handle nested sval structure: { sval: { sval: "value" } }
+                    const svalValue = typeof nodeData.sval === 'object' ? nodeData.sval.sval : nodeData.sval;
+                    const stringValue = svalValue.replace(/'/g, '');
+                    boolValue = stringValue.toLowerCase() === 'on' || stringValue.toLowerCase() === 'true';
                   }
-                  transactionOptions.push(boolValue ? 'READ ONLY' : 'READ WRITE');
-                } else if (defElem.defname === 'transaction_deferrable') {
-                  // Handle both A_Const with ival (integer) and sval (string) values
-                  let boolValue = false;
-                  if (defElem.arg) {
-                    const nodeData = this.getNodeData(defElem.arg);
-                    if (nodeData.ival !== undefined) {
-                      // Handle nested ival structure: { ival: { ival: 1 } }
-                      const ivalValue = typeof nodeData.ival === 'object' ? nodeData.ival.ival : nodeData.ival;
-                      boolValue = ivalValue === 1;
-                    } else if (nodeData.sval !== undefined) {
-                      // Handle nested sval structure: { sval: { sval: "value" } }
-                      const svalValue = typeof nodeData.sval === 'object' ? nodeData.sval.sval : nodeData.sval;
-                      const stringValue = svalValue.replace(/'/g, '');
-                      boolValue = stringValue.toLowerCase() === 'on' || stringValue.toLowerCase() === 'true';
-                    }
-                  }
-                  transactionOptions.push(boolValue ? 'DEFERRABLE' : 'NOT DEFERRABLE');
                 }
+                transactionOptions.push(boolValue ? 'READ ONLY' : 'READ WRITE');
+              } else if (defElem.defname === 'transaction_deferrable') {
+                // Handle both A_Const with ival (integer) and sval (string) values
+                let boolValue = false;
+                if (defElem.arg) {
+                  const nodeData = this.getNodeData(defElem.arg);
+                  if (nodeData.ival !== undefined) {
+                    // Handle nested ival structure: { ival: { ival: 1 } }
+                    const ivalValue = typeof nodeData.ival === 'object' ? nodeData.ival.ival : nodeData.ival;
+                    boolValue = ivalValue === 1;
+                  } else if (nodeData.sval !== undefined) {
+                    // Handle nested sval structure: { sval: { sval: "value" } }
+                    const svalValue = typeof nodeData.sval === 'object' ? nodeData.sval.sval : nodeData.sval;
+                    const stringValue = svalValue.replace(/'/g, '');
+                    boolValue = stringValue.toLowerCase() === 'on' || stringValue.toLowerCase() === 'true';
+                  }
+                }
+                transactionOptions.push(boolValue ? 'DEFERRABLE' : 'NOT DEFERRABLE');
               }
             }
           }
-          if (node.name === 'SESSION CHARACTERISTICS') {
-            return `SET SESSION CHARACTERISTICS AS TRANSACTION ${transactionOptions.join(', ')}`;
-          } else {
-            return `SET TRANSACTION ${transactionOptions.join(', ')}`;
-          }
-        } else {
-          // Handle other multi-variable sets
-          const assignments = node.args ? ListUtils.unwrapList(node.args).map(arg => {
-            if (arg.VariableSetStmt) {
-              return this.VariableSetStmt(arg.VariableSetStmt, context);
-            }
-            return this.visit(arg, context);
-          }).join(', ') : '';
-          return `SET ${assignments}`;
         }
-      case 'VAR_RESET':
-        const resetParamName = node.name && (node.name.includes('.') || node.name.includes('-') || /[A-Z]/.test(node.name)) ? `"${node.name}"` : node.name;
-        return `RESET ${resetParamName}`;
-      case 'VAR_RESET_ALL':
-        return 'RESET ALL';
-      default:
-        throw new Error(`Unsupported VariableSetStmt kind: ${node.kind}`);
+        if (node.name === 'SESSION CHARACTERISTICS') {
+          return `SET SESSION CHARACTERISTICS AS TRANSACTION ${transactionOptions.join(', ')}`;
+        } else {
+          return `SET TRANSACTION ${transactionOptions.join(', ')}`;
+        }
+      } else {
+        // Handle other multi-variable sets
+        const assignments = node.args ? ListUtils.unwrapList(node.args).map(arg => {
+          if (arg.VariableSetStmt) {
+            return this.VariableSetStmt(arg.VariableSetStmt, context);
+          }
+          return this.visit(arg, context);
+        }).join(', ') : '';
+        return `SET ${assignments}`;
+      }
+    case 'VAR_RESET':
+      const resetParamName = node.name && (node.name.includes('.') || node.name.includes('-') || /[A-Z]/.test(node.name)) ? `"${node.name}"` : node.name;
+      return `RESET ${resetParamName}`;
+    case 'VAR_RESET_ALL':
+      return 'RESET ALL';
+    default:
+      throw new Error(`Unsupported VariableSetStmt kind: ${node.kind}`);
     }
   }
 
@@ -4316,16 +4463,16 @@ export class Deparser implements DeparserVisitor {
     }
 
     switch (node.roletype) {
-      case 'ROLESPEC_PUBLIC':
-        return 'PUBLIC';
-      case 'ROLESPEC_CURRENT_USER':
-        return 'CURRENT_USER';
-      case 'ROLESPEC_SESSION_USER':
-        return 'SESSION_USER';
-      case 'ROLESPEC_CURRENT_ROLE':
-        return 'CURRENT_ROLE';
-      default:
-        return 'PUBLIC';
+    case 'ROLESPEC_PUBLIC':
+      return 'PUBLIC';
+    case 'ROLESPEC_CURRENT_USER':
+      return 'CURRENT_USER';
+    case 'ROLESPEC_SESSION_USER':
+      return 'SESSION_USER';
+    case 'ROLESPEC_CURRENT_ROLE':
+      return 'CURRENT_ROLE';
+    default:
+      return 'PUBLIC';
     }
   }
 
@@ -4341,159 +4488,159 @@ export class Deparser implements DeparserVisitor {
 
     if (node.removeType) {
       switch (node.removeType) {
-        case 'OBJECT_TABLE':
-          output.push('TABLE');
-          break;
-        case 'OBJECT_VIEW':
-          output.push('VIEW');
-          break;
-        case 'OBJECT_INDEX':
-          output.push('INDEX');
-          break;
-        case 'OBJECT_SEQUENCE':
-          output.push('SEQUENCE');
-          break;
-        case 'OBJECT_SCHEMA':
-          output.push('SCHEMA');
-          break;
-        case 'OBJECT_FUNCTION':
-          output.push('FUNCTION');
-          break;
-        case 'OBJECT_PROCEDURE':
-          output.push('PROCEDURE');
-          break;
-        case 'OBJECT_DATABASE':
-          output.push('DATABASE');
-          break;
-        case 'OBJECT_EXTENSION':
-          output.push('EXTENSION');
-          break;
-        case 'OBJECT_TYPE':
-          output.push('TYPE');
-          break;
-        case 'OBJECT_DOMAIN':
-          output.push('DOMAIN');
-          break;
-        case 'OBJECT_TRIGGER':
-          output.push('TRIGGER');
-          break;
-        case 'OBJECT_RULE':
-          output.push('RULE');
-          break;
-        case 'OBJECT_POLICY':
-          output.push('POLICY');
-          break;
-        case 'OBJECT_ROLE':
-          output.push('ROLE');
-          break;
+      case 'OBJECT_TABLE':
+        output.push('TABLE');
+        break;
+      case 'OBJECT_VIEW':
+        output.push('VIEW');
+        break;
+      case 'OBJECT_INDEX':
+        output.push('INDEX');
+        break;
+      case 'OBJECT_SEQUENCE':
+        output.push('SEQUENCE');
+        break;
+      case 'OBJECT_SCHEMA':
+        output.push('SCHEMA');
+        break;
+      case 'OBJECT_FUNCTION':
+        output.push('FUNCTION');
+        break;
+      case 'OBJECT_PROCEDURE':
+        output.push('PROCEDURE');
+        break;
+      case 'OBJECT_DATABASE':
+        output.push('DATABASE');
+        break;
+      case 'OBJECT_EXTENSION':
+        output.push('EXTENSION');
+        break;
+      case 'OBJECT_TYPE':
+        output.push('TYPE');
+        break;
+      case 'OBJECT_DOMAIN':
+        output.push('DOMAIN');
+        break;
+      case 'OBJECT_TRIGGER':
+        output.push('TRIGGER');
+        break;
+      case 'OBJECT_RULE':
+        output.push('RULE');
+        break;
+      case 'OBJECT_POLICY':
+        output.push('POLICY');
+        break;
+      case 'OBJECT_ROLE':
+        output.push('ROLE');
+        break;
 
-        case 'OBJECT_TABLESPACE':
-          output.push('TABLESPACE');
-          break;
-        case 'OBJECT_FOREIGN_SERVER':
-          output.push('SERVER');
-          break;
-        case 'OBJECT_FDW':
-          output.push('FOREIGN DATA WRAPPER');
-          break;
-        case 'OBJECT_PUBLICATION':
-          output.push('PUBLICATION');
-          break;
-        case 'OBJECT_SUBSCRIPTION':
-          output.push('SUBSCRIPTION');
-          break;
-        case 'OBJECT_CAST':
-          output.push('CAST');
-          break;
-        case 'OBJECT_TRANSFORM':
-          output.push('TRANSFORM');
-          break;
-        case 'OBJECT_ACCESS_METHOD':
-          output.push('ACCESS METHOD');
-          break;
-        case 'OBJECT_OPERATOR':
-          output.push('OPERATOR');
-          break;
-        case 'OBJECT_FOREIGN_TABLE':
-          output.push('FOREIGN TABLE');
-          break;
-        case 'OBJECT_MATVIEW':
-          output.push('MATERIALIZED VIEW');
-          break;
-        case 'OBJECT_OPCLASS':
-          output.push('OPERATOR CLASS');
-          break;
-        case 'OBJECT_OPFAMILY':
-          output.push('OPERATOR FAMILY');
-          break;
-        case 'OBJECT_COLLATION':
-          output.push('COLLATION');
-          break;
-        case 'OBJECT_CONVERSION':
-          output.push('CONVERSION');
-          break;
-        case 'OBJECT_LANGUAGE':
-          output.push('LANGUAGE');
-          break;
-        case 'OBJECT_LARGEOBJECT':
-          output.push('LARGE OBJECT');
-          break;
-        case 'OBJECT_AGGREGATE':
-          output.push('AGGREGATE');
-          break;
-        case 'OBJECT_STATISTIC_EXT':
-          output.push('STATISTICS');
-          break;
-        case 'OBJECT_EVENT_TRIGGER':
-          output.push('EVENT TRIGGER');
-          break;
-        case 'OBJECT_AMOP':
-          output.push('OPERATOR CLASS');
-          break;
-        case 'OBJECT_AMPROC':
-          output.push('OPERATOR CLASS');
-          break;
-        case 'OBJECT_ATTRIBUTE':
-          output.push('ATTRIBUTE');
-          break;
-        case 'OBJECT_DEFAULT':
-          output.push('DEFAULT');
-          break;
-        case 'OBJECT_DEFACL':
-          output.push('DEFAULT PRIVILEGES');
-          break;
-        case 'OBJECT_PARAMETER_ACL':
-          output.push('PARAMETER');
-          break;
-        case 'OBJECT_PUBLICATION_NAMESPACE':
-          output.push('PUBLICATION');
-          break;
-        case 'OBJECT_PUBLICATION_REL':
-          output.push('PUBLICATION');
-          break;
-        case 'OBJECT_ROUTINE':
-          output.push('ROUTINE');
-          break;
-        case 'OBJECT_TABCONSTRAINT':
-          output.push('CONSTRAINT');
-          break;
-        case 'OBJECT_TSCONFIGURATION':
-          output.push('TEXT SEARCH CONFIGURATION');
-          break;
-        case 'OBJECT_TSDICTIONARY':
-          output.push('TEXT SEARCH DICTIONARY');
-          break;
-        case 'OBJECT_TSPARSER':
-          output.push('TEXT SEARCH PARSER');
-          break;
-        case 'OBJECT_TSTEMPLATE':
-          output.push('TEXT SEARCH TEMPLATE');
-          break;
-        case 'OBJECT_USER_MAPPING':
-          output.push('USER MAPPING');
-          break;
-        default:
-          throw new Error(`Unsupported DROP object type: ${node.removeType}`);
+      case 'OBJECT_TABLESPACE':
+        output.push('TABLESPACE');
+        break;
+      case 'OBJECT_FOREIGN_SERVER':
+        output.push('SERVER');
+        break;
+      case 'OBJECT_FDW':
+        output.push('FOREIGN DATA WRAPPER');
+        break;
+      case 'OBJECT_PUBLICATION':
+        output.push('PUBLICATION');
+        break;
+      case 'OBJECT_SUBSCRIPTION':
+        output.push('SUBSCRIPTION');
+        break;
+      case 'OBJECT_CAST':
+        output.push('CAST');
+        break;
+      case 'OBJECT_TRANSFORM':
+        output.push('TRANSFORM');
+        break;
+      case 'OBJECT_ACCESS_METHOD':
+        output.push('ACCESS METHOD');
+        break;
+      case 'OBJECT_OPERATOR':
+        output.push('OPERATOR');
+        break;
+      case 'OBJECT_FOREIGN_TABLE':
+        output.push('FOREIGN TABLE');
+        break;
+      case 'OBJECT_MATVIEW':
+        output.push('MATERIALIZED VIEW');
+        break;
+      case 'OBJECT_OPCLASS':
+        output.push('OPERATOR CLASS');
+        break;
+      case 'OBJECT_OPFAMILY':
+        output.push('OPERATOR FAMILY');
+        break;
+      case 'OBJECT_COLLATION':
+        output.push('COLLATION');
+        break;
+      case 'OBJECT_CONVERSION':
+        output.push('CONVERSION');
+        break;
+      case 'OBJECT_LANGUAGE':
+        output.push('LANGUAGE');
+        break;
+      case 'OBJECT_LARGEOBJECT':
+        output.push('LARGE OBJECT');
+        break;
+      case 'OBJECT_AGGREGATE':
+        output.push('AGGREGATE');
+        break;
+      case 'OBJECT_STATISTIC_EXT':
+        output.push('STATISTICS');
+        break;
+      case 'OBJECT_EVENT_TRIGGER':
+        output.push('EVENT TRIGGER');
+        break;
+      case 'OBJECT_AMOP':
+        output.push('OPERATOR CLASS');
+        break;
+      case 'OBJECT_AMPROC':
+        output.push('OPERATOR CLASS');
+        break;
+      case 'OBJECT_ATTRIBUTE':
+        output.push('ATTRIBUTE');
+        break;
+      case 'OBJECT_DEFAULT':
+        output.push('DEFAULT');
+        break;
+      case 'OBJECT_DEFACL':
+        output.push('DEFAULT PRIVILEGES');
+        break;
+      case 'OBJECT_PARAMETER_ACL':
+        output.push('PARAMETER');
+        break;
+      case 'OBJECT_PUBLICATION_NAMESPACE':
+        output.push('PUBLICATION');
+        break;
+      case 'OBJECT_PUBLICATION_REL':
+        output.push('PUBLICATION');
+        break;
+      case 'OBJECT_ROUTINE':
+        output.push('ROUTINE');
+        break;
+      case 'OBJECT_TABCONSTRAINT':
+        output.push('CONSTRAINT');
+        break;
+      case 'OBJECT_TSCONFIGURATION':
+        output.push('TEXT SEARCH CONFIGURATION');
+        break;
+      case 'OBJECT_TSDICTIONARY':
+        output.push('TEXT SEARCH DICTIONARY');
+        break;
+      case 'OBJECT_TSPARSER':
+        output.push('TEXT SEARCH PARSER');
+        break;
+      case 'OBJECT_TSTEMPLATE':
+        output.push('TEXT SEARCH TEMPLATE');
+        break;
+      case 'OBJECT_USER_MAPPING':
+        output.push('USER MAPPING');
+        break;
+      default:
+        throw new Error(`Unsupported DROP object type: ${node.removeType}`);
       }
     }
 
@@ -4783,29 +4930,29 @@ export class Deparser implements DeparserVisitor {
 
     if (node.objtype) {
       switch (node.objtype) {
-        case 'OBJECT_TABLE':
-          output.push('TABLE');
-          break;
-        case 'OBJECT_INDEX':
-          output.push('INDEX');
-          break;
-        case 'OBJECT_SEQUENCE':
-          output.push('SEQUENCE');
-          break;
-        case 'OBJECT_VIEW':
-          output.push('VIEW');
-          break;
-        case 'OBJECT_MATVIEW':
-          output.push('MATERIALIZED VIEW');
-          break;
-        case 'OBJECT_FOREIGN_TABLE':
-          output.push('FOREIGN TABLE');
-          break;
-        case 'OBJECT_TYPE':
-          output.push('TYPE');
-          break;
-        default:
-          output.push('TABLE');
+      case 'OBJECT_TABLE':
+        output.push('TABLE');
+        break;
+      case 'OBJECT_INDEX':
+        output.push('INDEX');
+        break;
+      case 'OBJECT_SEQUENCE':
+        output.push('SEQUENCE');
+        break;
+      case 'OBJECT_VIEW':
+        output.push('VIEW');
+        break;
+      case 'OBJECT_MATVIEW':
+        output.push('MATERIALIZED VIEW');
+        break;
+      case 'OBJECT_FOREIGN_TABLE':
+        output.push('FOREIGN TABLE');
+        break;
+      case 'OBJECT_TYPE':
+        output.push('TYPE');
+        break;
+      default:
+        output.push('TABLE');
       }
     } else {
       output.push('TABLE');
@@ -4848,657 +4995,657 @@ export class Deparser implements DeparserVisitor {
 
     if (node.subtype) {
       switch (node.subtype) {
-        case 'AT_AddColumn':
-          if (context.objtype === 'OBJECT_TYPE') {
-            output.push('ADD ATTRIBUTE');
-          } else {
-            output.push('ADD COLUMN');
-          }
-          if (node.missing_ok) {
-            output.push('IF NOT EXISTS');
-          }
-          if (node.def) {
-            const colDefData = this.getNodeData(node.def);
+      case 'AT_AddColumn':
+        if (context.objtype === 'OBJECT_TYPE') {
+          output.push('ADD ATTRIBUTE');
+        } else {
+          output.push('ADD COLUMN');
+        }
+        if (node.missing_ok) {
+          output.push('IF NOT EXISTS');
+        }
+        if (node.def) {
+          const colDefData = this.getNodeData(node.def);
             
-            if (context.isPretty()) {
-              const parts: string[] = [];
-              const indentedParts: string[] = [];
+          if (context.isPretty()) {
+            const parts: string[] = [];
+            const indentedParts: string[] = [];
               
-              if (colDefData.colname) {
-                parts.push(QuoteUtils.quote(colDefData.colname));
-              }
+            if (colDefData.colname) {
+              parts.push(QuoteUtils.quote(colDefData.colname));
+            }
 
-              if (colDefData.typeName) {
-                parts.push(this.TypeName(colDefData.typeName, context));
-              }
+            if (colDefData.typeName) {
+              parts.push(this.TypeName(colDefData.typeName, context));
+            }
 
-              if (colDefData.is_not_null) {
-                indentedParts.push('NOT NULL');
-              }
+            if (colDefData.is_not_null) {
+              indentedParts.push('NOT NULL');
+            }
 
-              if (colDefData.collClause) {
-                indentedParts.push(this.CollateClause(colDefData.collClause, context));
-              }
+            if (colDefData.collClause) {
+              indentedParts.push(this.CollateClause(colDefData.collClause, context));
+            }
 
-              if (colDefData.constraints) {
-                const constraints = ListUtils.unwrapList(colDefData.constraints);
-                constraints.forEach(constraint => {
-                  const columnConstraintContext = context.spawn('ColumnDef', { isColumnConstraint: true });
-                  const constraintStr = this.visit(constraint, columnConstraintContext);
+            if (colDefData.constraints) {
+              const constraints = ListUtils.unwrapList(colDefData.constraints);
+              constraints.forEach(constraint => {
+                const columnConstraintContext = context.spawn('ColumnDef', { isColumnConstraint: true });
+                const constraintStr = this.visit(constraint, columnConstraintContext);
                   
-                  if (constraintStr.includes('REFERENCES') && constraintStr.includes('ON DELETE')) {
-                    const refMatch = constraintStr.match(/^(.*REFERENCES[^)]*\([^)]*\))\s*(ON\s+DELETE\s+CASCADE.*)$/);
-                    if (refMatch) {
-                      indentedParts.push(refMatch[1]);
-                      indentedParts.push(refMatch[2]);
-                    } else {
-                      indentedParts.push(constraintStr);
-                    }
-                  } else if (constraintStr === 'UNIQUE' && colDefData.raw_default) {
-                    const defaultStr = 'DEFAULT ' + this.visit(colDefData.raw_default, context);
-                    indentedParts.push('UNIQUE ' + defaultStr);
+                if (constraintStr.includes('REFERENCES') && constraintStr.includes('ON DELETE')) {
+                  const refMatch = constraintStr.match(/^(.*REFERENCES[^)]*\([^)]*\))\s*(ON\s+DELETE\s+CASCADE.*)$/);
+                  if (refMatch) {
+                    indentedParts.push(refMatch[1]);
+                    indentedParts.push(refMatch[2]);
                   } else {
                     indentedParts.push(constraintStr);
                   }
-                });
-              }
+                } else if (constraintStr === 'UNIQUE' && colDefData.raw_default) {
+                  const defaultStr = 'DEFAULT ' + this.visit(colDefData.raw_default, context);
+                  indentedParts.push('UNIQUE ' + defaultStr);
+                } else {
+                  indentedParts.push(constraintStr);
+                }
+              });
+            }
 
-              if (colDefData.raw_default && !colDefData.constraints?.some((c: any) => {
-                const constraintStr = this.visit(c, context.spawn('ColumnDef', { isColumnConstraint: true }));
-                return constraintStr === 'UNIQUE';
-              })) {
-                const defaultStr = 'DEFAULT ' + this.visit(colDefData.raw_default, context);
-                indentedParts.push(defaultStr);
-              }
+            if (colDefData.raw_default && !colDefData.constraints?.some((c: any) => {
+              const constraintStr = this.visit(c, context.spawn('ColumnDef', { isColumnConstraint: true }));
+              return constraintStr === 'UNIQUE';
+            })) {
+              const defaultStr = 'DEFAULT ' + this.visit(colDefData.raw_default, context);
+              indentedParts.push(defaultStr);
+            }
 
-              if (colDefData.fdwoptions && colDefData.fdwoptions.length > 0) {
-                indentedParts.push('OPTIONS');
-                const columnContext = context.spawn('ColumnDef');
-                const options = ListUtils.unwrapList(colDefData.fdwoptions).map(opt => this.visit(opt, columnContext));
-                indentedParts.push(`(${options.join(', ')})`);
-              }
+            if (colDefData.fdwoptions && colDefData.fdwoptions.length > 0) {
+              indentedParts.push('OPTIONS');
+              const columnContext = context.spawn('ColumnDef');
+              const options = ListUtils.unwrapList(colDefData.fdwoptions).map(opt => this.visit(opt, columnContext));
+              indentedParts.push(`(${options.join(', ')})`);
+            }
 
-              let result = parts.join(' ');
-              if (indentedParts.length > 0) {
-                const indentedStr = indentedParts.map(part => context.indent(part)).join(context.newline());
-                result += context.newline() + indentedStr;
-              }
+            let result = parts.join(' ');
+            if (indentedParts.length > 0) {
+              const indentedStr = indentedParts.map(part => context.indent(part)).join(context.newline());
+              result += context.newline() + indentedStr;
+            }
               
-              output.push(result);
-            } else {
-              const parts: string[] = [];
-
-              if (colDefData.colname) {
-                parts.push(QuoteUtils.quote(colDefData.colname));
-              }
-
-              if (colDefData.typeName) {
-                parts.push(this.TypeName(colDefData.typeName, context));
-              }
-
-              if (colDefData.collClause) {
-                parts.push(this.CollateClause(colDefData.collClause, context));
-              }
-
-              if (colDefData.fdwoptions && colDefData.fdwoptions.length > 0) {
-                parts.push('OPTIONS');
-                const columnContext = context.spawn('ColumnDef');
-                const options = ListUtils.unwrapList(colDefData.fdwoptions).map(opt => this.visit(opt, columnContext));
-                parts.push(`(${options.join(', ')})`);
-              }
-
-              if (colDefData.constraints) {
-                const constraints = ListUtils.unwrapList(colDefData.constraints);
-                const constraintStrs = constraints.map(constraint => {
-                  const columnConstraintContext = context.spawn('ColumnDef', { isColumnConstraint: true });
-                  return this.visit(constraint, columnConstraintContext);
-                });
-                parts.push(...constraintStrs);
-              }
-
-              if (colDefData.raw_default) {
-                parts.push('DEFAULT');
-                parts.push(this.visit(colDefData.raw_default, context));
-              }
-
-              if (colDefData.is_not_null) {
-                parts.push('NOT NULL');
-              }
-
-              output.push(parts.join(' '));
-            }
-          }
-          if (node.behavior === 'DROP_CASCADE') {
-            output.push('CASCADE');
-          }
-          break;
-        case 'AT_DropColumn':
-          if (node.missing_ok) {
-            if (context.objtype === 'OBJECT_TYPE') {
-              output.push('DROP ATTRIBUTE IF EXISTS');
-            } else {
-              output.push('DROP COLUMN IF EXISTS');
-            }
+            output.push(result);
           } else {
-            if (context.objtype === 'OBJECT_TYPE') {
-              output.push('DROP ATTRIBUTE');
-            } else {
-              output.push('DROP COLUMN');
+            const parts: string[] = [];
+
+            if (colDefData.colname) {
+              parts.push(QuoteUtils.quote(colDefData.colname));
             }
+
+            if (colDefData.typeName) {
+              parts.push(this.TypeName(colDefData.typeName, context));
+            }
+
+            if (colDefData.collClause) {
+              parts.push(this.CollateClause(colDefData.collClause, context));
+            }
+
+            if (colDefData.fdwoptions && colDefData.fdwoptions.length > 0) {
+              parts.push('OPTIONS');
+              const columnContext = context.spawn('ColumnDef');
+              const options = ListUtils.unwrapList(colDefData.fdwoptions).map(opt => this.visit(opt, columnContext));
+              parts.push(`(${options.join(', ')})`);
+            }
+
+            if (colDefData.constraints) {
+              const constraints = ListUtils.unwrapList(colDefData.constraints);
+              const constraintStrs = constraints.map(constraint => {
+                const columnConstraintContext = context.spawn('ColumnDef', { isColumnConstraint: true });
+                return this.visit(constraint, columnConstraintContext);
+              });
+              parts.push(...constraintStrs);
+            }
+
+            if (colDefData.raw_default) {
+              parts.push('DEFAULT');
+              parts.push(this.visit(colDefData.raw_default, context));
+            }
+
+            if (colDefData.is_not_null) {
+              parts.push('NOT NULL');
+            }
+
+            output.push(parts.join(' '));
           }
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          if (node.behavior === 'DROP_CASCADE') {
-            output.push('CASCADE');
-          } else if (node.behavior === 'DROP_RESTRICT') {
-            output.push('RESTRICT');
-          }
-          break;
-        case 'AT_AlterColumnType':
+        }
+        if (node.behavior === 'DROP_CASCADE') {
+          output.push('CASCADE');
+        }
+        break;
+      case 'AT_DropColumn':
+        if (node.missing_ok) {
           if (context.objtype === 'OBJECT_TYPE') {
-            output.push('ALTER ATTRIBUTE');
+            output.push('DROP ATTRIBUTE IF EXISTS');
           } else {
-            output.push('ALTER COLUMN');
+            output.push('DROP COLUMN IF EXISTS');
           }
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
+        } else {
+          if (context.objtype === 'OBJECT_TYPE') {
+            output.push('DROP ATTRIBUTE');
+          } else {
+            output.push('DROP COLUMN');
           }
-          output.push('TYPE');
-          if (node.def) {
-            const nodeData = this.getNodeData(node.def);
-            if (nodeData && nodeData.typeName) {
-              output.push(this.TypeName(nodeData.typeName, context));
-              // Handle USING clause (stored in raw_default for ALTER COLUMN TYPE)
-              if (nodeData.raw_default) {
-                output.push('USING');
-                output.push(this.visit(nodeData.raw_default, context));
-              }
-            } else {
-              // Fallback to original behavior
-              const typeDef = this.visit(node.def, context);
-              output.push(typeDef);
+        }
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        if (node.behavior === 'DROP_CASCADE') {
+          output.push('CASCADE');
+        } else if (node.behavior === 'DROP_RESTRICT') {
+          output.push('RESTRICT');
+        }
+        break;
+      case 'AT_AlterColumnType':
+        if (context.objtype === 'OBJECT_TYPE') {
+          output.push('ALTER ATTRIBUTE');
+        } else {
+          output.push('ALTER COLUMN');
+        }
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        output.push('TYPE');
+        if (node.def) {
+          const nodeData = this.getNodeData(node.def);
+          if (nodeData && nodeData.typeName) {
+            output.push(this.TypeName(nodeData.typeName, context));
+            // Handle USING clause (stored in raw_default for ALTER COLUMN TYPE)
+            if (nodeData.raw_default) {
+              output.push('USING');
+              output.push(this.visit(nodeData.raw_default, context));
+            }
+          } else {
+            // Fallback to original behavior
+            const typeDef = this.visit(node.def, context);
+            output.push(typeDef);
+          }
+        }
+        // Handle CASCADE/RESTRICT behavior for ALTER COLUMN TYPE operations
+        if (node.behavior === 'DROP_CASCADE') {
+          output.push('CASCADE');
+        }
+        break;
+      case 'AT_SetTableSpace':
+        output.push('SET TABLESPACE');
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        break;
+      case 'AT_AddConstraint':
+        output.push('ADD');
+        if (node.def) {
+          const constraintDef = this.visit(node.def, context);
+          output.push(constraintDef);
+        }
+        break;
+      case 'AT_DropConstraint':
+        if (node.missing_ok) {
+          output.push('DROP CONSTRAINT IF EXISTS');
+        } else {
+          output.push('DROP CONSTRAINT');
+        }
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        if (node.behavior === 'DROP_CASCADE') {
+          output.push('CASCADE');
+        } else if (node.behavior === 'DROP_RESTRICT') {
+          output.push('RESTRICT');
+        }
+        break;
+      case 'AT_SetRelOptions':
+        output.push('SET');
+        if (node.def) {
+          const alterTableContext = context.spawn('AlterTableCmd', { subtype: 'AT_SetRelOptions' });
+          const options = ListUtils.unwrapList(node.def)
+            .map(option => this.visit(option, alterTableContext))
+            .join(', ');
+          output.push(`(${options})`);
+        } else {
+          output.push('()');
+        }
+        break;
+      case 'AT_ResetRelOptions':
+        output.push('RESET');
+        if (node.def) {
+          const alterTableContext = context.spawn('AlterTableCmd', { subtype: 'AT_ResetRelOptions' });
+          const options = ListUtils.unwrapList(node.def)
+            .map(option => this.visit(option, alterTableContext))
+            .join(', ');
+          output.push(`(${options})`);
+        } else {
+          output.push('()');
+        }
+        break;
+      case 'AT_ColumnDefault':
+        output.push('ALTER COLUMN');
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        if (node.def) {
+          output.push('SET DEFAULT');
+          output.push(this.visit(node.def, context));
+        } else {
+          output.push('DROP DEFAULT');
+        }
+        break;
+      case 'AT_SetStorage':
+        output.push('ALTER COLUMN');
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        output.push('SET STORAGE');
+        if (node.def) {
+          const storageType = this.visit(node.def, context);
+          output.push(storageType);
+        }
+        break;
+      case 'AT_ClusterOn':
+        output.push('CLUSTER ON');
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        break;
+      case 'AT_DropCluster':
+        output.push('SET WITHOUT CLUSTER');
+        break;
+      case 'AT_ChangeOwner':
+        output.push('OWNER TO');
+        if (node.newowner) {
+          output.push(this.RoleSpec(node.newowner, context));
+        }
+        break;
+      case 'AT_AddInherit':
+        output.push('INHERIT');
+        if (node.def) {
+          output.push(this.visit(node.def, context));
+        }
+        break;
+      case 'AT_DropInherit':
+        output.push('NO INHERIT');
+        if (node.def) {
+          output.push(this.visit(node.def, context));
+        }
+        break;
+      case 'AT_SetNotNull':
+        output.push('ALTER COLUMN');
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        output.push('SET NOT NULL');
+        break;
+      case 'AT_DropNotNull':
+        output.push('ALTER COLUMN');
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        output.push('DROP NOT NULL');
+        break;
+      case 'AT_SetStatistics':
+        output.push('ALTER COLUMN');
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        } else if (node.num !== undefined && node.num !== null) {
+          output.push(node.num.toString());
+        }
+        output.push('SET STATISTICS');
+        if (node.def) {
+          output.push(this.visit(node.def, context));
+        }
+        break;
+      case 'AT_SetOptions':
+        output.push('ALTER COLUMN');
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        output.push('SET');
+        if (node.def) {
+          const alterTableContext = context.spawn('AlterTableCmd', { subtype: 'AT_SetOptions' });
+          const options = ListUtils.unwrapList(node.def)
+            .map(option => this.visit(option, alterTableContext))
+            .join(', ');
+          output.push(`(${options})`);
+        } else {
+          output.push('()');
+        }
+        break;
+      case 'AT_ResetOptions':
+        output.push('ALTER COLUMN');
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        output.push('RESET');
+        if (node.def) {
+          const alterTableContext = context.spawn('AlterTableCmd', { subtype: 'AT_ResetOptions' });
+          const options = ListUtils.unwrapList(node.def)
+            .map(option => this.visit(option, alterTableContext))
+            .join(', ');
+          output.push(`(${options})`);
+        } else {
+          output.push('()');
+        }
+        break;
+      case 'AT_SetCompression':
+        output.push('ALTER COLUMN');
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        output.push('SET COMPRESSION');
+        if (node.def) {
+          output.push(this.visit(node.def, context));
+        }
+        break;
+      case 'AT_ValidateConstraint':
+        output.push('VALIDATE CONSTRAINT');
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        break;
+      case 'AT_EnableTrig':
+        output.push('ENABLE TRIGGER');
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        break;
+      case 'AT_EnableAlwaysTrig':
+        output.push('ENABLE ALWAYS TRIGGER');
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        break;
+      case 'AT_EnableReplicaTrig':
+        output.push('ENABLE REPLICA TRIGGER');
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        break;
+      case 'AT_DisableTrig':
+        output.push('DISABLE TRIGGER');
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        break;
+      case 'AT_EnableTrigAll':
+        output.push('ENABLE TRIGGER ALL');
+        break;
+      case 'AT_DisableTrigAll':
+        output.push('DISABLE TRIGGER ALL');
+        break;
+      case 'AT_EnableTrigUser':
+        output.push('ENABLE TRIGGER USER');
+        break;
+      case 'AT_DisableTrigUser':
+        output.push('DISABLE TRIGGER USER');
+        break;
+      case 'AT_EnableRule':
+        output.push('ENABLE RULE');
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        break;
+      case 'AT_EnableAlwaysRule':
+        output.push('ENABLE ALWAYS RULE');
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        break;
+      case 'AT_EnableReplicaRule':
+        output.push('ENABLE REPLICA RULE');
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        break;
+      case 'AT_DisableRule':
+        output.push('DISABLE RULE');
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        break;
+      case 'AT_SetAccessMethod':
+        output.push('SET ACCESS METHOD');
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        } else {
+          // Handle DEFAULT access method case
+          output.push('DEFAULT');
+        }
+        break;
+      case 'AT_EnableRowSecurity':
+        output.push('ENABLE ROW LEVEL SECURITY');
+        break;
+      case 'AT_DisableRowSecurity':
+        output.push('DISABLE ROW LEVEL SECURITY');
+        break;
+      case 'AT_ForceRowSecurity':
+        output.push('FORCE ROW LEVEL SECURITY');
+        break;
+      case 'AT_NoForceRowSecurity':
+        output.push('NO FORCE ROW LEVEL SECURITY');
+        break;
+      case 'AT_AttachPartition':
+        output.push('ATTACH PARTITION');
+        if (node.def) {
+          output.push(this.visit(node.def, context));
+        }
+        break;
+      case 'AT_DetachPartition':
+        output.push('DETACH PARTITION');
+        if (node.def) {
+          output.push(this.visit(node.def, context));
+        }
+        break;
+      case 'AT_DetachPartitionFinalize':
+        output.push('DETACH PARTITION');
+        if (node.def) {
+          output.push(this.visit(node.def, context));
+        }
+        output.push('FINALIZE');
+        break;
+      case 'AT_SetLogged':
+        output.push('SET LOGGED');
+        break;
+      case 'AT_SetUnLogged':
+        output.push('SET UNLOGGED');
+        break;
+      case 'AT_AddColumnToView':
+        output.push('ADD COLUMN');
+        if (node.def) {
+          const columnDef = this.visit(node.def, context);
+          output.push(columnDef);
+        }
+        break;
+      case 'AT_CookedColumnDefault':
+        output.push('ALTER COLUMN');
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        if (node.def) {
+          output.push('SET DEFAULT');
+          output.push(this.visit(node.def, context));
+        } else {
+          output.push('DROP DEFAULT');
+        }
+        break;
+      case 'AT_SetExpression':
+        output.push('ALTER COLUMN');
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        output.push('SET EXPRESSION');
+        if (node.def) {
+          output.push(this.visit(node.def, context));
+        }
+        break;
+      case 'AT_DropExpression':
+        output.push('ALTER COLUMN');
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        output.push('DROP EXPRESSION');
+        break;
+      case 'AT_CheckNotNull':
+        output.push('ALTER COLUMN');
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        output.push('SET NOT NULL');
+        break;
+      case 'AT_AddIndex':
+        output.push('ADD');
+        if (node.def) {
+          output.push(this.visit(node.def, context));
+        }
+        break;
+      case 'AT_ReAddIndex':
+        output.push('ADD');
+        if (node.def) {
+          output.push(this.visit(node.def, context));
+        }
+        break;
+      case 'AT_ReAddConstraint':
+        output.push('ADD');
+        if (node.def) {
+          output.push(this.visit(node.def, context));
+        }
+        break;
+      case 'AT_ReAddDomainConstraint':
+        output.push('ADD');
+        if (node.def) {
+          output.push(this.visit(node.def, context));
+        }
+        break;
+      case 'AT_AlterConstraint':
+        output.push('ALTER CONSTRAINT');
+        if (node.def && this.getNodeType(node.def) === 'Constraint') {
+          const constraintData = this.getNodeData(node.def) as any;
+          if (constraintData.conname) {
+            output.push(QuoteUtils.quote(constraintData.conname));
+            if (constraintData.deferrable !== undefined) {
+              output.push(constraintData.deferrable ? 'DEFERRABLE' : 'NOT DEFERRABLE');
+            }
+            if (constraintData.initdeferred !== undefined) {
+              output.push(constraintData.initdeferred ? 'INITIALLY DEFERRED' : 'INITIALLY IMMEDIATE');
             }
           }
-          // Handle CASCADE/RESTRICT behavior for ALTER COLUMN TYPE operations
-          if (node.behavior === 'DROP_CASCADE') {
-            output.push('CASCADE');
-          }
-          break;
-        case 'AT_SetTableSpace':
-          output.push('SET TABLESPACE');
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          break;
-        case 'AT_AddConstraint':
-          output.push('ADD');
-          if (node.def) {
-            const constraintDef = this.visit(node.def, context);
-            output.push(constraintDef);
-          }
-          break;
-        case 'AT_DropConstraint':
-          if (node.missing_ok) {
-            output.push('DROP CONSTRAINT IF EXISTS');
-          } else {
-            output.push('DROP CONSTRAINT');
-          }
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          if (node.behavior === 'DROP_CASCADE') {
-            output.push('CASCADE');
-          } else if (node.behavior === 'DROP_RESTRICT') {
-            output.push('RESTRICT');
-          }
-          break;
-        case 'AT_SetRelOptions':
-          output.push('SET');
-          if (node.def) {
-            const alterTableContext = context.spawn('AlterTableCmd', { subtype: 'AT_SetRelOptions' });
-            const options = ListUtils.unwrapList(node.def)
-              .map(option => this.visit(option, alterTableContext))
-              .join(', ');
-            output.push(`(${options})`);
-          } else {
-            output.push('()');
-          }
-          break;
-        case 'AT_ResetRelOptions':
-          output.push('RESET');
-          if (node.def) {
-            const alterTableContext = context.spawn('AlterTableCmd', { subtype: 'AT_ResetRelOptions' });
-            const options = ListUtils.unwrapList(node.def)
-              .map(option => this.visit(option, alterTableContext))
-              .join(', ');
-            output.push(`(${options})`);
-          } else {
-            output.push('()');
-          }
-          break;
-        case 'AT_ColumnDefault':
-          output.push('ALTER COLUMN');
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          if (node.def) {
-            output.push('SET DEFAULT');
-            output.push(this.visit(node.def, context));
-          } else {
-            output.push('DROP DEFAULT');
-          }
-          break;
-        case 'AT_SetStorage':
-          output.push('ALTER COLUMN');
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          output.push('SET STORAGE');
-          if (node.def) {
-            const storageType = this.visit(node.def, context);
-            output.push(storageType);
-          }
-          break;
-        case 'AT_ClusterOn':
-          output.push('CLUSTER ON');
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          break;
-        case 'AT_DropCluster':
-          output.push('SET WITHOUT CLUSTER');
-          break;
-        case 'AT_ChangeOwner':
-          output.push('OWNER TO');
-          if (node.newowner) {
-            output.push(this.RoleSpec(node.newowner, context));
-          }
-          break;
-        case 'AT_AddInherit':
-          output.push('INHERIT');
+        } else if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
           if (node.def) {
             output.push(this.visit(node.def, context));
           }
-          break;
-        case 'AT_DropInherit':
-          output.push('NO INHERIT');
-          if (node.def) {
-            output.push(this.visit(node.def, context));
-          }
-          break;
-        case 'AT_SetNotNull':
-          output.push('ALTER COLUMN');
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          output.push('SET NOT NULL');
-          break;
-        case 'AT_DropNotNull':
-          output.push('ALTER COLUMN');
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          output.push('DROP NOT NULL');
-          break;
-        case 'AT_SetStatistics':
-          output.push('ALTER COLUMN');
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          } else if (node.num !== undefined && node.num !== null) {
-            output.push(node.num.toString());
-          }
-          output.push('SET STATISTICS');
-          if (node.def) {
-            output.push(this.visit(node.def, context));
-          }
-          break;
-        case 'AT_SetOptions':
-          output.push('ALTER COLUMN');
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          output.push('SET');
-          if (node.def) {
-            const alterTableContext = context.spawn('AlterTableCmd', { subtype: 'AT_SetOptions' });
-            const options = ListUtils.unwrapList(node.def)
-              .map(option => this.visit(option, alterTableContext))
-              .join(', ');
-            output.push(`(${options})`);
-          } else {
-            output.push('()');
-          }
-          break;
-        case 'AT_ResetOptions':
-          output.push('ALTER COLUMN');
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          output.push('RESET');
-          if (node.def) {
-            const alterTableContext = context.spawn('AlterTableCmd', { subtype: 'AT_ResetOptions' });
-            const options = ListUtils.unwrapList(node.def)
-              .map(option => this.visit(option, alterTableContext))
-              .join(', ');
-            output.push(`(${options})`);
-          } else {
-            output.push('()');
-          }
-          break;
-        case 'AT_SetCompression':
-          output.push('ALTER COLUMN');
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          output.push('SET COMPRESSION');
-          if (node.def) {
-            output.push(this.visit(node.def, context));
-          }
-          break;
-        case 'AT_ValidateConstraint':
-          output.push('VALIDATE CONSTRAINT');
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          break;
-        case 'AT_EnableTrig':
-          output.push('ENABLE TRIGGER');
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          break;
-        case 'AT_EnableAlwaysTrig':
-          output.push('ENABLE ALWAYS TRIGGER');
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          break;
-        case 'AT_EnableReplicaTrig':
-          output.push('ENABLE REPLICA TRIGGER');
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          break;
-        case 'AT_DisableTrig':
-          output.push('DISABLE TRIGGER');
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          break;
-        case 'AT_EnableTrigAll':
-          output.push('ENABLE TRIGGER ALL');
-          break;
-        case 'AT_DisableTrigAll':
-          output.push('DISABLE TRIGGER ALL');
-          break;
-        case 'AT_EnableTrigUser':
-          output.push('ENABLE TRIGGER USER');
-          break;
-        case 'AT_DisableTrigUser':
-          output.push('DISABLE TRIGGER USER');
-          break;
-        case 'AT_EnableRule':
-          output.push('ENABLE RULE');
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          break;
-        case 'AT_EnableAlwaysRule':
-          output.push('ENABLE ALWAYS RULE');
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          break;
-        case 'AT_EnableReplicaRule':
-          output.push('ENABLE REPLICA RULE');
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          break;
-        case 'AT_DisableRule':
-          output.push('DISABLE RULE');
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          break;
-        case 'AT_SetAccessMethod':
-          output.push('SET ACCESS METHOD');
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          } else {
-            // Handle DEFAULT access method case
-            output.push('DEFAULT');
-          }
-          break;
-        case 'AT_EnableRowSecurity':
-          output.push('ENABLE ROW LEVEL SECURITY');
-          break;
-        case 'AT_DisableRowSecurity':
-          output.push('DISABLE ROW LEVEL SECURITY');
-          break;
-        case 'AT_ForceRowSecurity':
-          output.push('FORCE ROW LEVEL SECURITY');
-          break;
-        case 'AT_NoForceRowSecurity':
-          output.push('NO FORCE ROW LEVEL SECURITY');
-          break;
-        case 'AT_AttachPartition':
-          output.push('ATTACH PARTITION');
-          if (node.def) {
-            output.push(this.visit(node.def, context));
-          }
-          break;
-        case 'AT_DetachPartition':
-          output.push('DETACH PARTITION');
-          if (node.def) {
-            output.push(this.visit(node.def, context));
-          }
-          break;
-        case 'AT_DetachPartitionFinalize':
-          output.push('DETACH PARTITION');
-          if (node.def) {
-            output.push(this.visit(node.def, context));
-          }
-          output.push('FINALIZE');
-          break;
-        case 'AT_SetLogged':
-          output.push('SET LOGGED');
-          break;
-        case 'AT_SetUnLogged':
-          output.push('SET UNLOGGED');
-          break;
-        case 'AT_AddColumnToView':
-          output.push('ADD COLUMN');
-          if (node.def) {
-            const columnDef = this.visit(node.def, context);
-            output.push(columnDef);
-          }
-          break;
-        case 'AT_CookedColumnDefault':
-          output.push('ALTER COLUMN');
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          if (node.def) {
-            output.push('SET DEFAULT');
-            output.push(this.visit(node.def, context));
-          } else {
-            output.push('DROP DEFAULT');
-          }
-          break;
-        case 'AT_SetExpression':
-          output.push('ALTER COLUMN');
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          output.push('SET EXPRESSION');
-          if (node.def) {
-            output.push(this.visit(node.def, context));
-          }
-          break;
-        case 'AT_DropExpression':
-          output.push('ALTER COLUMN');
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          output.push('DROP EXPRESSION');
-          break;
-        case 'AT_CheckNotNull':
-          output.push('ALTER COLUMN');
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          output.push('SET NOT NULL');
-          break;
-        case 'AT_AddIndex':
-          output.push('ADD');
-          if (node.def) {
-            output.push(this.visit(node.def, context));
-          }
-          break;
-        case 'AT_ReAddIndex':
-          output.push('ADD');
-          if (node.def) {
-            output.push(this.visit(node.def, context));
-          }
-          break;
-        case 'AT_ReAddConstraint':
-          output.push('ADD');
-          if (node.def) {
-            output.push(this.visit(node.def, context));
-          }
-          break;
-        case 'AT_ReAddDomainConstraint':
-          output.push('ADD');
-          if (node.def) {
-            output.push(this.visit(node.def, context));
-          }
-          break;
-        case 'AT_AlterConstraint':
-          output.push('ALTER CONSTRAINT');
-          if (node.def && this.getNodeType(node.def) === 'Constraint') {
-            const constraintData = this.getNodeData(node.def) as any;
-            if (constraintData.conname) {
-              output.push(QuoteUtils.quote(constraintData.conname));
-              if (constraintData.deferrable !== undefined) {
-                output.push(constraintData.deferrable ? 'DEFERRABLE' : 'NOT DEFERRABLE');
-              }
-              if (constraintData.initdeferred !== undefined) {
-                output.push(constraintData.initdeferred ? 'INITIALLY DEFERRED' : 'INITIALLY IMMEDIATE');
-              }
-            }
-          } else if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-            if (node.def) {
-              output.push(this.visit(node.def, context));
-            }
-          }
-          break;
-        case 'AT_AddIndexConstraint':
-          output.push('ADD');
-          if (node.def) {
-            output.push(this.visit(node.def, context));
-          }
-          break;
-        case 'AT_ReAddComment':
-          output.push('COMMENT');
-          if (node.def) {
-            output.push(this.visit(node.def, context));
-          }
-          break;
-        case 'AT_AlterColumnGenericOptions':
-          output.push('ALTER COLUMN');
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          output.push('OPTIONS');
-          if (node.def) {
-            const alterColumnContext = context.spawn('AlterTableCmd', { alterColumnOptions: true });
-            const options = ListUtils.unwrapList(node.def)
-              .map(option => this.visit(option, alterColumnContext))
-              .join(', ');
-            output.push(`(${options})`);
-          }
-          break;
-        case 'AT_DropOids':
-          output.push('SET WITHOUT OIDS');
-          break;
-        case 'AT_ReplaceRelOptions':
-          output.push('REPLACE');
-          if (node.def && Array.isArray(node.def)) {
-            const options = ListUtils.unwrapList(node.def)
-              .map(option => this.visit(option, context))
-              .join(', ');
-            output.push(`(${options})`);
-          } else {
-            output.push('()');
-          }
-          break;
-        case 'AT_AddOf':
-          output.push('OF');
-          if (node.def) {
-            output.push(this.visit(node.def, context));
-          }
-          break;
-        case 'AT_DropOf':
-          output.push('NOT OF');
-          break;
-        case 'AT_ReplicaIdentity':
-          output.push('REPLICA IDENTITY');
-          if (node.def) {
-            output.push(this.visit(node.def, context));
-          }
-          break;
-        case 'AT_GenericOptions':
-          output.push('OPTIONS');
-          if (node.def) {
-            const alterTableContext = context.spawn('AlterTableCmd', { alterTableOptions: true });
-            const options = ListUtils.unwrapList(node.def)
-              .map(option => this.visit(option, alterTableContext))
-              .join(', ');
-            output.push(`(${options})`);
-          }
-          break;
-        case 'AT_AddIdentity':
-          output.push('ALTER COLUMN');
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          output.push('ADD');
-          if (node.def) {
-            output.push(this.visit(node.def, context));
-          }
-          break;
-        case 'AT_SetIdentity':
-          output.push('ALTER COLUMN');
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          output.push('SET');
-          if (node.def) {
-            output.push(this.visit(node.def, context));
-          }
-          break;
-        case 'AT_DropIdentity':
-          output.push('ALTER COLUMN');
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          output.push('DROP IDENTITY');
-          if (node.behavior === 'DROP_CASCADE') {
-            output.push('CASCADE');
-          } else if (node.behavior === 'DROP_RESTRICT') {
-            output.push('RESTRICT');
-          }
-          break;
-        case 'AT_ReAddStatistics':
-          output.push('ADD');
-          if (node.def) {
-            output.push(this.visit(node.def, context));
-          }
-          break;
-        default:
-          throw new Error(`Unsupported AlterTableCmd subtype: ${node.subtype}`);
+        }
+        break;
+      case 'AT_AddIndexConstraint':
+        output.push('ADD');
+        if (node.def) {
+          output.push(this.visit(node.def, context));
+        }
+        break;
+      case 'AT_ReAddComment':
+        output.push('COMMENT');
+        if (node.def) {
+          output.push(this.visit(node.def, context));
+        }
+        break;
+      case 'AT_AlterColumnGenericOptions':
+        output.push('ALTER COLUMN');
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        output.push('OPTIONS');
+        if (node.def) {
+          const alterColumnContext = context.spawn('AlterTableCmd', { alterColumnOptions: true });
+          const options = ListUtils.unwrapList(node.def)
+            .map(option => this.visit(option, alterColumnContext))
+            .join(', ');
+          output.push(`(${options})`);
+        }
+        break;
+      case 'AT_DropOids':
+        output.push('SET WITHOUT OIDS');
+        break;
+      case 'AT_ReplaceRelOptions':
+        output.push('REPLACE');
+        if (node.def && Array.isArray(node.def)) {
+          const options = ListUtils.unwrapList(node.def)
+            .map(option => this.visit(option, context))
+            .join(', ');
+          output.push(`(${options})`);
+        } else {
+          output.push('()');
+        }
+        break;
+      case 'AT_AddOf':
+        output.push('OF');
+        if (node.def) {
+          output.push(this.visit(node.def, context));
+        }
+        break;
+      case 'AT_DropOf':
+        output.push('NOT OF');
+        break;
+      case 'AT_ReplicaIdentity':
+        output.push('REPLICA IDENTITY');
+        if (node.def) {
+          output.push(this.visit(node.def, context));
+        }
+        break;
+      case 'AT_GenericOptions':
+        output.push('OPTIONS');
+        if (node.def) {
+          const alterTableContext = context.spawn('AlterTableCmd', { alterTableOptions: true });
+          const options = ListUtils.unwrapList(node.def)
+            .map(option => this.visit(option, alterTableContext))
+            .join(', ');
+          output.push(`(${options})`);
+        }
+        break;
+      case 'AT_AddIdentity':
+        output.push('ALTER COLUMN');
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        output.push('ADD');
+        if (node.def) {
+          output.push(this.visit(node.def, context));
+        }
+        break;
+      case 'AT_SetIdentity':
+        output.push('ALTER COLUMN');
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        output.push('SET');
+        if (node.def) {
+          output.push(this.visit(node.def, context));
+        }
+        break;
+      case 'AT_DropIdentity':
+        output.push('ALTER COLUMN');
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        output.push('DROP IDENTITY');
+        if (node.behavior === 'DROP_CASCADE') {
+          output.push('CASCADE');
+        } else if (node.behavior === 'DROP_RESTRICT') {
+          output.push('RESTRICT');
+        }
+        break;
+      case 'AT_ReAddStatistics':
+        output.push('ADD');
+        if (node.def) {
+          output.push(this.visit(node.def, context));
+        }
+        break;
+      default:
+        throw new Error(`Unsupported AlterTableCmd subtype: ${node.subtype}`);
       }
     }
 
@@ -5614,18 +5761,18 @@ export class Deparser implements DeparserVisitor {
 
     if (node.mode) {
       switch (node.mode) {
-        case 'FUNC_PARAM_IN':
-          output.push('IN');
-          break;
-        case 'FUNC_PARAM_OUT':
-          output.push('OUT');
-          break;
-        case 'FUNC_PARAM_INOUT':
-          output.push('INOUT');
-          break;
-        case 'FUNC_PARAM_VARIADIC':
-          output.push('VARIADIC');
-          break;
+      case 'FUNC_PARAM_IN':
+        output.push('IN');
+        break;
+      case 'FUNC_PARAM_OUT':
+        output.push('OUT');
+        break;
+      case 'FUNC_PARAM_INOUT':
+        output.push('INOUT');
+        break;
+      case 'FUNC_PARAM_VARIADIC':
+        output.push('VARIADIC');
+        break;
       }
     }
 
@@ -6492,17 +6639,17 @@ export class Deparser implements DeparserVisitor {
 
     if (node.op) {
       switch (node.op) {
-        case 'SETOP_UNION':
-          output.push(node.all ? 'UNION ALL' : 'UNION');
-          break;
-        case 'SETOP_INTERSECT':
-          output.push(node.all ? 'INTERSECT ALL' : 'INTERSECT');
-          break;
-        case 'SETOP_EXCEPT':
-          output.push(node.all ? 'EXCEPT ALL' : 'EXCEPT');
-          break;
-        default:
-          throw new Error(`Unsupported SetOperation: ${node.op}`);
+      case 'SETOP_UNION':
+        output.push(node.all ? 'UNION ALL' : 'UNION');
+        break;
+      case 'SETOP_INTERSECT':
+        output.push(node.all ? 'INTERSECT ALL' : 'INTERSECT');
+        break;
+      case 'SETOP_EXCEPT':
+        output.push(node.all ? 'EXCEPT ALL' : 'EXCEPT');
+        break;
+      default:
+        throw new Error(`Unsupported SetOperation: ${node.op}`);
       }
     }
 
@@ -6518,27 +6665,27 @@ export class Deparser implements DeparserVisitor {
 
     if (node.identity_type) {
       switch (node.identity_type) {
-        case 'd':
-        case 'REPLICA_IDENTITY_DEFAULT':
-          output.push('DEFAULT');
-          break;
-        case 'f':
-        case 'REPLICA_IDENTITY_FULL':
-          output.push('FULL');
-          break;
-        case 'n':
-        case 'REPLICA_IDENTITY_NOTHING':
-          output.push('NOTHING');
-          break;
-        case 'i':
-        case 'REPLICA_IDENTITY_INDEX':
-          output.push('USING', 'INDEX');
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          break;
-        default:
-          throw new Error(`Unsupported replica identity type: ${node.identity_type}`);
+      case 'd':
+      case 'REPLICA_IDENTITY_DEFAULT':
+        output.push('DEFAULT');
+        break;
+      case 'f':
+      case 'REPLICA_IDENTITY_FULL':
+        output.push('FULL');
+        break;
+      case 'n':
+      case 'REPLICA_IDENTITY_NOTHING':
+        output.push('NOTHING');
+        break;
+      case 'i':
+      case 'REPLICA_IDENTITY_INDEX':
+        output.push('USING', 'INDEX');
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        break;
+      default:
+        throw new Error(`Unsupported replica identity type: ${node.identity_type}`);
       }
     }
 
@@ -6572,89 +6719,89 @@ export class Deparser implements DeparserVisitor {
 
     if (node.subtype) {
       switch (node.subtype) {
-        case 'AT_SetNotNull':
-          output.push('SET', 'NOT', 'NULL');
-          break;
-        case 'AT_DropNotNull':
-          output.push('DROP', 'NOT', 'NULL');
-          break;
-        case 'AT_SetDefault':
+      case 'AT_SetNotNull':
+        output.push('SET', 'NOT', 'NULL');
+        break;
+      case 'AT_DropNotNull':
+        output.push('DROP', 'NOT', 'NULL');
+        break;
+      case 'AT_SetDefault':
+        output.push('SET', 'DEFAULT');
+        if (node.def) {
+          output.push(this.visit(node.def, context));
+        }
+        break;
+      case 'AT_DropDefault':
+        output.push('DROP', 'DEFAULT');
+        break;
+      case 'AT_AddConstraint':
+        output.push('ADD');
+        if (node.def) {
+          // Pass domain context to avoid adding constraint names for domain constraints
+          const domainContext = context.spawn('CreateDomainStmt', { isDomainConstraint: true });
+          output.push(this.visit(node.def, domainContext));
+        }
+        break;
+      case 'AT_DropConstraint':
+        output.push('DROP', 'CONSTRAINT');
+        if (node.missing_ok) {
+          output.push('IF', 'EXISTS');
+        }
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        if (node.behavior === 'DROP_CASCADE') {
+          output.push('CASCADE');
+        }
+        break;
+      case 'AT_ValidateConstraint':
+        output.push('VALIDATE', 'CONSTRAINT');
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        break;
+      case 'C':
+        output.push('ADD');
+        if (node.def) {
+          // Pass domain context to avoid adding constraint names for domain constraints
+          const domainContext = context.spawn('CreateDomainStmt', { isDomainConstraint: true });
+          output.push(this.visit(node.def, domainContext));
+        }
+        break;
+      case 'X':
+        output.push('DROP', 'CONSTRAINT');
+        if (node.missing_ok) {
+          output.push('IF', 'EXISTS');
+        }
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        if (node.behavior === 'DROP_CASCADE') {
+          output.push('CASCADE');
+        }
+        break;
+      case 'V':
+        output.push('VALIDATE', 'CONSTRAINT');
+        if (node.name) {
+          output.push(QuoteUtils.quote(node.name));
+        }
+        break;
+      case 'O':
+        output.push('SET', 'NOT', 'NULL');
+        break;
+      case 'N':
+        output.push('DROP', 'NOT', 'NULL');
+        break;
+      case 'T':
+        if (node.def) {
           output.push('SET', 'DEFAULT');
-          if (node.def) {
-            output.push(this.visit(node.def, context));
-          }
-          break;
-        case 'AT_DropDefault':
+          output.push(this.visit(node.def, context));
+        } else {
           output.push('DROP', 'DEFAULT');
-          break;
-        case 'AT_AddConstraint':
-          output.push('ADD');
-          if (node.def) {
-            // Pass domain context to avoid adding constraint names for domain constraints
-            const domainContext = context.spawn('CreateDomainStmt', { isDomainConstraint: true });
-            output.push(this.visit(node.def, domainContext));
-          }
-          break;
-        case 'AT_DropConstraint':
-          output.push('DROP', 'CONSTRAINT');
-          if (node.missing_ok) {
-            output.push('IF', 'EXISTS');
-          }
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          if (node.behavior === 'DROP_CASCADE') {
-            output.push('CASCADE');
-          }
-          break;
-        case 'AT_ValidateConstraint':
-          output.push('VALIDATE', 'CONSTRAINT');
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          break;
-        case 'C':
-          output.push('ADD');
-          if (node.def) {
-            // Pass domain context to avoid adding constraint names for domain constraints
-            const domainContext = context.spawn('CreateDomainStmt', { isDomainConstraint: true });
-            output.push(this.visit(node.def, domainContext));
-          }
-          break;
-        case 'X':
-          output.push('DROP', 'CONSTRAINT');
-          if (node.missing_ok) {
-            output.push('IF', 'EXISTS');
-          }
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          if (node.behavior === 'DROP_CASCADE') {
-            output.push('CASCADE');
-          }
-          break;
-        case 'V':
-          output.push('VALIDATE', 'CONSTRAINT');
-          if (node.name) {
-            output.push(QuoteUtils.quote(node.name));
-          }
-          break;
-        case 'O':
-          output.push('SET', 'NOT', 'NULL');
-          break;
-        case 'N':
-          output.push('DROP', 'NOT', 'NULL');
-          break;
-        case 'T':
-          if (node.def) {
-            output.push('SET', 'DEFAULT');
-            output.push(this.visit(node.def, context));
-          } else {
-            output.push('DROP', 'DEFAULT');
-          }
-          break;
-        default:
-          throw new Error(`Unsupported AlterDomainStmt subtype: ${node.subtype}`);
+        }
+        break;
+      default:
+        throw new Error(`Unsupported AlterDomainStmt subtype: ${node.subtype}`);
       }
     }
 
@@ -6763,16 +6910,16 @@ export class Deparser implements DeparserVisitor {
 
   DiscardStmt(node: t.DiscardStmt, context: DeparserContext): string {
     switch (node.target) {
-      case 'DISCARD_ALL':
-        return 'DISCARD ALL';
-      case 'DISCARD_PLANS':
-        return 'DISCARD PLANS';
-      case 'DISCARD_SEQUENCES':
-        return 'DISCARD SEQUENCES';
-      case 'DISCARD_TEMP':
-        return 'DISCARD TEMP';
-      default:
-        throw new Error(`Unsupported DiscardStmt target: ${node.target}`);
+    case 'DISCARD_ALL':
+      return 'DISCARD ALL';
+    case 'DISCARD_PLANS':
+      return 'DISCARD PLANS';
+    case 'DISCARD_SEQUENCES':
+      return 'DISCARD SEQUENCES';
+    case 'DISCARD_TEMP':
+      return 'DISCARD TEMP';
+    default:
+      throw new Error(`Unsupported DiscardStmt target: ${node.target}`);
     }
   }
 
@@ -6781,83 +6928,83 @@ export class Deparser implements DeparserVisitor {
 
     if (node.objtype) {
       switch (node.objtype) {
-        case 'OBJECT_TABLE':
-          output.push('TABLE');
-          break;
-        case 'OBJECT_COLUMN':
-          output.push('COLUMN');
-          break;
-        case 'OBJECT_INDEX':
-          output.push('INDEX');
-          break;
-        case 'OBJECT_FUNCTION':
-          output.push('FUNCTION');
-          break;
-        case 'OBJECT_VIEW':
-          output.push('VIEW');
-          break;
-        case 'OBJECT_SCHEMA':
-          output.push('SCHEMA');
-          break;
-        case 'OBJECT_DATABASE':
-          output.push('DATABASE');
-          break;
-        case 'OBJECT_MATVIEW':
-          output.push('MATERIALIZED VIEW');
-          break;
-        case 'OBJECT_TABCONSTRAINT':
-          output.push('CONSTRAINT');
-          break;
-        case 'OBJECT_TRIGGER':
-          output.push('TRIGGER');
-          break;
-        case 'OBJECT_FDW':
-          output.push('FOREIGN DATA WRAPPER');
-          break;
-        case 'OBJECT_EVENT_TRIGGER':
-          output.push('EVENT TRIGGER');
-          break;
-        case 'OBJECT_FOREIGN_SERVER':
-          output.push('SERVER');
-          break;
-        case 'OBJECT_FOREIGN_TABLE':
-          output.push('FOREIGN TABLE');
-          break;
-        case 'OBJECT_STATISTIC_EXT':
-          output.push('STATISTICS');
-          break;
-        case 'OBJECT_LARGEOBJECT':
-          output.push('LARGE OBJECT');
-          break;
-        case 'OBJECT_OPERATOR':
-          output.push('OPERATOR');
-          break;
-        case 'OBJECT_OPCLASS':
-          output.push('OPERATOR CLASS');
-          break;
-        case 'OBJECT_OPFAMILY':
-          output.push('OPERATOR FAMILY');
-          break;
-        case 'OBJECT_POLICY':
-          output.push('POLICY');
-          break;
-        case 'OBJECT_TSPARSER':
-          output.push('TEXT SEARCH PARSER');
-          break;
-        case 'OBJECT_TSDICTIONARY':
-          output.push('TEXT SEARCH DICTIONARY');
-          break;
-        case 'OBJECT_TSTEMPLATE':
-          output.push('TEXT SEARCH TEMPLATE');
-          break;
-        case 'OBJECT_TSCONFIGURATION':
-          output.push('TEXT SEARCH CONFIGURATION');
-          break;
-        case 'OBJECT_TRANSFORM':
-          output.push('TRANSFORM');
-          break;
-        default:
-          output.push(node.objtype.replace('OBJECT_', ''));
+      case 'OBJECT_TABLE':
+        output.push('TABLE');
+        break;
+      case 'OBJECT_COLUMN':
+        output.push('COLUMN');
+        break;
+      case 'OBJECT_INDEX':
+        output.push('INDEX');
+        break;
+      case 'OBJECT_FUNCTION':
+        output.push('FUNCTION');
+        break;
+      case 'OBJECT_VIEW':
+        output.push('VIEW');
+        break;
+      case 'OBJECT_SCHEMA':
+        output.push('SCHEMA');
+        break;
+      case 'OBJECT_DATABASE':
+        output.push('DATABASE');
+        break;
+      case 'OBJECT_MATVIEW':
+        output.push('MATERIALIZED VIEW');
+        break;
+      case 'OBJECT_TABCONSTRAINT':
+        output.push('CONSTRAINT');
+        break;
+      case 'OBJECT_TRIGGER':
+        output.push('TRIGGER');
+        break;
+      case 'OBJECT_FDW':
+        output.push('FOREIGN DATA WRAPPER');
+        break;
+      case 'OBJECT_EVENT_TRIGGER':
+        output.push('EVENT TRIGGER');
+        break;
+      case 'OBJECT_FOREIGN_SERVER':
+        output.push('SERVER');
+        break;
+      case 'OBJECT_FOREIGN_TABLE':
+        output.push('FOREIGN TABLE');
+        break;
+      case 'OBJECT_STATISTIC_EXT':
+        output.push('STATISTICS');
+        break;
+      case 'OBJECT_LARGEOBJECT':
+        output.push('LARGE OBJECT');
+        break;
+      case 'OBJECT_OPERATOR':
+        output.push('OPERATOR');
+        break;
+      case 'OBJECT_OPCLASS':
+        output.push('OPERATOR CLASS');
+        break;
+      case 'OBJECT_OPFAMILY':
+        output.push('OPERATOR FAMILY');
+        break;
+      case 'OBJECT_POLICY':
+        output.push('POLICY');
+        break;
+      case 'OBJECT_TSPARSER':
+        output.push('TEXT SEARCH PARSER');
+        break;
+      case 'OBJECT_TSDICTIONARY':
+        output.push('TEXT SEARCH DICTIONARY');
+        break;
+      case 'OBJECT_TSTEMPLATE':
+        output.push('TEXT SEARCH TEMPLATE');
+        break;
+      case 'OBJECT_TSCONFIGURATION':
+        output.push('TEXT SEARCH CONFIGURATION');
+        break;
+      case 'OBJECT_TRANSFORM':
+        output.push('TRANSFORM');
+        break;
+      default:
+        output.push(node.objtype.replace('OBJECT_', ''));
       }
     }
 
@@ -7293,17 +7440,17 @@ export class Deparser implements DeparserVisitor {
 
     if (node.action) {
       switch (node.action) {
-        case 'AP_AddObjects':
-          output.push('ADD');
-          break;
-        case 'AP_DropObjects':
-          output.push('DROP');
-          break;
-        case 'AP_SetObjects':
-          output.push('SET');
-          break;
-        default:
-          throw new Error(`Unsupported AlterPublicationStmt action: ${node.action}`);
+      case 'AP_AddObjects':
+        output.push('ADD');
+        break;
+      case 'AP_DropObjects':
+        output.push('DROP');
+        break;
+      case 'AP_SetObjects':
+        output.push('SET');
+        break;
+      default:
+        throw new Error(`Unsupported AlterPublicationStmt action: ${node.action}`);
       }
     }
 
@@ -7333,33 +7480,33 @@ export class Deparser implements DeparserVisitor {
 
     if (node.kind) {
       switch (node.kind) {
-        case 'ALTER_SUBSCRIPTION_OPTIONS':
-          output.push('SET');
-          break;
-        case 'ALTER_SUBSCRIPTION_CONNECTION':
-          output.push('CONNECTION');
-          if (node.conninfo) {
-            output.push(`'${node.conninfo}'`);
-          }
-          break;
-        case 'ALTER_SUBSCRIPTION_SET_PUBLICATION':
-          output.push('SET PUBLICATION');
-          if (node.publication && node.publication.length > 0) {
-            const publications = ListUtils.unwrapList(node.publication).map(pub => this.visit(pub, context));
-            output.push(publications.join(', '));
-          }
-          break;
-        case 'ALTER_SUBSCRIPTION_REFRESH':
-          output.push('REFRESH PUBLICATION');
-          break;
-        case 'ALTER_SUBSCRIPTION_ENABLED':
-          output.push('ENABLE');
-          break;
-        case 'ALTER_SUBSCRIPTION_SKIP':
-          output.push('SKIP');
-          break;
-        default:
-          throw new Error(`Unsupported AlterSubscriptionStmt kind: ${node.kind}`);
+      case 'ALTER_SUBSCRIPTION_OPTIONS':
+        output.push('SET');
+        break;
+      case 'ALTER_SUBSCRIPTION_CONNECTION':
+        output.push('CONNECTION');
+        if (node.conninfo) {
+          output.push(`'${node.conninfo}'`);
+        }
+        break;
+      case 'ALTER_SUBSCRIPTION_SET_PUBLICATION':
+        output.push('SET PUBLICATION');
+        if (node.publication && node.publication.length > 0) {
+          const publications = ListUtils.unwrapList(node.publication).map(pub => this.visit(pub, context));
+          output.push(publications.join(', '));
+        }
+        break;
+      case 'ALTER_SUBSCRIPTION_REFRESH':
+        output.push('REFRESH PUBLICATION');
+        break;
+      case 'ALTER_SUBSCRIPTION_ENABLED':
+        output.push('ENABLE');
+        break;
+      case 'ALTER_SUBSCRIPTION_SKIP':
+        output.push('SKIP');
+        break;
+      default:
+        throw new Error(`Unsupported AlterSubscriptionStmt kind: ${node.kind}`);
       }
     }
 
@@ -7385,12 +7532,12 @@ export class Deparser implements DeparserVisitor {
 
     if (node.behavior) {
       switch (node.behavior) {
-        case 'DROP_CASCADE':
-          output.push('CASCADE');
-          break;
-        case 'DROP_RESTRICT':
-          output.push('RESTRICT');
-          break;
+      case 'DROP_CASCADE':
+        output.push('CASCADE');
+        break;
+      case 'DROP_RESTRICT':
+        output.push('RESTRICT');
+        break;
       }
     }
 
@@ -7530,12 +7677,12 @@ export class Deparser implements DeparserVisitor {
 
     if (node.behavior) {
       switch (node.behavior) {
-        case 'DROP_CASCADE':
-          output.push('CASCADE');
-          break;
-        case 'DROP_RESTRICT':
-          output.push('RESTRICT');
-          break;
+      case 'DROP_CASCADE':
+        output.push('CASCADE');
+        break;
+      case 'DROP_RESTRICT':
+        output.push('RESTRICT');
+        break;
       }
     }
 
@@ -7587,78 +7734,78 @@ export class Deparser implements DeparserVisitor {
 
     if (node.kind) {
       switch (node.kind) {
-        case 'ALTER_TSCONFIG_ADD_MAPPING':
-          output.push('ADD', 'MAPPING', 'FOR');
-          if (node.tokentype && node.tokentype.length > 0) {
-            const tokenTypes = ListUtils.unwrapList(node.tokentype).map(token => this.visit(token, context));
-            output.push(tokenTypes.join(', '));
-          }
-          if (node.dicts && node.dicts.length > 0) {
-            output.push('WITH');
-            const dictNames = ListUtils.unwrapList(node.dicts).map(dict => {
-              if (dict.List && dict.List.items) {
-                return ListUtils.unwrapList(dict.List.items).map(item => this.visit(item, context)).join('.');
-              }
-              return this.visit(dict, context);
-            });
-            output.push(dictNames.join(', '));
-          }
-          break;
-        case 'ALTER_TSCONFIG_ALTER_MAPPING_FOR_TOKEN':
-          output.push('ALTER', 'MAPPING', 'FOR');
-          if (node.tokentype && node.tokentype.length > 0) {
-            const tokenTypes = ListUtils.unwrapList(node.tokentype).map(token => this.visit(token, context));
-            output.push(tokenTypes.join(', '));
-          }
-          if (node.dicts && node.dicts.length > 0) {
-            output.push('WITH');
-            const dictNames = ListUtils.unwrapList(node.dicts).map(dict => {
-              if (dict.List && dict.List.items) {
-                return ListUtils.unwrapList(dict.List.items).map(item => this.visit(item, context)).join('.');
-              }
-              return this.visit(dict, context);
-            });
-            output.push(dictNames.join(', '));
-          }
-          break;
-        case 'ALTER_TSCONFIG_REPLACE_DICT':
-          output.push('ALTER', 'MAPPING', 'REPLACE');
-          if (node.dicts && node.dicts.length >= 2) {
-            const dictNames = ListUtils.unwrapList(node.dicts).map(dict => {
-              if (dict.List && dict.List.items) {
-                return ListUtils.unwrapList(dict.List.items).map(item => this.visit(item, context)).join('.');
-              }
-              return this.visit(dict, context);
-            });
-            output.push(dictNames[0], 'WITH', dictNames.slice(1).join(', '));
-          }
-          break;
-        case 'ALTER_TSCONFIG_REPLACE_DICT_FOR_TOKEN':
-          output.push('ALTER', 'MAPPING', 'FOR');
-          if (node.tokentype && node.tokentype.length > 0) {
-            const tokenTypes = ListUtils.unwrapList(node.tokentype).map(token => this.visit(token, context));
-            output.push(tokenTypes.join(', '));
-          }
-          if (node.dicts && node.dicts.length >= 2) {
-            output.push('REPLACE');
-            const dictNames = ListUtils.unwrapList(node.dicts).map(dict => {
-              if (dict.List && dict.List.items) {
-                return ListUtils.unwrapList(dict.List.items).map(item => this.visit(item, context)).join('.');
-              }
-              return this.visit(dict, context);
-            });
-            output.push(dictNames[0], 'WITH', dictNames.slice(1).join(', '));
-          }
-          break;
-        case 'ALTER_TSCONFIG_DROP_MAPPING':
-          output.push('DROP', 'MAPPING', 'FOR');
-          if (node.tokentype && node.tokentype.length > 0) {
-            const tokenTypes = ListUtils.unwrapList(node.tokentype).map(token => this.visit(token, context));
-            output.push(tokenTypes.join(', '));
-          }
-          break;
-        default:
-          throw new Error(`Unsupported AlterTSConfigurationStmt kind: ${node.kind}`);
+      case 'ALTER_TSCONFIG_ADD_MAPPING':
+        output.push('ADD', 'MAPPING', 'FOR');
+        if (node.tokentype && node.tokentype.length > 0) {
+          const tokenTypes = ListUtils.unwrapList(node.tokentype).map(token => this.visit(token, context));
+          output.push(tokenTypes.join(', '));
+        }
+        if (node.dicts && node.dicts.length > 0) {
+          output.push('WITH');
+          const dictNames = ListUtils.unwrapList(node.dicts).map(dict => {
+            if (dict.List && dict.List.items) {
+              return ListUtils.unwrapList(dict.List.items).map(item => this.visit(item, context)).join('.');
+            }
+            return this.visit(dict, context);
+          });
+          output.push(dictNames.join(', '));
+        }
+        break;
+      case 'ALTER_TSCONFIG_ALTER_MAPPING_FOR_TOKEN':
+        output.push('ALTER', 'MAPPING', 'FOR');
+        if (node.tokentype && node.tokentype.length > 0) {
+          const tokenTypes = ListUtils.unwrapList(node.tokentype).map(token => this.visit(token, context));
+          output.push(tokenTypes.join(', '));
+        }
+        if (node.dicts && node.dicts.length > 0) {
+          output.push('WITH');
+          const dictNames = ListUtils.unwrapList(node.dicts).map(dict => {
+            if (dict.List && dict.List.items) {
+              return ListUtils.unwrapList(dict.List.items).map(item => this.visit(item, context)).join('.');
+            }
+            return this.visit(dict, context);
+          });
+          output.push(dictNames.join(', '));
+        }
+        break;
+      case 'ALTER_TSCONFIG_REPLACE_DICT':
+        output.push('ALTER', 'MAPPING', 'REPLACE');
+        if (node.dicts && node.dicts.length >= 2) {
+          const dictNames = ListUtils.unwrapList(node.dicts).map(dict => {
+            if (dict.List && dict.List.items) {
+              return ListUtils.unwrapList(dict.List.items).map(item => this.visit(item, context)).join('.');
+            }
+            return this.visit(dict, context);
+          });
+          output.push(dictNames[0], 'WITH', dictNames.slice(1).join(', '));
+        }
+        break;
+      case 'ALTER_TSCONFIG_REPLACE_DICT_FOR_TOKEN':
+        output.push('ALTER', 'MAPPING', 'FOR');
+        if (node.tokentype && node.tokentype.length > 0) {
+          const tokenTypes = ListUtils.unwrapList(node.tokentype).map(token => this.visit(token, context));
+          output.push(tokenTypes.join(', '));
+        }
+        if (node.dicts && node.dicts.length >= 2) {
+          output.push('REPLACE');
+          const dictNames = ListUtils.unwrapList(node.dicts).map(dict => {
+            if (dict.List && dict.List.items) {
+              return ListUtils.unwrapList(dict.List.items).map(item => this.visit(item, context)).join('.');
+            }
+            return this.visit(dict, context);
+          });
+          output.push(dictNames[0], 'WITH', dictNames.slice(1).join(', '));
+        }
+        break;
+      case 'ALTER_TSCONFIG_DROP_MAPPING':
+        output.push('DROP', 'MAPPING', 'FOR');
+        if (node.tokentype && node.tokentype.length > 0) {
+          const tokenTypes = ListUtils.unwrapList(node.tokentype).map(token => this.visit(token, context));
+          output.push(tokenTypes.join(', '));
+        }
+        break;
+      default:
+        throw new Error(`Unsupported AlterTSConfigurationStmt kind: ${node.kind}`);
       }
     }
 
@@ -7686,38 +7833,38 @@ export class Deparser implements DeparserVisitor {
     // Handle direction first, then check for ALL within each direction
     if (node.direction) {
       switch (node.direction) {
-        case 'FETCH_FORWARD':
-          if (isAll) {
-            output.push('FORWARD', 'ALL');
-          } else if (node.howMany !== undefined && node.howMany !== null) {
-            output.push('FORWARD', node.howMany.toString());
-          } else {
-            output.push('FORWARD');
-          }
-          break;
-        case 'FETCH_BACKWARD':
-          if (isAll) {
-            output.push('BACKWARD', 'ALL');
-          } else if (node.howMany !== undefined && node.howMany !== null) {
-            output.push('BACKWARD', node.howMany.toString());
-          } else {
-            output.push('BACKWARD');
-          }
-          break;
-        case 'FETCH_ABSOLUTE':
-          if (node.howMany !== undefined && node.howMany !== null) {
-            output.push('ABSOLUTE', node.howMany.toString());
-          }
-          break;
-        case 'FETCH_RELATIVE':
-          if (node.howMany !== undefined && node.howMany !== null) {
-            output.push('RELATIVE', node.howMany.toString());
-          } else {
-            output.push('RELATIVE', '0');
-          }
-          break;
-        default:
-          throw new Error(`Unsupported FetchStmt direction: ${node.direction}`);
+      case 'FETCH_FORWARD':
+        if (isAll) {
+          output.push('FORWARD', 'ALL');
+        } else if (node.howMany !== undefined && node.howMany !== null) {
+          output.push('FORWARD', node.howMany.toString());
+        } else {
+          output.push('FORWARD');
+        }
+        break;
+      case 'FETCH_BACKWARD':
+        if (isAll) {
+          output.push('BACKWARD', 'ALL');
+        } else if (node.howMany !== undefined && node.howMany !== null) {
+          output.push('BACKWARD', node.howMany.toString());
+        } else {
+          output.push('BACKWARD');
+        }
+        break;
+      case 'FETCH_ABSOLUTE':
+        if (node.howMany !== undefined && node.howMany !== null) {
+          output.push('ABSOLUTE', node.howMany.toString());
+        }
+        break;
+      case 'FETCH_RELATIVE':
+        if (node.howMany !== undefined && node.howMany !== null) {
+          output.push('RELATIVE', node.howMany.toString());
+        } else {
+          output.push('RELATIVE', '0');
+        }
+        break;
+      default:
+        throw new Error(`Unsupported FetchStmt direction: ${node.direction}`);
       }
     } else if (isAll) {
       // Handle plain "ALL" without direction
@@ -7942,24 +8089,24 @@ export class Deparser implements DeparserVisitor {
 
     if (node.list_type) {
       switch (node.list_type) {
-        case 'FDW_IMPORT_SCHEMA_ALL':
-          break;
-        case 'FDW_IMPORT_SCHEMA_LIMIT_TO':
-          output.push('LIMIT', 'TO');
-          if (node.table_list && node.table_list.length > 0) {
-            const tables = ListUtils.unwrapList(node.table_list).map(table => this.visit(table, context));
-            output.push(`(${tables.join(', ')})`);
-          }
-          break;
-        case 'FDW_IMPORT_SCHEMA_EXCEPT':
-          output.push('EXCEPT');
-          if (node.table_list && node.table_list.length > 0) {
-            const tables = ListUtils.unwrapList(node.table_list).map(table => this.visit(table, context));
-            output.push(`(${tables.join(', ')})`);
-          }
-          break;
-        default:
-          throw new Error(`Unsupported ImportForeignSchemaStmt list_type: ${node.list_type}`);
+      case 'FDW_IMPORT_SCHEMA_ALL':
+        break;
+      case 'FDW_IMPORT_SCHEMA_LIMIT_TO':
+        output.push('LIMIT', 'TO');
+        if (node.table_list && node.table_list.length > 0) {
+          const tables = ListUtils.unwrapList(node.table_list).map(table => this.visit(table, context));
+          output.push(`(${tables.join(', ')})`);
+        }
+        break;
+      case 'FDW_IMPORT_SCHEMA_EXCEPT':
+        output.push('EXCEPT');
+        if (node.table_list && node.table_list.length > 0) {
+          const tables = ListUtils.unwrapList(node.table_list).map(table => this.visit(table, context));
+          output.push(`(${tables.join(', ')})`);
+        }
+        break;
+      default:
+        throw new Error(`Unsupported ImportForeignSchemaStmt list_type: ${node.list_type}`);
       }
     }
 
@@ -8045,23 +8192,23 @@ export class Deparser implements DeparserVisitor {
 
     if (node.kind) {
       switch (node.kind) {
-        case 'REINDEX_OBJECT_INDEX':
-          output.push('INDEX');
-          break;
-        case 'REINDEX_OBJECT_TABLE':
-          output.push('TABLE');
-          break;
-        case 'REINDEX_OBJECT_SCHEMA':
-          output.push('SCHEMA');
-          break;
-        case 'REINDEX_OBJECT_SYSTEM':
-          output.push('SYSTEM');
-          break;
-        case 'REINDEX_OBJECT_DATABASE':
-          output.push('DATABASE');
-          break;
-        default:
-          throw new Error(`Unsupported ReindexStmt kind: ${node.kind}`);
+      case 'REINDEX_OBJECT_INDEX':
+        output.push('INDEX');
+        break;
+      case 'REINDEX_OBJECT_TABLE':
+        output.push('TABLE');
+        break;
+      case 'REINDEX_OBJECT_SCHEMA':
+        output.push('SCHEMA');
+        break;
+      case 'REINDEX_OBJECT_SYSTEM':
+        output.push('SYSTEM');
+        break;
+      case 'REINDEX_OBJECT_DATABASE':
+        output.push('DATABASE');
+        break;
+      default:
+        throw new Error(`Unsupported ReindexStmt kind: ${node.kind}`);
       }
     }
 
@@ -8160,138 +8307,138 @@ export class Deparser implements DeparserVisitor {
     }
 
     switch (node.renameType) {
-      case 'OBJECT_TABLE':
-        output.push('TABLE');
-        break;
-      case 'OBJECT_VIEW':
-        output.push('VIEW');
-        break;
-      case 'OBJECT_INDEX':
-        output.push('INDEX');
-        break;
-      case 'OBJECT_SEQUENCE':
-        output.push('SEQUENCE');
-        break;
-      case 'OBJECT_FUNCTION':
-        output.push('FUNCTION');
-        break;
-      case 'OBJECT_PROCEDURE':
-        output.push('PROCEDURE');
-        break;
-      case 'OBJECT_SCHEMA':
-        output.push('SCHEMA');
-        break;
-      case 'OBJECT_DATABASE':
-        output.push('DATABASE');
-        break;
-      case 'OBJECT_COLUMN':
-        if (node.relationType === 'OBJECT_FOREIGN_TABLE') {
-          output.push('FOREIGN TABLE');
-        } else if (node.relationType === 'OBJECT_VIEW') {
-          output.push('VIEW');
-        } else {
-          output.push('TABLE');
-        }
-        break;
-      case 'OBJECT_DOMAIN':
-        output.push('DOMAIN');
-        break;
-      case 'OBJECT_TYPE':
-        output.push('TYPE');
-        break;
-      case 'OBJECT_DOMCONSTRAINT':
-        output.push('DOMAIN');
-        break;
-      case 'OBJECT_TABCONSTRAINT':
-        output.push('TABLE');
-        break;
-      case 'OBJECT_AGGREGATE':
-        output.push('AGGREGATE');
-        break;
-      case 'OBJECT_COLLATION':
-        output.push('COLLATION');
-        break;
-      case 'OBJECT_CONVERSION':
-        output.push('CONVERSION');
-        break;
-      case 'OBJECT_EXTENSION':
-        output.push('EXTENSION');
-        break;
-      case 'OBJECT_FOREIGN_SERVER':
-        output.push('SERVER');
-        break;
-      case 'OBJECT_FOREIGN_TABLE':
+    case 'OBJECT_TABLE':
+      output.push('TABLE');
+      break;
+    case 'OBJECT_VIEW':
+      output.push('VIEW');
+      break;
+    case 'OBJECT_INDEX':
+      output.push('INDEX');
+      break;
+    case 'OBJECT_SEQUENCE':
+      output.push('SEQUENCE');
+      break;
+    case 'OBJECT_FUNCTION':
+      output.push('FUNCTION');
+      break;
+    case 'OBJECT_PROCEDURE':
+      output.push('PROCEDURE');
+      break;
+    case 'OBJECT_SCHEMA':
+      output.push('SCHEMA');
+      break;
+    case 'OBJECT_DATABASE':
+      output.push('DATABASE');
+      break;
+    case 'OBJECT_COLUMN':
+      if (node.relationType === 'OBJECT_FOREIGN_TABLE') {
         output.push('FOREIGN TABLE');
-        break;
-      case 'OBJECT_LANGUAGE':
-        output.push('LANGUAGE');
-        break;
-      case 'OBJECT_MATVIEW':
-        output.push('MATERIALIZED VIEW');
-        break;
-      case 'OBJECT_OPCLASS':
-        output.push('OPERATOR CLASS');
-        break;
-      case 'OBJECT_OPERATOR':
-        output.push('OPERATOR');
-        break;
-      case 'OBJECT_OPFAMILY':
-        output.push('OPERATOR FAMILY');
-        break;
-      case 'OBJECT_POLICY':
-        output.push('POLICY');
-        if (node.subname) {
-          output.push(QuoteUtils.quote(node.subname));
-        }
-        break;
-      case 'OBJECT_PUBLICATION':
-        output.push('PUBLICATION');
-        break;
-      case 'OBJECT_ROLE':
-        output.push('ROLE');
-        break;
-      case 'OBJECT_RULE':
-        output.push('RULE');
-        break;
-      case 'OBJECT_SUBSCRIPTION':
-        output.push('SUBSCRIPTION');
-        break;
-      case 'OBJECT_TABLESPACE':
-        output.push('TABLESPACE');
-        break;
-      case 'OBJECT_TRIGGER':
-        output.push('TRIGGER');
-        break;
-      case 'OBJECT_TSCONFIGURATION':
-        output.push('TEXT SEARCH CONFIGURATION');
-        break;
-      case 'OBJECT_TSDICTIONARY':
-        output.push('TEXT SEARCH DICTIONARY');
-        break;
-      case 'OBJECT_TSPARSER':
-        output.push('TEXT SEARCH PARSER');
-        break;
-      case 'OBJECT_TSTEMPLATE':
-        output.push('TEXT SEARCH TEMPLATE');
-        break;
-      case 'OBJECT_FDW':
-        output.push('FOREIGN DATA WRAPPER');
-        break;
-      case 'OBJECT_EVENT_TRIGGER':
-        output.push('EVENT TRIGGER');
-        break;
-      case 'OBJECT_ATTRIBUTE':
-        if (node.relationType === 'OBJECT_TYPE') {
-          output.push('TYPE');
-        } else {
-          output.push('TABLE'); // fallback for other relation types
-        }
-        break;
-      case 'OBJECT_ROUTINE':
-        output.push('ROUTINE');
-        break;
-      default:
-        throw new Error(`Unsupported RenameStmt renameType: ${node.renameType}`);
+      } else if (node.relationType === 'OBJECT_VIEW') {
+        output.push('VIEW');
+      } else {
+        output.push('TABLE');
+      }
+      break;
+    case 'OBJECT_DOMAIN':
+      output.push('DOMAIN');
+      break;
+    case 'OBJECT_TYPE':
+      output.push('TYPE');
+      break;
+    case 'OBJECT_DOMCONSTRAINT':
+      output.push('DOMAIN');
+      break;
+    case 'OBJECT_TABCONSTRAINT':
+      output.push('TABLE');
+      break;
+    case 'OBJECT_AGGREGATE':
+      output.push('AGGREGATE');
+      break;
+    case 'OBJECT_COLLATION':
+      output.push('COLLATION');
+      break;
+    case 'OBJECT_CONVERSION':
+      output.push('CONVERSION');
+      break;
+    case 'OBJECT_EXTENSION':
+      output.push('EXTENSION');
+      break;
+    case 'OBJECT_FOREIGN_SERVER':
+      output.push('SERVER');
+      break;
+    case 'OBJECT_FOREIGN_TABLE':
+      output.push('FOREIGN TABLE');
+      break;
+    case 'OBJECT_LANGUAGE':
+      output.push('LANGUAGE');
+      break;
+    case 'OBJECT_MATVIEW':
+      output.push('MATERIALIZED VIEW');
+      break;
+    case 'OBJECT_OPCLASS':
+      output.push('OPERATOR CLASS');
+      break;
+    case 'OBJECT_OPERATOR':
+      output.push('OPERATOR');
+      break;
+    case 'OBJECT_OPFAMILY':
+      output.push('OPERATOR FAMILY');
+      break;
+    case 'OBJECT_POLICY':
+      output.push('POLICY');
+      if (node.subname) {
+        output.push(QuoteUtils.quote(node.subname));
+      }
+      break;
+    case 'OBJECT_PUBLICATION':
+      output.push('PUBLICATION');
+      break;
+    case 'OBJECT_ROLE':
+      output.push('ROLE');
+      break;
+    case 'OBJECT_RULE':
+      output.push('RULE');
+      break;
+    case 'OBJECT_SUBSCRIPTION':
+      output.push('SUBSCRIPTION');
+      break;
+    case 'OBJECT_TABLESPACE':
+      output.push('TABLESPACE');
+      break;
+    case 'OBJECT_TRIGGER':
+      output.push('TRIGGER');
+      break;
+    case 'OBJECT_TSCONFIGURATION':
+      output.push('TEXT SEARCH CONFIGURATION');
+      break;
+    case 'OBJECT_TSDICTIONARY':
+      output.push('TEXT SEARCH DICTIONARY');
+      break;
+    case 'OBJECT_TSPARSER':
+      output.push('TEXT SEARCH PARSER');
+      break;
+    case 'OBJECT_TSTEMPLATE':
+      output.push('TEXT SEARCH TEMPLATE');
+      break;
+    case 'OBJECT_FDW':
+      output.push('FOREIGN DATA WRAPPER');
+      break;
+    case 'OBJECT_EVENT_TRIGGER':
+      output.push('EVENT TRIGGER');
+      break;
+    case 'OBJECT_ATTRIBUTE':
+      if (node.relationType === 'OBJECT_TYPE') {
+        output.push('TYPE');
+      } else {
+        output.push('TABLE'); // fallback for other relation types
+      }
+      break;
+    case 'OBJECT_ROUTINE':
+      output.push('ROUTINE');
+      break;
+    default:
+      throw new Error(`Unsupported RenameStmt renameType: ${node.renameType}`);
     }
 
     if (node.missing_ok) {
@@ -8433,101 +8580,101 @@ export class Deparser implements DeparserVisitor {
     // Handle object type specification only for ALTER DEFAULT PRIVILEGES context
     if (node.objtype && node.targtype === 'ACL_TARGET_DEFAULTS') {
       switch (node.objtype) {
-        case 'OBJECT_TABLE':
-          output.push('TABLES');
-          break;
-        case 'OBJECT_SEQUENCE':
-          output.push('SEQUENCES');
-          break;
-        case 'OBJECT_FUNCTION':
-          output.push('FUNCTIONS');
-          break;
-        case 'OBJECT_PROCEDURE':
-          output.push('PROCEDURES');
-          break;
-        case 'OBJECT_ROUTINE':
-          output.push('ROUTINES');
-          break;
-        case 'OBJECT_TYPE':
-          output.push('TYPES');
-          break;
-        case 'OBJECT_SCHEMA':
-          output.push('SCHEMAS');
-          break;
-        default:
-          break;
+      case 'OBJECT_TABLE':
+        output.push('TABLES');
+        break;
+      case 'OBJECT_SEQUENCE':
+        output.push('SEQUENCES');
+        break;
+      case 'OBJECT_FUNCTION':
+        output.push('FUNCTIONS');
+        break;
+      case 'OBJECT_PROCEDURE':
+        output.push('PROCEDURES');
+        break;
+      case 'OBJECT_ROUTINE':
+        output.push('ROUTINES');
+        break;
+      case 'OBJECT_TYPE':
+        output.push('TYPES');
+        break;
+      case 'OBJECT_SCHEMA':
+        output.push('SCHEMAS');
+        break;
+      default:
+        break;
       }
     }
 
     switch (node.targtype) {
-      case 'ACL_TARGET_OBJECT':
-        if (node.objtype === 'OBJECT_SCHEMA') {
-          output.push('SCHEMA');
-        } else if (node.objtype === 'OBJECT_LANGUAGE') {
-          output.push('LANGUAGE');
-        } else if (node.objtype === 'OBJECT_FUNCTION') {
-          output.push('FUNCTION');
-        } else if (node.objtype === 'OBJECT_PROCEDURE') {
-          output.push('PROCEDURE');
-        } else if (node.objtype === 'OBJECT_TYPE') {
-          output.push('TYPE');
-        } else if (node.objtype === 'OBJECT_DOMAIN') {
-          output.push('DOMAIN');
-        } else if (node.objtype === 'OBJECT_LARGEOBJECT') {
-          output.push('LARGE OBJECT');
-        } else if (node.objtype === 'OBJECT_FDW') {
-          output.push('FOREIGN', 'DATA', 'WRAPPER');
-        } else if (node.objtype === 'OBJECT_FOREIGN_SERVER') {
-          output.push('FOREIGN', 'SERVER');
-        } else if (node.objtype === 'OBJECT_DATABASE') {
-          output.push('DATABASE');
-        }
-        if (node.objects && node.objects.length > 0) {
-          const objects = ListUtils.unwrapList(node.objects)
-            .map(obj => this.visit(obj, context))
-            .join(', ');
-          output.push(objects);
-        }
+    case 'ACL_TARGET_OBJECT':
+      if (node.objtype === 'OBJECT_SCHEMA') {
+        output.push('SCHEMA');
+      } else if (node.objtype === 'OBJECT_LANGUAGE') {
+        output.push('LANGUAGE');
+      } else if (node.objtype === 'OBJECT_FUNCTION') {
+        output.push('FUNCTION');
+      } else if (node.objtype === 'OBJECT_PROCEDURE') {
+        output.push('PROCEDURE');
+      } else if (node.objtype === 'OBJECT_TYPE') {
+        output.push('TYPE');
+      } else if (node.objtype === 'OBJECT_DOMAIN') {
+        output.push('DOMAIN');
+      } else if (node.objtype === 'OBJECT_LARGEOBJECT') {
+        output.push('LARGE OBJECT');
+      } else if (node.objtype === 'OBJECT_FDW') {
+        output.push('FOREIGN', 'DATA', 'WRAPPER');
+      } else if (node.objtype === 'OBJECT_FOREIGN_SERVER') {
+        output.push('FOREIGN', 'SERVER');
+      } else if (node.objtype === 'OBJECT_DATABASE') {
+        output.push('DATABASE');
+      }
+      if (node.objects && node.objects.length > 0) {
+        const objects = ListUtils.unwrapList(node.objects)
+          .map(obj => this.visit(obj, context))
+          .join(', ');
+        output.push(objects);
+      }
+      break;
+    case 'ACL_TARGET_ALL_IN_SCHEMA':
+      // Handle different object types for ALL ... IN SCHEMA syntax
+      switch (node.objtype) {
+      case 'OBJECT_TABLE':
+        output.push('ALL TABLES IN SCHEMA');
         break;
-      case 'ACL_TARGET_ALL_IN_SCHEMA':
-        // Handle different object types for ALL ... IN SCHEMA syntax
-        switch (node.objtype) {
-          case 'OBJECT_TABLE':
-            output.push('ALL TABLES IN SCHEMA');
-            break;
-          case 'OBJECT_SEQUENCE':
-            output.push('ALL SEQUENCES IN SCHEMA');
-            break;
-          case 'OBJECT_FUNCTION':
-            output.push('ALL FUNCTIONS IN SCHEMA');
-            break;
-          case 'OBJECT_PROCEDURE':
-            output.push('ALL PROCEDURES IN SCHEMA');
-            break;
-          case 'OBJECT_ROUTINE':
-            output.push('ALL ROUTINES IN SCHEMA');
-            break;
-          case 'OBJECT_TYPE':
-            output.push('ALL TYPES IN SCHEMA');
-            break;
-          default:
-            output.push('ALL TABLES IN SCHEMA'); // Default fallback
-            break;
-        }
-        if (node.objects && node.objects.length > 0) {
-          const schemas = ListUtils.unwrapList(node.objects)
-            .map(schema => this.visit(schema, context))
-            .join(', ');
-          output.push(schemas);
-        }
+      case 'OBJECT_SEQUENCE':
+        output.push('ALL SEQUENCES IN SCHEMA');
+        break;
+      case 'OBJECT_FUNCTION':
+        output.push('ALL FUNCTIONS IN SCHEMA');
+        break;
+      case 'OBJECT_PROCEDURE':
+        output.push('ALL PROCEDURES IN SCHEMA');
+        break;
+      case 'OBJECT_ROUTINE':
+        output.push('ALL ROUTINES IN SCHEMA');
+        break;
+      case 'OBJECT_TYPE':
+        output.push('ALL TYPES IN SCHEMA');
         break;
       default:
-        if (node.objects && node.objects.length > 0) {
-          const objects = ListUtils.unwrapList(node.objects)
-            .map(obj => this.visit(obj, context))
-            .join(', ');
-          output.push(objects);
-        }
+        output.push('ALL TABLES IN SCHEMA'); // Default fallback
+        break;
+      }
+      if (node.objects && node.objects.length > 0) {
+        const schemas = ListUtils.unwrapList(node.objects)
+          .map(schema => this.visit(schema, context))
+          .join(', ');
+        output.push(schemas);
+      }
+      break;
+    default:
+      if (node.objects && node.objects.length > 0) {
+        const objects = ListUtils.unwrapList(node.objects)
+          .map(obj => this.visit(obj, context))
+          .join(', ');
+        output.push(objects);
+      }
     }
 
     if (node.is_grant) {
@@ -8684,26 +8831,26 @@ export class Deparser implements DeparserVisitor {
 
     if (node.objtype) {
       switch (node.objtype) {
-        case 'OBJECT_TABLE':
-          output.push('TABLE');
-          break;
-        case 'OBJECT_COLUMN':
-          output.push('COLUMN');
-          break;
-        case 'OBJECT_FUNCTION':
-          output.push('FUNCTION');
-          break;
-        case 'OBJECT_SCHEMA':
-          output.push('SCHEMA');
-          break;
-        case 'OBJECT_DATABASE':
-          output.push('DATABASE');
-          break;
-        case 'OBJECT_ROLE':
-          output.push('ROLE');
-          break;
-        default:
-          output.push(node.objtype.replace('OBJECT_', ''));
+      case 'OBJECT_TABLE':
+        output.push('TABLE');
+        break;
+      case 'OBJECT_COLUMN':
+        output.push('COLUMN');
+        break;
+      case 'OBJECT_FUNCTION':
+        output.push('FUNCTION');
+        break;
+      case 'OBJECT_SCHEMA':
+        output.push('SCHEMA');
+        break;
+      case 'OBJECT_DATABASE':
+        output.push('DATABASE');
+        break;
+      case 'OBJECT_ROLE':
+        output.push('ROLE');
+        break;
+      default:
+        output.push(node.objtype.replace('OBJECT_', ''));
       }
     }
 
@@ -8820,16 +8967,16 @@ export class Deparser implements DeparserVisitor {
 
     if (node.context) {
       switch (node.context) {
-        case 'COERCION_IMPLICIT':
-          output.push('AS IMPLICIT');
-          break;
-        case 'COERCION_ASSIGNMENT':
-          output.push('AS ASSIGNMENT');
-          break;
-        case 'COERCION_EXPLICIT':
-          break;
-        default:
-          throw new Error(`Unsupported CreateCastStmt context: ${node.context}`);
+      case 'COERCION_IMPLICIT':
+        output.push('AS IMPLICIT');
+        break;
+      case 'COERCION_ASSIGNMENT':
+        output.push('AS ASSIGNMENT');
+        break;
+      case 'COERCION_EXPLICIT':
+        break;
+      default:
+        throw new Error(`Unsupported CreateCastStmt context: ${node.context}`);
       }
     }else if (node.context === 'COERCION_ASSIGNMENT') {
       output.push('AS ASSIGNMENT');
@@ -9159,20 +9306,20 @@ export class Deparser implements DeparserVisitor {
 
     if (node.tgenabled) {
       switch (node.tgenabled) {
-        case 'O':
-          output.push('ENABLE');
-          break;
-        case 'D':
-          output.push('DISABLE');
-          break;
-        case 'R':
-          output.push('ENABLE REPLICA');
-          break;
-        case 'A':
-          output.push('ENABLE ALWAYS');
-          break;
-        default:
-          throw new Error(`Unsupported trigger enable state: ${node.tgenabled}`);
+      case 'O':
+        output.push('ENABLE');
+        break;
+      case 'D':
+        output.push('DISABLE');
+        break;
+      case 'R':
+        output.push('ENABLE REPLICA');
+        break;
+      case 'A':
+        output.push('ENABLE ALWAYS');
+        break;
+      default:
+        throw new Error(`Unsupported trigger enable state: ${node.tgenabled}`);
       }
     }
 
@@ -9734,15 +9881,15 @@ export class Deparser implements DeparserVisitor {
     if (node.into && node.into.onCommit && node.into.onCommit !== 'ONCOMMIT_NOOP') {
       output.push('ON COMMIT');
       switch (node.into.onCommit) {
-        case 'ONCOMMIT_PRESERVE_ROWS':
-          output.push('PRESERVE ROWS');
-          break;
-        case 'ONCOMMIT_DELETE_ROWS':
-          output.push('DELETE ROWS');
-          break;
-        case 'ONCOMMIT_DROP':
-          output.push('DROP');
-          break;
+      case 'ONCOMMIT_PRESERVE_ROWS':
+        output.push('PRESERVE ROWS');
+        break;
+      case 'ONCOMMIT_DELETE_ROWS':
+        output.push('DELETE ROWS');
+        break;
+      case 'ONCOMMIT_DROP':
+        output.push('DROP');
+        break;
       }
     }
 
@@ -9822,100 +9969,100 @@ export class Deparser implements DeparserVisitor {
     }
 
     switch (node.kind) {
-      case 'OBJECT_OPERATOR':
-        output.push('CREATE OPERATOR');
+    case 'OBJECT_OPERATOR':
+      output.push('CREATE OPERATOR');
 
-        if (node.defnames && node.defnames.length > 0) {
-          const names = ListUtils.unwrapList(node.defnames).map((name, index) => {
-            if (index === node.defnames.length - 1) {
-              const nodeData = this.getNodeData(name);
-              if (nodeData && nodeData.sval) {
-                return nodeData.sval; // Return operator symbol unquoted
-              }
+      if (node.defnames && node.defnames.length > 0) {
+        const names = ListUtils.unwrapList(node.defnames).map((name, index) => {
+          if (index === node.defnames.length - 1) {
+            const nodeData = this.getNodeData(name);
+            if (nodeData && nodeData.sval) {
+              return nodeData.sval; // Return operator symbol unquoted
             }
-            return this.visit(name, context); // Quote schema/namespace names normally
-          });
-          output.push(names.join('.'));
-        }
+          }
+          return this.visit(name, context); // Quote schema/namespace names normally
+        });
+        output.push(names.join('.'));
+      }
 
-        if (node.definition && node.definition.length > 0) {
-          output.push('(');
-          const definitions = ListUtils.unwrapList(node.definition).map(def => {
-            if (def.DefElem) {
-              const defElem = def.DefElem;
-              const defName = defElem.defname;
-              const defValue = defElem.arg;
+      if (node.definition && node.definition.length > 0) {
+        output.push('(');
+        const definitions = ListUtils.unwrapList(node.definition).map(def => {
+          if (def.DefElem) {
+            const defElem = def.DefElem;
+            const defName = defElem.defname;
+            const defValue = defElem.arg;
 
-              if (defName && defValue) {
-                let preservedDefName;
-                if (Deparser.needsQuotes(defName)) {
-                  preservedDefName = `"${defName}"`;
-                } else {
-                  preservedDefName = this.preserveOperatorDefElemCase(defName);
-                }
+            if (defName && defValue) {
+              let preservedDefName;
+              if (Deparser.needsQuotes(defName)) {
+                preservedDefName = `"${defName}"`;
+              } else {
+                preservedDefName = this.preserveOperatorDefElemCase(defName);
+              }
 
-                if ((defName.toLowerCase() === 'commutator' || defName.toLowerCase() === 'negator') && defValue.List) {
-                  const listItems = ListUtils.unwrapList(defValue.List.items);
-                  if (listItems.length === 1 && listItems[0].String) {
-                    return `${preservedDefName} = ${listItems[0].String.sval}`;
-                  }
+              if ((defName.toLowerCase() === 'commutator' || defName.toLowerCase() === 'negator') && defValue.List) {
+                const listItems = ListUtils.unwrapList(defValue.List.items);
+                if (listItems.length === 1 && listItems[0].String) {
+                  return `${preservedDefName} = ${listItems[0].String.sval}`;
                 }
-                // For commutator/negator, we already handled them above
-                if ((defName.toLowerCase() === 'commutator' || defName.toLowerCase() === 'negator')) {
-                  return `${preservedDefName} = ${this.visit(defValue, context)}`;
-                }
+              }
+              // For commutator/negator, we already handled them above
+              if ((defName.toLowerCase() === 'commutator' || defName.toLowerCase() === 'negator')) {
                 return `${preservedDefName} = ${this.visit(defValue, context)}`;
-              } else if (defName && !defValue) {
-                // Handle boolean flags like HASHES, MERGES - preserve original case
-                if (defName === 'Hashes' || defName === 'Merges') {
-                  return `"${defName}"`;
-                }
-                return this.preserveOperatorDefElemCase(defName).toUpperCase();
               }
+              return `${preservedDefName} = ${this.visit(defValue, context)}`;
+            } else if (defName && !defValue) {
+              // Handle boolean flags like HASHES, MERGES - preserve original case
+              if (defName === 'Hashes' || defName === 'Merges') {
+                return `"${defName}"`;
+              }
+              return this.preserveOperatorDefElemCase(defName).toUpperCase();
             }
-            return this.visit(def, context);
-          });
-          output.push(definitions.join(', '));
-          output.push(')');
-        }
-        break;
+          }
+          return this.visit(def, context);
+        });
+        output.push(definitions.join(', '));
+        output.push(')');
+      }
+      break;
 
-      case 'OBJECT_TYPE':
-        output.push('CREATE TYPE');
+    case 'OBJECT_TYPE':
+      output.push('CREATE TYPE');
 
-        if (node.defnames && node.defnames.length > 0) {
-          output.push(ListUtils.unwrapList(node.defnames).map(name => this.visit(name, context)).join('.'));
-        }
+      if (node.defnames && node.defnames.length > 0) {
+        output.push(ListUtils.unwrapList(node.defnames).map(name => this.visit(name, context)).join('.'));
+      }
 
-        if (node.definition && node.definition.length > 0) {
-          const defineStmtContext = context.spawn('DefineStmt');
-          const definitions = ListUtils.unwrapList(node.definition).map(def => {
-            return this.visit(def, defineStmtContext);
-          });
-          output.push(`(${definitions.join(', ')})`);
-        }
-        break;
+      if (node.definition && node.definition.length > 0) {
+        const defineStmtContext = context.spawn('DefineStmt');
+        const definitions = ListUtils.unwrapList(node.definition).map(def => {
+          return this.visit(def, defineStmtContext);
+        });
+        output.push(`(${definitions.join(', ')})`);
+      }
+      break;
 
-      case 'OBJECT_AGGREGATE':
-        output.push('CREATE');
-        if (node.replace) {
-          output.push('OR REPLACE');
-        }
-        output.push('AGGREGATE');
+    case 'OBJECT_AGGREGATE':
+      output.push('CREATE');
+      if (node.replace) {
+        output.push('OR REPLACE');
+      }
+      output.push('AGGREGATE');
 
-        if (node.defnames && node.defnames.length > 0) {
-          const nameStrs = ListUtils.unwrapList(node.defnames).map(name => this.visit(name, context));
-          output.push(nameStrs.join('.'));
-        }
+      if (node.defnames && node.defnames.length > 0) {
+        const nameStrs = ListUtils.unwrapList(node.defnames).map(name => this.visit(name, context));
+        output.push(nameStrs.join('.'));
+      }
 
-        if (node.args && node.args.length > 0) {
-          const args = ListUtils.unwrapList(node.args);
+      if (node.args && node.args.length > 0) {
+        const args = ListUtils.unwrapList(node.args);
 
-          // Check if this is an ordered-set aggregate (indicated by Integer(1) or empty Integer after List with FunctionParameter FUNC_PARAM_DEFAULT)
-          const hasOrderedSetIndicator = args.some(arg => arg.Integer && arg.Integer.ival === 1);
+        // Check if this is an ordered-set aggregate (indicated by Integer(1) or empty Integer after List with FunctionParameter FUNC_PARAM_DEFAULT)
+        const hasOrderedSetIndicator = args.some(arg => arg.Integer && arg.Integer.ival === 1);
 
-          // Check for ORDER BY pattern: List with FunctionParameter FUNC_PARAM_DEFAULT followed by empty Integer
-          const hasOrderByPattern = args.length >= 2 &&
+        // Check for ORDER BY pattern: List with FunctionParameter FUNC_PARAM_DEFAULT followed by empty Integer
+        const hasOrderByPattern = args.length >= 2 &&
             args[0].List &&
             args[0].List.items &&
             args[0].List.items.length === 1 &&
@@ -9923,76 +10070,65 @@ export class Deparser implements DeparserVisitor {
             args[0].List.items[0].FunctionParameter.mode === 'FUNC_PARAM_DEFAULT' &&
             args[1].Integer && Object.keys(args[1].Integer).length === 0;
 
-          const filteredArgs = args.filter(arg => {
-            if (arg.Integer && (arg.Integer.ival === -1 || arg.Integer.ival === 1)) {
-              return false;
-            }
-            if (arg.Integer && Object.keys(arg.Integer).length === 0 && hasOrderByPattern) {
-              return false;
-            }
-            return true;
-          });
+        const filteredArgs = args.filter(arg => {
+          if (arg.Integer && (arg.Integer.ival === -1 || arg.Integer.ival === 1)) {
+            return false;
+          }
+          if (arg.Integer && Object.keys(arg.Integer).length === 0 && hasOrderByPattern) {
+            return false;
+          }
+          return true;
+        });
 
-          if (filteredArgs.length > 0) {
-            if (hasOrderByPattern) {
-              // Handle ORDER BY syntax for aggregates like myavg (ORDER BY numeric)
-              const listArg = filteredArgs[0];
-              if (listArg.List && listArg.List.items && listArg.List.items[0].FunctionParameter) {
-                const functionParam = listArg.List.items[0].FunctionParameter;
-                // Handle argType which has a TypeName-like structure with names array
-                let paramStr;
-                if (functionParam.argType && functionParam.argType.names) {
-                  // Extract type name from names array (skip pg_catalog schema)
-                  const names = functionParam.argType.names;
-                  if (names.length >= 2 && names[0].String && names[0].String.sval === 'pg_catalog') {
-                    paramStr = names[1].String.sval;
-                  } else if (names.length >= 1 && names[0].String) {
-                    paramStr = names[0].String.sval;
-                  } else {
-                    paramStr = 'unknown';
-                  }
+        if (filteredArgs.length > 0) {
+          if (hasOrderByPattern) {
+            // Handle ORDER BY syntax for aggregates like myavg (ORDER BY numeric)
+            const listArg = filteredArgs[0];
+            if (listArg.List && listArg.List.items && listArg.List.items[0].FunctionParameter) {
+              const functionParam = listArg.List.items[0].FunctionParameter;
+              // Handle argType which has a TypeName-like structure with names array
+              let paramStr;
+              if (functionParam.argType && functionParam.argType.names) {
+                // Extract type name from names array (skip pg_catalog schema)
+                const names = functionParam.argType.names;
+                if (names.length >= 2 && names[0].String && names[0].String.sval === 'pg_catalog') {
+                  paramStr = names[1].String.sval;
+                } else if (names.length >= 1 && names[0].String) {
+                  paramStr = names[0].String.sval;
                 } else {
-                  // Fallback to visiting the argType as a TypeName
-                  paramStr = this.visit({ TypeName: functionParam.argType }, context);
+                  paramStr = 'unknown';
                 }
-                output.push(`(ORDER BY ${paramStr})`);
               } else {
-                const paramStr = this.visit(listArg, context);
-                output.push(`(ORDER BY ${paramStr})`);
+                // Fallback to visiting the argType as a TypeName
+                paramStr = this.visit({ TypeName: functionParam.argType }, context);
               }
-            } else if (hasOrderedSetIndicator && filteredArgs.length === 1 && filteredArgs[0].List) {
-              // Handle ordered-set aggregate with ORDER BY syntax
-              const listArg = filteredArgs[0].List;
-              if (listArg.items && listArg.items.length >= 2) {
-                const items = ListUtils.unwrapList(listArg.items);
-                const firstItem = this.visit(items[0], context);
-                const remainingItems = items.slice(1).map(item => this.visit(item, context));
+              output.push(`(ORDER BY ${paramStr})`);
+            } else {
+              const paramStr = this.visit(listArg, context);
+              output.push(`(ORDER BY ${paramStr})`);
+            }
+          } else if (hasOrderedSetIndicator && filteredArgs.length === 1 && filteredArgs[0].List) {
+            // Handle ordered-set aggregate with ORDER BY syntax
+            const listArg = filteredArgs[0].List;
+            if (listArg.items && listArg.items.length >= 2) {
+              const items = ListUtils.unwrapList(listArg.items);
+              const firstItem = this.visit(items[0], context);
+              const remainingItems = items.slice(1).map(item => this.visit(item, context));
 
-                output.push(`(${firstItem} ORDER BY ${remainingItems.join(', ')})`);
-              } else if (listArg.items && listArg.items.length === 1) {
-                // Handle single VARIADIC parameter in ordered-set context
-                const item = listArg.items[0];
-                if (item.FunctionParameter && item.FunctionParameter.mode === 'FUNC_PARAM_VARIADIC') {
-                  const paramStr = this.visit(item, context);
-                  output.push(`(${paramStr} ORDER BY ${paramStr})`);
-                } else {
-                  const paramStr = this.visit(item, context);
-                  output.push(`(${paramStr})`);
-                }
+              output.push(`(${firstItem} ORDER BY ${remainingItems.join(', ')})`);
+            } else if (listArg.items && listArg.items.length === 1) {
+              // Handle single VARIADIC parameter in ordered-set context
+              const item = listArg.items[0];
+              if (item.FunctionParameter && item.FunctionParameter.mode === 'FUNC_PARAM_VARIADIC') {
+                const paramStr = this.visit(item, context);
+                output.push(`(${paramStr} ORDER BY ${paramStr})`);
               } else {
-                // Fallback to regular processing if structure is unexpected
-                const argStrs = filteredArgs.map(arg => {
-                  if (Object.keys(arg).length === 0) {
-                    return '*';
-                  }
-                  return this.visit(arg, context);
-                });
-                output.push(`(${argStrs.join(', ')})`);
+                const paramStr = this.visit(item, context);
+                output.push(`(${paramStr})`);
               }
             } else {
-              // Handle regular aggregate arguments
+              // Fallback to regular processing if structure is unexpected
               const argStrs = filteredArgs.map(arg => {
-                // Handle empty object representing * wildcard
                 if (Object.keys(arg).length === 0) {
                   return '*';
                 }
@@ -10000,193 +10136,204 @@ export class Deparser implements DeparserVisitor {
               });
               output.push(`(${argStrs.join(', ')})`);
             }
+          } else {
+            // Handle regular aggregate arguments
+            const argStrs = filteredArgs.map(arg => {
+              // Handle empty object representing * wildcard
+              if (Object.keys(arg).length === 0) {
+                return '*';
+              }
+              return this.visit(arg, context);
+            });
+            output.push(`(${argStrs.join(', ')})`);
           }
         }
+      }
 
-        if (node.definition && node.definition.length > 0) {
-          const definitions = ListUtils.unwrapList(node.definition).map(def => {
-            if (def.DefElem) {
-              const defElem = def.DefElem;
-              const defName = defElem.defname;
-              const defValue = defElem.arg;
+      if (node.definition && node.definition.length > 0) {
+        const definitions = ListUtils.unwrapList(node.definition).map(def => {
+          if (def.DefElem) {
+            const defElem = def.DefElem;
+            const defName = defElem.defname;
+            const defValue = defElem.arg;
 
-              if (defName && defValue) {
-                let preservedDefName;
-                if (Deparser.needsQuotes(defName)) {
-                  preservedDefName = `"${defName}"`;
-                } else {
-                  preservedDefName = defName;
-                }
-
-                // Handle String arguments with single quotes for string literals
-                if (defValue.String) {
-                  return `${preservedDefName} = '${defValue.String.sval}'`;
-                }
-                return `${preservedDefName} = ${this.visit(defValue, context)}`;
+            if (defName && defValue) {
+              let preservedDefName;
+              if (Deparser.needsQuotes(defName)) {
+                preservedDefName = `"${defName}"`;
+              } else {
+                preservedDefName = defName;
               }
+
+              // Handle String arguments with single quotes for string literals
+              if (defValue.String) {
+                return `${preservedDefName} = '${defValue.String.sval}'`;
+              }
+              return `${preservedDefName} = ${this.visit(defValue, context)}`;
             }
-            return this.visit(def, context);
-          });
+          }
+          return this.visit(def, context);
+        });
+        output.push(`(${definitions.join(', ')})`);
+      }
+      break;
+
+    case 'OBJECT_TSDICTIONARY':
+      output.push('CREATE TEXT SEARCH DICTIONARY');
+
+      if (node.defnames && node.defnames.length > 0) {
+        output.push(ListUtils.unwrapList(node.defnames).map(name => this.visit(name, context)).join('.'));
+      }
+
+      if (node.definition && node.definition.length > 0) {
+        output.push('(');
+        const definitions = ListUtils.unwrapList(node.definition).map(def => {
+          if (def.DefElem) {
+            const defElem = def.DefElem;
+            const defName = defElem.defname;
+            const defValue = defElem.arg;
+
+            if (defName && defValue) {
+              return `${defName} = ${this.visit(defValue, context)}`;
+            }
+          }
+          return this.visit(def, context);
+        });
+        output.push(definitions.join(', '));
+        output.push(')');
+      }
+      break;
+
+    case 'OBJECT_TSCONFIGURATION':
+      output.push('CREATE TEXT SEARCH CONFIGURATION');
+
+      if (node.defnames && node.defnames.length > 0) {
+        output.push(ListUtils.unwrapList(node.defnames).map(name => this.visit(name, context)).join('.'));
+      }
+
+      if (node.definition && node.definition.length > 0) {
+        output.push('(');
+        const definitions = ListUtils.unwrapList(node.definition).map(def => {
+          if (def.DefElem) {
+            const defElem = def.DefElem;
+            const defName = defElem.defname;
+            const defValue = defElem.arg;
+
+            if (defName && defValue) {
+              return `${defName} = ${this.visit(defValue, context)}`;
+            }
+          }
+          return this.visit(def, context);
+        });
+        output.push(definitions.join(', '));
+        output.push(')');
+      }
+      break;
+
+    case 'OBJECT_TSPARSER':
+      output.push('CREATE TEXT SEARCH PARSER');
+
+      if (node.defnames && node.defnames.length > 0) {
+        const names = ListUtils.unwrapList(node.defnames)
+          .map(name => this.visit(name, context))
+          .join('.');
+        output.push(names);
+      }
+
+      if (node.definition && node.definition.length > 0) {
+        output.push('(');
+        const definitions = ListUtils.unwrapList(node.definition).map(def => {
+          if (def.DefElem) {
+            const defElem = def.DefElem;
+            const defName = defElem.defname;
+            const defValue = defElem.arg;
+
+            if (defName && defValue) {
+              return `${defName} = ${this.visit(defValue, context)}`;
+            }
+          }
+          return this.visit(def, context);
+        });
+        output.push(definitions.join(', '));
+        output.push(')');
+      }
+      break;
+
+    case 'OBJECT_TSTEMPLATE':
+      output.push('CREATE TEXT SEARCH TEMPLATE');
+
+      if (node.defnames && node.defnames.length > 0) {
+        const names = ListUtils.unwrapList(node.defnames)
+          .map(name => this.visit(name, context))
+          .join('.');
+        output.push(names);
+      }
+
+      if (node.definition && node.definition.length > 0) {
+        output.push('(');
+        const definitions = ListUtils.unwrapList(node.definition).map(def => {
+          if (def.DefElem) {
+            const defElem = def.DefElem;
+            const defName = defElem.defname;
+            const defValue = defElem.arg;
+
+            if (defName && defValue) {
+              return `${defName} = ${this.visit(defValue, context)}`;
+            }
+          }
+          return this.visit(def, context);
+        });
+        output.push(definitions.join(', '));
+        output.push(')');
+      }
+      break;
+
+    case 'OBJECT_COLLATION':
+      output.push('CREATE COLLATION');
+
+      if (node.defnames && node.defnames.length > 0) {
+        output.push(ListUtils.unwrapList(node.defnames).map(name => this.visit(name, context)).join('.'));
+      }
+
+      if (node.definition && node.definition.length > 0) {
+        const definitions = ListUtils.unwrapList(node.definition).map(def => {
+          if (def.DefElem) {
+            const defElem = def.DefElem;
+            const defName = defElem.defname;
+            const defValue = defElem.arg;
+
+            if (defName && defValue) {
+              // Handle FROM clause for collation definitions
+              if (defName === 'from') {
+                return `FROM ${this.visit(defValue, context)}`;
+              }
+
+              // For CREATE COLLATION, ensure String nodes are quoted as string literals
+              let valueStr;
+              if (defValue.String) {
+                valueStr = `'${defValue.String.sval}'`;
+              } else {
+                valueStr = this.visit(defValue, context);
+              }
+              return `${defName} = ${valueStr}`;
+            }
+          }
+          return this.visit(def, context);
+        });
+
+        // Check if we have FROM clause or parameter definitions
+        const hasFromClause = definitions.some(def => def.startsWith('FROM '));
+        if (hasFromClause) {
+          output.push(definitions.join(' '));
+        } else {
+          // Wrap parameter definitions in parentheses
           output.push(`(${definitions.join(', ')})`);
         }
-        break;
+      }
+      break;
 
-      case 'OBJECT_TSDICTIONARY':
-        output.push('CREATE TEXT SEARCH DICTIONARY');
-
-        if (node.defnames && node.defnames.length > 0) {
-          output.push(ListUtils.unwrapList(node.defnames).map(name => this.visit(name, context)).join('.'));
-        }
-
-        if (node.definition && node.definition.length > 0) {
-          output.push('(');
-          const definitions = ListUtils.unwrapList(node.definition).map(def => {
-            if (def.DefElem) {
-              const defElem = def.DefElem;
-              const defName = defElem.defname;
-              const defValue = defElem.arg;
-
-              if (defName && defValue) {
-                return `${defName} = ${this.visit(defValue, context)}`;
-              }
-            }
-            return this.visit(def, context);
-          });
-          output.push(definitions.join(', '));
-          output.push(')');
-        }
-        break;
-
-      case 'OBJECT_TSCONFIGURATION':
-        output.push('CREATE TEXT SEARCH CONFIGURATION');
-
-        if (node.defnames && node.defnames.length > 0) {
-          output.push(ListUtils.unwrapList(node.defnames).map(name => this.visit(name, context)).join('.'));
-        }
-
-        if (node.definition && node.definition.length > 0) {
-          output.push('(');
-          const definitions = ListUtils.unwrapList(node.definition).map(def => {
-            if (def.DefElem) {
-              const defElem = def.DefElem;
-              const defName = defElem.defname;
-              const defValue = defElem.arg;
-
-              if (defName && defValue) {
-                return `${defName} = ${this.visit(defValue, context)}`;
-              }
-            }
-            return this.visit(def, context);
-          });
-          output.push(definitions.join(', '));
-          output.push(')');
-        }
-        break;
-
-      case 'OBJECT_TSPARSER':
-        output.push('CREATE TEXT SEARCH PARSER');
-
-        if (node.defnames && node.defnames.length > 0) {
-          const names = ListUtils.unwrapList(node.defnames)
-            .map(name => this.visit(name, context))
-            .join('.');
-          output.push(names);
-        }
-
-        if (node.definition && node.definition.length > 0) {
-          output.push('(');
-          const definitions = ListUtils.unwrapList(node.definition).map(def => {
-            if (def.DefElem) {
-              const defElem = def.DefElem;
-              const defName = defElem.defname;
-              const defValue = defElem.arg;
-
-              if (defName && defValue) {
-                return `${defName} = ${this.visit(defValue, context)}`;
-              }
-            }
-            return this.visit(def, context);
-          });
-          output.push(definitions.join(', '));
-          output.push(')');
-        }
-        break;
-
-      case 'OBJECT_TSTEMPLATE':
-        output.push('CREATE TEXT SEARCH TEMPLATE');
-
-        if (node.defnames && node.defnames.length > 0) {
-          const names = ListUtils.unwrapList(node.defnames)
-            .map(name => this.visit(name, context))
-            .join('.');
-          output.push(names);
-        }
-
-        if (node.definition && node.definition.length > 0) {
-          output.push('(');
-          const definitions = ListUtils.unwrapList(node.definition).map(def => {
-            if (def.DefElem) {
-              const defElem = def.DefElem;
-              const defName = defElem.defname;
-              const defValue = defElem.arg;
-
-              if (defName && defValue) {
-                return `${defName} = ${this.visit(defValue, context)}`;
-              }
-            }
-            return this.visit(def, context);
-          });
-          output.push(definitions.join(', '));
-          output.push(')');
-        }
-        break;
-
-      case 'OBJECT_COLLATION':
-        output.push('CREATE COLLATION');
-
-        if (node.defnames && node.defnames.length > 0) {
-          output.push(ListUtils.unwrapList(node.defnames).map(name => this.visit(name, context)).join('.'));
-        }
-
-        if (node.definition && node.definition.length > 0) {
-          const definitions = ListUtils.unwrapList(node.definition).map(def => {
-            if (def.DefElem) {
-              const defElem = def.DefElem;
-              const defName = defElem.defname;
-              const defValue = defElem.arg;
-
-              if (defName && defValue) {
-                // Handle FROM clause for collation definitions
-                if (defName === 'from') {
-                  return `FROM ${this.visit(defValue, context)}`;
-                }
-
-                // For CREATE COLLATION, ensure String nodes are quoted as string literals
-                let valueStr;
-                if (defValue.String) {
-                  valueStr = `'${defValue.String.sval}'`;
-                } else {
-                  valueStr = this.visit(defValue, context);
-                }
-                return `${defName} = ${valueStr}`;
-              }
-            }
-            return this.visit(def, context);
-          });
-
-          // Check if we have FROM clause or parameter definitions
-          const hasFromClause = definitions.some(def => def.startsWith('FROM '));
-          if (hasFromClause) {
-            output.push(definitions.join(' '));
-          } else {
-            // Wrap parameter definitions in parentheses
-            output.push(`(${definitions.join(', ')})`);
-          }
-        }
-        break;
-
-      default:
-        throw new Error(`Unsupported DefineStmt kind: ${node.kind}`);
+    default:
+      throw new Error(`Unsupported DefineStmt kind: ${node.kind}`);
     }
 
     return output.join(' ');
@@ -10326,16 +10473,16 @@ export class Deparser implements DeparserVisitor {
     output.push('TYPE');
 
     switch (node.amtype) {
-      case 'i':
-        output.push('INDEX');
-        break;
-      case 't':
-        output.push('TABLE');
-        break;
-      default:
-        // Fallback to the raw value if unknown
-        output.push(node.amtype || '');
-        break;
+    case 'i':
+      output.push('INDEX');
+      break;
+    case 't':
+      output.push('TABLE');
+      break;
+    default:
+      // Fallback to the raw value if unknown
+      output.push(node.amtype || '');
+      break;
     }
 
     if (node.handler_name && node.handler_name.length > 0) {
@@ -10378,15 +10525,15 @@ export class Deparser implements DeparserVisitor {
     if (node.onCommit && node.onCommit !== 'ONCOMMIT_NOOP') {
       output.push('ON COMMIT');
       switch (node.onCommit) {
-        case 'ONCOMMIT_PRESERVE_ROWS':
-          output.push('PRESERVE ROWS');
-          break;
-        case 'ONCOMMIT_DELETE_ROWS':
-          output.push('DELETE ROWS');
-          break;
-        case 'ONCOMMIT_DROP':
-          output.push('DROP');
-          break;
+      case 'ONCOMMIT_PRESERVE_ROWS':
+        output.push('PRESERVE ROWS');
+        break;
+      case 'ONCOMMIT_DELETE_ROWS':
+        output.push('DELETE ROWS');
+        break;
+      case 'ONCOMMIT_DROP':
+        output.push('DROP');
+        break;
       }
     }
 
@@ -10746,105 +10893,105 @@ export class Deparser implements DeparserVisitor {
     const output: string[] = [];
 
     switch (node.op) {
-      case 'IS_XMLCONCAT':
-        output.push('XMLCONCAT');
-        break;
-      case 'IS_XMLELEMENT':
-        output.push('XMLELEMENT');
-        const elementParts: string[] = [];
-        if (node.name) {
-          elementParts.push(`NAME ${QuoteUtils.quote(node.name)}`);
+    case 'IS_XMLCONCAT':
+      output.push('XMLCONCAT');
+      break;
+    case 'IS_XMLELEMENT':
+      output.push('XMLELEMENT');
+      const elementParts: string[] = [];
+      if (node.name) {
+        elementParts.push(`NAME ${QuoteUtils.quote(node.name)}`);
+      }
+      if (node.named_args && node.named_args.length > 0) {
+        const namedArgStrs = ListUtils.unwrapList(node.named_args).map(arg => this.visit(arg, context));
+        elementParts.push(`XMLATTRIBUTES(${namedArgStrs.join(', ')})`);
+      }
+      if (node.args && node.args.length > 0) {
+        const argStrs = ListUtils.unwrapList(node.args).map(arg => this.visit(arg, context));
+        elementParts.push(...argStrs);
+      }
+      if (elementParts.length > 0) {
+        output.push(`(${elementParts.join(', ')})`);
+      }
+      break;
+    case 'IS_XMLFOREST':
+      output.push('XMLFOREST');
+      break;
+    case 'IS_XMLPARSE':
+      output.push('XMLPARSE');
+      const parseParts: string[] = [];
+      if (node.xmloption) {
+        if (node.xmloption === 'XMLOPTION_DOCUMENT') {
+          parseParts.push('DOCUMENT');
+        } else if (node.xmloption === 'XMLOPTION_CONTENT') {
+          parseParts.push('CONTENT');
         }
-        if (node.named_args && node.named_args.length > 0) {
-          const namedArgStrs = ListUtils.unwrapList(node.named_args).map(arg => this.visit(arg, context));
-          elementParts.push(`XMLATTRIBUTES(${namedArgStrs.join(', ')})`);
+      }
+      if (node.args && node.args.length > 0) {
+        const argStrs = ListUtils.unwrapList(node.args).map(arg => this.visit(arg, context));
+        if (argStrs.length > 0) {
+          parseParts.push(argStrs[0]);
         }
-        if (node.args && node.args.length > 0) {
-          const argStrs = ListUtils.unwrapList(node.args).map(arg => this.visit(arg, context));
-          elementParts.push(...argStrs);
-        }
-        if (elementParts.length > 0) {
-          output.push(`(${elementParts.join(', ')})`);
-        }
-        break;
-      case 'IS_XMLFOREST':
-        output.push('XMLFOREST');
-        break;
-      case 'IS_XMLPARSE':
-        output.push('XMLPARSE');
-        const parseParts: string[] = [];
-        if (node.xmloption) {
-          if (node.xmloption === 'XMLOPTION_DOCUMENT') {
-            parseParts.push('DOCUMENT');
-          } else if (node.xmloption === 'XMLOPTION_CONTENT') {
-            parseParts.push('CONTENT');
-          }
-        }
-        if (node.args && node.args.length > 0) {
-          const argStrs = ListUtils.unwrapList(node.args).map(arg => this.visit(arg, context));
-          if (argStrs.length > 0) {
-            parseParts.push(argStrs[0]);
-          }
-        }
-        if (parseParts.length > 0) {
-          output.push(`(${parseParts.join(' ')})`);
-        }
-        break;
-      case 'IS_XMLROOT':
-        output.push('XMLROOT');
-        if (node.args && node.args.length > 0) {
-          const args = ListUtils.unwrapList(node.args);
-          const rootParts: string[] = [];
+      }
+      if (parseParts.length > 0) {
+        output.push(`(${parseParts.join(' ')})`);
+      }
+      break;
+    case 'IS_XMLROOT':
+      output.push('XMLROOT');
+      if (node.args && node.args.length > 0) {
+        const args = ListUtils.unwrapList(node.args);
+        const rootParts: string[] = [];
 
-          if (args[0]) {
-            rootParts.push(this.visit(args[0], context));
-          }
+        if (args[0]) {
+          rootParts.push(this.visit(args[0], context));
+        }
 
-          if (args[1]) {
-            const versionArg = args[1];
-            if (versionArg.A_Const && versionArg.A_Const.isnull) {
-              rootParts.push('version NO VALUE');
-            } else {
-              rootParts.push(`version ${this.visit(versionArg, context)}`);
-            }
+        if (args[1]) {
+          const versionArg = args[1];
+          if (versionArg.A_Const && versionArg.A_Const.isnull) {
+            rootParts.push('version NO VALUE');
+          } else {
+            rootParts.push(`version ${this.visit(versionArg, context)}`);
           }
+        }
 
-          if (args[2]) {
-            const standaloneArg = args[2];
-            if (standaloneArg.A_Const && standaloneArg.A_Const.ival !== undefined) {
-              if (standaloneArg.A_Const.ival.ival === 1) {
-                rootParts.push('STANDALONE NO');
-              } else if (standaloneArg.A_Const.ival.ival === 2) {
-                rootParts.push('STANDALONE NO VALUE');
-              } else if (standaloneArg.A_Const.ival.ival === 3) {
-              } else if (Object.keys(standaloneArg.A_Const.ival).length === 0) {
-                rootParts.push('STANDALONE YES');
-              } else {
-                rootParts.push(`STANDALONE ${this.visit(standaloneArg, context)}`);
-              }
+        if (args[2]) {
+          const standaloneArg = args[2];
+          if (standaloneArg.A_Const && standaloneArg.A_Const.ival !== undefined) {
+            if (standaloneArg.A_Const.ival.ival === 1) {
+              rootParts.push('STANDALONE NO');
+            } else if (standaloneArg.A_Const.ival.ival === 2) {
+              rootParts.push('STANDALONE NO VALUE');
+            } else if (standaloneArg.A_Const.ival.ival === 3) {
+            } else if (Object.keys(standaloneArg.A_Const.ival).length === 0) {
+              rootParts.push('STANDALONE YES');
             } else {
               rootParts.push(`STANDALONE ${this.visit(standaloneArg, context)}`);
             }
+          } else {
+            rootParts.push(`STANDALONE ${this.visit(standaloneArg, context)}`);
           }
+        }
 
-          if (rootParts.length > 0) {
-            output.push(`(${rootParts.join(', ')})`);
-          }
+        if (rootParts.length > 0) {
+          output.push(`(${rootParts.join(', ')})`);
         }
-        break;
-      case 'IS_XMLSERIALIZE':
-        output.push('XMLSERIALIZE');
-        break;
-      case 'IS_DOCUMENT':
-        if (node.args && node.args.length > 0) {
-          const argStrs = ListUtils.unwrapList(node.args).map(arg => this.visit(arg, context));
-          output.push(`${argStrs[0]} IS DOCUMENT`);
-        } else {
-          output.push('IS DOCUMENT');
-        }
-        break;
-      default:
-        throw new Error(`Unsupported XmlExpr op: ${node.op}`);
+      }
+      break;
+    case 'IS_XMLSERIALIZE':
+      output.push('XMLSERIALIZE');
+      break;
+    case 'IS_DOCUMENT':
+      if (node.args && node.args.length > 0) {
+        const argStrs = ListUtils.unwrapList(node.args).map(arg => this.visit(arg, context));
+        output.push(`${argStrs[0]} IS DOCUMENT`);
+      } else {
+        output.push('IS DOCUMENT');
+      }
+      break;
+    default:
+      throw new Error(`Unsupported XmlExpr op: ${node.op}`);
     }
 
     // Handle name and args for operations that don't have special handling
@@ -10984,20 +11131,20 @@ export class Deparser implements DeparserVisitor {
 
     if (node.event) {
       switch (node.event) {
-        case 'CMD_SELECT':
-          output.push('SELECT');
-          break;
-        case 'CMD_INSERT':
-          output.push('INSERT');
-          break;
-        case 'CMD_UPDATE':
-          output.push('UPDATE');
-          break;
-        case 'CMD_DELETE':
-          output.push('DELETE');
-          break;
-        default:
-          output.push(node.event.toString());
+      case 'CMD_SELECT':
+        output.push('SELECT');
+        break;
+      case 'CMD_INSERT':
+        output.push('INSERT');
+        break;
+      case 'CMD_UPDATE':
+        output.push('UPDATE');
+        break;
+      case 'CMD_DELETE':
+        output.push('DELETE');
+        break;
+      default:
+        output.push(node.event.toString());
       }
     }
 
@@ -11105,38 +11252,38 @@ export class Deparser implements DeparserVisitor {
 
   SQLValueFunction(node: t.SQLValueFunction, context: DeparserContext): string {
     switch (node.op) {
-      case 'SVFOP_CURRENT_DATE':
-        return 'CURRENT_DATE';
-      case 'SVFOP_CURRENT_TIME':
-        return 'CURRENT_TIME';
-      case 'SVFOP_CURRENT_TIME_N':
-        return `CURRENT_TIME(${node.typmod || 0})`;
-      case 'SVFOP_CURRENT_TIMESTAMP':
-        return 'CURRENT_TIMESTAMP';
-      case 'SVFOP_CURRENT_TIMESTAMP_N':
-        return `CURRENT_TIMESTAMP(${node.typmod || 0})`;
-      case 'SVFOP_LOCALTIME':
-        return 'LOCALTIME';
-      case 'SVFOP_LOCALTIME_N':
-        return `LOCALTIME(${node.typmod || 0})`;
-      case 'SVFOP_LOCALTIMESTAMP':
-        return 'LOCALTIMESTAMP';
-      case 'SVFOP_LOCALTIMESTAMP_N':
-        return `LOCALTIMESTAMP(${node.typmod || 0})`;
-      case 'SVFOP_CURRENT_ROLE':
-        return 'CURRENT_ROLE';
-      case 'SVFOP_CURRENT_USER':
-        return 'CURRENT_USER';
-      case 'SVFOP_USER':
-        return 'USER';
-      case 'SVFOP_SESSION_USER':
-        return 'SESSION_USER';
-      case 'SVFOP_CURRENT_CATALOG':
-        return 'CURRENT_CATALOG';
-      case 'SVFOP_CURRENT_SCHEMA':
-        return 'CURRENT_SCHEMA';
-      default:
-        throw new Error(`Unsupported SQLValueFunction op: ${node.op}`);
+    case 'SVFOP_CURRENT_DATE':
+      return 'CURRENT_DATE';
+    case 'SVFOP_CURRENT_TIME':
+      return 'CURRENT_TIME';
+    case 'SVFOP_CURRENT_TIME_N':
+      return `CURRENT_TIME(${node.typmod || 0})`;
+    case 'SVFOP_CURRENT_TIMESTAMP':
+      return 'CURRENT_TIMESTAMP';
+    case 'SVFOP_CURRENT_TIMESTAMP_N':
+      return `CURRENT_TIMESTAMP(${node.typmod || 0})`;
+    case 'SVFOP_LOCALTIME':
+      return 'LOCALTIME';
+    case 'SVFOP_LOCALTIME_N':
+      return `LOCALTIME(${node.typmod || 0})`;
+    case 'SVFOP_LOCALTIMESTAMP':
+      return 'LOCALTIMESTAMP';
+    case 'SVFOP_LOCALTIMESTAMP_N':
+      return `LOCALTIMESTAMP(${node.typmod || 0})`;
+    case 'SVFOP_CURRENT_ROLE':
+      return 'CURRENT_ROLE';
+    case 'SVFOP_CURRENT_USER':
+      return 'CURRENT_USER';
+    case 'SVFOP_USER':
+      return 'USER';
+    case 'SVFOP_SESSION_USER':
+      return 'SESSION_USER';
+    case 'SVFOP_CURRENT_CATALOG':
+      return 'CURRENT_CATALOG';
+    case 'SVFOP_CURRENT_SCHEMA':
+      return 'CURRENT_SCHEMA';
+    default:
+      throw new Error(`Unsupported SQLValueFunction op: ${node.op}`);
     }
   }
 
