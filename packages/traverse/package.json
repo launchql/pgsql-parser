@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@pgsql/types": "^17.6.1",
-    "pg-proto-parser": "^1.30.0"
+    "pg-proto-parser": "workspace:*"
   },
   "devDependencies": {
     "makage": "^0.1.2"

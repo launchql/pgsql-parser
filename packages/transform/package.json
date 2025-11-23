@@ -34,8 +34,8 @@
   },
   "devDependencies": {
     "@pgsql/parser": "^1.2.0",
-    "pg-proto-parser": "^1.30.0",
-    "pgsql-deparser": "^17.12.0",
+    "pg-proto-parser": "workspace:*",
+    "pgsql-deparser": "workspace:*",
     "makage": "^0.1.2"
   },
   "keywords": []

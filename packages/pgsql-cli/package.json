@@ -52,9 +52,9 @@
     "minimist": "1.2.8",
     "mkdirp": "3.0.1",
     "nested-obj": "^0.0.1",
-    "pg-proto-parser": "^1.30.0",
-    "pgsql-deparser": "^17.12.0",
-    "pgsql-parser": "^17.9.0"
+    "pg-proto-parser": "workspace:*",
+    "pgsql-deparser": "workspace:*",
+    "pgsql-parser": "workspace:*"
   },
   "devDependencies": {
     "@types/minimist": "^1.2.5",
