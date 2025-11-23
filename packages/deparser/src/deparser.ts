@@ -2446,6 +2446,11 @@ export class Deparser implements DeparserVisitor {
   private argumentNeedsCastSyntax(argNode: any): boolean {
     const argType = this.getNodeType(argNode);
     
+    // FuncCall nodes can use :: syntax (TypeCast will add parentheses)
+    if (argType === 'FuncCall') {
+      return false;
+    }
+    
     // Simple constants and column references can use :: syntax
     if (argType === 'A_Const' || argType === 'ColumnRef') {
       // Check for A_Const with special cases that might need CAST syntax
