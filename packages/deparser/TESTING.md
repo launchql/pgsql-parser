@@ -17,13 +17,13 @@ You can see `expectAstMatch` here: packages/deparser/test-utils/index.ts
 
 **Our systematic approach to fixing deparser issues:**
 
-1. **One test at a time**: Focus on individual failing tests using `yarn test --testNamePattern="specific-test"`
-2. **Always check for regressions**: After each fix, run full `yarn test` to ensure no previously passing tests broke
+1. **One test at a time**: Focus on individual failing tests using `pnpm test --testNamePattern="specific-test"`
+2. **Always check for regressions**: After each fix, run full `pnpm test` to ensure no previously passing tests broke
 3. **Track progress**: Update this file with current pass/fail counts after each significant change
-4. **Build before testing**: Always run `yarn build` after code changes before testing
+4. **Build before testing**: Always run `pnpm build` after code changes before testing
 5. **Clean commits**: Stage files explicitly with `git add <file>`, never use `git add .`
 6. **Tight feedback loops**: Use isolated debug scripts for complex issues, but don't commit them
 
-**Workflow**: Make changes → `yarn test --testNamePattern="target-test"` → `yarn test` (check regressions) → Update this file → Commit & push
+**Workflow**: Make changes → `pnpm test --testNamePattern="target-test"` → `pnpm test` (check regressions) → Update this file → Commit & push
 
-**When committing to TESTS.md, always run all tests — do not use testNamePattern, only `yarn test`**
+**When committing to TESTS.md, always run all tests — do not use testNamePattern, only `pnpm test`**

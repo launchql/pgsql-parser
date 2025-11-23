@@ -178,7 +178,7 @@ walk(ast, visitor);
 
 ## 🛠️ Development
 
-This project uses Yarn workspaces and Lerna for monorepo management. See [DEVELOPMENT.md](DEVELOPMENT.md) for more info.
+This project uses pnpm workspaces and Lerna for monorepo management. See [DEVELOPMENT.md](DEVELOPMENT.md) for more info.
 
 ### Setup
 ```bash
