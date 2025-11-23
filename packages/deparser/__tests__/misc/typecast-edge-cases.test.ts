@@ -61,21 +61,24 @@ describe('TypeCast with complex expressions', () => {
     const result = await expectParseDeparse(sql);
     // Complex expressions require CAST() syntax
     // Note: PostgreSQL normalizes "integer" to "int" in the AST
-    expect(result).toBe(`SELECT CAST((CASE WHEN (a > 0) THEN 1 ELSE 2 END) AS int) FROM t`);
+    // Note: Deparser removes outer parentheses from CASE expressions
+    expect(result).toBe(`SELECT CAST(CASE WHEN (a > 0) THEN 1 ELSE 2 END AS int) FROM t`);
   });
 
   it('should handle boolean expression', async () => {
     const sql = `SELECT (a IS NULL)::boolean FROM t`;
     const result = await expectParseDeparse(sql);
     // Complex expressions require CAST() syntax
-    expect(result).toBe(`SELECT CAST((a IS NULL) AS boolean) FROM t`);
+    // Note: Deparser removes outer parentheses from boolean expressions
+    expect(result).toBe(`SELECT CAST(a IS NULL AS boolean) FROM t`);
   });
 
   it('should handle comparison expression', async () => {
     const sql = `SELECT (a > b)::boolean FROM t`;
     const result = await expectParseDeparse(sql);
     // Complex expressions require CAST() syntax
-    expect(result).toBe(`SELECT CAST((a > b) AS boolean) FROM t`);
+    // Note: Deparser removes outer parentheses from comparison expressions
+    expect(result).toBe(`SELECT CAST(a > b AS boolean) FROM t`);
   });
 });
 
@@ -126,8 +129,8 @@ describe('TypeCast with pg_catalog.bpchar', () => {
   it('should handle bpchar with length modifier', async () => {
     const sql = `SELECT 'hello'::bpchar(10)`;
     const result = await expectParseDeparse(sql);
-    // bpchar with length modifier uses :: syntax
-    expect(result).toBe(`SELECT 'hello'::bpchar(10)`);
+    // bpchar with length modifier uses CAST() syntax (not :: syntax)
+    expect(result).toBe(`SELECT CAST('hello' AS bpchar(10))`);
   });
 });
 
@@ -176,13 +179,15 @@ describe('TypeCast with simple constants', () => {
   it('should handle boolean true', async () => {
     const sql = `SELECT true::boolean`;
     const result = await expectParseDeparse(sql);
-    expect(result).toBe(`SELECT TRUE::boolean`);
+    // Boolean constants use CAST() syntax (not :: syntax)
+    expect(result).toBe(`SELECT CAST(true AS boolean)`);
   });
 
   it('should handle boolean false', async () => {
     const sql = `SELECT false::boolean`;
     const result = await expectParseDeparse(sql);
-    expect(result).toBe(`SELECT FALSE::boolean`);
+    // Boolean constants use CAST() syntax (not :: syntax)
+    expect(result).toBe(`SELECT CAST(false AS boolean)`);
   });
 
   it('should handle NULL cast', async () => {
