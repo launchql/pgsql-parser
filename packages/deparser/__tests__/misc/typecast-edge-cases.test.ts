@@ -5,14 +5,16 @@ describe('TypeCast with negative numbers', () => {
     const sql = `SELECT -1::integer`;
     const result = await expectParseDeparse(sql);
     // Negative numbers require CAST() syntax for precedence
-    expect(result).toBe(`SELECT CAST(-1 AS integer)`);
+    // Note: PostgreSQL normalizes "integer" to "int" in the AST
+    expect(result).toBe(`SELECT CAST(-1 AS int)`);
   });
 
   it('should handle parenthesized negative integer', async () => {
     const sql = `SELECT (-1)::integer`;
     const result = await expectParseDeparse(sql);
     // Parenthesized negative numbers can use :: syntax
-    expect(result).toBe(`SELECT (-1)::integer`);
+    // Note: PostgreSQL normalizes "integer" to "int" in the AST
+    expect(result).toBe(`SELECT (-1)::int`);
   });
 
   it('should handle negative float with CAST syntax', async () => {
@@ -42,21 +44,24 @@ describe('TypeCast with complex expressions', () => {
     const sql = `SELECT (1 + 2)::integer`;
     const result = await expectParseDeparse(sql);
     // Complex expressions require CAST() syntax
-    expect(result).toBe(`SELECT CAST((1 + 2) AS integer)`);
+    // Note: PostgreSQL normalizes "integer" to "int" in the AST
+    expect(result).toBe(`SELECT CAST((1 + 2) AS int)`);
   });
 
   it('should handle subtraction expression', async () => {
     const sql = `SELECT (a - b)::integer FROM t`;
     const result = await expectParseDeparse(sql);
     // Complex expressions require CAST() syntax
-    expect(result).toBe(`SELECT CAST((a - b) AS integer) FROM t`);
+    // Note: PostgreSQL normalizes "integer" to "int" in the AST
+    expect(result).toBe(`SELECT CAST((a - b) AS int) FROM t`);
   });
 
   it('should handle CASE expression with CAST syntax', async () => {
     const sql = `SELECT (CASE WHEN a > 0 THEN 1 ELSE 2 END)::integer FROM t`;
     const result = await expectParseDeparse(sql);
     // Complex expressions require CAST() syntax
-    expect(result).toBe(`SELECT CAST((CASE WHEN (a > 0) THEN 1 ELSE 2 END) AS integer) FROM t`);
+    // Note: PostgreSQL normalizes "integer" to "int" in the AST
+    expect(result).toBe(`SELECT CAST((CASE WHEN (a > 0) THEN 1 ELSE 2 END) AS int) FROM t`);
   });
 
   it('should handle boolean expression', async () => {
@@ -158,7 +163,8 @@ describe('TypeCast with simple constants', () => {
   it('should handle positive integer with :: syntax', async () => {
     const sql = `SELECT 123::integer`;
     const result = await expectParseDeparse(sql);
-    expect(result).toBe(`SELECT 123::integer`);
+    // Note: PostgreSQL normalizes "integer" to "int" in the AST
+    expect(result).toBe(`SELECT 123::int`);
   });
 
   it('should handle positive float with :: syntax', async () => {
@@ -183,7 +189,8 @@ describe('TypeCast with simple constants', () => {
     const sql = `SELECT NULL::integer`;
     const result = await expectParseDeparse(sql);
     // NULL can use :: syntax
-    expect(result).toBe(`SELECT NULL::integer`);
+    // Note: PostgreSQL normalizes "integer" to "int" in the AST
+    expect(result).toBe(`SELECT NULL::int`);
   });
 });
 
@@ -191,20 +198,23 @@ describe('TypeCast with column references', () => {
   it('should handle simple column reference with :: syntax', async () => {
     const sql = `SELECT a::integer FROM t`;
     const result = await expectParseDeparse(sql);
-    expect(result).toBe(`SELECT a::integer FROM t`);
+    // Note: PostgreSQL normalizes "integer" to "int" in the AST
+    expect(result).toBe(`SELECT a::int FROM t`);
   });
 
   it('should handle qualified column reference', async () => {
     const sql = `SELECT t.a::integer FROM t`;
     const result = await expectParseDeparse(sql);
-    expect(result).toBe(`SELECT t.a::integer FROM t`);
+    // Note: PostgreSQL normalizes "integer" to "int" in the AST
+    expect(result).toBe(`SELECT t.a::int FROM t`);
   });
 
   it('should handle fully qualified column reference', async () => {
     const sql = `SELECT schema.t.a::integer FROM schema.t`;
     const result = await expectParseDeparse(sql);
     // Fully qualified column references can use :: syntax
-    expect(result).toBe(`SELECT schema.t.a::integer FROM schema.t`);
+    // Note: PostgreSQL normalizes "integer" to "int" in the AST
+    expect(result).toBe(`SELECT schema.t.a::int FROM schema.t`);
   });
 });
 
@@ -236,6 +246,7 @@ describe('TypeCast with arrays', () => {
     const sql = `SELECT ARRAY[1, 2, 3]::integer[]`;
     const result = await expectParseDeparse(sql);
     // Array literals require CAST() syntax
+    // Note: PostgreSQL normalizes "integer[]" to "int[]" in the AST
     expect(result).toBe(`SELECT CAST(ARRAY[1, 2, 3] AS int[])`);
   });
 
@@ -243,6 +254,7 @@ describe('TypeCast with arrays', () => {
     const sql = `SELECT '{1,2,3}'::integer[]`;
     const result = await expectParseDeparse(sql);
     // Array string literals require CAST() syntax
+    // Note: PostgreSQL normalizes "integer[]" to "int[]" in the AST
     expect(result).toBe(`SELECT CAST('{1,2,3}' AS int[])`);
   });
 });
