@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`dynamic creation of tables 1`] = `"CREATE TABLE users (id int PRIMARY KEY, username text, email text UNIQUE, created_at timestamp NOT NULL)"`;
 
